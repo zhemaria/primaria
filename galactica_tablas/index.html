@@ -1,1 +1,2022 @@
+<!doctype html>
+<!--
+  Tablas galácticas — viaje por las tablas de multiplicar
+  © José M. Fernández. Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#17123a" />
+    <title>Tablas galácticas</title>
+    <meta name="description" content="Juego por fases para aprender las tablas de multiplicar del 2 al 10, con apoyos visuales y conteo salteado." />
+    <meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago" />
+    <meta name="license" content="CC BY-NC-SA 4.0" />
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --noche: #17123a;
+        --noche2: #241a55;
+        --noche3: #2f2270;
+        --crema: #fff6e5;
+        --crema-suave: #e8dfc8;
+        --sol: #ffc24b;
+        --coral: #ff7a6b;
+        --menta: #5fe3c0;
+        --lila: #b58cff;
+        --cielo: #6fc8ff;
+        --tinta: #241300;
+        --radio: 22px;
+        --sombra: 0 10px 0 rgba(0, 0, 0, 0.22);
+        --display: 'Baloo 2', 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        --cuerpo: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: var(--cuerpo);
+        background: radial-gradient(1200px 700px at 20% -10%, #3a2a86 0%, transparent 60%), radial-gradient(900px 600px at 100% 10%, #4a2a6e 0%, transparent 55%), var(--noche);
+        color: var(--crema);
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      #estrellitas {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .estrellita {
+        position: absolute;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0.5;
+        animation: parpadeo 4s ease-in-out infinite;
+      }
+      @keyframes parpadeo {
+        0%,
+        100% {
+          opacity: 0.15;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 0.85;
+          transform: scale(1.15);
+        }
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 12px 14px 40px;
+      }
+
+      /* ---------- Barra superior ---------- */
+      .barra {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .marca {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1.15rem;
+        letter-spacing: 0.5px;
+        margin: 0;
+        flex: 1 1 auto;
+        line-height: 1.1;
+      }
+      .marca small {
+        display: block;
+        font-family: var(--cuerpo);
+        font-weight: 700;
+        font-size: 0.68rem;
+        color: var(--crema-suave);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .contador {
+        display: flex;
+        gap: 6px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 2px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-weight: 900;
+        font-size: 0.95rem;
+      }
+      .icono-btn {
+        background: rgba(255, 255, 255, 0.12);
+        border: 2px solid rgba(255, 255, 255, 0.22);
+        color: var(--crema);
+        border-radius: 999px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+      .icono-btn:active {
+        transform: translateY(2px);
+      }
+
+      /* ---------- Botones ---------- */
+      button {
+        font-family: var(--cuerpo);
+        touch-action: manipulation;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 56px;
+        padding: 14px 20px;
+        border-radius: 18px;
+        border: none;
+        background: var(--sol);
+        color: var(--tinta);
+        font-weight: 900;
+        font-size: 1.05rem;
+        box-shadow: 0 5px 0 #c98a00;
+        cursor: pointer;
+        width: 100%;
+      }
+      .btn:active {
+        transform: translateY(4px);
+        box-shadow: 0 1px 0 #c98a00;
+      }
+      .btn.secundario {
+        background: rgba(255, 255, 255, 0.14);
+        color: var(--crema);
+        box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.22);
+      }
+      .btn.menta {
+        background: var(--menta);
+        color: #053a2e;
+        box-shadow: 0 5px 0 #2aa98a;
+      }
+      .btn.coral {
+        background: var(--coral);
+        color: #3d0d06;
+        box-shadow: 0 5px 0 #c74a3d;
+      }
+      .btn.lila {
+        background: var(--lila);
+        color: #26094f;
+        box-shadow: 0 5px 0 #7e52d1;
+      }
+      .btn[disabled] {
+        opacity: 0.45;
+        box-shadow: none;
+        cursor: not-allowed;
+      }
+      .btn-fila {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      :focus-visible {
+        outline: 4px solid var(--cielo);
+        outline-offset: 3px;
+      }
+
+      /* ---------- Tarjetas ---------- */
+      .tarjeta {
+        background: rgba(255, 255, 255, 0.07);
+        border: 2px solid rgba(255, 255, 255, 0.16);
+        border-radius: var(--radio);
+        padding: 16px;
+        margin-bottom: 14px;
+      }
+      h2.titulo {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1.5rem;
+        margin: 0.2em 0 0.3em;
+        line-height: 1.15;
+      }
+      h3.sub {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1.1rem;
+        margin: 0.4em 0 0.5em;
+      }
+      p {
+        line-height: 1.55;
+        margin: 0.4em 0;
+      }
+      .apunte {
+        color: var(--crema-suave);
+        font-size: 0.92rem;
+      }
+
+      /* ---------- Ruta de planetas ---------- */
+      .ruta {
+        position: relative;
+        padding: 6px 0 10px;
+      }
+      .ruta::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 0;
+        border-left: 4px dashed rgba(255, 255, 255, 0.18);
+        transform: translateX(-50%);
+      }
+      .parada {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+      }
+      .parada:nth-child(odd) .nodo {
+        margin-right: 34%;
+      }
+      .parada:nth-child(even) .nodo {
+        margin-left: 34%;
+      }
+      .nodo {
+        position: relative;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        width: 132px;
+      }
+      .bola {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 2.1rem;
+        color: var(--tinta);
+        border: 5px solid rgba(255, 255, 255, 0.9);
+        box-shadow: 0 8px 0 rgba(0, 0, 0, 0.3);
+        animation: flotar 5s ease-in-out infinite;
+      }
+      .nodo:active .bola {
+        transform: translateY(4px);
+      }
+      @keyframes flotar {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-7px);
+        }
+      }
+      .bola.cerrada {
+        background: #3a3160 !important;
+        color: #c9c1e8;
+        border-color: rgba(255, 255, 255, 0.3);
+        animation: none;
+      }
+      .etiqueta {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1rem;
+        color: var(--crema);
+      }
+      .estrellas {
+        font-size: 0.95rem;
+        letter-spacing: 2px;
+        color: var(--sol);
+      }
+      .estrellas .vacia {
+        color: rgba(255, 255, 255, 0.28);
+      }
+
+      /* ---------- Fases ---------- */
+      .fase {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.09);
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        border-radius: 18px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        color: var(--crema);
+        cursor: pointer;
+        min-height: 64px;
+      }
+      .fase:active {
+        transform: translateY(3px);
+      }
+      .fase .num {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1.2rem;
+        color: var(--tinta);
+      }
+      .fase .txt {
+        flex: 1;
+      }
+      .fase .txt b {
+        display: block;
+        font-family: var(--display);
+        font-size: 1.05rem;
+      }
+      .fase .txt span {
+        font-size: 0.85rem;
+        color: var(--crema-suave);
+      }
+      .fase .marca-ok {
+        font-size: 1.3rem;
+        color: var(--sol);
+      }
+      .fase[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* ---------- Tabla exploración ---------- */
+      .fila-tabla {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid transparent;
+        border-radius: 16px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        color: var(--crema);
+        font-weight: 900;
+        font-size: 1.15rem;
+        cursor: pointer;
+        min-height: 58px;
+      }
+      .fila-tabla.vista {
+        border-color: var(--menta);
+        background: rgba(95, 227, 192, 0.14);
+      }
+      .fila-tabla .igual {
+        margin-left: auto;
+        font-family: var(--display);
+        font-size: 1.4rem;
+        color: var(--sol);
+      }
+      .fila-tabla .oculto {
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .detalle {
+        background: rgba(0, 0, 0, 0.22);
+        border-radius: 16px;
+        padding: 12px;
+        margin: -4px 0 10px;
+      }
+
+      /* ---------- Arreglo de puntos ---------- */
+      .grupos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin: 8px 0;
+      }
+      .grupo {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        border-radius: 12px;
+        padding: 6px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+        gap: 4px;
+      }
+      .punto {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--sol);
+        animation: aparece 0.3s backwards;
+      }
+      @keyframes aparece {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      .saltado {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      .paso {
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        padding: 6px 10px;
+        font-weight: 900;
+        font-size: 0.95rem;
+      }
+      .paso.fin {
+        background: var(--sol);
+        color: var(--tinta);
+      }
+
+      /* ---------- Juego ---------- */
+      .marcador {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      .pip {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+      }
+      .pip.ok {
+        background: var(--menta);
+      }
+      .pip.no {
+        background: var(--coral);
+      }
+      .pip.ahora {
+        outline: 3px solid var(--sol);
+        outline-offset: 2px;
+      }
+      .pregunta {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 3.4rem;
+        text-align: center;
+        margin: 14px 0 6px;
+        letter-spacing: 2px;
+      }
+      .opciones {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .opcion {
+        min-height: 84px;
+        border-radius: 20px;
+        border: none;
+        background: var(--cielo);
+        color: #062134;
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 2rem;
+        box-shadow: 0 6px 0 #3e96ce;
+        cursor: pointer;
+      }
+      .opcion:active {
+        transform: translateY(4px);
+        box-shadow: 0 2px 0 #3e96ce;
+      }
+      .opcion.bien {
+        background: var(--menta);
+        box-shadow: 0 6px 0 #2aa98a;
+        animation: brinco 0.4s;
+      }
+      .opcion.mal {
+        background: var(--coral);
+        box-shadow: 0 6px 0 #c74a3d;
+        animation: tiembla 0.35s;
+      }
+      @keyframes brinco {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.14);
+        }
+      }
+      @keyframes tiembla {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20% {
+          transform: translateX(-8px);
+        }
+        60% {
+          transform: translateX(8px);
+        }
+      }
+
+      .visor {
+        background: rgba(0, 0, 0, 0.3);
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 18px;
+        min-height: 70px;
+        display: grid;
+        place-items: center;
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 2.4rem;
+        letter-spacing: 4px;
+        margin-top: 10px;
+      }
+      .visor.bien {
+        border-color: var(--menta);
+        color: var(--menta);
+      }
+      .visor.mal {
+        border-color: var(--coral);
+        color: var(--coral);
+      }
+      .teclado {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 9px;
+        margin-top: 12px;
+      }
+      .tecla {
+        min-height: 62px;
+        border-radius: 16px;
+        border: none;
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--crema);
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1.7rem;
+        box-shadow: 0 5px 0 rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+      }
+      .tecla:active {
+        transform: translateY(3px);
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+      }
+      .tecla.accion {
+        background: var(--menta);
+        color: #053a2e;
+        box-shadow: 0 5px 0 #2aa98a;
+        font-size: 1.1rem;
+      }
+      .tecla.borrar {
+        background: rgba(255, 122, 107, 0.85);
+        color: #3d0d06;
+        box-shadow: 0 5px 0 #c74a3d;
+        font-size: 1.1rem;
+      }
+
+      .aviso {
+        border-radius: 18px;
+        padding: 14px;
+        margin-top: 12px;
+        font-weight: 700;
+        text-align: center;
+      }
+      .aviso.bien {
+        background: rgba(95, 227, 192, 0.2);
+        border: 2px solid var(--menta);
+      }
+      .aviso.mal {
+        background: rgba(255, 194, 75, 0.16);
+        border: 2px solid var(--sol);
+      }
+      .aviso .grande {
+        font-family: var(--display);
+        font-size: 1.7rem;
+        display: block;
+        margin: 4px 0;
+      }
+
+      .reloj {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 1.6rem;
+        text-align: center;
+        color: var(--sol);
+      }
+
+      /* ---------- Criaturas ---------- */
+      .galeria {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 12px;
+      }
+      .ficha {
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        border-radius: 20px;
+        padding: 12px;
+        text-align: center;
+      }
+      .ficha svg {
+        width: 100%;
+        max-width: 110px;
+        height: auto;
+      }
+      .ficha b {
+        display: block;
+        font-family: var(--display);
+        font-size: 1.05rem;
+        margin-top: 6px;
+      }
+      .ficha span {
+        font-size: 0.8rem;
+        color: var(--crema-suave);
+      }
+      .ficha.bloqueada {
+        opacity: 0.45;
+      }
+
+      /* ---------- Celebración ---------- */
+      .celebra {
+        text-align: center;
+        padding: 10px 0;
+      }
+      .celebra svg {
+        width: 170px;
+        height: auto;
+        animation: flotar 3s ease-in-out infinite;
+      }
+      .confeti {
+        position: fixed;
+        top: -20px;
+        width: 12px;
+        height: 16px;
+        z-index: 5;
+        pointer-events: none;
+        border-radius: 3px;
+        animation: caer linear forwards;
+      }
+      @keyframes caer {
+        to {
+          transform: translateY(105vh) rotate(720deg);
+          opacity: 0.9;
+        }
+      }
+
+      /* ---------- Panel adultos ---------- */
+      table.datos {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+      table.datos caption {
+        text-align: left;
+        font-weight: 900;
+        padding-bottom: 8px;
+        color: var(--crema);
+      }
+      table.datos th,
+      table.datos td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 8px 6px;
+        text-align: left;
+      }
+      table.datos th {
+        color: var(--sol);
+        font-weight: 900;
+      }
+      .lista-flojos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .flojo {
+        background: rgba(255, 122, 107, 0.22);
+        border: 2px solid var(--coral);
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-weight: 900;
+      }
+
+      footer {
+        margin-top: 26px;
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--crema-suave);
+        line-height: 1.6;
+      }
+      footer a {
+        color: var(--sol);
+      }
+      .sr {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      @media (max-width: 400px) {
+        .pregunta {
+          font-size: 2.8rem;
+        }
+        .opcion {
+          font-size: 1.7rem;
+          min-height: 76px;
+        }
+        .parada:nth-child(odd) .nodo {
+          margin-right: 26%;
+        }
+        .parada:nth-child(even) .nodo {
+          margin-left: 26%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="estrellitas" aria-hidden="true"></div>
+
+    <div class="app">
+      <div class="barra">
+        <h1 class="marca">
+          Tablas galácticas
+          <small>Viaje del 2 al 10</small>
+        </h1>
+        <div class="contador">
+          <span class="chip" id="chipEstrellas" title="Estrellas ganadas">
+            ⭐
+            <span id="numEstrellas">0</span>
+          </span>
+          <span class="chip" id="chipCristales" title="Cristales del portal">
+            💎
+            <span id="numCristales">0</span>
+          </span>
+        </div>
+        <button class="icono-btn" id="btnSonido" aria-label="Activar o apagar el sonido">🔊</button>
+      </div>
+
+      <main id="escena"></main>
+
+      <footer>
+        <p>
+          <strong>Tablas galácticas</strong>
+          — hecho con cariño para aprender multiplicando.
+        </p>
+        <p>
+          © José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.
+          <br />
+          Licencia
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license" target="_blank">CC BY-NC-SA 4.0</a>
+          .
+        </p>
+        <p><button class="icono-btn" id="btnAdultos" style="width: auto; padding: 0 16px; border-radius: 14px; font-size: 0.85rem; font-weight: 900">Zona de personas adultas</button></p>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* =========================================================
+   1. DATOS DEL VIAJE
+   ========================================================= */
+        const PLANETAS = [
+          {n: 2, planeta: 'Dosia', criatura: 'Bipo', color: '#6FC8FF', truco: 'Multiplicar por 2 es hacer un doble: 2 × 6 es 6 y otra vez 6.'},
+          {n: 3, planeta: 'Trilux', criatura: 'Trinca', color: '#B58CFF', truco: 'Para el 3: haz el doble y suma el número una vez más. 3 × 7 = 14 + 7 = 21.'},
+          {n: 4, planeta: 'Cuartano', criatura: 'Cuadrín', color: '#5FE3C0', truco: 'El 4 es el doble del doble. 4 × 8: el doble de 8 es 16, y el doble de 16 es 32.'},
+          {n: 5, planeta: 'Quintaria', criatura: 'Penta', color: '#FFC24B', truco: 'Todos los resultados del 5 terminan en 0 o en 5. Y siempre son la mitad de la tabla del 10.'},
+          {n: 6, planeta: 'Sextilio', criatura: 'Hexo', color: '#FF9E6B', truco: 'El 6 es la tabla del 3 doblada. 6 × 7: como 3 × 7 = 21, el doble es 42.'},
+          {n: 7, planeta: 'Septuna', criatura: 'Sieteluna', color: '#FF7A6B', truco: 'El 7 es el travieso: usa el 5 más el 2. 7 × 6 = 30 + 12 = 42.'},
+          {n: 8, planeta: 'Octaros', criatura: 'Pulpín', color: '#F58CD6', truco: 'El 8 es doble, doble y doble otra vez. 8 × 3: 3 → 6 → 12 → 24.'},
+          {n: 9, planeta: 'Novaluz', criatura: 'Novi', color: '#9BE36B', truco: 'En el 9 las dos cifras del resultado siempre suman 9. Y 9 × 6 es 60 menos 6 = 54.'},
+          {n: 10, planeta: 'Decápolis', criatura: 'Deka', color: '#8FE1FF', truco: 'Con el 10 solo le pones un cero al número. 10 × 7 = 70.'}
+        ];
+        const FASES = [
+          {id: 'explorar', nombre: 'Explorar el planeta', desc: 'Descubre la tabla tocando cada fila'},
+          {id: 'entrenar', nombre: 'Entrenar con la criatura', desc: '8 preguntas con tres opciones'},
+          {id: 'mision', nombre: 'Misión del planeta', desc: '10 preguntas, tú escribes la respuesta'},
+          {id: 'reto', nombre: 'Reto relámpago', desc: '¿Cuántas puedes hacer en 60 segundos?'}
+        ];
+        const CLAVE = 'tablasGalacticas_v1';
+
+        /* =========================================================
+   2. GUARDADO
+   ========================================================= */
+        const BASE = {nombre: '', estrellas: {}, cristales: 0, records: {}, errores: {}, sonido: true, vistas: {}};
+        let D = (function () {
+          try {
+            const raw = localStorage.getItem(CLAVE);
+            if (raw) return Object.assign({}, BASE, JSON.parse(raw));
+          } catch (e) {}
+          return JSON.parse(JSON.stringify(BASE));
+        })();
+        function guardar() {
+          try {
+            localStorage.setItem(CLAVE, JSON.stringify(D));
+          } catch (e) {}
+        }
+
+        function estrellasDe(n) {
+          return D.estrellas[n] || {};
+        }
+        function totalEstrellas() {
+          let t = 0;
+          PLANETAS.forEach(function (p) {
+            const e = estrellasDe(p.n);
+            ['explorar', 'entrenar', 'mision'].forEach(function (f) {
+              if (e[f]) t++;
+            });
+          });
+          return t;
+        }
+        function desbloqueado(i) {
+          if (i === 0) return true;
+          return !!estrellasDe(PLANETAS[i - 1].n).mision;
+        }
+        function primerBloqueado() {
+          for (let i = 0; i < PLANETAS.length; i++) {
+            if (!desbloqueado(i)) return PLANETAS[i];
+          }
+          return null;
+        }
+
+        /* =========================================================
+   3. SONIDO Y VOZ
+   ========================================================= */
+        let ctxAudio = null;
+        function audio() {
+          if (!D.sonido) return null;
+          try {
+            if (!ctxAudio) ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+            if (ctxAudio.state === 'suspended') ctxAudio.resume();
+            return ctxAudio;
+          } catch (e) {
+            return null;
+          }
+        }
+        function tono(freq, inicio, dur, vol) {
+          const ac = audio();
+          if (!ac) return;
+          const o = ac.createOscillator(),
+            g = ac.createGain();
+          o.type = 'triangle';
+          o.frequency.value = freq;
+          g.gain.setValueAtTime(0, ac.currentTime + inicio);
+          g.gain.linearRampToValueAtTime(vol || 0.16, ac.currentTime + inicio + 0.02);
+          g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + inicio + dur);
+          o.connect(g);
+          g.connect(ac.destination);
+          o.start(ac.currentTime + inicio);
+          o.stop(ac.currentTime + inicio + dur + 0.05);
+        }
+        function sonBien() {
+          [523, 659, 784].forEach(function (f, i) {
+            tono(f, i * 0.07, 0.22);
+          });
+          vibrar(30);
+        }
+        function sonMal() {
+          tono(196, 0, 0.28, 0.12);
+          tono(165, 0.12, 0.3, 0.1);
+        }
+        function sonEstrella() {
+          [523, 659, 784, 1046, 1318].forEach(function (f, i) {
+            tono(f, i * 0.09, 0.5, 0.15);
+          });
+          vibrar([40, 60, 40]);
+        }
+        function sonToque() {
+          tono(880, 0, 0.07, 0.07);
+        }
+        function vibrar(p) {
+          try {
+            if (navigator.vibrate && D.sonido) navigator.vibrate(p);
+          } catch (e) {}
+        }
+        function decir(texto) {
+          if (!D.sonido) return;
+          try {
+            if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(texto);
+            u.lang = 'es-ES';
+            u.rate = 0.92;
+            u.pitch = 1.15;
+            window.speechSynthesis.speak(u);
+          } catch (e) {}
+        }
+
+        /* =========================================================
+   4. UTILIDADES
+   ========================================================= */
+        const $ = function (sel) {
+          return document.querySelector(sel);
+        };
+        const escena = $('#escena');
+        function mezclar(a) {
+          const b = a.slice();
+          for (let i = b.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const t = b[i];
+            b[i] = b[j];
+            b[j] = t;
+          }
+          return b;
+        }
+        function alAzar(a) {
+          return a[Math.floor(Math.random() * a.length)];
+        }
+        function pintar(html) {
+          escena.innerHTML = html;
+          escena.scrollIntoView({block: 'start', behavior: 'auto'});
+          window.scrollTo(0, 0);
+        }
+        function refrescarBarra() {
+          $('#numEstrellas').textContent = totalEstrellas();
+          $('#numCristales').textContent = D.cristales;
+          $('#btnSonido').textContent = D.sonido ? '🔊' : '🔇';
+          $('#btnSonido').setAttribute('aria-label', D.sonido ? 'Apagar el sonido' : 'Encender el sonido');
+        }
+        function porPlaneta(n) {
+          return PLANETAS.filter(function (p) {
+            return p.n === n;
+          })[0];
+        }
+
+        /* =========================================================
+   5. CRIATURAS (los ojos son el número de la tabla)
+   ========================================================= */
+        function criaturaSVG(p, tam) {
+          const t = tam || 120;
+          const n = p.n;
+          const filas = n <= 5 ? [n] : n === 10 ? [5, 5] : [Math.ceil(n / 2), Math.floor(n / 2)];
+          let ojos = '';
+          const anchoZona = 92,
+            yBase = filas.length > 1 ? 60 : 66;
+          filas.forEach(function (cant, fi) {
+            const r = cant > 4 ? 7 : 9;
+            const paso = anchoZona / (cant + 1);
+            for (let k = 1; k <= cant; k++) {
+              const cx = 54 + (paso * k - anchoZona / 2);
+              const cy = yBase + fi * 20;
+              ojos +=
+                '<circle cx="' +
+                cx.toFixed(1) +
+                '" cy="' +
+                cy +
+                '" r="' +
+                r +
+                '" fill="#FFFFFF"/>' +
+                '<circle cx="' +
+                cx.toFixed(1) +
+                '" cy="' +
+                (cy + 1) +
+                '" r="' +
+                (r * 0.45).toFixed(1) +
+                '" fill="#241300"/>';
+            }
+          });
+          let antenas = '';
+          const nAnt = Math.min(3, Math.max(1, Math.round(n / 4)));
+          for (let a = 0; a < nAnt; a++) {
+            const x = 54 + (a - (nAnt - 1) / 2) * 20;
+            antenas += '<line x1="' + x + '" y1="30" x2="' + x + '" y2="12" stroke="#FFF6E5" stroke-width="4" stroke-linecap="round"/>' + '<circle cx="' + x + '" cy="9" r="6" fill="#FFC24B"/>';
+          }
+          return (
+            '<svg viewBox="0 0 108 118" width="' +
+            t +
+            '" role="img" aria-label="Criatura ' +
+            p.criatura +
+            ', tiene ' +
+            n +
+            ' ojos">' +
+            antenas +
+            '<ellipse cx="54" cy="70" rx="44" ry="40" fill="' +
+            p.color +
+            '"/>' +
+            '<ellipse cx="54" cy="70" rx="44" ry="40" fill="none" stroke="#FFF6E5" stroke-width="4"/>' +
+            '<path d="M14 92 q10 16 20 4" stroke="' +
+            p.color +
+            '" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+            '<path d="M94 92 q-10 16 -20 4" stroke="' +
+            p.color +
+            '" stroke-width="10" fill="none" stroke-linecap="round"/>' +
+            ojos +
+            '<path d="M40 92 q14 12 28 0" stroke="#241300" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+            '</svg>'
+          );
+        }
+
+        /* =========================================================
+   6. ARREGLO VISUAL Y CONTEO SALTEADO
+   ========================================================= */
+        function arregloHTML(n, m) {
+          // m grupos de n puntitos
+          let h = '<div class="grupos" aria-hidden="true">';
+          const cols = n <= 3 ? n : n <= 6 ? 3 : 4;
+          for (let g = 0; g < m; g++) {
+            h += '<div class="grupo" style="grid-template-columns:repeat(' + cols + ',1fr)">';
+            for (let k = 0; k < n; k++) {
+              h += '<span class="punto" style="animation-delay:' + ((g * n + k) * 0.012).toFixed(2) + 's"></span>';
+            }
+            h += '</div>';
+          }
+          h += '</div>';
+          h += '<p class="sr">' + m + ' grupos de ' + n + ' hacen ' + n * m + '.</p>';
+          return h;
+        }
+        function saltadoHTML(n, m) {
+          let h = '<div class="saltado" aria-label="Conteo salteado de ' + n + '">';
+          for (let k = 1; k <= m; k++) {
+            h += '<span class="paso' + (k === m ? ' fin' : '') + '">' + n * k + '</span>';
+          }
+          return h + '</div>';
+        }
+
+        /* =========================================================
+   7. PANTALLA: BIENVENIDA
+   ========================================================= */
+        function pantallaBienvenida() {
+          pintar(
+            '<div class="tarjeta celebra">' +
+              criaturaSVG(PLANETAS[0], 150) +
+              '<h2 class="titulo">¡Hola, explorador!</h2>' +
+              '<p>Nueve planetas te esperan. En cada uno vive una criatura que quiere ser tu amiga… pero solo aparece cuando dominas su tabla.</p>' +
+              '<p class="apunte">Escribe tu nombre para empezar el viaje.</p>' +
+              '<input id="campoNombre" type="text" maxlength="14" autocomplete="off" aria-label="Escribe tu nombre" ' +
+              'style="width:100%;min-height:56px;border-radius:16px;border:3px solid rgba(255,255,255,.35);background:rgba(0,0,0,.25);' +
+              'color:#FFF6E5;font-family:inherit;font-weight:900;font-size:1.3rem;text-align:center;padding:8px;margin-top:8px">' +
+              '<div class="btn-fila">' +
+              '<button class="btn" id="btnEmpezar">¡Despegar! 🚀</button>' +
+              '</div>' +
+              '</div>'
+          );
+          $('#btnEmpezar').onclick = function () {
+            const v = $('#campoNombre').value.trim();
+            D.nombre = v || 'Explorador';
+            guardar();
+            sonEstrella();
+            pantallaMapa();
+          };
+        }
+
+        /* =========================================================
+   8. PANTALLA: MAPA
+   ========================================================= */
+        function pantallaMapa() {
+          const sig = primerBloqueado();
+          let h =
+            '<div class="tarjeta" style="text-align:center">' +
+            '<h2 class="titulo">Hola, ' +
+            escapar(D.nombre || 'explorador') +
+            ' 👋</h2>' +
+            '<p class="apunte">Toca un planeta para entrar. Se abren de uno en uno, cuando terminas la misión del anterior.</p>' +
+            '</div>';
+
+          h += '<div class="ruta">';
+          PLANETAS.forEach(function (p, i) {
+            const abierto = desbloqueado(i);
+            const e = estrellasDe(p.n);
+            const cuenta = ['explorar', 'entrenar', 'mision'].filter(function (f) {
+              return e[f];
+            }).length;
+            let est = '';
+            for (let k = 0; k < 3; k++) {
+              est += k < cuenta ? '★' : '<span class="vacia">★</span>';
+            }
+            h +=
+              '<div class="parada">' +
+              '<button class="nodo" data-planeta="' +
+              p.n +
+              '" ' +
+              (abierto ? '' : 'aria-disabled="true"') +
+              ' aria-label="' +
+              (abierto ? 'Planeta ' + p.planeta + ', tabla del ' + p.n + ', ' + cuenta + ' de 3 estrellas' : 'Planeta ' + p.planeta + ' todavía cerrado') +
+              '">' +
+              '<span class="bola' +
+              (abierto ? '' : ' cerrada') +
+              '" style="background:' +
+              p.color +
+              '" aria-hidden="true">' +
+              (abierto ? '×' + p.n : '🔒') +
+              '</span>' +
+              '<span class="etiqueta">' +
+              p.planeta +
+              '</span>' +
+              '<span class="estrellas" aria-hidden="true">' +
+              (abierto ? est : '') +
+              '</span>' +
+              '</button></div>';
+          });
+          h += '</div>';
+
+          h +=
+            '<div class="tarjeta" style="border-color:var(--lila);background:rgba(181,140,255,.14)">' +
+            '<h3 class="sub">🌀 Portal misterioso</h3>' +
+            '<p>Aquí aparecen multiplicaciones de planetas que todavía no visitas. No importa: te enseño los grupos para que los cuentes y lo descubras solo. Cada acierto te da cristales.</p>' +
+            (sig ? '<p class="apunte">Ahora mismo el portal está mirando hacia <strong>' + sig.planeta + '</strong> (tabla del ' + sig.n + ').</p>' : '') +
+            '<button class="btn lila" id="btnPortal">Entrar al portal</button>' +
+            '</div>';
+
+          h += '<div class="btn-fila"><button class="btn secundario" id="btnGaleria">🐾 Mis criaturas</button></div>';
+
+          pintar(h);
+          Array.prototype.forEach.call(document.querySelectorAll('.nodo'), function (b) {
+            b.onclick = function () {
+              const n = parseInt(b.getAttribute('data-planeta'), 10);
+              const i = PLANETAS.findIndex(function (p) {
+                return p.n === n;
+              });
+              if (!desbloqueado(i)) {
+                sonMal();
+                avisoRapido('Ese planeta todavía está cerrado. Termina la misión del planeta anterior para abrirlo.');
+                return;
+              }
+              sonToque();
+              pantallaPlaneta(n);
+            };
+          });
+          $('#btnPortal').onclick = function () {
+            sonToque();
+            pantallaPortal();
+          };
+          $('#btnGaleria').onclick = function () {
+            sonToque();
+            pantallaGaleria();
+          };
+          refrescarBarra();
+        }
+        function avisoRapido(txt) {
+          const p = document.createElement('div');
+          p.className = 'tarjeta';
+          p.style.cssText = 'position:fixed;left:14px;right:14px;bottom:20px;max-width:600px;margin:auto;z-index:9;background:#2f2270;text-align:center';
+          p.textContent = txt;
+          document.body.appendChild(p);
+          setTimeout(function () {
+            p.remove();
+          }, 2600);
+        }
+        function escapar(s) {
+          return String(s).replace(/[&<>"]/g, function (c) {
+            return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c];
+          });
+        }
+
+        /* =========================================================
+   9. PANTALLA: PLANETA
+   ========================================================= */
+        function pantallaPlaneta(n) {
+          const p = porPlaneta(n);
+          const e = estrellasDe(n);
+          const listo = !!e.mision;
+
+          let h =
+            '<div class="tarjeta celebra" style="border-color:' +
+            p.color +
+            '">' +
+            (listo ? criaturaSVG(p, 150) : '<div style="font-size:4rem" aria-hidden="true">🔭</div>') +
+            '<h2 class="titulo">' +
+            p.planeta +
+            ' — tabla del ' +
+            n +
+            '</h2>' +
+            (listo
+              ? '<p>Tu amiga <strong>' + p.criatura + '</strong> vive aquí. ¿Le contaste que tiene ' + n + ' ojos?</p>'
+              : '<p>Aquí vive una criatura escondida. Termina la misión y saldrá a saludarte.</p>') +
+            '<p class="apunte">💡 ' +
+            p.truco +
+            '</p>' +
+            '</div>';
+
+          h += '<div class="tarjeta"><h3 class="sub">Fases del planeta</h3>';
+          FASES.forEach(function (f, i) {
+            const hecho = !!e[f.id];
+            const bloq = f.id === 'reto' && !e.mision;
+            const extra = f.id === 'reto' && D.records[n] ? ' · récord: ' + D.records[n] : '';
+            h +=
+              '<button class="fase" data-fase="' +
+              f.id +
+              '" ' +
+              (bloq ? 'disabled' : '') +
+              '>' +
+              '<span class="num" style="background:' +
+              p.color +
+              '" aria-hidden="true">' +
+              (i + 1) +
+              '</span>' +
+              '<span class="txt"><b>' +
+              f.nombre +
+              '</b><span>' +
+              f.desc +
+              extra +
+              '</span></span>' +
+              '<span class="marca-ok" aria-hidden="true">' +
+              (hecho ? '★' : bloq ? '🔒' : '›') +
+              '</span>' +
+              '</button>';
+          });
+          h += '</div>';
+          h += '<div class="btn-fila"><button class="btn secundario" id="btnVolver">← Volver al mapa</button></div>';
+          pintar(h);
+
+          Array.prototype.forEach.call(document.querySelectorAll('.fase'), function (b) {
+            if (b.disabled) return;
+            b.onclick = function () {
+              sonToque();
+              const f = b.getAttribute('data-fase');
+              if (f === 'explorar') pantallaExplorar(n);
+              else iniciarJuego(n, f);
+            };
+          });
+          $('#btnVolver').onclick = function () {
+            sonToque();
+            pantallaMapa();
+          };
+          refrescarBarra();
+        }
+
+        /* =========================================================
+   10. FASE 1: EXPLORAR
+   ========================================================= */
+        function pantallaExplorar(n) {
+          const p = porPlaneta(n);
+          if (!D.vistas[n]) D.vistas[n] = {};
+
+          function dibujar() {
+            let h =
+              '<div class="tarjeta">' +
+              '<h2 class="titulo">Explora la tabla del ' +
+              n +
+              '</h2>' +
+              '<p class="apunte">Toca cada fila para ver los grupos y escuchar el resultado. Cuando descubras las 10, ganas tu primera estrella.</p>' +
+              '<div id="listaFilas"></div>' +
+              '<p style="text-align:center;font-weight:900" id="progreso"></p>' +
+              '<div class="btn-fila"><button class="btn secundario" id="btnVolver">← Volver</button></div>' +
+              '</div>';
+            pintar(h);
+            const lista = $('#listaFilas');
+            for (let m = 1; m <= 10; m++) {
+              (function (m) {
+                const vista = !!D.vistas[n][m];
+                const b = document.createElement('button');
+                b.className = 'fila-tabla' + (vista ? ' vista' : '');
+                b.innerHTML = '<span>' + n + ' × ' + m + '</span>' + '<span class="igual ' + (vista ? '' : 'oculto') + '">= ' + (vista ? n * m : '?') + '</span>';
+                b.setAttribute('aria-label', n + ' por ' + m + (vista ? ' es igual a ' + n * m : ', toca para descubrirlo'));
+                b.onclick = function () {
+                  const eraNueva = !D.vistas[n][m];
+                  D.vistas[n][m] = true;
+                  guardar();
+                  sonBien();
+                  decir(n + ' por ' + m + ' es igual a ' + n * m);
+                  const det = document.createElement('div');
+                  det.className = 'detalle';
+                  det.innerHTML =
+                    '<p style="text-align:center;font-weight:900;font-size:1.15rem">' +
+                    m +
+                    ' grupos de ' +
+                    n +
+                    '</p>' +
+                    arregloHTML(n, m) +
+                    '<p style="text-align:center;font-family:var(--display);font-size:1.8rem;font-weight:800;color:' +
+                    p.color +
+                    '">' +
+                    n +
+                    ' × ' +
+                    m +
+                    ' = ' +
+                    n * m +
+                    '</p>' +
+                    saltadoHTML(n, m);
+                  // quitar detalles previos
+                  Array.prototype.forEach.call(lista.querySelectorAll('.detalle'), function (d) {
+                    d.remove();
+                  });
+                  b.classList.add('vista');
+                  b.innerHTML = '<span>' + n + ' × ' + m + '</span><span class="igual">= ' + n * m + '</span>';
+                  b.after(det);
+                  actualizarProgreso();
+                  if (eraNueva && Object.keys(D.vistas[n]).length === 10) ganarEstrella(n, 'explorar');
+                };
+                lista.appendChild(b);
+              })(m);
+            }
+            actualizarProgreso();
+            $('#btnVolver').onclick = function () {
+              sonToque();
+              pantallaPlaneta(n);
+            };
+          }
+          function actualizarProgreso() {
+            const c = Object.keys(D.vistas[n]).length;
+            const el = $('#progreso');
+            if (el) el.textContent = 'Descubiertas: ' + c + ' de 10';
+          }
+          dibujar();
+          refrescarBarra();
+        }
+
+        /* =========================================================
+   11. GENERACIÓN DE PREGUNTAS
+   ========================================================= */
+        function peso(n, m) {
+          const k = n + 'x' + m;
+          return 1 + (D.errores[k] || 0) * 2;
+        }
+        function preguntasDe(n, cuantas, todas) {
+          let factores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+          if (todas)
+            return mezclar(factores).map(function (m) {
+              return {n: n, m: m};
+            });
+          // selección ponderada por errores
+          const bolsa = [];
+          factores.forEach(function (m) {
+            const w = peso(n, m);
+            for (let i = 0; i < w; i++) bolsa.push(m);
+          });
+          const elegidos = [];
+          let intentos = 0;
+          while (elegidos.length < cuantas && intentos < 400) {
+            const m = alAzar(bolsa);
+            if (elegidos.indexOf(m) === -1) elegidos.push(m);
+            intentos++;
+          }
+          while (elegidos.length < cuantas) {
+            const m = alAzar(factores);
+            if (elegidos.indexOf(m) === -1) elegidos.push(m);
+          }
+          return mezclar(elegidos).map(function (m) {
+            return {n: n, m: m};
+          });
+        }
+        function distractores(n, m) {
+          const r = n * m;
+          const cand = [n * (m + 1), n * (m - 1), r + 1, r - 1, r + n, r - n, n * (m + 2)];
+          const usados = [r];
+          const salida = [];
+          mezclar(cand).forEach(function (c) {
+            if (salida.length >= 2) return;
+            if (c > 0 && usados.indexOf(c) === -1) {
+              usados.push(c);
+              salida.push(c);
+            }
+          });
+          let extra = 2;
+          while (salida.length < 2) {
+            if (usados.indexOf(r + extra) === -1) {
+              salida.push(r + extra);
+              usados.push(r + extra);
+            }
+            extra++;
+          }
+          return salida;
+        }
+
+        /* =========================================================
+   12. FASES 2, 3 Y 4: JUEGO
+   ========================================================= */
+        let J = null;
+
+        function iniciarJuego(n, modo) {
+          const p = porPlaneta(n);
+          if (modo === 'entrenar') J = {n: n, modo: modo, lista: preguntasDe(n, 8, false), i: 0, aciertos: 0, resultados: []};
+          else if (modo === 'mision') J = {n: n, modo: modo, lista: preguntasDe(n, 10, true), i: 0, aciertos: 0, resultados: []};
+          else J = {n: n, modo: 'reto', lista: [], i: 0, aciertos: 0, fallos: 0, fin: Date.now() + 60000, resultados: []};
+          J.entrada = '';
+          J.color = p.color;
+          siguientePregunta();
+        }
+
+        function siguientePregunta() {
+          if (J.modo === 'reto') {
+            if (Date.now() >= J.fin) return finDeReto();
+            J.actual = preguntasDe(J.n, 1, false)[0];
+          } else {
+            if (J.i >= J.lista.length) return finDeRonda();
+            J.actual = J.lista[J.i];
+          }
+          dibujarPregunta();
+        }
+
+        function dibujarPregunta() {
+          const n = J.actual.n,
+            m = J.actual.m;
+          const p = porPlaneta(J.n);
+          let cabecera = '';
+          if (J.modo === 'reto') {
+            cabecera = '<p class="reloj" id="reloj">⏱ 60</p><p style="text-align:center;font-weight:900">Aciertos: <span id="marcaReto">' + J.aciertos + '</span></p>';
+          } else {
+            let pips = '<div class="marcador" aria-hidden="true">';
+            for (let k = 0; k < J.lista.length; k++) {
+              const r = J.resultados[k];
+              pips += '<span class="pip' + (r === true ? ' ok' : r === false ? ' no' : '') + (k === J.i ? ' ahora' : '') + '"></span>';
+            }
+            pips += '</div>';
+            cabecera = pips + '<p class="apunte" style="text-align:center">Pregunta ' + (J.i + 1) + ' de ' + J.lista.length + '</p>';
+          }
+
+          let cuerpo = '<div class="tarjeta" style="border-color:' + p.color + '">' + cabecera + '<p class="pregunta" style="color:' + p.color + '">' + n + ' × ' + m + '</p>';
+
+          if (J.modo === 'entrenar') {
+            const ops = mezclar([n * m].concat(distractores(n, m)));
+            cuerpo += '<div class="opciones" id="opciones">';
+            ops.forEach(function (o) {
+              cuerpo += '<button class="opcion" data-valor="' + o + '">' + o + '</button>';
+            });
+            cuerpo += '</div>';
+          } else {
+            cuerpo +=
+              '<div class="visor" id="visor" aria-live="polite" aria-label="Tu respuesta">–</div>' +
+              '<div class="teclado" id="teclado">' +
+              [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                .map(function (d) {
+                  return '<button class="tecla" data-d="' + d + '">' + d + '</button>';
+                })
+                .join('') +
+              '<button class="tecla borrar" data-accion="borrar">Borrar</button>' +
+              '<button class="tecla" data-d="0">0</button>' +
+              '<button class="tecla accion" data-accion="ok">Listo ✓</button>' +
+              '</div>';
+          }
+
+          cuerpo += '<div id="zonaAviso" aria-live="polite"></div>';
+          if (J.modo !== 'reto') {
+            cuerpo += '<div class="btn-fila">' + '<button class="btn secundario" id="btnPista">🔍 Ver pista</button>' + '<button class="btn secundario" id="btnSalir">Salir</button>' + '</div>';
+          } else {
+            cuerpo += '<div class="btn-fila"><button class="btn secundario" id="btnSalir">Terminar</button></div>';
+          }
+          cuerpo += '</div>';
+          pintar(cuerpo);
+
+          if (J.modo === 'entrenar') {
+            Array.prototype.forEach.call(document.querySelectorAll('.opcion'), function (b) {
+              b.onclick = function () {
+                responder(parseInt(b.getAttribute('data-valor'), 10), b);
+              };
+            });
+          } else {
+            J.entrada = '';
+            Array.prototype.forEach.call(document.querySelectorAll('#teclado .tecla'), function (b) {
+              b.onclick = function () {
+                const d = b.getAttribute('data-d'),
+                  a = b.getAttribute('data-accion');
+                if (a === 'borrar') {
+                  J.entrada = J.entrada.slice(0, -1);
+                  sonToque();
+                } else if (a === 'ok') {
+                  if (J.entrada === '') return;
+                  responder(parseInt(J.entrada, 10), null);
+                  return;
+                } else {
+                  if (J.entrada.length < 3) {
+                    J.entrada += d;
+                    sonToque();
+                  }
+                }
+                const v = $('#visor');
+                if (v) v.textContent = J.entrada === '' ? '–' : J.entrada;
+              };
+            });
+          }
+          const bp = $('#btnPista');
+          if (bp) bp.onclick = mostrarPista;
+          $('#btnSalir').onclick = function () {
+            sonToque();
+            if (J.modo === 'reto') finDeReto();
+            else {
+              detenerReloj();
+              pantallaPlaneta(J.n);
+            }
+          };
+          if (J.modo === 'reto') arrancarReloj();
+          refrescarBarra();
+        }
+
+        function mostrarPista() {
+          const n = J.actual.n,
+            m = J.actual.m;
+          const z = $('#zonaAviso');
+          if (!z || z.getAttribute('data-pista') === 'si') return;
+          z.setAttribute('data-pista', 'si');
+          z.innerHTML = '<div class="aviso mal"><span>' + m + ' grupos de ' + n + ' — cuéntalos</span>' + arregloHTML(n, m) + saltadoHTML(n, m) + '</div>';
+        }
+
+        let relojID = null;
+        function arrancarReloj() {
+          detenerReloj();
+          relojID = setInterval(function () {
+            const queda = Math.max(0, Math.ceil((J.fin - Date.now()) / 1000));
+            const el = $('#reloj');
+            if (el) el.textContent = '⏱ ' + queda;
+            if (queda <= 0) finDeReto();
+          }, 250);
+        }
+        function detenerReloj() {
+          if (relojID) {
+            clearInterval(relojID);
+            relojID = null;
+          }
+        }
+
+        function responder(valor, boton) {
+          const n = J.actual.n,
+            m = J.actual.m,
+            r = n * m;
+          const clave = n + 'x' + m;
+          const bien = valor === r;
+
+          if (bien) {
+            sonBien();
+            J.aciertos++;
+            if (D.errores[clave]) D.errores[clave] = Math.max(0, D.errores[clave] - 1);
+          } else {
+            sonMal();
+            D.errores[clave] = (D.errores[clave] || 0) + 1;
+          }
+          guardar();
+
+          if (J.modo === 'reto') {
+            if (bien) {
+              const el = $('#marcaReto');
+              if (el) el.textContent = J.aciertos;
+              setTimeout(siguientePregunta, 260);
+            } else {
+              const z = $('#zonaAviso');
+              if (z) z.innerHTML = '<div class="aviso mal">Casi. <span class="grande">' + n + ' × ' + m + ' = ' + r + '</span></div>';
+              setTimeout(siguientePregunta, 1300);
+            }
+            return;
+          }
+
+          J.resultados[J.i] = bien;
+          if (boton) boton.classList.add(bien ? 'bien' : 'mal');
+          const v = $('#visor');
+          if (v) {
+            v.classList.add(bien ? 'bien' : 'mal');
+            v.textContent = valor;
+          }
+          Array.prototype.forEach.call(document.querySelectorAll('.opcion, .tecla'), function (b) {
+            b.disabled = true;
+          });
+
+          const z = $('#zonaAviso');
+          if (z) {
+            if (bien) {
+              z.innerHTML =
+                '<div class="aviso bien">' + alAzar(['¡Bestial!', '¡Eso es!', '¡Perfecto!', '¡Muy bien!', '¡Lo lograste!']) + '<span class="grande">' + n + ' × ' + m + ' = ' + r + '</span></div>';
+              decir(n + ' por ' + m + ' es ' + r);
+            } else {
+              z.innerHTML =
+                '<div class="aviso mal">Casi, casi. Mira:<span class="grande">' +
+                n +
+                ' × ' +
+                m +
+                ' = ' +
+                r +
+                '</span>' +
+                arregloHTML(n, m) +
+                '<p class="apunte">💡 ' +
+                porPlaneta(J.n).truco +
+                '</p></div>';
+            }
+          }
+          setTimeout(
+            function () {
+              J.i++;
+              siguientePregunta();
+            },
+            bien ? 950 : 2600
+          );
+        }
+
+        /* =========================================================
+   13. FINALES
+   ========================================================= */
+        function finDeRonda() {
+          const n = J.n,
+            p = porPlaneta(n);
+          const total = J.lista.length,
+            ac = J.aciertos;
+          const meta = J.modo === 'entrenar' ? 6 : 8;
+          const logrado = ac >= meta;
+          const yaTenia = !!estrellasDe(n)[J.modo];
+
+          let h =
+            '<div class="tarjeta celebra" style="border-color:' +
+            p.color +
+            '">' +
+            (logrado ? criaturaSVG(p, 140) : '<div style="font-size:3.5rem" aria-hidden="true">💪</div>') +
+            '<h2 class="titulo">' +
+            (logrado ? '¡Fase superada!' : '¡Buen intento!') +
+            '</h2>' +
+            '<p style="font-family:var(--display);font-size:2.2rem;font-weight:800;color:' +
+            p.color +
+            '">' +
+            ac +
+            ' de ' +
+            total +
+            '</p>';
+
+          if (logrado) {
+            h +=
+              '<p>' +
+              (J.modo === 'entrenar' ? 'Ya entrenaste con la criatura. Ahora ve por la misión.' : '¡Misión cumplida! ' + p.criatura + ' ya es tu amigo y se abrió el siguiente planeta.') +
+              '</p>';
+          } else {
+            h += '<p>Necesitas ' + meta + ' aciertos para la estrella. Repasa la tabla en <strong>Explorar</strong> y vuelve: cada vez sale mejor.</p>' + '<p class="apunte">💡 ' + p.truco + '</p>';
+          }
+          h +=
+            '<div class="btn-fila"><button class="btn" id="btnOtra">Intentar de nuevo</button></div>' +
+            '<div class="btn-fila"><button class="btn secundario" id="btnPlaneta">Volver al planeta</button></div></div>';
+          pintar(h);
+
+          if (logrado && !yaTenia) {
+            ganarEstrella(n, J.modo, true);
+          } else if (logrado) {
+            sonEstrella();
+          } else {
+            sonMal();
+          }
+
+          const modo = J.modo;
+          $('#btnOtra').onclick = function () {
+            sonToque();
+            iniciarJuego(n, modo);
+          };
+          $('#btnPlaneta').onclick = function () {
+            sonToque();
+            pantallaPlaneta(n);
+          };
+          refrescarBarra();
+        }
+
+        function finDeReto() {
+          detenerReloj();
+          const n = J.n,
+            p = porPlaneta(n);
+          const ac = J.aciertos;
+          const antes = D.records[n] || 0;
+          const nuevo = ac > antes;
+          if (nuevo) {
+            D.records[n] = ac;
+            D.cristales += 2;
+            guardar();
+          }
+
+          pintar(
+            '<div class="tarjeta celebra" style="border-color:' +
+              p.color +
+              '">' +
+              criaturaSVG(p, 140) +
+              '<h2 class="titulo">' +
+              (nuevo ? '¡Récord nuevo! 🏆' : '¡Se acabó el tiempo!') +
+              '</h2>' +
+              '<p style="font-family:var(--display);font-size:2.4rem;font-weight:800;color:' +
+              p.color +
+              '">' +
+              ac +
+              ' aciertos</p>' +
+              '<p>' +
+              (nuevo ? 'Superaste tu marca anterior de ' + antes + '. Ganaste 2 cristales 💎' : 'Tu récord en este planeta sigue siendo ' + antes + '. ¡Casi!') +
+              '</p>' +
+              '<div class="btn-fila"><button class="btn" id="btnOtra">Otra vez ⚡</button></div>' +
+              '<div class="btn-fila"><button class="btn secundario" id="btnPlaneta">Volver al planeta</button></div></div>'
+          );
+          if (nuevo) {
+            sonEstrella();
+            lluviaConfeti();
+          } else {
+            sonBien();
+          }
+          $('#btnOtra').onclick = function () {
+            sonToque();
+            iniciarJuego(n, 'reto');
+          };
+          $('#btnPlaneta').onclick = function () {
+            sonToque();
+            pantallaPlaneta(n);
+          };
+          refrescarBarra();
+        }
+
+        function ganarEstrella(n, fase, silencioso) {
+          if (!D.estrellas[n]) D.estrellas[n] = {};
+          if (D.estrellas[n][fase]) return;
+          D.estrellas[n][fase] = true;
+          D.cristales += 1;
+          guardar();
+          sonEstrella();
+          lluviaConfeti();
+          refrescarBarra();
+          if (!silencioso) {
+            avisoRapido('⭐ ¡Estrella ganada! ' + (fase === 'explorar' ? 'Descubriste la tabla completa.' : ''));
+          }
+        }
+
+        function lluviaConfeti() {
+          if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          const colores = ['#FFC24B', '#FF7A6B', '#5FE3C0', '#B58CFF', '#6FC8FF'];
+          for (let i = 0; i < 34; i++) {
+            const c = document.createElement('div');
+            c.className = 'confeti';
+            c.style.left = Math.random() * 100 + 'vw';
+            c.style.background = alAzar(colores);
+            c.style.animationDuration = 1.4 + Math.random() * 1.4 + 's';
+            c.style.animationDelay = Math.random() * 0.4 + 's';
+            document.body.appendChild(c);
+            setTimeout(function () {
+              c.remove();
+            }, 3200);
+          }
+        }
+
+        /* =========================================================
+   14. PORTAL MISTERIOSO
+   ========================================================= */
+        function pantallaPortal() {
+          const cerrado = primerBloqueado();
+          const objetivo = cerrado ? cerrado : alAzar(PLANETAS);
+          const n = objetivo.n;
+          const m = 2 + Math.floor(Math.random() * 9);
+          const ops = mezclar([n * m].concat(distractores(n, m)));
+
+          pintar(
+            '<div class="tarjeta" style="border-color:var(--lila);background:rgba(181,140,255,.12)">' +
+              '<h2 class="titulo">🌀 Portal misterioso</h2>' +
+              '<p>Del planeta <strong>' +
+              objetivo.planeta +
+              '</strong> llegan <strong>' +
+              m +
+              ' grupos de ' +
+              n +
+              '</strong>. Cuéntalos y dime cuántos hay en total.</p>' +
+              arregloHTML(n, m) +
+              saltadoHTML(n, Math.min(m, 4)) +
+              '<p class="apunte" style="text-align:center">Sigue contando de ' +
+              n +
+              ' en ' +
+              n +
+              ' hasta llegar al grupo ' +
+              m +
+              '.</p>' +
+              '<p class="pregunta" style="font-size:2.6rem;color:var(--lila)">' +
+              n +
+              ' × ' +
+              m +
+              '</p>' +
+              '<div class="opciones" id="opsPortal">' +
+              ops
+                .map(function (o) {
+                  return '<button class="opcion" data-valor="' + o + '">' + o + '</button>';
+                })
+                .join('') +
+              '</div>' +
+              '<div id="zonaAviso" aria-live="polite"></div>' +
+              '<div class="btn-fila"><button class="btn secundario" id="btnVolver">← Volver al mapa</button></div>' +
+              '</div>'
+          );
+
+          Array.prototype.forEach.call(document.querySelectorAll('#opsPortal .opcion'), function (b) {
+            b.onclick = function () {
+              const v = parseInt(b.getAttribute('data-valor'), 10);
+              const bien = v === n * m;
+              Array.prototype.forEach.call(document.querySelectorAll('#opsPortal .opcion'), function (x) {
+                x.disabled = true;
+              });
+              b.classList.add(bien ? 'bien' : 'mal');
+              const z = $('#zonaAviso');
+              if (bien) {
+                sonEstrella();
+                lluviaConfeti();
+                D.cristales += 2;
+                guardar();
+                refrescarBarra();
+                z.innerHTML =
+                  '<div class="aviso bien">¡Descubriste una multiplicación del planeta ' +
+                  objetivo.planeta +
+                  ' sin haber ido!' +
+                  '<span class="grande">' +
+                  n +
+                  ' × ' +
+                  m +
+                  ' = ' +
+                  n * m +
+                  '</span>+2 cristales 💎</div>';
+                decir(n + ' por ' + m + ' es ' + n * m);
+              } else {
+                sonMal();
+                z.innerHTML = '<div class="aviso mal">Cuenta otra vez los grupos:<span class="grande">' + n + ' × ' + m + ' = ' + n * m + '</span>' + saltadoHTML(n, m) + '</div>';
+              }
+              const otro = document.createElement('button');
+              otro.className = 'btn lila';
+              otro.textContent = 'Otro misterio 🌀';
+              otro.style.marginTop = '12px';
+              otro.onclick = function () {
+                sonToque();
+                pantallaPortal();
+              };
+              z.appendChild(otro);
+            };
+          });
+          $('#btnVolver').onclick = function () {
+            sonToque();
+            pantallaMapa();
+          };
+          refrescarBarra();
+        }
+
+        /* =========================================================
+   15. GALERÍA DE CRIATURAS
+   ========================================================= */
+        function pantallaGaleria() {
+          let h =
+            '<div class="tarjeta"><h2 class="titulo">🐾 Mis criaturas</h2>' +
+            '<p class="apunte">Cada criatura tiene tantos ojos como su tabla. Bipo tiene 2, Trinca tiene 3… ¿los cuentas?</p></div>' +
+            '<div class="galeria">';
+          PLANETAS.forEach(function (p) {
+            const tengo = !!estrellasDe(p.n).mision;
+            h +=
+              '<div class="ficha' +
+              (tengo ? '' : ' bloqueada') +
+              '">' +
+              (tengo ? criaturaSVG(p, 110) : '<div style="font-size:3rem;padding:14px 0" aria-hidden="true">🥚</div>') +
+              '<b>' +
+              (tengo ? p.criatura : '¿?') +
+              '</b>' +
+              '<span>' +
+              (tengo ? p.n + ' ojos · tabla del ' + p.n : 'Termina la misión del ' + p.n) +
+              '</span>' +
+              '</div>';
+          });
+          h += '</div><div class="btn-fila"><button class="btn secundario" id="btnVolver">← Volver al mapa</button></div>';
+          pintar(h);
+          $('#btnVolver').onclick = function () {
+            sonToque();
+            pantallaMapa();
+          };
+          refrescarBarra();
+        }
+
+        /* =========================================================
+   16. ZONA DE PERSONAS ADULTAS
+   ========================================================= */
+        function pantallaAdultos() {
+          let filas = '';
+          PLANETAS.forEach(function (p) {
+            const e = estrellasDe(p.n);
+            const c = ['explorar', 'entrenar', 'mision'].filter(function (f) {
+              return e[f];
+            }).length;
+            filas +=
+              '<tr><th scope="row" style="color:var(--crema);font-weight:700">' +
+              p.planeta +
+              ' (×' +
+              p.n +
+              ')</th>' +
+              '<td>' +
+              c +
+              '/3 ★</td>' +
+              '<td>' +
+              (e.mision ? 'Completada' : 'Pendiente') +
+              '</td>' +
+              '<td>' +
+              (D.records[p.n] || '—') +
+              '</td></tr>';
+          });
+
+          const flojos = Object.keys(D.errores)
+            .filter(function (k) {
+              return D.errores[k] >= 2;
+            })
+            .sort(function (a, b) {
+              return D.errores[b] - D.errores[a];
+            })
+            .slice(0, 12);
+
+          let h =
+            '<div class="tarjeta">' +
+            '<h2 class="titulo">Zona de personas adultas</h2>' +
+            '<p>Este juego avanza por fases: explorar la tabla con apoyo visual (grupos y conteo salteado), entrenar con opción múltiple, y una misión de respuesta escrita que abre el planeta siguiente.</p>' +
+            '<p class="apunte">Las multiplicaciones falladas se repiten con más frecuencia. El portal misterioso ofrece tablas todavía no estudiadas siempre con el apoyo visual delante, para que el niño pueda resolverlas contando.</p>' +
+            '</div>' +
+            '<div class="tarjeta"><table class="datos">' +
+            '<caption>Progreso por planeta</caption>' +
+            '<thead><tr><th scope="col">Planeta</th><th scope="col">Estrellas</th><th scope="col">Misión</th><th scope="col">Récord</th></tr></thead>' +
+            '<tbody>' +
+            filas +
+            '</tbody></table></div>';
+
+          h +=
+            '<div class="tarjeta"><h3 class="sub">Multiplicaciones que cuestan más</h3>' +
+            (flojos.length
+              ? '<div class="lista-flojos">' +
+                flojos
+                  .map(function (k) {
+                    return '<span class="flojo">' + k.replace('x', ' × ') + '</span>';
+                  })
+                  .join('') +
+                '</div>'
+              : '<p class="apunte">Todavía no hay datos suficientes, o va todo bien.</p>') +
+            '</div>';
+
+          h +=
+            '<div class="tarjeta"><h3 class="sub">Ajustes</h3>' +
+            '<div class="btn-fila"><button class="btn secundario" id="btnBorrar">Borrar todo el progreso</button></div>' +
+            '<p class="apunte" style="margin-top:10px">El progreso se guarda en este mismo dispositivo y navegador. No se envía a ningún sitio.</p></div>';
+
+          h += '<div class="btn-fila"><button class="btn" id="btnVolver">← Volver al juego</button></div>';
+          pintar(h);
+
+          $('#btnBorrar').onclick = function () {
+            if (confirm('¿Seguro que quieres borrar todas las estrellas y criaturas?')) {
+              D = JSON.parse(JSON.stringify(BASE));
+              guardar();
+              refrescarBarra();
+              pantallaBienvenida();
+            }
+          };
+          $('#btnVolver').onclick = function () {
+            sonToque();
+            pantallaMapa();
+          };
+          refrescarBarra();
+        }
+
+        /* =========================================================
+   17. FONDO Y ARRANQUE
+   ========================================================= */
+        (function estrellas() {
+          const cont = document.getElementById('estrellitas');
+          const frag = document.createDocumentFragment();
+          for (let i = 0; i < 70; i++) {
+            const s = document.createElement('span');
+            s.className = 'estrellita';
+            const t = 1 + Math.random() * 2.4;
+            s.style.width = t + 'px';
+            s.style.height = t + 'px';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.animationDelay = Math.random() * 4 + 's';
+            frag.appendChild(s);
+          }
+          cont.appendChild(frag);
+        })();
+
+        document.getElementById('btnSonido').onclick = function () {
+          D.sonido = !D.sonido;
+          guardar();
+          refrescarBarra();
+          if (D.sonido) sonBien();
+          else {
+            try {
+              window.speechSynthesis && window.speechSynthesis.cancel();
+            } catch (e) {}
+          }
+        };
+        document.getElementById('btnAdultos').onclick = function () {
+          pantallaAdultos();
+        };
+
+        refrescarBarra();
+        if (!D.nombre) pantallaBienvenida();
+        else pantallaMapa();
+      })();
+    </script>
+  </body>
+</html>
 
