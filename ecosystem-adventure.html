@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E3B2C">
+<title>Ecosystem Adventure</title>
+<style>
+:root{
+  --selva:#0E3B2C;
+  --papel:#FBF3DE;
+  --sol:#FFC63C;
+  --coral:#E4633C;
+  --hoja:#8DC63F;
+  --tinta:#16241F;
+  --sombra:rgba(6,32,24,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--selva);
+  color:var(--papel);
+  font-family:ui-rounded,"SF Pro Rounded","Segoe UI Variable Display","Trebuchet MS",system-ui,sans-serif;
+  font-size:19px;line-height:1.45;min-height:100vh;
+  padding:14px 14px calc(24px + env(safe-area-inset-bottom));
+  overscroll-behavior:none;
+}
+.envoltura{max-width:520px;margin:0 auto}
+
+.barra{display:flex;align-items:center;gap:8px;margin-bottom:14px;min-height:48px}
+.barra .titulo{font-size:16px;font-weight:700;flex:1;letter-spacing:.2px}
+.marcador{background:rgba(255,198,60,.16);border:2px solid var(--sol);color:var(--sol);
+  border-radius:999px;padding:6px 12px;font-weight:800;font-size:17px;white-space:nowrap}
+.icono-btn{background:rgba(251,243,222,.1);border:2px solid rgba(251,243,222,.35);color:var(--papel);
+  min-width:48px;height:48px;border-radius:16px;font-size:20px;cursor:pointer;display:grid;place-items:center;
+  font-family:inherit;font-weight:800;padding:0 8px}
+.icono-btn[aria-pressed="false"]{opacity:.45}
+
+.saludo{text-align:center;margin:6px 0 18px}
+.saludo h1{font-size:31px;line-height:1.1;margin:0 0 6px;font-weight:800}
+.saludo p{margin:0;color:#C9E3D4;font-size:17px}
+
+.piramide{display:grid;gap:10px;justify-items:center;margin-bottom:20px}
+.nivel{border:none;color:var(--tinta);cursor:pointer;text-align:left;
+  display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:20px;
+  box-shadow:0 5px 0 var(--sombra);font-family:inherit;font-size:19px;font-weight:700;width:100%}
+.nivel:active{transform:translateY(3px);box-shadow:0 2px 0 var(--sombra)}
+.nivel .cara{font-size:38px;line-height:1}
+.nivel .texto{flex:1}
+.nivel .texto small{display:block;font-weight:600;font-size:15px;opacity:.75;margin-top:2px}
+.nivel .listo{font-size:24px}
+.n1{background:var(--sol);width:80%}
+.n2{background:var(--hoja);width:92%}
+.n3{background:#7FD6C2;width:100%}
+.pie-piramide{text-align:center;font-size:15px;color:#9FC4B2;margin:0 0 22px}
+
+.tarjeta{background:var(--papel);color:var(--tinta);border-radius:24px;padding:20px;box-shadow:0 6px 0 var(--sombra)}
+.escena{font-size:56px;text-align:center;line-height:1.1;margin-bottom:6px}
+.pregunta{font-size:22px;font-weight:800;margin:0 0 16px;line-height:1.3}
+.opciones{display:grid;gap:12px}
+.opcion{display:flex;align-items:center;gap:14px;width:100%;min-height:66px;
+  background:#fff;border:3px solid #D9CEB0;border-radius:18px;padding:10px 16px;
+  font-family:inherit;font-size:19px;font-weight:700;color:var(--tinta);text-align:left;cursor:pointer}
+.opcion .em{font-size:34px;line-height:1;flex:0 0 auto}
+.opcion:active{transform:scale(.985)}
+.opcion.bien{background:#E4F6D2;border-color:var(--hoja)}
+.opcion.mal{background:#FBDDD3;border-color:var(--coral)}
+.opcion:disabled{cursor:default;opacity:1}
+.opcion.apagada{opacity:.45}
+
+.respuesta{margin-top:16px;border-radius:16px;padding:14px 16px;font-size:18px;font-weight:600;display:none;color:var(--tinta)}
+.respuesta.ver{display:block}
+.respuesta.si{background:#E4F6D2;border-left:8px solid var(--hoja)}
+.respuesta.no{background:#FBDDD3;border-left:8px solid var(--coral)}
+
+.progreso{display:flex;gap:6px;justify-content:center;margin:16px 0 0}
+.punto{width:11px;height:11px;border-radius:50%;background:rgba(251,243,222,.25)}
+.punto.hecho{background:var(--sol)}
+.punto.aqui{background:var(--papel);transform:scale(1.35)}
+
+.acciones{display:flex;gap:10px;margin-top:16px}
+.boton{flex:1;min-height:60px;border:none;border-radius:18px;font-family:inherit;font-size:19px;
+  font-weight:800;cursor:pointer;box-shadow:0 5px 0 var(--sombra);color:var(--tinta);background:var(--sol)}
+.boton.suave{background:transparent;color:var(--tinta);box-shadow:none;border:2px solid #B9AC8C}
+.boton:active{transform:translateY(3px);box-shadow:none}
+
+.instruccion{background:rgba(251,243,222,.1);border:2px dashed rgba(251,243,222,.4);
+  border-radius:18px;padding:14px 16px;font-size:17px;margin-bottom:14px}
+.cajas{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.caja{background:rgba(251,243,222,.08);border:3px dashed rgba(251,243,222,.45);border-radius:20px;
+  min-height:190px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer}
+.caja h3{margin:0;font-size:16px;text-align:center;color:var(--papel);font-weight:800}
+.caja .cabecera{font-size:26px;text-align:center;line-height:1}
+.caja.activa{border-color:var(--sol);background:rgba(255,198,60,.18)}
+.caja .contenido{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:flex-start}
+.ficha{background:var(--papel);color:var(--tinta);border:3px solid #D9CEB0;border-radius:16px;
+  padding:8px 6px;width:96px;font-family:inherit;font-weight:700;font-size:14px;text-align:center;
+  cursor:grab;touch-action:none;display:grid;gap:2px;justify-items:center}
+.ficha .em{font-size:30px;line-height:1}
+.ficha.elegida{border-color:var(--sol);background:#FFF3D2;transform:scale(1.06)}
+.ficha.colocada{border-color:var(--hoja);background:#E4F6D2;width:84px;font-size:13px;cursor:default}
+.ficha.colocada .em{font-size:24px}
+.ficha.temblor{animation:temblar .35s}
+@keyframes temblar{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.banco{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:110px}
+.fantasma{position:fixed;z-index:99;pointer-events:none;opacity:.95;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+
+.final{text-align:center}
+.final .trofeo{font-size:76px;margin-bottom:6px}
+.final h2{font-size:28px;margin:0 0 8px}
+
+details.nota{margin-top:26px;font-size:15px;color:#9FC4B2}
+details.nota summary{cursor:pointer;padding:10px 0;font-weight:700}
+details.nota ul{margin:6px 0 0;padding-left:20px;line-height:1.6}
+
+:focus-visible{outline:4px solid var(--sol);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="envoltura">
+
+  <div class="barra">
+    <button class="icono-btn" id="atras" hidden>←</button>
+    <span class="titulo" id="tituloBarra">Ecosystem Adventure</span>
+    <button class="icono-btn" id="idiomaBtn" style="font-size:15px">ES</button>
+    <button class="icono-btn" id="vozBtn" aria-pressed="true">🔊</button>
+    <span class="marcador" id="marcador">⭐ 0</span>
+  </div>
+
+  <main id="pantalla" aria-live="polite"></main>
+
+  <details class="nota" id="nota"><summary id="notaTitulo"></summary><ul id="notaLista"></ul></details>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var L = "en";                     /* idioma activo: en | es */
+function t(par){ return par[L]; } /* par = {en:"...", es:"..."} */
+
+/* ============ textos de la interfaz ============ */
+var UI = {
+  appTitle:{en:"Ecosystem Adventure", es:"Aventura en el ecosistema"},
+  appSub:{en:"Three missions. Tap the one you want.", es:"Tres misiones. Toca la que quieras."},
+  m1:{en:"Mission 1: The Chain Backwards", es:"Misión 1: La cadena al revés"},
+  m1sub:{en:"Predator, prey, and plant", es:"Depredador, presa y planta"},
+  m2:{en:"Mission 2: Seed Dispersal Helpers", es:"Misión 2: Ayudantes de las semillas"},
+  m2sub:{en:"Drag each one to the right box", es:"Arrastra cada uno a su caja"},
+  m3:{en:"Mission 3: Who Can Live Here?", es:"Misión 3: ¿Quién vive aquí?"},
+  m3sub:{en:"Grasslands, coral reefs, and swamps", es:"Praderas, arrecifes y pantanos"},
+  pie:{en:"Every food chain starts with plants.", es:"Toda cadena empieza en las plantas."},
+  pieListo:{en:"You finished all three missions! 🎉", es:"¡Completaste las tres misiones! 🎉"},
+  next:{en:"Next", es:"Siguiente"},
+  finish:{en:"Finish mission", es:"Terminar misión"},
+  again:{en:"Play again", es:"Jugar otra vez"},
+  menu:{en:"Choose another mission", es:"Elegir otra misión"},
+  great:{en:"Great job! ", es:"¡Muy bien! "},
+  close:{en:"Almost. ", es:"Casi. "},
+  perfect:{en:"Perfect mission!", es:"¡Misión perfecta!"},
+  done:{en:"Mission complete!", es:"¡Misión completada!"},
+  score:{en:" correct out of ", es:" correctas de "},
+  instr:{en:"Seeds travel far from their parent plant with help. Put each helper in its box: <b>living thing</b> or <b>not a living thing</b>.",
+         es:"Las semillas viajan lejos de su planta con ayuda. Lleva cada ayudante a su caja: <b>ser vivo</b> o <b>no es un ser vivo</b>."},
+  instrVoz:{en:"Put each helper in its box: living thing, or not a living thing.",
+            es:"Lleva cada ayudante a su caja: ser vivo, o no es un ser vivo."},
+  boxSi:{en:"living thing", es:"ser vivo"},
+  boxNo:{en:"not a living thing", es:"no es un ser vivo"},
+  right:{en:"Correct! ", es:"¡Correcto! "},
+  notYet:{en:"Not yet. ", es:"Todavía no. "},
+  think:{en:"Think about it: does it need to be born, grow, and eat? ",
+         es:"Piensa: ¿nace, crece y necesita comer? "},
+  nowBox:{en:". Now tap a box.", es:". Ahora toca una caja."},
+  back:{en:"Back to the start", es:"Volver al inicio"},
+  voiceOn:{en:"Voice on", es:"Voz encendida"},
+  notaTitulo:{en:"Note for the grown-up", es:"Nota para la persona adulta"},
+  nota:{
+    en:["The three missions follow the order taught in class: predator first, then prey, then the plant.",
+        "Tap 🔊 to have every question read out loud.",
+        "In the seed mission you can drag with a finger, or simply tap a picture and then tap a box.",
+        "Tap ES / EN in the top bar to switch the whole game between English and Spanish.",
+        "No timer and no penalty: a wrong answer gets an explanation and another try."],
+    es:["Las tres misiones siguen el orden aprendido en clase: primero el depredador, después la presa y por último la planta.",
+        "Toca 🔊 para que el juego lea cada pregunta en voz alta.",
+        "En la misión de las semillas se puede arrastrar con el dedo o tocar la imagen y después la caja.",
+        "Toca ES / EN en la barra de arriba para cambiar todo el juego entre inglés y español.",
+        "No hay tiempo ni penalización: si se equivoca, el juego explica el porqué y deja intentar otra vez."]
+  }
+};
+
+/* ============ contenido de las misiones ============ */
+var MISIONES = {
+  m1:{ clave:"m1", nombre:UI.m1,
+    preguntas:[
+      { escena:"🦅",
+        texto:{en:"Predators hunt other animals. Which one of these is a predator?",
+               es:"Los depredadores cazan a otros animales. ¿Cuál de estos es un depredador?"},
+        ops:[{e:"🦅",t:{en:"eagle",es:"águila"}},{e:"🦌",t:{en:"deer",es:"venado"}},{e:"🌳",t:{en:"tree",es:"árbol"}}], ok:0,
+        si:{en:"The eagle hunts and eats other animals.", es:"El águila caza y come otros animales."},
+        no:{en:"That one does not hunt. The eagle does: it is the predator.", es:"Ese no caza. El águila sí: es la depredadora."} },
+      { escena:"🦅 ➜ ❓",
+        texto:{en:"The eagle goes hunting. Which one could be its prey?",
+               es:"El águila sale a cazar. ¿Cuál de estos puede ser su presa?"},
+        ops:[{e:"🐇",t:{en:"rabbit",es:"conejo"}},{e:"🐆",t:{en:"cheetah",es:"guepardo"}},{e:"🌵",t:{en:"cactus",es:"cactus"}}], ok:0,
+        si:{en:"Prey is the animal a predator hunts. The rabbit is the prey.",
+            es:"La presa es el animal al que caza el depredador. El conejo es la presa."},
+        no:{en:"Prey has to be a smaller animal. The eagle hunts the rabbit.",
+            es:"La presa tiene que ser un animal más pequeño. El águila caza al conejo."} },
+      { escena:"🐇 ➜ ❓",
+        texto:{en:"The rabbit is prey, but it eats too. What does the rabbit eat?",
+               es:"El conejo es una presa, pero él también come. ¿Qué come el conejo?"},
+        ops:[{e:"🌿",t:{en:"grass",es:"hierba"}},{e:"🐍",t:{en:"snake",es:"serpiente"}},{e:"🦁",t:{en:"lion",es:"león"}}], ok:0,
+        si:{en:"The rabbit eats plants. That makes it a herbivore.", es:"El conejo come plantas. Por eso es herbívoro."},
+        no:{en:"The rabbit does not hunt. It eats plants, like grass.", es:"El conejo no caza. Él come plantas, como la hierba."} },
+      { escena:"🌿☀️",
+        texto:{en:"Plants do not hunt and do not eat animals. Where does their food come from?",
+               es:"Las plantas no cazan ni comen animales. ¿De dónde sacan su alimento?"},
+        ops:[{e:"☀️",t:{en:"they make it with sunlight",es:"lo fabrican con la luz del sol"}},
+             {e:"🐜",t:{en:"they eat insects",es:"comen insectos"}},
+             {e:"💤",t:{en:"they do not need food",es:"no necesitan comer"}}], ok:0,
+        si:{en:"They make their own sugar with sunlight. They are the producers.",
+            es:"Con la luz del sol fabrican su propio azúcar. Son las productoras."},
+        no:{en:"Plants make their food with sunlight, water, and air.",
+            es:"Las plantas fabrican su alimento con la luz del sol, el agua y el aire."} },
+      { escena:"🔗",
+        texto:{en:"Which food chain is in the right order?", es:"¿Cuál cadena está en el orden correcto?"},
+        ops:[{e:"🌿",t:{en:"grass ➜ rabbit ➜ eagle",es:"hierba ➜ conejo ➜ águila"}},
+             {e:"🦅",t:{en:"eagle ➜ rabbit ➜ grass",es:"águila ➜ conejo ➜ hierba"}},
+             {e:"🐇",t:{en:"rabbit ➜ grass ➜ eagle",es:"conejo ➜ hierba ➜ águila"}}], ok:0,
+        si:{en:"Grass feeds the rabbit and the rabbit feeds the eagle.",
+            es:"La hierba alimenta al conejo y el conejo alimenta al águila."},
+        no:{en:"A food chain always starts with the plant: grass ➜ rabbit ➜ eagle.",
+            es:"La cadena empieza siempre en la planta: hierba ➜ conejo ➜ águila."} },
+      { escena:"🪱",
+        texto:{en:"When a plant or an animal dies, who returns the nutrients to the soil?",
+               es:"Cuando una planta o un animal muere, ¿quién devuelve el alimento a la tierra?"},
+        ops:[{e:"🪱",t:{en:"the worm",es:"la lombriz"}},{e:"🦜",t:{en:"the parrot",es:"el loro"}},{e:"🐆",t:{en:"the cheetah",es:"el guepardo"}}], ok:0,
+        si:{en:"The worm is a decomposer: it returns nutrients to the soil for the plants.",
+            es:"La lombriz es descomponedora: devuelve los nutrientes al suelo para las plantas."},
+        no:{en:"That animal does not decompose. The worm does: it feeds the soil again.",
+            es:"Ese animal no descompone. La lombriz sí: devuelve el alimento a la tierra."} }
+    ]},
+  m3:{ clave:"m3", nombre:UI.m3,
+    preguntas:[
+      { escena:"🌾🌳",
+        texto:{en:"A grassland has lots of grass, lots of sun, and little water. Which animal can live here?",
+               es:"En la pradera hay mucha hierba, mucho sol y poca agua. ¿Cuál animal puede vivir aquí?"},
+        ops:[{e:"🦓",t:{en:"zebra",es:"cebra"}},{e:"🐙",t:{en:"octopus",es:"pulpo"}},{e:"🐠",t:{en:"clownfish",es:"pez payaso"}}], ok:0,
+        si:{en:"The zebra eats grass, and a grassland is full of it.", es:"La cebra come hierba y en la pradera hay muchísima."},
+        no:{en:"That animal lives in ocean water. The zebra can live here: it eats grass.",
+            es:"Ese animal vive en el agua del mar. La cebra sí puede: come hierba."} },
+      { escena:"🐙",
+        texto:{en:"Why can the octopus NOT live in a grassland?", es:"¿Por qué el pulpo NO puede vivir en la pradera?"},
+        ops:[{e:"🌊",t:{en:"it needs to live in ocean water",es:"necesita vivir dentro del agua del mar"}},
+             {e:"🥕",t:{en:"it does not like grass",es:"no le gusta la hierba"}},
+             {e:"❄️",t:{en:"it gets too cold",es:"tiene mucho frío"}}], ok:0,
+        si:{en:"The octopus breathes in salt water. A grassland has no ocean.",
+            es:"El pulpo respira dentro del agua salada. En la pradera no hay mar."},
+        no:{en:"The problem is water: the octopus can only live in the ocean.",
+            es:"El problema es el agua: el pulpo solo puede vivir dentro del mar."} },
+      { escena:"🪸🌊",
+        texto:{en:"A coral reef is under salty ocean water. Which animal can live here?",
+               es:"El arrecife de coral está bajo el agua salada del mar. ¿Cuál animal puede vivir aquí?"},
+        ops:[{e:"🐠",t:{en:"clownfish",es:"pez payaso"}},{e:"🐞",t:{en:"ladybug",es:"mariquita"}},{e:"🦜",t:{en:"parrot",es:"loro"}}], ok:0,
+        si:{en:"The clownfish breathes under water and hides among the corals.",
+            es:"El pez payaso respira bajo el agua y se esconde entre los corales."},
+        no:{en:"That animal breathes air above the water. The clownfish lives in the reef.",
+            es:"Ese animal respira aire fuera del agua. El pez payaso sí vive en el arrecife."} },
+      { escena:"🦜",
+        texto:{en:"Why can the parrot NOT live in a coral reef?", es:"¿Por qué el loro NO puede vivir en el arrecife de coral?"},
+        ops:[{e:"🌬️",t:{en:"it breathes air and needs trees",es:"respira aire y necesita árboles"}},
+             {e:"🎨",t:{en:"it has too many colors",es:"tiene muchos colores"}},
+             {e:"🍎",t:{en:"it eats fruit",es:"come frutas"}}], ok:0,
+        si:{en:"The parrot breathes air and needs branches to perch on. Under water it could not.",
+            es:"El loro respira aire y necesita ramas para posarse. Bajo el agua no podría."},
+        no:{en:"Many reef animals eat and have colors too. What matters is that the parrot breathes air.",
+            es:"Muchos animales del arrecife comen y tienen colores. Lo importante es que el loro respira aire."} },
+      { escena:"🌳💧",
+        texto:{en:"A swamp has a lot of water and a lot of shade. Which plant can live here?",
+               es:"El pantano tiene mucha agua y mucha sombra. ¿Cuál planta puede vivir aquí?"},
+        ops:[{e:"🪷",t:{en:"water lily",es:"nenúfar"}},{e:"🌵",t:{en:"cactus",es:"cactus"}},{e:"🌼",t:{en:"Arctic poppy",es:"amapola ártica"}}], ok:0,
+        si:{en:"The water lily floats on the water. A swamp is the perfect place for it.",
+            es:"El nenúfar flota en el agua. El pantano es su lugar perfecto."},
+        no:{en:"That plant needs a different home. The water lily floats right on the water.",
+            es:"Esa planta necesita otro lugar. El nenúfar sí vive flotando en el agua."} },
+      { escena:"🌵",
+        texto:{en:"Why can the cactus NOT live in a swamp?", es:"¿Por qué el cactus NO puede vivir en el pantano?"},
+        ops:[{e:"🏜️",t:{en:"it needs little water and lots of sun",es:"necesita poca agua y mucho sol"}},
+             {e:"🌡️",t:{en:"it needs a lot of rain",es:"necesita mucha lluvia"}},
+             {e:"🌑",t:{en:"it needs shade",es:"necesita sombra"}}], ok:0,
+        si:{en:"A cactus stores water and lives on very little. So much water would rot it.",
+            es:"El cactus guarda agua y vive con muy poquita. Tanta agua lo pudriría."},
+        no:{en:"It is the other way around: a cactus needs little water and lots of sun.",
+            es:"Es al revés: el cactus necesita poca agua y mucho sol."} }
+    ]}
+};
+
+var SEMILLAS = [
+  {e:"💨", t:{en:"wind",es:"viento"}, grupo:"no",
+   por:{en:"Wind is moving air. It is not born and does not grow.", es:"El viento es aire en movimiento: no nace ni crece."}},
+  {e:"🐜", t:{en:"insect",es:"insecto"}, grupo:"si",
+   por:{en:"An insect is born, grows, and eats. It is alive.", es:"El insecto nace, crece y come: está vivo."}},
+  {e:"🍂", t:{en:"gravity",es:"gravedad"}, grupo:"no",
+   por:{en:"Gravity is a force that makes seeds fall. It is not alive.", es:"La gravedad es una fuerza que hace caer las semillas: no está viva."}},
+  {e:"💧", t:{en:"water",es:"agua"}, grupo:"no",
+   por:{en:"Water is not born and does not grow. It is not alive.", es:"El agua no nace ni crece: no está viva."}},
+  {e:"🐺", t:{en:"mammal",es:"mamífero"}, grupo:"si",
+   por:{en:"A mammal is born, grows, and eats. It is alive.", es:"El mamífero nace, crece y come: está vivo."}},
+  {e:"🐦", t:{en:"bird",es:"ave"}, grupo:"si",
+   por:{en:"A bird is born, grows, and eats. It is alive.", es:"El ave nace, crece y come: está vivo."}}
+];
+
+/* ============ estado ============ */
+var estado = { estrellas:0, hechas:{m1:false,m2:false,m3:false}, voz:true, donde:"home", mision:null };
+var pantalla=document.getElementById("pantalla"), marcador=document.getElementById("marcador"),
+    tituloBarra=document.getElementById("tituloBarra"), btnAtras=document.getElementById("atras"),
+    btnVoz=document.getElementById("vozBtn"), btnIdioma=document.getElementById("idiomaBtn"),
+    nota=document.getElementById("nota");
+
+function pintarMarcador(){ marcador.textContent = "⭐ " + estado.estrellas; }
+
+function pintarNota(){
+  document.getElementById("notaTitulo").textContent = t(UI.notaTitulo);
+  var ul = document.getElementById("notaLista");
+  ul.innerHTML = "";
+  t(UI.nota).forEach(function(linea){ var li=document.createElement("li"); li.textContent=linea; ul.appendChild(li); });
+}
+
+/* ============ voz ============ */
+function hablar(texto){
+  if(!estado.voz || !("speechSynthesis" in window)) return;
+  try{
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(texto);
+    u.lang = (L === "en") ? "en-US" : "es-US";
+    u.rate = 0.92; u.pitch = 1.05;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+btnVoz.addEventListener("click", function(){
+  estado.voz = !estado.voz;
+  btnVoz.setAttribute("aria-pressed", String(estado.voz));
+  btnVoz.textContent = estado.voz ? "🔊" : "🔇";
+  if(estado.voz) hablar(t(UI.voiceOn));
+  else if(window.speechSynthesis) window.speechSynthesis.cancel();
+});
+btnIdioma.addEventListener("click", function(){
+  L = (L === "en") ? "es" : "en";
+  btnIdioma.textContent = (L === "en") ? "ES" : "EN";
+  document.documentElement.lang = L;
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  pintarNota();
+  if(estado.donde === "home") inicio();
+  else if(estado.donde === "m2") misionSemillas();
+  else misionQuiz(estado.mision);
+});
+btnAtras.addEventListener("click", inicio);
+
+/* ============ portada ============ */
+function inicio(){
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  estado.donde = "home";
+  btnAtras.hidden = true;
+  btnAtras.setAttribute("aria-label", t(UI.back));
+  nota.hidden = false;
+  tituloBarra.textContent = t(UI.appTitle);
+  var todas = estado.hechas.m1 && estado.hechas.m2 && estado.hechas.m3;
+  pantalla.innerHTML =
+    '<div class="saludo"><h1>'+t(UI.appTitle)+'</h1><p>'+t(UI.appSub)+'</p></div>'+
+    '<div class="piramide">'+
+      nivel("m1","n1","🦅",t(UI.m1),t(UI.m1sub))+
+      nivel("m2","n2","🌱",t(UI.m2),t(UI.m2sub))+
+      nivel("m3","n3","🌾",t(UI.m3),t(UI.m3sub))+
+    '</div>'+
+    '<p class="pie-piramide">'+(todas ? t(UI.pieListo) : t(UI.pie))+'</p>';
+  Array.prototype.forEach.call(pantalla.querySelectorAll(".nivel"), function(b){
+    b.addEventListener("click", function(){ abrir(b.dataset.mision); });
+  });
+}
+function nivel(id, clase, cara, titulo, sub){
+  var listo = estado.hechas[id] ? '<span class="listo">✅</span>' : '';
+  return '<button class="nivel '+clase+'" data-mision="'+id+'">'+
+         '<span class="cara" aria-hidden="true">'+cara+'</span>'+
+         '<span class="texto">'+titulo+'<small>'+sub+'</small></span>'+listo+'</button>';
+}
+function abrir(id){
+  btnAtras.hidden = false;
+  nota.hidden = true;
+  if(id === "m2") misionSemillas(); else misionQuiz(id);
+}
+
+/* ============ misiones de preguntas ============ */
+function misionQuiz(id){
+  var mision = MISIONES[id], i = 0, aciertos = 0;
+  estado.donde = id; estado.mision = id;
+  tituloBarra.textContent = t(mision.nombre);
+
+  function dibujar(){
+    var p = mision.preguntas[i];
+    pantalla.innerHTML =
+      '<div class="tarjeta">'+
+        '<div class="escena" aria-hidden="true">'+p.escena+'</div>'+
+        '<p class="pregunta">'+t(p.texto)+'</p>'+
+        '<div class="opciones" id="ops"></div>'+
+        '<div class="respuesta" id="resp" role="status"></div>'+
+      '</div>'+
+      '<div class="progreso" aria-hidden="true">'+puntos(mision.preguntas.length, i)+'</div>';
+    var cont = document.getElementById("ops");
+    p.ops.forEach(function(o, k){
+      var b = document.createElement("button");
+      b.className = "opcion";
+      b.innerHTML = '<span class="em" aria-hidden="true">'+o.e+'</span><span>'+t(o.t)+'</span>';
+      b.addEventListener("click", function(){ elegir(k); });
+      cont.appendChild(b);
+    });
+    hablar(t(p.texto));
+  }
+
+  function elegir(k){
+    var p = mision.preguntas[i], bien = (k === p.ok);
+    Array.prototype.forEach.call(pantalla.querySelectorAll(".opcion"), function(b, idx){
+      b.disabled = true;
+      if(idx === p.ok) b.classList.add("bien");
+      else if(idx === k) b.classList.add("mal");
+      else b.classList.add("apagada");
+    });
+    var mensaje = (bien ? t(UI.great) : t(UI.close)) + (bien ? t(p.si) : t(p.no));
+    var caja = document.getElementById("resp");
+    caja.className = "respuesta ver " + (bien ? "si" : "no");
+    caja.textContent = mensaje;
+    if(bien){ aciertos++; estado.estrellas++; pintarMarcador(); }
+    hablar(mensaje);
+
+    var acciones = document.createElement("div");
+    acciones.className = "acciones";
+    var seguir = document.createElement("button");
+    seguir.className = "boton";
+    seguir.textContent = (i === mision.preguntas.length - 1) ? t(UI.finish) : t(UI.next);
+    seguir.addEventListener("click", function(){
+      i++;
+      if(i < mision.preguntas.length) dibujar();
+      else { estado.hechas[id] = true; celebrar(id, aciertos, mision.preguntas.length); }
+    });
+    acciones.appendChild(seguir);
+    pantalla.querySelector(".tarjeta").after(acciones);
+    seguir.focus();
+  }
+  dibujar();
+}
+function puntos(total, aqui){
+  var s = "";
+  for(var k=0;k<total;k++) s += '<span class="punto '+(k<aqui?"hecho":(k===aqui?"aqui":""))+'"></span>';
+  return s;
+}
+
+/* ============ misión de arrastrar ============ */
+function misionSemillas(){
+  estado.donde = "m2";
+  tituloBarra.textContent = t(UI.m2);
+  var colocadas = 0, elegida = null, arrastrando = null, fantasma = null, movio = false, x0=0, y0=0;
+
+  pantalla.innerHTML =
+    '<div class="instruccion">'+t(UI.instr)+'</div>'+
+    '<div class="cajas">'+ caja("si","🐾",t(UI.boxSi)) + caja("no","💨",t(UI.boxNo)) +'</div>'+
+    '<div class="banco" id="banco"></div>'+
+    '<div class="respuesta" id="resp" role="status"></div>';
+
+  var banco = document.getElementById("banco");
+  SEMILLAS.slice().sort(function(){ return Math.random()-0.5; }).forEach(function(item){
+    var f = document.createElement("button");
+    f.className = "ficha";
+    f.dataset.grupo = item.grupo;
+    f._item = item;
+    f.setAttribute("aria-label", t(item.t));
+    f.innerHTML = '<span class="em" aria-hidden="true">'+item.e+'</span><span>'+t(item.t)+'</span>';
+    f.addEventListener("pointerdown", empezar);
+    f.addEventListener("click", function(){ if(!movio) seleccionar(f); });
+    banco.appendChild(f);
+  });
+
+  Array.prototype.forEach.call(pantalla.querySelectorAll(".caja"), function(c){
+    c.addEventListener("click", function(){ if(elegida) soltar(elegida, c); });
+  });
+
+  hablar(t(UI.instrVoz));
+
+  function caja(grupo, cara, titulo){
+    return '<div class="caja" data-grupo="'+grupo+'" role="button" tabindex="0" aria-label="'+titulo+'">'+
+           '<div class="cabecera" aria-hidden="true">'+cara+'</div><h3>'+titulo+'</h3>'+
+           '<div class="contenido"></div></div>';
+  }
+  function seleccionar(f){
+    if(f.classList.contains("colocada")) return;
+    if(elegida === f){ f.classList.remove("elegida"); elegida = null; return; }
+    if(elegida) elegida.classList.remove("elegida");
+    elegida = f; f.classList.add("elegida");
+    hablar(t(f._item.t) + t(UI.nowBox));
+  }
+  function empezar(ev){
+    var f = ev.currentTarget;
+    if(f.classList.contains("colocada")) return;
+    arrastrando = f; movio = false; x0 = ev.clientX; y0 = ev.clientY;
+    window.addEventListener("pointermove", mover);
+    window.addEventListener("pointerup", fin);
+  }
+  function mover(ev){
+    if(!arrastrando) return;
+    if(!movio && Math.abs(ev.clientX-x0) + Math.abs(ev.clientY-y0) < 9) return;
+    if(!movio){
+      movio = true;
+      fantasma = arrastrando.cloneNode(true);
+      fantasma.className = "ficha fantasma";
+      document.body.appendChild(fantasma);
+      arrastrando.style.opacity = ".3";
+    }
+    fantasma.style.left = (ev.clientX - 48) + "px";
+    fantasma.style.top  = (ev.clientY - 40) + "px";
+    var c = cajaBajo(ev.clientX, ev.clientY);
+    Array.prototype.forEach.call(pantalla.querySelectorAll(".caja"), function(k){ k.classList.toggle("activa", k === c); });
+  }
+  function fin(ev){
+    window.removeEventListener("pointermove", mover);
+    window.removeEventListener("pointerup", fin);
+    if(!arrastrando) return;
+    var f = arrastrando; arrastrando = null;
+    Array.prototype.forEach.call(pantalla.querySelectorAll(".caja"), function(k){ k.classList.remove("activa"); });
+    if(fantasma){ fantasma.remove(); fantasma = null; }
+    f.style.opacity = "";
+    if(!movio) return;
+    var c = cajaBajo(ev.clientX, ev.clientY);
+    if(c) soltar(f, c);
+    setTimeout(function(){ movio = false; }, 60);
+  }
+  function cajaBajo(x, y){
+    var encontrada = null;
+    Array.prototype.forEach.call(pantalla.querySelectorAll(".caja"), function(k){
+      var r = k.getBoundingClientRect();
+      if(x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) encontrada = k;
+    });
+    return encontrada;
+  }
+  function soltar(f, c){
+    var resp = document.getElementById("resp"), item = f._item;
+    if(item.grupo === c.dataset.grupo){
+      f.classList.remove("elegida"); f.classList.add("colocada"); f.disabled = true;
+      c.querySelector(".contenido").appendChild(f);
+      elegida = null; colocadas++; estado.estrellas++; pintarMarcador();
+      var msg = t(UI.right) + t(item.por);
+      resp.className = "respuesta ver si"; resp.textContent = msg; hablar(msg);
+      if(colocadas === SEMILLAS.length){
+        estado.hechas.m2 = true;
+        setTimeout(function(){ celebrar("m2", 6, 6); }, 1200);
+      }
+    }else{
+      f.classList.add("temblor");
+      setTimeout(function(){ f.classList.remove("temblor"); }, 400);
+      var m2 = t(UI.notYet) + t(UI.think) + t(item.t) + ".";
+      resp.className = "respuesta ver no"; resp.textContent = m2; hablar(m2);
+    }
+  }
+}
+
+/* ============ final de misión ============ */
+function celebrar(id, aciertos, total){
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  var perfecto = aciertos === total;
+  var nombre = (id === "m2") ? t(UI.m2) : t(MISIONES[id].nombre);
+  pantalla.innerHTML =
+    '<div class="tarjeta final">'+
+      '<div class="trofeo" aria-hidden="true">'+(perfecto ? "🏆" : "🌟")+'</div>'+
+      '<h2>'+(perfecto ? t(UI.perfect) : t(UI.done))+'</h2>'+
+      '<p style="color:#3B5449;margin:0 0 4px">'+nombre+'</p>'+
+      '<p style="color:#3B5449;margin:0">'+aciertos+t(UI.score)+total+'</p>'+
+      '<div class="acciones"><button class="boton" id="otra">'+t(UI.again)+'</button></div>'+
+      '<div class="acciones"><button class="boton suave" id="menu">'+t(UI.menu)+'</button></div>'+
+    '</div>';
+  document.getElementById("menu").addEventListener("click", inicio);
+  document.getElementById("otra").addEventListener("click", function(){
+    if(id === "m2") misionSemillas(); else misionQuiz(id);
+  });
+  hablar(perfecto ? t(UI.perfect) : t(UI.done));
+}
+
+pintarMarcador();
+pintarNota();
+inicio();
+})();
+</script>
+</body>
+</html>
