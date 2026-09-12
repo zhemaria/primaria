@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grow a Sentence</title>
+<style>
+  :root{
+    --paper:#f4ead4;
+    --paper-edge:#e3d5b6;
+    --ink:#2f2a20;
+    --who:#1f2a5a;
+    --doing:#15703a;
+    --where:#0f5ea8;
+    --when:#6a2a9c;
+    --why:#b3175c;
+    --n-yellow:#ffe27a;
+    --n-pink:#ffb3c8;
+    --n-blue:#a8d8f0;
+    --n-green:#b6e39a;
+    --n-orange:#ffc07a;
+    --hand:"Comic Sans MS","Chalkboard SE","Marker Felt","Bradley Hand",cursive;
+    --read:Verdana,"Trebuchet MS",Tahoma,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#6d7f6a;
+    background-image:radial-gradient(circle at 20% 10%, #7c8f78 0%, #5f7060 70%);
+    font-family:var(--read);
+    color:var(--ink);
+    padding:18px 12px 48px;
+    min-height:100vh;
+  }
+
+  .page{
+    max-width:1020px;margin:0 auto;position:relative;
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,.025) 0 1px, transparent 1px 34px),
+      radial-gradient(circle at 80% 0%, rgba(255,255,255,.55), transparent 60%);
+    border:2px solid var(--paper-edge);
+    border-radius:6px 18px 18px 6px;
+    box-shadow:0 14px 34px rgba(0,0,0,.32);
+    padding:26px 26px 26px 62px;
+  }
+  .spiral{position:absolute;left:14px;top:22px;bottom:22px;width:28px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+  .spiral i{display:block;height:14px;border:3px solid #3b3b3b;border-radius:50%;transform:rotate(-12deg)}
+
+  h1{font-family:var(--hand);font-size:clamp(30px,6vw,52px);color:var(--who);margin:0;letter-spacing:.5px;line-height:1.05}
+  .tagline{font-family:var(--hand);font-size:clamp(15px,2.4vw,19px);margin:2px 0 0;color:#5a5142}
+
+  .rail{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 20px;padding:0}
+  .rail li{
+    font-family:var(--hand);font-size:15px;font-weight:700;
+    padding:8px 12px;border-radius:2px;color:#2f2a20;
+    box-shadow:2px 3px 0 rgba(0,0,0,.16);
+    opacity:.42;filter:saturate(.5);
+    display:flex;align-items:center;gap:6px;
+  }
+  .rail li:nth-child(1){background:var(--n-yellow);transform:rotate(-2deg)}
+  .rail li:nth-child(2){background:var(--n-pink);transform:rotate(1.5deg)}
+  .rail li:nth-child(3){background:var(--n-blue);transform:rotate(-1deg)}
+  .rail li:nth-child(4){background:var(--n-green);transform:rotate(2deg)}
+  .rail li:nth-child(5){background:var(--n-orange);transform:rotate(-1.5deg)}
+  .rail li.done{opacity:1;filter:none}
+  .rail li.now{opacity:1;filter:none;outline:3px dashed #5a5142;outline-offset:3px}
+  .rail .tick{visibility:hidden}
+  .rail li.done .tick{visibility:visible}
+
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:24px;align-items:start}
+  @media (max-width:840px){.grid{grid-template-columns:1fr}}
+
+  .scene-frame{background:#fff;padding:8px;border:1px solid #d9cbaa;box-shadow:3px 4px 0 rgba(0,0,0,.14);transform:rotate(-.5deg)}
+  svg#scene{display:block;width:100%;height:auto;border-radius:3px}
+
+  .sentence{
+    font-family:var(--read);
+    font-size:clamp(20px,3.4vw,27px);
+    line-height:1.75;letter-spacing:.3px;
+    margin:20px 0 6px;min-height:2.4em;font-weight:700;
+  }
+  .sentence .who{color:var(--who)}
+  .sentence .doing{color:var(--doing)}
+  .sentence .where{color:var(--where)}
+  .sentence .when{color:var(--when)}
+  .sentence .why{color:var(--why)}
+  .sentence .blank{color:#9a907c;border-bottom:4px dotted #c3b79c;padding:0 .45em}
+  .sentence .fresh{animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .sentence span{display:inline-block}
+
+  .hint{font-family:var(--hand);font-size:17px;color:#5a5142;margin:0 0 14px;min-height:1.5em}
+
+  .stage-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .growth{font-family:var(--hand);font-size:17px;font-weight:700;background:var(--n-green);padding:7px 12px;border-radius:2px;box-shadow:2px 3px 0 rgba(0,0,0,.16);transform:rotate(-1deg)}
+
+  button{font-family:var(--hand);cursor:pointer;border:2px solid #3b3b3b;color:#2f2a20}
+  button:focus-visible{outline:4px solid #b3175c;outline-offset:3px}
+  .btn{background:#fff;font-size:17px;padding:11px 15px;border-radius:3px;box-shadow:2px 3px 0 rgba(0,0,0,.2);min-height:48px}
+  .btn:hover{background:#fffdf3}
+  .btn:active{transform:translate(2px,3px);box-shadow:0 0 0 rgba(0,0,0,0)}
+  .btn-loud{background:var(--n-yellow);font-size:19px}
+
+  .ask-note{display:inline-block;font-family:var(--hand);font-weight:700;font-size:clamp(20px,3.6vw,27px);padding:10px 20px;border-radius:2px;box-shadow:3px 4px 0 rgba(0,0,0,.18);transform:rotate(-2deg);background:var(--n-yellow)}
+  .ask-note[data-k="doing"]{background:var(--n-pink)}
+  .ask-note[data-k="where"]{background:var(--n-blue)}
+  .ask-note[data-k="when"]{background:var(--n-green)}
+  .ask-note[data-k="why"]{background:var(--n-orange)}
+  .ask-help{font-size:18px;margin:14px 0 12px;font-weight:700}
+
+  .choices{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:420px){.choices{grid-template-columns:1fr}}
+  .choice{
+    background:#fffdf6;border:2px solid #3b3b3b;border-radius:3px;
+    box-shadow:3px 4px 0 rgba(0,0,0,.2);
+    min-height:92px;padding:12px 8px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    font-size:17px;font-weight:700;text-align:center;line-height:1.25;
+  }
+  .choice .em{font-size:34px;line-height:1}
+  .choice:hover{background:#fff7dd}
+  .choice:active{transform:translate(2px,3px);box-shadow:0 0 0}
+
+  .ctrls{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+
+  .finish{background:#fffdf6;border:3px dashed #b3175c;border-radius:4px;padding:16px;text-align:center}
+  .finish h2{font-family:var(--hand);color:var(--why);font-size:26px;margin:0 0 8px}
+  .finish p{font-size:17px;margin:0 0 14px;font-weight:700}
+
+  .adult{margin:26px 0 0;background:#fffdf6;border:1px solid #d9cbaa;border-radius:4px;padding:12px 16px;font-size:15px;line-height:1.65}
+  .adult summary{font-family:var(--hand);font-size:18px;font-weight:700;cursor:pointer}
+  .adult ul{margin:10px 0 0;padding-left:20px}
+  .adult li{margin-bottom:7px}
+  .adult code{background:#efe6cf;padding:1px 5px;border-radius:3px;font-size:13px}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  @media print{
+    body{background:#fff;padding:0}
+    .page{box-shadow:none;border:none}
+    .choices,.ctrls,.rail,.adult,.stage-tools{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="spiral" aria-hidden="true"></div>
+
+  <h1>Grow a Sentence 🌱</h1>
+  <p class="tagline">Add more details to make your sentence stronger.</p>
+
+  <ol class="rail" id="rail">
+    <li data-k="who"><span class="tick">✓</span> Who</li>
+    <li data-k="doing"><span class="tick">✓</span> Doing what</li>
+    <li data-k="where"><span class="tick">✓</span> Where</li>
+    <li data-k="when"><span class="tick">✓</span> When</li>
+    <li data-k="why"><span class="tick">✓</span> Why</li>
+  </ol>
+
+  <div class="grid">
+    <section class="stage" aria-label="Your sentence">
+      <div class="scene-frame">
+        <svg id="scene" viewBox="0 0 420 240" role="img" aria-labelledby="sceneTitle">
+          <title id="sceneTitle">A picture of your sentence</title>
+          <defs>
+            <linearGradient id="gDay" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a9dcff"/><stop offset="100%" stop-color="#e8f6ff"/>
+            </linearGradient>
+            <linearGradient id="gMorning" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffc98a"/><stop offset="100%" stop-color="#fff4e2"/>
+            </linearGradient>
+            <linearGradient id="gNight" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#22315f"/><stop offset="100%" stop-color="#6577ad"/>
+            </linearGradient>
+          </defs>
+
+          <rect id="sky" x="0" y="0" width="420" height="240" fill="url(#gDay)"/>
+
+          <g id="stars" opacity="0">
+            <circle cx="60" cy="40" r="2" fill="#fff"/><circle cx="140" cy="26" r="1.6" fill="#fff"/>
+            <circle cx="300" cy="34" r="2" fill="#fff"/><circle cx="380" cy="70" r="1.6" fill="#fff"/>
+            <circle cx="210" cy="52" r="1.5" fill="#fff"/>
+          </g>
+
+          <g id="sunGroup"><circle id="sun" cx="348" cy="48" r="21" fill="#ffd23f"/></g>
+
+          <g id="clouds" fill="#ffffff" opacity=".92">
+            <ellipse cx="96" cy="52" rx="30" ry="15"/><ellipse cx="122" cy="56" rx="22" ry="12"/>
+            <ellipse cx="244" cy="36" rx="24" ry="12"/><ellipse cx="266" cy="40" rx="18" ry="9"/>
+          </g>
+
+          <rect id="ground" x="0" y="176" width="420" height="64" fill="#8ed079"/>
+          <path id="groundLine" d="M0 176 H420" stroke="#6cb457" stroke-width="3"/>
+
+          <text id="propL" x="52" y="172" font-size="44" text-anchor="middle" opacity="0">🌳</text>
+          <text id="propR" x="372" y="172" font-size="44" text-anchor="middle" opacity="0">🏡</text>
+          <text id="timeTag" x="34" y="52" font-size="30" text-anchor="middle" opacity="0">🎒</text>
+
+          <g id="hero" opacity="0">
+            <ellipse cx="212" cy="178" rx="26" ry="6" fill="rgba(0,0,0,.16)"/>
+            <text id="heroEm" x="212" y="172" font-size="56" text-anchor="middle">🐶</text>
+          </g>
+          <text id="actEm" x="278" y="168" font-size="30" text-anchor="middle" opacity="0">⚽</text>
+
+          <g id="sparks" opacity="0">
+            <text x="150" y="86" font-size="24" text-anchor="middle">✨</text>
+            <text x="276" y="72" font-size="20" text-anchor="middle">✨</text>
+            <text x="326" y="126" font-size="24" text-anchor="middle">✨</text>
+          </g>
+        </svg>
+      </div>
+
+      <p class="sentence" id="sentence" aria-live="polite"></p>
+      <p class="hint" id="hint">Pick who your sentence is about.</p>
+
+      <div class="stage-tools">
+        <button class="btn btn-loud" id="readBtn" type="button">🔊 Read it to me</button>
+        <span class="growth" id="growth">🌱 0 words</span>
+      </div>
+    </section>
+
+    <section class="ask" aria-label="Question">
+      <div id="askPanel">
+        <span class="ask-note" id="askNote" data-k="who">Who?</span>
+        <p class="ask-help" id="askHelp">Who is your sentence about?</p>
+        <div class="choices" id="choices"></div>
+      </div>
+
+      <div class="finish" id="finish" hidden>
+        <h2>You grew a big sentence! 🎉</h2>
+        <p id="finishMsg"></p>
+        <button class="btn btn-loud" type="button" id="againBtn">🌱 Grow another one</button>
+      </div>
+
+      <div class="ctrls">
+        <button class="btn" type="button" id="backBtn">↩️ Go back</button>
+        <button class="btn" type="button" id="resetBtn">🔁 Start over</button>
+        <button class="btn" type="button" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
+      </div>
+    </section>
+  </div>
+
+  <details class="adult" lang="en">
+    <summary>For the grown-up helping out</summary>
+    <ul>
+      <li><strong>The big idea:</strong> a sentence grows in layers. The child sees that <em>A dog</em> is not a sentence yet (it needs an action), and that every new question adds information, not just extra words.</li>
+      <li><strong>Every choice narrows the next one.</strong> The character decides which actions appear — a cat can sleep, purr, climb, hide, jump or eat, but it will never be offered <em>dances</em>. The action then decides the places, times and reasons. A sentence can come out silly, but never nonsense.</li>
+      <li><strong>The colors do a job.</strong> Each part keeps its color in the sentence, on the sticky note and in the step strip, so the child links <em>blue = where</em> and <em>purple = when</em>.</li>
+      <li><strong>Ask before they tap:</strong> "Where do you think a girl eats?" The button only confirms what they already said out loud.</li>
+      <li><strong>The grammar moment is step 4:</strong> moving the time to the front brings in a comma, and <em>A dog</em> becomes <em>a dog</em>. Point at it with your finger while it changes.</li>
+      <li><strong>To edit the word lists:</strong> open the file and find <code>WHO</code>, <code>PLACES</code>, <code>TIMES</code> and <code>ACTIONS</code> at the top of the script. <code>ACTIONS</code> is grouped by kind of character, and each action names the places, times and reasons that belong to it.</li>
+      <li><strong>Accessibility:</strong> works with the keyboard (Tab and Enter), reads aloud, honors the system setting for reduced motion, and prints cleanly with Ctrl+P showing only the picture and the sentence.</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- WHO (kind decides what it can do) ---------- */
+  var WHO = [
+    {em:"\ud83d\udc36", kind:"dog",    cap:"A dog",    low:"a dog",    the:"the dog",    pron:"it"},
+    {em:"\ud83d\udc31", kind:"cat",    cap:"A cat",    low:"a cat",    the:"the cat",    pron:"it"},
+    {em:"\ud83d\udc67", kind:"person", cap:"A girl",   low:"a girl",   the:"the girl",   pron:"she"},
+    {em:"\ud83d\udc66", kind:"person", cap:"A boy",    low:"a boy",    the:"the boy",    pron:"he"},
+    {em:"\ud83d\udc30", kind:"rabbit", cap:"A rabbit", low:"a rabbit", the:"the rabbit", pron:"it"},
+    {em:"\ud83d\udc26", kind:"bird",   cap:"A bird",   low:"a bird",   the:"the bird",   pron:"it"}
+  ];
+
+  /* ---------- PLACES (an entry with "wall" is an indoor scene) ---------- */
+  var PLACES = {
+    yard:     {t:"in the yard",      em:"\ud83c\udfe1", l:"\ud83c\udf33", r:"\ud83c\udfe1", floor:"#8ed079", line:"#6cb457"},
+    park:     {t:"at the park",      em:"\ud83d\udedd", l:"\ud83d\udedd", r:"\ud83c\udf33", floor:"#93d97f", line:"#6cb457"},
+    beach:    {t:"on the beach",     em:"\ud83c\udfd6\ufe0f", l:"\ud83c\udf0a", r:"\ud83c\udfd6\ufe0f", floor:"#f0dda6", line:"#d9c084"},
+    track:    {t:"around the track", em:"\ud83c\udfdf\ufe0f", l:"\ud83c\udfdf\ufe0f", r:"\ud83d\udea9", floor:"#e08a63", line:"#c06c48"},
+    garden:   {t:"in the garden",    em:"\ud83c\udf3b", l:"\ud83c\udf3b", r:"\ud83c\udf33", floor:"#8ed079", line:"#6cb457"},
+    grass:    {t:"in the grass",     em:"\ud83c\udf31", l:"\ud83c\udf31", r:"\ud83c\udf3c", floor:"#8ed079", line:"#6cb457"},
+    field:    {t:"in the field",     em:"\ud83c\udf3e", l:"\ud83c\udf3e", r:"\ud83d\ude9c", floor:"#c9dd7a", line:"#a9bf5c"},
+    undertree:{t:"under a tree",     em:"\ud83c\udf33", l:"\ud83c\udf33", r:"\ud83c\udf3c", floor:"#8ed079", line:"#6cb457"},
+    intree:   {t:"in a tree",        em:"\ud83c\udf33", l:"\ud83c\udf33", r:"\ud83c\udf43", floor:"#8ed079", line:"#6cb457"},
+    branch:   {t:"on a branch",      em:"\ud83c\udf3f", l:"\ud83c\udf3f", r:"\ud83c\udf43", floor:"#8ed079", line:"#6cb457"},
+    sky:      {t:"in the sky",       em:"\u2601\ufe0f", l:"\u2601\ufe0f", r:"\u2601\ufe0f", floor:"#8ed079", line:"#6cb457"},
+    shade:    {t:"in the shade",     em:"\u26f1\ufe0f", l:"\ud83c\udf33", r:"\u26f1\ufe0f", floor:"#8ed079", line:"#6cb457"},
+    porch:    {t:"on the porch",     em:"\ud83e\ude74", l:"\ud83e\ude74", r:"\ud83d\udeaa", floor:"#c9a06b", line:"#a87f4c"},
+    fence:    {t:"on the fence",     em:"\ud83e\udeb5", l:"\ud83e\udeb5", r:"\ud83c\udf3f", floor:"#8ed079", line:"#6cb457"},
+    doghouse: {t:"in its doghouse",  em:"\ud83c\udfe0", l:"\ud83c\udfe0", r:"\ud83e\uddb4", floor:"#8ed079", line:"#6cb457"},
+    burrow:   {t:"in its burrow",    em:"\ud83d\udd73\ufe0f", l:"\ud83d\udd73\ufe0f", r:"\ud83c\udf31", floor:"#a8895e", line:"#8a6e46"},
+    hutch:    {t:"in its hutch",     em:"\ud83e\udeb5", l:"\ud83e\udeb5", r:"\ud83e\udd55", floor:"#8ed079", line:"#6cb457"},
+    nest:     {t:"in its nest",      em:"\ud83e\ude79", l:"\ud83e\ude79", r:"\ud83c\udf43", floor:"#8ed079", line:"#6cb457"},
+
+    gym:      {t:"in the gym",           em:"\ud83c\udfc0", l:"\ud83c\udfc0", r:"\ud83c\udfd0", floor:"#d2a05e", line:"#b3813f", wall:"#f3e6cf"},
+    school:   {t:"at school",            em:"\ud83c\udfeb", l:"\ud83d\udcda", r:"\ud83c\udf92", floor:"#c9a06b", line:"#a87f4c", wall:"#e6f0da"},
+    stage:    {t:"on the stage",         em:"\ud83c\udfa4", l:"\ud83c\udfa4", r:"\ud83c\udfb9", floor:"#8a5a3c", line:"#6d452c", wall:"#41305a"},
+    car:      {t:"in the car",           em:"\ud83d\ude97", l:"\ud83d\ude97", r:"\ud83c\udfb5", floor:"#6f7785", line:"#565d69", wall:"#b9d7ea"},
+    kitchen:  {t:"in the kitchen",       em:"\ud83c\udf73", l:"\ud83c\udf73", r:"\ud83e\udd44", floor:"#dfe6ea", line:"#bcc6cc", wall:"#fdf0d5"},
+    table:    {t:"at the kitchen table", em:"\ud83c\udf7d\ufe0f", l:"\ud83c\udf7d\ufe0f", r:"\ud83c\udf73", floor:"#dfe6ea", line:"#bcc6cc", wall:"#fdf0d5"},
+    bowl:     {t:"by its bowl",          em:"\ud83e\udd63", l:"\ud83e\udd63", r:"\ud83d\udeb0", floor:"#dfe6ea", line:"#bcc6cc", wall:"#fdf0d5"},
+    cafe:     {t:"in the cafeteria",     em:"\ud83c\udf71", l:"\ud83c\udf71", r:"\ud83e\udd5b", floor:"#d7d2c4", line:"#b8b2a2", wall:"#eaf2e0"},
+    rest:     {t:"at a restaurant",      em:"\ud83c\udf5d", l:"\ud83c\udf5d", r:"\ud83d\udd6f\ufe0f", floor:"#8a5a3c", line:"#6d452c", wall:"#f7e4c8"},
+    party:    {t:"at the party",         em:"\ud83c\udf88", l:"\ud83c\udf88", r:"\ud83c\udf81", floor:"#c9a06b", line:"#a87f4c", wall:"#ffe9f2"},
+    living:   {t:"in the living room",   em:"\ud83d\udecb\ufe0f", l:"\ud83d\udecb\ufe0f", r:"\ud83d\udcfa", floor:"#c9a06b", line:"#a87f4c", wall:"#f6e7d2"},
+    sofa:     {t:"on the sofa",          em:"\ud83d\udecb\ufe0f", l:"\ud83d\udecb\ufe0f", r:"\ud83d\udcfa", floor:"#c9a06b", line:"#a87f4c", wall:"#f6e7d2"},
+    undersofa:{t:"under the sofa",       em:"\ud83d\udecb\ufe0f", l:"\ud83d\udecb\ufe0f", r:"\ud83e\udde6", floor:"#c9a06b", line:"#a87f4c", wall:"#f6e7d2"},
+    bed:      {t:"in bed",               em:"\ud83d\udecf\ufe0f", l:"\ud83d\udecf\ufe0f", r:"\ud83e\uddf8", floor:"#c9a06b", line:"#a87f4c", wall:"#dfe3f5"},
+    underbed: {t:"under the bed",        em:"\ud83d\udecf\ufe0f", l:"\ud83d\udecf\ufe0f", r:"\ud83e\udde6", floor:"#c9a06b", line:"#a87f4c", wall:"#dfe3f5"},
+    rug:      {t:"on the rug",           em:"\ud83e\uddf6", l:"\ud83e\uddf6", r:"\ud83d\udd25", floor:"#b9705a", line:"#93543f", wall:"#f6e7d2"},
+    window:   {t:"on the windowsill",    em:"\ud83e\ude9f", l:"\ud83e\ude9f", r:"\ud83e\ude74", floor:"#e2d7c2", line:"#c2b59c", wall:"#eef4fb"},
+    basket:   {t:"in its basket",        em:"\ud83e\uddfa", l:"\ud83e\uddfa", r:"\ud83e\uddf6", floor:"#c9a06b", line:"#a87f4c", wall:"#f6e7d2"},
+    shelf:    {t:"on the bookshelf",     em:"\ud83d\udcda", l:"\ud83d\udcda", r:"\ud83e\ude74", floor:"#c9a06b", line:"#a87f4c", wall:"#f3e8d8"},
+    box:      {t:"in a box",             em:"\ud83d\udce6", l:"\ud83d\udce6", r:"\ud83e\uddf6", floor:"#c9a06b", line:"#a87f4c", wall:"#f6e7d2"}
+  };
+
+  /* ---------- TIMES ---------- */
+  var TIMES = {
+    earlymorning:{t:"Before breakfast", em:"\ud83c\udf04", sky:"morning"},
+    morning:     {t:"In the morning",   em:"\ud83c\udf05", sky:"morning"},
+    recess:      {t:"At recess",        em:"\ud83d\udd14", sky:"day"},
+    lunchtime:   {t:"At lunchtime",     em:"\ud83e\udd6a", sky:"day"},
+    afterlunch:  {t:"After lunch",      em:"\ud83c\udf4e", sky:"day"},
+    afternoon:   {t:"In the afternoon", em:"\u2600\ufe0f", sky:"day"},
+    afterschool: {t:"After school",     em:"\ud83c\udf92", sky:"day"},
+    saturday:    {t:"On Saturday",      em:"\ud83d\udcc5", sky:"day"},
+    dinnertime:  {t:"At dinnertime",    em:"\ud83c\udf7d\ufe0f", sky:"night"},
+    afterdinner: {t:"After dinner",     em:"\ud83c\udf06", sky:"night"},
+    bedtime:     {t:"At bedtime",       em:"\ud83c\udf19", sky:"night"},
+    night:       {t:"At night",         em:"\ud83c\udf19", sky:"night"}
+  };
+
+  /* ---------- ACTIONS, grouped by kind of character ----------
+     Every action carries the only places, times and reasons that make
+     sense for it. Edit these lists to change the vocabulary.          */
+  var ACTIONS = {
+
+    person: [
+      {em:"\u26bd", t:"plays", base:"play",
+       where:["yard","park","beach","gym"],
+       when:["afterschool","saturday","afternoon","recess"],
+       why:[{em:"\ud83c\udf89",t:"because {p} wants to have fun"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"},
+            {em:"\ud83c\udfae",t:"because {p} loves games"}]},
+      {em:"\ud83c\udfc3", t:"runs", base:"run",
+       where:["track","park","beach","yard"],
+       when:["earlymorning","morning","afterschool","saturday"],
+       why:[{em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83c\udfc1",t:"because {p} wants to go fast"},
+            {em:"\ud83d\udcaa",t:"because {p} wants to get strong"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"}]},
+      {em:"\ud83c\udfb5", t:"sings", base:"sing",
+       where:["stage","school","car","garden"],
+       when:["morning","saturday","afterdinner","bedtime"],
+       why:[{em:"\ud83d\ude0a",t:"because {p} feels happy"},
+            {em:"\ud83c\udfb6",t:"because {p} loves music"},
+            {em:"\ud83c\udfa4",t:"because {p} knows the song"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"}]},
+      {em:"\ud83d\udc83", t:"dances", base:"dance",
+       where:["party","stage","kitchen","living"],
+       when:["afternoon","afterdinner","saturday","night"],
+       why:[{em:"\ud83c\udfb6",t:"because {p} loves music"},
+            {em:"\ud83d\ude0a",t:"because {p} feels happy"},
+            {em:"\ud83e\udd73",t:"because the song is fun"},
+            {em:"\u26a1",t:"because {p} has lots of energy"}]},
+      {em:"\ud83c\udf4e", t:"eats", base:"eat",
+       where:["table","cafe","rest","garden"],
+       when:["morning","lunchtime","afterschool","dinnertime"],
+       why:[{em:"\ud83d\ude0b",t:"because {p} feels hungry"},
+            {em:"\ud83d\udc43",t:"because the food smells good"},
+            {em:"\ud83d\udcaa",t:"because {p} needs energy"},
+            {em:"\u23f0",t:"because it is time to eat"}]},
+      {em:"\ud83d\udcd6", t:"reads", base:"read",
+       where:["living","bed","school","undertree"],
+       when:["afterschool","afterlunch","bedtime","saturday"],
+       why:[{em:"\ud83d\udcda",t:"because {p} loves stories"},
+            {em:"\ud83e\udde0",t:"because {p} wants to learn"},
+            {em:"\ud83e\udd2b",t:"because it is quiet and cozy"},
+            {em:"\u2728",t:"because the book is exciting"}]}
+    ],
+
+    dog: [
+      {em:"\ud83c\udfc3", t:"runs", base:"run",
+       where:["yard","park","beach","field"],
+       when:["earlymorning","morning","afternoon","afterschool"],
+       why:[{em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83c\udfbe",t:"because {p} sees a ball"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"},
+            {em:"\ud83d\ude04",t:"because {p} loves to run"}]},
+      {em:"\ud83c\udfbe", t:"plays", base:"play",
+       where:["yard","park","beach","grass"],
+       when:["morning","afternoon","afterschool","saturday"],
+       why:[{em:"\ud83c\udf89",t:"because {p} wants to have fun"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83c\udfbe",t:"because {p} loves the ball"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"}]},
+      {em:"\ud83d\udce3", t:"barks", base:"bark",
+       where:["yard","porch","fence","park"],
+       when:["earlymorning","morning","afternoon","night"],
+       why:[{em:"\ud83d\udc42",t:"because {p} hears a noise"},
+            {em:"\ud83d\udc31",t:"because {p} sees a cat"},
+            {em:"\ud83e\udd29",t:"because {p} feels excited"},
+            {em:"\ud83c\udfbe",t:"because {p} wants to play"}]},
+      {em:"\ud83e\uddb4", t:"eats", base:"eat",
+       where:["bowl","kitchen","porch","yard"],
+       when:["morning","lunchtime","afterschool","dinnertime"],
+       why:[{em:"\ud83d\ude0b",t:"because {p} feels hungry"},
+            {em:"\ud83d\udc43",t:"because the food smells good"},
+            {em:"\ud83d\udcaa",t:"because {p} needs energy"},
+            {em:"\u23f0",t:"because it is time to eat"}]},
+      {em:"\ud83d\ude34", t:"sleeps", base:"sleep",
+       where:["doghouse","rug","sofa","shade"],
+       when:["afterlunch","afternoon","bedtime","night"],
+       why:[{em:"\ud83d\ude34",t:"because {p} feels sleepy"},
+            {em:"\ud83c\udfc3",t:"because {p} ran all day"},
+            {em:"\ud83e\udd2b",t:"because it is quiet and cozy"},
+            {em:"\ud83e\udde3",t:"because the spot is warm and soft"}]},
+      {em:"\ud83d\udd73\ufe0f", t:"digs", base:"dig",
+       where:["yard","garden","beach","field"],
+       when:["morning","afternoon","afterschool","saturday"],
+       why:[{em:"\ud83e\uddb4",t:"because {p} is looking for a bone"},
+            {em:"\ud83d\udc43",t:"because {p} smells something"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83e\udd42",t:"because the dirt is soft"}]}
+    ],
+
+    cat: [
+      {em:"\ud83d\ude34", t:"sleeps", base:"sleep",
+       where:["window","sofa","bed","basket"],
+       when:["morning","afterlunch","afternoon","night"],
+       why:[{em:"\ud83d\ude34",t:"because {p} feels sleepy"},
+            {em:"\u2600\ufe0f",t:"because the sun is warm"},
+            {em:"\ud83e\udd2b",t:"because it is quiet and cozy"},
+            {em:"\ud83e\udde3",t:"because the blanket is soft"}]},
+      {em:"\ud83d\udc1f", t:"eats", base:"eat",
+       where:["bowl","kitchen","porch","window"],
+       when:["morning","lunchtime","dinnertime","night"],
+       why:[{em:"\ud83d\ude0b",t:"because {p} feels hungry"},
+            {em:"\ud83d\udc43",t:"because the food smells good"},
+            {em:"\ud83d\udcaa",t:"because {p} needs energy"},
+            {em:"\u23f0",t:"because it is time to eat"}]},
+      {em:"\ud83d\udc97", t:"purrs", base:"purr",
+       where:["sofa","bed","window","living"],
+       when:["morning","afternoon","bedtime","night"],
+       why:[{em:"\ud83d\ude0a",t:"because {p} feels happy"},
+            {em:"\ud83e\udd17",t:"because {p} likes being petted"},
+            {em:"\ud83e\udd2b",t:"because it is quiet and cozy"},
+            {em:"\ud83c\udfe1",t:"because {p} feels safe"}]},
+      {em:"\ud83e\uddd7", t:"climbs", base:"climb",
+       where:["intree","fence","shelf","window"],
+       when:["earlymorning","morning","afternoon","night"],
+       why:[{em:"\ud83d\udc26",t:"because {p} sees a bird"},
+            {em:"\ud83d\udc40",t:"because {p} feels curious"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83d\uddfb",t:"because {p} wants to look around"}]},
+      {em:"\ud83e\udee3", t:"hides", base:"hide",
+       where:["box","undersofa","underbed","garden"],
+       when:["morning","afterlunch","afternoon","night"],
+       why:[{em:"\ud83d\udc42",t:"because {p} hears a noise"},
+            {em:"\ud83d\ude36",t:"because {p} feels shy"},
+            {em:"\ud83d\udc36",t:"because {p} sees the dog"},
+            {em:"\ud83c\udfae",t:"because {p} is playing a game"}]},
+      {em:"\ud83d\udc3e", t:"jumps", base:"jump",
+       where:["fence","window","sofa","grass"],
+       when:["earlymorning","morning","afternoon","night"],
+       why:[{em:"\ud83d\udc26",t:"because {p} sees a bird"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83e\uddf6",t:"because {p} is chasing a string"},
+            {em:"\u2b06\ufe0f",t:"because {p} wants to get up high"}]}
+    ],
+
+    rabbit: [
+      {em:"\ud83d\udc3e", t:"hops", base:"hop",
+       where:["grass","garden","field","yard"],
+       when:["earlymorning","morning","afterlunch","afternoon"],
+       why:[{em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"},
+            {em:"\ud83e\udd55",t:"because {p} is looking for food"},
+            {em:"\ud83d\ude0a",t:"because {p} feels happy"}]},
+      {em:"\ud83e\udd55", t:"eats", base:"eat",
+       where:["garden","grass","hutch","field"],
+       when:["morning","lunchtime","afternoon","dinnertime"],
+       why:[{em:"\ud83d\ude0b",t:"because {p} feels hungry"},
+            {em:"\ud83e\udd55",t:"because the carrots taste good"},
+            {em:"\ud83d\udcaa",t:"because {p} needs energy"},
+            {em:"\u23f0",t:"because it is time to eat"}]},
+      {em:"\ud83d\ude34", t:"sleeps", base:"sleep",
+       where:["hutch","burrow","shade","grass"],
+       when:["afterlunch","afternoon","bedtime","night"],
+       why:[{em:"\ud83d\ude34",t:"because {p} feels sleepy"},
+            {em:"\ud83d\udc3e",t:"because {p} hopped all day"},
+            {em:"\ud83e\udd2b",t:"because it is quiet and cozy"},
+            {em:"\ud83e\udde3",t:"because the spot is warm and soft"}]},
+      {em:"\ud83e\udee3", t:"hides", base:"hide",
+       where:["burrow","garden","grass","shade"],
+       when:["morning","afterlunch","afternoon","night"],
+       why:[{em:"\ud83d\udc42",t:"because {p} hears a noise"},
+            {em:"\ud83d\ude36",t:"because {p} feels shy"},
+            {em:"\ud83d\udc36",t:"because {p} sees the dog"},
+            {em:"\ud83c\udfe1",t:"because {p} wants to feel safe"}]},
+      {em:"\ud83d\udd73\ufe0f", t:"digs", base:"dig",
+       where:["garden","field","yard","grass"],
+       when:["earlymorning","morning","afternoon","saturday"],
+       why:[{em:"\ud83c\udfe0",t:"because {p} is making a burrow"},
+            {em:"\ud83e\udd55",t:"because {p} is looking for food"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83e\udd42",t:"because the dirt is soft"}]}
+    ],
+
+    bird: [
+      {em:"\ud83c\udfb5", t:"sings", base:"sing",
+       where:["branch","nest","garden","window"],
+       when:["earlymorning","morning","afternoon","saturday"],
+       why:[{em:"\ud83d\ude0a",t:"because {p} feels happy"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"},
+            {em:"\ud83d\udc65",t:"because {p} is calling its friends"},
+            {em:"\ud83c\udfb6",t:"because {p} loves to sing"}]},
+      {em:"\ud83d\udd4a\ufe0f", t:"flies", base:"fly",
+       where:["sky","garden","park","field"],
+       when:["earlymorning","morning","afternoon","saturday"],
+       why:[{em:"\u2600\ufe0f",t:"because it is a beautiful day"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83c\udf3e",t:"because {p} is looking for food"},
+            {em:"\ud83d\uddfb",t:"because {p} wants to see far"}]},
+      {em:"\ud83c\udf3e", t:"eats", base:"eat",
+       where:["nest","branch","garden","grass"],
+       when:["earlymorning","morning","lunchtime","afternoon"],
+       why:[{em:"\ud83d\ude0b",t:"because {p} feels hungry"},
+            {em:"\ud83c\udf3e",t:"because the seeds taste good"},
+            {em:"\ud83d\udcaa",t:"because {p} needs energy"},
+            {em:"\u23f0",t:"because it is time to eat"}]},
+      {em:"\ud83d\ude34", t:"sleeps", base:"sleep",
+       where:["nest","branch","intree","shade"],
+       when:["afterlunch","afternoon","bedtime","night"],
+       why:[{em:"\ud83d\ude34",t:"because {p} feels sleepy"},
+            {em:"\ud83d\udd4a\ufe0f",t:"because {p} flew all day"},
+            {em:"\ud83e\udd2b",t:"because it is quiet and cozy"},
+            {em:"\ud83e\udde3",t:"because the nest is warm and soft"}]},
+      {em:"\ud83e\ude79", t:"builds a nest", base:"build a nest",
+       where:["intree","branch","garden","yard"],
+       when:["earlymorning","morning","afternoon","saturday"],
+       why:[{em:"\ud83c\udfe0",t:"because {p} needs a safe home"},
+            {em:"\u2600\ufe0f",t:"because it is a beautiful day"},
+            {em:"\u26a1",t:"because {p} has lots of energy"},
+            {em:"\ud83e\udd2b",t:"because {p} wants a cozy spot"}]}
+    ]
+  };
+
+  var STEPS = [
+    {k:"who",   label:"Who?",        help:"Who is your sentence about?",
+     hint:"That is the naming part. It is not a sentence yet \u2014 it needs an action!"},
+    {k:"doing", label:"Doing what?", help:"What is {THE} doing?",
+     hint:"Now it is a complete sentence. It tells who and what they do."},
+    {k:"where", label:"Where?",      help:"Where does {THE} {VERB}?",
+     hint:"Nice! Now the reader can picture the place."},
+    {k:"when",  label:"When?",       help:"When does it happen?",
+     hint:"Look \u2014 the time moved to the front, so it takes a comma."},
+    {k:"why",   label:"Why?",        help:"Why does it happen?", hint:""}
+  ];
+
+  var el = function(id){ return document.getElementById(id); };
+  var sentenceEl=el("sentence"), hintEl=el("hint"), choicesEl=el("choices"),
+      askNote=el("askNote"), askHelp=el("askHelp"), growthEl=el("growth"),
+      askPanel=el("askPanel"), finishEl=el("finish"), finishMsg=el("finishMsg"),
+      railItems=el("rail").getElementsByTagName("li");
+
+  var state={}, step=0, soundOn=true, firstWords=0, pools={};
+
+  function shuffle(a){
+    var c=a.slice(), i, j, t;
+    for(i=c.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=c[i]; c[i]=c[j]; c[j]=t; }
+    return c;
+  }
+
+  function optionsFor(key){
+    if(key==="who")   return shuffle(WHO).slice(0,4);
+    if(key==="doing") return shuffle(ACTIONS[state.who.kind]).slice(0,4);
+    if(key==="where") return shuffle(state.doing.where.map(function(n){ return PLACES[n]; })).slice(0,4);
+    if(key==="when")  return shuffle(state.doing.when.map(function(n){ return TIMES[n]; })).slice(0,4);
+    return shuffle(state.doing.why).slice(0,4);
+  }
+
+  function newRound(){
+    state={}; step=0; firstWords=0; pools={};
+    finishEl.hidden=true; askPanel.hidden=false;
+    render();
+  }
+
+  function parts(){
+    var p=[];
+    if(!state.who) return p;
+    var fronted=!!state.when;
+    if(fronted) p.push({t:state.when.t+",", c:"when"});
+    p.push({t: fronted ? state.who.low : state.who.cap, c:"who"});
+    if(state.doing) p.push({t:state.doing.t, c:"doing"});
+    if(state.where) p.push({t:state.where.t, c:"where"});
+    if(state.why)   p.push({t:state.why.t.replace("{p}", state.who.pron), c:"why"});
+    return p;
+  }
+
+  function plainText(){
+    var p=parts();
+    if(!p.length) return "";
+    var s=p.map(function(x){ return x.t; }).join(" ");
+    return state.doing ? s+"." : s;
+  }
+
+  function countWords(){
+    var s=plainText().replace(/[.,]/g,"").trim();
+    return s ? s.split(/\s+/).length : 0;
+  }
+
+  function render(newKey){
+    var p=parts(), html="";
+    if(!p.length){
+      html='<span class="blank">\u2026</span>';
+    } else {
+      for(var i=0;i<p.length;i++){
+        html+='<span class="'+p[i].c+(p[i].c===newKey?" fresh":"")+'">'+p[i].t+'</span> ';
+      }
+      if(state.doing) html=html.trim()+'<span class="who">.</span>';
+    }
+    sentenceEl.innerHTML=html;
+
+    var n=countWords();
+    growthEl.textContent=(n<=2?"🌱":(n<=6?"🌿":"🌳"))+" "+n+(n===1?" word":" words");
+
+    for(var r=0;r<railItems.length;r++){
+      railItems[r].className = r<step ? "done" : (r===step ? "now" : "");
+    }
+
+    drawScene();
+
+    if(step<STEPS.length){
+      var s=STEPS[step];
+      askNote.textContent=s.label;
+      askNote.setAttribute("data-k", s.k);
+      askHelp.textContent=s.help
+        .replace("{THE}", state.who ? state.who.the : "your character")
+        .replace("{VERB}", state.doing ? state.doing.base : "do it");
+      if(!pools[s.k]) pools[s.k]=optionsFor(s.k);
+      buildChoices(s.k);
+    }
+  }
+
+  function buildChoices(key){
+    choicesEl.innerHTML="";
+    var list=pools[key];
+    for(var i=0;i<list.length;i++){
+      (function(item){
+        var b=document.createElement("button");
+        b.type="button"; b.className="choice";
+        var label=(item.cap||item.t).replace("{p}", state.who ? state.who.pron : "it");
+        b.innerHTML='<span class="em" aria-hidden="true">'+item.em+'</span><span>'+label+'</span>';
+        b.addEventListener("click", function(){ choose(key, item); });
+        choicesEl.appendChild(b);
+      })(list[i]);
+    }
+  }
+
+  function choose(key, item){
+    state[key]=item;
+    if(key==="who"){ delete pools.doing; }
+    if(key==="who" || key==="doing"){ delete pools.where; delete pools.when; delete pools.why; }
+    var justDone=step;
+    step++;
+    render(key);
+    if(step===1) firstWords=countWords();
+
+    if(step>=STEPS.length){ finish(); }
+    else { hintEl.textContent=STEPS[justDone].hint; say(plainText()); }
+  }
+
+  function finish(){
+    askPanel.hidden=true; finishEl.hidden=false;
+    hintEl.textContent="Every part answers a question: who, doing what, where, when, why.";
+    var n=countWords();
+    finishMsg.textContent="You started with "+firstWords+(firstWords===1?" word":" words")+
+      " and grew it to "+n+" words. That is "+(n-firstWords)+" more!";
+    el("sparks").setAttribute("opacity","1");
+    say(plainText());
+  }
+
+  function show(id,on){ el(id).setAttribute("opacity", on?"1":"0"); }
+
+  function drawScene(){
+    show("hero", !!state.who);
+    if(state.who) el("heroEm").textContent=state.who.em;
+    show("actEm", !!state.doing);
+    if(state.doing) el("actEm").textContent=state.doing.em;
+
+    var place=state.where, indoor=!!(place && place.wall);
+    var g=el("ground"), gl=el("groundLine"), sky=el("sky"), sun=el("sun");
+
+    show("propL", !!place); show("propR", !!place);
+    if(place){
+      el("propL").textContent=place.l;
+      el("propR").textContent=place.r;
+      g.setAttribute("fill", place.floor);
+      gl.setAttribute("stroke", place.line);
+    } else {
+      g.setAttribute("fill","#8ed079"); gl.setAttribute("stroke","#6cb457");
+    }
+
+    show("timeTag", !!state.when);
+    if(state.when) el("timeTag").textContent=state.when.em;
+
+    if(indoor){
+      sky.setAttribute("fill", place.wall);
+      show("sunGroup", false); show("clouds", false); show("stars", false);
+    } else {
+      show("sunGroup", true);
+      var sk = state.when ? state.when.sky : "day";
+      if(sk==="night"){
+        sky.setAttribute("fill","url(#gNight)"); sun.setAttribute("fill","#f4f1d8");
+        show("stars", true); show("clouds", false);
+      } else if(sk==="morning"){
+        sky.setAttribute("fill","url(#gMorning)"); sun.setAttribute("fill","#ff9a4d");
+        show("stars", false); show("clouds", true);
+      } else {
+        sky.setAttribute("fill","url(#gDay)"); sun.setAttribute("fill","#ffd23f");
+        show("stars", false); show("clouds", true);
+      }
+    }
+
+    show("sparks", !!state.why);
+  }
+
+  function say(text){
+    if(!soundOn || !text || !("speechSynthesis" in window)) return;
+    try{
+      window.speechSynthesis.cancel();
+      var u=new SpeechSynthesisUtterance(text);
+      u.lang="en-US"; u.rate=0.82; u.pitch=1.08;
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  el("readBtn").addEventListener("click", function(){
+    var t=plainText();
+    if(!t){ hintEl.textContent="Pick who your sentence is about first."; return; }
+    var on=soundOn; soundOn=true; say(t); soundOn=on;
+  });
+
+  el("backBtn").addEventListener("click", function(){
+    if(step===0) return;
+    step--;
+    var k=STEPS[step].k;
+    delete state[k]; delete pools[k];
+    if(k==="who"){ delete pools.doing; }
+    if(k==="who" || k==="doing"){ delete pools.where; delete pools.when; delete pools.why; }
+    finishEl.hidden=true; askPanel.hidden=false;
+    hintEl.textContent = step===0 ? "Pick who your sentence is about." : "Try a different one.";
+    render();
+  });
+
+  el("resetBtn").addEventListener("click", function(){
+    hintEl.textContent="Pick who your sentence is about."; newRound();
+  });
+  el("againBtn").addEventListener("click", function(){
+    hintEl.textContent="Pick who your sentence is about."; newRound();
+  });
+
+  el("soundBtn").addEventListener("click", function(){
+    soundOn=!soundOn;
+    this.textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off";
+    this.setAttribute("aria-pressed", soundOn?"true":"false");
+    if(!soundOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  });
+
+  newRound();
+})();
+</script>
+</body>
+</html>
