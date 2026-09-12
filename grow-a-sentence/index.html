@@ -19,7 +19,7 @@
     --n-blue:#a8d8f0;
     --n-green:#b6e39a;
     --n-orange:#ffc07a;
-    --hand:"Comic Sans MS","Chalkboard SE","Marker Felt","Bradley Hand",cursive;
+    --hand:"Comic Sans MS","Chalkboard SE","Comic Neue",Verdana,Roboto,"Segoe UI",sans-serif;
     --read:Verdana,"Trebuchet MS",Tahoma,sans-serif;
   }
   *{box-sizing:border-box}
@@ -94,7 +94,7 @@
 
   .hint{font-family:var(--hand);font-size:17px;color:#5a5142;margin:0 0 14px;min-height:1.5em}
 
-  .stage-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .stage-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:20px}
   .growth{font-family:var(--hand);font-size:17px;font-weight:700;background:var(--n-green);padding:7px 12px;border-radius:2px;box-shadow:2px 3px 0 rgba(0,0,0,.16);transform:rotate(-1deg)}
 
   button{font-family:var(--hand);cursor:pointer;border:2px solid #3b3b3b;color:#2f2a20}
@@ -135,6 +135,43 @@
   .adult ul{margin:10px 0 0;padding-left:20px}
   .adult li{margin-bottom:7px}
   .adult code{background:#efe6cf;padding:1px 5px;border-radius:3px;font-size:13px}
+
+  /* ---------- phones ---------- */
+  @media (max-width:840px){
+    body{padding:8px 6px 28px}
+    .page{padding:16px 14px 20px 40px;border-radius:4px 12px 12px 4px}
+    .spiral{left:9px;top:14px;bottom:14px;width:20px}
+    .spiral i{height:10px;border-width:2px}
+    h1{font-size:27px}
+    .tagline{font-size:14px}
+    .rail{gap:6px;margin:12px 0 14px}
+    .rail li{font-size:12px;padding:6px 9px;gap:4px;box-shadow:2px 2px 0 rgba(0,0,0,.16)}
+    .grid{gap:0}
+    .stage{
+      position:sticky;top:0;z-index:5;
+      background:var(--paper);
+      padding:6px 0 8px;
+      box-shadow:0 10px 12px -8px rgba(0,0,0,.25);
+    }
+    .scene-frame{padding:5px;transform:none}
+    .sentence{font-size:19px;line-height:1.6;margin:12px 0 2px;min-height:0}
+    .hint{font-size:15px;margin:12px 0 10px}
+    .stage-tools{margin-bottom:16px}
+    .btn{font-size:16px;padding:9px 12px;min-height:46px}
+    .btn-loud{font-size:17px}
+    .growth{font-size:15px;padding:6px 10px}
+    .ask-note{font-size:20px;padding:8px 16px}
+    .ask-help{font-size:16px;margin:12px 0 10px}
+    .choice{min-height:78px;font-size:15px;padding:10px 6px}
+    .choice .em{font-size:29px}
+    .ctrls{gap:8px;margin-top:14px}
+    .adult{font-size:14px;margin-top:20px}
+  }
+  @media (max-width:380px){
+    .page{padding-left:34px}
+    .sentence{font-size:17px}
+    .choice{min-height:72px;font-size:14px}
+  }
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
   @media print{
@@ -226,15 +263,15 @@
             <rect id="baseboard" x="0" y="170" width="440" height="9" fill="#00000026"/>
           </g>
 
-          <text id="propL" x="54" y="170" font-size="46" text-anchor="middle" opacity="0">🌳</text>
-          <text id="propR" x="388" y="170" font-size="46" text-anchor="middle" opacity="0">🏡</text>
+          <text id="propL" x="54" y="160" font-size="46" text-anchor="middle" opacity="0">🌳</text>
+          <text id="propR" x="388" y="160" font-size="46" text-anchor="middle" opacity="0">🏡</text>
 
           <g id="hero" opacity="0">
-            <ellipse id="heroShadow" cx="220" cy="176" rx="30" ry="7" fill="rgba(0,0,0,.18)"/>
-            <text id="heroEm" x="220" y="170" font-size="58" text-anchor="middle">🐶</text>
+            <ellipse id="heroShadow" cx="220" cy="173" rx="30" ry="7" fill="rgba(0,0,0,.18)"/>
+            <text id="heroEm" x="220" y="158" font-size="58" text-anchor="middle">🐶</text>
           </g>
-          <text id="actEm" x="290" y="164" font-size="30" text-anchor="middle" opacity="0">⚽</text>
-          <text id="frontProp" x="92" y="180" font-size="70" text-anchor="middle" opacity="0">🌳</text>
+          <text id="actEm" x="290" y="152" font-size="30" text-anchor="middle" opacity="0">⚽</text>
+          <text id="frontProp" x="92" y="172" font-size="70" text-anchor="middle" opacity="0">🌳</text>
 
           <g id="fx" opacity="0"></g>
 
@@ -253,15 +290,16 @@
       </div>
 
       <p class="sentence" id="sentence" aria-live="polite"></p>
+    </section>
+
+    <section class="ask" aria-label="Question">
       <p class="hint" id="hint">Pick who your sentence is about.</p>
 
       <div class="stage-tools">
         <button class="btn btn-loud" id="readBtn" type="button">🔊 Read it to me</button>
         <span class="growth" id="growth">🌱 0 words</span>
       </div>
-    </section>
 
-    <section class="ask" aria-label="Question">
       <div id="askPanel">
         <span class="ask-note" id="askNote" data-k="who">Who?</span>
         <p class="ask-help" id="askHelp">Who is your sentence about?</p>
@@ -879,7 +917,7 @@
     show("propL", !!place && !hiding); show("propR", !!place);
     if(place){
       el("propL").textContent=place.l; el("propR").textContent=place.r;
-      attr("propL","y", indoor?178:170); attr("propR","y", indoor?178:170);
+      attr("propL","y", indoor?168:160); attr("propR","y", indoor?168:160);
     }
     show("frontProp", hiding && !!place);
     if(hiding && place) el("frontProp").textContent=place.l;
