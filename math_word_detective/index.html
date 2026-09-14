@@ -156,6 +156,30 @@
     background:var(--oro);color:var(--tinta);
     padding:0 .25rem;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone;
   }
+  .instruccion{
+    display:flex;align-items:center;gap:.6rem;
+    background:#FFF4DB;border:3px solid #8A6100;border-radius:12px;
+    padding:.6rem .9rem;margin:.75rem 0 .25rem;
+    font-family:'Fredoka',sans-serif;font-size:1.05rem;
+  }
+  .instruccion .mano{font-size:1.6rem;line-height:1}
+  .instruccion.hecha{background:#E3F3EA;border-color:var(--juntar)}
+
+  .bloqueado{
+    border:3px dashed #8CA0B3;border-radius:14px;
+    background:#F4F7FA;color:#3C4A57;
+    padding:.9rem;margin-top:.5rem;
+    display:flex;align-items:center;gap:.7rem;font-size:1.02rem;
+  }
+  .bloqueado .candado{font-size:1.8rem;line-height:1}
+  .fichasFantasma{display:flex;gap:.6rem;flex-wrap:wrap;margin-left:auto}
+  .fichasFantasma span{
+    min-width:62px;height:52px;display:flex;align-items:center;justify-content:center;
+    border:3px dashed #8CA0B3;border-radius:12px;background:#FFF;
+    font-family:'Fredoka',sans-serif;font-size:1.4rem;color:#8CA0B3;
+  }
+
+  .barraAudio{margin:0 0 .5rem;text-align:right}
   .audio{
     background:var(--tarjeta);border:2px solid var(--tinta-suave);color:var(--tinta);
     border-radius:999px;padding:.35rem .9rem;font-family:'Andika',sans-serif;font-size:.95rem;
@@ -693,15 +717,17 @@
       '</div>'+
       '<h2 class="tituloCaso">'+c.titulo+'</h2>'+
       '<div class="escena" role="img" aria-label="'+c.alt+'">'+c.escena+'</div>'+
+      '<p class="barraAudio"><button class="audio" type="button" id="oir">🔊 Read the question to me</button></p>'+
       '<p class="pregunta">'+c.q+'</p>'+
-      '<button class="audio" type="button" id="oir">🔊 Read the question to me</button>'+
+      (c.paso ? '<p class="instruccion" id="instruccion"><span class="mano" aria-hidden="true">✋</span>'+
+                '<span>Hold on — no number yet. First pick the move down here.</span></p>' : '')+
       '<div id="zonaPaso"></div>'+
       '<div id="zonaResp"></div>'+
       '<div id="zonaAviso"></div>';
 
     document.getElementById('oir').onclick = function(){ hablar(c.q); };
 
-    if(c.paso){ pintarPaso(c); } else { pintarRespuestas(c); }
+    if(c.paso){ pintarPaso(c); bloquearRespuestas(); } else { pintarRespuestas(c); }
     caso.querySelector('.tituloCaso').setAttribute('tabindex','-1');
     caso.querySelector('.tituloCaso').focus();
   }
@@ -709,6 +735,7 @@
   function pintarPaso(c){
     var z = document.getElementById('zonaPaso'), k, o, b;
     z.innerHTML = '<h3>Step 1 · '+c.paso.pregunta+'</h3><div class="opciones" id="opsPaso"></div>';
+    z.setAttribute('data-listo','no');
     var cont = document.getElementById('opsPaso');
     for(k=0;k<c.paso.opciones.length;k++){
       o = c.paso.opciones[k];
@@ -722,13 +749,26 @@
     }
   }
 
+  function bloquearRespuestas(){
+    document.getElementById('zonaResp').innerHTML =
+      '<h3>Step 2 · The answer</h3>'+
+      '<div class="bloqueado"><span class="candado" aria-hidden="true">🔒</span>'+
+      '<span>The number buttons show up here once Step 1 is solved.</span>'+
+      '<span class="fichasFantasma" aria-hidden="true"><span>?</span><span>?</span><span>?</span><span>?</span></span></div>';
+  }
+
   function elegirPaso(c, op, boton){
     var botones = document.querySelectorAll('#opsPaso button'), k;
+    var banda = document.getElementById('instruccion');
     if(op.clave === c.paso.correcto){
       for(k=0;k<botones.length;k++){ botones[k].disabled = true; }
       boton.className = 'opcion acertada'; boton.setAttribute('data-tono','juntar');
+      if(banda){
+        banda.className = 'instruccion hecha';
+        banda.innerHTML = '<span class="mano" aria-hidden="true">👇</span><span>Move picked. Now tap your answer in Step 2.</span>';
+      }
       aviso('bien','Good eye, detective!', c.paso.porque, false);
-      anuncio.textContent = 'Correct move.';
+      anuncio.textContent = 'Correct move. The answer buttons are unlocked.';
       pintarRespuestas(c);
     } else {
       intentos++;
@@ -742,8 +782,10 @@
     var z = document.getElementById('zonaResp'), k, r, b;
     var lista = barajar(c.respuestas);
     var numerico = c.respuestas.every(function(x){ return x.t.length <= 3; });
-    z.innerHTML = '<h3>'+(c.paso?'Step 2 · ':'')+'Now the answer</h3><div class="'+(numerico?'fichas':'opciones')+'" id="opsResp"></div>';
+    z.innerHTML = '<h3 tabindex="-1" id="tituloPaso2">'+(c.paso?'Step 2 · ':'')+'Now the answer</h3>'+
+                  '<div class="'+(numerico?'fichas':'opciones')+'" id="opsResp"></div>';
     var cont = document.getElementById('opsResp');
+    if(c.paso){ document.getElementById('tituloPaso2').focus(); }
     for(k=0;k<lista.length;k++){
       r = lista[k];
       b = document.createElement('button');
