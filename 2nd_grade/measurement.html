@@ -219,7 +219,7 @@ footer a{color:var(--domain-dark)}
 <section class="panel" id="p-est" role="tabpanel" aria-labelledby="tab-est" tabindex="0" hidden>
   <h2>Estimate and compare</h2>
   <div class="howto">
-    <p id="how-est">First guess how long the top strip is. Use the one inch square as your helper. After you guess, you will see the real length, and then you will work out how much longer one strip is than the other.</p>
+    <p id="how-est">The yellow square is exactly one unit long, and it sits right under the start of strip A. Nothing here moves: look at the strip and picture how many of those squares would fit along it, then write your number. When you check, the squares appear so you can count them and see how close you were.</p>
     <button class="btn-read" data-read="how-est" type="button">&#128266; Read to me</button>
   </div>
 
@@ -548,23 +548,38 @@ function checkToolsRead(){
 /* ===================== 2. ESTIMATE AND COMPARE ===================== */
 var estTask = null;
 
+function drawEst(showUnits){
+  var t = estTask, per = t.per, x0 = 30;
+  var s = '<svg viewBox="0 0 760 200" role="img" aria-label="' +
+          (showUnits ? 'Strip A covered by ' + t.a + ' unit squares, and strip B below'
+                     : 'Strip A with one unit square under its left end, and strip B below') + '">';
+  s += '<rect x="' + x0 + '" y="16" width="' + (t.a * per) + '" height="30" rx="5" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>';
+  s += '<text x="' + (x0 + t.a * per + 10) + '" y="38" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">strip A</text>';
+  if (showUnits){
+    for (var i = 0; i < t.a; i++){
+      s += '<rect x="' + (x0 + i * per) + '" y="50" width="' + per + '" height="26" fill="' +
+           (i % 2 ? '#FFE9A8' : '#FFF3CD') + '" stroke="#5C3900" stroke-width="2"/>';
+      s += '<text x="' + (x0 + i * per + per / 2) + '" y="68" text-anchor="middle" font-size="13" font-family="Verdana,sans-serif" fill="#5C3900">' + (i + 1) + '</text>';
+    }
+    s += '<text x="' + (x0 + t.a * per + 10) + '" y="69" font-size="16" font-weight="bold" font-family="Verdana,sans-serif" fill="#5C3900">' + t.a + ' ' + t.unit + '</text>';
+  } else {
+    s += '<rect x="' + x0 + '" y="50" width="' + per + '" height="26" fill="#FFF3CD" stroke="#5C3900" stroke-width="3"/>';
+    s += '<text x="' + (x0 + per + 12) + '" y="69" font-size="16" font-family="Verdana,sans-serif" fill="#5C3900">one ' + t.one + ' &mdash; how many fit along strip A?</text>';
+  }
+  s += '<rect x="' + x0 + '" y="104" width="' + (t.b * per) + '" height="30" rx="5" fill="#1B5FA8" stroke="#0E2E52" stroke-width="3"/>';
+  s += '<text x="' + (x0 + t.b * per + 10) + '" y="126" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">strip B</text>';
+  s += '</svg>';
+  document.getElementById('est-mat').innerHTML = s;
+}
+
 function newEstTask(){
   var unit = pick(['inches', 'centimeters']);
   var per = unit === 'inches' ? 52 : 22;
   var a = unit === 'inches' ? randInt(5, 12) : randInt(9, 28);
   var b = unit === 'inches' ? randInt(2, a - 2) : randInt(4, a - 3);
-  estTask = { unit: unit, a: a, b: b };
-  var W = 760;
-  var s = '<svg viewBox="0 0 ' + W + ' 190" role="img" aria-label="Two strips and one unit square">';
-  s += '<rect x="30" y="24" width="' + (a * per) + '" height="30" rx="5" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>';
-  s += '<text x="' + (36 + a * per) + '" y="46" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">strip A</text>';
-  s += '<rect x="30" y="76" width="' + (b * per) + '" height="30" rx="5" fill="#1B5FA8" stroke="#0E2E52" stroke-width="3"/>';
-  s += '<text x="' + (36 + b * per) + '" y="98" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">strip B</text>';
-  s += '<rect x="30" y="132" width="' + per + '" height="' + per + '" fill="#FFF3CD" stroke="#5C3900" stroke-width="3"/>';
-  s += '<text x="' + (per + 44) + '" y="' + (132 + per / 2 + 6) + '" font-size="16" font-family="Verdana,sans-serif" fill="#5C3900">one ' + unit.slice(0, -1) + ' &mdash; use it to help you guess</text>';
-  s += '</svg>';
-  document.getElementById('est-mat').innerHTML = s;
-  document.getElementById('est-q1').textContent = 'About how long is strip A?';
+  estTask = { unit: unit, one: unit === 'inches' ? 'inch' : 'centimeter', per: per, a: a, b: b };
+  drawEst(false);
+  document.getElementById('est-q1').textContent = 'About how long is strip A, in ' + unit + '?';
   document.getElementById('est-unit1').textContent = unit;
   document.getElementById('est-unit2').textContent = unit;
   document.getElementById('est-guess').value = '';
@@ -580,9 +595,10 @@ function checkEstimate(){
   var g = Number(box.value), a = estTask.a;
   var off = Math.abs(g - a);
   var near = estTask.unit === 'inches' ? 2 : 4;
-  if (off === 0) say(fb, 'Your estimate is exactly right. Strip A is ' + a + ' ' + estTask.unit + '.', 'ok');
-  else if (off <= near) say(fb, 'Close estimate. Strip A is really ' + a + ' ' + estTask.unit + '.', 'ok');
-  else say(fb, 'Strip A is really ' + a + ' ' + estTask.unit + '. Compare it to the little square next time.', 'note');
+  drawEst(true);
+  if (off === 0) say(fb, 'Your estimate is exactly right. Count the squares: strip A is ' + a + ' ' + estTask.unit + '.', 'ok');
+  else if (off <= near) say(fb, 'Close estimate. Count the squares: strip A is ' + a + ' ' + estTask.unit + '.', 'ok');
+  else say(fb, 'Count the squares: strip A is ' + a + ' ' + estTask.unit + '. Next time picture the little square end to end along the strip.', 'note');
   document.getElementById('est-q2').textContent =
     'Strip A is ' + estTask.a + ' ' + estTask.unit + '. Strip B is ' + estTask.b + ' ' +
     estTask.unit + '. How much longer is strip A than strip B?';
