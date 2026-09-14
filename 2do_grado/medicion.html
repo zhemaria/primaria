@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<!-- Medicion y recta numerica | Matematicas interactivas de 2do grado
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Bajo licencia Creative Commons Atribucion-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medicion y recta numerica | Matem&aacute;ticas interactivas de 2do grado</title>
+<meta name="description" content="Elegir herramientas de medicion, estimar y comparar largos, y resolver problemas en la recta numerica.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#1E7A46;--domain-dark:#14562F}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Medici&oacute;n y recta num&eacute;rica<span class="grade">Pr&aacute;ctica de matem&aacute;ticas de 2do grado</span></h1>
+    <a class="home-link" href="index.html">&#8592; Todas las actividades</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Actividades de medición">
+  <button class="tab" role="tab" id="tab-tools" aria-controls="p-tools" aria-selected="true">Taller de medición</button>
+  <button class="tab" role="tab" id="tab-est"   aria-controls="p-est"   aria-selected="false">Estimar y comparar</button>
+  <button class="tab" role="tab" id="tab-nline" aria-controls="p-nline" aria-selected="false">Recta numérica</button>
+</div>
+
+<!-- ============ 1. MEASURING WORKSHOP ============ -->
+<section class="panel" id="p-tools" role="tabpanel" aria-labelledby="tab-tools" tabindex="0">
+  <h2>Taller de medición</h2>
+  <div class="howto">
+    <p id="how-tools">A veces eliges la herramienta correcta. A veces lees una regla. Alinea un extremo del objeto con el cero y lee el número donde termina el otro extremo. Pulsa Revisar mi respuesta cuando estés listo.</p>
+    <button class="btn-read" data-read="how-tools" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <p class="task" id="tools-task">Cargando&hellip;</p>
+  <div class="mat" id="tools-mat"></div>
+  <div class="choices" id="tools-choices"></div>
+  <div class="row" id="tools-entry" hidden>
+    <label for="tools-input" style="font-weight:bold">Mide</label>
+    <input type="number" id="tools-input" step="1" min="0" data-enter="tools-check" aria-label="largo del objeto">
+    <span id="tools-unit" style="font-weight:bold"></span>
+    <button class="btn" type="button" id="tools-check">Revisar mi respuesta</button>
+  </div>
+  <p class="fb" id="tools-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn sec" type="button" id="tools-next">Nueva tarea</button></div>
+</section>
+
+<!-- ============ 2. ESTIMATE AND COMPARE ============ -->
+<section class="panel" id="p-est" role="tabpanel" aria-labelledby="tab-est" tabindex="0" hidden>
+  <h2>Estimar y comparar</h2>
+  <div class="howto">
+    <p id="how-est">Primero calcula cuánto mide la tira de arriba. Usa el cuadrito de una unidad como ayuda. Después de calcular verás el largo verdadero, y luego averiguarás cuánto más larga es una tira que la otra.</p>
+    <button class="btn-read" data-read="how-est" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <div class="mat" id="est-mat"></div>
+
+  <div id="est-step1">
+    <p class="task" id="est-q1">Cargando&hellip;</p>
+    <div class="row">
+      <label for="est-guess" style="font-weight:bold">Mi estimación:</label>
+      <input type="number" id="est-guess" min="1" data-enter="est-check1" aria-label="largo estimado">
+      <span id="est-unit1" style="font-weight:bold"></span>
+      <button class="btn" type="button" id="est-check1">Revisar mi estimación</button>
+    </div>
+  </div>
+
+  <div id="est-step2" hidden>
+    <p class="task" id="est-q2"></p>
+    <div class="row">
+      <label for="est-diff" style="font-weight:bold">La diferencia es</label>
+      <input type="number" id="est-diff" min="0" data-enter="est-check2" aria-label="diferencia de largo">
+      <span id="est-unit2" style="font-weight:bold"></span>
+      <button class="btn" type="button" id="est-check2">Revisar mi respuesta</button>
+    </div>
+  </div>
+
+  <p class="fb" id="est-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn sec" type="button" id="est-next">Nuevas tiras</button></div>
+</section>
+
+<!-- ============ 3. NUMBER LINE ============ -->
+<section class="panel" id="p-nline" role="tabpanel" aria-labelledby="tab-nline" tabindex="0" hidden>
+  <h2>Saltos en la recta numérica</h2>
+  <div class="howto">
+    <p id="how-nline">Empieza en cero. Usa los botones de salto para moverte por la recta. Los saltos grandes de diez te acercan rápido y los saltos pequeños de uno terminan el trabajo. Cuando tu marca quede en la respuesta, pulsa Esta es mi respuesta.</p>
+    <button class="btn-read" data-read="how-nline" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <p class="task" id="nl-task">Cargando&hellip;</p>
+  <div class="mat"><div id="nl-mat"></div>
+    <p id="nl-pos" aria-live="polite" style="font-weight:bold;margin:10px 0 0"></p>
+    <p id="nl-log" style="font-size:.9rem;color:var(--ink-soft);margin:4px 0 0"></p>
+  </div>
+
+  <div class="row" role="group" aria-label="Botones de salto">
+    <button class="btn sec" type="button" data-jump="-10">&minus;10</button>
+    <button class="btn sec" type="button" data-jump="-1">&minus;1</button>
+    <button class="btn sec" type="button" data-jump="1">+1</button>
+    <button class="btn sec" type="button" data-jump="10">+10</button>
+    <button class="btn sec" type="button" id="nl-undo">Deshacer el último salto</button>
+    <button class="btn sec" type="button" id="nl-reset">Volver al inicio</button>
+  </div>
+  <div class="row">
+    <button class="btn big" type="button" id="nl-check">Esta es mi respuesta</button>
+    <button class="btn sec" type="button" id="nl-next">Nuevo problema</button>
+  </div>
+  <p class="fb" id="nl-fb" role="status" aria-live="polite"></p>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Hecho para alumnos de segundo grado y sus familias. Funciona sin conexi&oacute;n una vez abierta la p&aacute;gina; no se guarda ni se env&iacute;a nada.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; se puede compartir y adaptar sin fines comerciales, dando cr&eacute;dito.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google espa\u00f1ol de Estados Unidos/i,   /* Chrome: espa\u00f1ol de EE. UU. */
+  /^(Paulina|Juan)$/i,                       /* iPad, iPhone, Mac: espa\u00f1ol de M\u00e9xico */
+  /Microsoft (Dalia|Sabina|Jorge)/i,         /* Windows y Edge: espa\u00f1ol de M\u00e9xico */
+  /Google espa\u00f1ol/i,                     /* Chrome: espa\u00f1ol de Espa\u00f1a */
+  /^(M[o\u00f3]nica|Helena|Laura)$/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var spanish = all.filter(function(v){ return /^es[-_]?/i.test(v.lang); });
+  if (!spanish.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = spanish.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  /* si no hay ninguna de las preferidas, se busca una de Am\u00e9rica antes que una de Espa\u00f1a */
+  VOICE = spanish.filter(function(v){ return /(US|MX|419|CO|AR)/i.test(v.lang); })[0] || spanish[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'es-US';
+    u.rate = 0.85;   /* un poco por debajo de lo normal: claro para un ni\u00f1o de siete a\u00f1os */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== shared drawing ===================== */
+function rulerSVG(unit, span, objLen, objName){
+  var W = 760, x0 = 36, x1 = 724, per = (x1 - x0) / span;
+  var s = '<svg viewBox="0 0 ' + W + ' 210" role="img" aria-label="' + objName + ' sobre una regla en ' + unit + '">';
+  s += '<rect x="' + x0 + '" y="46" width="' + (objLen * per) + '" height="34" rx="6" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>';
+  s += '<text x="' + (x0 + 8) + '" y="38" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">' + objName + '</text>';
+  s += '<rect x="' + x0 + '" y="100" width="' + (x1 - x0) + '" height="72" fill="#FFF8E6" stroke="#5C3900" stroke-width="3"/>';
+  for (var i = 0; i <= span; i++){
+    var x = x0 + i * per;
+    var big = (span <= 12) || (i % 5 === 0);
+    s += '<line x1="' + x + '" y1="100" x2="' + x + '" y2="' + (big ? 134 : 118) + '" stroke="#5C3900" stroke-width="' + (big ? 3 : 2) + '"/>';
+    if (big) s += '<text x="' + x + '" y="158" text-anchor="middle" font-size="16" font-family="Verdana,sans-serif" fill="#5C3900">' + i + '</text>';
+  }
+  s += '<text x="' + x1 + '" y="192" text-anchor="end" font-size="15" font-family="Verdana,sans-serif" fill="#5C3900">' + unit + '</text>';
+  return s + '</svg>';
+}
+
+/* ===================== 1. MEASURING WORKSHOP ===================== */
+var TOOLS = [
+  { id: 'ruler', name: 'Regla de pulgadas', note: '12 pulgadas de largo, recta' },
+  { id: 'tape',  name: 'Cinta métrica', note: 'larga y flexible' },
+  { id: 'meter', name: 'Vara de un metro', note: '100 centímetros de largo' },
+  { id: 'yard',  name: 'Vara de una yarda', note: '3 pies de largo' }
+];
+var TOOL_JOBS = [
+  { what: 'el largo de un crayón nuevo', right: 'ruler', why: 'Un crayón es corto y recto, así que la regla es lo más fácil.' },
+  { what: 'el largo de tu libro de matemáticas', right: 'ruler', why: 'Un libro cabe dentro de doce pulgadas, así que basta con la regla.' },
+  { what: 'cuánto mide alrededor de un frasco', right: 'tape', why: 'El frasco es redondo. Solo una cinta flexible puede rodearlo.' },
+  { what: 'cuánto mide tu amigo de alto', right: 'meter', why: 'Una persona es más alta que una regla, y la vara de un metro alcanza de una vez.' },
+  { what: 'el ancho de la puerta del salón', right: 'yard', why: 'Una puerta mide como una yarda de ancho, así que la vara lo hace de una vez.' },
+  { what: 'el largo del pasillo', right: 'tape', why: 'El pasillo es muy largo. La cinta se extiende mucho más que una vara.' }
+];
+var toolTask = null;
+
+function newToolsJob(){
+  var kind = pick(['pick', 'read', 'read', 'twounits']);
+  var mat = document.getElementById('tools-mat');
+  var ch = document.getElementById('tools-choices');
+  var entry = document.getElementById('tools-entry');
+  ch.innerHTML = ''; mat.innerHTML = ''; entry.hidden = true;
+  say(document.getElementById('tools-fb'), '', '');
+
+  if (kind === 'pick'){
+    var j = pick(TOOL_JOBS);
+    toolTask = { kind: 'pick', right: j.right, why: j.why };
+    document.getElementById('tools-task').textContent = 'Quieres medir ' + j.what + '. ¿Qué herramienta sirve mejor?';
+    shuffle(TOOLS).forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '1.05rem';
+      b.innerHTML = t.name + '<small>' + t.note + '</small>';
+      b.addEventListener('click', function(){ answerTool(b, t.id); });
+      ch.appendChild(b);
+    });
+  } else if (kind === 'read'){
+    var inches = Math.random() < 0.5;
+    var unit = inches ? 'pulgadas' : 'centímetros';
+    var span = inches ? 12 : 30;
+    var len = inches ? randInt(2, 11) : randInt(4, 28);
+    var name = pick(['listón', 'palito de madera', 'cordón', 'popote', 'lápiz']);
+    toolTask = { kind: 'read', answer: len, unit: unit };
+    document.getElementById('tools-task').textContent = '¿Cuánto mide el ' + name + '?';
+    mat.innerHTML = rulerSVG(inches ? 'pulgadas' : 'centímetros', span, len, 'el ' + name);
+    document.getElementById('tools-unit').textContent = unit + ' de largo.';
+    document.getElementById('tools-input').value = '';
+    entry.hidden = false;
+  } else {
+    var cm = randInt(10, 28);
+    var inch = Math.round(cm / 2.54);
+    toolTask = { kind: 'twounits', right: 'smaller' };
+    document.getElementById('tools-task').textContent =
+      'El mismo palo mide ' + inch + ' pulgadas y unos ' + cm + ' centímetros. ¿Por qué el número en centímetros es mayor?';
+    mat.innerHTML = rulerSVG('centímetros', 30, cm, 'el palo') + rulerSVG('pulgadas', 12, inch, 'el mismo palo');
+    var opts = [
+      { id: 'smaller', t: 'El centímetro es más corto que la pulgada, así que hacen falta más para cubrir el palo.' },
+      { id: 'grew',    t: 'El palo se hizo más largo cuando lo midieron la segunda vez.' },
+      { id: 'bigger',  t: 'El centímetro es más largo que la pulgada, por eso el número es mayor.' }
+    ];
+    shuffle(opts).forEach(function(o){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '.95rem'; b.style.textAlign = 'left';
+      b.textContent = o.t;
+      b.addEventListener('click', function(){ answerTool(b, o.id); });
+      ch.appendChild(b);
+    });
+    ch.style.gridTemplateColumns = '1fr';
+  }
+  if (kind !== 'twounits') ch.style.gridTemplateColumns = '';
+}
+
+function answerTool(btn, id){
+  var fb = document.getElementById('tools-fb');
+  if (id === toolTask.right){
+    btn.classList.add('right');
+    say(fb, 'Sí. ' + (toolTask.why || 'Una unidad más pequeña significa que hacen falta más unidades.'), 'ok');
+  } else {
+    btn.classList.add('wrong');
+    say(fb, 'Esa no. Piensa en el tamaño y en la forma de lo que vas a medir.', 'no');
+  }
+}
+
+function checkToolsRead(){
+  var fb = document.getElementById('tools-fb');
+  var v = Number(document.getElementById('tools-input').value);
+  if (!document.getElementById('tools-input').value){ say(fb, 'Escribe un número primero.', 'note'); return; }
+  if (v === toolTask.answer){
+    say(fb, 'Correcto. Mide ' + v + ' ' + toolTask.unit + ' de largo.', 'ok');
+  } else if (v === toolTask.answer + 1 || v === toolTask.answer - 1){
+    say(fb, 'Muy cerca. Revisa que empezaste a contar en el cero, no en el uno.', 'no');
+  } else {
+    say(fb, 'Todavía no. Lee el número donde termina el otro extremo del objeto.', 'no');
+  }
+}
+
+/* ===================== 2. ESTIMATE AND COMPARE ===================== */
+var estTask = null;
+
+function newEstTask(){
+  var unit = pick(['pulgadas', 'centímetros']);
+  var per = unit === 'pulgadas' ? 52 : 22;
+  var a = unit === 'pulgadas' ? randInt(5, 12) : randInt(9, 28);
+  var b = unit === 'pulgadas' ? randInt(2, a - 2) : randInt(4, a - 3);
+  estTask = { unit: unit, a: a, b: b };
+  var W = 760;
+  var s = '<svg viewBox="0 0 ' + W + ' 190" role="img" aria-label="Dos tiras y un cuadrito de una unidad">';
+  s += '<rect x="30" y="24" width="' + (a * per) + '" height="30" rx="5" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>';
+  s += '<text x="' + (36 + a * per) + '" y="46" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">tira A</text>';
+  s += '<rect x="30" y="76" width="' + (b * per) + '" height="30" rx="5" fill="#1B5FA8" stroke="#0E2E52" stroke-width="3"/>';
+  s += '<text x="' + (36 + b * per) + '" y="98" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">tira B</text>';
+  s += '<rect x="30" y="132" width="' + per + '" height="' + per + '" fill="#FFF3CD" stroke="#5C3900" stroke-width="3"/>';
+  s += '<text x="' + (per + 44) + '" y="' + (132 + per / 2 + 6) + '" font-size="16" font-family="Verdana,sans-serif" fill="#5C3900">un ' + unit.slice(0, -1) + ': úsalo para calcular</text>';
+  s += '</svg>';
+  document.getElementById('est-mat').innerHTML = s;
+  document.getElementById('est-q1').textContent = '¿Cuánto mide la tira A, más o menos?';
+  document.getElementById('est-unit1').textContent = unit;
+  document.getElementById('est-unit2').textContent = unit;
+  document.getElementById('est-guess').value = '';
+  document.getElementById('est-diff').value = '';
+  document.getElementById('est-step2').hidden = true;
+  say(document.getElementById('est-fb'), '', '');
+}
+
+function checkEstimate(){
+  var fb = document.getElementById('est-fb');
+  var box = document.getElementById('est-guess');
+  if (!box.value){ say(fb, 'Escribe tu mejor estimación primero.', 'note'); return; }
+  var g = Number(box.value), a = estTask.a;
+  var off = Math.abs(g - a);
+  var near = estTask.unit === 'pulgadas' ? 2 : 4;
+  if (off === 0) say(fb, 'Tu estimación es exacta. La tira A mide ' + a + ' ' + estTask.unit + '.', 'ok');
+  else if (off <= near) say(fb, 'Buena estimación. La tira A mide ' + a + ' ' + estTask.unit + '.', 'ok');
+  else say(fb, 'La tira A mide ' + a + ' ' + estTask.unit + '. La próxima vez compárala con el cuadrito.', 'note');
+  document.getElementById('est-q2').textContent =
+    'La tira A mide ' + estTask.a + ' ' + estTask.unit + '. La tira B mide ' + estTask.b + ' ' +
+    estTask.unit + '. ¿Cuánto más larga es la tira A que la tira B?';
+  document.getElementById('est-step2').hidden = false;
+}
+
+function checkDifference(){
+  var fb = document.getElementById('est-fb');
+  var box = document.getElementById('est-diff');
+  if (!box.value){ say(fb, 'Escribe la diferencia primero.', 'note'); return; }
+  var d = estTask.a - estTask.b;
+  if (Number(box.value) === d){
+    say(fb, 'Correcto. ' + estTask.a + ' \u2212 ' + estTask.b + ' = ' + d + ' ' + estTask.unit + '.', 'ok');
+  } else {
+    say(fb, 'Todavía no. Resta la tira corta de la tira larga: ' + estTask.a + ' \u2212 ' + estTask.b + '.', 'no');
+  }
+}
+
+/* ===================== 3. NUMBER LINE ===================== */
+var nl = { pos: 0, jumps: [], answer: 0, text: '' };
+
+function drawLine(){
+  var W = 760, x0 = 30, x1 = 730, per = (x1 - x0) / 100, base = 150;
+  function X(n){ return x0 + n * per; }
+  var s = '<svg viewBox="0 0 ' + W + ' 190" role="img" aria-label="Recta numérica del 0 al 100, la marca está en ' + nl.pos + '">';
+  var from = 0;
+  nl.jumps.forEach(function(j){
+    var to = from + j;
+    var mid = (X(from) + X(to)) / 2;
+    var up = Math.abs(j) >= 10 ? 62 : 32;
+    s += '<path d="M ' + X(from) + ' ' + base + ' Q ' + mid + ' ' + (base - up * 2) + ' ' + X(to) + ' ' + base +
+         '" fill="none" stroke="#1B5FA8" stroke-width="3"/>';
+    s += '<text x="' + mid + '" y="' + (base - up - 6) + '" text-anchor="middle" font-size="16" font-weight="bold" font-family="Verdana,sans-serif" fill="#123F70">' +
+         (j > 0 ? '+' + j : j) + '</text>';
+    from = to;
+  });
+  s += '<line x1="' + x0 + '" y1="' + base + '" x2="' + x1 + '" y2="' + base + '" stroke="#14243A" stroke-width="3"/>';
+  for (var i = 0; i <= 100; i++){
+    var big = i % 10 === 0, mid5 = i % 5 === 0;
+    if (!mid5 && per < 7) continue;
+    s += '<line x1="' + X(i) + '" y1="' + base + '" x2="' + X(i) + '" y2="' + (base + (big ? 14 : 8)) + '" stroke="#14243A" stroke-width="' + (big ? 3 : 1.5) + '"/>';
+    if (big) s += '<text x="' + X(i) + '" y="' + (base + 34) + '" text-anchor="middle" font-size="15" font-family="Verdana,sans-serif" fill="#14243A">' + i + '</text>';
+  }
+  s += '<circle cx="' + X(nl.pos) + '" cy="' + base + '" r="11" fill="#C2410C" stroke="#6B2206" stroke-width="3"/>';
+  s += '</svg>';
+  document.getElementById('nl-mat').innerHTML = s;
+  document.getElementById('nl-pos').textContent = 'Mi marca está en ' + nl.pos + '.';
+  document.getElementById('nl-log').textContent = nl.jumps.length
+    ? 'Saltos hasta ahora: ' + nl.jumps.map(function(j){ return j > 0 ? '+' + j : j; }).join(', ')
+    : 'Todavía no hay saltos.';
+}
+
+function newLineProblem(){
+  var kind = pick(['add', 'sub', 'word']);
+  var a, b;
+  if (kind === 'add'){
+    a = randInt(12, 58); b = randInt(11, 40);
+    nl.answer = a + b;
+    nl.text = 'Resuelve ' + a + ' + ' + b + ' en la recta numérica.';
+  } else if (kind === 'sub'){
+    a = randInt(45, 99); b = randInt(12, 40);
+    nl.answer = a - b;
+    nl.text = 'Resuelve ' + a + ' \u2212 ' + b + ' en la recta numérica.';
+  } else {
+    a = randInt(30, 70); b = randInt(12, 28);
+    nl.answer = a + b;
+    nl.text = 'Un cordón rojo mide ' + a + ' pulgadas. Un cordón azul mide ' + b +
+              ' pulgadas más que el rojo. ¿Cuánto mide el cordón azul?';
+  }
+  nl.pos = 0; nl.jumps = [];
+  document.getElementById('nl-task').textContent = nl.text;
+  say(document.getElementById('nl-fb'), '', '');
+  drawLine();
+}
+
+function checkLine(){
+  var fb = document.getElementById('nl-fb');
+  if (nl.pos === nl.answer){
+    say(fb, 'Correcto. Caíste en ' + nl.answer + ' con ' + nl.jumps.length + ' saltos. Los saltos de diez lo hacen más rápido.', 'ok');
+  } else {
+    var d = nl.answer - nl.pos;
+    say(fb, 'Tu marca está en ' + nl.pos + '. Te faltan ' + Math.abs(d) + '. Prueba saltar hacia ' +
+            (d > 0 ? 'adelante' : 'atrás') + '.', 'no');
+  }
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  document.getElementById('tools-next').addEventListener('click', newToolsJob);
+  document.getElementById('tools-check').addEventListener('click', checkToolsRead);
+  newToolsJob();
+
+  document.getElementById('est-check1').addEventListener('click', checkEstimate);
+  document.getElementById('est-check2').addEventListener('click', checkDifference);
+  document.getElementById('est-next').addEventListener('click', newEstTask);
+  newEstTask();
+
+  $$('[data-jump]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var j = Number(b.getAttribute('data-jump'));
+      if (nl.pos + j < 0 || nl.pos + j > 100) return;
+      nl.jumps.push(j); nl.pos += j; drawLine();
+    });
+  });
+  document.getElementById('nl-undo').addEventListener('click', function(){
+    var j = nl.jumps.pop();
+    if (j !== undefined){ nl.pos -= j; drawLine(); }
+  });
+  document.getElementById('nl-reset').addEventListener('click', function(){ nl.pos = 0; nl.jumps = []; drawLine(); });
+  document.getElementById('nl-check').addEventListener('click', checkLine);
+  document.getElementById('nl-next').addEventListener('click', newLineProblem);
+  newLineProblem();
+}
+</script>
+</body>
+</html>
