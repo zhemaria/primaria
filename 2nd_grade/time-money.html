@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<!-- Time & money | Grade 2 Math Interactives
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Time & money | Grade 2 Math Interactives</title>
+<meta name="description" content="Set clock hands to five-minute marks, tell a.m. from p.m., and solve money problems with bills and coins.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#7A3E0A;--domain-dark:#5C3900}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Time &amp; money<span class="grade">Grade 2 math practice</span></h1>
+    <a class="home-link" href="index.html">&#8592; All activities</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Time and money activities">
+  <button class="tab" role="tab" id="tab-clock" aria-controls="p-clock" aria-selected="true">Clock workshop</button>
+  <button class="tab" role="tab" id="tab-cash"  aria-controls="p-cash"  aria-selected="false">Cash register</button>
+</div>
+
+<!-- ============ 1. CLOCK ============ -->
+<section class="panel" id="p-clock" role="tabpanel" aria-labelledby="tab-clock" tabindex="0">
+  <h2>Clock workshop</h2>
+  <div class="howto">
+    <p id="how-clock">The short hand tells the hour. The long hand tells the minutes, and it moves five minutes at a time. Morning hours are a.m. and afternoon and evening hours are p.m. Read the job, move the hands or tap your answer, then check.</p>
+    <button class="btn-read" data-read="how-clock" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="clock-task">Loading&hellip;</p>
+
+  <div class="mat" style="display:flex;gap:24px;flex-wrap:wrap;align-items:center">
+    <div id="clock-face" style="flex:0 0 300px;max-width:300px"></div>
+    <div>
+      <p id="clock-digital" aria-live="polite"
+         style="font-size:2.6rem;font-weight:bold;margin:0;letter-spacing:.04em;color:var(--domain-dark)">--:--</p>
+      <p id="clock-words" style="margin:4px 0 0;font-size:.95rem;color:var(--ink-soft)"></p>
+    </div>
+  </div>
+
+  <div class="row" id="clock-controls" role="group" aria-label="Move the hands">
+    <button class="btn sec" type="button" data-hand="h" data-n="-1">&minus; 1 hour</button>
+    <button class="btn sec" type="button" data-hand="h" data-n="1">+ 1 hour</button>
+    <button class="btn sec" type="button" data-hand="m" data-n="-5">&minus; 5 minutes</button>
+    <button class="btn sec" type="button" data-hand="m" data-n="5">+ 5 minutes</button>
+  </div>
+
+  <div class="choices" id="clock-choices"></div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="clock-check">Check the clock</button>
+    <button class="btn sec" type="button" id="clock-next">New job</button>
+  </div>
+  <p class="fb" id="clock-fb" role="status" aria-live="polite"></p>
+</section>
+
+<!-- ============ 2. CASH REGISTER ============ -->
+<section class="panel" id="p-cash" role="tabpanel" aria-labelledby="tab-cash" tabindex="0" hidden>
+  <h2>Cash register</h2>
+  <div class="howto">
+    <p id="how-cash">Tap bills and coins to drop them in the tray. The tray adds them up for you. A quarter is twenty five cents, a dime is ten, a nickel is five and a penny is one. When the tray shows the right amount, press Check the tray.</p>
+    <button class="btn-read" data-read="how-cash" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="cash-task">Loading&hellip;</p>
+
+  <div class="row" id="cash-bank" role="group" aria-label="Bills and coins"></div>
+
+  <div class="mat">
+    <h3>Tray</h3>
+    <div id="cash-tray" style="display:flex;flex-wrap:wrap;gap:8px;min-height:60px;align-items:center"></div>
+    <p id="cash-total" aria-live="polite" style="font-weight:bold;font-size:1.4rem;margin:12px 0 0">Tray: $0.00</p>
+  </div>
+
+  <div class="choices" id="cash-choices"></div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="cash-check">Check the tray</button>
+    <button class="btn sec" type="button" id="cash-empty">Empty the tray</button>
+    <button class="btn sec" type="button" id="cash-next">New job</button>
+  </div>
+  <p class="fb" id="cash-fb" role="status" aria-live="polite"></p>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Built for second-grade learners and their families. Works offline once the page is open; nothing is stored or sent anywhere.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; free to share and adapt for non-commercial use, with credit.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google US English/i,          /* Chrome, desktop and Android */
+  /^Samantha$/i,                 /* iPad, iPhone, Mac */
+  /Microsoft (Aria|Jenny|Ava|Michelle)/i,  /* Edge, natural voices */
+  /Microsoft Zira/i,             /* Windows, older but clear */
+  /^English \(United States\)/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var english = all.filter(function(v){ return /^en[-_]?/i.test(v.lang); });
+  if (!english.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = english.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  VOICE = english.filter(function(v){ return /US/i.test(v.lang); })[0] || english[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'en-US';
+    u.rate = 0.85;   /* a little under normal speed: clear for a seven year old */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== 1. CLOCK ===================== */
+var clock = { h: 12, m: 0, task: null };
+var HOUR_WORDS = ['twelve','one','two','three','four','five','six','seven','eight','nine','ten','eleven'];
+
+function timeText(h, m){
+  return h + ':' + (m < 10 ? '0' + m : m);
+}
+function timeWords(h, m){
+  if (m === 0) return HOUR_WORDS[h % 12] + " o'clock";
+  if (m === 30) return 'half past ' + HOUR_WORDS[h % 12];
+  if (m === 15) return 'quarter past ' + HOUR_WORDS[h % 12];
+  if (m === 45) return 'quarter to ' + HOUR_WORDS[(h % 12) + 1 > 11 ? 0 : (h % 12) + 1];
+  return m + ' minutes past ' + HOUR_WORDS[h % 12];
+}
+
+function drawClock(){
+  var cx = 150, cy = 150, r = 132;
+  var s = '<svg viewBox="0 0 300 300" role="img" aria-label="Analog clock showing ' + timeText(clock.h, clock.m) + '">';
+  s += '<circle cx="150" cy="150" r="' + r + '" fill="#FFFDF7" stroke="#5C3900" stroke-width="6"/>';
+  for (var i = 0; i < 60; i++){
+    var a = i * 6 * Math.PI / 180, big = i % 5 === 0;
+    var r1 = big ? r - 20 : r - 11;
+    s += '<line x1="' + (cx + r1 * Math.sin(a)) + '" y1="' + (cy - r1 * Math.cos(a)) +
+         '" x2="' + (cx + (r - 5) * Math.sin(a)) + '" y2="' + (cy - (r - 5) * Math.cos(a)) +
+         '" stroke="#5C3900" stroke-width="' + (big ? 4 : 2) + '"/>';
+    if (big){
+      var n = i / 5 === 0 ? 12 : i / 5;
+      var rt = r - 44;
+      s += '<text x="' + (cx + rt * Math.sin(a)) + '" y="' + (cy - rt * Math.cos(a) + 8) +
+           '" text-anchor="middle" font-size="26" font-weight="bold" font-family="Verdana,sans-serif" fill="#14243A">' + n + '</text>';
+      var rm = r - 74;
+      s += '<text x="' + (cx + rm * Math.sin(a)) + '" y="' + (cy - rm * Math.cos(a) + 5) +
+           '" text-anchor="middle" font-size="14" font-family="Verdana,sans-serif" fill="#7A3E0A">' + (i === 0 ? '00' : i) + '</text>';
+    }
+  }
+  var ma = clock.m * 6 * Math.PI / 180;
+  var ha = ((clock.h % 12) * 30 + clock.m * 0.5) * Math.PI / 180;
+  s += '<line x1="150" y1="150" x2="' + (cx + 68 * Math.sin(ha)) + '" y2="' + (cy - 68 * Math.cos(ha)) +
+       '" stroke="#9B1C1C" stroke-width="12" stroke-linecap="round"/>';
+  s += '<line x1="150" y1="150" x2="' + (cx + 104 * Math.sin(ma)) + '" y2="' + (cy - 104 * Math.cos(ma)) +
+       '" stroke="#123F70" stroke-width="7" stroke-linecap="round"/>';
+  s += '<circle cx="150" cy="150" r="9" fill="#14243A"/></svg>';
+  document.getElementById('clock-face').innerHTML = s;
+  document.getElementById('clock-digital').textContent = timeText(clock.h, clock.m);
+  document.getElementById('clock-words').textContent = timeWords(clock.h, clock.m);
+}
+
+var DAY_EVENTS = [
+  { what: 'you eat breakfast', h: 7,  m: 30, ap: 'a.m.' },
+  { what: 'school starts',     h: 8,  m: 15, ap: 'a.m.' },
+  { what: 'you eat lunch',     h: 12, m: 5,  ap: 'p.m.' },
+  { what: 'recess is over',    h: 10, m: 45, ap: 'a.m.' },
+  { what: 'you eat dinner',    h: 6,  m: 30, ap: 'p.m.' },
+  { what: 'you go to bed',     h: 8,  m: 45, ap: 'p.m.' },
+  { what: 'the sun comes up',  h: 6,  m: 20, ap: 'a.m.' }
+];
+
+function newClockJob(){
+  var kind = pick(['set', 'set', 'read', 'ampm']);
+  var ch = document.getElementById('clock-choices');
+  ch.innerHTML = '';
+  say(document.getElementById('clock-fb'), '', '');
+  document.getElementById('clock-controls').hidden = (kind !== 'set');
+  document.getElementById('clock-check').hidden = (kind !== 'set');
+
+  if (kind === 'set'){
+    var th = randInt(1, 12), tm = randInt(0, 11) * 5;
+    clock.task = { kind: 'set', h: th, m: tm };
+    clock.h = 12; clock.m = 0;
+    document.getElementById('clock-task').textContent = 'Move the hands to show ' + timeText(th, tm) + '.';
+  } else if (kind === 'read'){
+    clock.h = randInt(1, 12); clock.m = randInt(0, 11) * 5;
+    clock.task = { kind: 'read', answer: timeText(clock.h, clock.m) };
+    document.getElementById('clock-task').textContent = 'What time does the clock show?';
+    var opts = [timeText(clock.h, clock.m),
+                timeText(clock.m === 0 ? 12 : Math.max(1, Math.round(clock.m / 5)), clock.h * 5 % 60),
+                timeText(clock.h, (clock.m + 5) % 60),
+                timeText(clock.h === 12 ? 1 : clock.h + 1, clock.m)];
+    var seen = [];
+    shuffle(opts).forEach(function(t){
+      if (seen.indexOf(t) > -1) return;
+      seen.push(t);
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.textContent = t;
+      b.addEventListener('click', function(){ answerClock(b, t); });
+      ch.appendChild(b);
+    });
+  } else {
+    var e = pick(DAY_EVENTS);
+    clock.h = e.h; clock.m = e.m;
+    clock.task = { kind: 'ampm', answer: e.ap };
+    document.getElementById('clock-task').textContent =
+      'The clock shows the time when ' + e.what + '. Is that a.m. or p.m.?';
+    ['a.m.', 'p.m.'].forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.innerHTML = t + '<small>' + (t === 'a.m.' ? 'midnight to noon' : 'noon to midnight') + '</small>';
+      b.addEventListener('click', function(){ answerClock(b, t); });
+      ch.appendChild(b);
+    });
+  }
+  drawClock();
+}
+
+function answerClock(btn, val){
+  var fb = document.getElementById('clock-fb');
+  if (val === clock.task.answer){
+    btn.classList.add('right');
+    say(fb, 'Correct. The clock shows ' + timeWords(clock.h, clock.m) + '.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    say(fb, clock.task.kind === 'ampm'
+      ? 'Not that one. Think about whether that happens before noon or after noon.'
+      : 'Not that one. The short hand gives the hour and the long hand gives the minutes.', 'no');
+  }
+}
+
+function checkClock(){
+  var fb = document.getElementById('clock-fb'), t = clock.task;
+  if (clock.h === t.h && clock.m === t.m){
+    say(fb, 'Correct. That is ' + timeWords(t.h, t.m) + '.', 'ok');
+  } else if (clock.m === t.m){
+    say(fb, 'The minutes are right. Now fix the hour hand.', 'no');
+  } else if (clock.h === t.h){
+    say(fb, 'The hour is right. Now move the long hand to ' + t.m + ' minutes.', 'no');
+  } else {
+    say(fb, 'Your clock shows ' + timeText(clock.h, clock.m) + '. You need ' + timeText(t.h, t.m) + '.', 'no');
+  }
+}
+
+/* ===================== 2. CASH REGISTER ===================== */
+var MONEY = [
+  { id: 'b5', v: 500, label: '$5',  kind: 'bill' },
+  { id: 'b1', v: 100, label: '$1',  kind: 'bill' },
+  { id: 'q',  v: 25,  label: '25\u00A2', name: 'quarter', kind: 'coin', size: 46, fill: '#C9CED6' },
+  { id: 'd',  v: 10,  label: '10\u00A2', name: 'dime',    kind: 'coin', size: 34, fill: '#C9CED6' },
+  { id: 'n',  v: 5,   label: '5\u00A2',  name: 'nickel',  kind: 'coin', size: 40, fill: '#C9CED6' },
+  { id: 'p',  v: 1,   label: '1\u00A2',  name: 'penny',   kind: 'coin', size: 36, fill: '#D69A6A' }
+];
+var ITEMS = [
+  ['pencil', 45], ['eraser', 30], ['sticker sheet', 65], ['apple', 55], ['notebook', 125],
+  ['marker', 89], ['juice box', 75], ['crayon box', 210], ['ruler', 99], ['book', 340]
+];
+var tray = [], cashTask = null;
+
+function moneySVG(m){
+  if (m.kind === 'bill'){
+    return '<svg width="86" height="42" viewBox="0 0 86 42" role="img" aria-label="' + m.label + ' bill">' +
+           '<rect x="1" y="1" width="84" height="40" rx="4" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>' +
+           '<text x="43" y="28" text-anchor="middle" font-size="19" font-weight="bold" font-family="Verdana,sans-serif" fill="#FFFFFF">' + m.label + '</text></svg>';
+  }
+  var s = m.size;
+  return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 ' + s + ' ' + s + '" role="img" aria-label="' + m.name + ', ' + m.label + '">' +
+         '<circle cx="' + s / 2 + '" cy="' + s / 2 + '" r="' + (s / 2 - 2) + '" fill="' + m.fill + '" stroke="#4A5A70" stroke-width="3"/>' +
+         '<text x="' + s / 2 + '" y="' + (s / 2 + 5) + '" text-anchor="middle" font-size="13" font-weight="bold" font-family="Verdana,sans-serif" fill="#14243A">' + m.label + '</text></svg>';
+}
+
+function trayTotal(){ return tray.reduce(function(a, b){ return a + b; }, 0); }
+
+function drawTray(){
+  var box = document.getElementById('cash-tray');
+  box.innerHTML = tray.length ? '' : '<span style="color:var(--ink-soft);font-size:.9rem">The tray is empty.</span>';
+  tray.forEach(function(v){
+    var m = MONEY.filter(function(x){ return x.v === v; })[0];
+    box.insertAdjacentHTML('beforeend', moneySVG(m));
+  });
+  var t = trayTotal();
+  document.getElementById('cash-total').textContent =
+    'Tray: ' + money(t) + (t < 100 ? '  (' + t + '\u00A2)' : '');
+}
+
+function newCashJob(){
+  tray = [];
+  var ch = document.getElementById('cash-choices');
+  ch.innerHTML = '';
+  say(document.getElementById('cash-fb'), '', '');
+  var kind = pick(['make', 'make', 'total', 'change']);
+  var bankRow = document.getElementById('cash-bank');
+  bankRow.hidden = (kind !== 'make');
+  document.getElementById('cash-check').hidden = (kind !== 'make');
+  document.getElementById('cash-empty').hidden = (kind !== 'make');
+
+  if (kind === 'make'){
+    var amt = pick([randInt(5, 99), randInt(105, 385)]);
+    cashTask = { kind: 'make', answer: amt };
+    document.getElementById('cash-task').textContent =
+      'Put exactly ' + money(amt) + (amt < 100 ? ' (' + amt + '\u00A2)' : '') + ' in the tray.';
+  } else if (kind === 'total'){
+    var i1 = pick(ITEMS), i2 = pick(ITEMS);
+    while (i2[0] === i1[0]) i2 = pick(ITEMS);
+    var tot = i1[1] + i2[1];
+    cashTask = { kind: 'total', answer: tot };
+    document.getElementById('cash-task').textContent =
+      'A ' + i1[0] + ' costs ' + money(i1[1]) + ' and a ' + i2[0] + ' costs ' + money(i2[1]) +
+      '. How much do both cost together?';
+    buildMoneyChoices(tot, [i1[1], i2[1], tot + 10, tot - 10]);
+  } else {
+    var it = pick(ITEMS);
+    var paid = it[1] < 100 ? 100 : (Math.floor(it[1] / 100) + 1) * 100;
+    var back = paid - it[1];
+    cashTask = { kind: 'change', answer: back };
+    document.getElementById('cash-task').textContent =
+      'A ' + it[0] + ' costs ' + money(it[1]) + '. You pay with ' + money(paid) +
+      '. How much change do you get back?';
+    buildMoneyChoices(back, [it[1], back + 10, back - 5, paid]);
+  }
+  drawTray();
+}
+
+function buildMoneyChoices(answer, pool){
+  var ch = document.getElementById('cash-choices');
+  var opts = [answer];
+  pool.forEach(function(p){ if (p > 0 && opts.indexOf(p) === -1 && opts.length < 4) opts.push(p); });
+  shuffle(opts).forEach(function(v){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'choice';
+    b.innerHTML = money(v) + (v < 100 ? '<small>' + v + ' cents</small>' : '');
+    b.addEventListener('click', function(){
+      var fb = document.getElementById('cash-fb');
+      if (v === answer){
+        b.classList.add('right');
+        say(fb, 'Correct. The answer is ' + money(v) + '.', 'ok');
+      } else {
+        b.classList.add('wrong');
+        say(fb, 'Not that one. Read the problem again and check which amounts go together.', 'no');
+      }
+    });
+    ch.appendChild(b);
+  });
+}
+
+function checkCash(){
+  var fb = document.getElementById('cash-fb'), t = trayTotal();
+  if (t === cashTask.answer){
+    say(fb, 'Correct. The tray holds ' + money(t) + ' using ' + tray.length + ' pieces.', 'ok');
+  } else if (t < cashTask.answer){
+    say(fb, 'The tray holds ' + money(t) + '. You need ' + money(cashTask.answer - t) + ' more.', 'no');
+  } else {
+    say(fb, 'The tray holds ' + money(t) + '. That is ' + money(t - cashTask.answer) + ' too much.', 'no');
+  }
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  $$('[data-hand]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var k = b.getAttribute('data-hand'), n = Number(b.getAttribute('data-n'));
+      if (k === 'h'){ clock.h = ((clock.h - 1 + n) + 12) % 12 + 1; }
+      else { clock.m = (clock.m + n + 60) % 60; }
+      drawClock();
+    });
+  });
+  document.getElementById('clock-check').addEventListener('click', checkClock);
+  document.getElementById('clock-next').addEventListener('click', newClockJob);
+  newClockJob();
+
+  var bank = document.getElementById('cash-bank');
+  MONEY.forEach(function(m){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn sec';
+    b.style.padding = '8px 10px';
+    b.setAttribute('aria-label', 'Add ' + (m.name || m.label + ' bill'));
+    b.innerHTML = moneySVG(m);
+    b.addEventListener('click', function(){ tray.push(m.v); drawTray(); });
+    bank.appendChild(b);
+  });
+  document.getElementById('cash-check').addEventListener('click', checkCash);
+  document.getElementById('cash-empty').addEventListener('click', function(){ tray = []; drawTray(); });
+  document.getElementById('cash-next').addEventListener('click', newCashJob);
+  newCashJob();
+}
+</script>
+</body>
+</html>

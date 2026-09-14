@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!-- Data | Grade 2 Math Interactives
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data | Grade 2 Math Interactives</title>
+<meta name="description" content="Build picture graphs and bar graphs, make line plots, and answer questions about the data.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#6A2C91;--domain-dark:#4C1D6B}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Data<span class="grade">Grade 2 math practice</span></h1>
+    <a class="home-link" href="index.html">&#8592; All activities</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Data activities">
+  <button class="tab" role="tab" id="tab-graph" aria-controls="p-graph" aria-selected="true">Picture &amp; bar graphs</button>
+  <button class="tab" role="tab" id="tab-plot"  aria-controls="p-plot"  aria-selected="false">Line plot</button>
+</div>
+
+<!-- ============ 1. GRAPH MAKER ============ -->
+<section class="panel" id="p-graph" role="tabpanel" aria-labelledby="tab-graph" tabindex="0">
+  <h2>Picture and bar graphs</h2>
+  <div class="howto">
+    <p id="how-graph">Read the table. Add one square to a row for every child in the table. Switch between the picture graph and the bar graph to see the same data two ways. Build the graph first, then answer the three questions.</p>
+    <button class="btn-read" data-read="how-graph" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="graph-title">Loading&hellip;</p>
+  <div id="graph-table"></div>
+
+  <div class="row">
+    <span style="font-weight:bold">Show it as:</span>
+    <button class="btn sec" type="button" id="graph-mode-pic" aria-pressed="true">Picture graph</button>
+    <button class="btn sec" type="button" id="graph-mode-bar" aria-pressed="false">Bar graph</button>
+  </div>
+
+  <div class="mat"><div id="graph-canvas"></div></div>
+  <div class="row" id="graph-controls" role="group" aria-label="Add or remove data"></div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="graph-check">Check my graph</button>
+    <button class="btn sec" type="button" id="graph-clear">Start the graph over</button>
+  </div>
+  <p class="fb" id="graph-fb" role="status" aria-live="polite"></p>
+
+  <fieldset id="graph-qs">
+    <legend>Questions about the data</legend>
+    <div id="graph-q-list"></div>
+    <div class="row"><button class="btn" type="button" id="graph-q-check">Check my answers</button>
+    <button class="btn sec" type="button" id="graph-next">New survey</button></div>
+    <p class="fb" id="graph-qfb" role="status" aria-live="polite"></p>
+  </fieldset>
+</section>
+
+<!-- ============ 2. LINE PLOT ============ -->
+<section class="panel" id="p-plot" role="tabpanel" aria-labelledby="tab-plot" tabindex="0" hidden>
+  <h2>Line plot</h2>
+  <div class="howto">
+    <p id="how-plot">Every measurement in the list gets one X above its number on the line. Tap the number to stack an X there. When your plot matches the list, answer the questions below.</p>
+    <button class="btn-read" data-read="how-plot" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="plot-title">Loading&hellip;</p>
+  <p id="plot-data" style="font-weight:bold;font-size:1.05rem;line-height:2"></p>
+
+  <div class="mat"><div id="plot-canvas"></div></div>
+  <div class="row" id="plot-controls" role="group" aria-label="Add an X above a number"></div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="plot-check">Check my plot</button>
+    <button class="btn sec" type="button" id="plot-clear">Start the plot over</button>
+  </div>
+  <p class="fb" id="plot-fb" role="status" aria-live="polite"></p>
+
+  <fieldset>
+    <legend>Questions about the plot</legend>
+    <div id="plot-q-list"></div>
+    <div class="row"><button class="btn" type="button" id="plot-q-check">Check my answers</button>
+    <button class="btn sec" type="button" id="plot-next">New set of measurements</button></div>
+    <p class="fb" id="plot-qfb" role="status" aria-live="polite"></p>
+  </fieldset>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Built for second-grade learners and their families. Works offline once the page is open; nothing is stored or sent anywhere.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; free to share and adapt for non-commercial use, with credit.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google US English/i,          /* Chrome, desktop and Android */
+  /^Samantha$/i,                 /* iPad, iPhone, Mac */
+  /Microsoft (Aria|Jenny|Ava|Michelle)/i,  /* Edge, natural voices */
+  /Microsoft Zira/i,             /* Windows, older but clear */
+  /^English \(United States\)/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var english = all.filter(function(v){ return /^en[-_]?/i.test(v.lang); });
+  if (!english.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = english.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  VOICE = english.filter(function(v){ return /US/i.test(v.lang); })[0] || english[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'en-US';
+    u.rate = 0.85;   /* a little under normal speed: clear for a seven year old */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== 1. GRAPH MAKER ===================== */
+var SURVEYS = [
+  { title: 'Favorite fruit in Room 12', label: 'Fruit', cats: ['Apple', 'Banana', 'Grapes', 'Orange'] },
+  { title: 'How we get to school',      label: 'Way to school', cats: ['Walk', 'Bus', 'Car', 'Bike'] },
+  { title: 'Favorite recess game',      label: 'Game', cats: ['Tag', 'Soccer', 'Swings', 'Jump rope'] },
+  { title: 'Pets at home',              label: 'Pet', cats: ['Dog', 'Cat', 'Fish', 'Bird'] }
+];
+var COLORS = ['#6A2C91', '#1B5FA8', '#1E7A46', '#C2410C'];
+var gr = { survey: null, target: [], built: [0, 0, 0, 0], mode: 'pic', qs: [] };
+
+function drawGraph(){
+  var s = gr.survey, W = 740, left = 150, per = 52, top = 20, rowH = 56;
+  var out = '<svg viewBox="0 0 ' + W + ' ' + (top + rowH * 4 + 40) + '" role="img" aria-label="' +
+            (gr.mode === 'pic' ? 'Picture graph' : 'Bar graph') + ' of ' + s.title + '">';
+  s.cats.forEach(function(c, i){
+    var y = top + i * rowH;
+    out += '<text x="0" y="' + (y + 32) + '" font-size="18" font-family="Verdana,sans-serif" fill="#14243A">' + c + '</text>';
+    if (gr.mode === 'pic'){
+      for (var k = 0; k < gr.built[i]; k++){
+        out += '<rect x="' + (left + k * per) + '" y="' + (y + 6) + '" width="40" height="40" rx="8" fill="' + COLORS[i] + '" stroke="#14243A" stroke-width="2"/>';
+      }
+    } else {
+      out += '<rect x="' + left + '" y="' + (y + 6) + '" width="' + (gr.built[i] * per) + '" height="40" fill="' + COLORS[i] + '" stroke="#14243A" stroke-width="2"/>';
+    }
+    out += '<text x="' + (left + 10 * per + 14) + '" y="' + (y + 32) + '" font-size="17" font-weight="bold" font-family="Verdana,sans-serif" fill="#4A5A70">' + gr.built[i] + '</text>';
+  });
+  var axisY = top + rowH * 4;
+  out += '<line x1="' + left + '" y1="' + top + '" x2="' + left + '" y2="' + axisY + '" stroke="#14243A" stroke-width="3"/>';
+  for (var n = 0; n <= 10; n++){
+    var x = left + n * per;
+    out += '<line x1="' + x + '" y1="' + axisY + '" x2="' + x + '" y2="' + (axisY + 8) + '" stroke="#14243A" stroke-width="2"/>';
+    out += '<text x="' + x + '" y="' + (axisY + 28) + '" text-anchor="middle" font-size="15" font-family="Verdana,sans-serif" fill="#14243A">' + n + '</text>';
+  }
+  out += '<text x="' + (left + 5 * per) + '" y="' + (axisY + 46) + '" text-anchor="middle" font-size="14" font-family="Verdana,sans-serif" fill="#4A5A70">Number of children' +
+         (gr.mode === 'pic' ? ' (each square stands for 1 child)' : '') + '</text>';
+  out += '</svg>';
+  document.getElementById('graph-canvas').innerHTML = out;
+}
+
+function newSurvey(){
+  gr.survey = pick(SURVEYS);
+  gr.target = gr.survey.cats.map(function(){ return randInt(2, 9); });
+  gr.built = [0, 0, 0, 0];
+  document.getElementById('graph-title').textContent = gr.survey.title;
+
+  var t = '<table><caption>' + gr.survey.title + '</caption><thead><tr>' +
+          '<th scope="col">' + gr.survey.label + '</th><th scope="col">Number of children</th></tr></thead><tbody>';
+  gr.survey.cats.forEach(function(c, i){ t += '<tr><th scope="row">' + c + '</th><td>' + gr.target[i] + '</td></tr>'; });
+  t += '</tbody></table>';
+  document.getElementById('graph-table').innerHTML = t;
+
+  var ctrl = document.getElementById('graph-controls');
+  ctrl.innerHTML = '';
+  gr.survey.cats.forEach(function(c, i){
+    var span = document.createElement('span');
+    span.className = 'stack';
+    var plus = document.createElement('button');
+    plus.type = 'button'; plus.className = 'btn sec'; plus.textContent = '+ ' + c;
+    plus.addEventListener('click', function(){ if (gr.built[i] < 10){ gr.built[i]++; drawGraph(); } });
+    var minus = document.createElement('button');
+    minus.type = 'button'; minus.className = 'btn sec'; minus.textContent = '\u2212';
+    minus.setAttribute('aria-label', 'Remove one from ' + c);
+    minus.addEventListener('click', function(){ if (gr.built[i] > 0){ gr.built[i]--; drawGraph(); } });
+    span.appendChild(plus); span.appendChild(minus);
+    ctrl.appendChild(span);
+  });
+
+  var c0 = gr.survey.cats, v = gr.target;
+  gr.qs = [
+    { q: 'How many children chose ' + c0[0] + ' and ' + c0[1] + ' together?', a: v[0] + v[1] },
+    { q: 'How many more children chose ' + (v[2] >= v[3] ? c0[2] + ' than ' + c0[3] : c0[3] + ' than ' + c0[2]) + '?', a: Math.abs(v[2] - v[3]) },
+    { q: 'How many children answered the survey in all?', a: v[0] + v[1] + v[2] + v[3] }
+  ];
+  var ql = document.getElementById('graph-q-list');
+  ql.innerHTML = '';
+  gr.qs.forEach(function(q, i){
+    ql.insertAdjacentHTML('beforeend',
+      '<p style="margin:10px 0"><label for="gq' + i + '">' + q.q + '</label> ' +
+      '<input type="number" id="gq' + i + '" min="0" style="width:5ch"></p>');
+  });
+  say(document.getElementById('graph-fb'), '', '');
+  say(document.getElementById('graph-qfb'), '', '');
+  drawGraph();
+}
+
+function checkGraph(){
+  var fb = document.getElementById('graph-fb');
+  var bad = [];
+  gr.survey.cats.forEach(function(c, i){ if (gr.built[i] !== gr.target[i]) bad.push(c); });
+  if (!bad.length) say(fb, 'Your graph matches the table exactly.', 'ok');
+  else say(fb, 'Check these rows again: ' + bad.join(', ') + '.', 'no');
+}
+
+function checkGraphQs(){
+  var fb = document.getElementById('graph-qfb'), right = 0, blank = 0;
+  gr.qs.forEach(function(q, i){
+    var box = document.getElementById('gq' + i);
+    if (box.value === ''){ blank++; box.style.borderColor = '#B6C6D8'; return; }
+    var ok = Number(box.value) === q.a;
+    box.style.borderColor = ok ? '#146B3A' : '#9B1C1C';
+    if (ok) right++;
+  });
+  if (blank) say(fb, 'Answer all three questions, then check again.', 'note');
+  else if (right === 3) say(fb, 'All three are correct.', 'ok');
+  else say(fb, right + ' out of 3 are right. The red boxes need another look at the graph.', 'no');
+}
+
+/* ===================== 2. LINE PLOT ===================== */
+var PLOTS = [
+  { title: 'We measured our pencils to the nearest inch.', unit: 'inches', lo: 3, hi: 8, what: 'pencils' },
+  { title: 'We measured our shoes to the nearest centimeter.', unit: 'centimeters', lo: 18, hi: 24, what: 'shoes' },
+  { title: 'We measured our jump ropes to the nearest foot.', unit: 'feet', lo: 5, hi: 10, what: 'jump ropes' },
+  { title: 'We measured leaves to the nearest inch.', unit: 'inches', lo: 2, hi: 7, what: 'leaves' }
+];
+var pl = { set: null, data: [], counts: {}, built: {}, qs: [] };
+
+function drawPlot(){
+  var lo = pl.set.lo, hi = pl.set.hi, n = hi - lo;
+  var W = 740, left = 60, per = (W - 120) / n, base = 250;
+  var out = '<svg viewBox="0 0 ' + W + ' 300" role="img" aria-label="Line plot of ' + pl.set.what + ' in ' + pl.set.unit + '">';
+  out += '<line x1="' + (left - 20) + '" y1="' + base + '" x2="' + (left + n * per + 20) + '" y2="' + base + '" stroke="#14243A" stroke-width="3"/>';
+  for (var v = lo; v <= hi; v++){
+    var x = left + (v - lo) * per;
+    out += '<line x1="' + x + '" y1="' + base + '" x2="' + x + '" y2="' + (base + 10) + '" stroke="#14243A" stroke-width="3"/>';
+    out += '<text x="' + x + '" y="' + (base + 32) + '" text-anchor="middle" font-size="17" font-weight="bold" font-family="Verdana,sans-serif" fill="#14243A">' + v + '</text>';
+    var c = pl.built[v] || 0;
+    for (var k = 0; k < c; k++){
+      out += '<text x="' + x + '" y="' + (base - 14 - k * 26) + '" text-anchor="middle" font-size="24" font-weight="bold" font-family="Verdana,sans-serif" fill="#6A2C91">X</text>';
+    }
+  }
+  out += '<text x="' + (left + n * per / 2) + '" y="' + (base + 56) + '" text-anchor="middle" font-size="15" font-family="Verdana,sans-serif" fill="#4A5A70">Length in ' + pl.set.unit + '</text>';
+  out += '</svg>';
+  document.getElementById('plot-canvas').innerHTML = out;
+}
+
+function newPlot(){
+  pl.set = pick(PLOTS);
+  var howMany = randInt(10, 14);
+  pl.data = []; pl.counts = {}; pl.built = {};
+  for (var i = 0; i < howMany; i++){
+    var v = randInt(pl.set.lo, pl.set.hi);
+    pl.data.push(v);
+    pl.counts[v] = (pl.counts[v] || 0) + 1;
+  }
+  document.getElementById('plot-title').textContent = pl.set.title;
+  document.getElementById('plot-data').textContent =
+    'Measurements: ' + pl.data.join(', ') + ' ' + pl.set.unit + '.';
+
+  var ctrl = document.getElementById('plot-controls');
+  ctrl.innerHTML = '';
+  for (var v2 = pl.set.lo; v2 <= pl.set.hi; v2++){
+    (function(val){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'btn sec'; b.textContent = 'X on ' + val;
+      b.addEventListener('click', function(){ pl.built[val] = (pl.built[val] || 0) + 1; drawPlot(); });
+      var m = document.createElement('button');
+      m.type = 'button'; m.className = 'btn sec'; m.textContent = '\u2212';
+      m.setAttribute('aria-label', 'Remove one X from ' + val);
+      m.addEventListener('click', function(){ if (pl.built[val]) { pl.built[val]--; drawPlot(); } });
+      var span = document.createElement('span');
+      span.className = 'stack'; span.appendChild(b); span.appendChild(m);
+      ctrl.appendChild(span);
+    })(v2);
+  }
+
+  var vals = Object.keys(pl.counts).map(Number).sort(function(a, b){ return a - b; });
+  var most = vals.slice().sort(function(a, b){ return pl.counts[b] - pl.counts[a]; })[0];
+  var longest = vals[vals.length - 1], shortest = vals[0];
+  pl.qs = [
+    { q: 'How many ' + pl.set.what + ' measured ' + most + ' ' + pl.set.unit + '?', a: pl.counts[most] },
+    { q: 'What is the difference between the longest and the shortest measurement?', a: longest - shortest },
+    { q: 'How many ' + pl.set.what + ' were measured in all?', a: pl.data.length }
+  ];
+  var ql = document.getElementById('plot-q-list');
+  ql.innerHTML = '';
+  pl.qs.forEach(function(q, i){
+    ql.insertAdjacentHTML('beforeend',
+      '<p style="margin:10px 0"><label for="pq' + i + '">' + q.q + '</label> ' +
+      '<input type="number" id="pq' + i + '" min="0" style="width:5ch"></p>');
+  });
+  say(document.getElementById('plot-fb'), '', '');
+  say(document.getElementById('plot-qfb'), '', '');
+  drawPlot();
+}
+
+function checkPlot(){
+  var fb = document.getElementById('plot-fb'), bad = [], total = 0;
+  for (var v = pl.set.lo; v <= pl.set.hi; v++){
+    var want = pl.counts[v] || 0, have = pl.built[v] || 0;
+    total += have;
+    if (want !== have) bad.push(v);
+  }
+  if (!bad.length) say(fb, 'Your line plot matches every measurement.', 'ok');
+  else if (total !== pl.data.length)
+    say(fb, 'You have ' + total + ' X marks but the list has ' + pl.data.length + ' measurements. Check the numbers ' + bad.join(' and ') + '.', 'no');
+  else say(fb, 'Almost. Count again above these numbers: ' + bad.join(', ') + '.', 'no');
+}
+
+function checkPlotQs(){
+  var fb = document.getElementById('plot-qfb'), right = 0, blank = 0;
+  pl.qs.forEach(function(q, i){
+    var box = document.getElementById('pq' + i);
+    if (box.value === ''){ blank++; box.style.borderColor = '#B6C6D8'; return; }
+    var ok = Number(box.value) === q.a;
+    box.style.borderColor = ok ? '#146B3A' : '#9B1C1C';
+    if (ok) right++;
+  });
+  if (blank) say(fb, 'Answer all three questions, then check again.', 'note');
+  else if (right === 3) say(fb, 'All three are correct.', 'ok');
+  else say(fb, right + ' out of 3 are right. Look at the red boxes again.', 'no');
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  document.getElementById('graph-mode-pic').addEventListener('click', function(){
+    gr.mode = 'pic'; this.setAttribute('aria-pressed', 'true');
+    document.getElementById('graph-mode-bar').setAttribute('aria-pressed', 'false'); drawGraph();
+  });
+  document.getElementById('graph-mode-bar').addEventListener('click', function(){
+    gr.mode = 'bar'; this.setAttribute('aria-pressed', 'true');
+    document.getElementById('graph-mode-pic').setAttribute('aria-pressed', 'false'); drawGraph();
+  });
+  document.getElementById('graph-check').addEventListener('click', checkGraph);
+  document.getElementById('graph-clear').addEventListener('click', function(){ gr.built = [0, 0, 0, 0]; drawGraph(); });
+  document.getElementById('graph-q-check').addEventListener('click', checkGraphQs);
+  document.getElementById('graph-next').addEventListener('click', newSurvey);
+  newSurvey();
+
+  document.getElementById('plot-check').addEventListener('click', checkPlot);
+  document.getElementById('plot-clear').addEventListener('click', function(){ pl.built = {}; drawPlot(); });
+  document.getElementById('plot-q-check').addEventListener('click', checkPlotQs);
+  document.getElementById('plot-next').addEventListener('click', newPlot);
+  newPlot();
+}
+</script>
+</body>
+</html>

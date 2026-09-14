@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<!-- Measurement & number line | Grade 2 Math Interactives
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measurement & number line | Grade 2 Math Interactives</title>
+<meta name="description" content="Choose measuring tools, estimate and compare lengths, and solve problems on a number line.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#1E7A46;--domain-dark:#14562F}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Measurement &amp; number line<span class="grade">Grade 2 math practice</span></h1>
+    <a class="home-link" href="index.html">&#8592; All activities</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Measurement activities">
+  <button class="tab" role="tab" id="tab-tools" aria-controls="p-tools" aria-selected="true">Measuring workshop</button>
+  <button class="tab" role="tab" id="tab-est"   aria-controls="p-est"   aria-selected="false">Estimate &amp; compare</button>
+  <button class="tab" role="tab" id="tab-nline" aria-controls="p-nline" aria-selected="false">Number line</button>
+</div>
+
+<!-- ============ 1. MEASURING WORKSHOP ============ -->
+<section class="panel" id="p-tools" role="tabpanel" aria-labelledby="tab-tools" tabindex="0">
+  <h2>Measuring workshop</h2>
+  <div class="howto">
+    <p id="how-tools">Sometimes you choose the right tool. Sometimes you read a ruler. Line up one end of the object with the zero, then read the number at the other end. Press Check my answer when you are ready.</p>
+    <button class="btn-read" data-read="how-tools" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="tools-task">Loading&hellip;</p>
+  <div class="mat" id="tools-mat"></div>
+  <div class="choices" id="tools-choices"></div>
+  <div class="row" id="tools-entry" hidden>
+    <label for="tools-input" style="font-weight:bold">It is</label>
+    <input type="number" id="tools-input" step="1" min="0" data-enter="tools-check" aria-label="length of the object">
+    <span id="tools-unit" style="font-weight:bold"></span>
+    <button class="btn" type="button" id="tools-check">Check my answer</button>
+  </div>
+  <p class="fb" id="tools-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn sec" type="button" id="tools-next">Next job</button></div>
+</section>
+
+<!-- ============ 2. ESTIMATE AND COMPARE ============ -->
+<section class="panel" id="p-est" role="tabpanel" aria-labelledby="tab-est" tabindex="0" hidden>
+  <h2>Estimate and compare</h2>
+  <div class="howto">
+    <p id="how-est">First guess how long the top strip is. Use the one inch square as your helper. After you guess, you will see the real length, and then you will work out how much longer one strip is than the other.</p>
+    <button class="btn-read" data-read="how-est" type="button">&#128266; Read to me</button>
+  </div>
+
+  <div class="mat" id="est-mat"></div>
+
+  <div id="est-step1">
+    <p class="task" id="est-q1">Loading&hellip;</p>
+    <div class="row">
+      <label for="est-guess" style="font-weight:bold">My estimate:</label>
+      <input type="number" id="est-guess" min="1" data-enter="est-check1" aria-label="estimated length">
+      <span id="est-unit1" style="font-weight:bold"></span>
+      <button class="btn" type="button" id="est-check1">Check my estimate</button>
+    </div>
+  </div>
+
+  <div id="est-step2" hidden>
+    <p class="task" id="est-q2"></p>
+    <div class="row">
+      <label for="est-diff" style="font-weight:bold">The difference is</label>
+      <input type="number" id="est-diff" min="0" data-enter="est-check2" aria-label="difference in length">
+      <span id="est-unit2" style="font-weight:bold"></span>
+      <button class="btn" type="button" id="est-check2">Check my answer</button>
+    </div>
+  </div>
+
+  <p class="fb" id="est-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn sec" type="button" id="est-next">New pair of strips</button></div>
+</section>
+
+<!-- ============ 3. NUMBER LINE ============ -->
+<section class="panel" id="p-nline" role="tabpanel" aria-labelledby="tab-nline" tabindex="0" hidden>
+  <h2>Number line jumps</h2>
+  <div class="howto">
+    <p id="how-nline">Start at zero. Use the jump buttons to move along the line. Big jumps of ten get you there fast, small jumps of one finish the job. When your marker sits on the answer, press This is my answer.</p>
+    <button class="btn-read" data-read="how-nline" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="nl-task">Loading&hellip;</p>
+  <div class="mat"><div id="nl-mat"></div>
+    <p id="nl-pos" aria-live="polite" style="font-weight:bold;margin:10px 0 0"></p>
+    <p id="nl-log" style="font-size:.9rem;color:var(--ink-soft);margin:4px 0 0"></p>
+  </div>
+
+  <div class="row" role="group" aria-label="Jump buttons">
+    <button class="btn sec" type="button" data-jump="-10">&minus;10</button>
+    <button class="btn sec" type="button" data-jump="-1">&minus;1</button>
+    <button class="btn sec" type="button" data-jump="1">+1</button>
+    <button class="btn sec" type="button" data-jump="10">+10</button>
+    <button class="btn sec" type="button" id="nl-undo">Undo last jump</button>
+    <button class="btn sec" type="button" id="nl-reset">Back to start</button>
+  </div>
+  <div class="row">
+    <button class="btn big" type="button" id="nl-check">This is my answer</button>
+    <button class="btn sec" type="button" id="nl-next">New problem</button>
+  </div>
+  <p class="fb" id="nl-fb" role="status" aria-live="polite"></p>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Built for second-grade learners and their families. Works offline once the page is open; nothing is stored or sent anywhere.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; free to share and adapt for non-commercial use, with credit.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google US English/i,          /* Chrome, desktop and Android */
+  /^Samantha$/i,                 /* iPad, iPhone, Mac */
+  /Microsoft (Aria|Jenny|Ava|Michelle)/i,  /* Edge, natural voices */
+  /Microsoft Zira/i,             /* Windows, older but clear */
+  /^English \(United States\)/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var english = all.filter(function(v){ return /^en[-_]?/i.test(v.lang); });
+  if (!english.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = english.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  VOICE = english.filter(function(v){ return /US/i.test(v.lang); })[0] || english[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'en-US';
+    u.rate = 0.85;   /* a little under normal speed: clear for a seven year old */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== shared drawing ===================== */
+function rulerSVG(unit, span, objLen, objName){
+  var W = 760, x0 = 36, x1 = 724, per = (x1 - x0) / span;
+  var s = '<svg viewBox="0 0 ' + W + ' 210" role="img" aria-label="' + objName + ' lying along a ' + unit + ' ruler">';
+  s += '<rect x="' + x0 + '" y="46" width="' + (objLen * per) + '" height="34" rx="6" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>';
+  s += '<text x="' + (x0 + 8) + '" y="38" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">' + objName + '</text>';
+  s += '<rect x="' + x0 + '" y="100" width="' + (x1 - x0) + '" height="72" fill="#FFF8E6" stroke="#5C3900" stroke-width="3"/>';
+  for (var i = 0; i <= span; i++){
+    var x = x0 + i * per;
+    var big = (span <= 12) || (i % 5 === 0);
+    s += '<line x1="' + x + '" y1="100" x2="' + x + '" y2="' + (big ? 134 : 118) + '" stroke="#5C3900" stroke-width="' + (big ? 3 : 2) + '"/>';
+    if (big) s += '<text x="' + x + '" y="158" text-anchor="middle" font-size="16" font-family="Verdana,sans-serif" fill="#5C3900">' + i + '</text>';
+  }
+  s += '<text x="' + x1 + '" y="192" text-anchor="end" font-size="15" font-family="Verdana,sans-serif" fill="#5C3900">' + unit + '</text>';
+  return s + '</svg>';
+}
+
+/* ===================== 1. MEASURING WORKSHOP ===================== */
+var TOOLS = [
+  { id: 'ruler', name: 'Inch ruler', note: '12 inches long, straight' },
+  { id: 'tape',  name: 'Measuring tape', note: 'long and bendy' },
+  { id: 'meter', name: 'Meter stick', note: '100 centimeters long' },
+  { id: 'yard',  name: 'Yardstick', note: '3 feet long' }
+];
+var TOOL_JOBS = [
+  { what: 'the length of a new crayon', right: 'ruler', why: 'A crayon is short and straight, so a ruler is the easiest tool.' },
+  { what: 'the length of your math book', right: 'ruler', why: 'A book fits inside twelve inches, so a ruler is enough.' },
+  { what: 'how far it is around a jar', right: 'tape', why: 'A jar is round. Only a bendy tape can curve around it.' },
+  { what: 'how tall your friend is', right: 'meter', why: 'A person is taller than a ruler, and a meter stick reaches in one go.' },
+  { what: 'the width of the classroom door', right: 'yard', why: 'A door is about one yard wide, so a yardstick does it in one go.' },
+  { what: 'the length of the hallway', right: 'tape', why: 'A hallway is very long. A tape rolls out much farther than a stick.' }
+];
+var toolTask = null;
+
+function newToolsJob(){
+  var kind = pick(['pick', 'read', 'read', 'twounits']);
+  var mat = document.getElementById('tools-mat');
+  var ch = document.getElementById('tools-choices');
+  var entry = document.getElementById('tools-entry');
+  ch.innerHTML = ''; mat.innerHTML = ''; entry.hidden = true;
+  say(document.getElementById('tools-fb'), '', '');
+
+  if (kind === 'pick'){
+    var j = pick(TOOL_JOBS);
+    toolTask = { kind: 'pick', right: j.right, why: j.why };
+    document.getElementById('tools-task').textContent = 'You want to measure ' + j.what + '. Which tool fits best?';
+    shuffle(TOOLS).forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '1.05rem';
+      b.innerHTML = t.name + '<small>' + t.note + '</small>';
+      b.addEventListener('click', function(){ answerTool(b, t.id); });
+      ch.appendChild(b);
+    });
+  } else if (kind === 'read'){
+    var inches = Math.random() < 0.5;
+    var unit = inches ? 'inches' : 'centimeters';
+    var span = inches ? 12 : 30;
+    var len = inches ? randInt(2, 11) : randInt(4, 28);
+    var name = pick(['ribbon', 'paper strip', 'craft stick', 'straw', 'shoelace']);
+    toolTask = { kind: 'read', answer: len, unit: unit };
+    document.getElementById('tools-task').textContent = 'How long is the ' + name + '?';
+    mat.innerHTML = rulerSVG(inches ? 'inches' : 'centimeters', span, len, 'the ' + name);
+    document.getElementById('tools-unit').textContent = unit + ' long.';
+    document.getElementById('tools-input').value = '';
+    entry.hidden = false;
+  } else {
+    var cm = randInt(10, 28);
+    var inch = Math.round(cm / 2.54);
+    toolTask = { kind: 'twounits', right: 'smaller' };
+    document.getElementById('tools-task').textContent =
+      'The same stick measures ' + inch + ' inches and about ' + cm + ' centimeters. Why is the centimeter number bigger?';
+    mat.innerHTML = rulerSVG('centimeters', 30, cm, 'the stick') + rulerSVG('inches', 12, inch, 'the same stick');
+    var opts = [
+      { id: 'smaller', t: 'A centimeter is shorter than an inch, so it takes more of them to cover the stick.' },
+      { id: 'grew',    t: 'The stick got longer when it was measured the second time.' },
+      { id: 'bigger',  t: 'A centimeter is longer than an inch, so the number is bigger.' }
+    ];
+    shuffle(opts).forEach(function(o){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '.95rem'; b.style.textAlign = 'left';
+      b.textContent = o.t;
+      b.addEventListener('click', function(){ answerTool(b, o.id); });
+      ch.appendChild(b);
+    });
+    ch.style.gridTemplateColumns = '1fr';
+  }
+  if (kind !== 'twounits') ch.style.gridTemplateColumns = '';
+}
+
+function answerTool(btn, id){
+  var fb = document.getElementById('tools-fb');
+  if (id === toolTask.right){
+    btn.classList.add('right');
+    say(fb, 'Yes. ' + (toolTask.why || 'A smaller unit means more units are needed.'), 'ok');
+  } else {
+    btn.classList.add('wrong');
+    say(fb, 'Not that one. Think about the size and the shape of what you are measuring.', 'no');
+  }
+}
+
+function checkToolsRead(){
+  var fb = document.getElementById('tools-fb');
+  var v = Number(document.getElementById('tools-input').value);
+  if (!document.getElementById('tools-input').value){ say(fb, 'Type a number first.', 'note'); return; }
+  if (v === toolTask.answer){
+    say(fb, 'Correct. It is ' + v + ' ' + toolTask.unit + ' long.', 'ok');
+  } else if (v === toolTask.answer + 1 || v === toolTask.answer - 1){
+    say(fb, 'So close. Check that you started counting at the zero, not at the one.', 'no');
+  } else {
+    say(fb, 'Not yet. Read the number where the far end of the object stops.', 'no');
+  }
+}
+
+/* ===================== 2. ESTIMATE AND COMPARE ===================== */
+var estTask = null;
+
+function newEstTask(){
+  var unit = pick(['inches', 'centimeters']);
+  var per = unit === 'inches' ? 52 : 22;
+  var a = unit === 'inches' ? randInt(5, 12) : randInt(9, 28);
+  var b = unit === 'inches' ? randInt(2, a - 2) : randInt(4, a - 3);
+  estTask = { unit: unit, a: a, b: b };
+  var W = 760;
+  var s = '<svg viewBox="0 0 ' + W + ' 190" role="img" aria-label="Two strips and one unit square">';
+  s += '<rect x="30" y="24" width="' + (a * per) + '" height="30" rx="5" fill="#1E7A46" stroke="#0E3F22" stroke-width="3"/>';
+  s += '<text x="' + (36 + a * per) + '" y="46" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">strip A</text>';
+  s += '<rect x="30" y="76" width="' + (b * per) + '" height="30" rx="5" fill="#1B5FA8" stroke="#0E2E52" stroke-width="3"/>';
+  s += '<text x="' + (36 + b * per) + '" y="98" font-size="17" font-family="Verdana,sans-serif" fill="#14243A">strip B</text>';
+  s += '<rect x="30" y="132" width="' + per + '" height="' + per + '" fill="#FFF3CD" stroke="#5C3900" stroke-width="3"/>';
+  s += '<text x="' + (per + 44) + '" y="' + (132 + per / 2 + 6) + '" font-size="16" font-family="Verdana,sans-serif" fill="#5C3900">one ' + unit.slice(0, -1) + ' &mdash; use it to help you guess</text>';
+  s += '</svg>';
+  document.getElementById('est-mat').innerHTML = s;
+  document.getElementById('est-q1').textContent = 'About how long is strip A?';
+  document.getElementById('est-unit1').textContent = unit;
+  document.getElementById('est-unit2').textContent = unit;
+  document.getElementById('est-guess').value = '';
+  document.getElementById('est-diff').value = '';
+  document.getElementById('est-step2').hidden = true;
+  say(document.getElementById('est-fb'), '', '');
+}
+
+function checkEstimate(){
+  var fb = document.getElementById('est-fb');
+  var box = document.getElementById('est-guess');
+  if (!box.value){ say(fb, 'Write your best guess first.', 'note'); return; }
+  var g = Number(box.value), a = estTask.a;
+  var off = Math.abs(g - a);
+  var near = estTask.unit === 'inches' ? 2 : 4;
+  if (off === 0) say(fb, 'Your estimate is exactly right. Strip A is ' + a + ' ' + estTask.unit + '.', 'ok');
+  else if (off <= near) say(fb, 'Close estimate. Strip A is really ' + a + ' ' + estTask.unit + '.', 'ok');
+  else say(fb, 'Strip A is really ' + a + ' ' + estTask.unit + '. Compare it to the little square next time.', 'note');
+  document.getElementById('est-q2').textContent =
+    'Strip A is ' + estTask.a + ' ' + estTask.unit + '. Strip B is ' + estTask.b + ' ' +
+    estTask.unit + '. How much longer is strip A than strip B?';
+  document.getElementById('est-step2').hidden = false;
+}
+
+function checkDifference(){
+  var fb = document.getElementById('est-fb');
+  var box = document.getElementById('est-diff');
+  if (!box.value){ say(fb, 'Type the difference first.', 'note'); return; }
+  var d = estTask.a - estTask.b;
+  if (Number(box.value) === d){
+    say(fb, 'Correct. ' + estTask.a + ' \u2212 ' + estTask.b + ' = ' + d + ' ' + estTask.unit + '.', 'ok');
+  } else {
+    say(fb, 'Not yet. Take away the shorter strip from the longer one: ' + estTask.a + ' \u2212 ' + estTask.b + '.', 'no');
+  }
+}
+
+/* ===================== 3. NUMBER LINE ===================== */
+var nl = { pos: 0, jumps: [], answer: 0, text: '' };
+
+function drawLine(){
+  var W = 760, x0 = 30, x1 = 730, per = (x1 - x0) / 100, base = 150;
+  function X(n){ return x0 + n * per; }
+  var s = '<svg viewBox="0 0 ' + W + ' 190" role="img" aria-label="Number line from 0 to 100, marker at ' + nl.pos + '">';
+  var from = 0;
+  nl.jumps.forEach(function(j){
+    var to = from + j;
+    var mid = (X(from) + X(to)) / 2;
+    var up = Math.abs(j) >= 10 ? 62 : 32;
+    s += '<path d="M ' + X(from) + ' ' + base + ' Q ' + mid + ' ' + (base - up * 2) + ' ' + X(to) + ' ' + base +
+         '" fill="none" stroke="#1B5FA8" stroke-width="3"/>';
+    s += '<text x="' + mid + '" y="' + (base - up - 6) + '" text-anchor="middle" font-size="16" font-weight="bold" font-family="Verdana,sans-serif" fill="#123F70">' +
+         (j > 0 ? '+' + j : j) + '</text>';
+    from = to;
+  });
+  s += '<line x1="' + x0 + '" y1="' + base + '" x2="' + x1 + '" y2="' + base + '" stroke="#14243A" stroke-width="3"/>';
+  for (var i = 0; i <= 100; i++){
+    var big = i % 10 === 0, mid5 = i % 5 === 0;
+    if (!mid5 && per < 7) continue;
+    s += '<line x1="' + X(i) + '" y1="' + base + '" x2="' + X(i) + '" y2="' + (base + (big ? 14 : 8)) + '" stroke="#14243A" stroke-width="' + (big ? 3 : 1.5) + '"/>';
+    if (big) s += '<text x="' + X(i) + '" y="' + (base + 34) + '" text-anchor="middle" font-size="15" font-family="Verdana,sans-serif" fill="#14243A">' + i + '</text>';
+  }
+  s += '<circle cx="' + X(nl.pos) + '" cy="' + base + '" r="11" fill="#C2410C" stroke="#6B2206" stroke-width="3"/>';
+  s += '</svg>';
+  document.getElementById('nl-mat').innerHTML = s;
+  document.getElementById('nl-pos').textContent = 'My marker is on ' + nl.pos + '.';
+  document.getElementById('nl-log').textContent = nl.jumps.length
+    ? 'Jumps so far: ' + nl.jumps.map(function(j){ return j > 0 ? '+' + j : j; }).join(', ')
+    : 'No jumps yet.';
+}
+
+function newLineProblem(){
+  var kind = pick(['add', 'sub', 'word']);
+  var a, b;
+  if (kind === 'add'){
+    a = randInt(12, 58); b = randInt(11, 40);
+    nl.answer = a + b;
+    nl.text = 'Solve ' + a + ' + ' + b + ' on the number line.';
+  } else if (kind === 'sub'){
+    a = randInt(45, 99); b = randInt(12, 40);
+    nl.answer = a - b;
+    nl.text = 'Solve ' + a + ' \u2212 ' + b + ' on the number line.';
+  } else {
+    a = randInt(30, 70); b = randInt(12, 28);
+    nl.answer = a + b;
+    nl.text = 'A red rope is ' + a + ' inches long. A blue rope is ' + b +
+              ' inches longer than the red one. How long is the blue rope?';
+  }
+  nl.pos = 0; nl.jumps = [];
+  document.getElementById('nl-task').textContent = nl.text;
+  say(document.getElementById('nl-fb'), '', '');
+  drawLine();
+}
+
+function checkLine(){
+  var fb = document.getElementById('nl-fb');
+  if (nl.pos === nl.answer){
+    say(fb, 'Correct. You landed on ' + nl.answer + ' in ' + nl.jumps.length + ' jumps. Tens jumps make it faster.', 'ok');
+  } else {
+    var d = nl.answer - nl.pos;
+    say(fb, 'Your marker is on ' + nl.pos + '. You are ' + Math.abs(d) + ' away. Try jumping ' +
+            (d > 0 ? 'forward' : 'back') + '.', 'no');
+  }
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  document.getElementById('tools-next').addEventListener('click', newToolsJob);
+  document.getElementById('tools-check').addEventListener('click', checkToolsRead);
+  newToolsJob();
+
+  document.getElementById('est-check1').addEventListener('click', checkEstimate);
+  document.getElementById('est-check2').addEventListener('click', checkDifference);
+  document.getElementById('est-next').addEventListener('click', newEstTask);
+  newEstTask();
+
+  $$('[data-jump]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var j = Number(b.getAttribute('data-jump'));
+      if (nl.pos + j < 0 || nl.pos + j > 100) return;
+      nl.jumps.push(j); nl.pos += j; drawLine();
+    });
+  });
+  document.getElementById('nl-undo').addEventListener('click', function(){
+    var j = nl.jumps.pop();
+    if (j !== undefined){ nl.pos -= j; drawLine(); }
+  });
+  document.getElementById('nl-reset').addEventListener('click', function(){ nl.pos = 0; nl.jumps = []; drawLine(); });
+  document.getElementById('nl-check').addEventListener('click', checkLine);
+  document.getElementById('nl-next').addEventListener('click', newLineProblem);
+  newLineProblem();
+}
+</script>
+</body>
+</html>

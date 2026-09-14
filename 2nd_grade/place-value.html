@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<!-- Place value & operations | Grade 2 Math Interactives
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Place value & operations | Grade 2 Math Interactives</title>
+<meta name="description" content="Base-ten blocks, mental math with 10 and 100, and explaining addition and subtraction strategies.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#1B5FA8;--domain-dark:#123F70}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Place value &amp; operations<span class="grade">Grade 2 math practice</span></h1>
+    <a class="home-link" href="index.html">&#8592; All activities</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Place value activities">
+  <button class="tab" role="tab" id="tab-blocks"  aria-controls="p-blocks"  aria-selected="true">Base-ten blocks</button>
+  <button class="tab" role="tab" id="tab-mental"  aria-controls="p-mental"  aria-selected="false">Mental math</button>
+  <button class="tab" role="tab" id="tab-explain" aria-controls="p-explain" aria-selected="false">Explain a strategy</button>
+</div>
+
+<!-- ============ 1. BASE-TEN BLOCKS ============ -->
+<section class="panel" id="p-blocks" role="tabpanel" aria-labelledby="tab-blocks" tabindex="0">
+  <h2>Base-ten blocks</h2>
+  <div class="howto">
+    <p id="how-blocks">Read the job at the top. Add or take away hundreds, tens and ones until your blocks show the right number. Ten ones can be traded for one ten, and ten tens can be traded for one hundred. Then press Check my blocks.</p>
+    <button class="btn-read" data-read="how-blocks" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="blocks-task">Loading&hellip;</p>
+
+  <div class="mat">
+    <h3>Your work mat</h3>
+    <div id="blocks-mat" style="display:flex;gap:24px;align-items:flex-end;min-height:100px;flex-wrap:wrap"></div>
+    <p id="blocks-value" aria-live="polite" style="font-weight:bold;font-size:1.2rem;margin:14px 0 0"></p>
+  </div>
+
+  <div class="row" role="group" aria-label="Add or remove blocks">
+    <span class="stack"><button class="btn sec" type="button" data-add="h" data-n="1">+ 1 hundred</button>
+    <button class="btn sec" type="button" data-add="h" data-n="-1">&minus; 1 hundred</button></span>
+    <span class="stack"><button class="btn sec" type="button" data-add="t" data-n="1">+ 1 ten</button>
+    <button class="btn sec" type="button" data-add="t" data-n="-1">&minus; 1 ten</button></span>
+    <span class="stack"><button class="btn sec" type="button" data-add="o" data-n="1">+ 1 one</button>
+    <button class="btn sec" type="button" data-add="o" data-n="-1">&minus; 1 one</button></span>
+  </div>
+
+  <div class="row" role="group" aria-label="Trade blocks">
+    <button class="btn sec" type="button" id="trade-up-o">Trade 10 ones &rarr; 1 ten</button>
+    <button class="btn sec" type="button" id="trade-up-t">Trade 10 tens &rarr; 1 hundred</button>
+    <button class="btn sec" type="button" id="trade-dn-t">Break 1 ten &rarr; 10 ones</button>
+    <button class="btn sec" type="button" id="trade-dn-h">Break 1 hundred &rarr; 10 tens</button>
+  </div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="blocks-check">Check my blocks</button>
+    <button class="btn sec" type="button" id="blocks-clear">Clear the mat</button>
+    <button class="btn sec" type="button" id="blocks-next">New job</button>
+  </div>
+  <p class="fb" id="blocks-fb" role="status" aria-live="polite"></p>
+</section>
+
+<!-- ============ 2. MENTAL MATH ============ -->
+<section class="panel" id="p-mental" role="tabpanel" aria-labelledby="tab-mental" hidden tabindex="0">
+  <h2>Mental math: 10 more, 10 less, 100 more, 100 less</h2>
+  <div class="howto">
+    <p id="how-mental">Do this one in your head. Ten more changes the tens digit. One hundred more changes the hundreds digit. Tap the answer you think is right. There are ten questions in a round.</p>
+    <button class="btn-read" data-read="how-mental" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="score" id="mental-score">Question 1 of 10 &middot; Score 0 &middot; Streak 0</p>
+  <p class="task" id="mental-task">Loading&hellip;</p>
+  <div class="choices" id="mental-choices"></div>
+  <p class="fb" id="mental-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn" type="button" id="mental-next">Next question</button>
+  <button class="btn sec" type="button" id="mental-restart">Start a new round</button></div>
+</section>
+
+<!-- ============ 3. EXPLAIN A STRATEGY ============ -->
+<section class="panel" id="p-explain" role="tabpanel" aria-labelledby="tab-explain" hidden tabindex="0">
+  <h2>Explain a strategy</h2>
+  <div class="howto">
+    <p id="how-explain">Three children solved the same problem. Only one of them is right. Find the one that works, then write why it works and why the other two do not. Press Read my writing to hear your own words out loud.</p>
+    <button class="btn-read" data-read="how-explain" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="explain-task">Loading&hellip;</p>
+  <div class="choices" id="explain-choices" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))"></div>
+  <p class="fb" id="explain-fb" role="status" aria-live="polite"></p>
+
+  <fieldset>
+    <legend>Now write your thinking</legend>
+    <p style="margin:0 0 8px;font-size:.9rem">Tap a sentence starter to drop it in the box, then finish the sentence.</p>
+    <div class="row" id="explain-chips"></div>
+    <textarea id="explain-text" aria-label="Write why the strategy works"></textarea>
+    <div class="row">
+      <button class="btn" type="button" id="explain-read">&#128266; Read my writing</button>
+      <button class="btn sec" type="button" id="explain-print">Print my work</button>
+      <button class="btn sec" type="button" id="explain-next">New problem</button>
+    </div>
+    <p style="font-size:.85rem;color:var(--ink-soft);margin:6px 0 0">Your writing stays on this page. Nothing is saved or sent.</p>
+  </fieldset>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Built for second-grade learners and their families. Works offline once the page is open; nothing is stored or sent anywhere.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; free to share and adapt for non-commercial use, with credit.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google US English/i,          /* Chrome, desktop and Android */
+  /^Samantha$/i,                 /* iPad, iPhone, Mac */
+  /Microsoft (Aria|Jenny|Ava|Michelle)/i,  /* Edge, natural voices */
+  /Microsoft Zira/i,             /* Windows, older but clear */
+  /^English \(United States\)/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var english = all.filter(function(v){ return /^en[-_]?/i.test(v.lang); });
+  if (!english.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = english.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  VOICE = english.filter(function(v){ return /US/i.test(v.lang); })[0] || english[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'en-US';
+    u.rate = 0.85;   /* a little under normal speed: clear for a seven year old */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== 1. BASE-TEN BLOCKS ===================== */
+var mat = { h: 0, t: 0, o: 0 };
+var job = null;
+
+function blockSVG(kind){
+  if (kind === 'h'){
+    var lines = '';
+    for (var i = 1; i < 10; i++){
+      lines += '<line x1="' + i*4.4 + '" y1="0" x2="' + i*4.4 + '" y2="44" />';
+      lines += '<line x1="0" y1="' + i*4.4 + '" x2="44" y2="' + i*4.4 + '" />';
+    }
+    return '<svg width="44" height="44" viewBox="0 0 44 44" role="img" aria-label="one hundred flat">' +
+           '<rect width="44" height="44" fill="#1B5FA8"/><g stroke="#DCE6F2" stroke-width=".7">' + lines +
+           '</g><rect width="44" height="44" fill="none" stroke="#0E2E52" stroke-width="2"/></svg>';
+  }
+  if (kind === 't'){
+    var l = '';
+    for (var j = 1; j < 10; j++){ l += '<line x1="0" y1="' + j*4.4 + '" x2="11" y2="' + j*4.4 + '" />'; }
+    return '<svg width="11" height="44" viewBox="0 0 11 44" role="img" aria-label="one ten rod">' +
+           '<rect width="11" height="44" fill="#1E7A46"/><g stroke="#DCE6F2" stroke-width=".7">' + l +
+           '</g><rect width="11" height="44" fill="none" stroke="#0E3F22" stroke-width="2"/></svg>';
+  }
+  return '<svg width="11" height="11" viewBox="0 0 11 11" role="img" aria-label="one unit">' +
+         '<rect width="11" height="11" fill="#C2410C" stroke="#6B2206" stroke-width="2"/></svg>';
+}
+
+function matValue(){ return mat.h * 100 + mat.t * 10 + mat.o; }
+
+function drawMat(){
+  var box = document.getElementById('blocks-mat');
+  var html = '';
+  var groups = [['h','Hundreds'], ['t','Tens'], ['o','Ones']];
+  groups.forEach(function(g){
+    var n = mat[g[0]];
+    var inner = '';
+    for (var i = 0; i < n; i++){ inner += blockSVG(g[0]); }
+    if (n === 0) inner = '<span style="color:var(--ink-soft);font-size:.85rem">empty</span>';
+    var wrapStyle = (g[0] === 'o')
+      ? 'display:grid;grid-template-columns:repeat(5,11px);gap:3px;align-content:end;min-height:44px'
+      : 'display:flex;gap:4px;align-items:flex-end;flex-wrap:wrap;max-width:260px;min-height:44px';
+    html += '<div><div style="' + wrapStyle + '">' + inner + '</div>' +
+            '<p style="margin:8px 0 0;font-weight:bold;font-size:.85rem">' + g[1] + ': ' + n + '</p></div>';
+  });
+  box.innerHTML = html;
+  var v = matValue();
+  document.getElementById('blocks-value').textContent =
+    'My blocks show ' + v + '   (' + (mat.h * 100) + ' + ' + (mat.t * 10) + ' + ' + mat.o + ')';
+  ['trade-up-o','trade-up-t','trade-dn-t','trade-dn-h'].forEach(function(id){
+    var b = document.getElementById(id);
+    if (id === 'trade-up-o') b.disabled = mat.o < 10;
+    if (id === 'trade-up-t') b.disabled = mat.t < 10;
+    if (id === 'trade-dn-t') b.disabled = mat.t < 1;
+    if (id === 'trade-dn-h') b.disabled = mat.h < 1;
+    b.style.opacity = b.disabled ? .45 : 1;
+  });
+}
+
+function newBlocksJob(){
+  var kind = pick(['build', 'build', 'add', 'sub']);
+  mat = { h: 0, t: 0, o: 0 };
+  if (kind === 'build'){
+    var n = randInt(102, 989);
+    job = { kind: 'build', answer: n };
+    document.getElementById('blocks-task').textContent = 'Build the number ' + n + '.';
+  } else if (kind === 'add'){
+    var a = randInt(120, 480), b = randInt(115, 390);
+    job = { kind: 'add', answer: a + b };
+    document.getElementById('blocks-task').textContent =
+      'Solve ' + a + ' + ' + b + '. Build the answer, and trade so no place has ten or more.';
+  } else {
+    var big = randInt(240, 860), small = randInt(105, 190);
+    mat = { h: Math.floor(big / 100), t: Math.floor((big % 100) / 10), o: big % 10 };
+    job = { kind: 'sub', answer: big - small };
+    document.getElementById('blocks-task').textContent =
+      'Your mat already shows ' + big + '. Take away ' + small + '. You may need to break a block apart first.';
+  }
+  say(document.getElementById('blocks-fb'), '', '');
+  drawMat();
+}
+
+function checkBlocks(){
+  var fb = document.getElementById('blocks-fb');
+  var v = matValue();
+  if (v !== job.answer){
+    var hint = v < job.answer ? 'That is less than the answer. Keep going.' : 'That is more than the answer. Take some away.';
+    say(fb, 'Your blocks show ' + v + '. ' + hint, 'no');
+    return;
+  }
+  if (mat.o > 9 || mat.t > 9){
+    say(fb, 'The value ' + v + ' is correct. Now trade: a place can only hold nine blocks.', 'note');
+    return;
+  }
+  say(fb, 'Correct. ' + v + ' is ' + mat.h + ' hundreds, ' + mat.t + ' tens and ' + mat.o + ' ones.', 'ok');
+}
+
+/* ===================== 2. MENTAL MATH ===================== */
+var mm = { q: 0, score: 0, streak: 0, answer: 0, locked: false };
+
+function newMentalQuestion(){
+  if (mm.q >= 10){
+    document.getElementById('mental-task').textContent = 'Round finished.';
+    document.getElementById('mental-choices').innerHTML = '';
+    say(document.getElementById('mental-fb'),
+        'You got ' + mm.score + ' out of 10. Press Start a new round to play again.', 'ok');
+    return;
+  }
+  mm.q++;
+  mm.locked = false;
+  var n = randInt(100, 900);
+  var step = pick([10, -10, 100, -100]);
+  if (n + step > 999) step = -Math.abs(step);
+  if (n + step < 0) step = Math.abs(step);
+  mm.answer = n + step;
+  var word = (step > 0 ? Math.abs(step) + ' more than ' : Math.abs(step) + ' less than ');
+  document.getElementById('mental-task').innerHTML =
+    'What is <span class="num">' + Math.abs(step) + '</span> ' + (step > 0 ? 'more' : 'less') +
+    ' than <span class="num">' + n + '</span>?';
+  document.getElementById('mental-task').setAttribute('data-say', 'What is ' + word + n + '?');
+  var wrong = [n + (step > 0 ? -step : -step), n + (step / 10 || step), n + step * 2, n];
+  var opts = [mm.answer];
+  wrong.forEach(function(w){
+    if (w >= 0 && w <= 999 && opts.indexOf(w) === -1 && opts.length < 4) opts.push(w);
+  });
+  while (opts.length < 4){
+    var extra = mm.answer + pick([1, -1, 11, -11, 9]);
+    if (extra >= 0 && opts.indexOf(extra) === -1) opts.push(extra);
+  }
+  var box = document.getElementById('mental-choices');
+  box.innerHTML = '';
+  shuffle(opts).forEach(function(v){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'choice'; b.textContent = v;
+    b.addEventListener('click', function(){ answerMental(b, v); });
+    box.appendChild(b);
+  });
+  updateMentalScore();
+  say(document.getElementById('mental-fb'), '', '');
+}
+
+function updateMentalScore(){
+  document.getElementById('mental-score').textContent =
+    'Question ' + Math.min(mm.q, 10) + ' of 10 \u00B7 Score ' + mm.score + ' \u00B7 Streak ' + mm.streak;
+}
+
+function answerMental(btn, v){
+  if (mm.locked) return;
+  mm.locked = true;
+  var fb = document.getElementById('mental-fb');
+  if (v === mm.answer){
+    btn.classList.add('right');
+    mm.score++; mm.streak++;
+    say(fb, mm.streak >= 3 ? 'Right again. That is ' + mm.streak + ' in a row.' : 'Right.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    mm.streak = 0;
+    $$('#mental-choices .choice').forEach(function(b){
+      if (Number(b.textContent) === mm.answer) b.classList.add('right');
+    });
+    say(fb, 'Not this time. The answer is ' + mm.answer + '.', 'no');
+  }
+  updateMentalScore();
+}
+
+/* ===================== 3. EXPLAIN A STRATEGY ===================== */
+var ex = { answer: 0, done: false };
+
+function newExplainProblem(){
+  ex.done = false;
+  var a = randInt(23, 58), b = randInt(15, 39);
+  var ta = Math.floor(a / 10) * 10, oa = a % 10;
+  var tb = Math.floor(b / 10) * 10, ob = b % 10;
+  var sum = a + b;
+  var good = {
+    ok: true,
+    who: 'Ana',
+    text: 'I broke both numbers apart. ' + ta + ' + ' + tb + ' = ' + (ta + tb) +
+          '. ' + oa + ' + ' + ob + ' = ' + (oa + ob) + '. ' + (ta + tb) + ' + ' + (oa + ob) + ' = ' + sum + '.'
+  };
+  var bad1 = {
+    ok: false,
+    who: 'Ben',
+    text: 'I broke both numbers apart. ' + ta + ' + ' + tb + ' = ' + (ta + tb) +
+          '. ' + oa + ' + ' + ob + ' = ' + (oa + ob) +
+          '. Then I wrote my two answers side by side and got ' + String(ta + tb) + String(oa + ob) + '.',
+    why: 'Ben wrote his two answers next to each other instead of adding them together.'
+  };
+  var hops = [], at = a;
+  for (var k = 0; k < tb / 10; k++){ at += 10; hops.push(at); }
+  var bad2 = {
+    ok: false,
+    who: 'Cleo',
+    text: 'I counted on by tens from ' + a + ': ' + hops.join(', ') +
+          '. Then I counted on ' + ob + ' more ones and landed on ' + (sum - 1) + '.',
+    why: 'Cleo jumped the tens correctly, but she miscounted the last ones and stopped one too soon.'
+  };
+  ex.answer = 'Ana';
+  document.getElementById('explain-task').textContent = 'The problem is ' + a + ' + ' + b + '. Who is right?';
+  var box = document.getElementById('explain-choices');
+  box.innerHTML = '';
+  shuffle([good, bad1, bad2]).forEach(function(c){
+    var b2 = document.createElement('button');
+    b2.type = 'button'; b2.className = 'choice';
+    b2.style.fontSize = '1rem'; b2.style.textAlign = 'left'; b2.style.lineHeight = '1.5';
+    b2.innerHTML = '<strong>' + c.who + '</strong><small style="margin-top:6px">' + c.text + '</small>';
+    b2.addEventListener('click', function(){ answerExplain(b2, c); });
+    box.appendChild(b2);
+  });
+  say(document.getElementById('explain-fb'), '', '');
+}
+
+function answerExplain(btn, card){
+  if (ex.done) return;
+  ex.done = true;
+  var fb = document.getElementById('explain-fb');
+  if (card.ok){
+    btn.classList.add('right');
+    say(fb, 'Yes. Ana kept every ten and every one, so nothing was lost.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    $$('#explain-choices .choice').forEach(function(b){
+      if (b.querySelector('strong').textContent === ex.answer) b.classList.add('right');
+    });
+    say(fb, card.why + ' Ana is the one who is right.', 'no');
+  }
+}
+
+var CHIPS = ['This strategy works because', 'I broke the number apart into', 'I added the tens first, and then',
+             'I made a ten by', 'It did not work because'];
+
+/* ===================== start ===================== */
+function startAll(){
+  $$('[data-add]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var k = b.getAttribute('data-add'), n = Number(b.getAttribute('data-n'));
+      mat[k] = Math.max(0, mat[k] + n);
+      drawMat();
+    });
+  });
+  document.getElementById('trade-up-o').addEventListener('click', function(){ mat.o -= 10; mat.t += 1; drawMat(); });
+  document.getElementById('trade-up-t').addEventListener('click', function(){ mat.t -= 10; mat.h += 1; drawMat(); });
+  document.getElementById('trade-dn-t').addEventListener('click', function(){ mat.t -= 1; mat.o += 10; drawMat(); });
+  document.getElementById('trade-dn-h').addEventListener('click', function(){ mat.h -= 1; mat.t += 10; drawMat(); });
+  document.getElementById('blocks-check').addEventListener('click', checkBlocks);
+  document.getElementById('blocks-clear').addEventListener('click', function(){ mat = { h: 0, t: 0, o: 0 }; drawMat(); });
+  document.getElementById('blocks-next').addEventListener('click', newBlocksJob);
+  newBlocksJob();
+
+  document.getElementById('mental-next').addEventListener('click', newMentalQuestion);
+  document.getElementById('mental-restart').addEventListener('click', function(){
+    mm = { q: 0, score: 0, streak: 0, answer: 0, locked: false };
+    newMentalQuestion();
+  });
+  newMentalQuestion();
+
+  var chipRow = document.getElementById('explain-chips');
+  CHIPS.forEach(function(c){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn sec'; b.style.fontSize = '.85rem'; b.textContent = c + '\u2026';
+    b.addEventListener('click', function(){
+      var ta = document.getElementById('explain-text');
+      ta.value += (ta.value && !/\s$/.test(ta.value) ? ' ' : '') + c + ' ';
+      ta.focus();
+    });
+    chipRow.appendChild(b);
+  });
+  document.getElementById('explain-read').addEventListener('click', function(){
+    var t = document.getElementById('explain-text').value.trim();
+    readAloud(t.length > 20 ? t : 'Write a sentence or two first, then I can read it back to you.', this);
+  });
+  document.getElementById('explain-print').addEventListener('click', function(){ window.print(); });
+  document.getElementById('explain-next').addEventListener('click', newExplainProblem);
+  newExplainProblem();
+}
+</script>
+</body>
+</html>

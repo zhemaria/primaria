@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<!-- Geometry & fractions | Grade 2 Math Interactives
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry & fractions | Grade 2 Math Interactives</title>
+<meta name="description" content="Recognize and draw shapes, partition rectangles into squares, and cut shapes into halves, thirds and fourths.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#9B1C1C;--domain-dark:#6E1313}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Geometry &amp; fractions<span class="grade">Grade 2 math practice</span></h1>
+    <a class="home-link" href="index.html">&#8592; All activities</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Geometry and fraction activities">
+  <button class="tab" role="tab" id="tab-shapes" aria-controls="p-shapes" aria-selected="true">Shape explorer</button>
+  <button class="tab" role="tab" id="tab-grid"   aria-controls="p-grid"   aria-selected="false">Grid builder</button>
+  <button class="tab" role="tab" id="tab-frac"   aria-controls="p-frac"   aria-selected="false">Fraction cutter</button>
+</div>
+
+<!-- ============ 1. SHAPE EXPLORER ============ -->
+<section class="panel" id="p-shapes" role="tabpanel" aria-labelledby="tab-shapes" tabindex="0">
+  <h2>Shape explorer</h2>
+  <div class="howto">
+    <p id="how-shapes">Shapes are named by how many sides and corners they have. A triangle has three, a quadrilateral has four, a pentagon has five and a hexagon has six. A cube is different: it is solid, and it has six square faces. Sometimes you name a shape, and sometimes you draw one by tapping the dots.</p>
+    <button class="btn-read" data-read="how-shapes" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="shape-task">Loading&hellip;</p>
+
+  <div class="mat" id="shape-show"></div>
+  <div class="choices" id="shape-choices"></div>
+
+  <div id="shape-draw" hidden>
+    <div class="mat" style="display:inline-block">
+      <h3>Tap dots to put a corner down</h3>
+      <div id="dotgrid" style="position:relative;width:300px;height:300px"></div>
+    </div>
+    <div class="row">
+      <button class="btn" type="button" id="shape-close">Close my shape and check</button>
+      <button class="btn sec" type="button" id="shape-undo">Undo last corner</button>
+      <button class="btn sec" type="button" id="shape-erase">Erase</button>
+    </div>
+  </div>
+
+  <p class="fb" id="shape-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn sec" type="button" id="shape-next">New job</button></div>
+</section>
+
+<!-- ============ 2. GRID BUILDER ============ -->
+<section class="panel" id="p-grid" role="tabpanel" aria-labelledby="tab-grid" tabindex="0" hidden>
+  <h2>Grid builder</h2>
+  <div class="howto">
+    <p id="how-grid">Split the rectangle into rows and columns of same size squares. Then count the squares. You can count them one by one, or add one row at a time, which is much faster.</p>
+    <button class="btn-read" data-read="how-grid" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="grid-task">Loading&hellip;</p>
+
+  <div class="row" role="group" aria-label="Rows and columns">
+    <span class="stack"><span style="font-weight:bold">Rows: <span id="grid-rows-n">1</span></span>
+    <button class="btn sec" type="button" data-grid="r" data-n="-1" aria-label="one row fewer">&minus;</button>
+    <button class="btn sec" type="button" data-grid="r" data-n="1" aria-label="one row more">+</button></span>
+    <span class="stack"><span style="font-weight:bold">Columns: <span id="grid-cols-n">1</span></span>
+    <button class="btn sec" type="button" data-grid="c" data-n="-1" aria-label="one column fewer">&minus;</button>
+    <button class="btn sec" type="button" data-grid="c" data-n="1" aria-label="one column more">+</button></span>
+  </div>
+
+  <div class="mat"><div id="grid-canvas"></div></div>
+
+  <div class="row">
+    <label for="grid-input" style="font-weight:bold">Squares in all:</label>
+    <input type="number" id="grid-input" min="0" data-enter="grid-check" aria-label="total number of squares">
+    <button class="btn big" type="button" id="grid-check">Check my answer</button>
+    <button class="btn sec" type="button" id="grid-next">New job</button>
+  </div>
+  <p class="fb" id="grid-fb" role="status" aria-live="polite"></p>
+</section>
+
+<!-- ============ 3. FRACTION CUTTER ============ -->
+<section class="panel" id="p-frac" role="tabpanel" aria-labelledby="tab-frac" tabindex="0" hidden>
+  <h2>Fraction cutter</h2>
+  <div class="howto">
+    <p id="how-frac">Cutting a shape into equal parts gives halves, thirds or fourths. Two parts are halves, three parts are thirds, four parts are fourths. Tap a part to shade it. The parts must be the same size, but they do not have to be the same shape.</p>
+    <button class="btn-read" data-read="how-frac" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="frac-task">Loading&hellip;</p>
+
+  <div class="row" id="frac-cuts" role="group" aria-label="Cut the shape">
+    <button class="btn sec" type="button" data-cut="2">Cut into halves</button>
+    <button class="btn sec" type="button" data-cut="3">Cut into thirds</button>
+    <button class="btn sec" type="button" data-cut="4">Cut into fourths</button>
+  </div>
+
+  <div class="mat"><div id="frac-canvas"></div>
+    <p id="frac-read" aria-live="polite" style="font-weight:bold;margin:12px 0 0"></p>
+  </div>
+
+  <div class="choices" id="frac-choices"></div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="frac-check">Check my shading</button>
+    <button class="btn sec" type="button" id="frac-next">New job</button>
+  </div>
+  <p class="fb" id="frac-fb" role="status" aria-live="polite"></p>
+
+  <div class="mat">
+    <h3>Equal parts can look different</h3>
+    <div id="frac-demo" style="display:flex;gap:20px;flex-wrap:wrap"></div>
+    <p style="margin:10px 0 0;font-size:.95rem">Both rectangles are cut into fourths. The shaded part is one fourth of the whole in each one, even though the two shaded pieces are not the same shape.</p>
+  </div>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Built for second-grade learners and their families. Works offline once the page is open; nothing is stored or sent anywhere.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; free to share and adapt for non-commercial use, with credit.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google US English/i,          /* Chrome, desktop and Android */
+  /^Samantha$/i,                 /* iPad, iPhone, Mac */
+  /Microsoft (Aria|Jenny|Ava|Michelle)/i,  /* Edge, natural voices */
+  /Microsoft Zira/i,             /* Windows, older but clear */
+  /^English \(United States\)/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var english = all.filter(function(v){ return /^en[-_]?/i.test(v.lang); });
+  if (!english.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = english.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  VOICE = english.filter(function(v){ return /US/i.test(v.lang); })[0] || english[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'en-US';
+    u.rate = 0.85;   /* a little under normal speed: clear for a seven year old */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== 1. SHAPE EXPLORER ===================== */
+var SHAPES = [
+  { name: 'triangle', sides: 3 },
+  { name: 'quadrilateral', sides: 4 },
+  { name: 'pentagon', sides: 5 },
+  { name: 'hexagon', sides: 6 }
+];
+var shapeTask = null, corners = [];
+
+function polygonSVG(sides, size){
+  var r = size / 2 - 12, cx = size / 2, cy = size / 2, pts = [];
+  var turn = (Math.random() * 0.4) - 0.2;
+  for (var i = 0; i < sides; i++){
+    var a = (i / sides) * 2 * Math.PI - Math.PI / 2 + turn;
+    var wob = 1 - (i % 2 ? 0.12 : 0);
+    pts.push((cx + r * wob * Math.cos(a)).toFixed(1) + ',' + (cy + r * wob * Math.sin(a)).toFixed(1));
+  }
+  return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '" role="img" aria-label="a shape with ' + sides + ' sides">' +
+         '<polygon points="' + pts.join(' ') + '" fill="#FBEAEA" stroke="#9B1C1C" stroke-width="5" stroke-linejoin="round"/></svg>';
+}
+
+function cubeSVG(size){
+  var s = size * 0.52, o = size * 0.22;
+  return '<svg viewBox="0 0 ' + size + ' ' + size + '" width="' + size + '" height="' + size + '" role="img" aria-label="a cube">' +
+         '<polygon points="' + o + ',' + (o + o) + ' ' + (o + s) + ',' + (o + o) + ' ' + (o + s) + ',' + (o + o + s) + ' ' + o + ',' + (o + o + s) +
+         '" fill="#FBEAEA" stroke="#9B1C1C" stroke-width="4"/>' +
+         '<polygon points="' + o + ',' + (o + o) + ' ' + (o + o) + ',' + o + ' ' + (o + o + s) + ',' + o + ' ' + (o + s) + ',' + (o + o) +
+         '" fill="#F6D7D7" stroke="#9B1C1C" stroke-width="4"/>' +
+         '<polygon points="' + (o + s) + ',' + (o + o) + ' ' + (o + o + s) + ',' + o + ' ' + (o + o + s) + ',' + (o + s) + ' ' + (o + s) + ',' + (o + o + s) +
+         '" fill="#EFC3C3" stroke="#9B1C1C" stroke-width="4"/></svg>';
+}
+
+function buildDotGrid(){
+  var box = document.getElementById('dotgrid'), N = 5, step = 60;
+  box.innerHTML = '<svg id="dotsvg" viewBox="0 0 300 300" style="position:absolute;inset:0;pointer-events:none" aria-hidden="true"></svg>';
+  for (var r = 0; r < N; r++){
+    for (var c = 0; c < N; c++){
+      (function(rr, cc){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'dot row ' + (rr + 1) + ' column ' + (cc + 1));
+        b.style.cssText = 'position:absolute;width:34px;height:34px;border-radius:50%;border:3px solid #B6C6D8;' +
+          'background:#fff;cursor:pointer;padding:0;left:' + (cc * step + 13) + 'px;top:' + (rr * step + 13) + 'px';
+        b.addEventListener('click', function(){
+          corners.push([cc * step + 30, rr * step + 30]);
+          drawCorners();
+        });
+        box.appendChild(b);
+      })(r, c);
+    }
+  }
+}
+
+function drawCorners(){
+  var svg = document.getElementById('dotsvg');
+  if (!svg) return;
+  var pts = corners.map(function(p){ return p[0] + ',' + p[1]; }).join(' ');
+  var dots = corners.map(function(p){
+    return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="8" fill="#9B1C1C"/>';
+  }).join('');
+  svg.innerHTML = (corners.length > 1 ? '<polyline points="' + pts + '" fill="none" stroke="#9B1C1C" stroke-width="5" stroke-linejoin="round"/>' : '') + dots;
+}
+
+function newShapeJob(){
+  var kind = pick(['name', 'name', 'draw', 'cube']);
+  var show = document.getElementById('shape-show');
+  var ch = document.getElementById('shape-choices');
+  ch.innerHTML = ''; show.innerHTML = '';
+  show.hidden = false;
+  document.getElementById('shape-draw').hidden = true;
+  say(document.getElementById('shape-fb'), '', '');
+  corners = [];
+
+  if (kind === 'name'){
+    var s = pick(SHAPES);
+    shapeTask = { kind: 'name', answer: s.name };
+    document.getElementById('shape-task').textContent = 'What is this shape called?';
+    show.innerHTML = polygonSVG(s.sides, 240);
+    shuffle(SHAPES).forEach(function(o){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '1.05rem';
+      b.innerHTML = o.name + '<small>' + o.sides + ' sides, ' + o.sides + ' corners</small>';
+      b.addEventListener('click', function(){ answerShape(b, o.name); });
+      ch.appendChild(b);
+    });
+  } else if (kind === 'cube'){
+    shapeTask = { kind: 'cube', answer: '6 faces' };
+    document.getElementById('shape-task').textContent = 'A cube is a solid shape. How many faces does it have?';
+    show.innerHTML = cubeSVG(240);
+    ['4 faces', '5 faces', '6 faces', '8 faces'].forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.textContent = t;
+      b.addEventListener('click', function(){ answerShape(b, t); });
+      ch.appendChild(b);
+    });
+  } else {
+    var s2 = pick(SHAPES);
+    shapeTask = { kind: 'draw', sides: s2.sides, name: s2.name };
+    document.getElementById('shape-task').textContent =
+      'Draw a ' + s2.name + '. Tap ' + s2.sides + ' dots, one for each corner, then close your shape.';
+    show.hidden = true;
+    document.getElementById('shape-draw').hidden = false;
+    buildDotGrid();
+  }
+}
+
+function answerShape(btn, val){
+  var fb = document.getElementById('shape-fb');
+  if (val === shapeTask.answer){
+    btn.classList.add('right');
+    say(fb, shapeTask.kind === 'cube'
+      ? 'Correct. A cube has six square faces, and they are all the same size.'
+      : 'Correct. Count the corners and the sides: they always match.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    say(fb, 'Not that one. Count the sides one at a time, and mark where you started.', 'no');
+  }
+}
+
+function closeShape(){
+  var fb = document.getElementById('shape-fb');
+  if (!shapeTask || shapeTask.kind !== 'draw') return;
+  if (corners.length < 3){ say(fb, 'A closed shape needs at least three corners.', 'note'); return; }
+  var svg = document.getElementById('dotsvg');
+  var pts = corners.map(function(p){ return p[0] + ',' + p[1]; }).join(' ');
+  svg.innerHTML = '<polygon points="' + pts + '" fill="#FBEAEA" stroke="#9B1C1C" stroke-width="5" stroke-linejoin="round"/>' +
+    corners.map(function(p){ return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="8" fill="#9B1C1C"/>'; }).join('');
+  if (corners.length === shapeTask.sides){
+    say(fb, 'Correct. Your shape has ' + corners.length + ' sides and ' + corners.length + ' corners, so it is a ' + shapeTask.name + '.', 'ok');
+  } else {
+    say(fb, 'Your shape has ' + corners.length + ' corners. A ' + shapeTask.name + ' needs ' + shapeTask.sides + '. Press Erase and try again.', 'no');
+  }
+}
+
+/* ===================== 2. GRID BUILDER ===================== */
+var grid = { r: 1, c: 1, wantR: 3, wantC: 4 };
+
+function drawGrid(){
+  var cell = 46, W = 6 * cell + 20, H = 6 * cell + 20;
+  var out = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="rectangle with ' + grid.r + ' rows and ' + grid.c + ' columns of squares">';
+  for (var r = 0; r < grid.r; r++){
+    for (var c = 0; c < grid.c; c++){
+      out += '<rect x="' + (10 + c * cell) + '" y="' + (10 + r * cell) + '" width="' + cell + '" height="' + cell +
+             '" fill="#FBEAEA" stroke="#9B1C1C" stroke-width="3"/>';
+    }
+  }
+  out += '</svg>';
+  document.getElementById('grid-canvas').innerHTML = out;
+  document.getElementById('grid-rows-n').textContent = grid.r;
+  document.getElementById('grid-cols-n').textContent = grid.c;
+}
+
+function newGridJob(){
+  grid.wantR = randInt(2, 5); grid.wantC = randInt(2, 5);
+  grid.r = 1; grid.c = 1;
+  document.getElementById('grid-task').textContent =
+    'Make a rectangle with ' + grid.wantR + ' rows of ' + grid.wantC + ' squares. Then count how many squares in all.';
+  document.getElementById('grid-input').value = '';
+  say(document.getElementById('grid-fb'), '', '');
+  drawGrid();
+}
+
+function checkGrid(){
+  var fb = document.getElementById('grid-fb');
+  if (grid.r !== grid.wantR || grid.c !== grid.wantC){
+    say(fb, 'Your rectangle has ' + grid.r + ' rows of ' + grid.c + '. The job asks for ' + grid.wantR + ' rows of ' + grid.wantC + '.', 'no');
+    return;
+  }
+  var box = document.getElementById('grid-input');
+  if (box.value === ''){ say(fb, 'The rectangle is right. Now type how many squares in all.', 'note'); return; }
+  var total = grid.wantR * grid.wantC;
+  if (Number(box.value) === total){
+    var chain = [];
+    for (var i = 0; i < grid.wantR; i++) chain.push(grid.wantC);
+    say(fb, 'Correct. ' + chain.join(' + ') + ' = ' + total + ' squares.', 'ok');
+  } else {
+    say(fb, 'Not yet. Count one row first, then add that number once for every row.', 'no');
+  }
+}
+
+/* ===================== 3. FRACTION CUTTER ===================== */
+var FRAC_WORDS = { 2: ['one half', 'halves'], 3: ['one third', 'thirds'], 4: ['one fourth', 'fourths'] };
+var frac = { shape: 'rect', parts: 1, shaded: [], task: null };
+
+function fracName(n, d){
+  if (n === d) return 'the whole shape';
+  var ones = { 2: 'half', 3: 'third', 4: 'fourth' }[d];
+  var words = ['zero', 'one', 'two', 'three', 'four'];
+  return words[n] + ' ' + ones + (n > 1 ? 's' : '');
+}
+
+function drawFrac(){
+  var out = '';
+  if (frac.shape === 'rect'){
+    var W = 420, H = 170, pw = W / frac.parts;
+    out = '<svg viewBox="0 0 ' + (W + 10) + ' ' + (H + 10) + '" role="group" aria-label="rectangle cut into ' + frac.parts + ' equal parts">';
+    for (var i = 0; i < frac.parts; i++){
+      out += '<rect data-part="' + i + '" tabindex="0" role="button" aria-label="part ' + (i + 1) + ' of ' + frac.parts +
+             ', ' + (frac.shaded.indexOf(i) > -1 ? 'shaded' : 'not shaded') + '" x="' + (5 + i * pw) + '" y="5" width="' + pw + '" height="' + H +
+             '" fill="' + (frac.shaded.indexOf(i) > -1 ? '#9B1C1C' : '#FBEAEA') + '" stroke="#6E1313" stroke-width="4" style="cursor:pointer"/>';
+    }
+  } else {
+    var cx = 160, cy = 160, r = 145;
+    out = '<svg viewBox="0 0 320 320" role="group" aria-label="circle cut into ' + frac.parts + ' equal parts">';
+    if (frac.parts === 1){
+      out += '<circle data-part="0" tabindex="0" role="button" aria-label="the whole circle" cx="160" cy="160" r="' + r +
+             '" fill="' + (frac.shaded.indexOf(0) > -1 ? '#9B1C1C' : '#FBEAEA') + '" stroke="#6E1313" stroke-width="4" style="cursor:pointer"/>';
+    } else {
+      for (var k = 0; k < frac.parts; k++){
+        var a0 = (k / frac.parts) * 2 * Math.PI - Math.PI / 2;
+        var a1 = ((k + 1) / frac.parts) * 2 * Math.PI - Math.PI / 2;
+        var large = (a1 - a0) > Math.PI ? 1 : 0;
+        var d = 'M ' + cx + ' ' + cy + ' L ' + (cx + r * Math.cos(a0)) + ' ' + (cy + r * Math.sin(a0)) +
+                ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + (cx + r * Math.cos(a1)) + ' ' + (cy + r * Math.sin(a1)) + ' Z';
+        out += '<path data-part="' + k + '" tabindex="0" role="button" aria-label="part ' + (k + 1) + ' of ' + frac.parts +
+               ', ' + (frac.shaded.indexOf(k) > -1 ? 'shaded' : 'not shaded') + '" d="' + d +
+               '" fill="' + (frac.shaded.indexOf(k) > -1 ? '#9B1C1C' : '#FBEAEA') + '" stroke="#6E1313" stroke-width="4" style="cursor:pointer"/>';
+      }
+    }
+  }
+  out += '</svg>';
+  document.getElementById('frac-canvas').innerHTML = out;
+  $$('#frac-canvas [data-part]').forEach(function(el){
+    function toggle(){
+      var i = Number(el.getAttribute('data-part'));
+      var at = frac.shaded.indexOf(i);
+      if (at > -1) frac.shaded.splice(at, 1); else frac.shaded.push(i);
+      drawFrac();
+    }
+    el.addEventListener('click', toggle);
+    el.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
+  });
+  document.getElementById('frac-read').textContent = frac.parts === 1
+    ? 'The shape is not cut yet.'
+    : 'Cut into ' + FRAC_WORDS[frac.parts][1] + '. Shaded: ' + frac.shaded.length + ' of ' + frac.parts + '.';
+}
+
+function newFracJob(){
+  frac.shape = pick(['rect', 'circle']);
+  frac.parts = 1; frac.shaded = [];
+  var ch = document.getElementById('frac-choices');
+  ch.innerHTML = '';
+  say(document.getElementById('frac-fb'), '', '');
+  var kind = pick(['make', 'make', 'name']);
+  document.getElementById('frac-cuts').hidden = (kind !== 'make');
+  document.getElementById('frac-check').hidden = (kind !== 'make');
+
+  if (kind === 'make'){
+    var d = pick([2, 3, 4]);
+    var n = randInt(1, d);
+    frac.task = { kind: 'make', d: d, n: n };
+    document.getElementById('frac-task').textContent =
+      'Cut the shape into ' + FRAC_WORDS[d][1] + ', then shade ' + fracName(n, d) + '.';
+  } else {
+    var d2 = pick([2, 3, 4]);
+    var n2 = randInt(1, d2 - 1);
+    frac.parts = d2;
+    for (var i = 0; i < n2; i++) frac.shaded.push(i);
+    frac.task = { kind: 'name', answer: fracName(n2, d2) };
+    document.getElementById('frac-task').textContent = 'How much of the shape is shaded?';
+    var opts = [fracName(n2, d2)];
+    [fracName(Math.max(1, n2 - 1), d2), fracName(1, d2 === 4 ? 3 : 4), fracName(1, 2)].forEach(function(o){
+      if (opts.indexOf(o) === -1 && opts.length < 4) opts.push(o);
+    });
+    shuffle(opts).forEach(function(o){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '1.1rem'; b.textContent = o;
+      b.addEventListener('click', function(){
+        var fb = document.getElementById('frac-fb');
+        if (o === frac.task.answer){
+          b.classList.add('right');
+          say(fb, 'Correct. ' + n2 + ' of the ' + d2 + ' equal parts are shaded, so that is ' + o + '.', 'ok');
+        } else {
+          b.classList.add('wrong');
+          say(fb, 'Not that one. Count all the equal parts first, then count the shaded ones.', 'no');
+        }
+      });
+      ch.appendChild(b);
+    });
+  }
+  drawFrac();
+}
+
+function checkFrac(){
+  var fb = document.getElementById('frac-fb'), t = frac.task;
+  if (!t || t.kind !== 'make') return;
+  if (frac.parts !== t.d){
+    say(fb, 'First cut the shape into ' + FRAC_WORDS[t.d][1] + '. That is ' + t.d + ' equal parts.', 'no');
+    return;
+  }
+  if (frac.shaded.length === t.n){
+    say(fb, 'Correct. ' + t.n + ' of ' + t.d + ' equal parts is ' + fracName(t.n, t.d) + '.', 'ok');
+  } else {
+    say(fb, 'You shaded ' + frac.shaded.length + ' of ' + t.d + '. The job asks for ' + fracName(t.n, t.d) + '.', 'no');
+  }
+}
+
+function drawFracDemo(){
+  var a = '<svg viewBox="0 0 220 130" width="220" height="130" role="img" aria-label="rectangle cut into four tall strips, one shaded">' +
+    '<rect x="5" y="5" width="52" height="120" fill="#9B1C1C" stroke="#6E1313" stroke-width="3"/>' +
+    '<rect x="57" y="5" width="52" height="120" fill="#FBEAEA" stroke="#6E1313" stroke-width="3"/>' +
+    '<rect x="109" y="5" width="52" height="120" fill="#FBEAEA" stroke="#6E1313" stroke-width="3"/>' +
+    '<rect x="161" y="5" width="52" height="120" fill="#FBEAEA" stroke="#6E1313" stroke-width="3"/></svg>';
+  var b = '<svg viewBox="0 0 220 130" width="220" height="130" role="img" aria-label="rectangle cut into four squares, one shaded">' +
+    '<rect x="5" y="5" width="104" height="60" fill="#9B1C1C" stroke="#6E1313" stroke-width="3"/>' +
+    '<rect x="109" y="5" width="104" height="60" fill="#FBEAEA" stroke="#6E1313" stroke-width="3"/>' +
+    '<rect x="5" y="65" width="104" height="60" fill="#FBEAEA" stroke="#6E1313" stroke-width="3"/>' +
+    '<rect x="109" y="65" width="104" height="60" fill="#FBEAEA" stroke="#6E1313" stroke-width="3"/></svg>';
+  document.getElementById('frac-demo').innerHTML = a + b;
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  document.getElementById('shape-next').addEventListener('click', newShapeJob);
+  document.getElementById('shape-close').addEventListener('click', closeShape);
+  document.getElementById('shape-undo').addEventListener('click', function(){ corners.pop(); drawCorners(); });
+  document.getElementById('shape-erase').addEventListener('click', function(){ corners = []; drawCorners(); say(document.getElementById('shape-fb'), '', ''); });
+  newShapeJob();
+
+  $$('[data-grid]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var k = b.getAttribute('data-grid'), n = Number(b.getAttribute('data-n'));
+      if (k === 'r') grid.r = Math.min(6, Math.max(1, grid.r + n));
+      else grid.c = Math.min(6, Math.max(1, grid.c + n));
+      drawGrid();
+    });
+  });
+  document.getElementById('grid-check').addEventListener('click', checkGrid);
+  document.getElementById('grid-next').addEventListener('click', newGridJob);
+  newGridJob();
+
+  $$('[data-cut]').forEach(function(b){
+    b.addEventListener('click', function(){
+      frac.parts = Number(b.getAttribute('data-cut'));
+      frac.shaded = [];
+      drawFrac();
+    });
+  });
+  document.getElementById('frac-check').addEventListener('click', checkFrac);
+  document.getElementById('frac-next').addEventListener('click', newFracJob);
+  newFracJob();
+  drawFracDemo();
+}
+</script>
+</body>
+</html>
