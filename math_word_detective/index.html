@@ -1,1 +1,820 @@
+<!DOCTYPE html>
+<!--
+  Math Word Detective — Do I add or subtract?
+  Reasoning practice for 2nd grade: choosing the operation from the question.
+  © 2026 José M. Fernández. Licensed CC BY-NC-SA 4.0
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Word Detective — Do I add or subtract?</title>
+<meta name="description" content="A second-grade reasoning game: decide whether to put together, compare, or take away before you solve. Covers Operations and Algebraic Thinking, Number and Operations in Base Ten, Measurement and Data, and Geometry.">
+<meta name="author" content="José M. Fernández">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papel:#EEF3F8;
+    --linea:#D8E4F0;
+    --tarjeta:#FFFFFF;
+    --tinta:#10293F;
+    --tinta-suave:#4A5F73;
+    --juntar:#146B4A;
+    --comparar:#A82A1A;
+    --quitar:#6B3E9E;
+    --mirar:#23508F;
+    --oro:#F4B92E;
+    --radio:18px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    padding:0 0 3rem;
+    font-family:'Andika','Segoe UI',system-ui,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    color:var(--tinta);
+    background-color:var(--papel);
+    background-image:
+      linear-gradient(var(--linea) 1px, transparent 1px),
+      linear-gradient(90deg, var(--linea) 1px, transparent 1px);
+    background-size:28px 28px;
+  }
+  .envoltura{max-width:860px;margin:0 auto;padding:1.25rem}
 
+  /* ---------- Header ---------- */
+  .portada{
+    background:var(--tarjeta);
+    border:4px solid var(--tinta);
+    border-radius:var(--radio);
+    box-shadow:8px 8px 0 var(--tinta);
+    padding:1.5rem 1.5rem 1.25rem;
+    margin-bottom:1.5rem;
+  }
+  h1{
+    font-family:'Fredoka','Andika',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.9rem,6vw,2.9rem);
+    line-height:1.05;
+    margin:0 0 .35rem;
+    letter-spacing:-.01em;
+  }
+  .subtitulo{margin:0;color:var(--tinta-suave);font-size:1.05rem}
+  .placa{
+    display:inline-block;
+    background:var(--oro);
+    color:var(--tinta);
+    border:3px solid var(--tinta);
+    border-radius:999px;
+    padding:.15rem .8rem;
+    font-family:'Fredoka',sans-serif;
+    font-size:.95rem;
+    margin-bottom:.6rem;
+  }
+
+  /* ---------- Clue card ---------- */
+  details.claves{
+    background:var(--tarjeta);
+    border:3px dashed var(--tinta);
+    border-radius:var(--radio);
+    padding:.75rem 1.1rem;
+    margin-bottom:1.5rem;
+  }
+  details.claves summary{
+    font-family:'Fredoka',sans-serif;
+    font-size:1.15rem;
+    cursor:pointer;
+    padding:.3rem 0;
+  }
+  details.claves summary:focus-visible{outline:3px solid var(--mirar);outline-offset:3px;border-radius:6px}
+  table.clavesTabla{width:100%;border-collapse:collapse;margin:.75rem 0 .25rem}
+  table.clavesTabla caption{text-align:left;font-size:.95rem;color:var(--tinta-suave);padding-bottom:.5rem}
+  table.clavesTabla th,table.clavesTabla td{
+    border:2px solid var(--tinta);padding:.5rem .6rem;text-align:left;vertical-align:top;font-size:1rem;
+  }
+  table.clavesTabla th{background:#E6EEF7;font-family:'Fredoka',sans-serif}
+  .pastilla{
+    display:inline-block;border-radius:999px;padding:.1rem .6rem;
+    color:#fff;font-family:'Fredoka',sans-serif;font-size:.9rem;white-space:nowrap;
+  }
+  .pJuntar{background:var(--juntar)} .pComparar{background:var(--comparar)} .pQuitar{background:var(--quitar)}
+
+  /* ---------- Case panel ---------- */
+  .caso{
+    background:var(--tarjeta);
+    border:4px solid var(--tinta);
+    border-radius:var(--radio);
+    box-shadow:8px 8px 0 var(--tinta);
+    padding:1.25rem;
+  }
+  .barraCaso{
+    display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;
+    border-bottom:3px solid var(--linea);padding-bottom:.7rem;margin-bottom:1rem;
+  }
+  .contador{font-family:'Fredoka',sans-serif;font-size:1.05rem}
+  .estrellas{font-size:1.3rem;letter-spacing:.1rem}
+  .norma{font-size:.85rem;color:var(--tinta-suave)}
+
+  h2.tituloCaso{font-family:'Fredoka',sans-serif;font-size:1.5rem;margin:0 0 .75rem}
+  h3{font-family:'Fredoka',sans-serif;font-size:1.15rem;margin:1.4rem 0 .6rem}
+
+  /* ---------- Picture area ---------- */
+  .escena{
+    background:var(--papel);
+    background-image:
+      linear-gradient(var(--linea) 1px, transparent 1px),
+      linear-gradient(90deg, var(--linea) 1px, transparent 1px);
+    background-size:22px 22px;
+    border:3px solid var(--tinta);
+    border-radius:12px;
+    padding:.9rem;
+    margin-bottom:1rem;
+    overflow-x:auto;
+  }
+  .fila{display:flex;align-items:center;gap:.5rem;margin:.35rem 0;flex-wrap:nowrap}
+  .etiquetaFila{
+    font-family:'Fredoka',sans-serif;font-size:1rem;min-width:7.5rem;
+    background:var(--tarjeta);border:2px solid var(--tinta);border-radius:8px;padding:.15rem .5rem;
+  }
+  .iconos{font-size:1.7rem;line-height:1.2;letter-spacing:.15rem;white-space:nowrap}
+  .leyenda{font-size:.95rem;color:var(--tinta-suave);margin-top:.5rem}
+  .cuento{font-size:1.2rem;margin:.2rem 0}
+  .cuento .grande{font-size:1.9rem;letter-spacing:.15rem}
+
+  /* ---------- Question ---------- */
+  .pregunta{
+    font-family:'Fredoka',sans-serif;font-size:clamp(1.15rem,3.6vw,1.5rem);
+    line-height:1.35;margin:0 0 .5rem;
+  }
+  mark.clave{
+    background:var(--oro);color:var(--tinta);
+    padding:0 .25rem;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  }
+  .audio{
+    background:var(--tarjeta);border:2px solid var(--tinta-suave);color:var(--tinta);
+    border-radius:999px;padding:.35rem .9rem;font-family:'Andika',sans-serif;font-size:.95rem;
+    cursor:pointer;margin-bottom:.4rem;min-height:44px;
+  }
+  .audio:hover{background:#E6EEF7}
+  .audio:focus-visible{outline:3px solid var(--mirar);outline-offset:3px}
+
+  /* ---------- Decision buttons ---------- */
+  .opciones{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
+  button.opcion{
+    flex:1 1 14rem;
+    min-height:64px;
+    display:flex;align-items:center;gap:.6rem;
+    text-align:left;
+    font-family:'Fredoka',sans-serif;font-size:1.1rem;
+    color:#fff;background:var(--mirar);
+    border:3px solid var(--tinta);border-radius:14px;
+    box-shadow:5px 5px 0 var(--tinta);
+    padding:.6rem .9rem;cursor:pointer;
+  }
+  button.opcion .glifo{
+    background:#fff;color:var(--tinta);border-radius:10px;
+    min-width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;flex:0 0 auto;
+  }
+  button.opcion small{display:block;font-family:'Andika',sans-serif;font-size:.85rem;opacity:.95;font-weight:400}
+  button.opcion[data-tono="juntar"]{background:var(--juntar)}
+  button.opcion[data-tono="comparar"]{background:var(--comparar)}
+  button.opcion[data-tono="quitar"]{background:var(--quitar)}
+  button.opcion[data-tono="mirar"]{background:var(--mirar)}
+  button.opcion:hover{transform:translate(1px,1px);box-shadow:4px 4px 0 var(--tinta)}
+  button.opcion:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--tinta)}
+  button.opcion:focus-visible{outline:4px solid var(--oro);outline-offset:3px}
+  button.opcion[disabled]{cursor:default;opacity:.55}
+  button.opcion.acertada{background:var(--juntar);opacity:1}
+  button.opcion.fallada{background:#6B7C8C;opacity:.75;text-decoration:line-through}
+
+  /* Number tiles */
+  .fichas{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
+  button.ficha{
+    min-width:96px;min-height:76px;
+    font-family:'Fredoka',sans-serif;font-size:1.7rem;
+    background:var(--tarjeta);color:var(--tinta);
+    border:3px solid var(--tinta);border-radius:14px;
+    box-shadow:5px 5px 0 var(--tinta);
+    padding:.5rem .9rem;cursor:pointer;flex:0 1 auto;
+  }
+  button.ficha:hover{transform:translate(1px,1px);box-shadow:4px 4px 0 var(--tinta)}
+  button.ficha:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--tinta)}
+  button.ficha:focus-visible{outline:4px solid var(--mirar);outline-offset:3px}
+  button.ficha[disabled]{cursor:default}
+  button.ficha.acertada{background:var(--juntar);color:#fff}
+  button.ficha.fallada{background:#DCE4EC;color:#3C4A57;text-decoration:line-through}
+
+  /* ---------- Feedback ---------- */
+  .aviso{
+    border:3px solid var(--tinta);border-radius:12px;
+    padding:.8rem 1rem;margin-top:1rem;font-size:1.05rem;
+  }
+  .aviso.bien{background:#E3F3EA;border-color:var(--juntar)}
+  .aviso.casi{background:#FFF4DB;border-color:#8A6100}
+  .aviso b{font-family:'Fredoka',sans-serif}
+  .aviso p{margin:.35rem 0}
+  .sello{
+    display:inline-block;font-family:'Fredoka',sans-serif;font-size:1.05rem;
+    border:3px solid var(--juntar);color:var(--juntar);border-radius:10px;
+    padding:.1rem .6rem;transform:rotate(-4deg);margin-bottom:.3rem;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .sello{animation:plaf .35s ease-out}
+    @keyframes plaf{from{transform:scale(1.6) rotate(-14deg);opacity:0}to{transform:scale(1) rotate(-4deg);opacity:1}}
+  }
+  button.seguir{
+    margin-top:1rem;
+    font-family:'Fredoka',sans-serif;font-size:1.2rem;
+    background:var(--tinta);color:#fff;
+    border:3px solid var(--tinta);border-radius:14px;
+    box-shadow:5px 5px 0 var(--oro);
+    padding:.6rem 1.4rem;min-height:56px;cursor:pointer;
+  }
+  button.seguir:hover{transform:translate(1px,1px)}
+  button.seguir:focus-visible{outline:4px solid var(--oro);outline-offset:3px}
+
+  /* ---------- Ending ---------- */
+  .medalla{text-align:center;padding:1rem}
+  .medalla .disco{
+    width:140px;height:140px;margin:0 auto 1rem;border-radius:50%;
+    background:var(--oro);border:6px solid var(--tinta);
+    display:flex;align-items:center;justify-content:center;font-size:4rem;
+  }
+  ul.repaso{padding-left:1.2rem}
+  ul.repaso li{margin:.3rem 0}
+
+  .oculto{display:none}
+  .soloLector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  footer{
+    max-width:860px;margin:2rem auto 0;padding:1rem 1.25rem;
+    font-size:.9rem;color:var(--tinta-suave);text-align:center;
+  }
+  footer a{color:var(--mirar)}
+
+  @media print{
+    body{background:#fff}
+    .caso,.portada{box-shadow:none}
+    button{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="envoltura">
+
+  <header class="portada">
+    <span class="placa">Grade 2 · Illinois Learning Standards for Mathematics</span>
+    <h1>Math Word Detective</h1>
+    <p class="subtitulo">Before you count, decide: do I put together, compare, or take away? Read the clue, think, then close the case.</p>
+  </header>
+
+  <details class="claves">
+    <summary>Detective card: the words that give the clue away</summary>
+    <table class="clavesTabla">
+      <caption>What to do when each word shows up in the question.</caption>
+      <thead>
+        <tr>
+          <th scope="col">The question says…</th>
+          <th scope="col">It means…</th>
+          <th scope="col">The move</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>altogether, in all, both</td><td>Push the two groups into one pile.</td><td><span class="pastilla pJuntar">Put together +</span></td></tr>
+        <tr><td>how many more…than, how many fewer…than, compare</td><td>Line the groups up side by side and find the difference.</td><td><span class="pastilla pComparar">Compare −</span></td></tr>
+        <tr><td>left, gave away, ate, lost, still there</td><td>You had one pile and part of it went away.</td><td><span class="pastilla pQuitar">Take away −</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.98rem;margin:.4rem 0 .2rem"><b>Detective tip:</b> the words <i>more</i> and <i>fewer</i> do not mean add or subtract by themselves. Watch for <b>than</b>. When two groups are lined up against each other, you are hunting for the difference.</p>
+  </details>
+
+  <main class="caso" id="caso" aria-live="polite">
+    <!-- The game is drawn here -->
+  </main>
+
+  <p class="soloLector" id="anuncio" role="status" aria-live="polite"></p>
+</div>
+
+<footer>
+  <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
+  <p>Licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ drawing helpers ============ */
+
+  function repetir(emoji, n){
+    return '<span class="iconos" aria-hidden="true">' + Array(n+1).join(emoji) + '</span>';
+  }
+
+  function filaRayitas(etiqueta, n){
+    return '<div class="fila"><span class="etiquetaFila">'+etiqueta+'</span>'+rayitas(n)+'</div>';
+  }
+
+  function rayitas(n){
+    var g='', x=6, grupos=Math.floor(n/5), resto=n%5, i, j;
+    for(i=0;i<grupos;i++){
+      for(j=0;j<4;j++){ g+='<line x1="'+(x+j*10)+'" y1="5" x2="'+(x+j*10)+'" y2="35"/>'; }
+      g+='<line x1="'+(x-5)+'" y1="33" x2="'+(x+35)+'" y2="7"/>';
+      x+=58;
+    }
+    for(j=0;j<resto;j++){ g+='<line x1="'+(x+j*10)+'" y1="5" x2="'+(x+j*10)+'" y2="35"/>'; }
+    x+= resto ? resto*10+8 : 4;
+    return '<svg viewBox="0 0 '+Math.max(x,60)+' 40" style="height:40px;width:auto" aria-hidden="true" '+
+           'fill="none" stroke="#10293F" stroke-width="4" stroke-linecap="round">'+g+'</svg>';
+  }
+
+  function matriz(filas, columnas, emoji){
+    var s='', i;
+    for(i=0;i<filas;i++){
+      s+='<div style="margin:.15rem 0">'+repetir(emoji,columnas)+'</div>';
+    }
+    return s;
+  }
+
+  function barras(datos){
+    var alto = 52*datos.length + 46, y=10, s='', max=8, ancho=520, i;
+    for(i=0;i<datos.length;i++){
+      var w = (datos[i].valor/max)*ancho;
+      s+='<text x="0" y="'+(y+26)+'" font-size="19" font-family="Fredoka, sans-serif" fill="#10293F">'+datos[i].nombre+'</text>';
+      s+='<rect x="90" y="'+y+'" width="'+w+'" height="34" fill="'+(i%2?'#23508F':'#146B4A')+'" stroke="#10293F" stroke-width="3"/>';
+      y+=52;
+    }
+    var ejeY = y+4, k;
+    s+='<line x1="90" y1="'+ejeY+'" x2="'+(90+ancho)+'" y2="'+ejeY+'" stroke="#10293F" stroke-width="3"/>';
+    for(k=0;k<=max;k++){
+      var x = 90 + (k/max)*ancho;
+      s+='<line x1="'+x+'" y1="'+ejeY+'" x2="'+x+'" y2="'+(ejeY+7)+'" stroke="#10293F" stroke-width="3"/>';
+      s+='<text x="'+x+'" y="'+(ejeY+28)+'" font-size="17" text-anchor="middle" fill="#10293F">'+k+'</text>';
+    }
+    return '<svg viewBox="0 -4 '+(90+ancho+16)+' '+(alto+30)+'" style="width:100%;max-width:620px;height:auto" aria-hidden="true">'+s+'</svg>';
+  }
+
+  function poligono(lados, cx, cy, r, etiqueta){
+    var pts=[], i, ang;
+    for(i=0;i<lados;i++){
+      ang = -Math.PI/2 + i*2*Math.PI/lados;
+      pts.push((cx+r*Math.cos(ang)).toFixed(1)+','+(cy+r*Math.sin(ang)).toFixed(1));
+    }
+    return '<polygon points="'+pts.join(' ')+'" fill="#FFF" stroke="#10293F" stroke-width="4"/>'+
+           '<text x="'+cx+'" y="'+(cy+r+26)+'" text-anchor="middle" font-size="20" font-family="Fredoka, sans-serif" fill="#10293F">'+etiqueta+'</text>';
+  }
+
+  function galeriaFormas(){
+    return '<svg viewBox="0 0 620 170" style="width:100%;max-width:620px;height:auto" aria-hidden="true">'+
+      poligono(3,80,70,52,'A')+poligono(4,230,70,50,'B')+poligono(5,380,70,54,'C')+poligono(6,530,70,54,'D')+
+      '</svg>';
+  }
+
+  function rejilla(filas, columnas){
+    var s='', i, j, lado=52, x0=6, y0=6;
+    for(i=0;i<filas;i++){
+      for(j=0;j<columnas;j++){
+        s+='<rect x="'+(x0+j*lado)+'" y="'+(y0+i*lado)+'" width="'+lado+'" height="'+lado+'" fill="#FFF7E2" stroke="#10293F" stroke-width="3"/>';
+      }
+    }
+    return '<svg viewBox="0 0 '+(columnas*lado+12)+' '+(filas*lado+12)+'" style="width:100%;max-width:'+(columnas*lado+12)+'px;height:auto" aria-hidden="true">'+s+'</svg>';
+  }
+
+  function circuloPartido(partes, cx, cy, r, etiqueta){
+    var s='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#FFF" stroke="#10293F" stroke-width="4"/>', i, ang;
+    if(partes === 2){
+      s+='<line x1="'+(cx-r)+'" y1="'+cy+'" x2="'+(cx+r)+'" y2="'+cy+'" stroke="#10293F" stroke-width="4"/>';
+    } else {
+      for(i=0;i<partes;i++){
+        ang = -Math.PI/2 + i*2*Math.PI/partes;
+        s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r*Math.cos(ang)).toFixed(1)+'" y2="'+(cy+r*Math.sin(ang)).toFixed(1)+'" stroke="#10293F" stroke-width="4"/>';
+      }
+    }
+    s+='<text x="'+cx+'" y="'+(cy+r+28)+'" text-anchor="middle" font-size="20" font-family="Fredoka, sans-serif" fill="#10293F">'+etiqueta+'</text>';
+    return s;
+  }
+
+  function galeriaCirculos(){
+    return '<svg viewBox="0 0 560 170" style="width:100%;max-width:560px;height:auto" aria-hidden="true">'+
+      circuloPartido(2,80,70,54,'A')+circuloPartido(4,230,70,54,'B')+circuloPartido(3,380,70,54,'C')+circuloPartido(6,520,70,54,'D')+
+      '</svg>';
+  }
+
+  /* ============ the three moves ============ */
+
+  var MOVIMIENTOS = [
+    {clave:'juntar',   tono:'juntar',   glifo:'+', titulo:'Put together', sub:'Both groups go into one pile'},
+    {clave:'comparar', tono:'comparar', glifo:'−', titulo:'Compare', sub:'Line them up and find the difference'},
+    {clave:'quitar',   tono:'quitar',   glifo:'−', titulo:'Take away', sub:'Part of the pile went away'}
+  ];
+
+  function pasoMovimiento(correcto, porque){
+    return {
+      pregunta:'What is the move?',
+      opciones:MOVIMIENTOS,
+      correcto:correcto,
+      porque:porque
+    };
+  }
+
+  /* ============ the cases ============ */
+
+  var CASOS = [
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.1',
+      titulo:'Case 1: The fruit basket',
+      escena:
+        '<div class="fila"><span class="etiquetaFila">Apples</span>'+repetir('🍎',6)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Bananas</span>'+repetir('🍌',9)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Grapes</span>'+repetir('🍇',4)+'</div>'+
+        '<p class="leyenda">🍎 = 1 apple &nbsp;·&nbsp; 🍌 = 1 banana &nbsp;·&nbsp; 🍇 = 1 bunch of grapes</p>',
+      alt:'Picture graph with 6 apples, 9 bananas and 4 bunches of grapes.',
+      q:'How many <mark class="clave">more</mark> bananas <mark class="clave">than</mark> apples are there?',
+      paso:pasoMovimiento('comparar','"More… than" puts two groups face to face. You are not building one pile — you are looking for the extra.'),
+      respuestas:[{t:'3',ok:true},{t:'15'},{t:'9'},{t:'6'}],
+      pista:'Put one banana on top of each apple. How many bananas are left with no partner?',
+      explica:'9 − 6 = 3. Six bananas pair up with the six apples, and 3 are left over. Those 3 are the difference.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.2',
+      titulo:'Case 2: The same basket',
+      escena:
+        '<div class="fila"><span class="etiquetaFila">Apples</span>'+repetir('🍎',6)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Bananas</span>'+repetir('🍌',9)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Grapes</span>'+repetir('🍇',4)+'</div>',
+      alt:'The same picture graph: 6 apples, 9 bananas, 4 bunches of grapes.',
+      q:'How many apples and grapes are there <mark class="clave">altogether</mark>?',
+      paso:pasoMovimiento('juntar','"Altogether" and "in all" ask for one pile. Nobody is being compared here.'),
+      respuestas:[{t:'10',ok:true},{t:'2'},{t:'19'},{t:'4'}],
+      pista:'Drop the apples and the grapes into the same bag, then count everything.',
+      explica:'6 + 4 = 10. Same graph as Case 1, different question, different move.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.1',
+      titulo:'Case 3: The backpack tally',
+      escena:
+        filaRayitas('Pencils',8)+filaRayitas('Crayons',5)+filaRayitas('Rulers',3)+
+        '<p class="leyenda">Each mark is 1. A bundle with a slash through it is 5.</p>',
+      alt:'Tally chart: 8 pencils, 5 crayons and 3 rulers.',
+      q:'How many <mark class="clave">fewer</mark> rulers <mark class="clave">than</mark> pencils are there?',
+      paso:pasoMovimiento('comparar','"Fewer… than" compares two groups too. The answer is the gap between them.'),
+      respuestas:[{t:'5',ok:true},{t:'11'},{t:'8'},{t:'3'}],
+      pista:'Count each row first: rulers 3, pencils 8.',
+      explica:'8 − 3 = 5. "Fewer" warns you that one group is smaller, but the question is still the difference.'
+    },
+    {
+      norma:'CC.2.OA.1',
+      titulo:'Case 4: The sticker sheet',
+      escena:
+        '<p class="cuento"><span class="grande" aria-hidden="true">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</span></p>'+
+        '<p class="leyenda">Israel had 15 stickers. He gave 6 to a friend.</p>',
+      alt:'Fifteen stickers in a row.',
+      q:'Israel had 15 stickers. He gave 6 away. How many are <mark class="clave">left</mark>?',
+      paso:pasoMovimiento('quitar','"Left" counts what stays after something goes away. There is only one group here, not two.'),
+      respuestas:[{t:'9',ok:true},{t:'21'},{t:'6'},{t:'11'}],
+      pista:'Cover 6 stars with your finger and count the ones you can still see.',
+      explica:'15 − 6 = 9. You subtract here too, but for a different reason: nothing is being compared, a part simply left the pile.'
+    },
+    {
+      norma:'CC.2.OA.4',
+      titulo:'Case 5: The star squad',
+      escena:matriz(3,5,'⭐')+'<p class="leyenda">3 rows, 5 stars in each row.</p>',
+      alt:'Array of 3 rows with 5 stars each.',
+      q:'Which addition shows the <mark class="clave">rows</mark> of this array?',
+      paso:{
+        pregunta:'What is the move?',
+        opciones:[
+          {clave:'juntar',tono:'juntar',glifo:'+',titulo:'Put together equal groups',sub:'Add the same number again and again'},
+          {clave:'comparar',tono:'comparar',glifo:'−',titulo:'Compare',sub:'Find the difference'},
+          {clave:'quitar',tono:'quitar',glifo:'−',titulo:'Take away',sub:'Part of the pile went away'}
+        ],
+        correcto:'juntar',
+        porque:'An array is made of equal groups. You add the same number once for every row.'
+      },
+      respuestas:[{t:'5 + 5 + 5 = 15',ok:true},{t:'3 + 3 + 3 = 9'},{t:'5 + 3 = 8'},{t:'15 + 15 = 30'}],
+      pista:'Each row holds 5 stars and there are 3 rows. Write one 5 for every row.',
+      explica:'5 + 5 + 5 = 15. Counting by columns also gives 15 (3 + 3 + 3 + 3 + 3) — the same total counted two ways.'
+    },
+    {
+      norma:'CC.2.OA.3',
+      titulo:'Case 6: The sock basket',
+      escena:'<p class="cuento"><span class="grande" aria-hidden="true">🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦</span></p>'+
+             '<p class="leyenda">13 socks came out of the dryer.</p>',
+      alt:'Thirteen socks in a row.',
+      q:'Can every sock find a partner? Is 13 <mark class="clave">odd or even</mark>?',
+      paso:{
+        pregunta:'What do you do first?',
+        opciones:[
+          {clave:'parear',tono:'mirar',glifo:'👥',titulo:'Make pairs',sub:'Match them two by two'},
+          {clave:'sumar',tono:'juntar',glifo:'+',titulo:'Add everything',sub:'Add every number you see'},
+          {clave:'restar',tono:'comparar',glifo:'−',titulo:'Subtract',sub:'Find the difference'}
+        ],
+        correcto:'parear',
+        porque:'Odd or even is decided by pairing. If nobody is left alone, the number is even.'
+      },
+      respuestas:[{t:'Odd — 1 sock has no partner',ok:true},{t:'Even — everyone has a partner'},{t:'Odd — 3 socks are alone'},{t:'Even — 13 = 6 + 6'}],
+      pista:'Match them two at a time: 2, 4, 6, 8, 10, 12… and then sock number 13?',
+      explica:'13 is odd: 6 pairs and one lonely sock. An even number splits into two equal addends (12 = 6 + 6); 13 cannot.'
+    },
+    {
+      norma:'CC.2.NBT.4',
+      titulo:'Case 7: Number showdown',
+      escena:'<p class="cuento" style="text-align:center;font-size:2.6rem;font-family:Fredoka,sans-serif">348 &nbsp;<span style="color:#4A5F73">?</span>&nbsp; 384</p>',
+      alt:'The numbers 348 and 384 with a missing symbol between them.',
+      q:'<mark class="clave">Compare</mark> the two numbers. Which symbol goes in the middle?',
+      paso:{
+        pregunta:'Where do you look first?',
+        opciones:[
+          {clave:'cientos',tono:'mirar',glifo:'💯',titulo:'The hundreds',sub:'Start with the hundreds digit'},
+          {clave:'unidades',tono:'quitar',glifo:'1️⃣',titulo:'The ones',sub:'Start with the ones digit'},
+          {clave:'largo',tono:'comparar',glifo:'📏',titulo:'The longer one',sub:'The longer number wins'}
+        ],
+        correcto:'cientos',
+        porque:'Always start with the biggest value: the hundreds. If they tie, move on to the tens.'
+      },
+      respuestas:[{t:'348 < 384',ok:true},{t:'348 > 384'},{t:'348 = 384'},{t:'384 < 348'}],
+      pista:'The hundreds tie (3 and 3). Check the tens: 4 tens against 8 tens.',
+      explica:'348 < 384. Same hundreds, so the tens decide: 40 is less than 80. The open mouth of the symbol always faces the bigger number.'
+    },
+    {
+      norma:'CC.2.NBT.5 · CC.2.OA.1',
+      titulo:'Case 8: Game points',
+      escena:'<p class="cuento" style="text-align:center;font-size:2.2rem;font-family:Fredoka,sans-serif">38 🎯 &nbsp;+&nbsp; 27 🎯</p>'+
+             '<p class="leyenda">Israel had 38 points and won 27 more points in round two.</p>',
+      alt:'Thirty-eight points plus twenty-seven points.',
+      q:'How many points does Israel have <mark class="clave">in all</mark>?',
+      paso:pasoMovimiento('juntar','"In all" puts both rounds on one scoreboard. He won points, he did not lose any.'),
+      respuestas:[{t:'65',ok:true},{t:'11'},{t:'55'},{t:'515'}],
+      pista:'Add the tens first (30 + 20 = 50), then the ones (8 + 7 = 15). Now put them together: 50 + 15.',
+      explica:'38 + 27 = 65. Watch out for the trap answer 515: tens and ones are not written side by side, they get regrouped.'
+    },
+    {
+      norma:'CC.2.NBT.8',
+      titulo:'Case 9: The hundred machine',
+      escena:'<p class="cuento" style="text-align:center;font-size:2.2rem;font-family:Fredoka,sans-serif">470 &nbsp;➜&nbsp; 🏭 <span style="font-size:1.5rem">(+100)</span> &nbsp;➜&nbsp; ?</p>',
+      alt:'The number 470 goes into a machine that adds 100.',
+      q:'The machine adds 100. What number comes out?',
+      paso:{
+        pregunta:'Which digit changes?',
+        opciones:[
+          {clave:'centenas',tono:'mirar',glifo:'💯',titulo:'The hundreds digit',sub:'Only the hundreds move'},
+          {clave:'decenas',tono:'juntar',glifo:'🔟',titulo:'The tens digit',sub:'Only the tens move'},
+          {clave:'todos',tono:'comparar',glifo:'🔢',titulo:'All of them',sub:'Every digit changes'}
+        ],
+        correcto:'centenas',
+        porque:'Adding 100 only moves the hundreds: the 4 becomes a 5 and everything else sits still.'
+      },
+      respuestas:[{t:'570',ok:true},{t:'480'},{t:'471'},{t:'370'}],
+      pista:'4 hundreds + 1 hundred = 5 hundreds. The 7 and the 0 stay put.',
+      explica:'470 + 100 = 570. If the machine took away 10 instead, you would get 460 — only the tens digit would move.'
+    },
+    {
+      norma:'CC.2.G.1',
+      titulo:'Case 10: The shape lineup',
+      escena:galeriaFormas()+'<p class="leyenda">Four shapes: A, B, C and D.</p>',
+      alt:'Four shapes: A triangle, B quadrilateral, C pentagon, D hexagon.',
+      q:'Which shape has <mark class="clave">5 sides</mark> and 5 angles?',
+      paso:{
+        pregunta:'How do you find out?',
+        opciones:[
+          {clave:'contar',tono:'mirar',glifo:'👁️',titulo:'Count sides and corners',sub:'Go around the shape and count'},
+          {clave:'tamano',tono:'comparar',glifo:'📐',titulo:'Find the biggest one',sub:'Look at the size'},
+          {clave:'color',tono:'quitar',glifo:'🎨',titulo:'Check the color',sub:'Look at the color'}
+        ],
+        correcto:'contar',
+        porque:'A shape is named by its attributes — how many sides and angles it has — not by how big it looks.'
+      },
+      respuestas:[{t:'C (pentagon)',ok:true},{t:'A (triangle)'},{t:'B (quadrilateral)'},{t:'D (hexagon)'}],
+      pista:'Put your finger on one corner and walk around the shape, counting sides as you go.',
+      explica:'C is the pentagon: 5 sides and 5 angles. A has 3, B has 4 and D has 6.'
+    },
+    {
+      norma:'CC.2.G.2 · CC.2.OA.4',
+      titulo:'Case 11: The tile floor',
+      escena:rejilla(3,4)+'<p class="leyenda">A rectangle cut into equal rows and columns.</p>',
+      alt:'Rectangle partitioned into 3 rows and 4 columns of equal squares.',
+      q:'How many equal squares are there <mark class="clave">in all</mark>?',
+      paso:pasoMovimiento('juntar','The rows are equal groups, so you add 4 once for every row.'),
+      respuestas:[{t:'12',ok:true},{t:'7'},{t:'34'},{t:'9'}],
+      pista:'Count the squares in one row, then add that number once per row: 4 + 4 + 4.',
+      explica:'4 + 4 + 4 = 12. Counting one by one also gives 12, but adding by rows is faster and you do not lose your place.'
+    },
+    {
+      norma:'CC.2.G.3',
+      titulo:'Case 12: Sharing the cake',
+      escena:galeriaCirculos()+'<p class="leyenda">Four cakes cut into equal shares.</p>',
+      alt:'Four circles: A in 2 shares, B in 4 shares, C in 3 shares and D in 6 shares.',
+      q:'Which cake is partitioned into <mark class="clave">thirds</mark>?',
+      paso:{
+        pregunta:'What does "thirds" mean?',
+        opciones:[
+          {clave:'tres',tono:'mirar',glifo:'🍰',titulo:'Three equal shares',sub:'One whole cut into 3 equal pieces'},
+          {clave:'tercera',tono:'juntar',glifo:'3️⃣',titulo:'Three whole cakes',sub:'Three cakes on the table'},
+          {clave:'grande',tono:'comparar',glifo:'📏',titulo:'The biggest piece',sub:'The largest share wins'}
+        ],
+        correcto:'tres',
+        porque:'Halves are 2 equal shares, thirds are 3, fourths are 4 — always equal shares of the same whole.'
+      },
+      respuestas:[{t:'C',ok:true},{t:'A'},{t:'B'},{t:'D'}],
+      pista:'Count how many pieces each circle was cut into.',
+      explica:'C has 3 equal shares, so those are thirds. Three thirds put back together make the whole cake.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.1',
+      titulo:'Case 13: The math club, part 1',
+      escena:barras([{nombre:'Boys',valor:7},{nombre:'Girls',valor:5}])+
+             '<p class="leyenda">Number of students</p>',
+      alt:'Bar graph: 7 boys and 5 girls in the math club.',
+      q:'How many <mark class="clave">fewer</mark> girls <mark class="clave">than</mark> boys are in the club?',
+      paso:pasoMovimiento('comparar','Two bars side by side: the question is how much the short one is missing.'),
+      respuestas:[{t:'2',ok:true},{t:'12'},{t:'5'},{t:'7'}],
+      pista:'Look at where each bar stops: one reaches 7 and the other reaches 5.',
+      explica:'7 − 5 = 2. On a bar graph, "how many fewer" is the little piece the short bar needs to catch up.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.2',
+      titulo:'Case 14: The math club, part 2',
+      escena:barras([{nombre:'Boys',valor:7},{nombre:'Girls',valor:5}])+
+             '<p class="leyenda">Same graph, new question.</p>',
+      alt:'The same bar graph: 7 boys and 5 girls.',
+      q:'How many members does the math club have <mark class="clave">in all</mark>?',
+      paso:pasoMovimiento('juntar','Same graph, but nobody is being compared now — both groups make up the whole club.'),
+      respuestas:[{t:'12',ok:true},{t:'2'},{t:'7'},{t:'75'}],
+      pista:'Boys and girls are all in the same club, so put them together.',
+      explica:'7 + 5 = 12. Detective lesson: one graph can ask for a sum or a difference. The question is the boss, not the picture.'
+    }
+  ];
+
+  /* ============ game engine ============ */
+
+  var caso = document.getElementById('caso');
+  var anuncio = document.getElementById('anuncio');
+  var i = 0;
+  var estrellas = 0;
+  var fallos = [];
+  var intentos = 0;
+
+  function barajar(a){
+    var b = a.slice(), j, t, k;
+    for(k=b.length-1;k>0;k--){ j=Math.floor(Math.random()*(k+1)); t=b[k]; b[k]=b[j]; b[j]=t; }
+    return b;
+  }
+
+  function tiraEstrellas(){
+    var s='', k;
+    for(k=0;k<CASOS.length;k++){ s += (k<i ? '★' : '☆'); }
+    return s;
+  }
+
+  function hablar(texto){
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(texto.replace(/<[^>]*>/g,''));
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+
+  function pintarCaso(){
+    var c = CASOS[i];
+    intentos = 0;
+    caso.innerHTML =
+      '<div class="barraCaso">'+
+        '<span class="contador">Case '+(i+1)+' of '+CASOS.length+'</span>'+
+        '<span class="estrellas" aria-hidden="true">'+tiraEstrellas()+'</span>'+
+        '<span class="norma">'+c.norma+'</span>'+
+      '</div>'+
+      '<h2 class="tituloCaso">'+c.titulo+'</h2>'+
+      '<div class="escena" role="img" aria-label="'+c.alt+'">'+c.escena+'</div>'+
+      '<p class="pregunta">'+c.q+'</p>'+
+      '<button class="audio" type="button" id="oir">🔊 Read the question to me</button>'+
+      '<div id="zonaPaso"></div>'+
+      '<div id="zonaResp"></div>'+
+      '<div id="zonaAviso"></div>';
+
+    document.getElementById('oir').onclick = function(){ hablar(c.q); };
+
+    if(c.paso){ pintarPaso(c); } else { pintarRespuestas(c); }
+    caso.querySelector('.tituloCaso').setAttribute('tabindex','-1');
+    caso.querySelector('.tituloCaso').focus();
+  }
+
+  function pintarPaso(c){
+    var z = document.getElementById('zonaPaso'), k, o, b;
+    z.innerHTML = '<h3>Step 1 · '+c.paso.pregunta+'</h3><div class="opciones" id="opsPaso"></div>';
+    var cont = document.getElementById('opsPaso');
+    for(k=0;k<c.paso.opciones.length;k++){
+      o = c.paso.opciones[k];
+      b = document.createElement('button');
+      b.type='button'; b.className='opcion'; b.setAttribute('data-tono',o.tono);
+      b.innerHTML = '<span class="glifo" aria-hidden="true">'+o.glifo+'</span><span>'+o.titulo+'<small>'+o.sub+'</small></span>';
+      (function(op,boton){
+        boton.onclick = function(){ elegirPaso(c, op, boton); };
+      })(o,b);
+      cont.appendChild(b);
+    }
+  }
+
+  function elegirPaso(c, op, boton){
+    var botones = document.querySelectorAll('#opsPaso button'), k;
+    if(op.clave === c.paso.correcto){
+      for(k=0;k<botones.length;k++){ botones[k].disabled = true; }
+      boton.className = 'opcion acertada'; boton.setAttribute('data-tono','juntar');
+      aviso('bien','Good eye, detective!', c.paso.porque, false);
+      anuncio.textContent = 'Correct move.';
+      pintarRespuestas(c);
+    } else {
+      intentos++;
+      boton.className = 'opcion fallada'; boton.disabled = true;
+      aviso('casi','Not this one.', c.pista, false);
+      anuncio.textContent = 'That is not the move. Read the yellow word again.';
+    }
+  }
+
+  function pintarRespuestas(c){
+    var z = document.getElementById('zonaResp'), k, r, b;
+    var lista = barajar(c.respuestas);
+    var numerico = c.respuestas.every(function(x){ return x.t.length <= 3; });
+    z.innerHTML = '<h3>'+(c.paso?'Step 2 · ':'')+'Now the answer</h3><div class="'+(numerico?'fichas':'opciones')+'" id="opsResp"></div>';
+    var cont = document.getElementById('opsResp');
+    for(k=0;k<lista.length;k++){
+      r = lista[k];
+      b = document.createElement('button');
+      b.type='button';
+      b.className = numerico ? 'ficha' : 'opcion';
+      if(!numerico){ b.setAttribute('data-tono','mirar'); b.innerHTML='<span>'+r.t+'</span>'; }
+      else { b.textContent = r.t; }
+      (function(res,boton){
+        boton.onclick = function(){ elegirRespuesta(c,res,boton); };
+      })(r,b);
+      cont.appendChild(b);
+    }
+  }
+
+  function elegirRespuesta(c, r, boton){
+    var botones = document.querySelectorAll('#opsResp button'), k;
+    if(r.ok){
+      for(k=0;k<botones.length;k++){ botones[k].disabled = true; }
+      boton.className = boton.className.replace(/(ficha|opcion)/,'$1 acertada');
+      if(intentos === 0){ estrellas++; } else { fallos.push(c.titulo); }
+      aviso('bien','Case closed!', c.explica, true);
+      anuncio.textContent = 'Correct. '+c.explica;
+    } else {
+      intentos++;
+      boton.className += ' fallada'; boton.disabled = true;
+      aviso('casi','Close.', c.pista, false);
+      anuncio.textContent = 'Not that one. '+c.pista;
+    }
+  }
+
+  function aviso(tipo, titulo, texto, conBoton){
+    var z = document.getElementById('zonaAviso');
+    z.innerHTML =
+      '<div class="aviso '+(tipo==='bien'?'bien':'casi')+'">'+
+        (tipo==='bien'?'<span class="sello">'+titulo+'</span>':'<b>'+titulo+'</b>')+
+        '<p>'+texto+'</p>'+
+      '</div>'+
+      (conBoton ? '<button class="seguir" type="button" id="btnSeguir">'+(i+1<CASOS.length?'Next case ':'See my badge ')+'</button>' : '');
+    if(conBoton){
+      var btn = document.getElementById('btnSeguir');
+      btn.onclick = function(){ i++; if(i<CASOS.length){ pintarCaso(); } else { pintarFinal(); } };
+      btn.focus();
+    }
+  }
+
+  function pintarFinal(){
+    var unicos = [], k;
+    for(k=0;k<fallos.length;k++){ if(unicos.indexOf(fallos[k])<0){ unicos.push(fallos[k]); } }
+    var repaso = unicos.length
+      ? '<h3>Cases to go over again</h3><ul class="repaso"><li>'+unicos.join('</li><li>')+'</li></ul>'
+      : '<p>No hints needed. That is what careful reading looks like.</p>';
+    caso.innerHTML =
+      '<div class="medalla">'+
+        '<div class="disco" aria-hidden="true">🔎</div>'+
+        '<h2 class="tituloCaso" tabindex="-1">Math Word Detective</h2>'+
+        '<p style="font-size:1.25rem">Cases solved on the first try: <b>'+estrellas+' of '+CASOS.length+'</b></p>'+
+        '<p class="estrellas" aria-hidden="true">'+Array(estrellas+1).join('★')+Array(CASOS.length-estrellas+1).join('☆')+'</p>'+
+      '</div>'+
+      '<div class="aviso bien">'+
+        '<p><b>What you cracked today:</b> "altogether" and "in all" say put together; "more than" and "fewer than" say compare; "left" says take away. The same graph can ask for a sum or a difference — the question is the boss, not the picture.</p>'+
+      '</div>'+
+      repaso+
+      '<button class="seguir" type="button" id="btnOtra">Play again</button>';
+    document.getElementById('btnOtra').onclick = function(){
+      i=0; estrellas=0; fallos=[]; pintarCaso();
+    };
+    caso.querySelector('.tituloCaso').focus();
+  }
+
+  pintarCaso();
+})();
+</script>
+</body>
+</html>
