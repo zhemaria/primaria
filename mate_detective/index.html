@@ -1,1 +1,860 @@
+<!DOCTYPE html>
+<!--
+  Detective de operaciones — ¿junto, comparo o quito?
+  Práctica de razonamiento para segundo grado.
+  © 2026 José M. Fernández. Licencia CC BY-NC-SA 4.0
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Detective de operaciones — ¿junto, comparo o quito?</title>
+<meta name="description" content="Juego de razonamiento matemático para segundo grado: decidir si hay que juntar, comparar o quitar antes de calcular. Cubre operaciones y pensamiento algebraico, valor posicional, datos y geometría.">
+<meta name="author" content="José M. Fernández">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papel:#EEF3F8;
+    --linea:#D8E4F0;
+    --tarjeta:#FFFFFF;
+    --tinta:#10293F;
+    --tinta-suave:#4A5F73;
+    --juntar:#146B4A;
+    --comparar:#A82A1A;
+    --quitar:#6B3E9E;
+    --mirar:#23508F;
+    --oro:#F4B92E;
+    --radio:18px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    padding:0 0 3rem;
+    font-family:'Andika','Segoe UI',system-ui,sans-serif;
+    font-size:19px;
+    line-height:1.55;
+    color:var(--tinta);
+    background-color:var(--papel);
+    background-image:
+      linear-gradient(var(--linea) 1px, transparent 1px),
+      linear-gradient(90deg, var(--linea) 1px, transparent 1px);
+    background-size:28px 28px;
+  }
+  .envoltura{max-width:860px;margin:0 auto;padding:1.25rem}
 
+  /* ---------- Encabezado ---------- */
+  .portada{
+    background:var(--tarjeta);
+    border:4px solid var(--tinta);
+    border-radius:var(--radio);
+    box-shadow:8px 8px 0 var(--tinta);
+    padding:1.5rem 1.5rem 1.25rem;
+    margin-bottom:1.5rem;
+  }
+  h1{
+    font-family:'Fredoka','Andika',sans-serif;
+    font-weight:700;
+    font-size:clamp(1.9rem,6vw,2.9rem);
+    line-height:1.05;
+    margin:0 0 .35rem;
+    letter-spacing:-.01em;
+  }
+  .subtitulo{margin:0;color:var(--tinta-suave);font-size:1.05rem}
+  .placa{
+    display:inline-block;
+    background:var(--oro);
+    color:var(--tinta);
+    border:3px solid var(--tinta);
+    border-radius:999px;
+    padding:.15rem .8rem;
+    font-family:'Fredoka',sans-serif;
+    font-size:.95rem;
+    margin-bottom:.6rem;
+  }
+
+  /* ---------- Tarjeta de claves ---------- */
+  details.claves{
+    background:var(--tarjeta);
+    border:3px dashed var(--tinta);
+    border-radius:var(--radio);
+    padding:.75rem 1.1rem;
+    margin-bottom:1.5rem;
+  }
+  details.claves summary{
+    font-family:'Fredoka',sans-serif;
+    font-size:1.15rem;
+    cursor:pointer;
+    padding:.3rem 0;
+  }
+  details.claves summary:focus-visible{outline:3px solid var(--mirar);outline-offset:3px;border-radius:6px}
+  table.clavesTabla{width:100%;border-collapse:collapse;margin:.75rem 0 .25rem}
+  table.clavesTabla caption{text-align:left;font-size:.95rem;color:var(--tinta-suave);padding-bottom:.5rem}
+  table.clavesTabla th,table.clavesTabla td{
+    border:2px solid var(--tinta);padding:.5rem .6rem;text-align:left;vertical-align:top;font-size:1rem;
+  }
+  table.clavesTabla th{background:#E6EEF7;font-family:'Fredoka',sans-serif}
+  .pastilla{
+    display:inline-block;border-radius:999px;padding:.1rem .6rem;
+    color:#fff;font-family:'Fredoka',sans-serif;font-size:.9rem;white-space:nowrap;
+  }
+  .pJuntar{background:var(--juntar)} .pComparar{background:var(--comparar)} .pQuitar{background:var(--quitar)}
+
+  /* ---------- Panel del caso ---------- */
+  .caso{
+    background:var(--tarjeta);
+    border:4px solid var(--tinta);
+    border-radius:var(--radio);
+    box-shadow:8px 8px 0 var(--tinta);
+    padding:1.25rem;
+  }
+  .barraCaso{
+    display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between;
+    border-bottom:3px solid var(--linea);padding-bottom:.7rem;margin-bottom:1rem;
+  }
+  .contador{font-family:'Fredoka',sans-serif;font-size:1.05rem}
+  .estrellas{font-size:1.3rem;letter-spacing:.1rem}
+  .norma{font-size:.85rem;color:var(--tinta-suave)}
+
+  h2.tituloCaso{font-family:'Fredoka',sans-serif;font-size:1.5rem;margin:0 0 .75rem}
+  h3{font-family:'Fredoka',sans-serif;font-size:1.15rem;margin:1.4rem 0 .6rem}
+
+  /* ---------- Zona visual ---------- */
+  .escena{
+    background:var(--papel);
+    background-image:
+      linear-gradient(var(--linea) 1px, transparent 1px),
+      linear-gradient(90deg, var(--linea) 1px, transparent 1px);
+    background-size:22px 22px;
+    border:3px solid var(--tinta);
+    border-radius:12px;
+    padding:.9rem;
+    margin-bottom:1rem;
+    overflow-x:auto;
+  }
+  .fila{display:flex;align-items:center;gap:.5rem;margin:.35rem 0;flex-wrap:nowrap}
+  .etiquetaFila{
+    font-family:'Fredoka',sans-serif;font-size:1rem;min-width:7.5rem;
+    background:var(--tarjeta);border:2px solid var(--tinta);border-radius:8px;padding:.15rem .5rem;
+  }
+  .iconos{font-size:1.7rem;line-height:1.2;letter-spacing:.15rem;white-space:nowrap}
+  .leyenda{font-size:.95rem;color:var(--tinta-suave);margin-top:.5rem}
+  .cuento{font-size:1.2rem;margin:.2rem 0}
+  .cuento .grande{font-size:1.9rem;letter-spacing:.15rem}
+
+  /* ---------- Pregunta ---------- */
+  .pregunta{
+    font-family:'Fredoka',sans-serif;font-size:clamp(1.15rem,3.6vw,1.5rem);
+    line-height:1.35;margin:0 0 .5rem;
+  }
+  mark.clave{
+    background:var(--oro);color:var(--tinta);
+    padding:0 .25rem;border-radius:6px;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+  }
+  .instruccion{
+    display:flex;align-items:center;gap:.6rem;
+    background:#FFF4DB;border:3px solid #8A6100;border-radius:12px;
+    padding:.6rem .9rem;margin:.75rem 0 .25rem;
+    font-family:'Fredoka',sans-serif;font-size:1.05rem;
+  }
+  .instruccion .mano{font-size:1.6rem;line-height:1}
+  .instruccion.hecha{background:#E3F3EA;border-color:var(--juntar)}
+
+  .bloqueado{
+    border:3px dashed #8CA0B3;border-radius:14px;
+    background:#F4F7FA;color:#3C4A57;
+    padding:.9rem;margin-top:.5rem;
+    display:flex;align-items:center;gap:.7rem;font-size:1.02rem;
+  }
+  .bloqueado .candado{font-size:1.8rem;line-height:1}
+  .fichasFantasma{display:flex;gap:.6rem;flex-wrap:wrap;margin-left:auto}
+  .fichasFantasma span{
+    min-width:62px;height:52px;display:flex;align-items:center;justify-content:center;
+    border:3px dashed #8CA0B3;border-radius:12px;background:#FFF;
+    font-family:'Fredoka',sans-serif;font-size:1.4rem;color:#8CA0B3;
+  }
+
+  .barraAudio{margin:0 0 .5rem;text-align:right}
+  .audio{
+    background:var(--tarjeta);border:2px solid var(--tinta-suave);color:var(--tinta);
+    border-radius:999px;padding:.35rem .9rem;font-family:'Andika',sans-serif;font-size:.95rem;
+    cursor:pointer;margin-bottom:.4rem;min-height:44px;
+  }
+  .audio:hover{background:#E6EEF7}
+  .audio:focus-visible{outline:3px solid var(--mirar);outline-offset:3px}
+
+  /* ---------- Botones de decisión ---------- */
+  .opciones{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
+  button.opcion{
+    flex:1 1 14rem;
+    min-height:64px;
+    display:flex;align-items:center;gap:.6rem;
+    text-align:left;
+    font-family:'Fredoka',sans-serif;font-size:1.1rem;
+    color:#fff;background:var(--mirar);
+    border:3px solid var(--tinta);border-radius:14px;
+    box-shadow:5px 5px 0 var(--tinta);
+    padding:.6rem .9rem;cursor:pointer;
+  }
+  button.opcion .glifo{
+    background:#fff;color:var(--tinta);border-radius:10px;
+    min-width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+    font-size:1.4rem;flex:0 0 auto;
+  }
+  button.opcion small{display:block;font-family:'Andika',sans-serif;font-size:.85rem;opacity:.95;font-weight:400}
+  button.opcion[data-tono="juntar"]{background:var(--juntar)}
+  button.opcion[data-tono="comparar"]{background:var(--comparar)}
+  button.opcion[data-tono="quitar"]{background:var(--quitar)}
+  button.opcion[data-tono="mirar"]{background:var(--mirar)}
+  button.opcion:hover{transform:translate(1px,1px);box-shadow:4px 4px 0 var(--tinta)}
+  button.opcion:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--tinta)}
+  button.opcion:focus-visible{outline:4px solid var(--oro);outline-offset:3px}
+  button.opcion[disabled]{cursor:default;opacity:.55}
+  button.opcion.acertada{background:var(--juntar);opacity:1}
+  button.opcion.fallada{background:#6B7C8C;opacity:.75;text-decoration:line-through}
+
+  /* Fichas numéricas */
+  .fichas{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.5rem}
+  button.ficha{
+    min-width:96px;min-height:76px;
+    font-family:'Fredoka',sans-serif;font-size:1.7rem;
+    background:var(--tarjeta);color:var(--tinta);
+    border:3px solid var(--tinta);border-radius:14px;
+    box-shadow:5px 5px 0 var(--tinta);
+    padding:.5rem .9rem;cursor:pointer;flex:0 1 auto;
+  }
+  button.ficha:hover{transform:translate(1px,1px);box-shadow:4px 4px 0 var(--tinta)}
+  button.ficha:active{transform:translate(4px,4px);box-shadow:1px 1px 0 var(--tinta)}
+  button.ficha:focus-visible{outline:4px solid var(--mirar);outline-offset:3px}
+  button.ficha[disabled]{cursor:default}
+  button.ficha.acertada{background:var(--juntar);color:#fff}
+  button.ficha.fallada{background:#DCE4EC;color:#3C4A57;text-decoration:line-through}
+
+  /* ---------- Retroalimentación ---------- */
+  .aviso{
+    border:3px solid var(--tinta);border-radius:12px;
+    padding:.8rem 1rem;margin-top:1rem;font-size:1.05rem;
+  }
+  .aviso.bien{background:#E3F3EA;border-color:var(--juntar)}
+  .aviso.casi{background:#FFF4DB;border-color:#8A6100}
+  .aviso b{font-family:'Fredoka',sans-serif}
+  .aviso p{margin:.35rem 0}
+  .sello{
+    display:inline-block;font-family:'Fredoka',sans-serif;font-size:1.05rem;
+    border:3px solid var(--juntar);color:var(--juntar);border-radius:10px;
+    padding:.1rem .6rem;transform:rotate(-4deg);margin-bottom:.3rem;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .sello{animation:plaf .35s ease-out}
+    @keyframes plaf{from{transform:scale(1.6) rotate(-14deg);opacity:0}to{transform:scale(1) rotate(-4deg);opacity:1}}
+  }
+  button.seguir{
+    margin-top:1rem;
+    font-family:'Fredoka',sans-serif;font-size:1.2rem;
+    background:var(--tinta);color:#fff;
+    border:3px solid var(--tinta);border-radius:14px;
+    box-shadow:5px 5px 0 var(--oro);
+    padding:.6rem 1.4rem;min-height:56px;cursor:pointer;
+  }
+  button.seguir:hover{transform:translate(1px,1px)}
+  button.seguir:focus-visible{outline:4px solid var(--oro);outline-offset:3px}
+
+  /* ---------- Cierre ---------- */
+  .medalla{text-align:center;padding:1rem}
+  .medalla .disco{
+    width:140px;height:140px;margin:0 auto 1rem;border-radius:50%;
+    background:var(--oro);border:6px solid var(--tinta);
+    display:flex;align-items:center;justify-content:center;font-size:4rem;
+  }
+  ul.repaso{padding-left:1.2rem}
+  ul.repaso li{margin:.3rem 0}
+
+  .soloLector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  footer{
+    max-width:860px;margin:2rem auto 0;padding:1rem 1.25rem;
+    font-size:.9rem;color:var(--tinta-suave);text-align:center;
+  }
+  footer a{color:var(--mirar)}
+
+  @media print{
+    body{background:#fff}
+    .caso,.portada{box-shadow:none}
+    button{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="envoltura">
+
+  <header class="portada">
+    <span class="placa">Segundo grado · Illinois Learning Standards for Mathematics</span>
+    <h1>Detective de operaciones</h1>
+    <p class="subtitulo">Antes de contar, decide: ¿junto, comparo o quito? Lee la pista, piensa y cierra el caso.</p>
+  </header>
+
+  <details class="claves">
+    <summary>Tarjeta del detective: las palabras que delatan la operación</summary>
+    <table class="clavesTabla">
+      <caption>Qué hacer cuando cada palabra aparece en la pregunta.</caption>
+      <thead>
+        <tr>
+          <th scope="col">La pregunta dice…</th>
+          <th scope="col">Significa…</th>
+          <th scope="col">El movimiento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>en total, entre los dos, juntos</td><td>Empuja los dos grupos hacia un solo montón.</td><td><span class="pastilla pJuntar">Junta +</span></td></tr>
+        <tr><td>cuántos más que, cuántos menos que, compara</td><td>Pon los grupos uno al lado del otro y busca la diferencia.</td><td><span class="pastilla pComparar">Compara −</span></td></tr>
+        <tr><td>quedan, regaló, se comió, perdió</td><td>Tenías un montón y una parte se fue.</td><td><span class="pastilla pQuitar">Quita −</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:.98rem;margin:.4rem 0 .2rem"><b>Truco de detective:</b> las palabras <i>más</i> y <i>menos</i> no dicen sumar ni restar por sí solas. Fíjate en el <b>que</b>. Cuando hay dos grupos frente a frente, lo que buscas es la diferencia.</p>
+  </details>
+
+  <main class="caso" id="caso" aria-live="polite">
+    <!-- Aquí se dibuja el juego -->
+  </main>
+
+  <p class="soloLector" id="anuncio" role="status" aria-live="polite"></p>
+</div>
+
+<footer>
+  <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
+  <p>Obra bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer">CC BY-NC-SA 4.0</a>.</p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ ayudantes de dibujo ============ */
+
+  function repetir(emoji, n){
+    return '<span class="iconos" aria-hidden="true">' + Array(n+1).join(emoji) + '</span>';
+  }
+
+  function rayitas(n){
+    var g='', x=6, grupos=Math.floor(n/5), resto=n%5, i, j;
+    for(i=0;i<grupos;i++){
+      for(j=0;j<4;j++){ g+='<line x1="'+(x+j*10)+'" y1="5" x2="'+(x+j*10)+'" y2="35"/>'; }
+      g+='<line x1="'+(x-5)+'" y1="33" x2="'+(x+35)+'" y2="7"/>';
+      x+=58;
+    }
+    for(j=0;j<resto;j++){ g+='<line x1="'+(x+j*10)+'" y1="5" x2="'+(x+j*10)+'" y2="35"/>'; }
+    x+= resto ? resto*10+8 : 4;
+    return '<svg viewBox="0 0 '+Math.max(x,60)+' 40" style="height:40px;width:auto" aria-hidden="true" '+
+           'fill="none" stroke="#10293F" stroke-width="4" stroke-linecap="round">'+g+'</svg>';
+  }
+
+  function filaRayitas(etiqueta, n){
+    return '<div class="fila"><span class="etiquetaFila">'+etiqueta+'</span>'+rayitas(n)+'</div>';
+  }
+
+  function matriz(filas, columnas, emoji){
+    var s='', i;
+    for(i=0;i<filas;i++){
+      s+='<div style="margin:.15rem 0">'+repetir(emoji,columnas)+'</div>';
+    }
+    return s;
+  }
+
+  function barras(datos){
+    var alto = 52*datos.length + 46, y=10, s='', max=8, ancho=520, i;
+    for(i=0;i<datos.length;i++){
+      var w = (datos[i].valor/max)*ancho;
+      s+='<text x="0" y="'+(y+26)+'" font-size="19" font-family="Fredoka, sans-serif" fill="#10293F">'+datos[i].nombre+'</text>';
+      s+='<rect x="90" y="'+y+'" width="'+w+'" height="34" fill="'+(i%2?'#23508F':'#146B4A')+'" stroke="#10293F" stroke-width="3"/>';
+      y+=52;
+    }
+    var ejeY = y+4, k;
+    s+='<line x1="90" y1="'+ejeY+'" x2="'+(90+ancho)+'" y2="'+ejeY+'" stroke="#10293F" stroke-width="3"/>';
+    for(k=0;k<=max;k++){
+      var x = 90 + (k/max)*ancho;
+      s+='<line x1="'+x+'" y1="'+ejeY+'" x2="'+x+'" y2="'+(ejeY+7)+'" stroke="#10293F" stroke-width="3"/>';
+      s+='<text x="'+x+'" y="'+(ejeY+28)+'" font-size="17" text-anchor="middle" fill="#10293F">'+k+'</text>';
+    }
+    return '<svg viewBox="0 -4 '+(90+ancho+16)+' '+(alto+30)+'" style="width:100%;max-width:620px;height:auto" aria-hidden="true">'+s+'</svg>';
+  }
+
+  function poligono(lados, cx, cy, r, etiqueta){
+    var pts=[], i, ang;
+    for(i=0;i<lados;i++){
+      ang = -Math.PI/2 + i*2*Math.PI/lados;
+      pts.push((cx+r*Math.cos(ang)).toFixed(1)+','+(cy+r*Math.sin(ang)).toFixed(1));
+    }
+    return '<polygon points="'+pts.join(' ')+'" fill="#FFF" stroke="#10293F" stroke-width="4"/>'+
+           '<text x="'+cx+'" y="'+(cy+r+26)+'" text-anchor="middle" font-size="20" font-family="Fredoka, sans-serif" fill="#10293F">'+etiqueta+'</text>';
+  }
+
+  function galeriaFormas(){
+    return '<svg viewBox="0 0 620 170" style="width:100%;max-width:620px;height:auto" aria-hidden="true">'+
+      poligono(3,80,70,52,'A')+poligono(4,230,70,50,'B')+poligono(5,380,70,54,'C')+poligono(6,530,70,54,'D')+
+      '</svg>';
+  }
+
+  function rejilla(filas, columnas){
+    var s='', i, j, lado=52, x0=6, y0=6;
+    for(i=0;i<filas;i++){
+      for(j=0;j<columnas;j++){
+        s+='<rect x="'+(x0+j*lado)+'" y="'+(y0+i*lado)+'" width="'+lado+'" height="'+lado+'" fill="#FFF7E2" stroke="#10293F" stroke-width="3"/>';
+      }
+    }
+    return '<svg viewBox="0 0 '+(columnas*lado+12)+' '+(filas*lado+12)+'" style="width:100%;max-width:'+(columnas*lado+12)+'px;height:auto" aria-hidden="true">'+s+'</svg>';
+  }
+
+  function circuloPartido(partes, cx, cy, r, etiqueta){
+    var s='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#FFF" stroke="#10293F" stroke-width="4"/>', i, ang;
+    if(partes === 2){
+      s+='<line x1="'+(cx-r)+'" y1="'+cy+'" x2="'+(cx+r)+'" y2="'+cy+'" stroke="#10293F" stroke-width="4"/>';
+    } else {
+      for(i=0;i<partes;i++){
+        ang = -Math.PI/2 + i*2*Math.PI/partes;
+        s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r*Math.cos(ang)).toFixed(1)+'" y2="'+(cy+r*Math.sin(ang)).toFixed(1)+'" stroke="#10293F" stroke-width="4"/>';
+      }
+    }
+    s+='<text x="'+cx+'" y="'+(cy+r+28)+'" text-anchor="middle" font-size="20" font-family="Fredoka, sans-serif" fill="#10293F">'+etiqueta+'</text>';
+    return s;
+  }
+
+  function galeriaCirculos(){
+    return '<svg viewBox="0 0 560 170" style="width:100%;max-width:560px;height:auto" aria-hidden="true">'+
+      circuloPartido(2,80,70,54,'A')+circuloPartido(4,230,70,54,'B')+circuloPartido(3,380,70,54,'C')+circuloPartido(6,520,70,54,'D')+
+      '</svg>';
+  }
+
+  /* ============ los tres movimientos ============ */
+
+  var MOVIMIENTOS = [
+    {clave:'juntar',   tono:'juntar',   glifo:'+', titulo:'Junta los grupos', sub:'Los dos van a un solo montón'},
+    {clave:'comparar', tono:'comparar', glifo:'−', titulo:'Compara', sub:'Ponlos lado a lado y busca la diferencia'},
+    {clave:'quitar',   tono:'quitar',   glifo:'−', titulo:'Quita', sub:'Una parte del montón se fue'}
+  ];
+
+  function pasoMovimiento(correcto, porque){
+    return {
+      pregunta:'¿Qué movimiento es?',
+      opciones:MOVIMIENTOS,
+      correcto:correcto,
+      porque:porque
+    };
+  }
+
+  /* ============ los casos ============ */
+
+  var CASOS = [
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.1',
+      titulo:'Caso 1: la canasta de frutas',
+      escena:
+        '<div class="fila"><span class="etiquetaFila">Manzanas</span>'+repetir('🍎',6)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Plátanos</span>'+repetir('🍌',9)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Uvas</span>'+repetir('🍇',4)+'</div>'+
+        '<p class="leyenda">🍎 = 1 manzana &nbsp;·&nbsp; 🍌 = 1 plátano &nbsp;·&nbsp; 🍇 = 1 racimo de uvas</p>',
+      alt:'Gráfica de dibujos con 6 manzanas, 9 plátanos y 4 racimos de uvas.',
+      q:'¿Cuántos plátanos <mark class="clave">más que</mark> manzanas hay?',
+      paso:pasoMovimiento('comparar','«Más que» pone dos grupos cara a cara. No armas un montón: buscas lo que le sobra a uno.'),
+      respuestas:[{t:'3',ok:true},{t:'15'},{t:'9'},{t:'6'}],
+      pista:'Pon un plátano encima de cada manzana. ¿Cuántos plátanos quedan sin pareja?',
+      explica:'9 − 6 = 3. Seis plátanos hacen pareja con las seis manzanas y sobran 3. Esos 3 son la diferencia.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.2',
+      titulo:'Caso 2: la misma canasta',
+      escena:
+        '<div class="fila"><span class="etiquetaFila">Manzanas</span>'+repetir('🍎',6)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Plátanos</span>'+repetir('🍌',9)+'</div>'+
+        '<div class="fila"><span class="etiquetaFila">Uvas</span>'+repetir('🍇',4)+'</div>',
+      alt:'La misma gráfica: 6 manzanas, 9 plátanos y 4 racimos de uvas.',
+      q:'¿Cuántas manzanas y uvas hay <mark class="clave">en total</mark>?',
+      paso:pasoMovimiento('juntar','«En total» pide un solo montón. Aquí nadie se compara con nadie.'),
+      respuestas:[{t:'10',ok:true},{t:'2'},{t:'19'},{t:'4'}],
+      pista:'Echa las manzanas y las uvas en la misma bolsa y cuenta todo.',
+      explica:'6 + 4 = 10. La misma gráfica del caso 1, otra pregunta, otro movimiento.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.1',
+      titulo:'Caso 3: el conteo de la mochila',
+      escena:
+        filaRayitas('Lápices',8)+filaRayitas('Crayones',5)+filaRayitas('Reglas',3)+
+        '<p class="leyenda">Cada rayita vale 1. El grupo con la raya cruzada vale 5.</p>',
+      alt:'Conteo con rayitas: 8 lápices, 5 crayones y 3 reglas.',
+      q:'¿Cuántas reglas <mark class="clave">menos que</mark> lápices hay?',
+      paso:pasoMovimiento('comparar','«Menos que» también compara dos grupos. La respuesta es la distancia entre ellos.'),
+      respuestas:[{t:'5',ok:true},{t:'11'},{t:'8'},{t:'3'}],
+      pista:'Cuenta primero cada fila: reglas 3, lápices 8.',
+      explica:'8 − 3 = 5. «Menos» avisa que un grupo es más pequeño, pero la pregunta sigue siendo la diferencia.'
+    },
+    {
+      norma:'CC.2.OA.1',
+      titulo:'Caso 4: las calcomanías',
+      escena:
+        '<p class="cuento"><span class="grande" aria-hidden="true">⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐</span></p>'+
+        '<p class="leyenda">Israel tenía 15 calcomanías. Le regaló 6 a un amigo.</p>',
+      alt:'Quince calcomanías en fila.',
+      q:'Israel tenía 15 calcomanías y regaló 6. ¿Cuántas le <mark class="clave">quedan</mark>?',
+      paso:pasoMovimiento('quitar','«Quedan» cuenta lo que se queda después de que algo se fue. Hay un solo grupo, no dos.'),
+      respuestas:[{t:'9',ok:true},{t:'21'},{t:'6'},{t:'11'}],
+      pista:'Tapa 6 estrellas con el dedo y cuenta las que todavía se ven.',
+      explica:'15 − 6 = 9. Aquí también restas, pero por otra razón: no comparas dos grupos, sacas una parte de uno solo.'
+    },
+    {
+      norma:'CC.2.OA.4',
+      titulo:'Caso 5: el escuadrón de estrellas',
+      escena:matriz(3,5,'⭐')+'<p class="leyenda">3 filas y 5 estrellas en cada fila.</p>',
+      alt:'Arreglo de 3 filas con 5 estrellas cada una.',
+      q:'¿Qué suma muestra las <mark class="clave">filas</mark> de este arreglo?',
+      paso:{
+        pregunta:'¿Qué movimiento es?',
+        opciones:[
+          {clave:'juntar',tono:'juntar',glifo:'+',titulo:'Junta grupos iguales',sub:'Suma el mismo número una y otra vez'},
+          {clave:'comparar',tono:'comparar',glifo:'−',titulo:'Compara',sub:'Busca la diferencia'},
+          {clave:'quitar',tono:'quitar',glifo:'−',titulo:'Quita',sub:'Una parte del montón se fue'}
+        ],
+        correcto:'juntar',
+        porque:'Un arreglo está hecho de grupos iguales. Sumas el mismo número una vez por cada fila.'
+      },
+      respuestas:[{t:'5 + 5 + 5 = 15',ok:true},{t:'3 + 3 + 3 = 9'},{t:'5 + 3 = 8'},{t:'15 + 15 = 30'}],
+      pista:'Cada fila tiene 5 estrellas y hay 3 filas. Escribe un 5 por cada fila.',
+      explica:'5 + 5 + 5 = 15. Contando por columnas también da 15 (3 + 3 + 3 + 3 + 3): el mismo total contado de dos maneras.'
+    },
+    {
+      norma:'CC.2.OA.3',
+      titulo:'Caso 6: el cesto de las medias',
+      escena:'<p class="cuento"><span class="grande" aria-hidden="true">🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦</span></p>'+
+             '<p class="leyenda">13 medias salieron de la secadora.</p>',
+      alt:'Trece medias en fila.',
+      q:'¿Cada media encuentra pareja? ¿13 es <mark class="clave">par o impar</mark>?',
+      paso:{
+        pregunta:'¿Qué haces primero?',
+        opciones:[
+          {clave:'parear',tono:'mirar',glifo:'👥',titulo:'Forma parejas',sub:'Júntalas de dos en dos'},
+          {clave:'sumar',tono:'juntar',glifo:'+',titulo:'Suma todo',sub:'Suma todos los números que veas'},
+          {clave:'restar',tono:'comparar',glifo:'−',titulo:'Resta',sub:'Busca la diferencia'}
+        ],
+        correcto:'parear',
+        porque:'Par o impar se decide formando parejas. Si nadie se queda solo, el número es par.'
+      },
+      respuestas:[{t:'Impar — 1 media se queda sola',ok:true},{t:'Par — todas tienen pareja'},{t:'Impar — 3 medias se quedan solas'},{t:'Par — 13 = 6 + 6'}],
+      pista:'Júntalas de dos en dos: 2, 4, 6, 8, 10, 12… ¿y la media número 13?',
+      explica:'13 es impar: quedan 6 parejas y una media sola. Un número par se parte en dos sumandos iguales (12 = 6 + 6); 13 no puede.'
+    },
+    {
+      norma:'CC.2.NBT.4',
+      titulo:'Caso 7: duelo de números',
+      escena:'<p class="cuento" style="text-align:center;font-size:2.6rem;font-family:Fredoka,sans-serif">348 &nbsp;<span style="color:#4A5F73">?</span>&nbsp; 384</p>',
+      alt:'Los números 348 y 384 con un símbolo por descubrir entre ellos.',
+      q:'<mark class="clave">Compara</mark> los dos números. ¿Qué símbolo va en el medio?',
+      paso:{
+        pregunta:'¿Dónde miras primero?',
+        opciones:[
+          {clave:'cientos',tono:'mirar',glifo:'💯',titulo:'Las centenas',sub:'Empieza por el dígito de las centenas'},
+          {clave:'unidades',tono:'quitar',glifo:'1️⃣',titulo:'Las unidades',sub:'Empieza por el dígito de las unidades'},
+          {clave:'largo',tono:'comparar',glifo:'📏',titulo:'El más largo',sub:'Gana el número más largo'}
+        ],
+        correcto:'cientos',
+        porque:'Siempre se empieza por el valor más grande: las centenas. Si empatan, pasas a las decenas.'
+      },
+      respuestas:[{t:'348 < 384',ok:true},{t:'348 > 384'},{t:'348 = 384'},{t:'384 < 348'}],
+      pista:'Las centenas empatan (3 y 3). Mira las decenas: 4 decenas contra 8 decenas.',
+      explica:'348 < 384. Centenas iguales, así que mandan las decenas: 40 es menos que 80. La boca abierta del símbolo siempre mira al número mayor.'
+    },
+    {
+      norma:'CC.2.NBT.5 · CC.2.OA.1',
+      titulo:'Caso 8: los puntos del juego',
+      escena:'<p class="cuento" style="text-align:center;font-size:2.2rem;font-family:Fredoka,sans-serif">38 🎯 &nbsp;+&nbsp; 27 🎯</p>'+
+             '<p class="leyenda">Israel tenía 38 puntos y ganó 27 puntos más en la segunda ronda.</p>',
+      alt:'Treinta y ocho puntos más veintisiete puntos.',
+      q:'¿Cuántos puntos tiene Israel <mark class="clave">en total</mark>?',
+      paso:pasoMovimiento('juntar','«En total» pone las dos rondas en el mismo marcador. Ganó puntos, no perdió ninguno.'),
+      respuestas:[{t:'65',ok:true},{t:'11'},{t:'55'},{t:'515'}],
+      pista:'Suma primero las decenas (30 + 20 = 50) y luego las unidades (8 + 7 = 15). Ahora junta: 50 + 15.',
+      explica:'38 + 27 = 65. Cuidado con la trampa 515: las decenas y las unidades no se escriben una al lado de la otra, se reagrupan.'
+    },
+    {
+      norma:'CC.2.NBT.8',
+      titulo:'Caso 9: la máquina de cien',
+      escena:'<p class="cuento" style="text-align:center;font-size:2.2rem;font-family:Fredoka,sans-serif">470 &nbsp;➜&nbsp; 🏭 <span style="font-size:1.5rem">(+100)</span> &nbsp;➜&nbsp; ?</p>',
+      alt:'El número 470 entra en una máquina que suma 100.',
+      q:'La máquina suma 100. ¿Qué número sale?',
+      paso:{
+        pregunta:'¿Qué dígito cambia?',
+        opciones:[
+          {clave:'centenas',tono:'mirar',glifo:'💯',titulo:'El de las centenas',sub:'Solo se mueven las centenas'},
+          {clave:'decenas',tono:'juntar',glifo:'🔟',titulo:'El de las decenas',sub:'Solo se mueven las decenas'},
+          {clave:'todos',tono:'comparar',glifo:'🔢',titulo:'Todos',sub:'Cambian todos los dígitos'}
+        ],
+        correcto:'centenas',
+        porque:'Sumar 100 solo mueve las centenas: el 4 pasa a 5 y lo demás se queda quieto.'
+      },
+      respuestas:[{t:'570',ok:true},{t:'480'},{t:'471'},{t:'370'}],
+      pista:'4 centenas + 1 centena = 5 centenas. El 7 y el 0 no se tocan.',
+      explica:'470 + 100 = 570. Si la máquina quitara 10, saldría 460: se movería solo el dígito de las decenas.'
+    },
+    {
+      norma:'CC.2.G.1',
+      titulo:'Caso 10: la fila de figuras',
+      escena:galeriaFormas()+'<p class="leyenda">Cuatro figuras: A, B, C y D.</p>',
+      alt:'Cuatro figuras: A triángulo, B cuadrilátero, C pentágono, D hexágono.',
+      q:'¿Qué figura tiene <mark class="clave">5 lados</mark> y 5 ángulos?',
+      paso:{
+        pregunta:'¿Cómo lo averiguas?',
+        opciones:[
+          {clave:'contar',tono:'mirar',glifo:'👁️',titulo:'Cuenta lados y esquinas',sub:'Da la vuelta a la figura contando'},
+          {clave:'tamano',tono:'comparar',glifo:'📐',titulo:'Busca la más grande',sub:'Mira el tamaño'},
+          {clave:'color',tono:'quitar',glifo:'🎨',titulo:'Mira el color',sub:'Fíjate en el color'}
+        ],
+        correcto:'contar',
+        porque:'Una figura se nombra por sus atributos —cuántos lados y ángulos tiene—, no por lo grande que se vea.'
+      },
+      respuestas:[{t:'C (pentágono)',ok:true},{t:'A (triángulo)'},{t:'B (cuadrilátero)'},{t:'D (hexágono)'}],
+      pista:'Pon el dedo en una esquina y ve dando la vuelta contando los lados.',
+      explica:'C es el pentágono: 5 lados y 5 ángulos. A tiene 3, B tiene 4 y D tiene 6.'
+    },
+    {
+      norma:'CC.2.G.2 · CC.2.OA.4',
+      titulo:'Caso 11: el piso de baldosas',
+      escena:rejilla(3,4)+'<p class="leyenda">Un rectángulo partido en filas y columnas iguales.</p>',
+      alt:'Rectángulo dividido en 3 filas y 4 columnas de cuadrados iguales.',
+      q:'¿Cuántos cuadrados iguales hay <mark class="clave">en total</mark>?',
+      paso:pasoMovimiento('juntar','Las filas son grupos iguales: sumas 4 una vez por cada fila.'),
+      respuestas:[{t:'12',ok:true},{t:'7'},{t:'34'},{t:'9'}],
+      pista:'Cuenta los cuadrados de una fila y suma ese número una vez por fila: 4 + 4 + 4.',
+      explica:'4 + 4 + 4 = 12. Contando de uno en uno también da 12, pero sumar por filas es más rápido y no pierdes la cuenta.'
+    },
+    {
+      norma:'CC.2.G.3',
+      titulo:'Caso 12: repartir el pastel',
+      escena:galeriaCirculos()+'<p class="leyenda">Cuatro pasteles partidos en partes iguales.</p>',
+      alt:'Cuatro círculos: A en 2 partes, B en 4 partes, C en 3 partes y D en 6 partes.',
+      q:'¿Qué pastel está partido en <mark class="clave">tercios</mark>?',
+      paso:{
+        pregunta:'¿Qué significa «tercios»?',
+        opciones:[
+          {clave:'tres',tono:'mirar',glifo:'🍰',titulo:'Tres partes iguales',sub:'Un entero partido en 3 pedazos iguales'},
+          {clave:'tercera',tono:'juntar',glifo:'3️⃣',titulo:'Tres pasteles enteros',sub:'Tres pasteles en la mesa'},
+          {clave:'grande',tono:'comparar',glifo:'📏',titulo:'El pedazo más grande',sub:'Gana la parte mayor'}
+        ],
+        correcto:'tres',
+        porque:'Medios son 2 partes iguales, tercios son 3 y cuartos son 4: siempre partes iguales del mismo entero.'
+      },
+      respuestas:[{t:'C',ok:true},{t:'A'},{t:'B'},{t:'D'}],
+      pista:'Cuenta en cuántos pedazos quedó partido cada círculo.',
+      explica:'C tiene 3 partes iguales: son tercios. Los tres tercios juntos forman el pastel entero.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.1',
+      titulo:'Caso 13: el club de matemáticas (parte 1)',
+      escena:barras([{nombre:'Niños',valor:7},{nombre:'Niñas',valor:5}])+
+             '<p class="leyenda">Cantidad de estudiantes</p>',
+      alt:'Gráfica de barras: 7 niños y 5 niñas en el club de matemáticas.',
+      q:'¿Cuántas niñas <mark class="clave">menos que</mark> niños hay en el club?',
+      paso:pasoMovimiento('comparar','Dos barras una al lado de la otra: la pregunta es cuánto le falta a la más corta.'),
+      respuestas:[{t:'2',ok:true},{t:'12'},{t:'5'},{t:'7'}],
+      pista:'Mira dónde termina cada barra: una llega al 7 y la otra al 5.',
+      explica:'7 − 5 = 2. En una gráfica de barras, «cuántas menos» es el pedacito que le falta a la barra corta para alcanzar a la larga.'
+    },
+    {
+      norma:'CC.2.MD.10 · CC.2.OA.2',
+      titulo:'Caso 14: el club de matemáticas (parte 2)',
+      escena:barras([{nombre:'Niños',valor:7},{nombre:'Niñas',valor:5}])+
+             '<p class="leyenda">La misma gráfica, otra pregunta.</p>',
+      alt:'La misma gráfica de barras: 7 niños y 5 niñas.',
+      q:'¿Cuántos miembros tiene el club <mark class="clave">en total</mark>?',
+      paso:pasoMovimiento('juntar','La misma gráfica, pero ahora nadie se compara: los dos grupos forman el club entero.'),
+      respuestas:[{t:'12',ok:true},{t:'2'},{t:'7'},{t:'75'}],
+      pista:'Niños y niñas están en el mismo club: júntalos.',
+      explica:'7 + 5 = 12. Lección del detective: una misma gráfica puede pedir una suma o una resta. Manda la pregunta, no el dibujo.'
+    }
+  ];
+
+  /* ============ motor del juego ============ */
+
+  var caso = document.getElementById('caso');
+  var anuncio = document.getElementById('anuncio');
+  var i = 0;
+  var estrellas = 0;
+  var fallos = [];
+  var intentos = 0;
+
+  function barajar(a){
+    var b = a.slice(), j, t, k;
+    for(k=b.length-1;k>0;k--){ j=Math.floor(Math.random()*(k+1)); t=b[k]; b[k]=b[j]; b[j]=t; }
+    return b;
+  }
+
+  function tiraEstrellas(){
+    var s='', k;
+    for(k=0;k<CASOS.length;k++){ s += (k<i ? '★' : '☆'); }
+    return s;
+  }
+
+  function hablar(texto){
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(texto.replace(/<[^>]*>/g,''));
+    u.lang = 'es-US';
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+
+  function pintarCaso(){
+    var c = CASOS[i];
+    intentos = 0;
+    caso.innerHTML =
+      '<div class="barraCaso">'+
+        '<span class="contador">Caso '+(i+1)+' de '+CASOS.length+'</span>'+
+        '<span class="estrellas" aria-hidden="true">'+tiraEstrellas()+'</span>'+
+        '<span class="norma">'+c.norma+'</span>'+
+      '</div>'+
+      '<h2 class="tituloCaso">'+c.titulo+'</h2>'+
+      '<div class="escena" role="img" aria-label="'+c.alt+'">'+c.escena+'</div>'+
+      '<p class="barraAudio"><button class="audio" type="button" id="oir">🔊 Léeme la pregunta</button></p>'+
+      '<p class="pregunta">'+c.q+'</p>'+
+      (c.paso ? '<p class="instruccion" id="instruccion"><span class="mano" aria-hidden="true">✋</span>'+
+                '<span>Espera, todavía no pongas el número. Primero elige el movimiento aquí abajo.</span></p>' : '')+
+      '<div id="zonaPaso"></div>'+
+      '<div id="zonaResp"></div>'+
+      '<div id="zonaAviso"></div>';
+
+    document.getElementById('oir').onclick = function(){ hablar(c.q); };
+
+    if(c.paso){ pintarPaso(c); bloquearRespuestas(); } else { pintarRespuestas(c); }
+    caso.querySelector('.tituloCaso').setAttribute('tabindex','-1');
+    caso.querySelector('.tituloCaso').focus();
+  }
+
+  function pintarPaso(c){
+    var z = document.getElementById('zonaPaso'), k, o, b;
+    z.innerHTML = '<h3>Paso 1 · '+c.paso.pregunta+'</h3><div class="opciones" id="opsPaso"></div>';
+    var cont = document.getElementById('opsPaso');
+    for(k=0;k<c.paso.opciones.length;k++){
+      o = c.paso.opciones[k];
+      b = document.createElement('button');
+      b.type='button'; b.className='opcion'; b.setAttribute('data-tono',o.tono);
+      b.innerHTML = '<span class="glifo" aria-hidden="true">'+o.glifo+'</span><span>'+o.titulo+'<small>'+o.sub+'</small></span>';
+      (function(op,boton){
+        boton.onclick = function(){ elegirPaso(c, op, boton); };
+      })(o,b);
+      cont.appendChild(b);
+    }
+  }
+
+  function bloquearRespuestas(){
+    document.getElementById('zonaResp').innerHTML =
+      '<h3>Paso 2 · La respuesta</h3>'+
+      '<div class="bloqueado"><span class="candado" aria-hidden="true">🔒</span>'+
+      '<span>Los números aparecen aquí cuando resuelvas el paso 1.</span>'+
+      '<span class="fichasFantasma" aria-hidden="true"><span>?</span><span>?</span><span>?</span><span>?</span></span></div>';
+  }
+
+  function elegirPaso(c, op, boton){
+    var botones = document.querySelectorAll('#opsPaso button'), k;
+    var banda = document.getElementById('instruccion');
+    if(op.clave === c.paso.correcto){
+      for(k=0;k<botones.length;k++){ botones[k].disabled = true; }
+      boton.className = 'opcion acertada'; boton.setAttribute('data-tono','juntar');
+      if(banda){
+        banda.className = 'instruccion hecha';
+        banda.innerHTML = '<span class="mano" aria-hidden="true">👇</span><span>Movimiento elegido. Ahora toca tu respuesta en el paso 2.</span>';
+      }
+      aviso('bien','¡Buen ojo, detective!', c.paso.porque, false);
+      anuncio.textContent = 'Movimiento correcto. Los números ya están disponibles.';
+      pintarRespuestas(c);
+    } else {
+      intentos++;
+      boton.className = 'opcion fallada'; boton.disabled = true;
+      aviso('casi','Este no es.', c.pista, false);
+      anuncio.textContent = 'Ese no es el movimiento. Vuelve a leer la palabra amarilla.';
+    }
+  }
+
+  function pintarRespuestas(c){
+    var z = document.getElementById('zonaResp'), k, r, b;
+    var lista = barajar(c.respuestas);
+    var numerico = c.respuestas.every(function(x){ return x.t.length <= 3; });
+    z.innerHTML = '<h3 tabindex="-1" id="tituloPaso2">'+(c.paso?'Paso 2 · ':'')+'Ahora sí, la respuesta</h3>'+
+                  '<div class="'+(numerico?'fichas':'opciones')+'" id="opsResp"></div>';
+    var cont = document.getElementById('opsResp');
+    if(c.paso){ document.getElementById('tituloPaso2').focus(); }
+    for(k=0;k<lista.length;k++){
+      r = lista[k];
+      b = document.createElement('button');
+      b.type='button';
+      b.className = numerico ? 'ficha' : 'opcion';
+      if(!numerico){ b.setAttribute('data-tono','mirar'); b.innerHTML='<span>'+r.t+'</span>'; }
+      else { b.textContent = r.t; }
+      (function(res,boton){
+        boton.onclick = function(){ elegirRespuesta(c,res,boton); };
+      })(r,b);
+      cont.appendChild(b);
+    }
+  }
+
+  function elegirRespuesta(c, r, boton){
+    var botones = document.querySelectorAll('#opsResp button'), k;
+    if(r.ok){
+      for(k=0;k<botones.length;k++){ botones[k].disabled = true; }
+      boton.className = boton.className.replace(/(ficha|opcion)/,'$1 acertada');
+      if(intentos === 0){ estrellas++; } else { fallos.push(c.titulo); }
+      aviso('bien','¡Caso resuelto!', c.explica, true);
+      anuncio.textContent = 'Correcto. '+c.explica;
+    } else {
+      intentos++;
+      boton.className += ' fallada'; boton.disabled = true;
+      aviso('casi','Casi.', c.pista, false);
+      anuncio.textContent = 'Esa no es. '+c.pista;
+    }
+  }
+
+  function aviso(tipo, titulo, texto, conBoton){
+    var z = document.getElementById('zonaAviso');
+    z.innerHTML =
+      '<div class="aviso '+(tipo==='bien'?'bien':'casi')+'">'+
+        (tipo==='bien'?'<span class="sello">'+titulo+'</span>':'<b>'+titulo+'</b>')+
+        '<p>'+texto+'</p>'+
+      '</div>'+
+      (conBoton ? '<button class="seguir" type="button" id="btnSeguir">'+(i+1<CASOS.length?'Siguiente caso ':'Ver mi medalla ')+'</button>' : '');
+    if(conBoton){
+      var btn = document.getElementById('btnSeguir');
+      btn.onclick = function(){ i++; if(i<CASOS.length){ pintarCaso(); } else { pintarFinal(); } };
+      btn.focus();
+    }
+  }
+
+  function pintarFinal(){
+    var unicos = [], k;
+    for(k=0;k<fallos.length;k++){ if(unicos.indexOf(fallos[k])<0){ unicos.push(fallos[k]); } }
+    var repaso = unicos.length
+      ? '<h3>Casos para repasar</h3><ul class="repaso"><li>'+unicos.join('</li><li>')+'</li></ul>'
+      : '<p>No hizo falta ninguna pista. Así se ve leer con calma.</p>';
+    caso.innerHTML =
+      '<div class="medalla">'+
+        '<div class="disco" aria-hidden="true">🔎</div>'+
+        '<h2 class="tituloCaso" tabindex="-1">Detective de operaciones</h2>'+
+        '<p style="font-size:1.25rem">Casos resueltos al primer intento: <b>'+estrellas+' de '+CASOS.length+'</b></p>'+
+        '<p class="estrellas" aria-hidden="true">'+Array(estrellas+1).join('★')+Array(CASOS.length-estrellas+1).join('☆')+'</p>'+
+      '</div>'+
+      '<div class="aviso bien">'+
+        '<p><b>Lo que resolviste hoy:</b> «en total» dice juntar; «más que» y «menos que» dicen comparar; «quedan» dice quitar. Una misma gráfica puede pedir una suma o una resta: manda la pregunta, no el dibujo.</p>'+
+      '</div>'+
+      repaso+
+      '<button class="seguir" type="button" id="btnOtra">Jugar otra vez</button>';
+    document.getElementById('btnOtra').onclick = function(){
+      i=0; estrellas=0; fallos=[]; pintarCaso();
+    };
+    caso.querySelector('.tituloCaso').focus();
+  }
+
+  pintarCaso();
+})();
+</script>
+</body>
+</html>
