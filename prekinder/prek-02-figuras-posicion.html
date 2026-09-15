@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<!--
+  Matemáticas para prekínder — Figuras y posición
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  Licencia: Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+  Alineado a Illinois Early Learning and Development Standards: PK.9.A y PK.9.B
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figuras y posición: Juegos de prekínder</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Juegos interactivos bilingües de geometría y posición para niños de prekínder. Sin lectura requerida: instrucciones habladas y figuras que responden al toque.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<style>
+:root{
+  --papel:#F2F7FB;
+  --tinta:#16283C;
+  --tinta-suave:#4A5D70;
+  --linea:#C9D8E6;
+  --blanco:#FFFFFF;
+  --acierto:#1B5E20;
+  --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00;
+  --reintento-fondo:#FFF1DF;
+  --foco:#0B62D6;
+  --sombra:0 4px 0 rgba(22,40,60,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel);
+  color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);
+  line-height:1.45;
+  min-height:100vh;
+  -webkit-text-size-adjust:100%;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+/* ---------- Estructura ---------- */
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px;
+}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700;letter-spacing:-.01em}
+.barra .crece{flex:1 1 auto}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--blanco);border:3px solid var(--linea);border-radius:999px;
+  padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra);
+}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{
+  border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;
+  padding:11px 20px;font-weight:700;box-shadow:var(--sombra);
+}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--tinta);color:var(--blanco)}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:20px 10px 10px}
+.portada .muestra{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.portada .muestra svg{width:clamp(56px,12vw,84px);height:clamp(56px,12vw,84px)}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:18px 0 6px;font-weight:700}
+.portada p{color:var(--tinta-suave);max-width:46ch;margin:0 auto 22px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.ficha-juego{
+  display:flex;align-items:center;gap:14px;text-align:left;
+  background:var(--blanco);border:4px solid var(--linea);border-radius:22px;
+  padding:16px;box-shadow:var(--sombra);
+}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego .emoji{font-size:2.6em;line-height:1}
+.ficha-juego .nombre{font-weight:700;font-size:1.02em;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Pantalla de juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{
+  display:flex;align-items:center;gap:14px;
+  background:var(--blanco);border:4px solid var(--linea);border-radius:20px;
+  padding:14px 18px;margin-bottom:16px;box-shadow:var(--sombra);
+}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px)}
+.bocina{
+  flex:0 0 auto;width:62px;height:62px;border-radius:50%;
+  border:4px solid var(--tinta);background:var(--blanco);
+  font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra);
+}
+.escena{
+  background:var(--blanco);border:4px solid var(--linea);border-radius:22px;
+  padding:20px;min-height:250px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+}
+.fila{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center}
+
+/* ---------- Figuras ---------- */
+.fig{
+  border:4px solid transparent;border-radius:20px;background:transparent;
+  padding:6px;line-height:0;
+}
+.fig svg{width:clamp(74px,15vw,112px);height:clamp(74px,15vw,112px);display:block}
+.fig.grande svg{width:clamp(130px,30vw,190px);height:clamp(130px,30vw,190px)}
+.fig.quieta{cursor:default}
+.fig:not(.quieta):hover{border-color:var(--linea)}
+.fig.elegida{border-color:var(--foco);background:#E3EEFC}
+.fig.mal{animation:temblor .38s}
+.fig.baila{animation:baile .7s}
+.fig.vuela-izq{animation:volarIzq .55s forwards}
+.fig.vuela-der{animation:volarDer .55s forwards}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes baile{
+  0%,100%{transform:rotate(0) scale(1)}
+  25%{transform:rotate(-9deg) scale(1.1)}
+  55%{transform:rotate(9deg) scale(1.1)}
+  80%{transform:rotate(-4deg) scale(1.04)}
+}
+@keyframes volarIzq{to{transform:translate(-34vw,120px) scale(.28);opacity:0}}
+@keyframes volarDer{to{transform:translate(34vw,120px) scale(.28);opacity:0}}
+.rueda{animation:rodar 1.5s ease-in-out}
+@keyframes rodar{
+  0%{transform:translateX(-70px) rotate(-200deg)}
+  100%{transform:translateX(0) rotate(0)}
+}
+.brinca{animation:brinco 1s}
+@keyframes brinco{
+  0%,100%{transform:translateY(0)}
+  30%{transform:translateY(-26px)}
+  50%{transform:translateY(0)}
+  70%{transform:translateY(-12px)}
+}
+
+/* partes tocables de una figura */
+.parte{cursor:pointer}
+.parte:focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+
+/* ---------- Cajas para clasificar ---------- */
+.cajas{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.caja{
+  border:5px dashed var(--tinta-suave);border-radius:20px;background:var(--papel);
+  padding:12px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  min-width:clamp(120px,26vw,170px);
+}
+.caja svg{width:clamp(48px,10vw,66px);height:clamp(48px,10vw,66px)}
+.caja .cuenta{font-weight:700;font-size:1.1em;color:var(--tinta-suave)}
+.caja.mal{animation:temblor .38s}
+
+/* ---------- Escenas de posición ---------- */
+.lugar{
+  position:relative;width:clamp(128px,27vw,178px);height:clamp(128px,27vw,178px);
+  border:4px solid var(--linea);border-radius:20px;background:var(--blanco);padding:0;
+}
+.lugar .mueble{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  font-size:clamp(52px,11vw,76px);line-height:1;
+}
+.lugar .bicho{position:absolute;font-size:clamp(28px,6vw,40px);line-height:1}
+.lugar.elegida{border-color:var(--foco);background:#E3EEFC}
+.lugar.mal{animation:temblor .38s}
+
+/* ---------- Fichas de número ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{
+  width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);
+  border-radius:22px;border:6px solid;display:grid;place-items:center;
+  font-size:clamp(40px,8.5vw,60px);font-weight:700;line-height:1;
+  box-shadow:var(--sombra);padding:0;
+}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.ficha-num.grande{width:clamp(110px,24vw,160px);height:clamp(110px,24vw,160px);font-size:clamp(58px,13vw,90px)}
+.ficha-num.mal{animation:temblor .38s}
+
+/* ---------- Tarjetas de nombre ---------- */
+.tarjeta-nombre{
+  border:5px solid var(--tinta);background:var(--blanco);border-radius:18px;
+  padding:14px 22px;font-weight:700;font-size:clamp(19px,3vw,26px);box-shadow:var(--sombra);
+}
+.tarjeta-nombre.mal{animation:temblor .38s}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{
+  margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;
+  font-size:clamp(18px,2.4vw,23px);text-align:center;border:4px solid transparent;
+}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32}
+.estrella.ganada{filter:none;opacity:1}
+
+/* ---------- Final ---------- */
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px)}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+/* ---------- Pie ---------- */
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#0B4FA8}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco,.pie,.barra{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:17pt;margin:0 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 5mm;color:#333}
+  .hoja .tira{display:flex;gap:7mm;flex-wrap:wrap;margin-bottom:6mm;page-break-inside:avoid}
+  .hoja .tira svg{width:28mm;height:28mm}
+  .hoja .clave{font-size:10.5pt;margin:0 0 5mm}
+  .hoja .creditos{margin-top:6mm;font-size:8.5pt;color:#444}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .fig.elegida{transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+
+  <div class="barra">
+    <h1 data-es="Figuras y posición" data-en="Shapes and position">Figuras y posición</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="true">Español</button>
+      <button id="btn-en" aria-pressed="false">English</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="muestra" id="muestra-portada" aria-hidden="true"></div>
+    <h2 data-es="¡Toca las figuras!" data-en="Touch the shapes!">¡Toca las figuras!</h2>
+    <p data-es="Seis juegos para conocer las figuras, contar sus lados y sus esquinas, y decir dónde están las cosas. Todo se dice en voz alta: no hace falta leer."
+       data-en="Six games to meet the shapes, count their sides and corners, and say where things are. Everything is read aloud: no reading needed.">
+       Seis juegos para conocer las figuras, contar sus lados y sus esquinas, y decir dónde están las cosas. Todo se dice en voz alta: no hace falta leer.</p>
+    <button class="boton fuerte" id="btn-empezar" data-es="Empezar" data-en="Start">Empezar</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Escoge un juego</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Volver</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Estrellas ganadas"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina" aria-label="Escuchar la instrucción">🔊</button>
+      <p id="txt-instruccion"></p>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Siguiente ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">¡Terminaste el juego!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Jugar otra vez</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Otro juego</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p>
+      <button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+              data-es="🖨 Imprimir hoja de figuras" data-en="🖨 Print a shapes page">🖨 Imprimir hoja de figuras</button>
+    </p>
+    <p data-es="Alineado con los estándares de Illinois para prekínder: PK.9.A (reconocer, nombrar, clasificar y describir figuras de dos y tres dimensiones) y PK.9.B (ubicación y posición ordinal)."
+       data-en="Aligned to Illinois pre-K standards: PK.9.A (recognize, name, sort and describe two- and three-dimensional shapes) and PK.9.B (location and ordinal position).">
+       Alineado con los estándares de Illinois para prekínder: PK.9.A (reconocer, nombrar, clasificar y describir figuras de dos y tres dimensiones) y PK.9.B (ubicación y posición ordinal).</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer">Licencia CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja" id="hoja">
+  <h2 data-es="Colorea las figuras" data-en="Color the shapes">Colorea las figuras</h2>
+  <p class="indicacion" data-es="Nombre: ______________________________     Fecha: ______________"
+     data-en="Name: ______________________________     Date: ______________">Nombre: ______________________________     Fecha: ______________</p>
+  <p class="clave" data-es="Círculos de rojo · Cuadrados de azul · Triángulos de verde · Rectángulos de amarillo"
+     data-en="Circles red · Squares blue · Triangles green · Rectangles yellow">Círculos de rojo · Cuadrados de azul · Triángulos de verde · Rectángulos de amarillo</p>
+  <div class="tira" id="hoja-tira-1"></div>
+  <div class="tira" id="hoja-tira-2"></div>
+  <p class="clave" data-es="Cuenta las esquinas de cada figura y escribe el número."
+     data-en="Count the corners of each shape and write the number.">Cuenta las esquinas de cada figura y escribe el número.</p>
+  <div class="tira" id="hoja-tira-3"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de las fichas de números ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"},
+  1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"},
+  3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"},
+  5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}
+};
+
+/* ============ Colores de las figuras (al azar en cada ronda,
+   para que el niño atienda a la forma y no al color) ============ */
+const COLORES = [
+  {f:"#E8746E",b:"#8E1B16"}, {f:"#F3A73E",b:"#8A4B00"},
+  {f:"#EFCA45",b:"#7A6100"}, {f:"#6FBC74",b:"#1B5E20"},
+  {f:"#6AA3E2",b:"#0D47A1"}, {f:"#AC82D4",b:"#4A148C"},
+  {f:"#EA8FB8",b:"#880E4F"}, {f:"#78C9C6",b:"#004D40"}
+];
+
+/* ============ Figuras planas ============ */
+const FIGURAS = {
+  circulo:   {es:["círculo","círculos"],    en:["circle","circles"],       redonda:true},
+  ovalo:     {es:["óvalo","óvalos"],        en:["oval","ovals"],           redonda:true},
+  triangulo: {es:["triángulo","triángulos"],en:["triangle","triangles"],   v:[[50,13],[89,84],[11,84]]},
+  cuadrado:  {es:["cuadrado","cuadrados"],  en:["square","squares"],       v:[[15,15],[85,15],[85,85],[15,85]]},
+  rectangulo:{es:["rectángulo","rectángulos"],en:["rectangle","rectangles"],v:[[8,26],[92,26],[92,74],[8,74]]},
+  rombo:     {es:["rombo","rombos"],        en:["rhombus","rhombuses"],    v:[[50,10],[88,50],[50,90],[12,50]]},
+  pentagono: {es:["pentágono","pentágonos"],en:["pentagon","pentagons"],   v:[[50,10],[90,39],[75,86],[25,86],[10,39]]},
+  hexagono:  {es:["hexágono","hexágonos"],  en:["hexagon","hexagons"],     v:[[92,50],[71,86],[29,86],[8,50],[29,14],[71,14]]},
+  estrella:  {es:["estrella","estrellas"],  en:["star","stars"],
+              v:[[50,6],[61,38],[95,38],[68,58],[78,90],[50,70],[22,90],[32,58],[5,38],[39,38]]}
+};
+const PLANAS_BASICAS = ["circulo","cuadrado","triangulo","rectangulo"];
+const PLANAS_TODAS   = ["circulo","cuadrado","triangulo","rectangulo","ovalo","rombo","estrella"];
+const PARA_CONTAR    = ["triangulo","cuadrado","rectangulo","rombo","pentagono","hexagono"];
+
+/* ============ Cuerpos geométricos ============ */
+const CUERPOS = {
+  esfera:   {es:["esfera","esferas"],    en:["sphere","spheres"],     rueda:true},
+  cubo:     {es:["cubo","cubos"],        en:["cube","cubes"],         rueda:false},
+  cono:     {es:["cono","conos"],        en:["cone","cones"],         rueda:true},
+  cilindro: {es:["cilindro","cilindros"],en:["cylinder","cylinders"], rueda:true},
+  piramide: {es:["pirámide","pirámides"],en:["pyramid","pyramids"],   rueda:false}
+};
+const CUERPOS_LISTA = ["esfera","cubo","cono","cilindro","piramide"];
+
+const NUMERO = {
+  es:["cero","uno","dos","tres","cuatro","cinco","seis"],
+  en:["zero","one","two","three","four","five","six"]
+};
+
+/* ============ Textos ============ */
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Qué bien miras!"],
+    otra:"Mira otra vez. Tú puedes.",
+    volverAEscuchar:"🔁 Escuchar otra vez",
+    toca:(f)=>`Toca el ${FIGURAS[f].es[0]}.`,
+    comoSeLlama:"¿Cómo se llama esta figura?",
+    esUn:(n)=>`Es un ${n}.`,
+    esUna:(n)=>`Es una ${n}.`,
+    cuentaLados:(f)=>`Toca cada lado del ${FIGURAS[f].es[0]} y cuenta.`,
+    cuentaEsquinas:(f)=>`Toca cada esquina del ${FIGURAS[f].es[0]} y cuenta.`,
+    esquinasCirculo:"¿Cuántas esquinas tiene el círculo?",
+    circuloRedondo:"El círculo no tiene esquinas. Es redondo.",
+    tiene:(n,que)=>`Tiene ${NUMERO.es[n]} ${que}.`,
+    lados:"lados", esquinas:"esquinas",
+    guarda:(f)=>`¿Dónde va esta figura? Toca la caja del ${FIGURAS[f].es[0]}.`,
+    guardaListo:"¡Guardaste todas las figuras!",
+    queCuerpo:"¿Cómo se llama este cuerpo?",
+    dondeEsta:(r)=>`Toca el dibujo donde el pollito está ${r}.`,
+    cualEs:(o)=>`Toca el ${o}.`
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","You look so carefully!"],
+    otra:"Look again. You can do it.",
+    volverAEscuchar:"🔁 Listen again",
+    toca:(f)=>`Touch the ${FIGURAS[f].en[0]}.`,
+    comoSeLlama:"What is this shape called?",
+    esUn:(n)=>`It is a ${n}.`,
+    esUna:(n)=>`It is a ${n}.`,
+    cuentaLados:(f)=>`Touch each side of the ${FIGURAS[f].en[0]} and count.`,
+    cuentaEsquinas:(f)=>`Touch each corner of the ${FIGURAS[f].en[0]} and count.`,
+    esquinasCirculo:"How many corners does the circle have?",
+    circuloRedondo:"The circle has no corners. It is round.",
+    tiene:(n,que)=>`It has ${NUMERO.en[n]} ${que}.`,
+    lados:"sides", esquinas:"corners",
+    guarda:(f)=>`Where does this shape go? Touch the ${FIGURAS[f].en[0]} box.`,
+    guardaListo:"You put away all the shapes!",
+    queCuerpo:"What is this solid called?",
+    dondeEsta:(r)=>`Touch the picture where the chick is ${r}.`,
+    cualEs:(o)=>`Touch the ${o}.`
+  }
+};
+
+/* ============ Palabras de posición ============ */
+const LUGARES = [
+  {clave:"dentro",   es:"dentro de la caja", en:"inside the box",  css:{left:"50%",top:"50%",transform:"translate(-50%,-50%)"}},
+  {clave:"fuera",    es:"fuera de la caja",  en:"outside the box", css:{right:"6%",bottom:"8%"}},
+  {clave:"arriba",   es:"arriba de la caja", en:"above the box",   css:{left:"50%",top:"4%",transform:"translateX(-50%)"}},
+  {clave:"abajo",    es:"debajo de la caja", en:"below the box",   css:{left:"50%",bottom:"4%",transform:"translateX(-50%)"}},
+  {clave:"izquierda",es:"a la izquierda de la caja", en:"to the left of the box",  css:{left:"4%",top:"42%"}},
+  {clave:"derecha",  es:"a la derecha de la caja",   en:"to the right of the box", css:{right:"4%",top:"42%"}}
+];
+const ORDINALES = [
+  {clave:"primero", es:"primero", en:"first"},
+  {clave:"ultimo",  es:"último",  en:"last"},
+  {clave:"medio",   es:"del medio", en:"middle one"}
+];
+
+const JUEGOS = [
+  {id:"toca",     emoji:"👆", es:"Toca la figura",   en:"Touch the shape",  metaEs:"Reconocer figuras",  metaEn:"Recognize shapes"},
+  {id:"nombre",   emoji:"🏷️", es:"¿Cómo se llama?",  en:"What's it called?",metaEs:"Nombrar figuras",    metaEn:"Name the shapes"},
+  {id:"contar",   emoji:"🔢", es:"Lados y esquinas", en:"Sides and corners",metaEs:"Contar tocando",     metaEn:"Count by touching"},
+  {id:"guardar",  emoji:"🧺", es:"Guarda las figuras",en:"Put shapes away", metaEs:"Clasificar por forma",metaEn:"Sort by shape"},
+  {id:"cuerpos",  emoji:"🎲", es:"Cuerpos que ruedan",en:"Solids that roll",metaEs:"Figuras de tres dimensiones",metaEn:"Three-dimensional shapes"},
+  {id:"donde",    emoji:"📦", es:"¿Dónde está?",     en:"Where is it?",     metaEs:"Posición y orden",   metaEn:"Position and order"}
+];
+
+const RONDAS = 5;
+
+/* ============ Estado ============ */
+const S = {idioma:"es", juego:null, ronda:0, estrellas:0, bloqueado:false};
+
+/* ============ Utilidades ============ */
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function distintos(lista, cuantos, incluir){
+  const resto = mezclar(lista.filter(x=>x!==incluir)).slice(0, cuantos-1);
+  return mezclar([incluir, ...resto]);
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.08;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function tono(frecs, dur){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    let t = audioCtx.currentTime;
+    frecs.forEach(f=>{
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type="sine"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+const sonBien = ()=>tono([523,659,784],0.17);
+const sonOtra = ()=>tono([330,262],0.18);
+const sonToque = ()=>tono([660],0.09);
+
+/* ============ Dibujo de figuras planas ============ */
+function svgPlana(clave, color, opciones){
+  const op = opciones || {};
+  const fig = FIGURAS[clave];
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox","0 0 100 100");
+  svg.setAttribute("aria-hidden","true");
+
+  if(fig.redonda){
+    const el = document.createElementNS(ns, clave==="circulo" ? "circle" : "ellipse");
+    if(clave==="circulo"){ el.setAttribute("cx",50); el.setAttribute("cy",50); el.setAttribute("r",42); }
+    else { el.setAttribute("cx",50); el.setAttribute("cy",50); el.setAttribute("rx",46); el.setAttribute("ry",32); }
+    el.setAttribute("fill", op.contorno ? "none" : color.f);
+    el.setAttribute("stroke", op.contorno ? "#000" : color.b);
+    el.setAttribute("stroke-width", 5);
+    svg.appendChild(el);
+    return svg;
+  }
+
+  const pts = fig.v.map(p=>p.join(",")).join(" ");
+  const poli = document.createElementNS(ns,"polygon");
+  poli.setAttribute("points", pts);
+  poli.setAttribute("fill", op.contorno ? "none" : color.f);
+  poli.setAttribute("stroke", op.contorno ? "#000" : color.b);
+  poli.setAttribute("stroke-width", 5);
+  poli.setAttribute("stroke-linejoin","round");
+  svg.appendChild(poli);
+  return svg;
+}
+
+/* Hace que una parte de la figura responda al dedo y también al teclado */
+function accesible(elemento, etiqueta, accion){
+  elemento.setAttribute("tabindex","0");
+  elemento.setAttribute("role","button");
+  elemento.setAttribute("aria-label", etiqueta);
+  elemento.addEventListener("click", accion);
+  elemento.addEventListener("keydown", (ev)=>{
+    if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); accion(); }
+  });
+}
+
+/* Figura con lados o esquinas que se pueden tocar uno por uno */
+function svgTocable(clave, color, modo, alTocar){
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = svgPlana(clave, color);
+  const v = FIGURAS[clave].v;
+
+  if(modo === "lados"){
+    for(let i=0;i<v.length;i++){
+      const a = v[i], b = v[(i+1)%v.length];
+      const linea = document.createElementNS(ns,"line");
+      linea.setAttribute("x1",a[0]); linea.setAttribute("y1",a[1]);
+      linea.setAttribute("x2",b[0]); linea.setAttribute("y2",b[1]);
+      linea.setAttribute("stroke", color.b);
+      linea.setAttribute("stroke-width", 9);
+      linea.setAttribute("stroke-linecap","round");
+      linea.setAttribute("class","parte");
+      accesible(linea, (S.idioma==="es"?"lado ":"side ")+(i+1), ()=>alTocar(linea, ()=>{
+        linea.setAttribute("stroke","#1B5E20");
+        linea.setAttribute("stroke-width",12);
+      }));
+      svg.appendChild(linea);
+    }
+  } else {
+    v.forEach((p,i)=>{
+      const punto = document.createElementNS(ns,"circle");
+      punto.setAttribute("cx",p[0]); punto.setAttribute("cy",p[1]); punto.setAttribute("r",9);
+      punto.setAttribute("fill", color.b);
+      punto.setAttribute("class","parte");
+      accesible(punto, (S.idioma==="es"?"esquina ":"corner ")+(i+1), ()=>alTocar(punto, ()=>{
+        punto.setAttribute("fill","#1B5E20");
+        punto.setAttribute("r",11);
+      }));
+      svg.appendChild(punto);
+    });
+  }
+  return svg;
+}
+
+/* ============ Dibujo de cuerpos geométricos ============ */
+function svgCuerpo(clave, color){
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns,"svg");
+  svg.setAttribute("viewBox","0 0 100 100");
+  svg.setAttribute("aria-hidden","true");
+  const nuevo = (tipo, attrs)=>{
+    const e = document.createElementNS(ns,tipo);
+    for(const k in attrs) e.setAttribute(k, attrs[k]);
+    e.setAttribute("stroke", color.b); e.setAttribute("stroke-width",4);
+    e.setAttribute("stroke-linejoin","round");
+    return e;
+  };
+  const claro = color.f, oscuro = color.b;
+
+  if(clave === "esfera"){
+    svg.appendChild(nuevo("circle",{cx:50,cy:52,r:40,fill:claro}));
+    const brillo = document.createElementNS(ns,"ellipse");
+    brillo.setAttribute("cx",37); brillo.setAttribute("cy",37);
+    brillo.setAttribute("rx",11); brillo.setAttribute("ry",8);
+    brillo.setAttribute("fill","#FFFFFF"); brillo.setAttribute("opacity",".55");
+    svg.appendChild(brillo);
+  }
+  else if(clave === "cubo"){
+    svg.appendChild(nuevo("polygon",{points:"20,38 50,22 80,38 80,74 50,90 20,74", fill:claro}));
+    svg.appendChild(nuevo("polyline",{points:"20,38 50,54 80,38", fill:"none"}));
+    svg.appendChild(nuevo("line",{x1:50,y1:54,x2:50,y2:90}));
+  }
+  else if(clave === "cono"){
+    svg.appendChild(nuevo("path",{d:"M50,12 L82,74 A32,13 0 0 1 18,74 Z", fill:claro}));
+    svg.appendChild(nuevo("path",{d:"M18,74 A32,13 0 0 0 82,74", fill:"none", stroke:oscuro}));
+  }
+  else if(clave === "cilindro"){
+    svg.appendChild(nuevo("path",{d:"M20,26 L20,74 A30,12 0 0 0 80,74 L80,26 Z", fill:claro}));
+    svg.appendChild(nuevo("ellipse",{cx:50,cy:26,rx:30,ry:12, fill:claro}));
+  }
+  else { /* piramide */
+    svg.appendChild(nuevo("polygon",{points:"50,12 88,76 12,76", fill:claro}));
+    svg.appendChild(nuevo("path",{d:"M12,76 L50,88 L88,76", fill:claro}));
+    svg.appendChild(nuevo("line",{x1:50,y1:12,x2:50,y2:88}));
+  }
+  return svg;
+}
+
+/* ============ Envoltura de figura tocable ============ */
+function botonFigura(contenidoSvg, etiqueta, interactiva){
+  const b = document.createElement("button");
+  b.className = "fig" + (interactiva ? "" : " quieta");
+  b.appendChild(contenidoSvg);
+  b.setAttribute("aria-label", etiqueta);
+  if(!interactiva) b.setAttribute("tabindex","-1");
+  return b;
+}
+
+function crearFicha(n, grande){
+  const b = document.createElement("button");
+  const c = PALETA[n] || PALETA[0];
+  b.className = "ficha-num" + (grande ? " grande":"");
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", NUMERO[S.idioma][n]);
+  return b;
+}
+
+function opcionesNumericas(correcto, minimo, maximo, alElegir){
+  const pool = [];
+  for(let i=minimo;i<=maximo;i++) if(i!==correcto) pool.push(i);
+  const todas = mezclar([correcto, ...mezclar(pool).slice(0,2)]);
+  todas.forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      alElegir(n===correcto, n, f);
+    });
+    $("opciones").appendChild(f);
+  });
+}
+
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir");
+  b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+
+/* ============ Idioma y navegación ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{
+    el.textContent = el.getAttribute("data-"+S.idioma);
+  });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  pintarMenu();
+  if(S.juego) nuevaRonda();
+}
+
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+
+function pintarMenu(){
+  const cont = $("rejilla-juegos");
+  cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego";
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span>
+      <span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+
+function pintarMarcador(cont, n){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  mostrar("p-juego");
+  nuevaRonda();
+}
+
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = "";
+  $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto");
+  $("btn-repetir").classList.add("oculto");
+  pintarMarcador($("marcador"), S.estrellas);
+}
+
+function acertar(mensajeExtra){
+  if(S.bloqueado) return;
+  S.bloqueado = true;
+  S.estrellas++;
+  sonBien();
+  pintarMarcador($("marcador"), S.estrellas);
+  const texto = elegir(T[S.idioma].bien) + (mensajeExtra ? " " + mensajeExtra : "");
+  $("aviso").className = "aviso bien";
+  $("aviso").textContent = texto;
+  hablar(texto);
+  $("btn-siguiente").classList.remove("oculto");
+  $("btn-siguiente").focus();
+}
+
+function fallar(elemento){
+  sonOtra();
+  $("aviso").className = "aviso otra";
+  $("aviso").textContent = T[S.idioma].otra;
+  hablar(T[S.idioma].otra);
+  if(elemento){ elemento.classList.add("mal"); setTimeout(()=>elemento.classList.remove("mal"),420); }
+}
+
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final");
+    hablar(S.idioma==="es" ? "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas."
+                           : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars.");
+  } else nuevaRonda();
+}
+
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").textContent = texto;
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+
+/* ============ Los seis juegos ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+
+  /* --- 1. Toca la figura (PK.9.A.ECa) --- */
+  if(S.juego === "toca"){
+    const correcta = elegir(PLANAS_TODAS);
+    const cuantas = S.ronda < 2 ? 3 : 4;
+    const puestas = distintos(PLANAS_TODAS, cuantas, correcta);
+    ponerInstruccion(t.toca(correcta));
+    const fila = document.createElement("div"); fila.className = "fila";
+    puestas.forEach(clave=>{
+      const b = botonFigura(svgPlana(clave, elegir(COLORES)), FIGURAS[clave][S.idioma][0], true);
+      b.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        if(clave === correcta){
+          b.classList.add("baila");
+          acertar(t.esUn(FIGURAS[correcta][S.idioma][0]));
+        } else fallar(b);
+      });
+      fila.appendChild(b);
+    });
+    esc.appendChild(fila);
+    return;
+  }
+
+  /* --- 2. ¿Cómo se llama? (PK.9.A.ECa) --- */
+  if(S.juego === "nombre"){
+    const correcta = elegir(PLANAS_TODAS);
+    const opciones = distintos(PLANAS_TODAS, 3, correcta);
+    ponerInstruccion(t.comoSeLlama);
+    const b = botonFigura(svgPlana(correcta, elegir(COLORES)), FIGURAS[correcta][S.idioma][0], false);
+    b.classList.add("grande");
+    esc.appendChild(b);
+    opciones.forEach(clave=>{
+      const tarjeta = document.createElement("button");
+      tarjeta.className = "tarjeta-nombre";
+      tarjeta.textContent = FIGURAS[clave][S.idioma][0];
+      tarjeta.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        hablar(FIGURAS[clave][S.idioma][0]);
+        if(clave === correcta){ b.classList.add("baila"); acertar(); }
+        else fallar(tarjeta);
+      });
+      $("opciones").appendChild(tarjeta);
+    });
+    return;
+  }
+
+  /* --- 3. Lados y esquinas (PK.9.A.ECa: atributos) --- */
+  if(S.juego === "contar"){
+    // Una de cada cinco rondas trabaja el círculo: no tiene esquinas.
+    if(S.ronda === 2){
+      ponerInstruccion(t.esquinasCirculo);
+      const b = botonFigura(svgPlana("circulo", elegir(COLORES)), FIGURAS.circulo[S.idioma][0], false);
+      b.classList.add("grande");
+      esc.appendChild(b);
+      opcionesNumericas(0, 0, 4, (ok,_v,f)=>{ ok ? acertar(t.circuloRedondo) : fallar(f); });
+      return;
+    }
+    const clave = elegir(PARA_CONTAR);
+    const modo = (S.ronda % 2 === 0) ? "lados" : "esquinas";
+    const total = FIGURAS[clave].v.length;
+    const color = elegir(COLORES);
+    ponerInstruccion(modo==="lados" ? t.cuentaLados(clave) : t.cuentaEsquinas(clave));
+
+    let tocadas = 0;
+    const marcadas = new Set();
+    const svg = svgTocable(clave, color, modo, (parte, pintar)=>{
+      if(S.bloqueado || marcadas.has(parte)) return;
+      marcadas.add(parte);
+      pintar();
+      tocadas++;
+      if(tocadas < total){
+        hablar(NUMERO[S.idioma][tocadas]);
+        tono([440 + tocadas*60], 0.1);
+      } else {
+        hablar(NUMERO[S.idioma][tocadas], ()=>{
+          const grande = crearFicha(total, true);
+          grande.setAttribute("tabindex","-1");
+          $("opciones").innerHTML = "";
+          $("opciones").appendChild(grande);
+          acertar(t.tiene(total, modo==="lados" ? t.lados : t.esquinas));
+        });
+      }
+    });
+    const caja = botonFigura(svg, FIGURAS[clave][S.idioma][0], false);
+    caja.classList.add("grande");
+    caja.removeAttribute("tabindex");
+    esc.appendChild(caja);
+    return;
+  }
+
+  /* --- 4. Guarda las figuras (PK.9.A.ECb) --- */
+  if(S.juego === "guardar"){
+    const tipoA = elegir(PLANAS_BASICAS);
+    const tipoB = elegir(PLANAS_BASICAS.filter(x=>x!==tipoA));
+    const cola = mezclar([tipoA, tipoB, elegir([tipoA,tipoB])]);
+    let indice = 0;
+
+    const zonaFigura = document.createElement("div");
+    zonaFigura.className = "fila";
+    esc.appendChild(zonaFigura);
+
+    const cajas = document.createElement("div");
+    cajas.className = "cajas";
+    esc.appendChild(cajas);
+
+    const contadores = {};
+    [tipoA, tipoB].forEach(tipo=>{
+      const caja = document.createElement("button");
+      caja.className = "caja";
+      caja.appendChild(svgPlana(tipo, {f:"#FFFFFF", b:"#4A5D70"}));
+      const cuenta = document.createElement("span");
+      cuenta.className = "cuenta"; cuenta.textContent = "0";
+      caja.appendChild(cuenta);
+      contadores[tipo] = cuenta;
+      caja.setAttribute("aria-label",
+        (S.idioma==="es"?"caja de ":"box for ") + FIGURAS[tipo][S.idioma][1]);
+      caja.addEventListener("click", ()=>responder(tipo, caja));
+      cajas.appendChild(caja);
+    });
+
+    let actual = null;
+    function mostrarSiguiente(){
+      zonaFigura.innerHTML = "";
+      if(indice >= cola.length){
+        acertar(t.guardaListo);
+        return;
+      }
+      const clave = cola[indice];
+      actual = botonFigura(svgPlana(clave, elegir(COLORES)), FIGURAS[clave][S.idioma][0], false);
+      actual.classList.add("grande");
+      zonaFigura.appendChild(actual);
+      ponerInstruccion(t.guarda(clave));
+    }
+    function responder(tipo, caja){
+      if(S.bloqueado || indice >= cola.length) return;
+      sonToque();
+      if(tipo === cola[indice]){
+        const lado = (caja === cajas.firstElementChild) ? "vuela-izq" : "vuela-der";
+        actual.classList.add(lado);
+        contadores[tipo].textContent = String(Number(contadores[tipo].textContent) + 1);
+        tono([700],0.1);
+        indice++;
+        setTimeout(mostrarSiguiente, 560);
+      } else fallar(caja);
+    }
+    mostrarSiguiente();
+    return;
+  }
+
+  /* --- 5. Cuerpos que ruedan (PK.9.A.ECa en tres dimensiones) --- */
+  if(S.juego === "cuerpos"){
+    const correcta = elegir(CUERPOS_LISTA);
+    const opciones = distintos(CUERPOS_LISTA, 3, correcta);
+    ponerInstruccion(t.queCuerpo);
+    const color = elegir(COLORES);
+    const b = botonFigura(svgCuerpo(correcta, color), CUERPOS[correcta][S.idioma][0], false);
+    b.classList.add("grande");
+    esc.appendChild(b);
+    opciones.forEach(clave=>{
+      const tarjeta = document.createElement("button");
+      tarjeta.className = "tarjeta-nombre";
+      tarjeta.textContent = CUERPOS[clave][S.idioma][0];
+      tarjeta.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        hablar(CUERPOS[clave][S.idioma][0]);
+        if(clave === correcta){
+          // El cuerpo muestra si rueda o si se queda quieto: es un atributo, no un adorno.
+          const svg = b.querySelector("svg");
+          svg.classList.add(CUERPOS[correcta].rueda ? "rueda" : "brinca");
+          acertar(CUERPOS[correcta].rueda
+            ? (S.idioma==="es" ? "El "+CUERPOS[correcta].es[0]+" rueda." : "The "+CUERPOS[correcta].en[0]+" rolls.")
+            : (S.idioma==="es" ? "El "+CUERPOS[correcta].es[0]+" no rueda. Tiene caras planas."
+                               : "The "+CUERPOS[correcta].en[0]+" does not roll. It has flat faces."));
+        } else fallar(tarjeta);
+      });
+      $("opciones").appendChild(tarjeta);
+    });
+    return;
+  }
+
+  /* --- 6. ¿Dónde está? (PK.9.B.ECa y ECb) --- */
+  if(S.juego === "donde"){
+    // Rondas 1, 3 y 5: ubicación. Rondas 2 y 4: posición ordinal.
+    if(S.ronda % 2 === 1){
+      const orden = elegir(ORDINALES);
+      ponerInstruccion(t.cualEs(orden[S.idioma]));
+      const fila = document.createElement("div"); fila.className = "fila";
+      const bichos = ["🐥","🐢","🦋","🐠","🐞"];
+      const cuantos = 5;
+      const correcto = orden.clave==="primero" ? 0 : (orden.clave==="ultimo" ? cuantos-1 : 2);
+      const bicho = elegir(bichos);
+      for(let i=0;i<cuantos;i++){
+        const b = document.createElement("button");
+        b.className = "fig";
+        b.style.fontSize = "clamp(34px,8vw,54px)";
+        b.style.lineHeight = "1";
+        b.innerHTML = `<span aria-hidden="true">${bicho}</span>`;
+        b.setAttribute("aria-label", (S.idioma==="es"?"animalito ":"animal ") + (i+1));
+        b.addEventListener("click", ()=>{
+          if(S.bloqueado) return;
+          sonToque();
+          if(i === correcto){ b.classList.add("baila"); acertar(); }
+          else fallar(b);
+        });
+        fila.appendChild(b);
+      }
+      esc.appendChild(fila);
+      return;
+    }
+
+    const correcto = elegir(LUGARES);
+    const puestos = distintos(LUGARES.map(l=>l.clave), 3, correcto.clave)
+                      .map(c=>LUGARES.find(l=>l.clave===c));
+    ponerInstruccion(t.dondeEsta(correcto[S.idioma]));
+    const fila = document.createElement("div"); fila.className = "fila";
+    puestos.forEach(lugar=>{
+      const escena = document.createElement("button");
+      escena.className = "lugar";
+      escena.innerHTML = `<span class="mueble" aria-hidden="true">📦</span>`;
+      const bicho = document.createElement("span");
+      bicho.className = "bicho";
+      bicho.textContent = "🐥";
+      bicho.setAttribute("aria-hidden","true");
+      for(const k in lugar.css) bicho.style[k] = lugar.css[k];
+      escena.appendChild(bicho);
+      escena.setAttribute("aria-label",
+        (S.idioma==="es"?"pollito ":"chick ") + lugar[S.idioma]);
+      escena.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        if(lugar.clave === correcto.clave){
+          escena.classList.add("elegida");
+          acertar(S.idioma==="es" ? "El pollito está "+correcto.es+"." : "The chick is "+correcto.en+".");
+        } else fallar(escena);
+      });
+      fila.appendChild(escena);
+    });
+    esc.appendChild(fila);
+    return;
+  }
+}
+
+/* ============ Portada y hoja impresa ============ */
+function pintarPortada(){
+  const cont = $("muestra-portada");
+  cont.innerHTML = "";
+  ["circulo","cuadrado","triangulo","rectangulo","estrella"].forEach((clave,i)=>{
+    cont.appendChild(svgPlana(clave, COLORES[i % COLORES.length]));
+  });
+}
+
+function pintarHoja(){
+  const negro = {f:"#FFFFFF", b:"#000000"};
+  const tiras = [
+    ["circulo","cuadrado","triangulo","rectangulo","circulo","triangulo"],
+    ["cuadrado","rectangulo","circulo","triangulo","rectangulo","cuadrado"],
+    ["triangulo","cuadrado","pentagono","hexagono","rombo","rectangulo"]
+  ];
+  ["hoja-tira-1","hoja-tira-2","hoja-tira-3"].forEach((id,i)=>{
+    const cont = $(id);
+    cont.innerHTML = "";
+    tiras[i].forEach(clave=>cont.appendChild(svgPlana(clave, negro, {contorno:true})));
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  hablar(S.idioma==="es" ? "Escoge un juego." : "Pick a game.");
+  mostrar("p-menu");
+});
+$("btn-volver").addEventListener("click", ()=>{
+  S.juego=null;
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+});
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-al-menu").addEventListener("click", ()=>{ S.juego=null; mostrar("p-menu"); });
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); });
+
+pintarMenu();
+pintarPortada();
+pintarHoja();
+</script>
+</body>
+</html>
