@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<!-- Operaciones y pensamiento algebraico | Matematicas interactivas de 2do grado
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Bajo licencia Creative Commons Atribucion-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operaciones y pensamiento algebraico | Matem&aacute;ticas interactivas de 2do grado</title>
+<meta name="description" content="Datos basicos hasta 20, problemas verbales con la incognita en cualquier posicion, pares e impares, y arreglos con suma repetida.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#0E6070;--domain-dark:#0A424D}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Operaciones y pensamiento algebraico<span class="grade">Pr&aacute;ctica de matem&aacute;ticas de 2do grado</span></h1>
+    <a class="home-link" href="index.html">&#8592; Todas las actividades</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Actividades de operaciones">
+  <button class="tab" role="tab" id="tab-facts"  aria-controls="p-facts"  aria-selected="true">Datos básicos hasta 20</button>
+  <button class="tab" role="tab" id="tab-word"   aria-controls="p-word"   aria-selected="false">Problemas verbales</button>
+  <button class="tab" role="tab" id="tab-oddeven" aria-controls="p-oddeven" aria-selected="false">Pares e impares</button>
+  <button class="tab" role="tab" id="tab-array"  aria-controls="p-array"  aria-selected="false">Arreglos</button>
+</div>
+
+<!-- ============ 1. FACTS TO 20 ============ -->
+<section class="panel" id="p-facts" role="tabpanel" aria-labelledby="tab-facts" tabindex="0">
+  <h2>Datos básicos hasta 20</h2>
+  <div class="howto">
+    <p id="how-facts">Cada dato básico tiene una estrategia que lo hace rápido. Los marcos de diez te muestran los números, y la pista te dice qué estrategia probar. Contesta todo lo que puedas sin contar de uno en uno. Cada ronda tiene diez preguntas.</p>
+    <button class="btn-read" data-read="how-facts" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <p class="score" id="facts-score">Pregunta 1 de 10 &middot; Aciertos 0 &middot; Racha 0</p>
+  <p class="task" id="facts-task">Cargando&hellip;</p>
+  <div class="mat"><div id="facts-mat"></div></div>
+  <p class="fb note" id="facts-hint"></p>
+  <div class="choices" id="facts-choices"></div>
+  <p class="fb" id="facts-fb" role="status" aria-live="polite"></p>
+  <div class="row">
+    <button class="btn" type="button" id="facts-next">Siguiente pregunta</button>
+    <button class="btn sec" type="button" id="facts-restart">Empezar otra ronda</button>
+  </div>
+</section>
+
+<!-- ============ 2. WORD PROBLEMS ============ -->
+<section class="panel" id="p-word" role="tabpanel" aria-labelledby="tab-word" tabindex="0" hidden>
+  <h2>Problemas verbales</h2>
+  <div class="howto">
+    <p id="how-word">Lee el problema dos veces. Primero escoge la ecuación que le corresponde, con el signo de interrogación en la parte que todavía no sabes. Después calcula el número y escríbelo en el recuadro. Las dos partes se revisan juntas.</p>
+    <button class="btn-read" data-read="how-word" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <p class="task" id="word-task" style="font-size:1.2rem">Cargando&hellip;</p>
+  <button class="btn-read" data-read="word-task" type="button" style="margin-bottom:12px">&#128266; Léeme el problema</button>
+
+  <fieldset>
+    <legend>¿Qué ecuación le corresponde al problema?</legend>
+    <div class="choices" id="word-choices" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))"></div>
+  </fieldset>
+
+  <div class="row">
+    <label for="word-input" style="font-weight:bold">La respuesta es</label>
+    <input type="number" id="word-input" min="0" data-enter="word-check" aria-label="respuesta del problema verbal">
+    <span id="word-unit" style="font-weight:bold"></span>
+  </div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="word-check">Revisar mi trabajo</button>
+    <button class="btn sec" type="button" id="word-next">Nuevo problema</button>
+  </div>
+  <p class="fb" id="word-fb" role="status" aria-live="polite"></p>
+</section>
+
+<!-- ============ 3. ODD AND EVEN ============ -->
+<section class="panel" id="p-oddeven" role="tabpanel" aria-labelledby="tab-oddeven" tabindex="0" hidden>
+  <h2>Pares e impares</h2>
+  <div class="howto">
+    <p id="how-oddeven">Las fichas están acomodadas en parejas. Si todas las fichas tienen pareja, el número es par. Si una se queda sola, el número es impar. Un número par siempre se puede repartir en dos grupos iguales.</p>
+    <button class="btn-read" data-read="how-oddeven" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <p class="task" id="oe-task">Cargando&hellip;</p>
+  <div class="mat"><div id="oe-mat"></div></div>
+  <div class="choices" id="oe-choices"></div>
+
+  <div id="oe-second" hidden>
+    <p class="task" id="oe-q2" style="font-size:1.15rem"></p>
+    <div class="row">
+      <input type="number" id="oe-addend" min="0" style="width:5ch" data-enter="oe-check2" aria-label="uno de los dos sumandos iguales">
+      <span style="font-weight:bold;font-size:1.3rem">+</span>
+      <span id="oe-mirror" style="font-weight:bold;font-size:1.3rem;min-width:3ch">?</span>
+      <span style="font-weight:bold;font-size:1.3rem">=</span>
+      <span id="oe-total" style="font-weight:bold;font-size:1.3rem"></span>
+      <button class="btn" type="button" id="oe-check2">Revisar mi ecuación</button>
+    </div>
+  </div>
+
+  <p class="fb" id="oe-fb" role="status" aria-live="polite"></p>
+  <div class="row"><button class="btn sec" type="button" id="oe-next">Nuevo número</button></div>
+</section>
+
+<!-- ============ 4. ARRAYS ============ -->
+<section class="panel" id="p-array" role="tabpanel" aria-labelledby="tab-array" tabindex="0" hidden>
+  <h2>Arreglos</h2>
+  <div class="howto">
+    <p id="how-array">Un arreglo son filas de fichas, todas del mismo largo. En vez de contar cada ficha, cuenta una fila y después suma ese número una vez por cada fila. Escribe un recuadro por cada fila y al final el total.</p>
+    <button class="btn-read" data-read="how-array" type="button">&#128266; Léemelo</button>
+  </div>
+
+  <p class="task" id="ar-task">Cargando&hellip;</p>
+  <div class="mat"><div id="ar-mat"></div></div>
+
+  <fieldset>
+    <legend>Escribe la oración de suma</legend>
+    <div class="row" id="ar-boxes"></div>
+  </fieldset>
+
+  <div class="row">
+    <button class="btn big" type="button" id="ar-check">Revisar mi oración</button>
+    <button class="btn sec" type="button" id="ar-next">Nuevo arreglo</button>
+  </div>
+  <p class="fb" id="ar-fb" role="status" aria-live="polite"></p>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Hecho para alumnos de segundo grado y sus familias. Funciona sin conexi&oacute;n una vez abierta la p&aacute;gina; no se guarda ni se env&iacute;a nada.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; se puede compartir y adaptar sin fines comerciales, dando cr&eacute;dito.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google espa\u00f1ol de Estados Unidos/i,   /* Chrome: espa\u00f1ol de EE. UU. */
+  /^(Paulina|Juan)$/i,                       /* iPad, iPhone, Mac: espa\u00f1ol de M\u00e9xico */
+  /Microsoft (Dalia|Sabina|Jorge)/i,         /* Windows y Edge: espa\u00f1ol de M\u00e9xico */
+  /Google espa\u00f1ol/i,                     /* Chrome: espa\u00f1ol de Espa\u00f1a */
+  /^(M[o\u00f3]nica|Helena|Laura)$/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var spanish = all.filter(function(v){ return /^es[-_]?/i.test(v.lang); });
+  if (!spanish.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = spanish.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  /* si no hay ninguna de las preferidas, se busca una de Am\u00e9rica antes que una de Espa\u00f1a */
+  VOICE = spanish.filter(function(v){ return /(US|MX|419|CO|AR)/i.test(v.lang); })[0] || spanish[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'es-US';
+    u.rate = 0.85;   /* un poco por debajo de lo normal: claro para un ni\u00f1o de siete a\u00f1os */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== shared drawing ===================== */
+function tenFrame(n, fill, label){
+  var cell = 30, W = 5 * cell + 6, H = 2 * cell + 6;
+  var s = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H +
+          '" role="img" aria-label="' + label + ': ' + n + '">';
+  for (var r = 0; r < 2; r++){
+    for (var c = 0; c < 5; c++){
+      s += '<rect x="' + (3 + c * cell) + '" y="' + (3 + r * cell) + '" width="' + cell + '" height="' + cell +
+           '" fill="#fff" stroke="#14243A" stroke-width="2"/>';
+      if (r * 5 + c < n){
+        s += '<circle cx="' + (3 + c * cell + cell / 2) + '" cy="' + (3 + r * cell + cell / 2) +
+             '" r="10" fill="' + fill + '"/>';
+      }
+    }
+  }
+  return s + '</svg>';
+}
+
+function frames(n, fill, label){
+  var out = '', left = n;
+  while (left > 0 || out === ''){
+    out += tenFrame(Math.min(left, 10), fill, label) ;
+    left -= 10;
+    if (left <= 0) break;
+  }
+  return '<div style="display:flex;gap:8px;flex-wrap:wrap">' + out + '</div>';
+}
+
+/* ===================== 1. FACTS TO 20 ===================== */
+var ff = { q: 0, score: 0, streak: 0, answer: 0, locked: false };
+
+function newFactsQuestion(){
+  if (ff.q >= 10){
+    document.getElementById('facts-task').textContent = 'Ronda terminada.';
+    document.getElementById('facts-mat').innerHTML = '';
+    document.getElementById('facts-choices').innerHTML = '';
+    document.getElementById('facts-hint').textContent = '';
+    say(document.getElementById('facts-fb'),
+        'Obtuviste ' + ff.score + ' de 10. Pulsa Empezar otra ronda para jugar de nuevo.', 'ok');
+    return;
+  }
+  ff.q++; ff.locked = false;
+  var kind = pick(['double', 'near', 'maketen', 'counton', 'sub', 'sub']);
+  var a, b, hint, mat;
+  if (kind === 'double'){
+    a = randInt(2, 10); b = a;
+    ff.answer = a + b;
+    hint = 'Dobles: las dos partes son iguales.';
+  } else if (kind === 'near'){
+    a = randInt(2, 9); b = a + 1;
+    ff.answer = a + b;
+    hint = 'Casi dobles: ' + a + ' + ' + a + ' = ' + (a + a) + ', y después uno más.';
+  } else if (kind === 'maketen'){
+    a = randInt(6, 9); b = randInt(10 - a + 1, 9);
+    ff.answer = a + b;
+    hint = 'Formar diez: a ' + a + ' le faltan ' + (10 - a) + ' para llenar el marco, y sobran ' + (b - (10 - a)) + '.';
+  } else if (kind === 'counton'){
+    a = randInt(9, 15); b = randInt(1, 3);
+    ff.answer = a + b;
+    hint = 'Contar hacia adelante: empieza en ' + a + ' y cuenta ' + b + ' más.';
+  } else {
+    var whole = randInt(11, 18); b = randInt(2, 9);
+    a = whole - b;
+    ff.answer = a;
+    hint = 'Piensa en la suma: ¿qué va con ' + b + ' para formar ' + whole + '?';
+    document.getElementById('facts-task').innerHTML =
+      '<span class="num">' + whole + '</span> &minus; <span class="num">' + b + '</span> = ?';
+    document.getElementById('facts-mat').innerHTML = frames(whole, '#0E6070', 'el entero');
+  }
+  if (kind !== 'sub'){
+    document.getElementById('facts-task').innerHTML =
+      '<span class="num">' + a + '</span> + <span class="num">' + b + '</span> = ?';
+    document.getElementById('facts-mat').innerHTML =
+      frames(a, '#0E6070', 'primer número') + frames(b, '#C2410C', 'segundo número');
+  }
+  document.getElementById('facts-hint').textContent = hint;
+
+  var opts = [ff.answer];
+  [ff.answer + 1, ff.answer - 1, ff.answer + 2, ff.answer - 2, ff.answer + 10].forEach(function(w){
+    if (w > 0 && opts.indexOf(w) === -1 && opts.length < 4) opts.push(w);
+  });
+  var box = document.getElementById('facts-choices');
+  box.innerHTML = '';
+  shuffle(opts).forEach(function(v){
+    var b2 = document.createElement('button');
+    b2.type = 'button'; b2.className = 'choice'; b2.textContent = v;
+    b2.addEventListener('click', function(){ answerFacts(b2, v); });
+    box.appendChild(b2);
+  });
+  updateFactsScore();
+  say(document.getElementById('facts-fb'), '', '');
+}
+
+function updateFactsScore(){
+  document.getElementById('facts-score').textContent =
+    'Pregunta ' + Math.min(ff.q, 10) + ' de 10 \u00B7 Aciertos ' + ff.score + ' \u00B7 Racha ' + ff.streak;
+}
+
+function answerFacts(btn, v){
+  if (ff.locked) return;
+  ff.locked = true;
+  var fb = document.getElementById('facts-fb');
+  if (v === ff.answer){
+    btn.classList.add('right');
+    ff.score++; ff.streak++;
+    say(fb, ff.streak >= 3 ? 'Otra vez correcto. Van ' + ff.streak + ' seguidas.' : 'Correcto.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    ff.streak = 0;
+    $$('#facts-choices .choice').forEach(function(b){
+      if (Number(b.textContent) === ff.answer) b.classList.add('right');
+    });
+    say(fb, 'Esta vez no. La respuesta es ' + ff.answer + '.', 'no');
+  }
+  updateFactsScore();
+}
+
+/* ===================== 2. WORD PROBLEMS ===================== */
+var NAMES = ['Ana', 'Luis', 'Mía', 'Leo', 'Sara', 'Zoe'];
+var THINGS = ['canicas', 'calcomanías', 'conchas', 'manzanas', 'galletas', 'tarjetas'];
+var wp = { answer: 0, eq: '', picked: null };
+
+function newWordProblem(){
+  var n1 = pick(NAMES), n2 = pick(NAMES);
+  while (n2 === n1) n2 = pick(NAMES);
+  var thing = pick(THINGS);
+  var kind = pick(['result', 'change', 'start', 'takeResult', 'takeChange', 'compare', 'twostep']);
+  var a = randInt(12, 48), b = randInt(11, 39), c, text, eq, wrong1, wrong2, ans;
+
+  if (kind === 'result'){
+    ans = a + b; eq = a + ' + ' + b + ' = ?';
+    text = n1 + ' tenía ' + a + ' ' + thing + '. Después consiguió ' + b + ' más. ¿Cuántas ' + thing + ' tiene ahora?';
+    wrong1 = a + ' \u2212 ' + b + ' = ?'; wrong2 = a + ' + ? = ' + b;
+  } else if (kind === 'change'){
+    c = a + b; ans = b; eq = a + ' + ? = ' + c;
+    text = n1 + ' tenía ' + a + ' ' + thing + '. Después consiguió algunas más. Ahora tiene ' + c + '. ¿Cuántas consiguió?';
+    wrong1 = a + ' + ' + c + ' = ?'; wrong2 = '? + ' + c + ' = ' + a;
+  } else if (kind === 'start'){
+    c = a + b; ans = a; eq = '? + ' + b + ' = ' + c;
+    text = n1 + ' tenía algunas ' + thing + '. Después consiguió ' + b + ' más. Ahora tiene ' + c + '. ¿Cuántas tenía al principio?';
+    wrong1 = b + ' + ' + c + ' = ?'; wrong2 = c + ' + ? = ' + b;
+  } else if (kind === 'takeResult'){
+    c = a + b; ans = c - b; eq = c + ' \u2212 ' + b + ' = ?';
+    text = 'Había ' + c + ' ' + thing + ' en la caja. ' + n1 + ' sacó ' + b + '. ¿Cuántas quedan?';
+    wrong1 = c + ' + ' + b + ' = ?'; wrong2 = b + ' \u2212 ? = ' + c;
+  } else if (kind === 'takeChange'){
+    c = a + b; ans = b; eq = c + ' \u2212 ? = ' + a;
+    text = 'Había ' + c + ' ' + thing + ' en la caja. ' + n1 + ' sacó algunas. Ahora hay ' + a + '. ¿Cuántas sacó?';
+    wrong1 = a + ' \u2212 ? = ' + c; wrong2 = '? \u2212 ' + c + ' = ' + a;
+  } else if (kind === 'compare'){
+    c = a + b; ans = b; eq = c + ' \u2212 ' + a + ' = ?';
+    text = n1 + ' tiene ' + c + ' ' + thing + '. ' + n2 + ' tiene ' + a + '. ¿Cuántas ' + thing + ' más tiene ' + n1 + ' que ' + n2 + '?';
+    wrong1 = c + ' + ' + a + ' = ?'; wrong2 = a + ' \u2212 ' + c + ' = ?';
+  } else {
+    b = randInt(6, 20); var d = randInt(6, 20);
+    ans = a - b + d; eq = a + ' \u2212 ' + b + ' = ?, y luego ? + ' + d + ' = ?';
+    text = n1 + ' tenía ' + a + ' ' + thing + '. Le dio ' + b + ' a ' + n2 + '. Después encontró ' + d + ' más. ¿Cuántas tiene ahora?';
+    wrong1 = a + ' + ' + b + ' + ' + d + ' = ?'; wrong2 = a + ' \u2212 ' + b + ' \u2212 ' + d + ' = ?';
+  }
+
+  wp.answer = ans; wp.eq = eq; wp.picked = null;
+  document.getElementById('word-task').textContent = text;
+  document.getElementById('word-unit').textContent = thing + '.';
+  document.getElementById('word-input').value = '';
+  var box = document.getElementById('word-choices');
+  box.innerHTML = '';
+  shuffle([eq, wrong1, wrong2]).forEach(function(t){
+    var b2 = document.createElement('button');
+    b2.type = 'button'; b2.className = 'choice'; b2.style.fontSize = '1.15rem'; b2.textContent = t;
+    b2.addEventListener('click', function(){
+      $$('#word-choices .choice').forEach(function(x){ x.classList.remove('picked'); });
+      b2.classList.add('picked');
+      wp.picked = t;
+    });
+    box.appendChild(b2);
+  });
+  say(document.getElementById('word-fb'), '', '');
+}
+
+function checkWord(){
+  var fb = document.getElementById('word-fb');
+  var box = document.getElementById('word-input');
+  if (!wp.picked){ say(fb, 'Escoge primero una ecuación.', 'note'); return; }
+  if (box.value === ''){ say(fb, 'Ahora escribe la respuesta en el recuadro.', 'note'); return; }
+  var eqOK = (wp.picked === wp.eq), numOK = (Number(box.value) === wp.answer);
+  $$('#word-choices .choice').forEach(function(x){
+    if (x.textContent === wp.eq) x.classList.add('right');
+    else if (x.classList.contains('picked')) x.classList.add('wrong');
+  });
+  box.style.borderColor = numOK ? '#146B3A' : '#9B1C1C';
+  if (eqOK && numOK) say(fb, 'Las dos partes están bien. La ecuación le corresponde al problema y la respuesta es ' + wp.answer + '.', 'ok');
+  else if (!eqOK && numOK) say(fb, 'La respuesta está bien, pero la ecuación que le corresponde al problema es ' + wp.eq + '.', 'note');
+  else if (eqOK && !numOK) say(fb, 'Buena ecuación. Vuelve a calcularla: la respuesta es ' + wp.answer + '.', 'no');
+  else say(fb, 'Todavía no. La ecuación es ' + wp.eq + ' y la respuesta es ' + wp.answer + '.', 'no');
+}
+
+/* ===================== 3. ODD AND EVEN ===================== */
+var oe = { n: 0, even: false, done: false };
+
+function drawPairs(n){
+  var pairs = Math.floor(n / 2), odd = n % 2, cell = 34;
+  var W = (pairs + odd) * cell + 40, H = 2 * cell + 20;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + Math.min(W, 700) +
+          '" role="img" aria-label="' + n + ' fichas acomodadas en parejas">';
+  for (var i = 0; i < pairs; i++){
+    s += '<circle cx="' + (24 + i * cell) + '" cy="24" r="13" fill="#0E6070" stroke="#0A424D" stroke-width="2"/>';
+    s += '<circle cx="' + (24 + i * cell) + '" cy="' + (24 + cell) + '" r="13" fill="#0E6070" stroke="#0A424D" stroke-width="2"/>';
+  }
+  if (odd){
+    s += '<circle cx="' + (24 + pairs * cell + 14) + '" cy="24" r="13" fill="#C2410C" stroke="#6B2206" stroke-width="2"/>';
+  }
+  return s + '</svg>';
+}
+
+function newOddEven(){
+  oe.n = randInt(6, 20);
+  oe.even = (oe.n % 2 === 0);
+  oe.done = false;
+  document.getElementById('oe-task').textContent = '¿' + oe.n + ' es par o impar?';
+  document.getElementById('oe-mat').innerHTML = drawPairs(oe.n);
+  document.getElementById('oe-second').hidden = true;
+  document.getElementById('oe-addend').value = '';
+  document.getElementById('oe-mirror').textContent = '?';
+  say(document.getElementById('oe-fb'), '', '');
+  var box = document.getElementById('oe-choices');
+  box.innerHTML = '';
+  ['par', 'impar'].forEach(function(t){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'choice';
+    b.innerHTML = t + '<small>' + (t === 'par' ? 'todas tienen pareja' : 'una se queda sola') + '</small>';
+    b.addEventListener('click', function(){ answerOddEven(b, t); });
+    box.appendChild(b);
+  });
+}
+
+function answerOddEven(btn, t){
+  if (oe.done) return;
+  oe.done = true;
+  var fb = document.getElementById('oe-fb');
+  var right = (t === 'par') === oe.even;
+  if (right){
+    btn.classList.add('right');
+    say(fb, oe.even ? 'Correcto. Las ' + oe.n + ' fichas tienen pareja, así que ' + oe.n + ' es par.'
+                    : 'Correcto. Una ficha se quedó sin pareja, así que ' + oe.n + ' es impar.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    say(fb, oe.even ? 'Mira otra vez: todas las fichas tienen pareja, así que ' + oe.n + ' es par.'
+                    : 'Mira otra vez: la ficha anaranjada no tiene pareja, así que ' + oe.n + ' es impar.', 'no');
+  }
+  if (oe.even){
+    document.getElementById('oe-q2').textContent = 'Ahora reparte ' + oe.n + ' en dos grupos iguales.';
+    document.getElementById('oe-total').textContent = oe.n;
+    document.getElementById('oe-second').hidden = false;
+  }
+}
+
+function checkOddEven2(){
+  var fb = document.getElementById('oe-fb');
+  var box = document.getElementById('oe-addend');
+  if (box.value === ''){ say(fb, 'Escribe uno de los dos números iguales.', 'note'); return; }
+  var v = Number(box.value);
+  document.getElementById('oe-mirror').textContent = box.value;
+  if (v + v === oe.n){
+    say(fb, 'Correcto. ' + v + ' + ' + v + ' = ' + oe.n + ', dos grupos iguales.', 'ok');
+  } else {
+    say(fb, 'Todavía no. ' + v + ' + ' + v + ' = ' + (v + v) + ', y necesitas ' + oe.n + '.', 'no');
+  }
+}
+
+/* ===================== 4. ARRAYS ===================== */
+var ar = { rows: 0, cols: 0 };
+
+function drawArray(){
+  var cell = 46, W = ar.cols * cell + 20, H = ar.rows * cell + 20;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" role="img" aria-label="arreglo de ' +
+          ar.rows + ' filas de ' + ar.cols + ' fichas">';
+  for (var r = 0; r < ar.rows; r++){
+    for (var c = 0; c < ar.cols; c++){
+      s += '<circle cx="' + (10 + c * cell + cell / 2) + '" cy="' + (10 + r * cell + cell / 2) +
+           '" r="17" fill="#0E6070" stroke="#0A424D" stroke-width="3"/>';
+    }
+  }
+  return document.getElementById('ar-mat').innerHTML = s + '</svg>';
+}
+
+function newArray(){
+  ar.rows = randInt(2, 5); ar.cols = randInt(2, 5);
+  document.getElementById('ar-task').textContent =
+    'Este arreglo tiene ' + ar.rows + ' filas de ' + ar.cols + '. ¿Cuántas fichas hay en total?';
+  drawArray();
+  var row = document.getElementById('ar-boxes');
+  row.innerHTML = '';
+  for (var i = 0; i < ar.rows; i++){
+    row.insertAdjacentHTML('beforeend',
+      (i ? '<span style="font-weight:bold;font-size:1.4rem">+</span>' : '') +
+      '<input type="number" id="arb' + i + '" min="0" style="width:4ch" aria-label="fila ' + (i + 1) + '">');
+  }
+  row.insertAdjacentHTML('beforeend',
+    '<span style="font-weight:bold;font-size:1.4rem">=</span>' +
+    '<input type="number" id="ar-total" min="0" style="width:5ch" aria-label="total" data-enter="ar-check">');
+  document.getElementById('ar-total').addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); document.getElementById('ar-check').click(); }
+  });
+  say(document.getElementById('ar-fb'), '', '');
+}
+
+function checkArray(){
+  var fb = document.getElementById('ar-fb');
+  var vals = [], blank = false;
+  for (var i = 0; i < ar.rows; i++){
+    var box = document.getElementById('arb' + i);
+    if (box.value === '') blank = true;
+    vals.push(Number(box.value));
+    box.style.borderColor = (Number(box.value) === ar.cols) ? '#146B3A' : '#9B1C1C';
+  }
+  var tb = document.getElementById('ar-total');
+  if (tb.value === '') blank = true;
+  if (blank){ say(fb, 'Llena todos los recuadros y revisa otra vez.', 'note'); return; }
+  var total = ar.rows * ar.cols;
+  var rowsOK = vals.every(function(v){ return v === ar.cols; });
+  var totalOK = Number(tb.value) === total;
+  tb.style.borderColor = totalOK ? '#146B3A' : '#9B1C1C';
+  if (rowsOK && totalOK){
+    say(fb, 'Correcto. ' + vals.join(' + ') + ' = ' + total + '. Todas las filas son iguales, así que sumas ' + ar.cols + ' una vez por cada una de las ' + ar.rows + ' filas.', 'ok');
+  } else if (!rowsOK){
+    say(fb, 'Cada recuadro representa una fila, y cada fila tiene ' + ar.cols + ' fichas.', 'no');
+  } else {
+    say(fb, 'Las filas están bien. Súmalas otra vez: ' + vals.join(' + ') + '.', 'no');
+  }
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  document.getElementById('facts-next').addEventListener('click', newFactsQuestion);
+  document.getElementById('facts-restart').addEventListener('click', function(){
+    ff = { q: 0, score: 0, streak: 0, answer: 0, locked: false };
+    newFactsQuestion();
+  });
+  newFactsQuestion();
+
+  document.getElementById('word-check').addEventListener('click', checkWord);
+  document.getElementById('word-next').addEventListener('click', newWordProblem);
+  newWordProblem();
+
+  document.getElementById('oe-check2').addEventListener('click', checkOddEven2);
+  document.getElementById('oe-next').addEventListener('click', newOddEven);
+  newOddEven();
+
+  document.getElementById('ar-check').addEventListener('click', checkArray);
+  document.getElementById('ar-next').addEventListener('click', newArray);
+  newArray();
+}
+</script>
+</body>
+</html>
