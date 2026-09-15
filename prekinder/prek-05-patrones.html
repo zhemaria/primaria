@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<!--
+  Matemáticas para prekínder — Patrones y clasificar
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  Licencia: Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+  Alineado a Illinois Early Learning and Development Standards: PK.8.A
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patrones y clasificar: Juegos de prekínder</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Juegos interactivos bilingues de patrones y clasificacion para ninos de prekinder: igual y diferente, clasificar por color y forma, y patrones A B, A B B y A B C.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<style>
+:root{
+  --papel:#F2F7FB; --tinta:#16283C; --tinta-suave:#4A5D70; --linea:#C9D8E6;
+  --blanco:#FFFFFF; --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF; --foco:#0B62D6;
+  --sombra:0 4px 0 rgba(22,40,60,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel); color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px); line-height:1.45; min-height:100vh;
+  -webkit-text-size-adjust:100%;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700;letter-spacing:-.01em}
+.barra .crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:999px;padding:7px 14px;
+  font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;
+  padding:11px 20px;font-weight:700;box-shadow:var(--sombra)}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--tinta);color:var(--blanco)}
+.oculto{display:none !important}
+
+.portada{text-align:center;padding:20px 10px 10px}
+.portada .muestra{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center}
+.portada .muestra svg{width:clamp(56px,12vw,84px);height:clamp(56px,12vw,84px)}
+.portada .muestra .emoji{font-size:clamp(44px,10vw,70px);line-height:1}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:18px 0 6px;font-weight:700}
+.portada p{color:var(--tinta-suave);max-width:46ch;margin:0 auto 22px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+.ficha-juego{display:flex;align-items:center;gap:14px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:22px;padding:16px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego .emoji{font-size:2.6em;line-height:1}
+.ficha-juego .nombre{font-weight:700;font-size:1.02em;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px 18px;
+  margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px)}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:20px;
+  min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;box-shadow:var(--sombra)}
+.fila{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:center}
+.fila.abajo{align-items:flex-end}
+
+/* Figuras planas */
+.fig{border:4px solid transparent;border-radius:20px;background:transparent;padding:6px;line-height:0}
+.fig svg{width:clamp(74px,15vw,112px);height:clamp(74px,15vw,112px);display:block}
+.fig.grande svg{width:clamp(130px,30vw,190px);height:clamp(130px,30vw,190px)}
+.fig.chica svg{width:clamp(46px,9vw,68px);height:clamp(46px,9vw,68px)}
+.fig.quieta{cursor:default}
+.fig:not(.quieta):hover{border-color:var(--linea)}
+.fig.elegida{border-color:var(--foco);background:#E3EEFC}
+.fig.mal{animation:temblor .38s}
+.fig.baila{animation:baile .7s}
+.fig.vuela-izq{animation:volarIzq .55s forwards}
+.fig.vuela-der{animation:volarDer .55s forwards}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes baile{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-9deg) scale(1.1)}
+  55%{transform:rotate(9deg) scale(1.1)}80%{transform:rotate(-4deg) scale(1.04)}}
+@keyframes volarIzq{to{transform:translate(-30vw,120px) scale(.28);opacity:0}}
+@keyframes volarDer{to{transform:translate(30vw,120px) scale(.28);opacity:0}}
+.parte{cursor:pointer}
+.parte:focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+
+/* Objetos de emoji */
+.objeto{width:clamp(56px,11vw,82px);height:clamp(56px,11vw,82px);border:4px solid transparent;
+  border-radius:18px;background:transparent;font-size:clamp(30px,6.4vw,44px);
+  display:grid;place-items:center;padding:0;line-height:1;position:relative}
+.objeto.quieto{cursor:default}
+.objeto.elegido{border-color:var(--foco);background:#E3EEFC}
+.objeto.contado{border-color:var(--acierto);background:var(--acierto-fondo)}
+.objeto.mal{animation:temblor .38s}
+.objeto .sello{position:absolute;top:-10px;right:-10px;min-width:32px;height:32px;padding:0 6px;
+  border-radius:999px;background:var(--acierto);color:var(--blanco);font-size:16px;
+  font-weight:700;display:grid;place-items:center}
+
+/* Grupos y cajas */
+.grupo{border:5px solid var(--linea);border-radius:22px;background:var(--papel);padding:14px;
+  min-width:clamp(128px,30vw,220px);min-height:clamp(112px,24vw,170px);
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.grupo.elegido{border-color:var(--foco);background:#E3EEFC}
+.grupo.mal{animation:temblor .38s}
+.caja{border:5px dashed var(--tinta-suave);border-radius:20px;background:var(--papel);
+  padding:12px 18px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  min-width:clamp(120px,26vw,170px)}
+.caja svg{width:clamp(48px,10vw,66px);height:clamp(48px,10vw,66px)}
+.caja .muestra-caja{font-size:clamp(34px,7vw,48px);line-height:1}
+.caja .cuenta{font-weight:700;font-size:1.1em;color:var(--tinta-suave)}
+.caja.mal{animation:temblor .38s}
+.cajas{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+
+/* Fichas de número y tarjetas */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);border-radius:22px;
+  border:6px solid;display:grid;place-items:center;font-size:clamp(40px,8.5vw,60px);
+  font-weight:700;line-height:1;box-shadow:var(--sombra);padding:0}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.ficha-num.grande{width:clamp(110px,24vw,160px);height:clamp(110px,24vw,160px);font-size:clamp(58px,13vw,90px)}
+.ficha-num.mal{animation:temblor .38s}
+.tarjeta{border:5px solid var(--tinta);background:var(--blanco);border-radius:18px;
+  padding:14px 22px;font-weight:700;font-size:clamp(19px,3vw,26px);box-shadow:var(--sombra);
+  display:flex;align-items:center;gap:10px}
+.tarjeta .icono{font-size:1.3em;line-height:1}
+.tarjeta.mal{animation:temblor .38s}
+
+/* Aviso, marcador y final */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;
+  font-size:clamp(18px,2.4vw,23px);text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32}
+.estrella.ganada{filter:none;opacity:1}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px)}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);
+  font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#0B4FA8}
+
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco,.pie,.barra{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:17pt;margin:0 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 5mm;color:#333}
+  .hoja .clave{font-size:10.5pt;margin:0 0 5mm}
+  .hoja .tira{display:flex;gap:7mm;flex-wrap:wrap;align-items:flex-end;margin-bottom:6mm;page-break-inside:avoid}
+  .hoja .tira svg{width:26mm;height:26mm}
+  .hoja .renglon{display:flex;align-items:center;gap:8mm;border-bottom:1.6pt dotted #666;
+    padding:5mm 0;page-break-inside:avoid}
+  .hoja .cosas{font-size:21pt;letter-spacing:4pt;flex:1}
+  .hoja .opciones{display:flex;gap:6mm}
+  .hoja .redondel{width:15mm;height:15mm;border:1.6pt solid #000;border-radius:50%;
+    display:grid;place-items:center;font-size:16pt;font-weight:700}
+  .hoja .creditos{margin-top:6mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+
+.secuencia{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
+.hueco{width:clamp(74px,15vw,112px);height:clamp(74px,15vw,112px);
+  border:4px dashed var(--tinta-suave);border-radius:20px;display:grid;place-items:center;
+  font-size:clamp(34px,7vw,50px);font-weight:700;color:var(--tinta-suave);margin:6px}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Patrones y clasificar" data-en="Patterns and sorting">Patrones y clasificar</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="true">Español</button>
+      <button id="btn-en" aria-pressed="false">English</button>
+    </span>
+  </div>
+
+  <section id="p-portada" class="portada">
+    <div class="muestra" id="muestra-portada" aria-hidden="true"><span class="emoji">🔴</span><span class="emoji">🔵</span><span class="emoji">🔴</span><span class="emoji">🔵</span></div>
+    <h2 data-es="¿Qué sigue?" data-en="What comes next?">¿Qué sigue?</h2>
+    <p data-es="Seis juegos para descubrir patrones y clasificar por color, por forma y por tamaño. Todo se dice en voz alta: no hace falta leer." data-en="Six games to find patterns and sort by color, shape and size. Everything is read aloud: no reading needed.">Seis juegos para descubrir patrones y clasificar por color, por forma y por tamaño. Todo se dice en voz alta: no hace falta leer.</p>
+    <button class="boton fuerte" id="btn-empezar" data-es="Empezar" data-en="Start">Empezar</button>
+  </section>
+
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Escoge un juego</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Volver</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Estrellas ganadas"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina" aria-label="Escuchar la instrucción">🔊</button>
+      <p id="txt-instruccion"></p>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Siguiente ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">¡Terminaste el juego!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Jugar otra vez</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Otro juego</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+        data-es="🖨 Imprimir hoja de patrones" data-en="🖨 Print a patterns page">🖨 Imprimir hoja de patrones</button></p>
+    <p data-es="Alineado con los estándares de Illinois para prekínder: PK.8.A.ECa (ordenar, comparar y describir objetos según sus atributos) y PK.8.A.ECb (reconocer, repetir, extender y crear patrones sencillos en distintos formatos)." data-en="Aligned to Illinois pre-K standards: PK.8.A.ECa (sort, order, compare and describe objects by attribute) and PK.8.A.ECb (recognize, duplicate, extend and create simple patterns in various formats).">Alineado con los estándares de Illinois para prekínder: PK.8.A.ECa (ordenar, comparar y describir objetos según sus atributos) y PK.8.A.ECb (reconocer, repetir, extender y crear patrones sencillos en distintos formatos).</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener noreferrer">Licencia CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<div class="hoja" id="hoja">
+<h2 data-es="¿Qué sigue en el patrón?" data-en="What comes next in the pattern?">¿Qué sigue en el patrón?</h2>
+<p class="indicacion" data-es="Nombre: ______________________________     Fecha: ______________"
+   data-en="Name: ______________________________     Date: ______________">Nombre: ______________________________     Fecha: ______________</p>
+<p class="clave" data-es="Dibuja lo que sigue en el cuadrito."
+   data-en="Draw what comes next in the box.">Dibuja lo que sigue en el cuadrito.</p>
+<div class="renglon"><div class="cosas">🔴 🔵 🔴 🔵 🔴</div><div class="opciones"><div class="redondel"></div></div></div>
+<div class="renglon"><div class="cosas">⭐ ⭐ 🔺 ⭐ ⭐ 🔺</div><div class="opciones"><div class="redondel"></div></div></div>
+<div class="renglon"><div class="cosas">🟦 🟨 🟨 🟦 🟨 🟨</div><div class="opciones"><div class="redondel"></div></div></div>
+<div class="renglon"><div class="cosas">🐥 🦋 🐢 🐥 🦋 🐢</div><div class="opciones"><div class="redondel"></div></div></div>
+<p class="clave" data-es="Encierra el que es diferente." data-en="Circle the one that is different.">Encierra el que es diferente.</p>
+<div class="renglon"><div class="cosas">🔵 🔵 🔴 🔵</div></div>
+<div class="renglon"><div class="cosas">🔺 🔺 🔺 🟥</div></div>
+<p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+
+"use strict";
+
+/* Colores de las fichas de números: cada número conserva su color en toda la serie */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+
+/* Colores de las figuras y los objetos: se sortean en cada ronda para que
+   el niño atienda al atributo que se le pide y no al color. */
+const COLORES = [
+  {f:"#E8746E",b:"#8E1B16",es:"rojo",en:"red"},
+  {f:"#F3A73E",b:"#8A4B00",es:"anaranjado",en:"orange"},
+  {f:"#EFCA45",b:"#7A6100",es:"amarillo",en:"yellow"},
+  {f:"#6FBC74",b:"#1B5E20",es:"verde",en:"green"},
+  {f:"#6AA3E2",b:"#0D47A1",es:"azul",en:"blue"},
+  {f:"#AC82D4",b:"#4A148C",es:"morado",en:"purple"},
+  {f:"#EA8FB8",b:"#880E4F",es:"rosado",en:"pink"},
+  {f:"#78C9C6",b:"#004D40",es:"turquesa",en:"teal"}
+];
+
+const FIGURAS = {
+  circulo:   {es:["círculo","círculos"],      en:["circle","circles"],        redonda:true},
+  ovalo:     {es:["óvalo","óvalos"],          en:["oval","ovals"],            redonda:true},
+  triangulo: {es:["triángulo","triángulos"],  en:["triangle","triangles"],    v:[[50,13],[89,84],[11,84]]},
+  cuadrado:  {es:["cuadrado","cuadrados"],    en:["square","squares"],        v:[[15,15],[85,15],[85,85],[15,85]]},
+  rectangulo:{es:["rectángulo","rectángulos"],en:["rectangle","rectangles"],  v:[[8,26],[92,26],[92,74],[8,74]]},
+  rombo:     {es:["rombo","rombos"],          en:["rhombus","rhombuses"],     v:[[50,10],[88,50],[50,90],[12,50]]},
+  pentagono: {es:["pentágono","pentágonos"],  en:["pentagon","pentagons"],    v:[[50,10],[90,39],[75,86],[25,86],[10,39]]},
+  hexagono:  {es:["hexágono","hexágonos"],    en:["hexagon","hexagons"],      v:[[92,50],[71,86],[29,86],[8,50],[29,14],[71,14]]},
+  estrella:  {es:["estrella","estrellas"],    en:["star","stars"],
+              v:[[50,6],[61,38],[95,38],[68,58],[78,90],[50,70],[22,90],[32,58],[5,38],[39,38]]}
+};
+const PLANAS_BASICAS = ["circulo","cuadrado","triangulo","rectangulo"];
+
+const OBJETOS = [
+  {e:"🍎", es:["manzana","manzanas"], en:["apple","apples"]},
+  {e:"⭐", es:["estrella","estrellas"], en:["star","stars"]},
+  {e:"🐥", es:["pollito","pollitos"], en:["chick","chicks"]},
+  {e:"🐠", es:["pez","peces"], en:["fish","fish"]},
+  {e:"🌸", es:["flor","flores"], en:["flower","flowers"]},
+  {e:"🎈", es:["globo","globos"], en:["balloon","balloons"]},
+  {e:"🦋", es:["mariposa","mariposas"], en:["butterfly","butterflies"]},
+  {e:"🐢", es:["tortuga","tortugas"], en:["turtle","turtles"]},
+  {e:"🚗", es:["carrito","carritos"], en:["car","cars"]},
+  {e:"🍌", es:["plátano","plátanos"], en:["banana","bananas"]}
+];
+
+const NUMERO = {
+  es:["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez"],
+  en:["zero","one","two","three","four","five","six","seven","eight","nine","ten"]
+};
+
+const T = {
+  es:{ bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Qué bien miras!"],
+       otra:"Mira otra vez. Tú puedes.",
+       volverAEscuchar:"🔁 Escuchar otra vez", listo:"✓ Listo",
+       si:"Sí", no:"No" },
+  en:{ bien:["Great job!","Excellent!","You did it!","Perfect!","You look so carefully!"],
+       otra:"Look again. You can do it.",
+       volverAEscuchar:"🔁 Listen again", listo:"✓ Done",
+       si:"Yes", no:"No" }
+};
+
+const RONDAS = 5;
+const S = {idioma:"es", juego:null, ronda:0, estrellas:0, bloqueado:false};
+
+/* ---------- Utilidades ---------- */
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function distintos(lista, cuantos, incluir){
+  const resto = mezclar(lista.filter(x=>x!==incluir)).slice(0, cuantos-1);
+  return mezclar([incluir, ...resto]);
+}
+function dosDistintos(lista){
+  const a = elegir(lista);
+  return [a, elegir(lista.filter(x=>x!==a))];
+}
+
+/* ---------- Voz ---------- */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.08;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ---------- Sonidos ---------- */
+let audioCtx = null;
+function tono(frecs, dur){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    let t = audioCtx.currentTime;
+    frecs.forEach(f=>{
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type="sine"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+const sonBien = ()=>tono([523,659,784],0.17);
+const sonOtra = ()=>tono([330,262],0.18);
+const sonToque = ()=>tono([660],0.09);
+
+/* ---------- Dibujo de figuras planas ---------- */
+function svgPlana(clave, color, opciones){
+  const op = opciones || {};
+  const fig = FIGURAS[clave];
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns,"svg");
+  svg.setAttribute("viewBox","0 0 100 100");
+  svg.setAttribute("aria-hidden","true");
+  if(fig.redonda){
+    const el = document.createElementNS(ns, clave==="circulo" ? "circle" : "ellipse");
+    if(clave==="circulo"){ el.setAttribute("cx",50); el.setAttribute("cy",50); el.setAttribute("r",42); }
+    else { el.setAttribute("cx",50); el.setAttribute("cy",50); el.setAttribute("rx",46); el.setAttribute("ry",32); }
+    el.setAttribute("fill", op.contorno ? "none" : color.f);
+    el.setAttribute("stroke", op.contorno ? "#000" : color.b);
+    el.setAttribute("stroke-width",5);
+    svg.appendChild(el);
+    return svg;
+  }
+  const poli = document.createElementNS(ns,"polygon");
+  poli.setAttribute("points", fig.v.map(p=>p.join(",")).join(" "));
+  poli.setAttribute("fill", op.contorno ? "none" : color.f);
+  poli.setAttribute("stroke", op.contorno ? "#000" : color.b);
+  poli.setAttribute("stroke-width",5);
+  poli.setAttribute("stroke-linejoin","round");
+  svg.appendChild(poli);
+  return svg;
+}
+
+/* ---------- Constructores comunes ---------- */
+function accesible(elemento, etiqueta, accion){
+  elemento.setAttribute("tabindex","0");
+  elemento.setAttribute("role","button");
+  elemento.setAttribute("aria-label", etiqueta);
+  elemento.addEventListener("click", accion);
+  elemento.addEventListener("keydown",(ev)=>{
+    if(ev.key==="Enter" || ev.key===" "){ ev.preventDefault(); accion(); }
+  });
+}
+
+function botonFigura(contenido, etiqueta, interactiva){
+  const b = document.createElement("button");
+  b.className = "fig" + (interactiva ? "" : " quieta");
+  b.appendChild(contenido);
+  b.setAttribute("aria-label", etiqueta);
+  if(!interactiva) b.setAttribute("tabindex","-1");
+  return b;
+}
+
+function botonObjeto(emoji, etiqueta, interactivo){
+  const b = document.createElement("button");
+  b.className = "objeto" + (interactivo ? "" : " quieto");
+  b.innerHTML = '<span aria-hidden="true">'+emoji+'</span>';
+  b.setAttribute("aria-label", etiqueta);
+  if(!interactivo) b.setAttribute("tabindex","-1");
+  return b;
+}
+
+function crearFicha(n, grande){
+  const b = document.createElement("button");
+  const c = PALETA[n] || PALETA[0];
+  b.className = "ficha-num" + (grande ? " grande":"");
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", NUMERO[S.idioma][n]);
+  return b;
+}
+
+function opcionesNumericas(correcto, minimo, maximo, alElegir){
+  const pool = [];
+  for(let i=minimo;i<=maximo;i++) if(i!==correcto) pool.push(i);
+  mezclar([correcto, ...mezclar(pool).slice(0,2)]).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      alElegir(n===correcto, n, f);
+    });
+    $("opciones").appendChild(f);
+  });
+}
+
+/* Dos o tres tarjetas de respuesta con palabra e icono */
+function tarjetas(lista, alElegir){
+  lista.forEach(op=>{
+    const t = document.createElement("button");
+    t.className = "tarjeta";
+    t.innerHTML = (op.icono ? '<span class="icono" aria-hidden="true">'+op.icono+'</span>' : '') +
+                  '<span>'+op.texto+'</span>';
+    t.setAttribute("aria-label", op.texto);
+    t.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      hablar(op.texto);
+      alElegir(op, t);
+    });
+    $("opciones").appendChild(t);
+  });
+}
+
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir");
+  b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+
+/* ---------- Idioma y navegación ---------- */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{
+    el.textContent = el.getAttribute("data-"+S.idioma);
+  });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  pintarMenu();
+  if(typeof alCambiarIdioma === "function") alCambiarIdioma();
+  if(S.juego) nuevaRonda();
+}
+
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+
+function pintarMenu(){
+  const cont = $("rejilla-juegos");
+  cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego";
+    b.innerHTML = '<span class="emoji" aria-hidden="true">'+j.emoji+'</span>'+
+      '<span><span class="nombre">'+j[S.idioma]+'</span>'+
+      '<span class="meta">'+(S.idioma==="es"?j.metaEs:j.metaEn)+'</span></span>';
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+
+function pintarMarcador(cont, n){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  mostrar("p-juego");
+  nuevaRonda();
+}
+
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = "";
+  $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto");
+  $("btn-repetir").classList.add("oculto");
+  pintarMarcador($("marcador"), S.estrellas);
+}
+
+function acertar(mensajeExtra){
+  if(S.bloqueado) return;
+  S.bloqueado = true;
+  S.estrellas++;
+  sonBien();
+  pintarMarcador($("marcador"), S.estrellas);
+  const texto = elegir(T[S.idioma].bien) + (mensajeExtra ? " " + mensajeExtra : "");
+  $("aviso").className = "aviso bien";
+  $("aviso").textContent = texto;
+  hablar(texto);
+  $("btn-siguiente").classList.remove("oculto");
+  $("btn-siguiente").focus();
+}
+
+function fallar(elemento, mensaje){
+  sonOtra();
+  $("aviso").className = "aviso otra";
+  $("aviso").textContent = mensaje || T[S.idioma].otra;
+  hablar($("aviso").textContent);
+  if(elemento){ elemento.classList.add("mal"); setTimeout(()=>elemento.classList.remove("mal"),420); }
+}
+
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final");
+    hablar(S.idioma==="es" ? "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas."
+                           : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars.");
+  } else nuevaRonda();
+}
+
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").textContent = texto;
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+
+/* ---------- Eventos comunes ---------- */
+function conectarEventos(){
+  $("btn-empezar").addEventListener("click", ()=>{
+    try{ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+    hablar(S.idioma==="es" ? "Escoge un juego." : "Pick a game.");
+    mostrar("p-menu");
+  });
+  $("btn-volver").addEventListener("click", ()=>{
+    S.juego=null;
+    if(window.speechSynthesis) window.speechSynthesis.cancel();
+    mostrar("p-menu");
+  });
+  $("btn-siguiente").addEventListener("click", avanzar);
+  $("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+  $("btn-al-menu").addEventListener("click", ()=>{ S.juego=null; mostrar("p-menu"); });
+  $("btn-imprimir").addEventListener("click", ()=>window.print());
+  $("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); });
+  $("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); });
+}
+
+/* ================= Datos del módulo ================= */
+
+Object.assign(T.es, {
+  cualDiferente:"Toca el que es diferente.",
+  eseDiferente:"Ese es diferente. Los otros son iguales.",
+  clasificaColor:"¿De qué color es? Toca su caja.",
+  clasificaForma:"¿Qué figura es? Toca su caja.",
+  clasificaListo:"¡Clasificaste todas!",
+  queSigue:"Mira el patrón. ¿Qué sigue?",
+  queFalta:"Mira el patrón. ¿Qué falta?",
+  patronTamano:"Mira el patrón de tamaños. ¿Qué sigue?",
+  asiSigue:"Así sigue el patrón.",
+  grande:"grande", chica:"pequeño"
+});
+Object.assign(T.en, {
+  cualDiferente:"Touch the one that is different.",
+  eseDiferente:"That one is different. The others are the same.",
+  clasificaColor:"What color is it? Touch its box.",
+  clasificaForma:"What shape is it? Touch its box.",
+  clasificaListo:"You sorted them all!",
+  queSigue:"Look at the pattern. What comes next?",
+  queFalta:"Look at the pattern. What is missing?",
+  patronTamano:"Look at the size pattern. What comes next?",
+  asiSigue:"That is how the pattern goes.",
+  grande:"big", chica:"small"
+});
+
+const JUEGOS = [
+  {id:"diferente", emoji:"🔍", es:"¿Cuál es diferente?", en:"Which is different?", metaEs:"Igual y diferente",   metaEn:"Same and different"},
+  {id:"clasifica", emoji:"🧺", es:"Clasifica",            en:"Sort them",           metaEs:"Por color y por forma",metaEn:"By color and by shape"},
+  {id:"sigue",     emoji:"➡️", es:"¿Qué sigue?",          en:"What comes next?",    metaEs:"Patrón A B",          metaEn:"A B pattern"},
+  {id:"dificil",   emoji:"🧠", es:"Patrones más largos",  en:"Longer patterns",     metaEs:"A B B, A A B, A B C", metaEn:"A B B, A A B, A B C"},
+  {id:"falta",     emoji:"❓", es:"¿Qué falta?",          en:"What is missing?",    metaEs:"Completar el patrón", metaEn:"Complete the pattern"},
+  {id:"tamano",    emoji:"🔠", es:"Patrones de tamaño",   en:"Size patterns",       metaEs:"Grande y pequeño",    metaEn:"Big and small"}
+];
+
+const FIGS_PATRON = ["circulo","cuadrado","triangulo","rectangulo","estrella","rombo"];
+
+/* Un elemento del patrón: figura + color + tamaño */
+function etiquetaItem(item){
+  const nombre = FIGURAS[item.figura][S.idioma][0];
+  const color = item.color[S.idioma];
+  const tam = item.tam === "chica" ? (" " + T[S.idioma].chica) : "";
+  return nombre + " " + color + tam;
+}
+
+function crearItem(item, interactivo){
+  const b = botonFigura(svgPlana(item.figura, item.color), etiquetaItem(item), interactivo);
+  if(item.tam === "chica") b.classList.add("chica");
+  return b;
+}
+
+function mismoItem(a,b){
+  return a.figura === b.figura && a.color === b.color && a.tam === b.tam;
+}
+
+/* Los elementos del patrón se distinguen por color o por forma, nunca por las dos
+   cosas a la vez: así el atributo que se repite queda claro. */
+function elementosPatron(cuantos){
+  if(Math.random() < 0.5){
+    const fig = elegir(FIGS_PATRON);
+    return mezclar(COLORES).slice(0,cuantos).map(c=>({figura:fig, color:c, tam:"normal"}));
+  }
+  const color = elegir(COLORES);
+  return mezclar(FIGS_PATRON).slice(0,cuantos).map(f=>({figura:f, color:color, tam:"normal"}));
+}
+
+/* Construye la serie repitiendo la unidad hasta el largo pedido */
+function serie(elementos, unidad, largo){
+  const s = [];
+  for(let i=0;i<largo;i++) s.push(elementos[unidad[i % unidad.length]]);
+  return s;
+}
+
+function pintarSerie(contenedor, items, hueco){
+  const s = document.createElement("div");
+  s.className = "secuencia";
+  items.forEach((item,i)=>{
+    if(i === hueco){
+      const h = document.createElement("div");
+      h.className = "hueco";
+      h.textContent = "?";
+      h.setAttribute("aria-label", S.idioma==="es" ? "falta una figura" : "a shape is missing");
+      s.appendChild(h);
+    } else {
+      s.appendChild(crearItem(item, false));
+    }
+  });
+  contenedor.appendChild(s);
+  return s;
+}
+
+/* Tres opciones: la correcta y dos que no siguen el patrón */
+function opcionesItems(correcto, candidatos, alElegir){
+  const otros = [];
+  candidatos.forEach(c=>{
+    if(!mismoItem(c, correcto) && !otros.some(o=>mismoItem(o,c))) otros.push(c);
+  });
+  const distractores = mezclar(otros).slice(0,2);
+  mezclar([correcto, ...distractores]).forEach(item=>{
+    const b = crearItem(item, true);
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      alElegir(mismoItem(item, correcto), b);
+    });
+    $("opciones").appendChild(b);
+  });
+}
+
+/* ================= Los seis juegos ================= */
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+
+  /* --- 1. ¿Cuál es diferente? (PK.8.A.ECa) --- */
+  if(S.juego === "diferente"){
+    const iguales = elementosPatron(2);
+    const base = iguales[0];
+    const raro = (Math.random() < 0.5)
+      ? {figura: iguales[1].figura, color: base.color, tam:"normal"}
+      : {figura: base.figura, color: iguales[1].color, tam:"normal"};
+    const cuantos = S.ronda < 2 ? 3 : 4;
+    const puestos = [];
+    for(let i=0;i<cuantos-1;i++) puestos.push(base);
+    puestos.push(raro);
+    ponerInstruccion(t.cualDiferente);
+    const fila = document.createElement("div"); fila.className = "fila";
+    mezclar(puestos).forEach(item=>{
+      const b = crearItem(item, true);
+      b.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        if(mismoItem(item, raro)){ b.classList.add("baila"); acertar(t.eseDiferente); }
+        else fallar(b);
+      });
+      fila.appendChild(b);
+    });
+    esc.appendChild(fila);
+    return;
+  }
+
+  /* --- 2. Clasifica por color o por forma (PK.8.A.ECa) --- */
+  if(S.juego === "clasifica"){
+    const porColor = (S.ronda % 2 === 0);
+    const fig = elegir(FIGS_PATRON);
+    const figs = mezclar(FIGS_PATRON).slice(0,2);
+    const cols = mezclar(COLORES).slice(0,2);
+
+    // Dos grupos: o dos colores de la misma figura, o dos figuras del mismo color.
+    const tipos = porColor
+      ? cols.map(c=>({clave:c.es, figura:fig, color:c}))
+      : figs.map(f=>({clave:f, figura:f, color:cols[0]}));
+
+    const cola = mezclar([tipos[0], tipos[1], elegir(tipos)]);
+    let indice = 0;
+
+    const zona = document.createElement("div"); zona.className = "fila";
+    esc.appendChild(zona);
+    const cajas = document.createElement("div"); cajas.className = "cajas";
+    esc.appendChild(cajas);
+
+    const cuentas = {};
+    tipos.forEach(tipo=>{
+      const caja = document.createElement("button");
+      caja.className = "caja";
+      // La caja muestra el atributo por el que se clasifica, no el otro.
+      caja.appendChild(svgPlana(tipo.figura, porColor ? tipo.color : {f:"#FFFFFF", b:"#4A5D70"}));
+      const cuenta = document.createElement("span");
+      cuenta.className = "cuenta"; cuenta.textContent = "0";
+      caja.appendChild(cuenta);
+      cuentas[tipo.clave] = cuenta;
+      caja.setAttribute("aria-label", porColor
+        ? (S.idioma==="es"?"caja de color ":"box for color ") + tipo.color[S.idioma]
+        : (S.idioma==="es"?"caja de ":"box for ") + FIGURAS[tipo.figura][S.idioma][1]);
+      caja.addEventListener("click", ()=>responder(tipo, caja));
+      cajas.appendChild(caja);
+    });
+
+    let actual = null;
+    function mostrarSiguiente(){
+      zona.innerHTML = "";
+      if(indice >= cola.length){ acertar(t.clasificaListo); return; }
+      const tipo = cola[indice];
+      // Si clasificamos por forma, el color cambia a propósito: no debe servir de pista.
+      const item = porColor
+        ? {figura: elegir(FIGS_PATRON), color: tipo.color, tam:"normal"}
+        : {figura: tipo.figura, color: elegir(COLORES), tam:"normal"};
+      actual = crearItem(item, false);
+      actual.classList.add("grande");
+      zona.appendChild(actual);
+      ponerInstruccion(porColor ? t.clasificaColor : t.clasificaForma);
+    }
+    function responder(tipo, caja){
+      if(S.bloqueado || indice >= cola.length) return;
+      sonToque();
+      if(tipo.clave === cola[indice].clave){
+        actual.classList.add(caja === cajas.firstElementChild ? "vuela-izq" : "vuela-der");
+        cuentas[tipo.clave].textContent = String(Number(cuentas[tipo.clave].textContent) + 1);
+        tono([700],0.1);
+        indice++;
+        setTimeout(mostrarSiguiente, 560);
+      } else fallar(caja);
+    }
+    mostrarSiguiente();
+    return;
+  }
+
+  /* --- 3. Patrón A B (PK.8.A.ECb) --- */
+  if(S.juego === "sigue"){
+    const elementos = elementosPatron(2);
+    const completa = serie(elementos, [0,1], 6);
+    ponerInstruccion(t.queSigue);
+    pintarSerie(esc, completa.slice(0,5), 5);
+    opcionesItems(completa[5], elementos.concat(elementosPatron(2)), (ok,b)=>{
+      ok ? acertar(t.asiSigue) : fallar(b);
+    });
+    return;
+  }
+
+  /* --- 4. Patrones más largos: A B B, A A B, A B C (PK.8.A.ECb) --- */
+  if(S.juego === "dificil"){
+    const unidad = elegir([[0,1,1],[0,0,1],[0,1,2]]);
+    const cuantos = unidad.includes(2) ? 3 : 2;
+    const elementos = elementosPatron(cuantos);
+    const completa = serie(elementos, unidad, 7);
+    ponerInstruccion(t.queSigue);
+    pintarSerie(esc, completa.slice(0,6), 6);
+    opcionesItems(completa[6], elementos.concat(elementosPatron(2)), (ok,b)=>{
+      ok ? acertar(t.asiSigue) : fallar(b);
+    });
+    return;
+  }
+
+  /* --- 5. ¿Qué falta? (PK.8.A.ECb: completar, no solo extender) --- */
+  if(S.juego === "falta"){
+    const unidad = elegir([[0,1],[0,1,1],[0,0,1]]);
+    const cuantos = 2;
+    const elementos = elementosPatron(cuantos);
+    const completa = serie(elementos, unidad, 6);
+    const hueco = azar(1,4);
+    ponerInstruccion(t.queFalta);
+    pintarSerie(esc, completa, hueco);
+    opcionesItems(completa[hueco], elementos.concat(elementosPatron(2)), (ok,b)=>{
+      ok ? acertar(t.asiSigue) : fallar(b);
+    });
+    return;
+  }
+
+  /* --- 6. Patrones de tamaño (PK.8.A.ECb: patrones en varios formatos) --- */
+  if(S.juego === "tamano"){
+    const fig = elegir(FIGS_PATRON);
+    const color = elegir(COLORES);
+    const elementos = [
+      {figura:fig, color:color, tam:"normal"},
+      {figura:fig, color:color, tam:"chica"}
+    ];
+    const unidad = elegir([[0,1],[0,0,1],[0,1,1]]);
+    const completa = serie(elementos, unidad, 6);
+    ponerInstruccion(t.patronTamano);
+    pintarSerie(esc, completa.slice(0,5), 5);
+    const otraFigura = elegir(FIGS_PATRON.filter(f=>f !== fig));
+    opcionesItems(completa[5],
+      elementos.concat([{figura:otraFigura, color:color, tam:"normal"}]),
+      (ok,b)=>{ ok ? acertar(t.asiSigue) : fallar(b); });
+    return;
+  }
+}
+
+/* ================= Arranque ================= */
+conectarEventos();
+pintarMenu();
+
+</script>
+</body>
+</html>
