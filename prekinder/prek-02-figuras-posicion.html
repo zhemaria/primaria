@@ -232,6 +232,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
 }
 .casa{display:inline-flex;align-items:center;gap:6px;text-decoration:none;
   font-size:.86em;padding:8px 14px}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 20px}
 </style>
 </head>
 <body>
@@ -253,9 +254,8 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
   <section id="p-portada" class="portada">
     <div class="muestra" id="muestra-portada" aria-hidden="true"></div>
     <h2 data-es="¡Toca las figuras!" data-en="Touch the shapes!">¡Toca las figuras!</h2>
-    <p data-es="Seis juegos para conocer las figuras, contar sus lados y sus esquinas, y decir dónde están las cosas. Todo se dice en voz alta: no hace falta leer."
-       data-en="Six games to meet the shapes, count their sides and corners, and say where things are. Everything is read aloud: no reading needed.">
-       Seis juegos para conocer las figuras, contar sus lados y sus esquinas, y decir dónde están las cosas. Todo se dice en voz alta: no hace falta leer.</p>
+    <p data-es="Aquí vas a tocar figuras, contar sus lados y sus esquinas, y decir dónde están las cosas. Yo te digo todo en voz alta y tú contestas tocando. ¡Puedes jugar sin ayuda!" data-en="Here you will touch shapes, count their sides and corners, and say where things are. I say everything out loud and you answer by touching. You can play all by yourself!">Aquí vas a tocar figuras, contar sus lados y sus esquinas, y decir dónde están las cosas. Yo te digo todo en voz alta y tú contestas tocando. ¡Puedes jugar sin ayuda!</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
     <button class="boton fuerte" id="btn-empezar" data-es="Empezar" data-en="Start">Empezar</button>
   </section>
 
@@ -1053,6 +1053,44 @@ $("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); });
 aplicarIdioma();
 pintarPortada();
 pintarHoja();
+
+/* Lee en voz alta de qué se trata el módulo. Los navegadores bloquean la voz
+   hasta que hay un gesto del usuario, así que se intenta al cargar y, si queda
+   bloqueada, la dispara el primer toque en cualquier parte de la página. */
+let presentado = false;
+function presentar(){
+  if(presentado) return;
+  if($("p-portada").classList.contains("oculto")) return;   // ya está jugando: no interrumpir
+  presentado = true;
+  const titulo = document.querySelector("#p-portada h2").textContent;
+  const texto = document.querySelector("#p-portada p").textContent;
+  hablar(titulo + ". " + texto);
+}
+function intentarPresentar(){
+  presentar();
+  setTimeout(()=>{
+    const sonando = window.speechSynthesis &&
+      (window.speechSynthesis.speaking || window.speechSynthesis.pending);
+    if(!sonando) presentado = false;
+  }, 400);
+}
+["pointerdown","keydown"].forEach(evento=>{
+  document.addEventListener(evento, (ev)=>{
+    // Si lo primero que toca es "Empezar", no le leemos la portada encima.
+    if(ev.target && ev.target.closest && ev.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+function ponerEtiquetaOir(){
+  $("btn-oir").setAttribute("aria-label",
+    S.idioma === "es" ? "Escuchar de qué se trata este juego"
+                      : "Hear what this game is about");
+}
+$("btn-oir").addEventListener("click", ()=>{ presentado = false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ ponerEtiquetaOir(); presentado = false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ ponerEtiquetaOir(); presentado = false; presentar(); });
+ponerEtiquetaOir();
+intentarPresentar();
 </script>
 </body>
 </html>
