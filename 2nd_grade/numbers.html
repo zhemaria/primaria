@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<!-- Numbers to 1,000 | Grade 2 Math Interactives
+     (c) Jose M. Fernandez, ABE/ASE Math Master Teacher, Harry S. Truman College - City Colleges of Chicago
+     Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+     https://creativecommons.org/licenses/by-nc-sa/4.0/ -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Numbers to 1,000 | Grade 2 Math Interactives</title>
+<meta name="description" content="Compare three-digit numbers, skip-count by fives, tens and hundreds, and write numbers in words and expanded form.">
+<meta name="author" content="Jose M. Fernandez">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --ink:#14243A;
+  --ink-soft:#4A5A70;
+  --paper:#FFFFFF;
+  --grid:#DEE8F4;
+  --line:#B6C6D8;
+  --panel:#F3F7FC;
+  --domain:#1B5FA8;
+  --domain-dark:#123F70;
+  --ok:#146B3A;
+  --ok-bg:#E6F4EC;
+  --no:#9B1C1C;
+  --no-bg:#FBEAEA;
+  --note:#5C3900;
+  --note-bg:#FFF3CD;
+  --focus:#0B3C6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:Verdana,Geneva,"DejaVu Sans",sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 48px}
+a{color:var(--domain-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:4px solid var(--focus);outline-offset:2px;border-radius:4px;
+}
+
+/* ---------- header ---------- */
+.topbar{background:var(--domain);color:#fff;border-bottom:6px solid var(--domain-dark)}
+.topbar .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.topbar h1{margin:0;font-size:1.5rem;line-height:1.2;letter-spacing:.01em}
+.topbar .grade{display:block;font-size:.8rem;font-weight:normal;opacity:.95}
+.home-link{
+  display:inline-block;background:#fff;color:var(--domain-dark);text-decoration:none;
+  font-weight:bold;padding:10px 16px;border-radius:8px;border:2px solid var(--domain-dark);
+  min-height:44px;
+}
+.home-link:hover{background:var(--panel)}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.tab{
+  font:inherit;font-weight:bold;cursor:pointer;
+  background:var(--panel);color:var(--domain-dark);
+  border:2px solid var(--line);border-bottom:none;
+  border-radius:10px 10px 0 0;padding:12px 16px;min-height:48px;
+}
+.tab[aria-selected="true"]{background:#fff;color:var(--ink);border-color:var(--domain);border-bottom:2px solid #fff;position:relative;top:2px}
+.panel{
+  background:#fff;border:2px solid var(--domain);border-radius:0 10px 10px 10px;
+  padding:20px;
+}
+.panel[hidden]{display:none}
+.panel h2{margin:0 0 6px;font-size:1.25rem}
+
+/* ---------- instructions + read aloud ---------- */
+.howto{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border-left:8px solid var(--domain);padding:12px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
+.howto p{margin:0}
+.btn-read{
+  flex:none;font:inherit;font-size:.85rem;font-weight:bold;cursor:pointer;
+  background:#fff;color:var(--domain-dark);border:2px solid var(--domain-dark);
+  border-radius:8px;padding:8px 10px;min-height:44px;white-space:nowrap;
+}
+.btn-read:hover{background:var(--panel)}
+.btn-read.speaking{background:var(--note-bg);color:var(--note);border-color:var(--note)}
+
+/* ---------- generic controls ---------- */
+button{font-family:inherit}
+.btn{
+  font:inherit;font-weight:bold;cursor:pointer;min-height:48px;padding:12px 18px;
+  background:var(--domain);color:#fff;border:2px solid var(--domain-dark);border-radius:10px;
+}
+.btn:hover{background:var(--domain-dark)}
+.btn.sec{background:#fff;color:var(--domain-dark)}
+.btn.sec:hover{background:var(--panel)}
+.btn.big{font-size:1.15rem;padding:14px 24px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.stack{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.task{font-size:1.5rem;font-weight:bold;margin:0 0 8px;line-height:1.35}
+.task .num{font-size:1.9rem;color:var(--domain-dark)}
+input[type=number],input[type=text]{
+  font:inherit;font-size:1.3rem;font-weight:bold;text-align:center;
+  padding:10px;width:7ch;border:3px solid var(--line);border-radius:10px;color:var(--ink);background:#fff;
+}
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+textarea{font:inherit;width:100%;min-height:110px;padding:12px;border:3px solid var(--line);border-radius:10px;color:var(--ink)}
+select{font:inherit;min-height:48px;padding:8px;border:3px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+fieldset{border:2px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 14px}
+legend{font-weight:bold;padding:0 6px}
+
+/* ---------- choice buttons ---------- */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:14px 0}
+.choice{
+  font:inherit;font-size:1.4rem;font-weight:bold;cursor:pointer;min-height:64px;
+  background:#fff;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:10px;
+}
+.choice:hover{border-color:var(--domain);background:var(--panel)}
+.choice.picked{border-color:var(--domain);background:var(--panel)}
+.choice.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.choice.wrong{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+.choice small{display:block;font-size:.75rem;font-weight:normal;color:var(--ink-soft)}
+
+/* ---------- feedback + score ---------- */
+.fb{min-height:1.8em;margin:14px 0 0;font-weight:bold;padding:10px 14px;border-radius:10px}
+.fb:empty{display:none}
+.fb.ok{background:var(--ok-bg);color:var(--ok);border:2px solid var(--ok)}
+.fb.no{background:var(--no-bg);color:var(--no);border:2px solid var(--no)}
+.fb.note{background:var(--note-bg);color:var(--note);border:2px solid var(--note)}
+.score{font-weight:bold;color:var(--ink-soft);margin:0 0 10px;font-size:.95rem}
+
+/* ---------- workmat ---------- */
+.mat{background:#fff;border:3px solid var(--line);border-radius:12px;padding:14px;margin:14px 0}
+.mat h3{margin:0 0 10px;font-size:1rem;color:var(--ink-soft)}
+svg{max-width:100%;height:auto;display:block}
+table{border-collapse:collapse;width:100%;margin:12px 0}
+caption{text-align:left;font-weight:bold;padding-bottom:6px}
+th,td{border:2px solid var(--line);padding:8px 10px;text-align:left}
+th{background:var(--panel)}
+
+/* ---------- hub ---------- */
+.hub-intro{max-width:62ch;margin:24px 0 8px;font-size:1.05rem}
+.tiles{list-style:none;padding:0;margin:20px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+.tile a{
+  display:block;height:100%;text-decoration:none;color:var(--ink);background:#fff;
+  border:3px solid var(--line);border-bottom-width:10px;border-radius:14px;padding:18px;
+}
+.tile a:hover{border-color:var(--tile);background:var(--panel)}
+.tile a{border-bottom-color:var(--tile)}
+.tile h2{margin:10px 0 4px;font-size:1.15rem;color:var(--tile-dark)}
+.tile p{margin:0;font-size:.9rem;color:var(--ink-soft)}
+.tile svg{margin-bottom:4px}
+
+/* ---------- footer ---------- */
+footer{margin-top:40px;border-top:3px solid var(--line);padding-top:16px;font-size:.8rem;color:var(--ink-soft)}
+footer p{margin:.3em 0;max-width:70ch}
+footer a{color:var(--domain-dark)}
+
+@media (max-width:560px){
+  body{font-size:17px}
+  .topbar h1{font-size:1.2rem}
+  .panel{padding:14px;border-radius:0 10px 10px 10px}
+  .task{font-size:1.3rem}
+}
+@media (prefers-reduced-motion:no-preference){
+  .pop{animation:pop .25s ease-out}
+  @keyframes pop{from{transform:scale(.85)}to{transform:scale(1)}}
+}
+@media print{
+  .tabs,.btn-read,.btn{display:none}
+  body{background:#fff}
+  .panel[hidden]{display:block}
+}
+
+:root{--domain:#3D3A8C;--domain-dark:#282668}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <h1>Numbers to 1,000<span class="grade">Grade 2 math practice</span></h1>
+    <a class="home-link" href="index.html">&#8592; All activities</a>
+  </div>
+</header>
+<main class="wrap" id="main">
+<div class="tabs" role="tablist" aria-label="Number activities">
+  <button class="tab" role="tab" id="tab-compare" aria-controls="p-compare" aria-selected="true">Compare</button>
+  <button class="tab" role="tab" id="tab-skip"    aria-controls="p-skip"    aria-selected="false">Skip-count</button>
+  <button class="tab" role="tab" id="tab-names"   aria-controls="p-names"   aria-selected="false">Number names</button>
+</div>
+
+<!-- ============ 1. COMPARE ============ -->
+<section class="panel" id="p-compare" role="tabpanel" aria-labelledby="tab-compare" tabindex="0">
+  <h2>Compare numbers</h2>
+  <div class="howto">
+    <p id="how-compare">Look at the hundreds first. If they are the same, look at the tens. If those match too, look at the ones. The open end of the sign always points to the bigger number.</p>
+    <button class="btn-read" data-read="how-compare" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="score" id="cmp-score">Question 1 of 10 &middot; Score 0</p>
+  <div class="mat" style="text-align:center">
+    <p id="cmp-pair" style="font-size:2.1rem;font-weight:bold;margin:8px 0;line-height:1.5">Loading&hellip;</p>
+  </div>
+  <div class="choices" id="cmp-choices"></div>
+  <p class="fb" id="cmp-fb" role="status" aria-live="polite"></p>
+  <div class="row">
+    <button class="btn" type="button" id="cmp-next">Next question</button>
+    <button class="btn sec" type="button" id="cmp-restart">Start a new round</button>
+  </div>
+</section>
+
+<!-- ============ 2. SKIP-COUNT ============ -->
+<section class="panel" id="p-skip" role="tabpanel" aria-labelledby="tab-skip" tabindex="0" hidden>
+  <h2>Skip-count</h2>
+  <div class="howto">
+    <p id="how-skip">Every number in the row is the same jump away from the one before it. Work out the size of the jump, then keep it going. Counting by hundreds changes the hundreds digit, counting by tens changes the tens digit.</p>
+    <button class="btn-read" data-read="how-skip" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="skip-task">Loading&hellip;</p>
+  <div class="mat"><div class="row" id="skip-row" style="justify-content:flex-start;font-size:1.4rem;font-weight:bold"></div></div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="skip-check">Check my numbers</button>
+    <button class="btn sec" type="button" id="skip-hint">Show me the jump</button>
+    <button class="btn sec" type="button" id="skip-next">New row</button>
+  </div>
+  <p class="fb" id="skip-fb" role="status" aria-live="polite"></p>
+</section>
+
+<!-- ============ 3. NUMBER NAMES ============ -->
+<section class="panel" id="p-names" role="tabpanel" aria-labelledby="tab-names" tabindex="0" hidden>
+  <h2>Number names and expanded form</h2>
+  <div class="howto">
+    <p id="how-names">The same number can be written three ways: with digits, with words, and pulled apart into hundreds, tens and ones. A zero in the middle still counts, so read the places carefully.</p>
+    <button class="btn-read" data-read="how-names" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="nm-task">Loading&hellip;</p>
+  <div class="mat" style="text-align:center">
+    <p id="nm-show" style="font-size:2.2rem;font-weight:bold;margin:8px 0"></p>
+  </div>
+
+  <div class="choices" id="nm-choices"></div>
+
+  <div class="row" id="nm-expanded" hidden>
+    <input type="number" id="nm-h" min="0" style="width:5ch" aria-label="hundreds">
+    <span style="font-weight:bold;font-size:1.4rem">+</span>
+    <input type="number" id="nm-t" min="0" style="width:5ch" aria-label="tens">
+    <span style="font-weight:bold;font-size:1.4rem">+</span>
+    <input type="number" id="nm-o" min="0" style="width:4ch" aria-label="ones">
+    <span style="font-weight:bold;font-size:1.4rem">=</span>
+    <span id="nm-target" style="font-weight:bold;font-size:1.5rem"></span>
+  </div>
+
+  <div class="row" id="nm-digits" hidden>
+    <label for="nm-num" style="font-weight:bold">In digits:</label>
+    <input type="number" id="nm-num" min="0" max="999" data-enter="nm-check" aria-label="the number in digits">
+  </div>
+
+  <div class="row">
+    <button class="btn big" type="button" id="nm-check">Check my answer</button>
+    <button class="btn sec" type="button" id="nm-next">New number</button>
+  </div>
+  <p class="fb" id="nm-fb" role="status" aria-live="polite"></p>
+</section>
+
+</main>
+<footer class="wrap">
+  <p>Jos&eacute; M. Fern&aacute;ndez, ABE/ASE Math Master Teacher, Harry S. Truman College &mdash; City Colleges of Chicago</p>
+  <p>Built for second-grade learners and their families. Works offline once the page is open; nothing is stored or sent anywhere.</p>
+  <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">Creative Commons BY-NC-SA 4.0</a> &middot; free to share and adapt for non-commercial use, with credit.</p>
+</footer>
+<script>
+/* ---------- shared helpers ---------- */
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $$(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+function randInt(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function pick(arr){ return arr[randInt(0, arr.length - 1)]; }
+function shuffle(arr){
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--){ var j = randInt(0, i); var t = a[i]; a[i] = a[j]; a[j] = t; }
+  return a;
+}
+function say(el, text, kind){
+  el.className = 'fb ' + (kind || '');
+  el.textContent = text;
+}
+function money(cents){
+  var d = Math.floor(cents / 100), c = cents % 100;
+  return '$' + d + '.' + (c < 10 ? '0' + c : c);
+}
+
+/* ---------- read aloud (Web Speech API) ----------
+   The device supplies the voices, so we choose the clearest one available
+   instead of accepting whatever the browser hands us by default.          */
+var VOICE_OK = ('speechSynthesis' in window);
+var VOICE = null;
+var VOICE_WANTED = [
+  /Google US English/i,          /* Chrome, desktop and Android */
+  /^Samantha$/i,                 /* iPad, iPhone, Mac */
+  /Microsoft (Aria|Jenny|Ava|Michelle)/i,  /* Edge, natural voices */
+  /Microsoft Zira/i,             /* Windows, older but clear */
+  /^English \(United States\)/i
+];
+
+function chooseVoice(){
+  var all = window.speechSynthesis.getVoices() || [];
+  if (!all.length) return;
+  var english = all.filter(function(v){ return /^en[-_]?/i.test(v.lang); });
+  if (!english.length) return;
+  for (var i = 0; i < VOICE_WANTED.length; i++){
+    var hit = english.filter(function(v){ return VOICE_WANTED[i].test(v.name); })[0];
+    if (hit){ VOICE = hit; return; }
+  }
+  VOICE = english.filter(function(v){ return /US/i.test(v.lang); })[0] || english[0];
+}
+
+/* Android Chrome drops long utterances, so send one sentence at a time. */
+function splitForSpeech(text){
+  var parts = text.replace(/\s+/g, ' ').match(/[^.!?]+[.!?]*/g) || [text];
+  var out = [], buf = '';
+  parts.forEach(function(p){
+    if ((buf + p).length > 150 && buf){ out.push(buf.trim()); buf = p; }
+    else { buf += p; }
+  });
+  if (buf.trim()) out.push(buf.trim());
+  return out;
+}
+
+var keepAlive = null;
+function stopSpeech(){
+  window.speechSynthesis.cancel();
+  if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+  $$('.btn-read').forEach(function(b){ b.classList.remove('speaking'); });
+}
+
+function readAloud(text, btn){
+  if (!VOICE_OK) return;
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending){ stopSpeech(); return; }
+  if (!VOICE) chooseVoice();
+  var chunks = splitForSpeech(text);
+  if (btn) btn.classList.add('speaking');
+  chunks.forEach(function(chunk, i){
+    var u = new SpeechSynthesisUtterance(chunk);
+    if (VOICE) u.voice = VOICE;
+    u.lang = VOICE ? VOICE.lang : 'en-US';
+    u.rate = 0.85;   /* a little under normal speed: clear for a seven year old */
+    u.pitch = 1;
+    if (i === chunks.length - 1){
+      u.onend = u.onerror = function(){
+        if (btn) btn.classList.remove('speaking');
+        if (keepAlive){ clearInterval(keepAlive); keepAlive = null; }
+      };
+    }
+    window.speechSynthesis.speak(u);
+  });
+  /* desktop Chrome pauses itself after about fifteen seconds */
+  keepAlive = setInterval(function(){
+    if (window.speechSynthesis.speaking) window.speechSynthesis.resume();
+    else { clearInterval(keepAlive); keepAlive = null; }
+  }, 6000);
+}
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', function(){
+
+  if (VOICE_OK){
+    chooseVoice();
+    window.speechSynthesis.onvoiceschanged = chooseVoice;
+  }
+
+  /* read-aloud buttons: read the text of the element named in data-read */
+  $$('.btn-read').forEach(function(btn){
+    if (!VOICE_OK){ btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var src = document.getElementById(btn.getAttribute('data-read'));
+      var txt = btn.getAttribute('data-text') || (src ? src.textContent : '');
+      readAloud(txt, btn);
+    });
+  });
+
+  /* tabs */
+  var lists = $$('[role="tablist"]');
+  lists.forEach(function(list){
+    var tabs = $$('[role="tab"]', list);
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = (t === tab);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+      if (VOICE_OK) stopSpeech();
+    }
+    tabs.forEach(function(tab, i){
+      tab.addEventListener('click', function(){ select(tab); });
+      tab.addEventListener('keydown', function(e){
+        var j = null;
+        if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+        if (e.key === 'ArrowLeft')  j = (i - 1 + tabs.length) % tabs.length;
+        if (e.key === 'Home') j = 0;
+        if (e.key === 'End')  j = tabs.length - 1;
+        if (j !== null){ e.preventDefault(); tabs[j].focus(); select(tabs[j]); }
+      });
+    });
+    select(tabs[0]);
+  });
+
+  /* pressing Enter inside a number box acts as "Check" */
+  $$('[data-enter]').forEach(function(inp){
+    inp.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ e.preventDefault(); document.getElementById(inp.getAttribute('data-enter')).click(); }
+    });
+  });
+
+  if (typeof startAll === 'function') startAll();
+});
+
+</script>
+<script>
+/* ===================== number words ===================== */
+var ONES = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+            'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+var TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+
+function numberWords(n){
+  var h = Math.floor(n / 100), r = n % 100, parts = [];
+  if (h) parts.push(ONES[h] + ' hundred');
+  if (r){
+    if (r < 20) parts.push(ONES[r]);
+    else {
+      var o = r % 10;
+      parts.push(o ? TENS[Math.floor(r / 10)] + '-' + ONES[o] : TENS[Math.floor(r / 10)]);
+    }
+  }
+  if (!parts.length) return ONES[0];
+  return parts.join(' ');
+}
+
+function expandedText(n){
+  return Math.floor(n / 100) * 100 + ' + ' + Math.floor((n % 100) / 10) * 10 + ' + ' + (n % 10);
+}
+
+/* ===================== 1. COMPARE ===================== */
+var cmp = { q: 0, score: 0, answer: '', a: 0, b: 0, locked: false };
+
+function newCompare(){
+  if (cmp.q >= 10){
+    document.getElementById('cmp-pair').textContent = 'Round finished.';
+    document.getElementById('cmp-choices').innerHTML = '';
+    say(document.getElementById('cmp-fb'),
+        'You got ' + cmp.score + ' out of 10. Press Start a new round to play again.', 'ok');
+    return;
+  }
+  cmp.q++; cmp.locked = false;
+  var a = randInt(102, 989), b;
+  var roll = Math.random();
+  if (roll < 0.12) b = a;                                   /* equal */
+  else if (roll < 0.45) b = a + pick([-1, 1, -2, 2]);        /* ones decide */
+  else if (roll < 0.72) b = a + pick([-10, 10, -20, 20]);    /* tens decide */
+  else b = randInt(102, 989);
+  if (b < 100 || b > 999) b = randInt(102, 989);
+  cmp.a = a; cmp.b = b;
+  cmp.answer = a > b ? '>' : (a < b ? '<' : '=');
+  var left = (Math.random() < 0.3) ? expandedText(a) : String(a);
+  document.getElementById('cmp-pair').innerHTML =
+    '<span>' + left + '</span> <span style="color:var(--domain-dark)">?</span> <span>' + b + '</span>';
+  var box = document.getElementById('cmp-choices');
+  box.innerHTML = '';
+  [['>', 'is greater than'], ['=', 'is equal to'], ['<', 'is less than']].forEach(function(o){
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'choice'; btn.style.fontSize = '2rem';
+    btn.innerHTML = o[0] + '<small>' + o[1] + '</small>';
+    btn.setAttribute('aria-label', o[1]);
+    btn.addEventListener('click', function(){ answerCompare(btn, o[0]); });
+    box.appendChild(btn);
+  });
+  document.getElementById('cmp-score').textContent =
+    'Question ' + Math.min(cmp.q, 10) + ' of 10 \u00B7 Score ' + cmp.score;
+  say(document.getElementById('cmp-fb'), '', '');
+}
+
+function compareWhy(){
+  var a = cmp.a, b = cmp.b;
+  if (a === b) return 'Every place is the same, so the numbers are equal.';
+  if (Math.floor(a / 100) !== Math.floor(b / 100))
+    return 'The hundreds decide it: ' + Math.floor(a / 100) + ' hundreds against ' + Math.floor(b / 100) + ' hundreds.';
+  if (Math.floor((a % 100) / 10) !== Math.floor((b % 100) / 10))
+    return 'The hundreds match, so the tens decide it: ' + Math.floor((a % 100) / 10) + ' tens against ' + Math.floor((b % 100) / 10) + ' tens.';
+  return 'The hundreds and the tens match, so the ones decide it: ' + (a % 10) + ' against ' + (b % 10) + '.';
+}
+
+function answerCompare(btn, sign){
+  if (cmp.locked) return;
+  cmp.locked = true;
+  var fb = document.getElementById('cmp-fb');
+  if (sign === cmp.answer){
+    btn.classList.add('right');
+    cmp.score++;
+    say(fb, 'Correct. ' + cmp.a + ' ' + cmp.answer + ' ' + cmp.b + '. ' + compareWhy(), 'ok');
+  } else {
+    btn.classList.add('wrong');
+    $$('#cmp-choices .choice').forEach(function(x){
+      if (x.textContent.indexOf(cmp.answer) === 0) x.classList.add('right');
+    });
+    say(fb, 'Not this time. ' + cmp.a + ' ' + cmp.answer + ' ' + cmp.b + '. ' + compareWhy(), 'no');
+  }
+  document.getElementById('cmp-score').textContent =
+    'Question ' + Math.min(cmp.q, 10) + ' of 10 \u00B7 Score ' + cmp.score;
+}
+
+/* ===================== 2. SKIP-COUNT ===================== */
+var sk = { start: 0, step: 0, shown: 4, blanks: 2 };
+
+function newSkip(){
+  sk.step = pick([5, 10, 100, 5, 10, -5, -10, -100]);
+  var span = Math.abs(sk.step) * 5;
+  sk.start = sk.step > 0 ? randInt(5, 995 - span) : randInt(span + 5, 995);
+  if (Math.abs(sk.step) === 5) sk.start = Math.round(sk.start / 5) * 5;
+  if (Math.abs(sk.step) === 10) sk.start = Math.round(sk.start / 10) * 10;
+  if (Math.abs(sk.step) === 100) sk.start = Math.round(sk.start / 10) * 10;
+  document.getElementById('skip-task').textContent =
+    'Fill in the last two numbers of the row.';
+  var row = document.getElementById('skip-row');
+  row.innerHTML = '';
+  for (var i = 0; i < sk.shown; i++){
+    row.insertAdjacentHTML('beforeend',
+      '<span>' + (sk.start + i * sk.step) + '</span><span style="color:var(--ink-soft)">,</span>');
+  }
+  for (var j = 0; j < sk.blanks; j++){
+    row.insertAdjacentHTML('beforeend',
+      '<input type="number" id="sk' + j + '" style="width:6ch" aria-label="number ' + (sk.shown + j + 1) + ' in the row">' +
+      (j < sk.blanks - 1 ? '<span style="color:var(--ink-soft)">,</span>' : ''));
+  }
+  say(document.getElementById('skip-fb'), '', '');
+}
+
+function checkSkip(){
+  var fb = document.getElementById('skip-fb'), right = 0, blank = 0;
+  for (var j = 0; j < sk.blanks; j++){
+    var box = document.getElementById('sk' + j);
+    var want = sk.start + (sk.shown + j) * sk.step;
+    if (box.value === ''){ blank++; box.style.borderColor = '#B6C6D8'; continue; }
+    var ok = Number(box.value) === want;
+    box.style.borderColor = ok ? '#146B3A' : '#9B1C1C';
+    if (ok) right++;
+  }
+  if (blank){ say(fb, 'Fill in both boxes, then check again.', 'note'); return; }
+  if (right === sk.blanks){
+    say(fb, 'Correct. The row counts ' + (sk.step > 0 ? 'forward' : 'back') + ' by ' + Math.abs(sk.step) + '.', 'ok');
+  } else {
+    say(fb, 'Not yet. Look at how much the row changes from one number to the next.', 'no');
+  }
+}
+
+/* ===================== 3. NUMBER NAMES ===================== */
+var nm = { n: 0, kind: '', answer: '' };
+
+function newNames(){
+  nm.n = randInt(101, 989);
+  if (Math.random() < 0.25) nm.n = Math.floor(nm.n / 100) * 100 + (nm.n % 10);   /* a zero in the tens */
+  nm.kind = pick(['toWords', 'toWords', 'expand', 'fromWords']);
+  var ch = document.getElementById('nm-choices');
+  ch.innerHTML = '';
+  document.getElementById('nm-expanded').hidden = true;
+  document.getElementById('nm-digits').hidden = true;
+  say(document.getElementById('nm-fb'), '', '');
+
+  if (nm.kind === 'toWords'){
+    document.getElementById('nm-task').textContent = 'How do you write this number in words?';
+    document.getElementById('nm-show').textContent = nm.n;
+    nm.answer = numberWords(nm.n);
+    var pool = [nm.n + 10, nm.n - 10, nm.n + 100, nm.n % 100, nm.n + 1];
+    var opts = [nm.answer];
+    pool.forEach(function(m){
+      if (m > 0 && m < 1000){
+        var w = numberWords(m);
+        if (opts.indexOf(w) === -1 && opts.length < 4) opts.push(w);
+      }
+    });
+    shuffle(opts).forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'choice'; b.style.fontSize = '1.05rem'; b.textContent = t;
+      b.addEventListener('click', function(){ answerNames(b, t); });
+      ch.appendChild(b);
+    });
+    ch.style.gridTemplateColumns = 'repeat(auto-fit,minmax(200px,1fr))';
+  } else if (nm.kind === 'expand'){
+    document.getElementById('nm-task').textContent = 'Pull the number apart into hundreds, tens and ones.';
+    document.getElementById('nm-show').textContent = nm.n + '  \u2014  ' + numberWords(nm.n);
+    document.getElementById('nm-target').textContent = nm.n;
+    document.getElementById('nm-h').value = '';
+    document.getElementById('nm-t').value = '';
+    document.getElementById('nm-o').value = '';
+    document.getElementById('nm-expanded').hidden = false;
+  } else {
+    document.getElementById('nm-task').textContent = 'Write this number with digits.';
+    document.getElementById('nm-show').textContent = numberWords(nm.n);
+    document.getElementById('nm-num').value = '';
+    document.getElementById('nm-digits').hidden = false;
+  }
+}
+
+function answerNames(btn, t){
+  var fb = document.getElementById('nm-fb');
+  if (t === nm.answer){
+    btn.classList.add('right');
+    say(fb, 'Correct. ' + nm.n + ' is ' + nm.answer + ', and pulled apart it is ' + expandedText(nm.n) + '.', 'ok');
+  } else {
+    btn.classList.add('wrong');
+    $$('#nm-choices .choice').forEach(function(x){ if (x.textContent === nm.answer) x.classList.add('right'); });
+    say(fb, 'Not that one. Read the hundreds, then the tens, then the ones.', 'no');
+  }
+}
+
+function checkNames(){
+  var fb = document.getElementById('nm-fb');
+  if (nm.kind === 'toWords'){ say(fb, 'Tap one of the choices above.', 'note'); return; }
+  if (nm.kind === 'expand'){
+    var h = document.getElementById('nm-h'), t = document.getElementById('nm-t'), o = document.getElementById('nm-o');
+    if (h.value === '' || t.value === '' || o.value === ''){ say(fb, 'Fill in all three boxes, then check again.', 'note'); return; }
+    var wh = Math.floor(nm.n / 100) * 100, wt = Math.floor((nm.n % 100) / 10) * 10, wo = nm.n % 10;
+    h.style.borderColor = Number(h.value) === wh ? '#146B3A' : '#9B1C1C';
+    t.style.borderColor = Number(t.value) === wt ? '#146B3A' : '#9B1C1C';
+    o.style.borderColor = Number(o.value) === wo ? '#146B3A' : '#9B1C1C';
+    if (Number(h.value) === wh && Number(t.value) === wt && Number(o.value) === wo){
+      say(fb, 'Correct. ' + nm.n + ' is ' + expandedText(nm.n) + '.', 'ok');
+    } else {
+      say(fb, 'Not yet. Each box holds the value of one place, so a 4 in the hundreds place is worth 400.', 'no');
+    }
+    return;
+  }
+  var box = document.getElementById('nm-num');
+  if (box.value === ''){ say(fb, 'Write the number in the box first.', 'note'); return; }
+  if (Number(box.value) === nm.n){
+    box.style.borderColor = '#146B3A';
+    say(fb, 'Correct. ' + numberWords(nm.n) + ' is ' + nm.n + '.', 'ok');
+  } else {
+    box.style.borderColor = '#9B1C1C';
+    say(fb, 'Not yet. Listen for the hundreds first, and remember that a missing place needs a zero.', 'no');
+  }
+}
+
+/* ===================== start ===================== */
+function startAll(){
+  document.getElementById('cmp-next').addEventListener('click', newCompare);
+  document.getElementById('cmp-restart').addEventListener('click', function(){
+    cmp = { q: 0, score: 0, answer: '', a: 0, b: 0, locked: false };
+    newCompare();
+  });
+  newCompare();
+
+  document.getElementById('skip-check').addEventListener('click', checkSkip);
+  document.getElementById('skip-hint').addEventListener('click', function(){
+    say(document.getElementById('skip-fb'),
+        'The row counts ' + (sk.step > 0 ? 'forward' : 'back') + ' by ' + Math.abs(sk.step) + '.', 'note');
+  });
+  document.getElementById('skip-next').addEventListener('click', newSkip);
+  newSkip();
+
+  document.getElementById('nm-check').addEventListener('click', checkNames);
+  document.getElementById('nm-next').addEventListener('click', newNames);
+  newNames();
+}
+</script>
+</body>
+</html>

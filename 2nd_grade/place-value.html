@@ -192,7 +192,36 @@ footer a{color:var(--domain-dark)}
   <button class="tab" role="tab" id="tab-blocks"  aria-controls="p-blocks"  aria-selected="true">Base-ten blocks</button>
   <button class="tab" role="tab" id="tab-mental"  aria-controls="p-mental"  aria-selected="false">Mental math</button>
   <button class="tab" role="tab" id="tab-explain" aria-controls="p-explain" aria-selected="false">Explain a strategy</button>
+  <button class="tab" role="tab" id="tab-many"    aria-controls="p-many"    aria-selected="false">Add several numbers</button>
 </div>
+
+<!-- ============ 4. ADD SEVERAL TWO-DIGIT NUMBERS ============ -->
+<section class="panel" id="p-many" role="tabpanel" aria-labelledby="tab-many" tabindex="0" hidden>
+  <h2>Add several numbers</h2>
+  <div class="howto">
+    <p id="how-many">Four numbers at once is easier if you take the places apart. Add all the tens together first, then all the ones, and put the two answers back together at the end.</p>
+    <button class="btn-read" data-read="how-many" type="button">&#128266; Read to me</button>
+  </div>
+
+  <p class="task" id="many-task">Loading&hellip;</p>
+  <div class="mat"><div id="many-list" style="font-size:1.5rem;font-weight:bold;line-height:1.6"></div></div>
+
+  <fieldset>
+    <legend>Take the places apart</legend>
+    <p style="margin:6px 0"><label for="many-tens">All the tens together:</label>
+      <input type="number" id="many-tens" min="0" style="width:6ch"></p>
+    <p style="margin:6px 0"><label for="many-ones">All the ones together:</label>
+      <input type="number" id="many-ones" min="0" style="width:6ch"></p>
+    <p style="margin:6px 0"><label for="many-total">Everything together:</label>
+      <input type="number" id="many-total" min="0" style="width:6ch" data-enter="many-check"></p>
+  </fieldset>
+
+  <div class="row">
+    <button class="btn big" type="button" id="many-check">Check my work</button>
+    <button class="btn sec" type="button" id="many-next">New numbers</button>
+  </div>
+  <p class="fb" id="many-fb" role="status" aria-live="polite"></p>
+</section>
 
 <!-- ============ 1. BASE-TEN BLOCKS ============ -->
 <section class="panel" id="p-blocks" role="tabpanel" aria-labelledby="tab-blocks" tabindex="0">
@@ -659,6 +688,47 @@ function answerExplain(btn, card){
 var CHIPS = ['This strategy works because', 'I broke the number apart into', 'I added the tens first, and then',
              'I made a ten by', 'It did not work because'];
 
+/* ===================== 4. ADD SEVERAL TWO-DIGIT NUMBERS ===================== */
+var many = { nums: [], tens: 0, ones: 0, total: 0 };
+
+function newMany(){
+  var howMany = pick([3, 3, 4]);
+  many.nums = [];
+  for (var i = 0; i < howMany; i++) many.nums.push(randInt(12, 79));
+  many.tens = 0; many.ones = 0;
+  many.nums.forEach(function(n){ many.tens += Math.floor(n / 10) * 10; many.ones += n % 10; });
+  many.total = many.tens + many.ones;
+  document.getElementById('many-task').textContent = 'Add these ' + howMany + ' numbers.';
+  document.getElementById('many-list').innerHTML = many.nums.join(' &nbsp;+&nbsp; ') + ' &nbsp;=&nbsp; ?';
+  ['many-tens', 'many-ones', 'many-total'].forEach(function(id){
+    var b = document.getElementById(id);
+    b.value = ''; b.style.borderColor = '#B6C6D8';
+  });
+  say(document.getElementById('many-fb'), '', '');
+}
+
+function checkMany(){
+  var fb = document.getElementById('many-fb');
+  var t = document.getElementById('many-tens'), o = document.getElementById('many-ones'), g = document.getElementById('many-total');
+  if (t.value === '' || o.value === '' || g.value === ''){
+    say(fb, 'Fill in all three boxes, then check again.', 'note');
+    return;
+  }
+  var tOK = Number(t.value) === many.tens, oOK = Number(o.value) === many.ones, gOK = Number(g.value) === many.total;
+  t.style.borderColor = tOK ? '#146B3A' : '#9B1C1C';
+  o.style.borderColor = oOK ? '#146B3A' : '#9B1C1C';
+  g.style.borderColor = gOK ? '#146B3A' : '#9B1C1C';
+  if (tOK && oOK && gOK){
+    say(fb, 'Correct. ' + many.tens + ' from the tens and ' + many.ones + ' from the ones make ' + many.total + '.', 'ok');
+  } else if (!tOK){
+    say(fb, 'Check the tens again. A 4 in the tens place is worth 40, not 4.', 'no');
+  } else if (!oOK){
+    say(fb, 'Check the ones again. Add just the last digit of every number.', 'no');
+  } else {
+    say(fb, 'The two parts are right. Now put them together: ' + many.tens + ' + ' + many.ones + '.', 'no');
+  }
+}
+
 /* ===================== start ===================== */
 function startAll(){
   $$('[data-add]').forEach(function(b){
@@ -702,6 +772,10 @@ function startAll(){
   document.getElementById('explain-print').addEventListener('click', function(){ window.print(); });
   document.getElementById('explain-next').addEventListener('click', newExplainProblem);
   newExplainProblem();
+
+  document.getElementById('many-check').addEventListener('click', checkMany);
+  document.getElementById('many-next').addEventListener('click', newMany);
+  newMany();
 }
 </script>
 </body>
