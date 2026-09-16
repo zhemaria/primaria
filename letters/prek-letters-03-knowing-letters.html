@@ -298,6 +298,7 @@ function barajar(lista){
 function decir(elemento, texto, clase){
   elemento.textContent = texto;
   elemento.className = "aviso" + (clase ? " " + clase : "");
+  if (clase === "bien" || clase === "ojo"){ hablar(texto, null); }
 }
 
 document.getElementById("op-sonido").addEventListener("click", function(){
@@ -558,7 +559,7 @@ lienzo.addEventListener("pointerdown", function(evento){
         if (siguientePunto >= PUNTOS.length){
           terminadoPuntos = true;
           tono(880, 300);
-          decir(avisoPuntos, "A fish appeared! You did it in order, from a to r.", "bien");
+          decir(avisoPuntos, "A fish appeared! You did it in order, from a to r. Press Start over to do it again.", "bien");
         } else {
           decir(avisoPuntos, "Good. Now find the " + PUNTOS[siguientePunto].letra + ".");
         }
@@ -674,6 +675,7 @@ function hablar(texto, boton){
   if (!LECTURA || !("speechSynthesis" in window)){ return; }
   try{
     window.speechSynthesis.cancel();
+    texto = String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
     var voz = new SpeechSynthesisUtterance(texto);
     voz.lang  = "en-US";
     voz.rate  = 0.85;

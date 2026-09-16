@@ -521,6 +521,7 @@ function tono(frecuencia, milisegundos){
 function decir(texto, clase){
   aviso.textContent = texto;
   aviso.className = "aviso" + (clase ? " " + clase : "");
+  if (clase === "bien" || clase === "ojo"){ hablar(texto); }
 }
 
 /* =======================================================================
@@ -610,7 +611,8 @@ function celebrar(){
   logradas[letra] = true;
   indiceTrazo = trazos.length;
   tono(880, 260);
-  decir("You wrote the " + letra + "! " + letra + " is for " + LETRAS[letra].palabra + ".", "bien");
+  decir("You wrote the " + letra + "! " + letra + " is for " + LETRAS[letra].palabra +
+    ". Press Next letter to keep going.", "bien");
   dibujarAbecedario();
   pintar();
 }
@@ -627,7 +629,7 @@ document.getElementById("b-borrar").addEventListener("click", function(){
 document.getElementById("b-papel").addEventListener("click", function(){
   tintaHecha = trazos.map(function(t){ return t.slice(); });
   celebrar();
-  decir("Got it: this letter is done on paper.", "bien");
+  decir("Got it: this letter is done on paper. Press Next letter to keep going.", "bien");
 });
 
 document.getElementById("b-siguiente").addEventListener("click", function(){
@@ -819,6 +821,7 @@ function hablar(texto){
   if (!LECTURA || !("speechSynthesis" in window)){ return; }
   try{
     window.speechSynthesis.cancel();
+    texto = String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
     var voz = new SpeechSynthesisUtterance(texto);
     voz.lang  = "en-US";
     voz.rate  = 0.85;

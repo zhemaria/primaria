@@ -561,6 +561,7 @@ function tono(frecuencia, milisegundos){
 function decir(texto, clase){
   aviso.textContent = texto;
   aviso.className = "aviso" + (clase ? " " + clase : "");
+  if (clase === "bien" || clase === "ojo"){ hablar(texto); }
 }
 
 /* =======================================================================
@@ -665,7 +666,7 @@ function marcarCompletado(){
   completados[indiceEjercicio] = true;
   indiceTrazo = EJERCICIOS[indiceEjercicio].trazos.length;
   tono(880, 260);
-  decir("You did it! Now you can go to the next exercise.", "bien");
+  decir("You did it! Press the Next button to keep going.", "bien");
   dibujarTira();
   pintar();
 }
@@ -684,7 +685,7 @@ document.getElementById("b-papel").addEventListener("click", function(){
   var ej = EJERCICIOS[indiceEjercicio];
   for (var i = 0; i < ej.trazos.length; i++){ tintaHecha.push(ej.trazos[i].slice()); }
   marcarCompletado();
-  decir("Got it: this exercise is done on paper.", "bien");
+  decir("Got it: this exercise is done on paper. Press the Next button to keep going.", "bien");
 });
 
 document.getElementById("b-siguiente").addEventListener("click", function(){
@@ -818,6 +819,7 @@ function hablar(texto){
   if (!LECTURA || !("speechSynthesis" in window)){ return; }
   try{
     window.speechSynthesis.cancel();
+    texto = String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
     var voz = new SpeechSynthesisUtterance(texto);
     voz.lang  = "en-US";
     voz.rate  = 0.85;
