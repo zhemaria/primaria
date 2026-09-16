@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<!--
+  Knowing the letters — Module 3 of the pre-K handwriting readiness series.
+  Autor: José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowing the letters</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="description" content="Pre-K letter recognition activity: matching capital and lowercase letters, connecting the dots in alphabetical order, and beginning sounds.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#FDFCF8;
+  --papel-hondo:#EDF1F4;
+  --tinta:#1F2D36;
+  --tinta-suave:#4A5D68;
+  --crayon:#D6420B;
+  --menta:#0B6157;
+  --azul:#1D4E89;
+  --borde:#C9D6DF;
+  --radio:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel-hondo);color:var(--tinta);
+  font-family:"Atkinson Hyperlegible","Verdana",system-ui,sans-serif;
+  font-size:18px;line-height:1.55;padding:16px;
+}
+h1,h2,h3,button,.chip,.contador,.tarjeta-letra{font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif}
+.marco{max-width:980px;margin:0 auto}
+
+header.cabecera{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding:4px 4px 14px}
+header.cabecera h1{font-size:clamp(1.5rem,4vw,2.1rem);margin:0;font-weight:600}
+header.cabecera p{margin:0;color:var(--tinta-suave);font-size:1rem}
+
+.actividades{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;padding:0;list-style:none}
+.chip{border:2px solid var(--borde);background:var(--papel);color:var(--tinta);border-radius:999px;
+  padding:10px 18px;font-size:.98rem;font-weight:500;cursor:pointer;min-height:48px}
+.chip[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+
+.hoja{background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);padding:16px;box-shadow:0 2px 0 var(--borde)}
+.hoja[hidden]{display:none}
+.consigna{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.consigna .icono{font-size:2.1rem;line-height:1}
+.consigna h2{margin:0;font-size:1.3rem;font-weight:600}
+.consigna p{margin:2px 0 0;color:var(--tinta-suave);font-size:1rem}
+
+/* --- Actividad 1: parejas --- */
+.muestra{display:grid;place-items:center;margin:6px 0 18px}
+.tarjeta-letra{
+  font-size:clamp(5rem,20vw,8rem);line-height:1;font-weight:600;color:var(--azul);
+  background:var(--papel-hondo);border-radius:24px;padding:10px 46px;
+}
+.opciones-letras{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.opcion-letra{
+  font-family:"Fredoka",system-ui,sans-serif;font-size:3rem;font-weight:600;
+  width:110px;height:110px;border-radius:20px;border:3px solid var(--borde);
+  background:var(--papel);color:var(--tinta);cursor:pointer;
+}
+.opcion-letra.bien{background:var(--menta);color:#fff;border-color:var(--menta)}
+.opcion-letra.mal{background:#FBEFD9;border-color:#C08A2E;color:#5C3900}
+
+/* --- Actividad 3: sonido inicial --- */
+.opciones-dibujos{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.opcion-dibujo{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  width:150px;padding:16px 10px;border-radius:20px;border:3px solid var(--borde);
+  background:var(--papel);color:var(--tinta);cursor:pointer;
+}
+.opcion-dibujo .dibujo{font-size:3.2rem;line-height:1}
+.opcion-dibujo .palabra{font-family:"Fredoka",system-ui,sans-serif;font-size:1.15rem;font-weight:600}
+.opcion-dibujo.bien{background:var(--menta);color:#fff;border-color:var(--menta)}
+.opcion-dibujo.mal{background:#FBEFD9;border-color:#C08A2E;color:#5C3900}
+
+/* --- Actividad 2: unir los puntos --- */
+canvas{display:block;width:100%;aspect-ratio:5/3;touch-action:none;border-radius:12px;background:var(--papel);cursor:pointer}
+canvas:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+
+.aviso{min-height:2.8em;margin:14px 0 0;padding:9px 14px;border-radius:12px;background:var(--papel-hondo);font-size:1.05rem}
+.aviso.bien{background:#E3F3EC;color:#08463E}
+.aviso.ojo{background:#FBEFD9;color:#5C3900}
+
+.botonera{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+button.accion{font-size:1.02rem;font-weight:600;border-radius:14px;border:2px solid transparent;padding:12px 18px;cursor:pointer;min-height:48px}
+button:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-principal{background:var(--menta);color:#fff}
+.b-calmo{background:var(--papel);color:var(--tinta);border-color:var(--borde)}
+
+.contador{margin:14px 0 0;font-size:1rem;color:var(--tinta-suave)}
+
+details.adulto{margin-top:18px;background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);padding:12px 16px}
+details.adulto summary{font-family:"Fredoka",system-ui,sans-serif;font-weight:600;cursor:pointer}
+details.adulto h3{margin:16px 0 6px;font-size:1.05rem;font-weight:600}
+details.adulto p{margin:6px 0;color:var(--tinta-suave);font-size:.97rem}
+.opciones{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 2px}
+.opcion{background:var(--papel);border:2px solid var(--borde);color:var(--tinta);border-radius:999px;padding:8px 16px;font-size:.95rem;min-height:44px;cursor:pointer}
+.opcion[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+
+footer{margin:26px auto 8px;max-width:980px;font-size:.88rem;color:var(--tinta-suave);line-height:1.5}
+footer a{color:var(--azul)}
+
+@media (max-width:560px){
+  body{padding:10px;font-size:17px}
+  .opcion-letra{width:88px;height:88px;font-size:2.4rem}
+  .opcion-dibujo{width:120px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="marco">
+
+  <header class="cabecera">
+    <h1>Knowing the letters</h1>
+    <p>The same letter has two faces, a place in line and a sound</p>
+  </header>
+
+  <ul class="actividades" id="actividades" aria-label="Activities in this module"></ul>
+
+  <!-- ============ Actividad 1: parejas ============ -->
+  <section class="hoja" id="hoja-parejas">
+    <div class="consigna">
+      <span class="icono" aria-hidden="true">🔠</span>
+      <div>
+        <h2>The same letter, small</h2>
+        <p id="consigna-parejas">Find the small letter that matches the big one.</p>
+      </div>
+    </div>
+
+    <div class="muestra"><div class="tarjeta-letra" id="letra-grande">M</div></div>
+    <div class="opciones-letras" id="opciones-parejas"></div>
+
+    <p class="aviso" id="aviso-parejas" aria-live="polite">Tap the small letter that matches.</p>
+    <p class="contador" id="contador-parejas">0 of 10 so far</p>
+  </section>
+
+  <!-- ============ Actividad 2: unir los puntos ============ -->
+  <section class="hoja" id="hoja-puntos" hidden>
+    <div class="consigna">
+      <span class="icono" aria-hidden="true">🐟</span>
+      <div>
+        <h2>Connect the dots</h2>
+        <p>Tap the letters in order, from a to r, and the picture will appear.</p>
+      </div>
+    </div>
+
+    <canvas id="lienzo" tabindex="0" role="application" aria-label="Connect the dots in alphabetical order"></canvas>
+
+    <p class="aviso" id="aviso-puntos" aria-live="polite">Start with the letter a.</p>
+
+    <div class="botonera">
+      <button type="button" class="accion b-calmo" id="b-pista">Which one is next?</button>
+      <button type="button" class="accion b-principal" id="b-otra-vez">Start over</button>
+    </div>
+  </section>
+
+  <!-- ============ Actividad 3: sonido inicial ============ -->
+  <section class="hoja" id="hoja-sonido" hidden>
+    <div class="consigna">
+      <span class="icono" aria-hidden="true">👂</span>
+      <div>
+        <h2>What letter does it start with?</h2>
+        <p id="consigna-sonido">Say the three words out loud and pick the one that starts with that letter.</p>
+      </div>
+    </div>
+
+    <div class="muestra"><div class="tarjeta-letra" id="letra-sonido">S</div></div>
+    <div class="opciones-dibujos" id="opciones-sonido"></div>
+
+    <p class="aviso" id="aviso-sonido" aria-live="polite">Tap the picture that starts with that letter.</p>
+    <p class="contador" id="contador-sonido">0 of 8 so far</p>
+  </section>
+
+  <details class="adulto">
+    <summary>For the grown-up</summary>
+
+    <h3>Settings</h3>
+    <div class="opciones" role="group" aria-label="Settings">
+      <button type="button" class="opcion" id="op-sonido" aria-pressed="true">Sound</button>
+    </div>
+
+    <h3>What each activity works on</h3>
+    <p><strong>The same letter, small.</strong> Recognizing that M and m are the same letter is one of the biggest conceptual jumps at this age. The wrong choices are not random: they are lowercase letters with similar shapes, so the child really has to look.</p>
+    <p><strong>Connect the dots.</strong> Practices alphabetical order without asking the child to recite it. Tapping the wrong letter costs nothing: the picture simply waits.</p>
+    <p><strong>What letter does it start with?</strong> This is phonological awareness, not reading. Say the word out loud stretching the first sound: ssssun. The child chooses by ear, not by sight.</p>
+
+    <h3>When to use it</h3>
+    <p>This module comes after tracing, not before. A child recognizes a letter better once their hand has made it.</p>
+  </details>
+
+</div>
+
+<footer class="marco">
+  <p>Knowing the letters. Pre-K handwriting readiness series.<br>
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
+  <p>Licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* =======================================================================
+   1. Vocabulary shared with the tracing module
+   ======================================================================= */
+
+var PALABRAS = {
+  "A":{p:"apple", d:"🍎"}, "B":{p:"ball", d:"⚽"}, "C":{p:"cat", d:"🐱"},
+  "D":{p:"dog", d:"🐶"}, "E":{p:"egg", d:"🥚"}, "F":{p:"fish", d:"🐟"},
+  "G":{p:"goat", d:"🐐"}, "H":{p:"hat", d:"🎩"}, "I":{p:"ice", d:"🧊"},
+  "J":{p:"jar", d:"🫙"}, "K":{p:"kite", d:"🪁"}, "L":{p:"leaf", d:"🍂"},
+  "M":{p:"moon", d:"🌙"}, "N":{p:"nest", d:"🪹"},
+  "O":{p:"owl", d:"🦉"}, "P":{p:"pig", d:"🐷"}, "Q":{p:"queen", d:"👑"},
+  "R":{p:"rain", d:"🌧️"}, "S":{p:"sun", d:"☀️"}, "T":{p:"tree", d:"🌳"},
+  "U":{p:"umbrella", d:"☂️"}, "V":{p:"van", d:"🚐"}, "W":{p:"whale", d:"🐳"},
+  "X":{p:"xylophone", d:"🎹"}, "Y":{p:"yarn", d:"🧶"}, "Z":{p:"zebra", d:"🦓"}
+};
+
+var ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+/* Lookalike lowercase letters: the distractors have to make the child look. */
+var PARECIDAS = {
+  "b":["d","p","q","h"], "d":["b","p","q","a"], "p":["q","b","d","g"], "q":["p","g","d","b"],
+  "m":["n","w","u","r"], "n":["m","h","u","r"], "u":["v","n","w","o"],
+  "v":["u","w","y","x"], "w":["m","v","u","n"], "a":["e","o","d","c"], "e":["a","c","o","s"],
+  "o":["c","e","a","q"], "c":["e","o","s","a"], "s":["c","z","e","g"], "z":["s","x","n","v"],
+  "i":["l","j","t","f"], "l":["i","t","j","f"], "j":["i","g","y","l"], "t":["f","l","i","r"],
+  "f":["t","l","r","i"], "r":["n","t","f","s"], "g":["q","y","j","p"], "y":["v","g","j","x"],
+  "x":["y","z","k","v"], "k":["x","h","y","b"], "h":["n","k","b","m"]
+};
+
+/* =======================================================================
+   2. Utilidades comunes
+   ======================================================================= */
+
+var SONIDO = true;
+var audio = null;
+
+function tono(frecuencia, milisegundos){
+  if (!SONIDO){ return; }
+  try{
+    if (!audio){ audio = new (window.AudioContext || window.webkitAudioContext)(); }
+    var osc = audio.createOscillator();
+    var vol = audio.createGain();
+    osc.type = "sine";
+    osc.frequency.value = frecuencia;
+    vol.gain.value = 0.12;
+    osc.connect(vol); vol.connect(audio.destination);
+    osc.start();
+    vol.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + milisegundos / 1000);
+    osc.stop(audio.currentTime + milisegundos / 1000);
+  }catch(e){ /* without sound the activity still works */ }
+}
+
+function alAzar(n){ return Math.floor(Math.random() * n); }
+
+function barajar(lista){
+  var copia = lista.slice();
+  for (var i = copia.length - 1; i > 0; i--){
+    var j = alAzar(i + 1);
+    var guardar = copia[i]; copia[i] = copia[j]; copia[j] = guardar;
+  }
+  return copia;
+}
+
+function decir(elemento, texto, clase){
+  elemento.textContent = texto;
+  elemento.className = "aviso" + (clase ? " " + clase : "");
+}
+
+document.getElementById("op-sonido").addEventListener("click", function(){
+  SONIDO = !SONIDO;
+  this.setAttribute("aria-pressed", SONIDO ? "true" : "false");
+});
+
+/* =======================================================================
+   3. Navegación entre actividades
+   ======================================================================= */
+
+var ACTIVIDADES = [
+  { nombre:"Same letter", hoja:"hoja-parejas" },
+  { nombre:"Connect the dots", hoja:"hoja-puntos" },
+  { nombre:"Beginning sound", hoja:"hoja-sonido" }
+];
+
+var actividadActual = 0;
+var listaActividades = document.getElementById("actividades");
+
+function dibujarActividades(){
+  listaActividades.innerHTML = "";
+  for (var i = 0; i < ACTIVIDADES.length; i++){
+    (function(n){
+      var li = document.createElement("li");
+      var boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "chip";
+      boton.textContent = ACTIVIDADES[n].nombre;
+      boton.setAttribute("aria-pressed", n === actividadActual ? "true" : "false");
+      boton.addEventListener("click", function(){ abrirActividad(n); });
+      li.appendChild(boton);
+      listaActividades.appendChild(li);
+    })(i);
+  }
+}
+
+function abrirActividad(n){
+  actividadActual = n;
+  for (var i = 0; i < ACTIVIDADES.length; i++){
+    document.getElementById(ACTIVIDADES[i].hoja).hidden = (i !== n);
+  }
+  dibujarActividades();
+  if (n === 1){ ajustarLienzo(); }
+}
+
+/* =======================================================================
+   4. Actividad 1: la misma letra, pequeñita
+   ======================================================================= */
+
+var TOTAL_PAREJAS = 10;
+var aciertosParejas = 0;
+var rondaParejas = 0;
+var letraObjetivo = "";
+var bloqueoParejas = false;
+
+var avisoParejas = document.getElementById("aviso-parejas");
+var cajaOpciones = document.getElementById("opciones-parejas");
+
+function nuevaRondaParejas(){
+  bloqueoParejas = false;
+  letraObjetivo = ALFABETO[alAzar(ALFABETO.length)];
+  var minuscula = letraObjetivo.toLowerCase();
+  var candidatas = PARECIDAS[minuscula] || ["a","e","o","i"];
+
+  var opciones = [ minuscula ];
+  for (var i = 0; i < candidatas.length && opciones.length < 4; i++){
+    if (candidatas[i] !== minuscula && opciones.indexOf(candidatas[i]) === -1){
+      opciones.push(candidatas[i]);
+    }
+  }
+  opciones = barajar(opciones);
+
+  document.getElementById("letra-grande").textContent = letraObjetivo;
+  cajaOpciones.innerHTML = "";
+
+  for (var j = 0; j < opciones.length; j++){
+    (function(letra){
+      var boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "opcion-letra";
+      boton.textContent = letra;
+      boton.setAttribute("aria-label", "lowercase " + letra);
+      boton.addEventListener("click", function(){ responderParejas(this, letra); });
+      cajaOpciones.appendChild(boton);
+    })(opciones[j]);
+  }
+  decir(avisoParejas, "Which one is the small " + letraObjetivo + "?");
+}
+
+function responderParejas(boton, letra){
+  if (bloqueoParejas){ return; }
+  if (letra === letraObjetivo.toLowerCase()){
+    bloqueoParejas = true;
+    boton.className = "opcion-letra bien";
+    aciertosParejas++;
+    rondaParejas++;
+    tono(880, 200);
+    decir(avisoParejas, "Yes! " + letraObjetivo + " and " + letra + " are the same letter.", "bien");
+    document.getElementById("contador-parejas").textContent =
+      "" + aciertosParejas + " of " + TOTAL_PAREJAS + " so far";
+
+    setTimeout(function(){
+      if (rondaParejas >= TOTAL_PAREJAS){
+        decir(avisoParejas, "All ten done! ⭐ Tap a letter to play again.", "bien");
+        aciertosParejas = 0; rondaParejas = 0;
+        document.getElementById("contador-parejas").textContent = "0 of " + TOTAL_PAREJAS + " so far";
+      }
+      nuevaRondaParejas();
+    }, 1400);
+  } else {
+    boton.className = "opcion-letra mal";
+    tono(220, 160);
+    decir(avisoParejas, "That one is " + letra + ". Look at the big letter again.", "ojo");
+  }
+}
+
+/* =======================================================================
+   5. Actividad 2: unir los puntos
+   The outline of a fish traced in alphabetical order, from a to r.
+   ======================================================================= */
+
+var ANCHO_V = 1000;
+var ALTO_V  = 600;
+
+var PUNTOS = [
+  { letra:"a", x:160, y:300 }, { letra:"b", x:230, y:215 }, { letra:"c", x:340, y:170 },
+  { letra:"d", x:460, y:160 }, { letra:"e", x:570, y:185 }, { letra:"f", x:660, y:230 },
+  { letra:"g", x:730, y:290 }, { letra:"h", x:820, y:205 }, { letra:"i", x:900, y:165 },
+  { letra:"j", x:880, y:300 }, { letra:"k", x:900, y:435 }, { letra:"l", x:820, y:395 },
+  { letra:"m", x:730, y:310 }, { letra:"n", x:660, y:370 }, { letra:"o", x:570, y:415 },
+  { letra:"p", x:460, y:430 }, { letra:"q", x:340, y:420 }, { letra:"r", x:230, y:385 }
+];
+
+var lienzo = document.getElementById("lienzo");
+var ctx = lienzo.getContext("2d");
+var avisoPuntos = document.getElementById("aviso-puntos");
+var siguientePunto = 0;
+var terminadoPuntos = false;
+var pistaVisible = false;
+var escala = 1;
+
+function ajustarLienzo(){
+  var caja = lienzo.getBoundingClientRect();
+  if (caja.width === 0){ return; }
+  var dpr = window.devicePixelRatio || 1;
+  lienzo.width  = Math.round(caja.width * dpr);
+  lienzo.height = Math.round(caja.width * 0.6 * dpr);
+  escala = caja.width / ANCHO_V;
+  ctx.setTransform(dpr * escala, 0, 0, dpr * escala, 0, 0);
+  pintarPuntos();
+}
+
+function pintarPuntos(){
+  ctx.clearRect(0, 0, ANCHO_V, ALTO_V);
+  ctx.fillStyle = "#FDFCF8";
+  ctx.fillRect(0, 0, ANCHO_V, ALTO_V);
+
+  /* Water in the background, so the fish has somewhere to live */
+  ctx.save();
+  ctx.strokeStyle = "#E4EBF1";
+  ctx.lineWidth = 4;
+  for (var y = 90; y < ALTO_V; y += 120){
+    ctx.beginPath();
+    for (var x = 40; x <= 960; x += 10){
+      var yy = y + Math.sin(x / 60) * 8;
+      if (x === 40){ ctx.moveTo(x, yy); } else { ctx.lineTo(x, yy); }
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  /* Once finished, the shape is filled in */
+  if (terminadoPuntos){
+    ctx.save();
+    ctx.fillStyle = "#BFE3EE";
+    ctx.beginPath();
+    ctx.moveTo(PUNTOS[0].x, PUNTOS[0].y);
+    for (var f = 1; f < PUNTOS.length; f++){ ctx.lineTo(PUNTOS[f].x, PUNTOS[f].y); }
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+
+  /* Segments already connected */
+  ctx.save();
+  ctx.strokeStyle = "#D6420B";
+  ctx.lineWidth = 8;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  if (siguientePunto > 1){
+    ctx.beginPath();
+    ctx.moveTo(PUNTOS[0].x, PUNTOS[0].y);
+    for (var i = 1; i < siguientePunto; i++){ ctx.lineTo(PUNTOS[i].x, PUNTOS[i].y); }
+    if (terminadoPuntos){ ctx.closePath(); }
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  /* Dots with their letter */
+  for (var j = 0; j < PUNTOS.length; j++){
+    var p = PUNTOS[j];
+    var hecho = j < siguientePunto;
+    var toca = (j === siguientePunto);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, hecho ? 9 : 11, 0, Math.PI * 2);
+    ctx.fillStyle = hecho ? "#D6420B" : "#1F2D36";
+    ctx.fill();
+
+    if (toca && pistaVisible){
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 28, 0, Math.PI * 2);
+      ctx.strokeStyle = "#0B6157";
+      ctx.lineWidth = 5;
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = hecho ? "#9FB3C8" : "#1D4E89";
+    ctx.font = "600 30px Fredoka, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(p.letra, p.x, p.y - 32);
+    ctx.restore();
+  }
+
+  /* Eye and fin as the final reward */
+  if (terminadoPuntos){
+    ctx.save();
+    ctx.fillStyle = "#1F2D36";
+    ctx.beginPath(); ctx.arc(260, 280, 14, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = "#1F2D36";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(430, 175); ctx.lineTo(500, 250); ctx.lineTo(400, 250);
+    ctx.stroke();
+    ctx.font = "50px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("⭐", 110, 90);
+    ctx.restore();
+  }
+}
+
+lienzo.addEventListener("pointerdown", function(evento){
+  if (terminadoPuntos){ return; }
+  var caja = lienzo.getBoundingClientRect();
+  var x = (evento.clientX - caja.left) / escala;
+  var y = (evento.clientY - caja.top) / escala;
+
+  for (var i = 0; i < PUNTOS.length; i++){
+    if (Math.hypot(PUNTOS[i].x - x, PUNTOS[i].y - y) <= 40){
+      if (i === siguientePunto){
+        siguientePunto++;
+        pistaVisible = false;
+        tono(520 + siguientePunto * 20, 120);
+        if (siguientePunto >= PUNTOS.length){
+          terminadoPuntos = true;
+          tono(880, 300);
+          decir(avisoPuntos, "A fish appeared! You did it in order, from a to r.", "bien");
+        } else {
+          decir(avisoPuntos, "Good. Now find the " + PUNTOS[siguientePunto].letra + ".");
+        }
+      } else if (i > siguientePunto){
+        decir(avisoPuntos, "Not yet. Tap the " + PUNTOS[siguientePunto].letra + " first.", "ojo");
+      }
+      pintarPuntos();
+      return;
+    }
+  }
+});
+
+document.getElementById("b-pista").addEventListener("click", function(){
+  if (terminadoPuntos){ return; }
+  pistaVisible = true;
+  decir(avisoPuntos, "The next one is the " + PUNTOS[siguientePunto].letra + ".");
+  pintarPuntos();
+});
+
+document.getElementById("b-otra-vez").addEventListener("click", function(){
+  siguientePunto = 0;
+  terminadoPuntos = false;
+  pistaVisible = false;
+  decir(avisoPuntos, "Start with the letter a.");
+  pintarPuntos();
+});
+
+/* =======================================================================
+   6. Actividad 3: ¿con qué letra empieza?
+   ======================================================================= */
+
+var TOTAL_SONIDO = 8;
+var aciertosSonido = 0;
+var rondaSonido = 0;
+var letraSonido = "";
+var bloqueoSonido = false;
+
+var avisoSonido = document.getElementById("aviso-sonido");
+var cajaSonido = document.getElementById("opciones-sonido");
+
+function nuevaRondaSonido(){
+  bloqueoSonido = false;
+  letraSonido = ALFABETO[alAzar(ALFABETO.length)];
+
+  var opciones = [ letraSonido ];
+  var resto = barajar(ALFABETO);
+  for (var i = 0; i < resto.length && opciones.length < 3; i++){
+    if (resto[i] !== letraSonido){ opciones.push(resto[i]); }
+  }
+  opciones = barajar(opciones);
+
+  document.getElementById("letra-sonido").textContent = letraSonido;
+  document.getElementById("consigna-sonido").textContent =
+    "Say the three words out loud and pick the one that starts with that letter.";
+
+  cajaSonido.innerHTML = "";
+  for (var j = 0; j < opciones.length; j++){
+    (function(letra){
+      var datos = PALABRAS[letra];
+      var boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "opcion-dibujo";
+      boton.setAttribute("aria-label", datos.p);
+      boton.innerHTML =
+        '<span class="dibujo" aria-hidden="true">' + datos.d + '</span>' +
+        '<span class="palabra">' + datos.p + '</span>';
+      boton.addEventListener("click", function(){ responderSonido(this, letra); });
+      cajaSonido.appendChild(boton);
+    })(opciones[j]);
+  }
+  decir(avisoSonido, "Tap the picture for the letter " + letraSonido + ".");
+}
+
+function responderSonido(boton, letra){
+  if (bloqueoSonido){ return; }
+  if (letra === letraSonido){
+    bloqueoSonido = true;
+    boton.className = "opcion-dibujo bien";
+    aciertosSonido++;
+    rondaSonido++;
+    tono(880, 200);
+    decir(avisoSonido, "Correct! " + letraSonido + " is for " + PALABRAS[letra].p + ".", "bien");
+    document.getElementById("contador-sonido").textContent =
+      "" + aciertosSonido + " of " + TOTAL_SONIDO + " so far";
+
+    setTimeout(function(){
+      if (rondaSonido >= TOTAL_SONIDO){
+        decir(avisoSonido, "All eight done! ⭐ Tap a picture to play again.", "bien");
+        aciertosSonido = 0; rondaSonido = 0;
+        document.getElementById("contador-sonido").textContent = "0 of " + TOTAL_SONIDO + " so far";
+      }
+      nuevaRondaSonido();
+    }, 1500);
+  } else {
+    boton.className = "opcion-dibujo mal";
+    tono(220, 160);
+    decir(avisoSonido, PALABRAS[letra].p + " starts with " + letra + ". Listen again.", "ojo");
+  }
+}
+
+/* =======================================================================
+   7. Arranque
+   ======================================================================= */
+
+window.addEventListener("resize", function(){ if (actividadActual === 1){ ajustarLienzo(); } });
+if (document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ if (actividadActual === 1){ pintarPuntos(); } }); }
+
+dibujarActividades();
+nuevaRondaParejas();
+nuevaRondaSonido();
+pintarPuntos();
+abrirActividad(0);
+</script>
+</body>
+</html>
