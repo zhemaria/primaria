@@ -191,13 +191,17 @@ footer a{color:var(--azul)}
       <span class="icono" aria-hidden="true">👂</span>
       <div>
         <h2>What letter does it start with?</h2>
-        <p id="consigna-sonido">Say the three words out loud and pick the one that starts with that letter.</p>
+        <p id="consigna-sonido">Listen to the three words and tap the one that starts with that letter.</p>
       </div>
       <button type="button" class="b-voz b-voz-actividad" data-consigna="consigna-sonido" aria-label="Listen to the instructions">🔊</button>
     </div>
 
     <div class="muestra"><div class="tarjeta-letra" id="letra-sonido">S</div></div>
     <div class="opciones-dibujos" id="opciones-sonido"></div>
+
+    <div class="botonera">
+      <button type="button" class="accion b-calmo" id="b-escuchar">🔊 Hear the words</button>
+    </div>
 
     <p class="aviso" id="aviso-sonido" aria-live="polite">Tap the picture that starts with that letter.</p>
     <p class="contador" id="contador-sonido">0 of 8 so far</p>
@@ -388,6 +392,7 @@ function nuevaRondaParejas(){
     })(opciones[j]);
   }
   decir(avisoParejas, "Which one is the small " + letraObjetivo + "?");
+  hablar("Which one is the small " + letraObjetivo + "?", null);
 }
 
 function responderParejas(boton, letra){
@@ -559,9 +564,10 @@ lienzo.addEventListener("pointerdown", function(evento){
         if (siguientePunto >= PUNTOS.length){
           terminadoPuntos = true;
           tono(880, 300);
-          decir(avisoPuntos, "A fish appeared! You did it in order, from a to r. Press Start over to do it again.", "bien");
+          decir(avisoPuntos, "A fish appeared! You did it in order, from a to r. Press the green Start over button to do it again.", "bien");
         } else {
           decir(avisoPuntos, "Good. Now find the " + PUNTOS[siguientePunto].letra + ".");
+          hablar("Good. Now find the letter " + PUNTOS[siguientePunto].letra + ".", null);
         }
       } else if (i > siguientePunto){
         decir(avisoPuntos, "Not yet. Tap the " + PUNTOS[siguientePunto].letra + " first.", "ojo");
@@ -576,6 +582,7 @@ document.getElementById("b-pista").addEventListener("click", function(){
   if (terminadoPuntos){ return; }
   pistaVisible = true;
   decir(avisoPuntos, "The next one is the " + PUNTOS[siguientePunto].letra + ".");
+  hablar("The next one is the letter " + PUNTOS[siguientePunto].letra + ".", null);
   pintarPuntos();
 });
 
@@ -596,6 +603,7 @@ var aciertosSonido = 0;
 var rondaSonido = 0;
 var letraSonido = "";
 var bloqueoSonido = false;
+var palabrasRonda = [];
 
 var avisoSonido = document.getElementById("aviso-sonido");
 var cajaSonido = document.getElementById("opciones-sonido");
@@ -613,7 +621,10 @@ function nuevaRondaSonido(){
 
   document.getElementById("letra-sonido").textContent = letraSonido;
   document.getElementById("consigna-sonido").textContent =
-    "Say the three words out loud and pick the one that starts with that letter.";
+    "Listen to the three words and tap the one that starts with that letter.";
+
+  palabrasRonda = [];
+  for (var k = 0; k < opciones.length; k++){ palabrasRonda.push(PALABRAS[opciones[k]].p); }
 
   cajaSonido.innerHTML = "";
   for (var j = 0; j < opciones.length; j++){
@@ -631,6 +642,7 @@ function nuevaRondaSonido(){
     })(opciones[j]);
   }
   decir(avisoSonido, "Tap the picture for the letter " + letraSonido + ".");
+  hablarLista(["Which one starts with " + letraSonido + "?"].concat(palabrasRonda), 0.7);
 }
 
 function responderSonido(boton, letra){
@@ -645,6 +657,10 @@ function responderSonido(boton, letra){
     document.getElementById("contador-sonido").textContent =
       "" + aciertosSonido + " of " + TOTAL_SONIDO + " so far";
 
+    /* Se repite la palabra despacio: el niño oye el sonido inicial otra vez */
+    var palabraCorrecta = PALABRAS[letra].p;
+    setTimeout(function(){ hablarDespacio(palabraCorrecta); }, 1700);
+
     setTimeout(function(){
       if (rondaSonido >= TOTAL_SONIDO){
         decir(avisoSonido, "All eight done! ⭐ Tap a picture to play again.", "bien");
@@ -652,11 +668,12 @@ function responderSonido(boton, letra){
         document.getElementById("contador-sonido").textContent = "0 of " + TOTAL_SONIDO + " so far";
       }
       nuevaRondaSonido();
-    }, 1500);
+    }, 3400);
   } else {
     boton.className = "opcion-dibujo mal";
     tono(220, 160);
     decir(avisoSonido, PALABRAS[letra].p + " starts with " + letra + ". Listen again.", "ojo");
+    setTimeout(function(){ hablarLista(palabrasRonda, 0.6); }, 2400);
   }
 }
 
@@ -689,6 +706,24 @@ function hablar(texto, boton){
   }catch(e){ /* sin voz, el interactivo funciona igual */ }
 }
 
+
+/* Varias frases seguidas, sin que una cancele a la anterior.
+   Sirve para leerle las tres palabras a un niño que no lee. */
+function hablarLista(textos, velocidad){
+  if (!LECTURA || !("speechSynthesis" in window)){ return; }
+  try{
+    window.speechSynthesis.cancel();
+    for (var i = 0; i < textos.length; i++){
+      var voz = new SpeechSynthesisUtterance(textos[i]);
+      voz.lang = "en-US";
+      voz.rate = velocidad || 0.7;
+      window.speechSynthesis.speak(voz);
+    }
+  }catch(e){ /* sin voz, el interactivo funciona igual */ }
+}
+
+function hablarDespacio(texto){ hablarLista([texto], 0.6); }
+
 var vocesActividad = document.querySelectorAll(".b-voz-actividad");
 for (var v = 0; v < vocesActividad.length; v++){
   (function(boton){
@@ -711,6 +746,10 @@ function leerActividad(n){
   var texto = document.getElementById(enunciados[n]);
   hablar(titulos[n] + ". " + (texto ? texto.textContent : ""), null);
 }
+
+document.getElementById("b-escuchar").addEventListener("click", function(){
+  hablarLista(palabrasRonda, 0.6);
+});
 
 document.getElementById("op-lectura").addEventListener("click", function(){
   LECTURA = !LECTURA;
