@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<!--
+  Mayúsculas paso a paso — Módulo 2 de la serie de preescritura de prekínder.
+  Autor: José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.
+  Licencia: Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0).
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mayúsculas paso a paso</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="description" content="Interactivo de prekínder para trazar las 27 letras mayúsculas del alfabeto español con orden de trazos, punto de inicio y dirección guiada. Incluye el trazo del propio nombre.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papel:#FDFCF8;
+  --papel-hondo:#EDF1F4;
+  --tinta:#1F2D36;
+  --tinta-suave:#4A5D68;
+  --guia:#9FB3C8;
+  --crayon:#D6420B;
+  --menta:#0B6157;
+  --azul:#1D4E89;
+  --borde:#C9D6DF;
+  --radio:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel-hondo);color:var(--tinta);
+  font-family:"Atkinson Hyperlegible","Verdana",system-ui,sans-serif;
+  font-size:18px;line-height:1.55;padding:16px;
+}
+h1,h2,h3,button,.chip,.contador,.letra-chip{font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif}
+.marco{max-width:980px;margin:0 auto}
+
+header.cabecera{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding:4px 4px 14px}
+header.cabecera h1{font-size:clamp(1.5rem,4vw,2.1rem);margin:0;font-weight:600}
+header.cabecera p{margin:0;color:var(--tinta-suave);font-size:1rem}
+
+/* Grupos de letras: no es una secuencia numerada, son familias de trazo */
+.grupos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px;padding:0;list-style:none}
+.chip{
+  border:2px solid var(--borde);background:var(--papel);color:var(--tinta);
+  border-radius:999px;padding:9px 18px;font-size:.98rem;font-weight:500;cursor:pointer;min-height:46px;
+}
+.chip[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+
+.abecedario{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px;padding:0;list-style:none}
+.letra-chip{
+  width:46px;height:46px;border-radius:12px;border:2px solid var(--borde);
+  background:var(--papel);color:var(--tinta);font-size:1.15rem;font-weight:600;cursor:pointer;
+}
+.letra-chip[aria-current="true"]{background:#E8F0FA;border-color:var(--azul)}
+.letra-chip.listo{background:var(--menta);color:#fff;border-color:var(--menta)}
+
+.hoja{background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);padding:14px;box-shadow:0 2px 0 var(--borde)}
+.consigna{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.consigna .icono{font-size:2.1rem;line-height:1}
+.consigna h2{margin:0;font-size:1.3rem;font-weight:600}
+.consigna p{margin:2px 0 0;color:var(--tinta-suave);font-size:1rem}
+
+canvas{display:block;width:100%;aspect-ratio:5/3;touch-action:none;border-radius:12px;background:var(--papel);cursor:crosshair}
+canvas:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+
+.aviso{min-height:2.8em;margin:10px 0 0;padding:9px 14px;border-radius:12px;background:var(--papel-hondo);font-size:1.05rem}
+.aviso.bien{background:#E3F3EC;color:#08463E}
+.aviso.ojo{background:#FBEFD9;color:#5C3900}
+
+.botonera{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+button{font-size:1.02rem;font-weight:600;border-radius:14px;border:2px solid transparent;padding:12px 18px;cursor:pointer;min-height:48px}
+button:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-principal{background:var(--menta);color:#fff}
+.b-secundario{background:var(--azul);color:#fff}
+.b-calmo{background:var(--papel);color:var(--tinta);border-color:var(--borde)}
+
+details.adulto{margin-top:18px;background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);padding:12px 16px}
+details.adulto summary{font-family:"Fredoka",system-ui,sans-serif;font-weight:600;cursor:pointer}
+details.adulto h3{margin:16px 0 6px;font-size:1.05rem;font-weight:600}
+details.adulto p{margin:6px 0;color:var(--tinta-suave);font-size:.97rem}
+.opciones{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 2px;align-items:center}
+.opcion{background:var(--papel);border:2px solid var(--borde);color:var(--tinta);border-radius:999px;padding:8px 16px;font-size:.95rem;min-height:44px}
+.opcion[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+input[type="text"]{
+  font-family:"Fredoka",system-ui,sans-serif;font-size:1.05rem;padding:10px 14px;min-height:46px;
+  border:2px solid var(--borde);border-radius:12px;background:var(--papel);color:var(--tinta);width:min(260px,100%);
+}
+input[type="text"]:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+
+.contador{margin:14px 0 0;font-size:1rem;color:var(--tinta-suave)}
+footer{margin:26px auto 8px;max-width:980px;font-size:.88rem;color:var(--tinta-suave);line-height:1.5}
+footer a{color:var(--azul)}
+
+@media (max-width:560px){
+  body{padding:10px;font-size:17px}
+  .letra-chip{width:42px;height:42px;font-size:1.05rem}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="marco">
+
+  <header class="cabecera">
+    <h1>Mayúsculas paso a paso</h1>
+    <p>Cada letra empieza donde dice el número y va hacia donde apunta la flecha</p>
+  </header>
+
+  <ul class="grupos" id="grupos" aria-label="Familias de letras"></ul>
+  <ul class="abecedario" id="abecedario" aria-label="Letras de esta familia"></ul>
+
+  <section class="hoja">
+    <div class="consigna">
+      <span class="icono" id="icono" aria-hidden="true">🌳</span>
+      <div>
+        <h2 id="titulo">La letra A</h2>
+        <p id="consigna">A de árbol. Tiene tres trazos.</p>
+      </div>
+    </div>
+
+    <canvas id="lienzo" tabindex="0" role="application" aria-label="Zona de trazo"></canvas>
+
+    <p class="aviso" id="aviso" aria-live="polite">Pon el dedo en el punto verde para empezar.</p>
+
+    <div class="botonera">
+      <button type="button" class="b-secundario" id="b-demo">Mírame</button>
+      <button type="button" class="b-calmo" id="b-borrar">Empezar de nuevo</button>
+      <button type="button" class="b-calmo" id="b-papel">Lo hice en papel</button>
+      <button type="button" class="b-principal" id="b-siguiente">Siguiente letra</button>
+    </div>
+
+    <p class="contador" id="contador">Letra 1 de 27</p>
+  </section>
+
+  <details class="adulto">
+    <summary>Para el adulto</summary>
+
+    <h3>Trazar su propio nombre</h3>
+    <p>Escribe aquí el nombre del niño y el interactivo arma la secuencia con sus letras. Es la actividad con más sentido a esta edad, porque la letra deja de ser un dibujo y pasa a ser suya.</p>
+    <div class="opciones">
+      <input type="text" id="campo-nombre" maxlength="14" placeholder="Por ejemplo: Mateo" aria-label="Nombre del niño" autocomplete="off">
+      <button type="button" class="b-secundario" id="b-nombre">Armar el nombre</button>
+    </div>
+
+    <h3>Ajustes</h3>
+    <div class="opciones" role="group" aria-label="Nivel de exigencia del trazo">
+      <button type="button" class="opcion" id="op-facil" aria-pressed="false">Modo fácil</button>
+      <button type="button" class="opcion" id="op-normal" aria-pressed="true">Modo normal</button>
+      <button type="button" class="opcion" id="op-sonido" aria-pressed="true">Sonido</button>
+    </div>
+    <p>En modo fácil el margen de error es más ancho y salirse del camino no interrumpe el trazo.</p>
+
+    <h3>Por qué este orden</h3>
+    <p>Las letras están agrupadas por dificultad motora, no por orden alfabético. Primero las de líneas rectas, que solo piden bajar y cruzar. Después las inclinadas, que exigen control del ángulo. Al final las curvas, que son las últimas en dominarse.</p>
+    <p>Los Illinois Early Learning and Development Standards no piden caligrafía perfecta a los cuatro y cinco años: piden reconocimiento y direccionalidad. Por eso el interactivo bloquea el trazo al revés pero perdona el temblor.</p>
+
+    <h3>Cómo acompañar</h3>
+    <p>Diga el nombre de la letra y su sonido mientras el niño traza: «la eme, mmm, de mano». La asociación entre el movimiento y el sonido es lo que después sostiene la lectura.</p>
+  </details>
+
+</div>
+
+<footer class="marco">
+  <p>Mayúsculas paso a paso. Serie de preescritura de prekínder.<br>
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
+  <p>Obra bajo licencia <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* =======================================================================
+   1. Espacio virtual, caja de la letra y pauta de escritura
+   Las letras se describen en coordenadas normalizadas: u de 0 a 1 de
+   izquierda a derecha, v de 0 a 1 de la línea superior a la inferior.
+   Así una misma letra sirve para cualquier tamaño de pantalla.
+   ======================================================================= */
+
+var ANCHO_V = 1000;
+var ALTO_V  = 600;
+
+var CAJA = { x: 360, y: 150, ancho: 280, alto: 350 };   /* donde vive la letra */
+
+function aLienzo(u, v){
+  return { x: CAJA.x + u * CAJA.ancho, y: CAJA.y + v * CAJA.alto };
+}
+
+/* Genera puntos de un arco en coordenadas normalizadas. */
+function arcoN(cu, cv, ru, rv, g0, g1, tramos){
+  var salida = [];
+  for (var i = 0; i <= tramos; i++){
+    var g = g0 + (g1 - g0) * (i / tramos);
+    var r = g * Math.PI / 180;
+    salida.push([ cu + ru * Math.cos(r), cv + rv * Math.sin(r) ]);
+  }
+  return salida;
+}
+
+/* =======================================================================
+   2. El alfabeto español: 27 letras con su orden de trazos
+   Cada trazo es una lista de puntos [u, v] recorrida en el orden correcto.
+   ======================================================================= */
+
+var LETRAS = {
+  /* --- Familia de líneas rectas --- */
+  "I": { palabra:"isla",      icono:"🏝️", grupo:0, trazos:[ [[0.2,0],[0.8,0]], [[0.5,0],[0.5,1]], [[0.2,1],[0.8,1]] ] },
+  "L": { palabra:"luna",      icono:"🌙", grupo:0, trazos:[ [[0.15,0],[0.15,1]], [[0.15,1],[0.85,1]] ] },
+  "T": { palabra:"tren",      icono:"🚂", grupo:0, trazos:[ [[0.1,0],[0.9,0]], [[0.5,0],[0.5,1]] ] },
+  "E": { palabra:"elefante",  icono:"🐘", grupo:0, trazos:[ [[0.15,0],[0.15,1]], [[0.15,0],[0.85,0]], [[0.15,0.5],[0.72,0.5]], [[0.15,1],[0.85,1]] ] },
+  "F": { palabra:"flor",      icono:"🌻", grupo:0, trazos:[ [[0.15,0],[0.15,1]], [[0.15,0],[0.85,0]], [[0.15,0.5],[0.72,0.5]] ] },
+  "H": { palabra:"helado",    icono:"🍦", grupo:0, trazos:[ [[0.15,0],[0.15,1]], [[0.85,0],[0.85,1]], [[0.15,0.5],[0.85,0.5]] ] },
+
+  /* --- Familia de líneas inclinadas --- */
+  "A": { palabra:"árbol",     icono:"🌳", grupo:1, trazos:[ [[0.5,0],[0.1,1]], [[0.5,0],[0.9,1]], [[0.22,0.62],[0.78,0.62]] ] },
+  "V": { palabra:"vaca",      icono:"🐄", grupo:1, trazos:[ [[0.1,0],[0.5,1],[0.9,0]] ] },
+  "W": { palabra:"wafle",     icono:"🧇", grupo:1, trazos:[ [[0.05,0],[0.28,1],[0.5,0.25],[0.72,1],[0.95,0]] ] },
+  "X": { palabra:"xilófono",  icono:"🎹", grupo:1, trazos:[ [[0.15,0],[0.85,1]], [[0.85,0],[0.15,1]] ] },
+  "Y": { palabra:"yoyo",      icono:"🪀", grupo:1, trazos:[ [[0.15,0],[0.5,0.5]], [[0.85,0],[0.5,0.5],[0.5,1]] ] },
+  "Z": { palabra:"zapato",    icono:"👟", grupo:1, trazos:[ [[0.12,0],[0.88,0],[0.12,1],[0.88,1]] ] },
+  "K": { palabra:"koala",     icono:"🐨", grupo:1, trazos:[ [[0.15,0],[0.15,1]], [[0.85,0],[0.15,0.5],[0.85,1]] ] },
+  "M": { palabra:"mano",      icono:"✋", grupo:1, trazos:[ [[0.12,1],[0.12,0],[0.5,0.62],[0.88,0],[0.88,1]] ] },
+  "N": { palabra:"nube",      icono:"☁️", grupo:1, trazos:[ [[0.15,1],[0.15,0],[0.85,1],[0.85,0]] ] },
+  "Ñ": { palabra:"piña",      icono:"🍍", grupo:1, trazos:[ [[0.15,1],[0.15,0],[0.85,1],[0.85,0]], [[0.25,-0.2],[0.4,-0.3],[0.6,-0.18],[0.75,-0.28]] ] },
+
+  /* --- Familia de curvas --- */
+  "C": { palabra:"casa",      icono:"🏠", grupo:2, trazos:[ arcoN(0.5,0.5,0.42,0.5,-60,-300,14) ] },
+  "O": { palabra:"oso",       icono:"🐻", grupo:2, trazos:[ arcoN(0.5,0.5,0.42,0.5,-90,-450,18) ] },
+  "Q": { palabra:"queso",     icono:"🧀", grupo:2, trazos:[ arcoN(0.5,0.5,0.42,0.5,-90,-450,18), [[0.6,0.7],[0.75,0.88],[0.95,1.05]] ] },
+  "G": { palabra:"gato",      icono:"🐱", grupo:2, trazos:[ arcoN(0.5,0.5,0.42,0.5,-60,-300,14), [[0.71,0.93],[0.71,0.55],[0.45,0.55]] ] },
+  "S": { palabra:"sol",       icono:"☀️", grupo:2, trazos:[ [[0.82,0.14],[0.6,0.02],[0.3,0.05],[0.2,0.22],[0.35,0.4],[0.62,0.52],[0.8,0.68],[0.72,0.9],[0.45,0.99],[0.18,0.88]] ] },
+  "U": { palabra:"uvas",      icono:"🍇", grupo:2, trazos:[ [[0.15,0],[0.15,0.4],[0.15,0.62]].concat(arcoN(0.5,0.62,0.35,0.38,180,0,8)).concat([[0.85,0.4],[0.85,0]]) ] },
+  "J": { palabra:"jirafa",    icono:"🦒", grupo:2, trazos:[ [[0.62,0],[0.62,0.45],[0.62,0.7]].concat(arcoN(0.37,0.7,0.25,0.3,0,155,7)) ] },
+  "D": { palabra:"dado",      icono:"🎲", grupo:2, trazos:[ [[0.18,0],[0.18,1]], [[0.18,0],[0.5,0.03],[0.72,0.2],[0.78,0.5],[0.72,0.8],[0.5,0.97],[0.18,1]] ] },
+  "P": { palabra:"pez",       icono:"🐟", grupo:2, trazos:[ [[0.18,0],[0.18,1]], [[0.18,0],[0.55,0.03],[0.74,0.17],[0.74,0.38],[0.55,0.5],[0.18,0.52]] ] },
+  "B": { palabra:"barco",     icono:"⛵", grupo:2, trazos:[ [[0.18,0],[0.18,1]], [[0.18,0],[0.52,0.03],[0.7,0.15],[0.7,0.35],[0.52,0.48],[0.18,0.5]], [[0.18,0.5],[0.56,0.53],[0.76,0.68],[0.72,0.88],[0.52,0.98],[0.18,1]] ] },
+  "R": { palabra:"rana",      icono:"🐸", grupo:2, trazos:[ [[0.18,0],[0.18,1]], [[0.18,0],[0.55,0.03],[0.74,0.17],[0.74,0.38],[0.55,0.5],[0.18,0.52]], [[0.42,0.52],[0.82,1]] ] }
+};
+
+var GRUPOS = [
+  { nombre:"Líneas rectas",     letras:["I","L","T","E","F","H"] },
+  { nombre:"Líneas inclinadas", letras:["A","V","W","X","Y","Z","K","M","N","Ñ"] },
+  { nombre:"Curvas",            letras:["B","C","D","G","J","O","P","Q","R","S","U"] }
+];
+
+/* =======================================================================
+   3. Preparación de caminos: paso de normalizado a lienzo y remuestreo
+   Los puntos de control quedan separados de manera pareja, así la
+   tolerancia se comporta igual en una recta que en una curva.
+   ======================================================================= */
+
+var SEPARACION = 52;   /* distancia entre puntos de control, en unidades del lienzo */
+
+function remuestrear(puntos, paso){
+  var salida = [ puntos[0] ];
+  var sobra = 0;
+  for (var i = 1; i < puntos.length; i++){
+    var a = puntos[i - 1], b = puntos[i];
+    var largo = Math.hypot(b.x - a.x, b.y - a.y);
+    var recorrido = paso - sobra;
+    while (recorrido <= largo){
+      var t = recorrido / largo;
+      salida.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+      recorrido += paso;
+    }
+    sobra = largo - (recorrido - paso);
+  }
+  var ultimo = puntos[puntos.length - 1];
+  var cola = salida[salida.length - 1];
+  if (Math.hypot(ultimo.x - cola.x, ultimo.y - cola.y) > paso * 0.35){ salida.push(ultimo); }
+  else { salida[salida.length - 1] = ultimo; }
+  return salida;
+}
+
+function prepararTrazos(letra){
+  var datos = LETRAS[letra];
+  var listos = [];
+  for (var i = 0; i < datos.trazos.length; i++){
+    var crudo = [];
+    for (var j = 0; j < datos.trazos[i].length; j++){
+      crudo.push(aLienzo(datos.trazos[i][j][0], datos.trazos[i][j][1]));
+    }
+    listos.push(remuestrear(crudo, SEPARACION));
+  }
+  return listos;
+}
+
+/* =======================================================================
+   4. Estado
+   ======================================================================= */
+
+var lienzo  = document.getElementById("lienzo");
+var ctx     = lienzo.getContext("2d");
+var aviso   = document.getElementById("aviso");
+
+var grupoActual  = 0;
+var lista        = GRUPOS[0].letras.slice();   /* letras en práctica ahora */
+var nombreActivo = false;                      /* true si la lista es un nombre propio */
+var posicion     = 0;                          /* letra dentro de la lista */
+var trazos       = [];                         /* caminos ya preparados de la letra */
+var indiceTrazo  = 0;
+var meta         = 0;
+var dibujando    = false;
+var tintaActual  = [];
+var tintaHecha   = [];
+var logradas     = {};                         /* letras ya completadas */
+var demoEnCurso  = false;
+var escala       = 1;
+
+var TOLERANCIA = 40;
+var MODO_FACIL = false;
+var SONIDO     = true;
+
+/* =======================================================================
+   5. Geometría
+   ======================================================================= */
+
+function distancia(a, b){ return Math.hypot(b.x - a.x, b.y - a.y); }
+
+function distanciaAlSegmento(p, a, b){
+  var dx = b.x - a.x, dy = b.y - a.y;
+  var largo = dx * dx + dy * dy;
+  if (largo === 0){ return distancia(p, a); }
+  var t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / largo;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
+}
+
+/* =======================================================================
+   6. Dibujo
+   ======================================================================= */
+
+function ajustarLienzo(){
+  var caja = lienzo.getBoundingClientRect();
+  var dpr  = window.devicePixelRatio || 1;
+  lienzo.width  = Math.round(caja.width * dpr);
+  lienzo.height = Math.round(caja.width * 0.6 * dpr);
+  escala = caja.width / ANCHO_V;
+  ctx.setTransform(dpr * escala, 0, 0, dpr * escala, 0, 0);
+  pintar();
+}
+
+function pintarPauta(){
+  ctx.clearRect(0, 0, ANCHO_V, ALTO_V);
+  ctx.fillStyle = "#FDFCF8";
+  ctx.fillRect(0, 0, ANCHO_V, ALTO_V);
+
+  var arriba = CAJA.y;
+  var medio  = CAJA.y + CAJA.alto / 2;
+  var abajo  = CAJA.y + CAJA.alto;
+
+  ctx.save();
+  ctx.strokeStyle = "#C9D6DF";
+  ctx.lineWidth = 3;
+
+  ctx.beginPath(); ctx.moveTo(60, arriba); ctx.lineTo(940, arriba); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(60, abajo);  ctx.lineTo(940, abajo);  ctx.stroke();
+
+  ctx.setLineDash([12, 16]);
+  ctx.strokeStyle = "#DCE5EB";
+  ctx.beginPath(); ctx.moveTo(60, medio); ctx.lineTo(940, medio); ctx.stroke();
+  ctx.restore();
+}
+
+function pintarCamino(puntos, terminado){
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 14;
+  ctx.strokeStyle = terminado ? "#CBD9E3" : "#9FB3C8";
+  ctx.setLineDash([16, 20]);
+  ctx.beginPath();
+  ctx.moveTo(puntos[0].x, puntos[0].y);
+  for (var i = 1; i < puntos.length; i++){ ctx.lineTo(puntos[i].x, puntos[i].y); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function pintarTinta(puntos){
+  if (puntos.length < 2){ return; }
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 18;
+  ctx.strokeStyle = "#D6420B";
+  ctx.beginPath();
+  ctx.moveTo(puntos[0].x, puntos[0].y);
+  for (var i = 1; i < puntos.length; i++){ ctx.lineTo(puntos[i].x, puntos[i].y); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function pintarSalida(puntos, numero){
+  var p0 = puntos[0], p1 = puntos[1];
+
+  ctx.save();
+  ctx.fillStyle = "#0B6157";
+  ctx.beginPath();
+  ctx.arc(p0.x, p0.y, 25, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = "700 27px Fredoka, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(String(numero), p0.x, p0.y + 1);
+
+  var ang = Math.atan2(p1.y - p0.y, p1.x - p0.x);
+  ctx.translate(p0.x + Math.cos(ang) * 48, p0.y + Math.sin(ang) * 48);
+  ctx.rotate(ang);
+  ctx.fillStyle = "#0B6157";
+  ctx.beginPath();
+  ctx.moveTo(16, 0); ctx.lineTo(-10, -12); ctx.lineTo(-10, 12);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+/* Los trazos que todavía no llegan llevan su número en gris, para que el
+   niño y el adulto vean de un vistazo cuántos faltan y por dónde van. */
+function pintarPendientes(){
+  for (var i = indiceTrazo + 1; i < trazos.length; i++){
+    var p = trazos[i][0];
+    ctx.save();
+    ctx.fillStyle = "#EDF1F4";
+    ctx.strokeStyle = "#9FB3C8";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 20, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#4A5D68";
+    ctx.font = "600 22px Fredoka, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(String(i + 1), p.x, p.y + 1);
+    ctx.restore();
+  }
+}
+
+function pintarMuestra(){
+  /* La letra impresa, a un lado, como referencia visual permanente */
+  var letra = lista[posicion];
+  ctx.save();
+  ctx.fillStyle = "#E4EBF1";
+  ctx.font = "700 300px Fredoka, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(letra, 170, 330);
+  ctx.restore();
+}
+
+function pintar(){
+  pintarPauta();
+  pintarMuestra();
+
+  for (var i = 0; i < trazos.length; i++){
+    pintarCamino(trazos[i], i < indiceTrazo);
+  }
+  for (var j = 0; j < tintaHecha.length; j++){ pintarTinta(tintaHecha[j]); }
+  pintarTinta(tintaActual);
+
+  if (indiceTrazo < trazos.length){
+    pintarSalida(trazos[indiceTrazo], indiceTrazo + 1);
+    pintarPendientes();
+  } else {
+    ctx.save();
+    ctx.font = "54px system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("⭐ ⭐ ⭐", 500, 70);
+    ctx.restore();
+  }
+}
+
+/* =======================================================================
+   7. Sonido
+   ======================================================================= */
+
+var audio = null;
+
+function tono(frecuencia, milisegundos){
+  if (!SONIDO){ return; }
+  try{
+    if (!audio){ audio = new (window.AudioContext || window.webkitAudioContext)(); }
+    var osc = audio.createOscillator();
+    var vol = audio.createGain();
+    osc.type = "sine";
+    osc.frequency.value = frecuencia;
+    vol.gain.value = 0.12;
+    osc.connect(vol); vol.connect(audio.destination);
+    osc.start();
+    vol.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + milisegundos / 1000);
+    osc.stop(audio.currentTime + milisegundos / 1000);
+  }catch(e){ /* el interactivo funciona igual sin sonido */ }
+}
+
+function decir(texto, clase){
+  aviso.textContent = texto;
+  aviso.className = "aviso" + (clase ? " " + clase : "");
+}
+
+/* =======================================================================
+   8. Trazo con el dedo o el lápiz óptico
+   ======================================================================= */
+
+function puntoDelEvento(evento){
+  var caja = lienzo.getBoundingClientRect();
+  return { x: (evento.clientX - caja.left) / escala, y: (evento.clientY - caja.top) / escala };
+}
+
+lienzo.addEventListener("pointerdown", function(evento){
+  if (demoEnCurso || indiceTrazo >= trazos.length){ return; }
+  var p = puntoDelEvento(evento);
+  var salida = trazos[indiceTrazo][0];
+
+  if (distancia(p, salida) > TOLERANCIA * 1.6){
+    decir("Empieza en el punto verde con el número " + (indiceTrazo + 1) + ".", "ojo");
+    return;
+  }
+  evento.preventDefault();
+  lienzo.setPointerCapture(evento.pointerId);
+  dibujando = true;
+  meta = 0;
+  tintaActual = [ p ];
+  decir("Sigue la flecha sin levantar el dedo.");
+  pintar();
+});
+
+lienzo.addEventListener("pointermove", function(evento){
+  if (!dibujando){ return; }
+  evento.preventDefault();
+
+  var camino = trazos[indiceTrazo];
+  var p = puntoDelEvento(evento);
+  tintaActual.push(p);
+
+  var objetivo = camino[meta + 1];
+  if (objetivo && distancia(p, objetivo) <= TOLERANCIA){
+    meta++;
+    if (meta === camino.length - 1){ terminarTrazo(); return; }
+  } else if (objetivo && !MODO_FACIL){
+    if (distanciaAlSegmento(p, camino[meta], objetivo) > TOLERANCIA * 1.8){ desviarse(); return; }
+  }
+  pintar();
+});
+
+function soltar(evento){
+  if (!dibujando){ return; }
+  dibujando = false;
+  if (evento && evento.pointerId !== undefined && lienzo.hasPointerCapture(evento.pointerId)){
+    lienzo.releasePointerCapture(evento.pointerId);
+  }
+  tintaActual = [];
+  decir("Te faltó un poquito. Vuelve al punto verde y hazlo otra vez.", "ojo");
+  pintar();
+}
+
+lienzo.addEventListener("pointerup", soltar);
+lienzo.addEventListener("pointercancel", soltar);
+lienzo.addEventListener("pointerleave", soltar);
+
+function desviarse(){
+  dibujando = false;
+  tintaActual = [];
+  tono(220, 160);
+  decir("Te saliste de la letra. Empieza otra vez en el punto verde.", "ojo");
+  pintar();
+}
+
+function terminarTrazo(){
+  dibujando = false;
+  tintaHecha.push(trazos[indiceTrazo].slice());
+  tintaActual = [];
+  indiceTrazo++;
+  tono(660, 140);
+
+  if (indiceTrazo >= trazos.length){ celebrar(); }
+  else {
+    decir("¡Muy bien! Ahora el trazo número " + (indiceTrazo + 1) + ".", "bien");
+    pintar();
+  }
+}
+
+function celebrar(){
+  var letra = lista[posicion];
+  logradas[letra] = true;
+  indiceTrazo = trazos.length;
+  tono(880, 260);
+  decir("¡Escribiste la " + letra + "! " + letra + " de " + LETRAS[letra].palabra + ".", "bien");
+  dibujarAbecedario();
+  pintar();
+}
+
+/* =======================================================================
+   9. Botones
+   ======================================================================= */
+
+document.getElementById("b-borrar").addEventListener("click", function(){
+  cargarLetra(posicion);
+  decir("Listo, hoja limpia. Empieza en el punto verde.");
+});
+
+document.getElementById("b-papel").addEventListener("click", function(){
+  tintaHecha = trazos.map(function(t){ return t.slice(); });
+  celebrar();
+  decir("Anotado: esta letra ya está hecha en papel.", "bien");
+});
+
+document.getElementById("b-siguiente").addEventListener("click", function(){
+  cargarLetra((posicion + 1) % lista.length);
+});
+
+document.getElementById("b-demo").addEventListener("click", demostrar);
+
+lienzo.addEventListener("keydown", function(evento){
+  if (evento.key === "Enter" || evento.key === " "){ evento.preventDefault(); demostrar(); }
+});
+
+document.getElementById("op-facil").addEventListener("click", function(){
+  MODO_FACIL = true; TOLERANCIA = 62;
+  this.setAttribute("aria-pressed", "true");
+  document.getElementById("op-normal").setAttribute("aria-pressed", "false");
+});
+
+document.getElementById("op-normal").addEventListener("click", function(){
+  MODO_FACIL = false; TOLERANCIA = 40;
+  this.setAttribute("aria-pressed", "true");
+  document.getElementById("op-facil").setAttribute("aria-pressed", "false");
+});
+
+document.getElementById("op-sonido").addEventListener("click", function(){
+  SONIDO = !SONIDO;
+  this.setAttribute("aria-pressed", SONIDO ? "true" : "false");
+});
+
+/* =======================================================================
+   10. Demostración animada
+   ======================================================================= */
+
+function demostrar(){
+  if (demoEnCurso){ return; }
+  var cual = Math.min(indiceTrazo, trazos.length - 1);
+  var camino = trazos[cual];
+  var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  demoEnCurso = true;
+  decir("Mira cómo se hace el trazo número " + (cual + 1) + ".");
+
+  if (reducido){
+    tintaActual = camino.slice();
+    pintar();
+    setTimeout(function(){
+      tintaActual = []; demoEnCurso = false; pintar();
+      decir("Ahora te toca a ti.");
+    }, 2200);
+    return;
+  }
+
+  var paso = 0;
+  tintaActual = [];
+  var reloj = setInterval(function(){
+    tintaActual.push(camino[paso]);
+    pintar();
+    paso++;
+    if (paso >= camino.length){
+      clearInterval(reloj);
+      setTimeout(function(){
+        tintaActual = []; demoEnCurso = false; pintar();
+        decir("Ahora te toca a ti. Empieza en el punto verde.");
+      }, 700);
+    }
+  }, Math.max(80, 1500 / camino.length));
+}
+
+/* =======================================================================
+   11. Nombre propio
+   ======================================================================= */
+
+var ACENTOS = { "Á":"A","É":"E","Í":"I","Ó":"O","Ú":"U","Ü":"U" };
+
+document.getElementById("b-nombre").addEventListener("click", function(){
+  var texto = document.getElementById("campo-nombre").value.toUpperCase();
+  var letras = [];
+  for (var i = 0; i < texto.length; i++){
+    var c = texto.charAt(i);
+    if (ACENTOS[c]){ c = ACENTOS[c]; }
+    if (LETRAS[c]){ letras.push(c); }
+  }
+  if (letras.length === 0){
+    decir("Escribe un nombre con letras del alfabeto para armar la secuencia.", "ojo");
+    return;
+  }
+  nombreActivo = true;
+  lista = letras;
+  dibujarGrupos();
+  cargarLetra(0);
+  decir("Vamos a escribir ese nombre, letra por letra.", "bien");
+});
+
+/* =======================================================================
+   12. Navegación
+   ======================================================================= */
+
+var grupos = document.getElementById("grupos");
+var abecedario = document.getElementById("abecedario");
+
+function dibujarGrupos(){
+  grupos.innerHTML = "";
+  for (var i = 0; i < GRUPOS.length; i++){
+    (function(n){
+      var li = document.createElement("li");
+      var boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "chip";
+      boton.textContent = GRUPOS[n].nombre;
+      boton.setAttribute("aria-pressed", (!nombreActivo && n === grupoActual) ? "true" : "false");
+      boton.addEventListener("click", function(){
+        nombreActivo = false;
+        grupoActual = n;
+        lista = GRUPOS[n].letras.slice();
+        dibujarGrupos();
+        cargarLetra(0);
+      });
+      li.appendChild(boton);
+      grupos.appendChild(li);
+    })(i);
+  }
+  if (nombreActivo){
+    var li2 = document.createElement("li");
+    var etiqueta = document.createElement("button");
+    etiqueta.type = "button";
+    etiqueta.className = "chip";
+    etiqueta.textContent = "Mi nombre";
+    etiqueta.setAttribute("aria-pressed", "true");
+    li2.appendChild(etiqueta);
+    grupos.appendChild(li2);
+  }
+}
+
+function dibujarAbecedario(){
+  abecedario.innerHTML = "";
+  for (var i = 0; i < lista.length; i++){
+    (function(n){
+      var li = document.createElement("li");
+      var boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "letra-chip" + (logradas[lista[n]] ? " listo" : "");
+      boton.textContent = lista[n];
+      boton.setAttribute("aria-label", "Letra " + lista[n]);
+      boton.setAttribute("aria-current", n === posicion ? "true" : "false");
+      boton.addEventListener("click", function(){ cargarLetra(n); });
+      li.appendChild(boton);
+      abecedario.appendChild(li);
+    })(i);
+  }
+}
+
+function cargarLetra(n){
+  posicion = n;
+  var letra = lista[n];
+  var datos = LETRAS[letra];
+
+  trazos = prepararTrazos(letra);
+  indiceTrazo = 0;
+  meta = 0;
+  dibujando = false;
+  tintaActual = [];
+  tintaHecha = [];
+  logradas[letra] = false;
+
+  document.getElementById("icono").textContent = datos.icono;
+  document.getElementById("titulo").textContent = "La letra " + letra;
+  document.getElementById("consigna").textContent =
+    letra + " de " + datos.palabra + ". Tiene " + trazos.length +
+    (trazos.length === 1 ? " trazo." : " trazos.");
+  document.getElementById("contador").textContent =
+    (nombreActivo ? "Letra " : "Letra ") + (n + 1) + " de " + lista.length;
+  lienzo.setAttribute("aria-label", "Trazo de la letra " + letra + ", " + trazos.length + " trazos.");
+
+  decir("Pon el dedo en el punto verde para empezar.");
+  dibujarAbecedario();
+  pintar();
+}
+
+window.addEventListener("resize", ajustarLienzo);
+if (document.fonts && document.fonts.ready){ document.fonts.ready.then(pintar); }
+
+dibujarGrupos();
+cargarLetra(0);
+ajustarLienzo();
+</script>
+</body>
+</html>

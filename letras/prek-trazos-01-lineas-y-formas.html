@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<!--
+  Trazos y caminos: líneas y formas — Módulo 1 de la serie de preescritura de prekínder.
+  Autor: José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.
+  Licencia: Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0).
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trazos y caminos: líneas y formas</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="description" content="Interactivo de preescritura para prekínder: trazos verticales, horizontales, diagonales, curvos, zigzag y formas básicas, con control de dirección y puntos de control.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- Sistema de color y tipografía ---------- */
+:root{
+  --papel:#FDFCF8;         /* hoja de cuaderno */
+  --papel-hondo:#EDF1F4;   /* fondo de la página */
+  --tinta:#1F2D36;         /* texto principal */
+  --tinta-suave:#4A5D68;   /* texto secundario (4.5:1 sobre papel) */
+  --guia:#9FB3C8;          /* camino punteado */
+  --crayon:#D6420B;        /* trazo del niño */
+  --menta:#0B6157;         /* éxito y acción principal */
+  --azul:#1D4E89;          /* acción secundaria */
+  --sol:#F6C445;           /* acento decorativo */
+  --borde:#C9D6DF;
+  --radio:18px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--papel-hondo);
+  color:var(--tinta);
+  font-family:"Atkinson Hyperlegible","Verdana",system-ui,sans-serif;
+  font-size:18px;
+  line-height:1.55;
+  padding:16px;
+}
+h1,h2,h3,button,.chip,.contador{font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif}
+
+.marco{max-width:980px;margin:0 auto}
+
+header.cabecera{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;
+  padding:4px 4px 14px;
+}
+header.cabecera h1{font-size:clamp(1.5rem,4vw,2.1rem);margin:0;font-weight:600;letter-spacing:.2px}
+header.cabecera p{margin:0;color:var(--tinta-suave);font-size:1rem}
+
+/* ---------- Tira de ejercicios (es una secuencia: los números informan) ---------- */
+.tira{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px;padding:0;list-style:none}
+.chip{
+  display:flex;align-items:center;gap:7px;
+  border:2px solid var(--borde);background:var(--papel);color:var(--tinta);
+  border-radius:999px;padding:7px 15px 7px 9px;font-size:.95rem;font-weight:500;
+  cursor:pointer;
+}
+.chip .num{
+  display:grid;place-items:center;width:26px;height:26px;border-radius:50%;
+  background:var(--papel-hondo);color:var(--tinta);font-weight:700;font-size:.9rem;
+}
+.chip[aria-current="true"]{border-color:var(--azul);background:#E8F0FA}
+.chip[aria-current="true"] .num{background:var(--azul);color:#fff}
+.chip.listo .num{background:var(--menta);color:#fff}
+
+/* ---------- Escenario ---------- */
+.hoja{
+  background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);
+  padding:14px;box-shadow:0 2px 0 var(--borde);
+}
+.consigna{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+.consigna .icono{font-size:2rem;line-height:1}
+.consigna h2{margin:0;font-size:1.25rem;font-weight:600}
+.consigna p{margin:2px 0 0;color:var(--tinta-suave);font-size:1rem}
+
+canvas{
+  display:block;width:100%;aspect-ratio:5/3;
+  touch-action:none;border-radius:12px;background:var(--papel);
+  cursor:crosshair;
+}
+canvas:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+
+.aviso{
+  min-height:2.8em;margin:10px 0 0;padding:9px 14px;border-radius:12px;
+  background:var(--papel-hondo);color:var(--tinta);font-size:1.05rem;
+}
+.aviso.bien{background:#E3F3EC;color:#08463E}
+.aviso.ojo{background:#FBEFD9;color:#5C3900}
+
+/* ---------- Controles ---------- */
+.botonera{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+button{
+  font-size:1.02rem;font-weight:600;border-radius:14px;border:2px solid transparent;
+  padding:12px 18px;cursor:pointer;min-height:48px;
+}
+button:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-principal{background:var(--menta);color:#fff}
+.b-secundario{background:var(--azul);color:#fff}
+.b-calmo{background:var(--papel);color:var(--tinta);border-color:var(--borde)}
+button[disabled]{opacity:.45;cursor:not-allowed}
+
+/* ---------- Panel del adulto ---------- */
+details.adulto{margin-top:18px;background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);padding:12px 16px}
+details.adulto summary{font-family:"Fredoka",system-ui,sans-serif;font-weight:600;cursor:pointer}
+details.adulto h3{margin:16px 0 6px;font-size:1.05rem;font-weight:600}
+details.adulto p{margin:6px 0;color:var(--tinta-suave);font-size:.97rem}
+.opciones{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 2px}
+.opcion{
+  background:var(--papel);border:2px solid var(--borde);color:var(--tinta);
+  border-radius:999px;padding:8px 16px;font-size:.95rem;min-height:44px;
+}
+.opcion[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+
+.contador{margin:14px 0 0;font-size:1rem;color:var(--tinta-suave)}
+
+footer{margin:26px auto 8px;max-width:980px;font-size:.88rem;color:var(--tinta-suave);line-height:1.5}
+footer a{color:var(--azul)}
+
+@media (max-width:560px){
+  body{padding:10px;font-size:17px}
+  .chip{padding:6px 12px 6px 7px;font-size:.88rem}
+  .chip .texto{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="marco">
+
+  <header class="cabecera">
+    <h1>Trazos y caminos</h1>
+    <p>Líneas y formas para la mano que va a escribir</p>
+  </header>
+
+  <ul class="tira" id="tira" aria-label="Ejercicios del módulo"></ul>
+
+  <section class="hoja">
+    <div class="consigna">
+      <span class="icono" id="icono" aria-hidden="true">🍂</span>
+      <div>
+        <h2 id="titulo">Líneas de arriba abajo</h2>
+        <p id="consigna">Empieza en el punto verde y baja despacio.</p>
+      </div>
+    </div>
+
+    <canvas id="lienzo" tabindex="0" role="application" aria-label="Zona de trazo"></canvas>
+
+    <p class="aviso" id="aviso" aria-live="polite">Pon el dedo en el punto verde para empezar.</p>
+
+    <div class="botonera">
+      <button type="button" class="b-secundario" id="b-demo">Mírame</button>
+      <button type="button" class="b-calmo" id="b-borrar">Empezar de nuevo</button>
+      <button type="button" class="b-calmo" id="b-papel">Lo hice en papel</button>
+      <button type="button" class="b-principal" id="b-siguiente">Siguiente</button>
+    </div>
+
+    <p class="contador" id="contador">Ejercicio 1 de 8</p>
+  </section>
+
+  <details class="adulto">
+    <summary>Para el adulto</summary>
+
+    <h3>Ajustes</h3>
+    <div class="opciones" role="group" aria-label="Nivel de exigencia del trazo">
+      <button type="button" class="opcion" id="op-facil" aria-pressed="false">Modo fácil</button>
+      <button type="button" class="opcion" id="op-normal" aria-pressed="true">Modo normal</button>
+      <button type="button" class="opcion" id="op-sonido" aria-pressed="true">Sonido</button>
+    </div>
+    <p>En modo fácil el margen de error es más ancho y salirse del camino no interrumpe el trazo. En modo normal el trazo se reinicia si el niño se aleja demasiado, que es lo que fuerza la direccionalidad correcta.</p>
+
+    <h3>Qué está practicando</h3>
+    <p>El control del trazo en la dirección que exige la escritura: vertical de arriba abajo, horizontal de izquierda a derecha, y cierre completo en las figuras. El interactivo no deja avanzar si el niño traza al revés, porque el primer punto de control queda fuera de su alcance.</p>
+    <p>Corresponde a la preparación motora que los Illinois Early Learning and Development Standards ubican antes del trazo de letras: el niño pasa del garabato a formas reconocibles y controladas.</p>
+
+    <h3>Diseño accesible</h3>
+    <p>Hay tres rutas para cada ejercicio: trazar con el dedo o el lápiz óptico, ver la demostración con «Mírame», o hacerlo en papel y marcarlo con «Lo hice en papel». Ninguna penaliza al niño. El error nunca se anuncia como fracaso, solo como una invitación a repetir.</p>
+    <p>Sugerencia de uso: tableta apoyada en la mesa, no en la mano, y sesiones de cinco a ocho minutos.</p>
+  </details>
+
+</div>
+
+<footer class="marco">
+  <p>Trazos y caminos: líneas y formas. Serie de preescritura de prekínder.<br>
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
+  <p>Obra bajo licencia <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>.</p>
+</footer>
+
+<script>
+"use strict";
+
+/* =======================================================================
+   1. Espacio virtual y constructores de caminos
+   Todo se dibuja en un lienzo virtual de 1000 x 600 y se escala al ancho
+   real del canvas. Así las coordenadas no dependen de la pantalla.
+   ======================================================================= */
+
+var ANCHO_V = 1000;
+var ALTO_V  = 600;
+
+function linea(x0, y0, x1, y1, tramos){
+  var puntos = [];
+  for (var i = 0; i <= tramos; i++){
+    var t = i / tramos;
+    puntos.push({ x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t });
+  }
+  return puntos;
+}
+
+function onda(x0, x1, yMedio, amplitud, ciclos, tramos){
+  var puntos = [];
+  for (var i = 0; i <= tramos; i++){
+    var t = i / tramos;
+    puntos.push({
+      x: x0 + (x1 - x0) * t,
+      y: yMedio - amplitud * Math.sin(t * Math.PI * 2 * ciclos)
+    });
+  }
+  return puntos;
+}
+
+function arco(cx, cy, radio, gradosInicio, gradosFin, tramos){
+  var puntos = [];
+  for (var i = 0; i <= tramos; i++){
+    var g = gradosInicio + (gradosFin - gradosInicio) * (i / tramos);
+    var r = g * Math.PI / 180;
+    puntos.push({ x: cx + radio * Math.cos(r), y: cy + radio * Math.sin(r) });
+  }
+  return puntos;
+}
+
+/* Recorre una lista de vértices y coloca puntos de control en cada tramo. */
+function poligonal(vertices, porTramo){
+  var puntos = [ vertices[0] ];
+  for (var i = 1; i < vertices.length; i++){
+    var a = vertices[i - 1], b = vertices[i];
+    for (var j = 1; j <= porTramo; j++){
+      var t = j / porTramo;
+      puntos.push({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+    }
+  }
+  return puntos;
+}
+
+/* =======================================================================
+   2. Los ocho ejercicios del módulo
+   ======================================================================= */
+
+var EJERCICIOS = [
+  {
+    nombre: "Bajar",
+    icono: "🍂",
+    titulo: "Líneas de arriba abajo",
+    consigna: "Las hojas caen al suelo. Empieza arriba y baja despacio.",
+    inicio: "🍂", meta: "🌱",
+    trazos: [
+      linea(180, 110, 180, 500, 4),
+      linea(400, 110, 400, 500, 4),
+      linea(620, 110, 620, 500, 4),
+      linea(840, 110, 840, 500, 4)
+    ]
+  },
+  {
+    nombre: "Cruzar",
+    icono: "🚌",
+    titulo: "Líneas de izquierda a derecha",
+    consigna: "Lleva el autobús a la escuela sin salirte de la calle.",
+    inicio: "🚌", meta: "🏫",
+    trazos: [
+      linea(130, 150, 870, 150, 4),
+      linea(130, 300, 870, 300, 4),
+      linea(130, 450, 870, 450, 4)
+    ]
+  },
+  {
+    nombre: "Bajar en diagonal",
+    icono: "⛷️",
+    titulo: "Líneas inclinadas",
+    consigna: "Baja por la montaña. Empieza siempre arriba.",
+    inicio: "⭐", meta: "🏁",
+    trazos: [
+      linea(150, 110, 430, 500, 4),
+      linea(420, 110, 700, 500, 4),
+      linea(690, 110, 970, 500, 4)
+    ]
+  },
+  {
+    nombre: "Subir en diagonal",
+    icono: "🪁",
+    titulo: "Líneas inclinadas al revés",
+    consigna: "El papalote sube. Empieza abajo y sube hacia la derecha.",
+    inicio: "🧒", meta: "🪁",
+    trazos: [
+      linea(120, 500, 400, 120, 4),
+      linea(390, 500, 670, 120, 4),
+      linea(660, 500, 940, 120, 4)
+    ]
+  },
+  {
+    nombre: "Olas",
+    icono: "🐟",
+    titulo: "Líneas curvas",
+    consigna: "El pez nada entre las olas. Sigue la curva sin levantar el dedo.",
+    inicio: "🐟", meta: "🪸",
+    trazos: [
+      onda(120, 880, 200, 70, 2, 12),
+      onda(120, 880, 430, 70, 2, 12)
+    ]
+  },
+  {
+    nombre: "Montañas",
+    icono: "⛰️",
+    titulo: "Zigzag",
+    consigna: "Sube y baja por las montañas sin parar.",
+    inicio: "🥾", meta: "🚩",
+    trazos: [
+      poligonal([
+        {x:120,y:470},{x:240,y:180},{x:360,y:470},{x:480,y:180},
+        {x:600,y:470},{x:720,y:180},{x:860,y:470}
+      ], 2)
+    ]
+  },
+  {
+    nombre: "Círculo",
+    icono: "🎈",
+    titulo: "El círculo",
+    consigna: "Da la vuelta completa al globo. Empieza arriba y ve hacia la derecha.",
+    inicio: "🎈", meta: "🎈",
+    trazos: [ arco(500, 300, 175, -90, 270, 16) ]
+  },
+  {
+    nombre: "Cuadrado y triángulo",
+    icono: "🏠",
+    titulo: "Formas cerradas",
+    consigna: "Primero el techo, después la casa. Cierra bien las esquinas.",
+    inicio: "✏️", meta: "🏠",
+    trazos: [
+      poligonal([{x:500,y:120},{x:720,y:270},{x:280,y:270},{x:500,y:120}], 3),
+      poligonal([{x:320,y:290},{x:680,y:290},{x:680,y:500},{x:320,y:500},{x:320,y:290}], 3)
+    ]
+  }
+];
+
+/* =======================================================================
+   3. Estado
+   ======================================================================= */
+
+var lienzo   = document.getElementById("lienzo");
+var ctx      = lienzo.getContext("2d");
+var aviso    = document.getElementById("aviso");
+var tira     = document.getElementById("tira");
+
+var indiceEjercicio = 0;   // ejercicio actual
+var indiceTrazo     = 0;   // trazo dentro del ejercicio
+var meta            = 0;   // último punto de control alcanzado
+var dibujando       = false;
+var tintaActual     = [];  // puntos del trazo en curso
+var tintaHecha      = [];  // trazos ya completados
+var completados     = [];  // ejercicios terminados
+var demoEnCurso     = false;
+var escala          = 1;
+
+var TOLERANCIA = 40;       // margen de acierto, en unidades virtuales
+var MODO_FACIL = false;
+var SONIDO     = true;
+
+for (var k = 0; k < EJERCICIOS.length; k++){ completados.push(false); }
+
+/* =======================================================================
+   4. Geometría auxiliar
+   ======================================================================= */
+
+function distancia(a, b){
+  return Math.hypot(b.x - a.x, b.y - a.y);
+}
+
+/* Distancia de un punto al segmento a-b: mide si el niño sigue el camino. */
+function distanciaAlSegmento(p, a, b){
+  var dx = b.x - a.x, dy = b.y - a.y;
+  var largo = dx * dx + dy * dy;
+  if (largo === 0){ return distancia(p, a); }
+  var t = ((p.x - a.x) * dx + (p.y - a.y) * dy) / largo;
+  t = Math.max(0, Math.min(1, t));
+  return Math.hypot(p.x - (a.x + t * dx), p.y - (a.y + t * dy));
+}
+
+/* =======================================================================
+   5. Dibujo
+   ======================================================================= */
+
+function ajustarLienzo(){
+  var caja = lienzo.getBoundingClientRect();
+  var dpr  = window.devicePixelRatio || 1;
+  lienzo.width  = Math.round(caja.width * dpr);
+  lienzo.height = Math.round(caja.width * 0.6 * dpr);
+  escala = caja.width / ANCHO_V;
+  ctx.setTransform(dpr * escala, 0, 0, dpr * escala, 0, 0);
+  pintar();
+}
+
+function pintarPapel(){
+  ctx.clearRect(0, 0, ANCHO_V, ALTO_V);
+  ctx.fillStyle = "#FDFCF8";
+  ctx.fillRect(0, 0, ANCHO_V, ALTO_V);
+  ctx.fillStyle = "#E4EBF1";
+  for (var y = 40; y < ALTO_V; y += 40){
+    for (var x = 40; x < ANCHO_V; x += 40){
+      ctx.beginPath();
+      ctx.arc(x, y, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+function pintarCamino(puntos, terminado){
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = terminado ? "#CBD9E3" : "#9FB3C8";
+  ctx.setLineDash([16, 20]);
+  ctx.beginPath();
+  ctx.moveTo(puntos[0].x, puntos[0].y);
+  for (var i = 1; i < puntos.length; i++){ ctx.lineTo(puntos[i].x, puntos[i].y); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function pintarTinta(puntos, color){
+  if (puntos.length < 2){ return; }
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = 16;
+  ctx.strokeStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(puntos[0].x, puntos[0].y);
+  for (var i = 1; i < puntos.length; i++){ ctx.lineTo(puntos[i].x, puntos[i].y); }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function pintarSalida(puntos, ej){
+  var p0 = puntos[0], p1 = puntos[1];
+
+  /* Punto verde de arranque */
+  ctx.save();
+  ctx.fillStyle = "#0B6157";
+  ctx.beginPath();
+  ctx.arc(p0.x, p0.y, 24, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = "#FFFFFF";
+  ctx.font = "700 26px Fredoka, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("1", p0.x, p0.y + 1);
+
+  /* Flecha que marca la dirección obligatoria */
+  var ang = Math.atan2(p1.y - p0.y, p1.x - p0.x);
+  var base = { x: p0.x + Math.cos(ang) * 46, y: p0.y + Math.sin(ang) * 46 };
+  ctx.translate(base.x, base.y);
+  ctx.rotate(ang);
+  ctx.fillStyle = "#0B6157";
+  ctx.beginPath();
+  ctx.moveTo(16, 0); ctx.lineTo(-10, -12); ctx.lineTo(-10, 12);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  /* Iconos de salida y llegada */
+  var pf = puntos[puntos.length - 1];
+  ctx.save();
+  ctx.font = "40px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(ej.inicio, p0.x - Math.cos(ang) * 52, p0.y - Math.sin(ang) * 52);
+  ctx.fillText(ej.meta, pf.x + 44, pf.y);
+  ctx.restore();
+}
+
+function pintar(){
+  var ej = EJERCICIOS[indiceEjercicio];
+  pintarPapel();
+
+  for (var i = 0; i < ej.trazos.length; i++){
+    pintarCamino(ej.trazos[i], i < indiceTrazo);
+  }
+  for (var j = 0; j < tintaHecha.length; j++){
+    pintarTinta(tintaHecha[j], "#D6420B");
+  }
+  pintarTinta(tintaActual, "#D6420B");
+
+  if (indiceTrazo < ej.trazos.length){
+    pintarSalida(ej.trazos[indiceTrazo], ej);
+  }
+  if (completados[indiceEjercicio] && indiceTrazo >= ej.trazos.length){
+    pintarEstrellas();
+  }
+}
+
+function pintarEstrellas(){
+  ctx.save();
+  ctx.font = "56px system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("⭐ ⭐ ⭐", ANCHO_V / 2, 70);
+  ctx.restore();
+}
+
+/* =======================================================================
+   6. Sonido breve de confirmación
+   ======================================================================= */
+
+var audio = null;
+
+function tono(frecuencia, milisegundos){
+  if (!SONIDO){ return; }
+  try{
+    if (!audio){ audio = new (window.AudioContext || window.webkitAudioContext)(); }
+    var osc = audio.createOscillator();
+    var vol = audio.createGain();
+    osc.type = "sine";
+    osc.frequency.value = frecuencia;
+    vol.gain.value = 0.12;
+    osc.connect(vol); vol.connect(audio.destination);
+    osc.start();
+    vol.gain.exponentialRampToValueAtTime(0.001, audio.currentTime + milisegundos / 1000);
+    osc.stop(audio.currentTime + milisegundos / 1000);
+  }catch(e){ /* sin sonido, el interactivo sigue funcionando igual */ }
+}
+
+/* =======================================================================
+   7. Mensajes
+   ======================================================================= */
+
+function decir(texto, clase){
+  aviso.textContent = texto;
+  aviso.className = "aviso" + (clase ? " " + clase : "");
+}
+
+/* =======================================================================
+   8. Interacción con el dedo o el lápiz óptico
+   ======================================================================= */
+
+function posicion(evento){
+  var caja = lienzo.getBoundingClientRect();
+  return {
+    x: (evento.clientX - caja.left) / escala,
+    y: (evento.clientY - caja.top) / escala
+  };
+}
+
+lienzo.addEventListener("pointerdown", function(evento){
+  if (demoEnCurso){ return; }
+  var ej = EJERCICIOS[indiceEjercicio];
+  if (indiceTrazo >= ej.trazos.length){ return; }
+
+  var p = posicion(evento);
+  var salida = ej.trazos[indiceTrazo][0];
+
+  if (distancia(p, salida) > TOLERANCIA * 1.6){
+    decir("Empieza en el punto verde, donde está el número 1.", "ojo");
+    return;
+  }
+  evento.preventDefault();
+  lienzo.setPointerCapture(evento.pointerId);
+  dibujando = true;
+  meta = 0;
+  tintaActual = [ p ];
+  decir("Ahora sigue el camino sin levantar el dedo.");
+  pintar();
+});
+
+lienzo.addEventListener("pointermove", function(evento){
+  if (!dibujando){ return; }
+  evento.preventDefault();
+
+  var ej = EJERCICIOS[indiceEjercicio];
+  var camino = ej.trazos[indiceTrazo];
+  var p = posicion(evento);
+  tintaActual.push(p);
+
+  var objetivo = camino[meta + 1];
+  if (objetivo && distancia(p, objetivo) <= TOLERANCIA){
+    meta++;
+    if (meta === camino.length - 1){
+      terminarTrazo();
+      return;
+    }
+  } else if (objetivo && !MODO_FACIL){
+    /* Control de bordes: se mide contra el tramo que toca recorrer ahora */
+    if (distanciaAlSegmento(p, camino[meta], objetivo) > TOLERANCIA * 1.8){
+      desviarse();
+      return;
+    }
+  }
+  pintar();
+});
+
+function soltar(evento){
+  if (!dibujando){ return; }
+  dibujando = false;
+  if (evento && evento.pointerId !== undefined && lienzo.hasPointerCapture(evento.pointerId)){
+    lienzo.releasePointerCapture(evento.pointerId);
+  }
+  tintaActual = [];
+  decir("Te faltó un poquito. Pon el dedo en el punto verde y hazlo otra vez.", "ojo");
+  pintar();
+}
+
+lienzo.addEventListener("pointerup", soltar);
+lienzo.addEventListener("pointercancel", soltar);
+lienzo.addEventListener("pointerleave", soltar);
+
+function desviarse(){
+  dibujando = false;
+  tintaActual = [];
+  tono(220, 160);
+  decir("Te saliste del camino. Vuelve al punto verde y sigue la flecha.", "ojo");
+  pintar();
+}
+
+function terminarTrazo(){
+  dibujando = false;
+  tintaHecha.push(EJERCICIOS[indiceEjercicio].trazos[indiceTrazo].slice());
+  tintaActual = [];
+  indiceTrazo++;
+  tono(660, 140);
+
+  var ej = EJERCICIOS[indiceEjercicio];
+  if (indiceTrazo >= ej.trazos.length){
+    marcarCompletado();
+  } else {
+    decir("¡Muy bien! Ahora el siguiente camino.", "bien");
+    pintar();
+  }
+}
+
+function marcarCompletado(){
+  completados[indiceEjercicio] = true;
+  indiceTrazo = EJERCICIOS[indiceEjercicio].trazos.length;
+  tono(880, 260);
+  decir("¡Lo lograste! Ya puedes pasar al siguiente ejercicio.", "bien");
+  dibujarTira();
+  pintar();
+}
+
+/* =======================================================================
+   9. Botones
+   ======================================================================= */
+
+document.getElementById("b-borrar").addEventListener("click", function(){
+  cargarEjercicio(indiceEjercicio, true);
+  decir("Listo, hoja limpia. Empieza en el punto verde.");
+});
+
+document.getElementById("b-papel").addEventListener("click", function(){
+  tintaHecha = [];
+  var ej = EJERCICIOS[indiceEjercicio];
+  for (var i = 0; i < ej.trazos.length; i++){ tintaHecha.push(ej.trazos[i].slice()); }
+  marcarCompletado();
+  decir("Anotado: este ejercicio ya está hecho en papel.", "bien");
+});
+
+document.getElementById("b-siguiente").addEventListener("click", function(){
+  var siguiente = (indiceEjercicio + 1) % EJERCICIOS.length;
+  cargarEjercicio(siguiente, true);
+});
+
+document.getElementById("b-demo").addEventListener("click", function(){ demostrar(); });
+
+lienzo.addEventListener("keydown", function(evento){
+  if (evento.key === "Enter" || evento.key === " "){
+    evento.preventDefault();
+    demostrar();
+  }
+});
+
+function op(id, accion){
+  document.getElementById(id).addEventListener("click", accion);
+}
+
+op("op-facil", function(){
+  MODO_FACIL = true; TOLERANCIA = 62;
+  document.getElementById("op-facil").setAttribute("aria-pressed", "true");
+  document.getElementById("op-normal").setAttribute("aria-pressed", "false");
+});
+
+op("op-normal", function(){
+  MODO_FACIL = false; TOLERANCIA = 40;
+  document.getElementById("op-facil").setAttribute("aria-pressed", "false");
+  document.getElementById("op-normal").setAttribute("aria-pressed", "true");
+});
+
+op("op-sonido", function(){
+  SONIDO = !SONIDO;
+  document.getElementById("op-sonido").setAttribute("aria-pressed", SONIDO ? "true" : "false");
+});
+
+/* =======================================================================
+   10. Demostración animada
+   ======================================================================= */
+
+function demostrar(){
+  if (demoEnCurso){ return; }
+  var ej = EJERCICIOS[indiceEjercicio];
+  var cual = Math.min(indiceTrazo, ej.trazos.length - 1);
+  var camino = ej.trazos[cual];
+  var reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  demoEnCurso = true;
+  decir("Mira cómo se hace. Fíjate por dónde empieza.");
+
+  if (reducido){
+    tintaActual = camino.slice();
+    pintar();
+    setTimeout(function(){ tintaActual = []; demoEnCurso = false; pintar(); decir("Ahora te toca a ti."); }, 2200);
+    return;
+  }
+
+  var paso = 0;
+  tintaActual = [];
+  var reloj = setInterval(function(){
+    tintaActual.push(camino[paso]);
+    pintar();
+    paso++;
+    if (paso >= camino.length){
+      clearInterval(reloj);
+      setTimeout(function(){
+        tintaActual = [];
+        demoEnCurso = false;
+        pintar();
+        decir("Ahora te toca a ti. Empieza en el punto verde.");
+      }, 700);
+    }
+  }, Math.max(90, 1600 / camino.length));
+}
+
+/* =======================================================================
+   11. Navegación y arranque
+   ======================================================================= */
+
+function dibujarTira(){
+  tira.innerHTML = "";
+  for (var i = 0; i < EJERCICIOS.length; i++){
+    (function(n){
+      var li = document.createElement("li");
+      var boton = document.createElement("button");
+      boton.type = "button";
+      boton.className = "chip" + (completados[n] ? " listo" : "");
+      boton.setAttribute("aria-current", n === indiceEjercicio ? "true" : "false");
+      boton.innerHTML =
+        '<span class="num">' + (completados[n] ? "✓" : (n + 1)) + '</span>' +
+        '<span class="texto">' + EJERCICIOS[n].nombre + '</span>';
+      boton.addEventListener("click", function(){ cargarEjercicio(n, true); });
+      li.appendChild(boton);
+      tira.appendChild(li);
+    })(i);
+  }
+}
+
+function cargarEjercicio(n, limpiar){
+  indiceEjercicio = n;
+  if (limpiar){
+    indiceTrazo = 0;
+    tintaHecha = [];
+    tintaActual = [];
+    meta = 0;
+    dibujando = false;
+    completados[n] = false;
+  }
+  var ej = EJERCICIOS[n];
+  document.getElementById("icono").textContent = ej.icono;
+  document.getElementById("titulo").textContent = ej.titulo;
+  document.getElementById("consigna").textContent = ej.consigna;
+  document.getElementById("contador").textContent = "Ejercicio " + (n + 1) + " de " + EJERCICIOS.length;
+  lienzo.setAttribute("aria-label", ej.titulo + ". " + ej.consigna);
+  decir("Pon el dedo en el punto verde para empezar.");
+  dibujarTira();
+  pintar();
+}
+
+window.addEventListener("resize", ajustarLienzo);
+document.fonts && document.fonts.ready && document.fonts.ready.then(pintar);
+
+dibujarTira();
+cargarEjercicio(0, true);
+ajustarLienzo();
+</script>
+</body>
+</html>
