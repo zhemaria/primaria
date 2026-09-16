@@ -20,15 +20,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --papel:#FDFCF8;
-  --papel-hondo:#EDF1F4;
-  --tinta:#1F2D36;
+  --papel:#FFFFFF;
+  --papel-hondo:#EDF2F7;
+  --tinta:#1B2A4A;
   --tinta-suave:#4A5D68;
   --crayon:#D6420B;
   --menta:#0B6157;
   --azul:#1D4E89;
-  --borde:#C9D6DF;
-  --radio:18px;
+  --borde:#D6DEE7;
+  --radio:16px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -37,43 +37,52 @@ body{
   font-family:"Atkinson Hyperlegible","Verdana",system-ui,sans-serif;
   font-size:18px;line-height:1.6;padding:18px;
 }
-h1,h2,h3,.numero,.enlace{font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif}
-.marco{max-width:880px;margin:0 auto}
+h1,h2,h3,.codigo{font-family:"Fredoka","Trebuchet MS",system-ui,sans-serif}
+.marco{max-width:1040px;margin:0 auto}
 
-.portada{
-  background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);
-  padding:26px 24px 22px;box-shadow:0 2px 0 var(--borde);
-}
-.portada h1{margin:0 0 6px;font-size:clamp(1.8rem,6vw,2.6rem);font-weight:600;letter-spacing:.5px}
+.portada{padding:4px 4px 6px}
+.portada h1{margin:0 0 4px;font-size:clamp(1.8rem,6vw,2.5rem);font-weight:600;letter-spacing:.5px}
 .portada p{margin:0;color:var(--tinta-suave);max-width:62ch}
-.muestra-abc{display:block;width:100%;height:auto;margin:6px 0 18px}
+.muestra-abc{display:block;width:100%;max-width:560px;height:auto;margin:10px 0 14px}
 .muestra-abc .camino{fill:none;stroke:#9FB3C8;stroke-width:9;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:14 18}
 .muestra-abc .trazo{fill:none;stroke:var(--crayon);stroke-width:11;stroke-linecap:round;stroke-linejoin:round}
 .muestra-abc .punto{fill:var(--menta)}
 
-/* The modules are a sequence: the numbers carry the order of use */
-.modulos{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
-.modulo{
-  display:flex;gap:16px;align-items:flex-start;
+/* Tarjetas de módulo: misma estructura que la serie de matemáticas */
+.tarjetas{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
+.tarjeta{
+  position:relative;display:flex;gap:14px;align-items:flex-start;
   background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);
-  padding:18px;box-shadow:0 2px 0 var(--borde);
+  padding:20px 18px;box-shadow:0 2px 6px rgba(27,42,74,.06);
 }
-.numero{
-  flex:0 0 auto;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;
-  background:var(--azul);color:#fff;font-size:1.4rem;font-weight:700;
-}
-.modulo h2{margin:0 0 4px;font-size:1.25rem;font-weight:600}
-.modulo p{margin:0 0 10px;color:var(--tinta-suave);max-width:60ch}
-.modulo .contenido{margin:0 0 12px;font-size:.97rem;color:var(--tinta-suave)}
-.enlace{
-  display:inline-block;background:var(--menta);color:#fff;text-decoration:none;
-  border-radius:14px;padding:11px 20px;font-weight:600;min-height:48px;line-height:26px;
-}
-.enlace:hover,.enlace:focus{background:#094F47}
-.enlace:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.tarjeta:hover{border-color:var(--azul)}
+.tarjeta:focus-within{border-color:var(--azul);box-shadow:0 0 0 3px rgba(29,78,137,.25)}
+.emblema{flex:0 0 auto;font-size:2.4rem;line-height:1.1}
+.cuerpo{flex:1 1 auto;min-width:0}
+.cuerpo h2{margin:0 0 6px;font-size:1.22rem;font-weight:600;line-height:1.25}
+.cuerpo h2 a{color:var(--tinta);text-decoration:none}
+.cuerpo h2 a::after{content:"";position:absolute;inset:0}
+.cuerpo p{margin:0 0 10px;color:var(--tinta-suave);font-size:1rem;line-height:1.45}
+.codigo{margin:0;font-size:.95rem;font-weight:700;color:var(--tinta)}
 
-.vuelta{margin:22px 0 0}
-.vuelta a{color:var(--azul)}
+/* El botón de voz va por encima del enlace que cubre toda la tarjeta */
+.b-voz{
+  position:relative;z-index:2;flex:0 0 auto;
+  width:50px;height:50px;border-radius:50%;
+  border:2px solid var(--borde);background:var(--papel-hondo);color:var(--azul);
+  font-size:1.35rem;line-height:1;cursor:pointer;display:grid;place-items:center;align-self:center;
+}
+.b-voz:hover{background:#E1EAF5;border-color:var(--azul)}
+.b-voz:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
+
+.vuelta{margin:24px 0 0}
+.vuelta a{
+  display:inline-block;background:var(--papel);border:2px solid var(--borde);border-radius:14px;
+  padding:11px 18px;color:var(--azul);text-decoration:none;font-weight:700;min-height:48px;line-height:26px;
+}
+.vuelta a:hover{border-color:var(--azul)}
+.vuelta a:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
 
 details.adulto{margin-top:20px;background:var(--papel);border:2px solid var(--borde);border-radius:var(--radio);padding:14px 18px}
 details.adulto summary{font-family:"Fredoka",system-ui,sans-serif;font-weight:600;cursor:pointer;min-height:44px;line-height:30px}
@@ -81,19 +90,20 @@ details.adulto h3{margin:16px 0 6px;font-size:1.05rem;font-weight:600}
 details.adulto p{margin:6px 0;color:var(--tinta-suave);font-size:.97rem;max-width:66ch}
 details.adulto ul{margin:6px 0;padding-left:1.2em;color:var(--tinta-suave);font-size:.97rem}
 
-footer{margin:28px auto 8px;max-width:880px;font-size:.88rem;color:var(--tinta-suave);line-height:1.5}
+footer{margin:28px auto 8px;max-width:1040px;font-size:.88rem;color:var(--tinta-suave);line-height:1.5}
 footer a{color:var(--azul)}
 
-@media (max-width:560px){
-  body{padding:12px;font-size:17px}
-  .modulo{flex-direction:column;gap:10px}
-}
+@media (max-width:900px){ .tarjetas{grid-template-columns:1fr} }
+@media (max-width:560px){ body{padding:12px;font-size:17px} }
 </style>
 </head>
 <body>
 <div class="marco">
 
   <section class="portada">
+    <h1>Letters</h1>
+    <p>Three activities for the hand and the eye. Use them in this order: first the hand learns to move, then it draws letters, and last it learns to recognize them.</p>
+
     <svg class="muestra-abc" viewBox="0 0 760 180" role="img" aria-label="The letters A, B and C being traced on writing lines">
       <line x1="20" y1="30" x2="740" y2="30" stroke="#C9D6DF" stroke-width="3"/>
       <line x1="20" y1="150" x2="740" y2="150" stroke="#C9D6DF" stroke-width="3"/>
@@ -112,66 +122,60 @@ footer a{color:var(--azul)}
       <path class="camino" d="M 600 52 C 580 26 520 22 500 60 C 480 100 495 150 545 152 C 575 153 595 140 604 128"/>
       <circle class="punto" cx="600" cy="52" r="9"/>
     </svg>
-
-    <h1>Letters</h1>
-    <p>Three activities for the hand and the eye in pre-K. Use them in this order: first the hand learns to move, then it draws letters, and last it learns to recognize them.</p>
   </section>
 
-  <ol class="modulos">
+  <ul class="tarjetas">
 
-    <li class="modulo">
-      <span class="numero" aria-hidden="true">1</span>
-      <div>
-        <h2>Tracing paths</h2>
-        <p>Lines and shapes before any letter. The child learns to go down, to cross from left to right, and to close a shape.</p>
-        <p class="contenido">Eight exercises: down, across, slants both ways, waves, zigzag, circle and closed shapes.</p>
-        <a class="enlace" href="prek-letters-01-lines-and-shapes.html" target="_blank" rel="noopener noreferrer">Open module one</a>
+    <li class="tarjeta">
+      <span class="emblema" aria-hidden="true">✏️</span>
+      <div class="cuerpo">
+        <h2><a href="prek-letters-01-lines-and-shapes.html" target="_blank" rel="noopener noreferrer">Tracing paths</a></h2>
+        <p>Down, across and around: lines and shapes before any letter</p>
+        <p class="codigo">PK.5.A</p>
       </div>
+      <button type="button" class="b-voz" data-voz="Tracing paths. Down, across and around. Lines and shapes before any letter." aria-label="Listen: Tracing paths">🔊</button>
     </li>
 
-    <li class="modulo">
-      <span class="numero" aria-hidden="true">2</span>
-      <div>
-        <h2>Capital letters step by step</h2>
-        <p>All 26 letters with their starting point, stroke order and direction. Grouped by what the hand has to do, not alphabetically.</p>
-        <p class="contenido">Includes building the child's own name so they can trace it letter by letter.</p>
-        <a class="enlace" href="prek-letters-02-capital-letters.html" target="_blank" rel="noopener noreferrer">Open module two</a>
+    <li class="tarjeta">
+      <span class="emblema" aria-hidden="true">🔠</span>
+      <div class="cuerpo">
+        <h2><a href="prek-letters-02-capital-letters.html" target="_blank" rel="noopener noreferrer">Capital letters</a></h2>
+        <p>All 26 letters with their starting point, stroke order and your own name</p>
+        <p class="codigo">PK.4.B, PK.5.A</p>
       </div>
+      <button type="button" class="b-voz" data-voz="Capital letters. All twenty six letters with their starting point, stroke order, and your own name." aria-label="Listen: Capital letters">🔊</button>
     </li>
 
-    <li class="modulo">
-      <span class="numero" aria-hidden="true">3</span>
-      <div>
-        <h2>Knowing the letters</h2>
-        <p>Recognizing the letter with the eye and the ear instead of the hand.</p>
-        <p class="contenido">Three activities: matching capital with lowercase, connecting the dots in alphabetical order, and picking the word that starts with each letter.</p>
-        <a class="enlace" href="prek-letters-03-knowing-letters.html" target="_blank" rel="noopener noreferrer">Open module three</a>
+    <li class="tarjeta">
+      <span class="emblema" aria-hidden="true">🔎</span>
+      <div class="cuerpo">
+        <h2><a href="prek-letters-03-knowing-letters.html" target="_blank" rel="noopener noreferrer">Knowing the letters</a></h2>
+        <p>Big and small letters, alphabet order, and beginning sounds</p>
+        <p class="codigo">PK.4.A–C</p>
       </div>
+      <button type="button" class="b-voz" data-voz="Knowing the letters. Big and small letters, alphabet order, and beginning sounds." aria-label="Listen: Knowing the letters">🔊</button>
     </li>
 
-  </ol>
+  </ul>
 
-  <p class="vuelta">
-    <a href="../">Back to elementary</a> &nbsp;·&nbsp;
-    <a href="../prekinder/">Pre-K math activities</a>
-  </p>
+  <p class="vuelta"><a href="../prekinder/">Pre-K math activities</a></p>
 
   <details class="adulto">
     <summary>For the grown-up</summary>
 
     <h3>How to use the series</h3>
     <p>The modules are ordered by what depends on what, not by difficulty within a single session. A child may spend weeks on the first one before touching the second, and that is what you should expect. Sessions of five to eight minutes are enough.</p>
-    <p>All three modules have an easy mode, an animated demonstration, and the option to mark an exercise as done on paper, so no child gets stuck for lack of motor control.</p>
+    <p>All three modules read their instructions out loud, have an easy mode, an animated demonstration, and the option to mark an exercise as done on paper, so no child gets stuck for lack of motor control or for not reading yet.</p>
 
     <h3>What each one practices</h3>
     <ul>
-      <li>The first one, stroke control and direction: top to bottom and left to right.</li>
-      <li>The second one, letter formation and the idea that a letter is always written the same way, starting from the same place.</li>
-      <li>The third one, the match between capital and lowercase, alphabetical order, and beginning sounds.</li>
+      <li>Tracing paths: stroke control and direction, top to bottom and left to right. Standard 5.A, writing tools and letterlike forms.</li>
+      <li>Capital letters: letter formation, stroke order, and writing their own first name. Standards 4.B and 5.A.</li>
+      <li>Knowing the letters: matching capital with lowercase, alphabet order, and the first sound in a word. Standards 4.A, 4.B and 4.C.</li>
     </ul>
 
     <h3>Standards</h3>
-    <p>The series supports the Illinois Early Learning and Development Standards for language and literacy at this age: early writing, print awareness and letter recognition. Four and five year olds are not asked for handwriting, they are asked to recognize letters and know where each one starts.</p>
+    <p>The codes come from the Illinois Early Learning and Development Standards for preschool, language arts: 4.A print features, 4.B alphabet knowledge, 4.C spoken words and sounds, 5.A interest and ability in writing. Four and five year olds are not asked for handwriting, they are asked to recognize letters and know where each one starts.</p>
 
     <h3>In the classroom</h3>
     <p>Keep the tablet flat on the table, never held in the hand. Alternate the screen with paper and crayon: a screen offers no resistance, and resistance is part of what strengthens the hand.</p>
@@ -184,5 +188,39 @@ footer a{color:var(--azul)}
   José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
   <p>Licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)</a>.</p>
 </footer>
+
+<script>
+"use strict";
+
+/* Lectura en voz alta de cada tarjeta, para el niño que todavía no lee. */
+function hablar(texto, boton){
+  if (!("speechSynthesis" in window)){ return; }
+  try{
+    window.speechSynthesis.cancel();
+    var voz = new SpeechSynthesisUtterance(texto);
+    voz.lang  = "en-US";
+    voz.rate  = 0.85;
+    voz.pitch = 1.05;
+    if (boton){
+      boton.setAttribute("aria-pressed", "true");
+      voz.onend   = function(){ boton.setAttribute("aria-pressed", "false"); };
+      voz.onerror = function(){ boton.setAttribute("aria-pressed", "false"); };
+    }
+    window.speechSynthesis.speak(voz);
+  }catch(e){ /* sin voz, la página funciona igual */ }
+}
+
+var botones = document.querySelectorAll(".b-voz");
+for (var i = 0; i < botones.length; i++){
+  (function(boton){
+    boton.setAttribute("aria-pressed", "false");
+    boton.addEventListener("click", function(evento){
+      evento.preventDefault();
+      evento.stopPropagation();
+      hablar(boton.getAttribute("data-voz"), boton);
+    });
+  })(botones[i]);
+}
+</script>
 </body>
 </html>

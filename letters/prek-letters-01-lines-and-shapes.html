@@ -128,10 +128,29 @@ footer a{color:var(--azul)}
   .chip .texto{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Volver al hub y lectura en voz alta */
+.volver{
+  display:inline-block;margin:0 0 12px;padding:10px 16px;min-height:46px;line-height:24px;
+  background:var(--papel);border:2px solid var(--borde);border-radius:14px;
+  color:var(--azul);text-decoration:none;font-family:"Fredoka",system-ui,sans-serif;font-weight:700;
+}
+.volver:hover{border-color:var(--azul)}
+.volver:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz{
+  margin-left:auto;flex:0 0 auto;width:52px;height:52px;border-radius:50%;
+  border:2px solid var(--borde);background:var(--papel-hondo);color:var(--azul);
+  font-size:1.4rem;line-height:1;cursor:pointer;display:grid;place-items:center;
+}
+.b-voz:hover{background:#E1EAF5;border-color:var(--azul)}
+.b-voz:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
 </style>
 </head>
 <body>
 <div class="marco">
+
+  <a class="volver" href="index.html">← All letter activities</a>
 
   <header class="cabecera">
     <h1>Tracing paths</h1>
@@ -147,6 +166,7 @@ footer a{color:var(--azul)}
         <h2 id="titulo">Lines from top to bottom</h2>
         <p id="consigna">Start at the green dot and go down slowly.</p>
       </div>
+      <button type="button" class="b-voz" id="b-voz" aria-label="Listen to the instructions">🔊</button>
     </div>
 
     <canvas id="lienzo" tabindex="0" role="application" aria-label="Tracing area"></canvas>
@@ -171,6 +191,7 @@ footer a{color:var(--azul)}
       <button type="button" class="opcion" id="op-facil" aria-pressed="false">Easy mode</button>
       <button type="button" class="opcion" id="op-normal" aria-pressed="true">Normal mode</button>
       <button type="button" class="opcion" id="op-sonido" aria-pressed="true">Sound</button>
+      <button type="button" class="opcion" id="op-lectura" aria-pressed="true">Read aloud</button>
     </div>
     <p>In easy mode the margin of error is wider and leaving the path does not interrupt the stroke. In normal mode the stroke restarts when the child drifts too far, which is what enforces the correct direction.</p>
 
@@ -780,9 +801,55 @@ function cargarEjercicio(n, limpiar){
   document.getElementById("contador").textContent = "Exercise " + (n + 1) + " of " + EJERCICIOS.length;
   lienzo.setAttribute("aria-label", ej.titulo + ". " + ej.consigna);
   decir("Put your finger on the green dot to start.");
+  leerConsigna();
   dibujarTira();
   pintar();
 }
+
+
+/* =======================================================================
+   Lectura en voz alta: el niño de prekínder no lee la consigna.
+   ======================================================================= */
+
+var LECTURA = true;
+var botonVoz = document.getElementById("b-voz");
+
+function hablar(texto){
+  if (!LECTURA || !("speechSynthesis" in window)){ return; }
+  try{
+    window.speechSynthesis.cancel();
+    var voz = new SpeechSynthesisUtterance(texto);
+    voz.lang  = "en-US";
+    voz.rate  = 0.85;
+    voz.pitch = 1.05;
+    if (botonVoz){
+      botonVoz.setAttribute("aria-pressed", "true");
+      voz.onend   = function(){ botonVoz.setAttribute("aria-pressed", "false"); };
+      voz.onerror = function(){ botonVoz.setAttribute("aria-pressed", "false"); };
+    }
+    window.speechSynthesis.speak(voz);
+  }catch(e){ /* sin voz, el interactivo funciona igual */ }
+}
+
+function leerConsigna(){
+  var titulo = document.getElementById("titulo");
+  var consigna = document.getElementById("consigna");
+  var partes = [];
+  if (titulo){ partes.push(titulo.textContent); }
+  if (consigna){ partes.push(consigna.textContent); }
+  hablar(partes.join(". "));
+}
+
+if (botonVoz){
+  botonVoz.setAttribute("aria-pressed", "false");
+  botonVoz.addEventListener("click", leerConsigna);
+}
+
+document.getElementById("op-lectura").addEventListener("click", function(){
+  LECTURA = !LECTURA;
+  this.setAttribute("aria-pressed", LECTURA ? "true" : "false");
+  if (!LECTURA && "speechSynthesis" in window){ window.speechSynthesis.cancel(); }
+});
 
 window.addEventListener("resize", ajustarLienzo);
 document.fonts && document.fonts.ready && document.fonts.ready.then(pintar);
