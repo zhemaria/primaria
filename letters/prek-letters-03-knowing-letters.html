@@ -181,7 +181,8 @@ footer a{color:var(--azul)}
 
     <div class="botonera">
       <button type="button" class="accion b-calmo" id="b-pista">Which one is next?</button>
-      <button type="button" class="accion b-principal" id="b-otra-vez">Start over</button>
+      <button type="button" class="accion b-calmo" id="b-otra-vez">Start over</button>
+      <button type="button" class="accion b-principal" id="b-figura">Another picture</button>
     </div>
   </section>
 
@@ -403,18 +404,25 @@ function responderParejas(boton, letra){
     aciertosParejas++;
     rondaParejas++;
     tono(880, 200);
-    decir(avisoParejas, "Yes! " + letraObjetivo + " and " + letra + " are the same letter.", "bien");
+    var mensaje = "Yes! " + letraObjetivo + " and " + letra + " are the same letter.";
+    avisoParejas.textContent = mensaje;
+    avisoParejas.className = "aviso bien";
     document.getElementById("contador-parejas").textContent =
       "" + aciertosParejas + " of " + TOTAL_PAREJAS + " so far";
 
-    setTimeout(function(){
-      if (rondaParejas >= TOTAL_PAREJAS){
-        decir(avisoParejas, "All ten done! ⭐ Tap a letter to play again.", "bien");
-        aciertosParejas = 0; rondaParejas = 0;
-        document.getElementById("contador-parejas").textContent = "0 of " + TOTAL_PAREJAS + " so far";
-      }
-      nuevaRondaParejas();
-    }, 1400);
+    /* La ronda siguiente espera a que la voz acabe de felicitarlo */
+    hablarCola([{ texto: mensaje, rate: 0.85 }], function(){
+      setTimeout(function(){
+        if (rondaParejas >= TOTAL_PAREJAS){
+          decir(avisoParejas, "All ten done! Tap a letter to play again.", "bien");
+          aciertosParejas = 0; rondaParejas = 0;
+          document.getElementById("contador-parejas").textContent = "0 of " + TOTAL_PAREJAS + " so far";
+          setTimeout(nuevaRondaParejas, 2600);
+        } else {
+          nuevaRondaParejas();
+        }
+      }, 600);
+    });
   } else {
     boton.className = "opcion-letra mal";
     tono(220, 160);
@@ -424,28 +432,101 @@ function responderParejas(boton, letra){
 
 /* =======================================================================
    5. Actividad 2: unir los puntos
-   The outline of a fish traced in alphabetical order, from a to r.
+   Dos figuras recorridas en orden alfabético. Las letras se asignan por
+   posición, así que cada figura puede tener su propio número de puntos.
    ======================================================================= */
 
 var ANCHO_V = 1000;
 var ALTO_V  = 600;
 
-var PUNTOS = [
-  { letra:"a", x:160, y:300 }, { letra:"b", x:230, y:215 }, { letra:"c", x:340, y:170 },
-  { letra:"d", x:460, y:160 }, { letra:"e", x:570, y:185 }, { letra:"f", x:660, y:230 },
-  { letra:"g", x:730, y:290 }, { letra:"h", x:820, y:205 }, { letra:"i", x:900, y:165 },
-  { letra:"j", x:880, y:300 }, { letra:"k", x:900, y:435 }, { letra:"l", x:820, y:395 },
-  { letra:"m", x:730, y:310 }, { letra:"n", x:660, y:370 }, { letra:"o", x:570, y:415 },
-  { letra:"p", x:460, y:430 }, { letra:"q", x:340, y:420 }, { letra:"r", x:230, y:385 }
+var LETRAS_MINUS = "abcdefghijklmnopqrstuvwxyz".split("");
+
+/* Genera una estrella de tantos picos como se pida. */
+function estrella(cx, cy, radioGrande, radioChico, picos){
+  var puntos = [];
+  for (var i = 0; i < picos * 2; i++){
+    var radio = (i % 2 === 0) ? radioGrande : radioChico;
+    var angulo = (-90 + i * (180 / picos)) * Math.PI / 180;
+    puntos.push({ x: cx + radio * Math.cos(angulo), y: cy + radio * Math.sin(angulo) });
+  }
+  return puntos;
+}
+
+var FIGURAS = [
+  {
+    nombre: "a fish",
+    relleno: "#BFE3EE",
+    /* La g y la m son las dos uniones de la cola: van bien separadas
+       para que un dedo de cuatro años no las confunda. */
+    puntos: [
+      { x:150, y:300 }, { x:225, y:215 }, { x:340, y:168 }, { x:460, y:158 },
+      { x:570, y:183 }, { x:660, y:228 }, { x:725, y:258 }, { x:820, y:200 },
+      { x:900, y:160 }, { x:880, y:300 }, { x:900, y:440 }, { x:820, y:400 },
+      { x:725, y:352 }, { x:660, y:375 }, { x:570, y:418 }, { x:460, y:432 },
+      { x:340, y:422 }, { x:225, y:388 }
+    ],
+    adornos: function(){
+      ctx.save();
+      ctx.fillStyle = "#1F2D36";
+      ctx.beginPath(); ctx.arc(258, 278, 14, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#1F2D36";
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(430, 188); ctx.lineTo(500, 258); ctx.lineTo(400, 258);
+      ctx.stroke();
+      ctx.restore();
+    }
+  },
+  {
+    nombre: "a sun",
+    relleno: "#FBE3A6",
+    puntos: estrella(500, 300, 235, 118, 9),
+    adornos: function(){
+      ctx.save();
+      ctx.fillStyle = "#1F2D36";
+      ctx.beginPath(); ctx.arc(455, 270, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(545, 270, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#1F2D36";
+      ctx.lineWidth = 6;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.arc(500, 310, 45, 0.15 * Math.PI, 0.85 * Math.PI);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
 ];
 
 var lienzo = document.getElementById("lienzo");
 var ctx = lienzo.getContext("2d");
 var avisoPuntos = document.getElementById("aviso-puntos");
+
+var figuraActual = 0;
+var PUNTOS = [];
 var siguientePunto = 0;
 var terminadoPuntos = false;
 var pistaVisible = false;
 var escala = 1;
+
+function ultimaLetra(){ return LETRAS_MINUS[PUNTOS.length - 1]; }
+
+function cargarFigura(n){
+  figuraActual = n % FIGURAS.length;
+  var figura = FIGURAS[figuraActual];
+  PUNTOS = [];
+  for (var i = 0; i < figura.puntos.length; i++){
+    PUNTOS.push({ letra: LETRAS_MINUS[i], x: figura.puntos[i].x, y: figura.puntos[i].y });
+  }
+  siguientePunto = 0;
+  terminadoPuntos = false;
+  pistaVisible = false;
+
+  var enunciado = document.getElementById("consigna-puntos");
+  if (enunciado){ enunciado.textContent = "Tap the letters in order, from a to " + ultimaLetra() + ", and the picture will appear."; }
+
+  decir(avisoPuntos, "Start with the letter a.");
+  pintarPuntos();
+}
 
 function ajustarLienzo(){
   var caja = lienzo.getBoundingClientRect();
@@ -459,11 +540,13 @@ function ajustarLienzo(){
 }
 
 function pintarPuntos(){
+  var figura = FIGURAS[figuraActual];
+
   ctx.clearRect(0, 0, ANCHO_V, ALTO_V);
   ctx.fillStyle = "#FDFCF8";
   ctx.fillRect(0, 0, ANCHO_V, ALTO_V);
 
-  /* Water in the background, so the fish has somewhere to live */
+  /* Fondo con ondas suaves */
   ctx.save();
   ctx.strokeStyle = "#E4EBF1";
   ctx.lineWidth = 4;
@@ -477,10 +560,10 @@ function pintarPuntos(){
   }
   ctx.restore();
 
-  /* Once finished, the shape is filled in */
+  /* Al terminar se rellena la figura */
   if (terminadoPuntos){
     ctx.save();
-    ctx.fillStyle = "#BFE3EE";
+    ctx.fillStyle = figura.relleno;
     ctx.beginPath();
     ctx.moveTo(PUNTOS[0].x, PUNTOS[0].y);
     for (var f = 1; f < PUNTOS.length; f++){ ctx.lineTo(PUNTOS[f].x, PUNTOS[f].y); }
@@ -489,7 +572,7 @@ function pintarPuntos(){
     ctx.restore();
   }
 
-  /* Segments already connected */
+  /* Tramos ya unidos */
   ctx.save();
   ctx.strokeStyle = "#D6420B";
   ctx.lineWidth = 8;
@@ -504,7 +587,7 @@ function pintarPuntos(){
   }
   ctx.restore();
 
-  /* Dots with their letter */
+  /* Puntos con su letra */
   for (var j = 0; j < PUNTOS.length; j++){
     var p = PUNTOS[j];
     var hecho = j < siguientePunto;
@@ -524,27 +607,23 @@ function pintarPuntos(){
       ctx.stroke();
     }
 
+    /* La etiqueta se aparta del centro de la figura para que dos puntos
+       vecinos nunca tengan la letra encima uno del otro. */
+    var fuera = (p.y < 300) ? -34 : 36;
     ctx.fillStyle = hecho ? "#9FB3C8" : "#1D4E89";
     ctx.font = "600 30px Fredoka, system-ui, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(p.letra, p.x, p.y - 32);
+    ctx.fillText(p.letra, p.x, p.y + fuera);
     ctx.restore();
   }
 
-  /* Eye and fin as the final reward */
   if (terminadoPuntos){
+    figura.adornos();
     ctx.save();
-    ctx.fillStyle = "#1F2D36";
-    ctx.beginPath(); ctx.arc(260, 280, 14, 0, Math.PI * 2); ctx.fill();
-    ctx.strokeStyle = "#1F2D36";
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.moveTo(430, 175); ctx.lineTo(500, 250); ctx.lineTo(400, 250);
-    ctx.stroke();
     ctx.font = "50px system-ui, sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("⭐", 110, 90);
+    ctx.fillText("\u2B50", 110, 90);
     ctx.restore();
   }
 }
@@ -555,27 +634,32 @@ lienzo.addEventListener("pointerdown", function(evento){
   var x = (evento.clientX - caja.left) / escala;
   var y = (evento.clientY - caja.top) / escala;
 
+  /* Se elige el punto MÁS CERCANO dentro del radio, no el primero de la
+     lista: con dos puntos vecinos, el primero se llevaba siempre el toque. */
+  var elegido = -1;
+  var minima = 999999;
   for (var i = 0; i < PUNTOS.length; i++){
-    if (Math.hypot(PUNTOS[i].x - x, PUNTOS[i].y - y) <= 40){
-      if (i === siguientePunto){
-        siguientePunto++;
-        pistaVisible = false;
-        tono(520 + siguientePunto * 20, 120);
-        if (siguientePunto >= PUNTOS.length){
-          terminadoPuntos = true;
-          tono(880, 300);
-          decir(avisoPuntos, "A fish appeared! You did it in order, from a to r. Press the green Start over button to do it again.", "bien");
-        } else {
-          decir(avisoPuntos, "Good. Now find the " + PUNTOS[siguientePunto].letra + ".");
-          hablar("Good. Now find the letter " + PUNTOS[siguientePunto].letra + ".", null);
-        }
-      } else if (i > siguientePunto){
-        decir(avisoPuntos, "Not yet. Tap the " + PUNTOS[siguientePunto].letra + " first.", "ojo");
-      }
-      pintarPuntos();
-      return;
-    }
+    var d = Math.hypot(PUNTOS[i].x - x, PUNTOS[i].y - y);
+    if (d <= 45 && d < minima){ minima = d; elegido = i; }
   }
+  if (elegido === -1){ return; }
+
+  if (elegido === siguientePunto){
+    siguientePunto++;
+    pistaVisible = false;
+    tono(520 + siguientePunto * 20, 120);
+    if (siguientePunto >= PUNTOS.length){
+      terminadoPuntos = true;
+      tono(880, 300);
+      decir(avisoPuntos, "You made " + FIGURAS[figuraActual].nombre + "! Press the green Another picture button for a new one.", "bien");
+    } else {
+      decir(avisoPuntos, "Good. Now find the " + PUNTOS[siguientePunto].letra + ".");
+      hablar("Good. Now find the letter " + PUNTOS[siguientePunto].letra + ".", null);
+    }
+  } else if (elegido > siguientePunto){
+    decir(avisoPuntos, "Not yet. Tap the " + PUNTOS[siguientePunto].letra + " first.", "ojo");
+  }
+  pintarPuntos();
 });
 
 document.getElementById("b-pista").addEventListener("click", function(){
@@ -587,11 +671,12 @@ document.getElementById("b-pista").addEventListener("click", function(){
 });
 
 document.getElementById("b-otra-vez").addEventListener("click", function(){
-  siguientePunto = 0;
-  terminadoPuntos = false;
-  pistaVisible = false;
-  decir(avisoPuntos, "Start with the letter a.");
-  pintarPuntos();
+  cargarFigura(figuraActual);
+});
+
+document.getElementById("b-figura").addEventListener("click", function(){
+  cargarFigura(figuraActual + 1);
+  hablar("A new picture. Start with the letter a.", null);
 });
 
 /* =======================================================================
@@ -653,27 +738,38 @@ function responderSonido(boton, letra){
     aciertosSonido++;
     rondaSonido++;
     tono(880, 200);
-    decir(avisoSonido, "Correct! " + letraSonido + " is for " + PALABRAS[letra].p + ".", "bien");
+    var mensaje = "Correct! " + letraSonido + " is for " + PALABRAS[letra].p + ".";
+    avisoSonido.textContent = mensaje;
+    avisoSonido.className = "aviso bien";
     document.getElementById("contador-sonido").textContent =
       "" + aciertosSonido + " of " + TOTAL_SONIDO + " so far";
 
-    /* Se repite la palabra despacio: el niño oye el sonido inicial otra vez */
-    var palabraCorrecta = PALABRAS[letra].p;
-    setTimeout(function(){ hablarDespacio(palabraCorrecta); }, 1700);
-
-    setTimeout(function(){
-      if (rondaSonido >= TOTAL_SONIDO){
-        decir(avisoSonido, "All eight done! ⭐ Tap a picture to play again.", "bien");
-        aciertosSonido = 0; rondaSonido = 0;
-        document.getElementById("contador-sonido").textContent = "0 of " + TOTAL_SONIDO + " so far";
-      }
-      nuevaRondaSonido();
-    }, 3400);
+    /* Felicitación y, en la misma cola, la palabra repetida despacio para
+       que vuelva a oír el sonido inicial. La ronda espera a que termine. */
+    hablarCola([
+      { texto: mensaje, rate: 0.85 },
+      { texto: PALABRAS[letra].p, rate: 0.55 }
+    ], function(){
+      setTimeout(function(){
+        if (rondaSonido >= TOTAL_SONIDO){
+          decir(avisoSonido, "All eight done! Tap a picture to play again.", "bien");
+          aciertosSonido = 0; rondaSonido = 0;
+          document.getElementById("contador-sonido").textContent = "0 of " + TOTAL_SONIDO + " so far";
+          setTimeout(nuevaRondaSonido, 2600);
+        } else {
+          nuevaRondaSonido();
+        }
+      }, 600);
+    });
   } else {
     boton.className = "opcion-dibujo mal";
     tono(220, 160);
-    decir(avisoSonido, PALABRAS[letra].p + " starts with " + letra + ". Listen again.", "ojo");
-    setTimeout(function(){ hablarLista(palabrasRonda, 0.6); }, 2400);
+    var fallo = PALABRAS[letra].p + " starts with " + letra + ". Listen again.";
+    avisoSonido.textContent = fallo;
+    avisoSonido.className = "aviso ojo";
+    var cola = [{ texto: fallo, rate: 0.85 }];
+    for (var c = 0; c < palabrasRonda.length; c++){ cola.push({ texto: palabrasRonda[c], rate: 0.6 }); }
+    hablarCola(cola, null);
   }
 }
 
@@ -688,12 +784,16 @@ function responderSonido(boton, letra){
 
 var LECTURA = true;
 
+/* La voz no debe leer los emojis: el niño ve la estrella, no la oye. */
+function limpiar(texto){
+  return String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
+}
+
 function hablar(texto, boton){
   if (!LECTURA || !("speechSynthesis" in window)){ return; }
   try{
     window.speechSynthesis.cancel();
-    texto = String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
-    var voz = new SpeechSynthesisUtterance(texto);
+    var voz = new SpeechSynthesisUtterance(limpiar(texto));
     voz.lang  = "en-US";
     voz.rate  = 0.85;
     voz.pitch = 1.05;
@@ -707,19 +807,43 @@ function hablar(texto, boton){
 }
 
 
-/* Varias frases seguidas, sin que una cancele a la anterior.
-   Sirve para leerle las tres palabras a un niño que no lee. */
-function hablarLista(textos, velocidad){
-  if (!LECTURA || !("speechSynthesis" in window)){ return; }
+/* Varias frases seguidas, sin que una cancele a la anterior, y con aviso
+   al terminar: así la ronda siguiente no le corta la palabra al niño. */
+function hablarCola(items, alTerminar){
+  var cerrado = false;
+  function terminar(){
+    if (cerrado){ return; }
+    cerrado = true;
+    if (alTerminar){ alTerminar(); }
+  }
+
+  if (!LECTURA || !("speechSynthesis" in window)){
+    setTimeout(terminar, 1200);
+    return;
+  }
   try{
     window.speechSynthesis.cancel();
-    for (var i = 0; i < textos.length; i++){
-      var voz = new SpeechSynthesisUtterance(textos[i]);
+    for (var i = 0; i < items.length; i++){
+      var voz = new SpeechSynthesisUtterance(limpiar(items[i].texto));
       voz.lang = "en-US";
-      voz.rate = velocidad || 0.7;
+      voz.rate = items[i].rate || 0.8;
+      if (i === items.length - 1){
+        voz.onend   = terminar;
+        voz.onerror = terminar;
+      }
       window.speechSynthesis.speak(voz);
     }
-  }catch(e){ /* sin voz, el interactivo funciona igual */ }
+    /* Red de seguridad: hay navegadores que no disparan onend */
+    setTimeout(terminar, 1500 + items.length * 2500);
+  }catch(e){ setTimeout(terminar, 1200); }
+}
+
+function hablarLista(textos, velocidad){
+  var items = [];
+  for (var i = 0; i < textos.length; i++){
+    items.push({ texto: textos[i], rate: velocidad || 0.7 });
+  }
+  hablarCola(items, null);
 }
 
 function hablarDespacio(texto){ hablarLista([texto], 0.6); }
@@ -763,7 +887,7 @@ if (document.fonts && document.fonts.ready){ document.fonts.ready.then(function(
 dibujarActividades();
 nuevaRondaParejas();
 nuevaRondaSonido();
-pintarPuntos();
+cargarFigura(0);
 abrirActividad(0);
 </script>
 </body>
