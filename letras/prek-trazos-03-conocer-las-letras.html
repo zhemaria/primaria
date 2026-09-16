@@ -115,10 +115,29 @@ footer a{color:var(--azul)}
   .opcion-dibujo{width:120px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Volver al hub y lectura en voz alta */
+.volver{
+  display:inline-block;margin:0 0 12px;padding:10px 16px;min-height:46px;line-height:24px;
+  background:var(--papel);border:2px solid var(--borde);border-radius:14px;
+  color:var(--azul);text-decoration:none;font-family:"Fredoka",system-ui,sans-serif;font-weight:700;
+}
+.volver:hover{border-color:var(--azul)}
+.volver:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz{
+  margin-left:auto;flex:0 0 auto;width:52px;height:52px;border-radius:50%;
+  border:2px solid var(--borde);background:var(--papel-hondo);color:var(--azul);
+  font-size:1.4rem;line-height:1;cursor:pointer;display:grid;place-items:center;
+}
+.b-voz:hover{background:#E1EAF5;border-color:var(--azul)}
+.b-voz:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
 </style>
 </head>
 <body>
 <div class="marco">
+
+  <a class="volver" href="index.html">← Todas las actividades de letras</a>
 
   <header class="cabecera">
     <h1>Conocer las letras</h1>
@@ -135,6 +154,7 @@ footer a{color:var(--azul)}
         <h2>La misma letra, pequeñita</h2>
         <p id="consigna-parejas">Busca la letra pequeña que es igual que la grande.</p>
       </div>
+      <button type="button" class="b-voz b-voz-actividad" data-consigna="consigna-parejas" aria-label="Escuchar las instrucciones">🔊</button>
     </div>
 
     <div class="muestra"><div class="tarjeta-letra" id="letra-grande">M</div></div>
@@ -150,8 +170,9 @@ footer a{color:var(--azul)}
       <span class="icono" aria-hidden="true">🐟</span>
       <div>
         <h2>Une los puntos</h2>
-        <p>Toca las letras en orden, desde la a hasta la q, y aparecerá el dibujo.</p>
+        <p id="consigna-puntos">Toca las letras en orden, desde la a hasta la q, y aparecerá el dibujo.</p>
       </div>
+      <button type="button" class="b-voz b-voz-actividad" data-consigna="consigna-puntos" aria-label="Escuchar las instrucciones">🔊</button>
     </div>
 
     <canvas id="lienzo" tabindex="0" role="application" aria-label="Unir los puntos en orden alfabético"></canvas>
@@ -172,6 +193,7 @@ footer a{color:var(--azul)}
         <h2>¿Con qué letra empieza?</h2>
         <p id="consigna-sonido">Di las tres palabras en voz alta y escoge la que empieza con esa letra.</p>
       </div>
+      <button type="button" class="b-voz b-voz-actividad" data-consigna="consigna-sonido" aria-label="Escuchar las instrucciones">🔊</button>
     </div>
 
     <div class="muestra"><div class="tarjeta-letra" id="letra-sonido">S</div></div>
@@ -187,6 +209,7 @@ footer a{color:var(--azul)}
     <h3>Ajustes</h3>
     <div class="opciones" role="group" aria-label="Ajustes">
       <button type="button" class="opcion" id="op-sonido" aria-pressed="true">Sonido</button>
+      <button type="button" class="opcion" id="op-lectura" aria-pressed="true">Leer en voz alta</button>
     </div>
 
     <h3>Qué evalúa cada actividad</h3>
@@ -278,6 +301,7 @@ function barajar(lista){
 function decir(elemento, texto, clase){
   elemento.textContent = texto;
   elemento.className = "aviso" + (clase ? " " + clase : "");
+  if (clase === "bien" || clase === "ojo"){ hablar(texto, null); }
 }
 
 document.getElementById("op-sonido").addEventListener("click", function(){
@@ -322,6 +346,7 @@ function abrirActividad(n){
   }
   dibujarActividades();
   if (n === 1){ ajustarLienzo(); }
+  if (typeof leerActividad === "function"){ leerActividad(n); }
 }
 
 /* =======================================================================
@@ -538,7 +563,7 @@ lienzo.addEventListener("pointerdown", function(evento){
         if (siguientePunto >= PUNTOS.length){
           terminadoPuntos = true;
           tono(880, 300);
-          decir(avisoPuntos, "¡Apareció un pez! Lo hiciste en orden, de la a a la q.", "bien");
+          decir(avisoPuntos, "¡Apareció un pez! Lo hiciste en orden, de la a a la q. Toca Empezar de nuevo para repetirlo.", "bien");
         } else {
           decir(avisoPuntos, "Bien. Ahora busca la " + PUNTOS[siguientePunto].letra + ".");
         }
@@ -646,6 +671,60 @@ function responderSonido(boton, letra){
 /* =======================================================================
    7. Arranque
    ======================================================================= */
+
+
+/* =======================================================================
+   Lectura en voz alta: cada actividad lee su propio enunciado.
+   ======================================================================= */
+
+var LECTURA = true;
+
+function hablar(texto, boton){
+  if (!LECTURA || !("speechSynthesis" in window)){ return; }
+  try{
+    window.speechSynthesis.cancel();
+    texto = String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
+    var voz = new SpeechSynthesisUtterance(texto);
+    voz.lang  = "es-MX";
+    voz.rate  = 0.85;
+    voz.pitch = 1.05;
+    if (boton){
+      boton.setAttribute("aria-pressed", "true");
+      voz.onend   = function(){ boton.setAttribute("aria-pressed", "false"); };
+      voz.onerror = function(){ boton.setAttribute("aria-pressed", "false"); };
+    }
+    window.speechSynthesis.speak(voz);
+  }catch(e){ /* sin voz, el interactivo funciona igual */ }
+}
+
+var vocesActividad = document.querySelectorAll(".b-voz-actividad");
+for (var v = 0; v < vocesActividad.length; v++){
+  (function(boton){
+    boton.setAttribute("aria-pressed", "false");
+    boton.addEventListener("click", function(){
+      var titulo = boton.parentNode.querySelector("h2");
+      var consigna = document.getElementById(boton.getAttribute("data-consigna"));
+      var partes = [];
+      if (titulo){ partes.push(titulo.textContent); }
+      if (consigna){ partes.push(consigna.textContent); }
+      hablar(partes.join(". "), boton);
+    });
+  })(vocesActividad[v]);
+}
+
+/* Al abrir una actividad se lee su enunciado en voz alta */
+function leerActividad(n){
+  var enunciados = ["consigna-parejas", "consigna-puntos", "consigna-sonido"];
+  var titulos = ["La misma letra, pequeñita", "Une los puntos", "¿Con qué letra empieza?"];
+  var texto = document.getElementById(enunciados[n]);
+  hablar(titulos[n] + ". " + (texto ? texto.textContent : ""), null);
+}
+
+document.getElementById("op-lectura").addEventListener("click", function(){
+  LECTURA = !LECTURA;
+  this.setAttribute("aria-pressed", LECTURA ? "true" : "false");
+  if (!LECTURA && "speechSynthesis" in window){ window.speechSynthesis.cancel(); }
+});
 
 window.addEventListener("resize", function(){ if (actividadActual === 1){ ajustarLienzo(); } });
 if (document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ if (actividadActual === 1){ pintarPuntos(); } }); }

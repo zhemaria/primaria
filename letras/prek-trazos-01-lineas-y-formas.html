@@ -128,10 +128,29 @@ footer a{color:var(--azul)}
   .chip .texto{display:none}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Volver al hub y lectura en voz alta */
+.volver{
+  display:inline-block;margin:0 0 12px;padding:10px 16px;min-height:46px;line-height:24px;
+  background:var(--papel);border:2px solid var(--borde);border-radius:14px;
+  color:var(--azul);text-decoration:none;font-family:"Fredoka",system-ui,sans-serif;font-weight:700;
+}
+.volver:hover{border-color:var(--azul)}
+.volver:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz{
+  margin-left:auto;flex:0 0 auto;width:52px;height:52px;border-radius:50%;
+  border:2px solid var(--borde);background:var(--papel-hondo);color:var(--azul);
+  font-size:1.4rem;line-height:1;cursor:pointer;display:grid;place-items:center;
+}
+.b-voz:hover{background:#E1EAF5;border-color:var(--azul)}
+.b-voz:focus-visible{outline:3px solid var(--azul);outline-offset:3px}
+.b-voz[aria-pressed="true"]{background:var(--azul);color:#fff;border-color:var(--azul)}
 </style>
 </head>
 <body>
 <div class="marco">
+
+  <a class="volver" href="index.html">← Todas las actividades de letras</a>
 
   <header class="cabecera">
     <h1>Trazos y caminos</h1>
@@ -147,6 +166,7 @@ footer a{color:var(--azul)}
         <h2 id="titulo">Líneas de arriba abajo</h2>
         <p id="consigna">Empieza en el punto verde y baja despacio.</p>
       </div>
+      <button type="button" class="b-voz" id="b-voz" aria-label="Escuchar las instrucciones">🔊</button>
     </div>
 
     <canvas id="lienzo" tabindex="0" role="application" aria-label="Zona de trazo"></canvas>
@@ -171,6 +191,7 @@ footer a{color:var(--azul)}
       <button type="button" class="opcion" id="op-facil" aria-pressed="false">Modo fácil</button>
       <button type="button" class="opcion" id="op-normal" aria-pressed="true">Modo normal</button>
       <button type="button" class="opcion" id="op-sonido" aria-pressed="true">Sonido</button>
+      <button type="button" class="opcion" id="op-lectura" aria-pressed="true">Leer en voz alta</button>
     </div>
     <p>En modo fácil el margen de error es más ancho y salirse del camino no interrumpe el trazo. En modo normal el trazo se reinicia si el niño se aleja demasiado, que es lo que fuerza la direccionalidad correcta.</p>
 
@@ -540,6 +561,7 @@ function tono(frecuencia, milisegundos){
 function decir(texto, clase){
   aviso.textContent = texto;
   aviso.className = "aviso" + (clase ? " " + clase : "");
+  if (clase === "bien" || clase === "ojo"){ hablar(texto); }
 }
 
 /* =======================================================================
@@ -644,7 +666,7 @@ function marcarCompletado(){
   completados[indiceEjercicio] = true;
   indiceTrazo = EJERCICIOS[indiceEjercicio].trazos.length;
   tono(880, 260);
-  decir("¡Lo lograste! Ya puedes pasar al siguiente ejercicio.", "bien");
+  decir("¡Lo lograste! Toca el botón Siguiente para continuar.", "bien");
   dibujarTira();
   pintar();
 }
@@ -663,7 +685,7 @@ document.getElementById("b-papel").addEventListener("click", function(){
   var ej = EJERCICIOS[indiceEjercicio];
   for (var i = 0; i < ej.trazos.length; i++){ tintaHecha.push(ej.trazos[i].slice()); }
   marcarCompletado();
-  decir("Anotado: este ejercicio ya está hecho en papel.", "bien");
+  decir("Anotado: este ejercicio ya está hecho en papel. Toca el botón Siguiente para continuar.", "bien");
 });
 
 document.getElementById("b-siguiente").addEventListener("click", function(){
@@ -780,9 +802,57 @@ function cargarEjercicio(n, limpiar){
   document.getElementById("contador").textContent = "Ejercicio " + (n + 1) + " de " + EJERCICIOS.length;
   lienzo.setAttribute("aria-label", ej.titulo + ". " + ej.consigna);
   decir("Pon el dedo en el punto verde para empezar.");
+  leerConsigna();
   dibujarTira();
   pintar();
 }
+
+
+/* =======================================================================
+   Lectura en voz alta: el niño de prekínder no lee la consigna.
+   La voz va en español de México, que es donde se usa esta versión.
+   ======================================================================= */
+
+var LECTURA = true;
+var botonVoz = document.getElementById("b-voz");
+
+function hablar(texto){
+  if (!LECTURA || !("speechSynthesis" in window)){ return; }
+  try{
+    window.speechSynthesis.cancel();
+    texto = String(texto).replace(/[\u2B50\uD83C-\uDBFF\uDC00-\uDFFF\uFE0F]/g, " ").replace(/\s+/g, " ").trim();
+    var voz = new SpeechSynthesisUtterance(texto);
+    voz.lang  = "es-MX";
+    voz.rate  = 0.85;
+    voz.pitch = 1.05;
+    if (botonVoz){
+      botonVoz.setAttribute("aria-pressed", "true");
+      voz.onend   = function(){ botonVoz.setAttribute("aria-pressed", "false"); };
+      voz.onerror = function(){ botonVoz.setAttribute("aria-pressed", "false"); };
+    }
+    window.speechSynthesis.speak(voz);
+  }catch(e){ /* sin voz, el interactivo funciona igual */ }
+}
+
+function leerConsigna(){
+  var titulo = document.getElementById("titulo");
+  var consigna = document.getElementById("consigna");
+  var partes = [];
+  if (titulo){ partes.push(titulo.textContent); }
+  if (consigna){ partes.push(consigna.textContent); }
+  hablar(partes.join(". "));
+}
+
+if (botonVoz){
+  botonVoz.setAttribute("aria-pressed", "false");
+  botonVoz.addEventListener("click", leerConsigna);
+}
+
+document.getElementById("op-lectura").addEventListener("click", function(){
+  LECTURA = !LECTURA;
+  this.setAttribute("aria-pressed", LECTURA ? "true" : "false");
+  if (!LECTURA && "speechSynthesis" in window){ window.speechSynthesis.cancel(); }
+});
 
 window.addEventListener("resize", ajustarLienzo);
 document.fonts && document.fonts.ready && document.fonts.ready.then(pintar);
