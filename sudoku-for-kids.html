@@ -228,6 +228,9 @@
     .tecla{min-height:64px;font-size:2.2rem}
     .zona-controles .fila-botones{flex-direction:column;align-items:stretch}
   }
+  .elegir-voz{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin-top:.8rem;font-size:1rem}
+  .elegir-voz select{font-family:var(--texto);font-size:1rem;padding:.45rem .6rem;border:2px solid var(--tinta);border-radius:.6rem;background:#fff;color:var(--tinta);min-height:44px;max-width:100%}
+  .elegir-voz .btn{min-height:44px;padding:.4rem .8rem}
   .solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   @media print{
     body{background:#fff;font-size:12pt}
@@ -323,6 +326,20 @@
             <li>Board of 6: numbers 1 to 6</li>
             <li>Board of 9: numbers 1 to 9</li>
           </ul>
+          <div class="elegir-voz">
+            <span id="t-voz">Teacher's voice:</span>
+            <select id="selVoz" aria-labelledby="t-voz"></select>
+            <button type="button" class="btn claro" id="btnProbarVoz">▶ Try it</button>
+          </div>
+          <div class="elegir-voz">
+            <span id="t-vel">Speed:</span>
+            <select id="selVel" aria-labelledby="t-vel">
+              <option value="0.6">Very slow</option>
+              <option value="0.72" selected>Slow</option>
+              <option value="0.85">Medium</option>
+              <option value="1">Normal</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="camino" id="camino"></div>
@@ -403,12 +420,32 @@
   var tablero=$("tablero"), mensaje=$("mensaje");
 
   /* ---------- Voz ---------- */
-  var vozEs=null;
+  var vozEs=null, vozElegidaA_mano=false, velocidad=.72;
+  /* Voces femeninas suaves, de más natural a más básica. Cada dispositivo trae voces distintas. */
+  var FEMENINAS=[/aria.*natural/i,/jenny.*natural/i,/ava.*(natural|premium|enhanced)/i,/michelle.*natural/i,/emma.*natural/i,
+    /samantha.*(premium|enhanced)/i,/allison/i,/^ava\b/i,/google us english/i,/samantha/i,/aria/i,/jenny/i,/michelle/i,
+    /zira/i,/susan/i,/joanna/i,/salli/i,/kendra/i,/female/i];
+  var MASCULINAS=/(guy|david|mark|alex|fred|daniel|tom|aaron|arthur|evan|nathan|ryan|christopher|eric|roger|steffan|male)/i;
+  function vocesIngles(){ return speechSynthesis.getVoices().filter(function(v){return /^en/i.test(v.lang);}); }
   function elegirVoz(){
     if(!("speechSynthesis" in window)) return;
-    var vs=speechSynthesis.getVoices(), pref=["en-US","en-CA","en-GB","en-AU"];
-    for(var p=0;p<pref.length&&!vozEs;p++) for(var i=0;i<vs.length;i++) if(vs[i].lang.replace("_","-")===pref[p]){vozEs=vs[i];break;}
-    if(!vozEs) for(var j=0;j<vs.length;j++) if(/^en/i.test(vs[j].lang)){vozEs=vs[j];break;}
+    var vs=vocesIngles(); if(!vs.length) return;
+    if(!vozElegidaA_mano){
+      vozEs=null;
+      var us=vs.filter(function(v){return /en[-_]US/i.test(v.lang);}), grupos=[us,vs];
+      for(var g=0;g<2&&!vozEs;g++) for(var k=0;k<FEMENINAS.length&&!vozEs;k++)
+        for(var i=0;i<grupos[g].length;i++) if(FEMENINAS[k].test(grupos[g][i].name)&&!MASCULINAS.test(grupos[g][i].name)){vozEs=grupos[g][i];break;}
+      if(!vozEs) vozEs=us.filter(function(v){return !MASCULINAS.test(v.name);})[0]||us[0]||vs[0];
+    }
+    llenarSelector(vs);
+  }
+  function llenarSelector(vs){
+    var sel=document.getElementById("selVoz"); if(!sel) return;
+    sel.innerHTML="";
+    vs.forEach(function(v,i){
+      var o=document.createElement("option"); o.value=v.name; o.textContent=v.name.replace(/^Microsoft |^Google /,"")+" ("+v.lang+")";
+      if(vozEs&&v.name===vozEs.name) o.selected=true; sel.appendChild(o);
+    });
   }
   if("speechSynthesis" in window){elegirVoz();speechSynthesis.onvoiceschanged=elegirVoz;}
   function decir(t,forzar){
@@ -416,7 +453,7 @@
     speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(t);
     u.lang=vozEs?vozEs.lang:"en-US"; if(vozEs) u.voice=vozEs;
-    u.rate=.9; u.pitch=1.1;
+    u.rate=velocidad; u.pitch=1.12;
     var bo=$("btnLeer"); bo.classList.remove("hablando");
     if(forzar){ bo.classList.add("hablando"); u.onend=u.onerror=function(){bo.classList.remove("hablando");}; }
     speechSynthesis.speak(u);
@@ -671,6 +708,12 @@
   $("btnLeer").addEventListener("click",function(){
     decir("How to play. Each row has all the numbers, with no repeats. Each column has all the numbers, with no repeats. Each colored box has all the numbers, with no repeats. Tap an empty square, then tap the number. This game uses the numbers one to "+N+".",true);
   });
+  $("selVoz").addEventListener("change",function(){
+    var n=this.value; vozEs=vocesIngles().filter(function(v){return v.name===n;})[0]||vozEs; vozElegidaA_mano=true;
+    decir("Hi! I will help you play sudoku.",true);
+  });
+  $("selVel").addEventListener("change",function(){ velocidad=+this.value; decir("This is how fast I talk.",true); });
+  $("btnProbarVoz").addEventListener("click",function(){ decir("Correct! Great job.",true); });
   $("btnVoz").addEventListener("click",function(){
     vozActiva=!vozActiva; this.setAttribute("aria-pressed",vozActiva?"true":"false");
     this.textContent=(vozActiva?"🔊 Voice: on":"🔇 Voice: off");
