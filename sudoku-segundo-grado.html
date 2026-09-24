@@ -174,6 +174,61 @@
   footer p{margin:.25rem 0}
   footer a{color:var(--tinta)}
 
+  /* ---------- Ajustes de tamaño: que el tablero quepa en la pantalla ---------- */
+  .envoltura{padding-top:.6rem}
+  .letrero{padding:.25rem 1rem .35rem;border-width:4px;box-shadow:0 .35rem 0 #0f2438}
+  .letrero .cifras{display:none}
+  h1{font-size:clamp(1.5rem,4.5vw,2.1rem);margin:0}
+  .sub{font-size:.95rem;margin:0}
+  nav.saltos{margin:.5rem 0 0;gap:.4rem}
+  nav.saltos a{padding:.15rem .8rem;font-size:1rem;border-width:2px}
+  #juego.panel{margin-top:.7rem;padding:.7rem .9rem 1rem}
+  .acordeon{margin-bottom:.6rem}
+  .acordeon-boton{min-height:44px;padding:.35rem .8rem;font-size:1.05rem}
+  .bocina{min-height:38px;min-width:48px;font-size:1.3rem;margin:.2rem}
+  .camino{gap:.5rem;margin:0 0 .7rem}
+  .grupo{padding:.3rem .4rem .4rem}
+  .grupo h3{font-size:.9rem;margin:0 0 .2rem}
+  .juego{min-height:44px;padding:.2rem}
+  .juego .num{font-size:1.05rem;display:inline}
+  .juego.cerrado .candado{display:inline;margin-left:.15rem;font-size:.85rem}
+  .camino{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grupo,.par,.juego{min-width:0}
+  @media (max-width:560px){
+    .envoltura{padding-left:.5rem;padding-right:.5rem}
+    #juego.panel{padding:.6rem .5rem .9rem}
+    .camino{gap:.3rem}
+    .grupo h3{font-size:.72rem;line-height:1.2}
+    .juego .palabra{display:none}
+    .juego .num{font-size:1.2rem}
+    .juego.cerrado .candado{font-size:.75rem}
+  }
+
+  /* Lado del tablero: lo limita el ancho y también el alto de la pantalla */
+  .mesa{--lado:min(92vw, var(--ancho,26rem), calc(100vh - 21rem));gap:.6rem}
+  @supports (height:100svh){.mesa{--lado:min(92vw, var(--ancho,26rem), calc(100svh - 21rem))}}
+  .zona-tablero,.zona-controles{display:grid;justify-items:center;gap:.6rem;width:100%}
+  .encabezado-tablero{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:.2rem 1rem}
+  .rotulo{font-size:1.15rem}
+  .tablero{width:max(15rem,var(--lado));border-width:5px;box-shadow:0 .4rem 0 #0f2438}
+  .celda{font-size:calc(max(15rem,var(--lado)) / var(--n) * .55)}
+  .teclado,.mensaje{width:max(15rem,var(--lado))}
+  .tecla{min-height:52px;font-size:1.9rem}
+  .mensaje{min-height:2.6rem;font-size:1.05rem;padding:.35rem .6rem}
+
+  /* Pantallas anchas (computadora, tableta horizontal): tablero a la izquierda, controles a la derecha */
+  @media (min-width:820px){
+    .envoltura{max-width:60rem}
+    .mesa{grid-template-columns:auto 17rem;align-items:start;justify-content:center;column-gap:1.5rem;
+      --lado:min(var(--ancho,26rem), calc(100vh - 17rem), 55vw)}
+    @supports (height:100svh){.mesa{--lado:min(var(--ancho,26rem), calc(100svh - 17rem), 55vw)}}
+    .zona-controles{align-self:center;justify-items:stretch}
+    .zona-controles .mensaje,.zona-controles .teclado{width:100%}
+    .teclado{grid-template-columns:repeat(var(--cols-d,2),1fr)}
+    .tecla{min-height:64px;font-size:2.2rem}
+    .zona-controles .fila-botones{flex-direction:column;align-items:stretch}
+  }
+  .solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   @media print{
     body{background:#fff;font-size:12pt}
     .paisaje,#confeti,.velo{display:none!important}
@@ -248,7 +303,7 @@
 
   <main>
     <section id="juego" class="panel" aria-labelledby="t-juego">
-      <h2 id="t-juego">A jugar</h2>
+      <h2 id="t-juego" class="solo-lector">A jugar</h2>
       <div class="acordeon" id="instrucciones">
         <div class="acordeon-barra">
           <button type="button" class="acordeon-boton" id="btnAcordeon" aria-expanded="false" aria-controls="acordeonCuerpo">
@@ -273,9 +328,14 @@
       <div class="camino" id="camino"></div>
 
       <div class="mesa">
+        <div class="zona-tablero">
+        <div class="encabezado-tablero">
         <p class="rotulo" id="rotulo">Juego 1</p>
         <p class="faltan" aria-live="polite">Casillas por llenar: <strong id="faltan">0</strong></p>
+        </div>
         <div class="tablero" id="tablero" role="group" aria-label="Tablero del sudoku. Usa las flechas para moverte y las teclas de número para escribir."></div>
+        </div>
+        <div class="zona-controles">
         <div class="mensaje" id="mensaje" role="status" aria-live="polite">Toca una casilla vacía para empezar.</div>
         <div class="teclado" id="teclado" role="group" aria-label="Números"></div>
         <div class="fila-botones">
@@ -284,6 +344,7 @@
           <button type="button" class="btn claro" id="btnVoz" aria-pressed="true">🔊 Voz: encendida</button>
         </div>
         <div class="maestro"><button type="button" id="btnMaestro">Para el maestro: abrir todos los juegos</button></div>
+        </div>
       </div>
     </section>
 
@@ -423,7 +484,7 @@
     var par=document.createElement("div"); par.className="par";
     g.j.forEach(function(i){
       var b=document.createElement("button"); b.type="button"; b.className="juego"; b.id="j"+i;
-      b.innerHTML='<span class="num">Juego '+(i+1)+'</span><span class="candado" aria-hidden="true">🔒</span><span class="hecho" aria-hidden="true">✓</span>';
+      b.innerHTML='<span class="num"><span class="palabra">Juego </span>'+(i+1)+'</span><span class="candado" aria-hidden="true">🔒</span><span class="hecho" aria-hidden="true">✓</span>';
       b.addEventListener("click",function(){
         if(i>abierto){ avisar("Ese juego se abre cuando termines el juego "+i+".",""); decir("Primero termina el juego "+i); return; }
         cargar(i,false);
@@ -465,7 +526,7 @@
 
   function armarTeclado(){
     var t=$("teclado"); t.innerHTML="";
-    t.style.setProperty("--cols",N===9?5:N);
+    t.style.setProperty("--cols",N===9?5:N); t.style.setProperty("--cols-d",N===9?3:2);
     for(var n=1;n<=N;n++)(function(n){
       var b=document.createElement("button"); b.type="button"; b.className="tecla"; b.textContent=n;
       b.style.background=COLORES[n]; b.setAttribute("aria-label","Número "+n);
