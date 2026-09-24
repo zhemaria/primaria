@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<!--
+  Sudoku de 4, 6 y 9: piensa y coloca — interactivo para segundo grado
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  Licencia: Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sudoku para niños: piensa y coloca</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="description" content="Sudoku para segundo grado en tres niveles: tablero de 4, de 6 y de 9. Con voz, pistas de lógica y celebración.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tinta:#16324F; --tinta-suave:#3E5670;
+    --tablero:#FFFFFF; --caja-b:#F1F6E6;
+    --n1:#2563A8; --n2:#2F7A3B; --n3:#A8326A; --n4:#6B4400; --n5:#6A3FB0;
+    --n6:#0F6E6E; --n7:#9A3412; --n8:#4D6B00; --n9:#374151;
+    --error:#B3261E; --sol:#FFC93C;
+    --texto:"Andika","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+    --titulo:"Baloo 2","Andika","Trebuchet MS",system-ui,sans-serif;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *,*::before,*::after{box-sizing:inherit}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+  body{margin:0;min-height:100%;color:var(--tinta);font-family:var(--texto);font-size:1.15rem;line-height:1.55;background:#8FD3F7}
+
+  /* ---------- Paisaje de fondo ---------- */
+  .paisaje{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+    background:linear-gradient(#6EC4F2 0%,#A9E0FA 55%,#D9F3FF 100%)}
+  .paisaje svg{position:absolute}
+  .sol{top:-3rem;right:-3rem;width:15rem;height:15rem}
+  .sol .rayos{transform-origin:120px 120px;animation:girar 40s linear infinite}
+  .nube{width:11rem;animation:flotar 60s linear infinite}
+  .nube.a{top:12%;left:-12rem;animation-duration:70s}
+  .nube.b{top:32%;left:-12rem;animation-duration:95s;animation-delay:-40s;width:8rem}
+  .nube.c{top:55%;left:-12rem;animation-duration:85s;animation-delay:-65s;width:13rem;opacity:.9}
+  .colinas{bottom:0;left:0;width:100%;height:32vh;min-height:10rem}
+  .globo{width:3.4rem;animation:mecer 5s ease-in-out infinite}
+  .globo.g1{left:3%;top:20%}
+  .globo.g2{left:6%;top:62%;animation-delay:-2s;width:2.8rem}
+  .globo.g3{right:4%;top:45%;animation-delay:-3.5s}
+  @keyframes girar{to{transform:rotate(360deg)}}
+  @keyframes flotar{to{transform:translateX(calc(100vw + 26rem))}}
+  @keyframes mecer{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-1.2rem) rotate(4deg)}}
+  @media (max-width:700px){.globo{display:none}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+
+  .envoltura{position:relative;z-index:1;max-width:46rem;margin:0 auto;padding:1.25rem 1rem 2rem}
+
+  /* Letrero del título */
+  header{text-align:center}
+  .letrero{display:inline-block;background:#fff;border:5px solid var(--tinta);border-radius:1.5rem;padding:.6rem 1.4rem .8rem;box-shadow:0 .5rem 0 #0f2438;transform:rotate(-1.5deg)}
+  h1{font-family:var(--titulo);font-weight:800;font-size:clamp(2rem,7vw,3rem);line-height:1.05;margin:.1rem 0}
+  .cifras{display:flex;justify-content:center;gap:.3rem;margin-bottom:.2rem}
+  .cifras span{display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:.55rem;color:#fff;font-family:var(--titulo);font-weight:800;font-size:1.4rem}
+  .cifras span:nth-child(odd){transform:rotate(-8deg)} .cifras span:nth-child(even){transform:rotate(7deg)}
+  .sub{margin:.25rem 0 0;color:var(--tinta-suave)}
+
+  nav.saltos{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:1.2rem 0 .5rem}
+  nav.saltos a{color:var(--tinta);background:#fff;border:3px solid var(--tinta);border-radius:999px;padding:.3rem 1rem;text-decoration:none;font-weight:700}
+  nav.saltos a:hover{background:var(--tinta);color:#fff}
+
+  .panel{background:#fff;border-radius:1.5rem;border:4px solid var(--tinta);padding:1rem 1.25rem 1.25rem;margin-top:1.5rem;box-shadow:0 .5rem 0 rgba(15,36,56,.35)}
+  h2{font-family:var(--titulo);font-weight:800;font-size:1.6rem;margin:0 0 .5rem}
+  section{scroll-margin-top:1rem}
+  .reglas ol{margin:.25rem 0 .75rem;padding-left:1.5rem}
+  .reglas li{margin:.3rem 0}
+  .tamanos{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 .9rem;padding:0;list-style:none}
+  .tamanos li{background:#EEF6FC;border-radius:.8rem;padding:.3rem .8rem;font-size:1rem}
+
+  .fila-botones{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:center}
+  .reglas .fila-botones{justify-content:flex-start}
+  button{font-family:var(--texto);font-size:1.05rem;cursor:pointer}
+  .btn{background:var(--tinta);color:#fff;border:0;border-radius:.8rem;padding:.6rem 1rem;font-weight:700;min-height:48px}
+  .btn.claro{background:#fff;color:var(--tinta);border:2px solid var(--tinta)}
+  .btn:hover{filter:brightness(1.15)}
+  :focus-visible{outline:4px solid var(--sol);outline-offset:3px}
+
+  /* Acordeón de instrucciones */
+  .acordeon{margin:0 0 1rem;border:3px solid var(--tinta);border-radius:1rem;background:#EEF6FC;scroll-margin-top:1rem}
+  .acordeon-barra{display:flex;align-items:stretch}
+  .acordeon-boton{flex:1;text-align:left;background:none;border:0;color:var(--tinta);font-weight:700;font-size:1.15rem;padding:.6rem .9rem;min-height:52px;border-radius:.8rem}
+  .acordeon-boton .flecha{display:inline-block;font-size:.8em;margin-right:.35rem;transition:transform .2s}
+  .acordeon-boton[aria-expanded="true"] .flecha{transform:rotate(90deg)}
+  .bocina{background:var(--tinta);color:#fff;border:0;border-radius:.8rem;margin:.3rem;min-width:52px;min-height:44px;font-size:1.5rem}
+  .bocina:hover{filter:brightness(1.15)}
+  .bocina.hablando{background:var(--n2)}
+  .acordeon-cuerpo{padding:0 1rem .8rem;border-top:2px dashed rgba(22,50,79,.3)}
+  .acordeon-cuerpo ol{margin:.6rem 0 .6rem}
+  .tamanos{margin-bottom:0!important}
+  /* Encabezado más compacto para que el juego se vea primero */
+  .letrero{padding:.35rem 1.2rem .5rem}
+  h1{font-size:clamp(1.7rem,6vw,2.5rem)}
+  nav.saltos{margin:.8rem 0 0}
+  #juego.panel{margin-top:1rem}
+  /* ---------- Camino de juegos ---------- */
+  .camino{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:.25rem 0 1.1rem}
+  .grupo{border-radius:1.1rem;padding:.5rem;text-align:center}
+  .grupo.g1{background:#E3F0FB} .grupo.g2{background:#E6F3E1} .grupo.g3{background:#F6E4EE}
+  .grupo h3{margin:0 0 .35rem;font-size:1rem;font-weight:700}
+  .grupo .par{display:flex;gap:.4rem;justify-content:center}
+  .juego{flex:1;background:#fff;border:3px solid var(--tinta);border-radius:.9rem;padding:.35rem .2rem;color:var(--tinta);font-weight:700;min-height:58px;line-height:1.1;position:relative}
+  .juego .num{display:block;font-family:var(--titulo);font-size:1.25rem}
+  .juego .candado{display:none;font-size:.95rem}
+  .juego[aria-pressed="true"]{background:var(--tinta);color:#fff}
+  .juego.cerrado{background:#E9EDF1;border-style:dashed;cursor:not-allowed;color:#4A5A6A}
+  .juego.cerrado .candado{display:block}
+  .juego .hecho{position:absolute;top:-.6rem;right:-.5rem;background:var(--n2);color:#fff;border-radius:50%;width:1.6rem;height:1.6rem;display:none;place-items:center;font-size:.95rem;border:2px solid #fff}
+  .juego.completo .hecho{display:grid}
+  @media (max-width:560px){.camino{grid-template-columns:1fr}}
+
+  /* ---------- Tablero ---------- */
+  .mesa{display:grid;justify-items:center;gap:1rem}
+  .rotulo{margin:0;font-family:var(--titulo);font-weight:800;font-size:1.35rem;text-align:center}
+  .faltan{font-size:1.05rem;color:var(--tinta-suave);margin:0}
+  .faltan strong{color:var(--tinta);font-size:1.3rem}
+  .tablero{--n:4;width:min(90vw,var(--ancho,26rem));aspect-ratio:1;display:grid;
+    grid-template-columns:repeat(var(--n),1fr);grid-template-rows:repeat(var(--n),1fr);
+    background:var(--tinta);border:6px solid var(--tinta);border-radius:1.1rem;gap:2px;overflow:hidden;box-shadow:0 .6rem 0 #0f2438}
+  .celda{border:0;margin:0;padding:0;background:var(--tablero);display:grid;place-items:center;font-family:var(--titulo);font-weight:800;
+    font-size:calc(min(90vw,var(--ancho,26rem)) / var(--n) * .55);color:var(--tinta);position:relative;min-width:0;min-height:0;line-height:1}
+  .celda.cajaB{background:var(--caja-b)}
+  .celda.der{margin-right:4px}
+  .celda.abajo{margin-bottom:4px}
+  .celda.dada{cursor:default}
+  .celda.vacia{cursor:pointer}
+  .celda.vacia:hover{background:#FFF6D6}
+  .celda.elegida{background:#FFE9A8!important;box-shadow:inset 0 0 0 4px var(--sol)}
+  .celda.puesta{color:#fff}
+  .celda.puesta::before{content:"";position:absolute;inset:9%;border-radius:22%;background:var(--c)}
+  .celda.puesta span{position:relative}
+  .celda.puesta.pop::before{animation:pop .35s ease-out}
+  @keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+  .celda.mal{animation:temblor .45s;box-shadow:inset 0 0 0 4px var(--error)!important}
+  @keyframes temblor{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+  .celda.choque{box-shadow:inset 0 0 0 5px var(--error)}
+  .celda.choque::after{content:"";position:absolute;inset:4px;border:3px dashed var(--error);border-radius:14%}
+  .celda.fiesta span{display:inline-block;animation:salto .6s ease-in-out both}
+  @keyframes salto{0%,100%{transform:translateY(0)}40%{transform:translateY(-22%)}}
+
+  .teclado{display:grid;grid-template-columns:repeat(var(--cols,4),1fr);gap:.6rem;width:min(90vw,var(--ancho,26rem))}
+  .tecla{border:0;border-radius:1rem;min-height:64px;color:#fff;font-family:var(--titulo);font-weight:800;font-size:2.2rem;box-shadow:0 .35rem 0 rgba(22,50,79,.45)}
+  .tecla:active{transform:translateY(.25rem);box-shadow:0 .1rem 0 rgba(22,50,79,.45)}
+
+  .mensaje{min-height:3.4rem;width:min(90vw,var(--ancho,26rem));text-align:center;font-weight:700;font-size:1.15rem;padding:.5rem .75rem;border-radius:.9rem;background:#F4F8FB;border:3px solid transparent}
+  .mensaje.bien{border-color:var(--n2);color:var(--n2)}
+  .mensaje.mal{border-color:var(--error);color:var(--error)}
+  .maestro{margin-top:.5rem;font-size:.95rem}
+  .maestro button{background:none;border:0;color:var(--tinta);text-decoration:underline;padding:.4rem;font-size:.95rem}
+
+  /* ---------- Celebración ---------- */
+  .velo{position:fixed;inset:0;background:rgba(22,50,79,.55);display:none;place-items:center;padding:1rem;z-index:10}
+  .velo.abierto{display:grid}
+  .festejo{background:#fff;border-radius:1.5rem;padding:1.5rem 1.25rem;text-align:center;max-width:25rem;border:6px solid var(--sol)}
+  .festejo .estrellas{font-size:2.6rem;letter-spacing:.2rem}
+  .festejo h3{font-family:var(--titulo);font-size:2rem;margin:.25rem 0;line-height:1.1}
+  .festejo p{margin:.25rem 0 1rem}
+  #confeti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+
+  .imprimir-caja p{margin-top:0}
+  #hojaImprimir{display:none}
+  footer{margin-top:2rem;background:rgba(255,255,255,.92);border-radius:1rem;padding:.75rem 1rem;font-size:.9rem;color:var(--tinta-suave);text-align:center}
+  footer p{margin:.25rem 0}
+  footer a{color:var(--tinta)}
+
+  @media print{
+    body{background:#fff;font-size:12pt}
+    .paisaje,#confeti,.velo{display:none!important}
+    .envoltura > *:not(#hojaImprimir){display:none!important}
+    #hojaImprimir{display:block}
+    .hoja h1{font-size:22pt;margin:0 0 4pt}
+    .hoja p{margin:0 0 8pt}
+    .rejilla-imp{display:grid;grid-template-columns:1fr 1fr;gap:14pt 24pt}
+    .mini{break-inside:avoid}
+    .mini h4{margin:0 0 4pt;font-family:var(--titulo);font-size:13pt}
+    .mini table{border-collapse:collapse;border:3pt solid #000}
+    .mini caption{font-size:0;height:0}
+    .mini td{border:1pt solid #000;text-align:center;font-family:var(--titulo);font-weight:800}
+    .mini.t4 td{width:1.9cm;height:1.9cm;font-size:26pt}
+    .mini.t6 td{width:1.25cm;height:1.25cm;font-size:18pt}
+    .mini.t9 td{width:.88cm;height:.88cm;font-size:14pt}
+    .mini td.d{border-right:3pt solid #000}
+    .mini tr.a td{border-bottom:3pt solid #000}
+    .hoja .pie{margin-top:12pt;font-size:9pt}
+  }
+</style>
+</head>
+<body>
+
+<!-- Paisaje decorativo -->
+<div class="paisaje" aria-hidden="true">
+  <svg class="sol" viewBox="0 0 240 240">
+    <g class="rayos" fill="#FFD84D">
+      <polygon points="120,0 132,50 108,50"/><polygon points="120,240 108,190 132,190"/>
+      <polygon points="0,120 50,108 50,132"/><polygon points="240,120 190,132 190,108"/>
+      <polygon points="35,35 76,64 64,76"/><polygon points="205,205 164,176 176,164"/>
+      <polygon points="205,35 176,76 164,64"/><polygon points="35,205 64,164 76,176"/>
+    </g>
+    <circle cx="120" cy="120" r="62" fill="#FFC93C"/>
+    <circle cx="100" cy="112" r="7" fill="#16324F"/><circle cx="140" cy="112" r="7" fill="#16324F"/>
+    <path d="M96 136 Q120 160 144 136" stroke="#16324F" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <circle cx="88" cy="134" r="8" fill="#FF9AA2" opacity=".7"/><circle cx="152" cy="134" r="8" fill="#FF9AA2" opacity=".7"/>
+  </svg>
+  <svg class="nube a" viewBox="0 0 200 90"><g fill="#fff"><ellipse cx="60" cy="58" rx="50" ry="28"/><ellipse cx="105" cy="40" rx="45" ry="36"/><ellipse cx="150" cy="60" rx="42" ry="26"/></g></svg>
+  <svg class="nube b" viewBox="0 0 200 90"><g fill="#fff"><ellipse cx="60" cy="58" rx="50" ry="28"/><ellipse cx="105" cy="40" rx="45" ry="36"/><ellipse cx="150" cy="60" rx="42" ry="26"/></g></svg>
+  <svg class="nube c" viewBox="0 0 200 90"><g fill="#fff"><ellipse cx="60" cy="58" rx="50" ry="28"/><ellipse cx="105" cy="40" rx="45" ry="36"/><ellipse cx="150" cy="60" rx="42" ry="26"/></g></svg>
+  <svg class="globo g1" viewBox="0 0 60 120"><ellipse cx="30" cy="30" rx="24" ry="29" fill="#E4572E"/><path d="M30 59 L26 66 L34 66 Z" fill="#E4572E"/><path d="M30 66 Q22 88 32 118" stroke="#16324F" stroke-width="2" fill="none"/><ellipse cx="21" cy="20" rx="6" ry="9" fill="#fff" opacity=".45"/></svg>
+  <svg class="globo g2" viewBox="0 0 60 120"><ellipse cx="30" cy="30" rx="24" ry="29" fill="#8E5BD8"/><path d="M30 59 L26 66 L34 66 Z" fill="#8E5BD8"/><path d="M30 66 Q38 88 28 118" stroke="#16324F" stroke-width="2" fill="none"/><ellipse cx="21" cy="20" rx="6" ry="9" fill="#fff" opacity=".45"/></svg>
+  <svg class="globo g3" viewBox="0 0 60 120"><ellipse cx="30" cy="30" rx="24" ry="29" fill="#FFB400"/><path d="M30 59 L26 66 L34 66 Z" fill="#FFB400"/><path d="M30 66 Q22 88 32 118" stroke="#16324F" stroke-width="2" fill="none"/><ellipse cx="21" cy="20" rx="6" ry="9" fill="#fff" opacity=".45"/></svg>
+  <svg class="colinas" viewBox="0 0 1200 300" preserveAspectRatio="none">
+    <path d="M0 150 Q200 60 420 140 T820 120 T1200 110 V300 H0 Z" fill="#9BDB7E"/>
+    <path d="M0 210 Q260 130 520 200 T1000 190 T1200 180 V300 H0 Z" fill="#5DBB63"/>
+    <path d="M0 260 Q300 210 620 255 T1200 245 V300 H0 Z" fill="#3E9A4B"/>
+    <g><circle cx="140" cy="236" r="9" fill="#FF6FA8"/><circle cx="140" cy="236" r="3.5" fill="#FFE066"/>
+       <circle cx="330" cy="200" r="8" fill="#FFE066"/><circle cx="330" cy="200" r="3" fill="#FF8C42"/>
+       <circle cx="700" cy="232" r="9" fill="#fff"/><circle cx="700" cy="232" r="3.5" fill="#FFB400"/>
+       <circle cx="930" cy="206" r="8" fill="#B983FF"/><circle cx="930" cy="206" r="3" fill="#FFE066"/>
+       <circle cx="1090" cy="250" r="9" fill="#FF6FA8"/><circle cx="1090" cy="250" r="3.5" fill="#FFE066"/></g>
+  </svg>
+</div>
+
+<canvas id="confeti" aria-hidden="true"></canvas>
+
+<div class="envoltura">
+  <header>
+    <div class="letrero">
+      <div class="cifras" aria-hidden="true"><span style="background:var(--n1)">1</span><span style="background:var(--n2)">2</span><span style="background:var(--n3)">3</span><span style="background:var(--n5)">4</span><span style="background:var(--n7)">5</span><span style="background:var(--n6)">6</span></div>
+      <h1>Sudoku para niños</h1>
+      <p class="sub">Piensa, busca el número que falta y colócalo.</p>
+    </div>
+    <nav class="saltos" aria-label="Partes de la página">
+      <a href="#juego">A jugar</a>
+      <a href="#instrucciones">Cómo se juega</a>
+      <a href="#imprimir">Para imprimir</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="juego" class="panel" aria-labelledby="t-juego">
+      <h2 id="t-juego">A jugar</h2>
+      <div class="acordeon" id="instrucciones">
+        <div class="acordeon-barra">
+          <button type="button" class="acordeon-boton" id="btnAcordeon" aria-expanded="false" aria-controls="acordeonCuerpo">
+            <span class="flecha" aria-hidden="true">▶</span> Cómo se juega
+          </button>
+          <button type="button" class="bocina" id="btnLeer" aria-label="Escuchar cómo se juega" title="Escuchar cómo se juega">🔊</button>
+        </div>
+        <div class="acordeon-cuerpo reglas" id="acordeonCuerpo" role="region" aria-labelledby="btnAcordeon" hidden>
+          <ol>
+            <li>Cada <strong>fila</strong> (de lado a lado) tiene todos los números, sin repetir.</li>
+            <li>Cada <strong>columna</strong> (de arriba a abajo) tiene todos los números, sin repetir.</li>
+            <li>Cada <strong>cuadro</strong> de color tiene todos los números, sin repetir.</li>
+            <li>Toca una casilla vacía y luego toca el número.</li>
+          </ol>
+          <ul class="tamanos">
+            <li>Tablero de 4: números del 1 al 4</li>
+            <li>Tablero de 6: números del 1 al 6</li>
+            <li>Tablero de 9: números del 1 al 9</li>
+          </ul>
+        </div>
+      </div>
+      <div class="camino" id="camino"></div>
+
+      <div class="mesa">
+        <p class="rotulo" id="rotulo">Juego 1</p>
+        <p class="faltan" aria-live="polite">Casillas por llenar: <strong id="faltan">0</strong></p>
+        <div class="tablero" id="tablero" role="group" aria-label="Tablero del sudoku. Usa las flechas para moverte y las teclas de número para escribir."></div>
+        <div class="mensaje" id="mensaje" role="status" aria-live="polite">Toca una casilla vacía para empezar.</div>
+        <div class="teclado" id="teclado" role="group" aria-label="Números"></div>
+        <div class="fila-botones">
+          <button type="button" class="btn claro" id="btnReiniciar">↺ Empezar de nuevo</button>
+          <button type="button" class="btn claro" id="btnMezclar">🔀 Mismo juego, otros números</button>
+          <button type="button" class="btn claro" id="btnVoz" aria-pressed="true">🔊 Voz: encendida</button>
+        </div>
+        <div class="maestro"><button type="button" id="btnMaestro">Para el maestro: abrir todos los juegos</button></div>
+      </div>
+    </section>
+
+    <section id="imprimir" class="panel imprimir-caja" aria-labelledby="t-imp">
+      <h2 id="t-imp">Para imprimir</h2>
+      <p>¿Prefieres lápiz y papel? Imprime los seis juegos (dos hojas).</p>
+      <div class="fila-botones" style="justify-content:flex-start">
+        <button type="button" class="btn" id="btnImprimir">🖨️ Imprimir los seis juegos</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="hojaImprimir" class="hoja"></div>
+
+  <footer>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.</p>
+    <p>Esta obra está bajo una licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="license noopener noreferrer">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>.</p>
+  </footer>
+</div>
+
+<div class="velo" id="velo" role="dialog" aria-modal="true" aria-labelledby="t-fiesta">
+  <div class="festejo">
+    <div class="estrellas" id="estrellas" aria-hidden="true">⭐</div>
+    <h3 id="t-fiesta">¡Lo lograste!</h3>
+    <p id="textoFiesta"></p>
+    <div class="fila-botones">
+      <button type="button" class="btn" id="btnSiguiente">Siguiente juego</button>
+      <button type="button" class="btn claro" id="btnOtraVez">Jugar este otra vez</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* Seis juegos en tres niveles. n = tamaño; bh × bw = alto y ancho de cada cuadro.
+     mas: 1 = número dado, 0 = casilla vacía. Todos se resuelven paso a paso
+     buscando la única opción posible (lógica sencilla) y tienen una sola solución. */
+  var JUEGOS = [
+    {n:4,bh:2,bw:2,sol:"2431312443121243",mas:"1001011011111101"},
+    {n:4,bh:2,bw:2,sol:"3142423123141423",mas:"0101011010011100"},
+    {n:6,bh:2,bw:3,sol:"235641641235316452452316124563563124",mas:"101111110111110101111001110111110001"},
+    {n:6,bh:2,bw:3,sol:"136245245136362451451362624513513624",mas:"001101010011110111100111100011010110"},
+    {n:9,bh:3,bw:3,sol:"951746283283519674674832951427983165398651427165274398819465732732198546546327819",mas:"011111111101111100101111111101111111101101111011111110111111010101111011100111111"},
+    {n:9,bh:3,bw:3,sol:"369857142241936875578124963937485621854612739126793458795248316613579284482361597",mas:"110111111100111100110100011010101101111011111111101100011011100101001011111101111"}
+  ];
+  var ANCHO = {4:"26rem",6:"29rem",9:"34rem"};
+  var COLORES = ["","var(--n1)","var(--n2)","var(--n3)","var(--n4)","var(--n5)","var(--n6)","var(--n7)","var(--n8)","var(--n9)"];
+
+  var actual=0, N=4, BH=2, BW=2, solucion=[], valores=[], dadas=[], elegida=-1, bloqueo=false;
+  var abierto=0;           // último juego disponible
+  var completos={};
+  var vozActiva=true;
+  var $=function(id){return document.getElementById(id);};
+  var tablero=$("tablero"), mensaje=$("mensaje");
+
+  /* ---------- Voz ---------- */
+  var vozEs=null;
+  function elegirVoz(){
+    if(!("speechSynthesis" in window)) return;
+    var vs=speechSynthesis.getVoices(), pref=["es-US","es-MX","es-419","es-ES"];
+    for(var p=0;p<pref.length&&!vozEs;p++) for(var i=0;i<vs.length;i++) if(vs[i].lang.replace("_","-")===pref[p]){vozEs=vs[i];break;}
+    if(!vozEs) for(var j=0;j<vs.length;j++) if(/^es/i.test(vs[j].lang)){vozEs=vs[j];break;}
+  }
+  if("speechSynthesis" in window){elegirVoz();speechSynthesis.onvoiceschanged=elegirVoz;}
+  function decir(t,forzar){
+    if((!vozActiva&&!forzar)||!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(t);
+    u.lang=vozEs?vozEs.lang:"es-US"; if(vozEs) u.voice=vozEs;
+    u.rate=.9; u.pitch=1.1;
+    var bo=$("btnLeer"); bo.classList.remove("hablando");
+    if(forzar){ bo.classList.add("hablando"); u.onend=u.onerror=function(){bo.classList.remove("hablando");}; }
+    speechSynthesis.speak(u);
+  }
+
+  /* ---------- Sonidos ---------- */
+  var ctx=null;
+  function tono(frecs,dur){
+    try{
+      ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+      frecs.forEach(function(f,k){
+        var o=ctx.createOscillator(),g=ctx.createGain(),t=ctx.currentTime+k*dur;
+        o.type="triangle";o.frequency.value=f;
+        g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+        o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+dur+.02);
+      });
+    }catch(e){}
+  }
+
+  /* ---------- Confeti ---------- */
+  var lienzo=$("confeti"), c2=lienzo.getContext("2d"), piezas=[], animando=false;
+  var TONOS=["#E4572E","#FFC93C","#3E9A4B","#2563A8","#A8326A","#8E5BD8","#FF6FA8","#29B6C9"];
+  var sinMovimiento=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function medir(){lienzo.width=innerWidth*devicePixelRatio;lienzo.height=innerHeight*devicePixelRatio;c2.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+  addEventListener("resize",medir); medir();
+  function lanzar(cantidad,desdeX){
+    for(var i=0;i<cantidad;i++){
+      piezas.push({x:desdeX!=null?desdeX:Math.random()*innerWidth, y:desdeX!=null?innerHeight*.35:-20-Math.random()*innerHeight*.3,
+        vx:(Math.random()-.5)*(desdeX!=null?14:4), vy:desdeX!=null?-(6+Math.random()*9):2+Math.random()*3,
+        t:6+Math.random()*8, giro:Math.random()*6, vg:(Math.random()-.5)*.3,
+        color:TONOS[i%TONOS.length], forma:Math.random()<.25?"estrella":(Math.random()<.5?"circulo":"tira"), vida:0});
+    }
+    if(!animando){animando=true;requestAnimationFrame(cuadro);}
+  }
+  function estrella(x,y,r){c2.beginPath();for(var i=0;i<10;i++){var a=i*Math.PI/5-Math.PI/2,rr=i%2?r*.45:r;c2.lineTo(x+Math.cos(a)*rr,y+Math.sin(a)*rr);}c2.closePath();c2.fill();}
+  function cuadro(){
+    c2.clearRect(0,0,innerWidth,innerHeight);
+    piezas=piezas.filter(function(p){return p.y<innerHeight+30&&p.vida<600;});
+    piezas.forEach(function(p){
+      p.vida++; p.vy+=.18; p.vx*=.99; p.x+=p.vx+Math.sin(p.vida/12)*.6; p.y+=Math.min(p.vy,7); p.giro+=p.vg;
+      c2.save();c2.translate(p.x,p.y);c2.rotate(p.giro);c2.fillStyle=p.color;
+      if(p.forma==="circulo"){c2.beginPath();c2.arc(0,0,p.t/2,0,7);c2.fill();}
+      else if(p.forma==="estrella"){estrella(0,0,p.t*.9);}
+      else c2.fillRect(-p.t/2,-p.t/4,p.t,p.t/2.2);
+      c2.restore();
+    });
+    if(piezas.length) requestAnimationFrame(cuadro); else {animando=false;c2.clearRect(0,0,innerWidth,innerHeight);}
+  }
+  function confetiGrupo(){ if(sinMovimiento) return; lanzar(90,innerWidth*.2); lanzar(90,innerWidth*.8); setTimeout(function(){lanzar(120);},500); }
+  function confetiFinal(){
+    if(sinMovimiento) return;
+    var olas=0;
+    (function ola(){
+      lanzar(110,innerWidth*.15); lanzar(110,innerWidth*.5); lanzar(110,innerWidth*.85); lanzar(160);
+      if(++olas<5) setTimeout(ola,900);
+    })();
+  }
+
+  /* ---------- Camino de juegos ---------- */
+  var GRUPOS=[{t:"Nivel 1: tablero de 4",c:"g1",j:[0,1]},{t:"Nivel 2: tablero de 6",c:"g2",j:[2,3]},{t:"Nivel 3: tablero de 9",c:"g3",j:[4,5]}];
+  GRUPOS.forEach(function(g){
+    var d=document.createElement("div"); d.className="grupo "+g.c;
+    d.setAttribute("role","group"); d.setAttribute("aria-label",g.t);
+    d.innerHTML="<h3>"+g.t+"</h3>";
+    var par=document.createElement("div"); par.className="par";
+    g.j.forEach(function(i){
+      var b=document.createElement("button"); b.type="button"; b.className="juego"; b.id="j"+i;
+      b.innerHTML='<span class="num">Juego '+(i+1)+'</span><span class="candado" aria-hidden="true">🔒</span><span class="hecho" aria-hidden="true">✓</span>';
+      b.addEventListener("click",function(){
+        if(i>abierto){ avisar("Ese juego se abre cuando termines el juego "+i+".",""); decir("Primero termina el juego "+i); return; }
+        cargar(i,false);
+      });
+      par.appendChild(b);
+    });
+    d.appendChild(par); $("camino").appendChild(d);
+  });
+  function actualizarCamino(){
+    for(var i=0;i<6;i++){
+      var b=$("j"+i), cerrado=i>abierto;
+      b.classList.toggle("cerrado",cerrado);
+      b.classList.toggle("completo",!!completos[i]);
+      b.setAttribute("aria-disabled",cerrado?"true":"false");
+      b.setAttribute("aria-pressed",i===actual?"true":"false");
+      b.setAttribute("aria-label","Juego "+(i+1)+", tablero de "+JUEGOS[i].n+(cerrado?", cerrado":"")+(completos[i]?", terminado":""));
+    }
+  }
+
+  /* ---------- Juego ---------- */
+  function fila(i){return Math.floor(i/N);}
+  function col(i){return i%N;}
+  function caja(i){return Math.floor(fila(i)/BH)*(N/BW)+Math.floor(col(i)/BW);}
+
+  function cargar(i,mezclar){
+    actual=i; var j=JUEGOS[i]; N=j.n; BH=j.bh; BW=j.bw;
+    var perm=[]; for(var k=0;k<=N;k++) perm.push(k);
+    if(mezclar){ for(var a=N;a>1;a--){var r=1+Math.floor(Math.random()*a);var t=perm[a];perm[a]=perm[r];perm[r]=t;} }
+    solucion=[];valores=[];dadas=[];
+    for(var c=0;c<N*N;c++){ var s=perm[+j.sol[c]]; solucion.push(s); var d=j.mas[c]==="1"; dadas.push(d); valores.push(d?s:0); }
+    elegida=-1; bloqueo=false;
+    var mesa=document.querySelector(".mesa");
+    mesa.style.setProperty("--ancho",ANCHO[N]);
+    tablero.style.setProperty("--n",N);
+    $("rotulo").textContent="Juego "+(i+1)+": números del 1 al "+N;
+    armarTeclado(); dibujar(); actualizarCamino();
+    avisar("Toca una casilla vacía para empezar.","");
+  }
+
+  function armarTeclado(){
+    var t=$("teclado"); t.innerHTML="";
+    t.style.setProperty("--cols",N===9?5:N);
+    for(var n=1;n<=N;n++)(function(n){
+      var b=document.createElement("button"); b.type="button"; b.className="tecla"; b.textContent=n;
+      b.style.background=COLORES[n]; b.setAttribute("aria-label","Número "+n);
+      b.addEventListener("click",function(){poner(n);}); t.appendChild(b);
+    })(n);
+  }
+
+  function dibujar(){
+    tablero.innerHTML="";
+    var porFila=N/BW;
+    for(var i=0;i<N*N;i++){
+      var b=document.createElement("button"); b.type="button"; b.className="celda"; b.dataset.i=i;
+      var cj=caja(i), fc=Math.floor(cj/porFila), cc=cj%porFila;
+      if((fc+cc)%2===1) b.classList.add("cajaB");
+      if((col(i)+1)%BW===0&&col(i)<N-1) b.classList.add("der");
+      if((fila(i)+1)%BH===0&&fila(i)<N-1) b.classList.add("abajo");
+      pintar(b,i); b.tabIndex=i===0?0:-1;
+      b.addEventListener("click",clicCelda); b.addEventListener("keydown",teclaCelda);
+      tablero.appendChild(b);
+    }
+    $("faltan").textContent=cuantasFaltan();
+  }
+
+  function pintar(b,i){
+    var v=valores[i]; b.classList.remove("vacia","dada","puesta");
+    if(v){
+      b.innerHTML="<span>"+v+"</span>";
+      if(dadas[i]){b.classList.add("dada");b.style.color=COLORES[v];}
+      else{b.classList.add("puesta");b.style.color="#fff";b.style.setProperty("--c",COLORES[v]);}
+    } else { b.innerHTML=""; b.classList.add("vacia"); b.style.color=""; }
+    b.setAttribute("aria-label","Fila "+(fila(i)+1)+", columna "+(col(i)+1)+", "+(v?(dadas[i]?"número "+v+", ya estaba":"número "+v):"vacía"));
+  }
+  function celda(i){return tablero.children[i];}
+  function cuantasFaltan(){return valores.filter(function(v){return v===0;}).length;}
+  function elegir(i){ if(elegida>=0) celda(elegida).classList.remove("elegida"); elegida=i; if(i>=0) celda(i).classList.add("elegida"); }
+  function enfocar(i){ Array.prototype.forEach.call(tablero.children,function(b){b.tabIndex=-1;}); celda(i).tabIndex=0; celda(i).focus(); }
+
+  function clicCelda(e){
+    if(bloqueo) return;
+    var i=+e.currentTarget.dataset.i; enfocar(i);
+    if(valores[i]){ avisar("Esa casilla ya tiene número. Busca una vacía.",""); elegir(-1); return; }
+    elegir(i); avisar("Ahora toca el número que va en esa casilla.","");
+  }
+  function teclaCelda(e){
+    var i=+e.currentTarget.dataset.i, d=-1;
+    if(e.key==="ArrowRight") d=col(i)<N-1?i+1:i;
+    else if(e.key==="ArrowLeft") d=col(i)>0?i-1:i;
+    else if(e.key==="ArrowDown") d=fila(i)<N-1?i+N:i;
+    else if(e.key==="ArrowUp") d=fila(i)>0?i-N:i;
+    else if(/^[1-9]$/.test(e.key)&&+e.key<=N){ e.preventDefault(); if(!valores[i]){elegir(i);poner(+e.key);} return; }
+    if(d>=0){ e.preventDefault(); enfocar(d); elegir(valores[d]?-1:d); }
+  }
+
+  function poner(n){
+    if(bloqueo) return;
+    if(elegida<0){ avisar("Primero toca una casilla vacía.",""); decir("Primero toca una casilla vacía"); return; }
+    var i=elegida, b=celda(i);
+    if(solucion[i]===n){
+      valores[i]=n; b.classList.remove("elegida"); pintar(b,i);
+      b.classList.add("pop"); setTimeout(function(){b.classList.remove("pop");},400);
+      elegida=-1; tono([660,880],.12); decir("¡Correcto!");
+      avisar("¡Correcto! El "+n+" va ahí.","bien");
+      var f=cuantasFaltan(); $("faltan").textContent=f;
+      if(f===0) terminar();
+    } else {
+      tono([220,180],.16); decir("Ese no es el número");
+      b.classList.remove("mal"); void b.offsetWidth; b.classList.add("mal");
+      setTimeout(function(){b.classList.remove("mal");},500);
+      var ch=buscarChoque(i,n);
+      if(ch){
+        ch.lugares.forEach(function(k){celda(k).classList.add("choque");});
+        setTimeout(function(){ch.lugares.forEach(function(k){celda(k).classList.remove("choque");});},1800);
+        avisar("Ese no es el número. Mira: el "+n+" ya está en "+ch.donde+".","mal");
+      } else avisar("Ese no es el número. Piensa: ¿qué número falta aquí?","mal");
+    }
+  }
+  function buscarChoque(i,n){
+    var l=[],d=[];
+    function anota(k,t){l.push(k); if(d.indexOf(t)<0) d.push(t);}
+    for(var k=0;k<N*N;k++){
+      if(k===i||valores[k]!==n) continue;
+      if(fila(k)===fila(i)) anota(k,"esta fila");
+      else if(col(k)===col(i)) anota(k,"esta columna");
+      else if(caja(k)===caja(i)) anota(k,"este cuadro");
+    }
+    return l.length?{lugares:l,donde:d.join(" y en ")}:null;
+  }
+  function avisar(t,tipo){ mensaje.textContent=t; mensaje.className="mensaje"+(tipo?" "+tipo:""); }
+
+  var accionSiguiente=null;
+  function terminar(){
+    bloqueo=true; completos[actual]=true;
+    if(actual+1>abierto&&actual<5) abierto=actual+1;
+    actualizarCamino();
+    Array.prototype.forEach.call(tablero.children,function(b,k){
+      b.classList.add("fiesta"); var s=b.querySelector("span"); if(s) s.style.animationDelay=(fila(k)+col(k))*.06+"s";
+    });
+    var finGrupo=(actual===1||actual===3), finTodo=actual===5;
+    var titulo, texto, voz, estrellas, boton;
+    if(finTodo){
+      titulo="¡Terminaste todos los sudokus!"; estrellas="🏆⭐⭐⭐🏆";
+      texto="Resolviste los seis juegos: tableros de 4, de 6 y de 9. ¡Eres un gran pensador del sudoku!";
+      voz="¡Felicidades! Terminaste todos los sudokus. ¡Eres un gran pensador!";
+      boton="Empezar otra vez"; accionSiguiente=function(){cargar(0,true);};
+      tono([523,659,784,1047,784,1047,1319],.15); confetiFinal();
+    } else if(finGrupo){
+      var nivel=actual===1?1:2, prox=actual===1?6:9;
+      titulo="¡Completaste el nivel "+nivel+"!"; estrellas=nivel===1?"⭐⭐":"⭐⭐⭐⭐";
+      texto="Ya sabes jugar en el tablero de "+JUEGOS[actual].n+". Ahora viene el tablero de "+prox+", con números del 1 al "+prox+".";
+      voz="¡Muy bien! Completaste el nivel "+nivel+". Ahora viene el tablero de "+prox+".";
+      boton="Ir al nivel "+(nivel+1); accionSiguiente=function(){cargar(actual+1,false);};
+      tono([523,659,784,1047],.14); confetiGrupo();
+    } else {
+      titulo="¡Lo lograste!"; estrellas="⭐";
+      texto="Terminaste el juego "+(actual+1)+". Ya se abrió el juego "+(actual+2)+".";
+      voz="¡Muy bien! Llenaste todas las casillas.";
+      boton="Ir al juego "+(actual+2); accionSiguiente=function(){cargar(actual+1,false);};
+      tono([523,659,784],.14);
+    }
+    setTimeout(function(){
+      decir(voz);
+      $("t-fiesta").textContent=titulo; $("textoFiesta").textContent=texto;
+      $("estrellas").textContent=estrellas; $("btnSiguiente").textContent=boton;
+      $("velo").classList.add("abierto"); $("btnSiguiente").focus();
+    },finTodo?600:900);
+  }
+  function cerrarVelo(){ $("velo").classList.remove("abierto"); }
+  $("btnSiguiente").addEventListener("click",function(){ cerrarVelo(); accionSiguiente(); document.getElementById("juego").scrollIntoView(); });
+  $("btnOtraVez").addEventListener("click",function(){ cerrarVelo(); cargar(actual,true); });
+  $("velo").addEventListener("keydown",function(e){ if(e.key==="Escape") cerrarVelo(); });
+  $("btnReiniciar").addEventListener("click",function(){ cargar(actual,false); });
+  $("btnMezclar").addEventListener("click",function(){ cargar(actual,true); avisar("Mismo juego con otros números. ¡A pensar!",""); });
+  $("btnMaestro").addEventListener("click",function(){ abierto=5; actualizarCamino(); avisar("Todos los juegos están abiertos.",""); });
+
+  /* ---------- Acordeón ---------- */
+  var btnA=$("btnAcordeon"), cuerpo=$("acordeonCuerpo");
+  function abrirAcordeon(si){ btnA.setAttribute("aria-expanded",si?"true":"false"); cuerpo.hidden=!si; }
+  btnA.addEventListener("click",function(){ abrirAcordeon(btnA.getAttribute("aria-expanded")!=="true"); });
+  document.querySelector('a[href="#instrucciones"]').addEventListener("click",function(){ abrirAcordeon(true); });
+  if(location.hash==="#instrucciones") abrirAcordeon(true);
+
+  $("btnLeer").addEventListener("click",function(){
+    decir("Cómo se juega. Cada fila tiene todos los números, sin repetir. Cada columna tiene todos los números, sin repetir. Cada cuadro de color tiene todos los números, sin repetir. Toca una casilla vacía y luego toca el número. Este juego usa los números del uno al "+N+".",true);
+  });
+  $("btnVoz").addEventListener("click",function(){
+    vozActiva=!vozActiva; this.setAttribute("aria-pressed",vozActiva?"true":"false");
+    this.textContent=(vozActiva?"🔊 Voz: encendida":"🔇 Voz: apagada");
+    if(!vozActiva&&"speechSynthesis" in window) speechSynthesis.cancel();
+  });
+
+  /* ---------- Hoja para imprimir ---------- */
+  (function(){
+    var h='<h1>Sudoku para niños</h1><p>Cada fila, cada columna y cada cuadro tiene todos los números, sin repetir.</p>'+
+          '<p>Nombre: ______________________________ &nbsp; Fecha: ______________</p><div class="rejilla-imp">';
+    JUEGOS.forEach(function(j,g){
+      h+='<div class="mini t'+j.n+'"><h4>Juego '+(g+1)+': números del 1 al '+j.n+'</h4><table><caption>Sudoku, juego '+(g+1)+'</caption>';
+      for(var r=0;r<j.n;r++){
+        h+='<tr'+((r+1)%j.bh===0&&r<j.n-1?' class="a"':'')+'>';
+        for(var c=0;c<j.n;c++){ var k=r*j.n+c; h+='<td'+((c+1)%j.bw===0&&c<j.n-1?' class="d"':'')+'>'+(j.mas[k]==="1"?j.sol[k]:"")+'</td>'; }
+        h+='</tr>';
+      }
+      h+='</table></div>';
+    });
+    h+='</div><p class="pie">José M. Fernández, Harry S. Truman College — City Colleges of Chicago. Licencia CC BY-NC-SA 4.0.</p>';
+    $("hojaImprimir").innerHTML=h;
+  })();
+  $("btnImprimir").addEventListener("click",function(){ window.print(); });
+
+  cargar(0,false);
+})();
+</script>
+</body>
+</html>
