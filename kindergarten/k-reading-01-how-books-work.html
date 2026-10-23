@@ -183,6 +183,16 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
   font-size:clamp(70px,16vw,120px);line-height:1;background:#E2E3F7;border:6px solid #3949AB;color:#283593;
   border-radius:24px;padding:10px 28px;display:inline-block}
 .balbucea{animation:rebote .55s ease-in-out 3}
+/* Fichas de letras para leer palabras (vocal en rojo) */
+.fichas-letra{display:flex;gap:clamp(6px,1.6vw,12px);justify-content:center;align-items:flex-end}
+.ficha-letra{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif;font-weight:700;
+  font-size:clamp(44px,10vw,74px);line-height:1;width:1.35em;height:1.45em;display:grid;place-items:center;
+  background:#DDEAFB;border:5px solid #1565C0;color:#0D47A1;border-radius:16px;position:relative}
+.ficha-letra.vocal{background:#FFE3E3;border-color:#C62828;color:#7F1D1D}
+.ficha-letra.vacia{background:#fff;border-style:dashed;border-color:#4C4766;color:#4C4766}
+.ficha-letra.pisada::before{content:"🐸";position:absolute;top:-.95em;left:50%;transform:translateX(-50%);font-size:.55em}
+.ficha-letra.cambia{animation:temblor .38s}
+.ficha-letra .tachada{position:absolute;inset:0;display:grid;place-items:center;color:#B3261E;font-size:1.1em;opacity:.85}
 
 
 /* ---------- La página del libro ---------- */
@@ -253,7 +263,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
   <div class="barra">
     <h1 data-es="Así funciona un libro" data-en="How books work">How books work</h1>
     <span class="crece"></span>
-    <a class="boton casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <a class="boton casa" href="reading.html" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
     <span class="chip">
       <span aria-hidden="true">🌐</span>
       <button id="btn-es" aria-pressed="false" lang="es">Español</button>
@@ -719,6 +729,48 @@ function resaltarPalabra(el, p, donde){
 /* Hace bailar un elemento (dibujo, tarjeta…) */
 function bailar(el){ animar(el.querySelector(".pic") || el, "baila"); }
 
+/* ---------- Palabras de tres sonidos (consonante, vocal corta, consonante) ---------- */
+const CVC = [
+  ["cat","🐱"],["hat","🎩"],["bat","🦇"],["rat","🐀"],["map","🗺️"],["cap","🧢"],["can","🥫"],["pan","🍳"],
+  ["van","🚐"],["man","👨"],["bag","👜"],["ram","🐏"],
+  ["bed","🛏️"],["red","🟥"],["pen","🖊️"],["hen","🐔"],["ten","🔟"],["net","🥅"],["jet","✈️"],["web","🕸️"],["leg","🦵"],
+  ["pig","🐷"],["pin","📌"],["bin","🗑️"],["lip","👄"],["kid","🧒"],["six","6️⃣"],
+  ["dog","🐶"],["log","🪵"],["box","📦"],["fox","🦊"],["pot","🍲"],["dot","🔴"],["hot","🔥"],
+  ["sun","☀️"],["bus","🚌"],["bug","🐛"],["mug","☕"],["cup","🥤"],["nut","🥜"],["hut","🛖"],["tub","🛁"]
+].map(([w,e])=>({w,e}));
+const VOCALES = "aeiou";
+const cvcDe = (w)=>CVC.find(p=>p.w===w);
+/* Cuántas letras cambian entre dos palabras de tres letras */
+const diferencias = (a,b)=>[0,1,2].filter(i=>a[i]!==b[i]).length;
+/* Fichas de letras: las vocales van en rojo, las consonantes en azul */
+function crearFichas(letras, opciones){
+  opciones = opciones || {};
+  const fila = document.createElement("div"); fila.className = "fichas-letra"; fila.setAttribute("lang","en");
+  const fichas = letras.map(l=>{
+    const f = document.createElement("span");
+    f.className = "ficha-letra" + (l==="" ? " vacia" : (VOCALES.includes(l) ? " vocal" : ""));
+    f.textContent = l;
+    fila.appendChild(f);
+    return f;
+  });
+  if(!opciones.leible) fila.setAttribute("aria-hidden","true");
+  return {fila, fichas};
+}
+
+/* La ranita salta por una lista de elementos, uno tras otro */
+let saltos = [];
+function saltarPor(lista, despues){
+  saltos.forEach(clearTimeout); saltos = [];
+  lista.forEach((el,i)=>{
+    saltos.push(setTimeout(()=>{
+      lista.forEach(x=>x.classList.remove("pisada"));
+      el.classList.add("pisada");
+      if(!sinMovimiento()) animar(el,"balbucea");
+    }, i*520));
+  });
+  saltos.push(setTimeout(()=>{ lista.forEach(x=>x.classList.remove("pisada")); if(despues) despues(); }, lista.length*520 + 400));
+}
+
 
 /* =====================================================================
    MÓDULO 1 DE LECTURA: ASÍ FUNCIONA UN LIBRO
@@ -815,19 +867,6 @@ function crearPagina(pag, quietas){
     return botones;
   });
   return {libro, renglones};
-}
-/* La ranita salta por una lista de elementos, uno tras otro */
-let saltos = [];
-function saltarPor(lista, despues){
-  saltos.forEach(clearTimeout); saltos = [];
-  lista.forEach((el,i)=>{
-    saltos.push(setTimeout(()=>{
-      lista.forEach(x=>x.classList.remove("pisada"));
-      el.classList.add("pisada");
-      if(!sinMovimiento()) animar(el,"balbucea");
-    }, i*520));
-  });
-  saltos.push(setTimeout(()=>{ lista.forEach(x=>x.classList.remove("pisada")); if(despues) despues(); }, lista.length*520 + 400));
 }
 function hacerPalabrasTocables(renglones, correcta, alAcertar, pista){
   renglones.flat().forEach(b=>{
