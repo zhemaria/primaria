@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<!--
+  Kindergarten Math — Counting to 100 and how many
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics: K.CC.1, K.CC.2, K.CC.3, K.CC.4, K.CC.5
+  and to the Illinois Early Learning Standards, Kindergarten: 6.A.Ka (ordinals)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Contar hasta 100: Juegos de kindergarten" data-en="Counting to 100: Kindergarten games">Counting to 100: Kindergarten games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual kindergarten counting games with a frog, a sneaky monkey, a parrot and a bus full of teddy bears: count by tens, find the missing number, how many with ten-frames, count out a set, hear and find numbers to 20, and ordinal numbers.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --agua:#D7EEF7; --hoja:#2E7D32;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:50ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: una ranita que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+
+/* ---------- Fichas de números ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(36px,8vw,56px);font-weight:700;line-height:1;
+  box-shadow:var(--sombra);padding:0}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.ficha-num.grande{width:clamp(110px,24vw,160px);height:clamp(110px,24vw,160px);font-size:clamp(52px,12vw,84px)}
+.ficha-num.quieta{cursor:default}
+.mal{animation:temblor .38s}
+
+/* ---------- 1. Ranita de diez en diez: nenúfares ---------- */
+.estanque{background:var(--agua);border-radius:18px;padding:14px 10px 10px;width:100%;max-width:760px}
+.nenufares{display:flex;justify-content:space-around;align-items:flex-end;gap:6px}
+.nenufar{position:relative;width:clamp(64px,15vw,110px);height:clamp(40px,9vw,64px);border-radius:50%;
+  background:#66BB6A;border:4px solid var(--hoja);display:grid;place-items:center;
+  font-weight:700;font-size:clamp(20px,4.4vw,32px);color:#fff;text-shadow:0 2px 0 #1B5E20}
+.nenufar.misterio{background:#fff;color:var(--acento);text-shadow:none;border-style:dashed;border-color:var(--acento)}
+.nenufar .rana{position:absolute;bottom:62%;left:50%;transform:translateX(-50%);font-size:clamp(34px,7vw,54px);
+  text-shadow:none;transition:none}
+.rana.salta{animation:salto-rana .5s ease-out}
+
+/* ---------- 2. El mono travieso: fila de la tabla del 100 ---------- */
+.fila100{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;width:100%;max-width:720px}
+.casilla{aspect-ratio:1;border:3px solid var(--linea);border-radius:10px;display:grid;place-items:center;
+  font-weight:700;font-size:clamp(15px,3.4vw,26px);background:var(--papel);position:relative}
+.casilla.hueco{border:3px dashed var(--acento);background:#EEE8FB;font-size:clamp(26px,5.6vw,44px)}
+.casilla.hueco .mono{animation:meneo 1.2s ease-in-out infinite;display:inline-block}
+.casilla.hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto);font-size:clamp(15px,3.4vw,26px)}
+.mono-huye{position:absolute;font-size:clamp(36px,7vw,56px);animation:huida 1.1s ease-in forwards;pointer-events:none}
+@media (max-width:520px){ .fila100{grid-template-columns:repeat(5,1fr)} }
+
+/* ---------- 3 y 4. Marcos de diez / autobús de ositos ---------- */
+.marcos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.marco10{display:grid;grid-template-columns:repeat(5,1fr);border:4px solid var(--tinta);border-radius:8px;background:var(--tinta)}
+.celda{width:clamp(46px,9.5vw,68px);height:clamp(46px,9.5vw,68px);background:var(--blanco);
+  display:grid;place-items:center;border:2px solid var(--tinta);padding:0;font-size:clamp(28px,6vw,44px);line-height:1}
+.celda .cosa{display:inline-block;animation:aparece .35s ease-out}
+.celda .cosa.baila{animation:rebote .55s ease-in-out 3}
+.bus{position:relative;background:#FFC928;border:4px solid #6B4E00;border-radius:26px 60px 14px 14px;
+  padding:16px 18px 30px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.bus .marco10{border-color:#6B4E00;background:#6B4E00}
+.bus .celda{background:#E3F2FD}
+.bus .marco10.vivo .celda{cursor:pointer}
+.ruedas{position:absolute;bottom:-20px;left:0;right:0;display:flex;justify-content:space-around;font-size:34px;line-height:1}
+.ruedas span{display:inline-block;width:36px;height:36px;border-radius:50%;background:#1E1A3A;border:7px solid #9E9E9E}
+.bus.arranca{animation:arranca 1.2s ease-in}
+.cartel{display:flex;align-items:center;gap:12px}
+
+/* ---------- 5. El loro ---------- */
+.loro{font-size:clamp(70px,16vw,120px);line-height:1;display:inline-block}
+.loro.habla{animation:cabeceo .5s ease-in-out 3}
+.loro.baila{animation:rebote .5s ease-in-out 4}
+
+/* ---------- 6. Carrera ---------- */
+.carrera{display:flex;align-items:flex-end;gap:clamp(4px,1.2vw,8px);justify-content:center;width:100%;
+  border-bottom:6px solid #8D6E63;padding-bottom:6px}
+.meta-bandera{font-size:clamp(30px,8vw,64px);line-height:1}
+.corredor{width:clamp(44px,13vw,96px);height:clamp(44px,13vw,96px);font-size:clamp(28px,8vw,58px);flex:0 0 auto;
+  border:4px dashed var(--linea);border-radius:18px;background:var(--papel);display:grid;place-items:center;padding:0;position:relative}
+.corredor > span:first-child{display:inline-block;animation:trote .45s ease-in-out infinite}
+.corredor .sello{position:absolute;top:-14px;right:-10px;min-width:34px;height:34px;padding:0 6px;border-radius:999px;
+  background:var(--acierto);color:#fff;font-size:15px;font-weight:700;display:grid;place-items:center}
+.corredor.bien{border:4px solid var(--acierto);background:var(--acierto-fondo)}
+.flecha{font-size:.85em;color:var(--tinta-suave);font-weight:700;margin:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#3A2580}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes salto-rana{0%{transform:translate(-50%,0)}45%{transform:translate(-50%,-38px) rotate(-10deg)}100%{transform:translate(-50%,0)}}
+@keyframes meneo{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@keyframes huida{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(260px,-160px) rotate(40deg);opacity:0}}
+@keyframes aparece{0%{transform:scale(0) translateY(-30px)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes arranca{0%{transform:translateX(0)}20%{transform:translateX(-10px)}100%{transform:translateX(120vw)}}
+@keyframes cabeceo{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
+@keyframes trote{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:6mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 4mm;color:#333}
+  .hoja .trazos{display:grid;grid-template-columns:repeat(7,1fr);gap:2mm 4mm}
+  .hoja .trazo{border-bottom:1.2pt solid #000;height:17mm;display:flex;align-items:flex-end;padding-left:1mm}
+  .hoja .trazo b{font-size:28pt;font-weight:400;color:#bdbdbd;line-height:1}
+  .hoja .cuenta{display:flex;gap:8mm;align-items:center;margin:2mm 0;page-break-inside:avoid}
+  .hoja .mini{display:grid;grid-template-columns:repeat(5,8mm);border:1.2pt solid #000}
+  .hoja .mini span{width:8mm;height:8mm;border:.6pt solid #000;display:grid;place-items:center;font-size:12pt}
+  .hoja .caja{width:16mm;height:12mm;border:1.2pt solid #000;border-radius:2mm}
+  .hoja .creditos{margin-top:6mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Contar hasta 100" data-en="Counting to 100">Counting to 100</h1>
+    <span class="crece"></span>
+    <a class="boton casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <span data-es="Hasta" data-en="Up to">Up to</span>
+      <button id="btn-10" aria-pressed="true">10</button>
+      <button id="btn-20" aria-pressed="false">20</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🐸</span><span>🐒</span><span>🧸</span><span>🦜</span><span>🐢</span></div>
+    <h2 data-es="¡Contemos con los animales!" data-en="Let's count with the animals!">Let's count with the animals!</h2>
+    <p data-es="La ranita salta de diez en diez, el mono travieso esconde números, los ositos se suben al autobús y el loro dice números. Yo te digo todo en voz alta y tú contestas tocando."
+       data-en="The frog jumps by tens, a sneaky monkey hides numbers, the teddy bears get on the bus and the parrot says numbers. I say everything out loud and you answer by touching.">The frog jumps by tens, a sneaky monkey hides numbers, the teddy bears get on the bus and the parrot says numbers. I say everything out loud and you answer by touching.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true">🐸</span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: escribir y contar" data-en="🖨 Print a page: write and count">🖨 Print a page: write and count</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para kindergarten: K.CC.1 (contar hasta 100 de uno en uno y de diez en diez), K.CC.2 (seguir contando desde cualquier número), K.CC.3 (escribir los números del 0 al 20, en la hoja impresa), K.CC.4 y K.CC.5 (contar para saber cuántos, hasta 20). Los números ordinales siguen el estándar 6.A.Ka de los Illinois Early Learning Standards para kindergarten."
+       data-en="Aligned to the Illinois kindergarten mathematics standards: K.CC.1 (count to 100 by ones and by tens), K.CC.2 (count forward from any number), K.CC.3 (write numbers 0 to 20, on the printed page), K.CC.4 and K.CC.5 (count to tell how many, up to 20). Ordinal numbers follow benchmark 6.A.Ka of the Illinois Early Learning Standards for kindergarten.">Aligned to the Illinois kindergarten mathematics standards: K.CC.1 (count to 100 by ones and by tens), K.CC.2 (count forward from any number), K.CC.3 (write numbers 0 to 20, on the printed page), K.CC.4 and K.CC.5 (count to tell how many, up to 20). Ordinal numbers follow benchmark 6.A.Ka of the Illinois Early Learning Standards for kindergarten.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Escribe y cuenta" data-en="Write and count">Write and count</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Repasa cada número y escríbelo otra vez." data-en="1. Trace each number and write it again.">1. Trace each number and write it again.</h3>
+  <div class="trazos" id="hoja-trazos"></div>
+  <h3 data-es="2. Cuenta los animalitos. Escribe cuántos hay." data-en="2. Count the animals. Write how many.">2. Count the animals. Write how many.</h3>
+  <div id="hoja-cuentas"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#4B2E9A",t:"#2A1A63"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+
+const NUMERO = {
+  es:["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez"],
+  en:["zero","one","two","three","four","five","six","seven","eight","nine","ten"]
+};
+const palabra = (n)=> n<=10 ? NUMERO[S.idioma][n] : String(n);
+
+/* Cosas divertidas para contar */
+const COSAS = [
+  {e:"⚽", es:["pelota","pelotas"], en:["ball","balls"]},
+  {e:"🐸", es:["rana","ranas"], en:["frog","frogs"]},
+  {e:"🧸", es:["osito","ositos"], en:["teddy bear","teddy bears"]},
+  {e:"🐥", es:["pollito","pollitos"], en:["chick","chicks"]},
+  {e:"🐙", es:["pulpo","pulpos"], en:["octopus","octopuses"]},
+  {e:"🍩", es:["dona","donas"], en:["donut","donuts"]},
+  {e:"🦆", es:["patito","patitos"], en:["duck","ducks"]},
+  {e:"🎈", es:["globo","globos"], en:["balloon","balloons"]},
+  {e:"🐞", es:["mariquita","mariquitas"], en:["ladybug","ladybugs"]},
+  {e:"🦖", es:["dinosaurio","dinosaurios"], en:["dinosaur","dinosaurs"]}
+];
+
+const ORDINAL = {
+  es:["primero","segundo","tercero","cuarto","quinto"],
+  en:["first","second","third","fourth","fifth"]
+};
+const ANIMALES = [
+  {e:"🐢", es:"la tortuga", en:"the turtle"}, {e:"🐇", es:"el conejo", en:"the rabbit"},
+  {e:"🐌", es:"el caracol", en:"the snail"},  {e:"🐕", es:"el perro", en:"the dog"},
+  {e:"🐈", es:"el gato", en:"the cat"},       {e:"🦆", es:"el pato", en:"the duck"},
+  {e:"🐖", es:"el cerdito", en:"the pig"},    {e:"🐓", es:"el gallo", en:"the rooster"},
+  {e:"🐘", es:"el elefante", en:"the elephant"}, {e:"🦒", es:"la jirafa", en:"the giraffe"}
+];
+
+/* ============ Textos ============ */
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Qué bien cuentas!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", listo:"🚌 ¡Arranca!",
+    dieces:"La ranita salta de diez en diez. ¿A qué número salta ahora?",
+    falta:"¡El mono travieso escondió un número! ¿Cuál es?",
+    monoDevuelve:"El mono lo devolvió.",
+    cuantos:(c)=>`¿Cuántos ${c.es[1]} hay?`,
+    dame:(n)=>`Sube ${palabra(n)} ositos al autobús.`,
+    loro:(n)=>`El loro dice: ¡${palabra(n)}! Toca el ${palabra(n)}.`,
+    carrera:(i)=>`¡Carrera de animales! La meta es la bandera. Toca el que va ${ORDINAL.es[i]}.`,
+    hay:(n,c)=>`Hay ${palabra(n)} ${n===1?c.es[0]:c.es[1]}.`,
+    ositos:(n)=>`${palabra(n)} ositos. ¡Bip, bip! El autobús se va.`,
+    llevas:(n)=>`Llevas ${palabra(n)}.`,
+    esOrdinal:(a,i)=>`${a.es.charAt(0).toUpperCase()+a.es.slice(1)} va ${ORDINAL.es[i]}.`,
+    marcoLleno:"Un marco lleno es diez.",
+    final:(n)=>`¡Terminaste! Ganaste ${NUMERO.es[n]} estrellas.`,
+    menu:"Escoge un juego.",
+    asiento:"asiento vacío", ocupado:"asiento con osito",
+    queSigue:"¿Qué sigue?", hueco:"número escondido por el mono"
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","You count so well!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", listo:"🚌 Let's go!",
+    dieces:"The frog jumps by tens. What number does it jump to now?",
+    falta:"The sneaky monkey hid a number! Which one is it?",
+    monoDevuelve:"The monkey gave it back.",
+    cuantos:(c)=>`How many ${c.en[1]} are there?`,
+    dame:(n)=>`Put ${palabra(n)} teddy bears on the bus.`,
+    loro:(n)=>`The parrot says: ${palabra(n)}! Touch ${palabra(n)}.`,
+    carrera:(i)=>`Animal race! The finish line is the flag. Touch the one that is ${ORDINAL.en[i]}.`,
+    hay:(n,c)=>`There are ${palabra(n)} ${n===1?c.en[0]:c.en[1]}.`,
+    ositos:(n)=>`${palabra(n)} teddy bears. Beep, beep! The bus is leaving.`,
+    llevas:(n)=>`You have ${palabra(n)}.`,
+    esOrdinal:(a,i)=>`${a.en.charAt(0).toUpperCase()+a.en.slice(1)} is ${ORDINAL.en[i]}.`,
+    marcoLleno:"A full frame is ten.",
+    final:(n)=>`You finished! You earned ${NUMERO.en[n]} stars.`,
+    menu:"Pick a game.",
+    asiento:"empty seat", ocupado:"seat with a teddy bear",
+    queSigue:"What comes next?", hueco:"number hidden by the monkey"
+  }
+};
+
+const JUEGOS = [
+  {id:"dieces", emoji:"🐸", es:"La ranita salta", en:"Jumping frog", metaEs:"De diez en diez", metaEn:"Count by tens", rango:false},
+  {id:"falta",  emoji:"🐒", es:"El mono travieso", en:"Sneaky monkey", metaEs:"El número que falta", metaEn:"The missing number", rango:false},
+  {id:"cuantos",emoji:"⚽", es:"¿Cuántos hay?", en:"How many?", metaEs:"Marcos de diez", metaEn:"Ten-frames", rango:true},
+  {id:"dame",   emoji:"🧸", es:"El autobús de ositos", en:"Teddy bear bus", metaEs:"Dame esta cantidad", metaEn:"Give me this many", rango:true},
+  {id:"oye",    emoji:"🦜", es:"El loro dice", en:"The parrot says", metaEs:"Oye y busca el número", metaEn:"Hear and find the number", rango:true},
+  {id:"carrera",emoji:"🏁", es:"Carrera de animales", en:"Animal race", metaEs:"Primero, segundo, tercero", metaEn:"First, second, third", rango:false}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", tope:10, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* Reinicia una animación CSS quitando y volviendo a poner la clase */
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+/* Barrido de frecuencia: sirve para el «boing» y el «fiuuu» */
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonCroac = ()=>{ tono([160],0.07,"square"); setTimeout(()=>tono([140],0.09,"square"),110); };
+const sonPop   = ()=>barrido(900,300,0.1);
+const sonBocina= ()=>{ tono([392],0.18,"square"); setTimeout(()=>tono([392],0.18,"square"),240); };
+
+/* ============ Mascota y confeti ============ */
+function mascotaFeliz(){
+  const m = $("mascota"); m.innerHTML = "🐸<span class='globo'>🎉</span>"; animar(m,"feliz");
+}
+function mascotaPiensa(){
+  const m = $("mascota"); m.innerHTML = "🐸<span class='globo'>🤔</span>"; animar(m,"pensando");
+}
+function mascotaNormal(){ $("mascota").textContent = "🐸"; $("mascota").className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego";
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  $("chip-rango").style.display = JUEGOS.find(j=>j.id===id).rango ? "" : "none";
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    hablar(T[S.idioma].final(S.estrellas));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n, grande){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.className = "ficha-num" + (grande ? " grande":"");
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function fichaQuieta(n, grande){
+  const f = crearFicha(n, grande);
+  f.classList.add("quieta"); f.setAttribute("tabindex","-1"); f.setAttribute("aria-disabled","true");
+  return f;
+}
+function ponerOpciones(lista, correcto, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f);
+    });
+    cont.appendChild(f);
+  });
+}
+function cercanos(correcto, min, max, cuantos){
+  const pool = [];
+  for(let d=1; d<=4; d++){ [correcto-d, correcto+d].forEach(v=>{ if(v>=min && v<=max) pool.push(v); }); }
+  return mezclar(pool).slice(0, cuantos||2);
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").textContent = texto;
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+/* Marcos de diez con una cosa divertida dentro de cada casilla llena */
+function crearMarcos(cuantosMarcos, llenas, emoji, vivo){
+  const cont = document.createElement("div"); cont.className = "marcos";
+  const celdas = [];
+  for(let m=0;m<cuantosMarcos;m++){
+    const marco = document.createElement("div");
+    marco.className = "marco10" + (vivo ? " vivo" : "");
+    if(!vivo) marco.setAttribute("aria-hidden","true");
+    for(let i=0;i<10;i++){
+      const idx = m*10+i;
+      const c = document.createElement(vivo ? "button" : "div");
+      c.className = "celda";
+      if(idx < llenas){
+        const s = document.createElement("span"); s.className = "cosa"; s.textContent = emoji;
+        s.style.animationDelay = (idx*0.06).toFixed(2)+"s";
+        c.appendChild(s);
+      }
+      if(vivo){ c.type = "button"; c.setAttribute("aria-label", T[S.idioma].asiento); c.setAttribute("aria-pressed","false"); }
+      marco.appendChild(c); celdas.push(c);
+    }
+    cont.appendChild(marco);
+  }
+  return {cont, celdas};
+}
+
+/* ============ Los seis juegos ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+
+  /* --- 1. La ranita salta de diez en diez (K.CC.1) --- */
+  if(S.juego === "dieces"){
+    const inicio = azar(1,6)*10;
+    const serie = [inicio, inicio+10, inicio+20];
+    const resp = inicio+30;
+    const estanque = document.createElement("div"); estanque.className = "estanque";
+    const fila = document.createElement("div"); fila.className = "nenufares";
+    const hojas = [];
+    serie.forEach(n=>{ const h = document.createElement("div"); h.className = "nenufar"; h.textContent = String(n);
+      h.setAttribute("aria-label", String(n)); fila.appendChild(h); hojas.push(h); });
+    const misterio = document.createElement("div"); misterio.className = "nenufar misterio"; misterio.textContent = "?";
+    misterio.setAttribute("aria-label", t.queSigue); fila.appendChild(misterio); hojas.push(misterio);
+    estanque.appendChild(fila); esc.appendChild(estanque);
+    const rana = document.createElement("span"); rana.className = "rana"; rana.textContent = "🐸"; rana.setAttribute("aria-hidden","true");
+    function ranaEn(i){ hojas[i].appendChild(rana); animar(rana,"salta"); sonBoing(); }
+    function recitar(){
+      let i = 0;
+      (function paso(){
+        if(i < serie.length){ ranaEn(i); hablar(String(serie[i]), ()=>{ i++; setTimeout(paso,150); }); }
+        else { sonCroac(); hablar(t.queSigue); }
+      })();
+    }
+    ponerInstruccion(t.dieces, recitar);
+    botonRepetir(t.escuchar, ()=>{ if(!S.bloqueado) recitar(); });
+    const distract = mezclar([resp+10, resp+1, resp-1].filter(v=>v>0 && v<=100)).slice(0,2);
+    ponerOpciones([resp, ...distract], resp, ()=>{
+      misterio.textContent = String(resp); misterio.classList.remove("misterio");
+      ranaEn(3); setTimeout(sonCroac, 350);
+      acertar(serie.join(", ") + ", " + resp + "!");
+    });
+    return;
+  }
+
+  /* --- 2. El mono travieso: el número que falta (K.CC.1, K.CC.2) --- */
+  if(S.juego === "falta"){
+    const decena = azar(0,9)*10;
+    const pos = azar(1,8);
+    const resp = decena + pos + 1;
+    const fila = document.createElement("div"); fila.className = "fila100";
+    let hueco = null;
+    for(let i=1;i<=10;i++){
+      const n = decena + i;
+      const c = document.createElement("div");
+      c.className = "casilla";
+      if(n === resp){ c.classList.add("hueco"); c.innerHTML = '<span class="mono" aria-hidden="true">🐒</span>';
+        c.setAttribute("role","img"); c.setAttribute("aria-label", t.hueco); hueco = c; }
+      else c.textContent = String(n);
+      fila.appendChild(c);
+    }
+    esc.appendChild(fila);
+    ponerInstruccion(t.falta);
+    const distract = mezclar([resp+10, resp-10, resp+2, resp-2].filter(v=>v>=1 && v<=100)).slice(0,2);
+    ponerOpciones([resp, ...distract], resp, ()=>{
+      // El mono sale corriendo y deja el número
+      const huye = document.createElement("span"); huye.className = "mono-huye"; huye.textContent = "🙈"; huye.setAttribute("aria-hidden","true");
+      hueco.appendChild(huye); setTimeout(()=>huye.remove(), 1200);
+      barrido(300,1200,0.4);
+      hueco.querySelector(".mono").remove();
+      hueco.insertAdjacentText("afterbegin", String(resp));
+      hueco.classList.add("lleno"); hueco.removeAttribute("role"); hueco.removeAttribute("aria-label");
+      acertar(t.monoDevuelve + " " + (resp-1) + ", " + resp + ", " + (resp+1) + ".");
+    });
+    return;
+  }
+
+  /* --- 3. ¿Cuántos hay? con marcos de diez (K.CC.4, K.CC.5) --- */
+  if(S.juego === "cuantos"){
+    const n = azar(S.tope===10 ? 1 : 8, S.tope);
+    const cosa = elegir(COSAS);
+    const {cont} = crearMarcos(S.tope/10, n, cosa.e, false);
+    esc.appendChild(cont);
+    ponerInstruccion(t.cuantos(cosa));
+    ponerOpciones([n, ...cercanos(n, 1, S.tope)], n, ()=>{
+      cont.querySelectorAll(".cosa").forEach((s,k)=>{ s.style.animationDelay = (k*0.05).toFixed(2)+"s"; animar(s,"baila"); });
+      acertar(t.hay(n, cosa) + (n>=10 ? " " + t.marcoLleno : ""));
+    });
+    return;
+  }
+
+  /* --- 4. El autobús de ositos: dame esta cantidad (K.CC.5) --- */
+  if(S.juego === "dame"){
+    const meta = azar(S.tope===10 ? 2 : 11, S.tope);
+    const cartel = document.createElement("div"); cartel.className = "cartel";
+    cartel.appendChild(fichaQuieta(meta, false));
+    const osos = document.createElement("span"); osos.setAttribute("aria-hidden","true");
+    osos.style.fontSize = "clamp(36px,8vw,56px)"; osos.textContent = "🧸🧸🧸";
+    cartel.appendChild(osos);
+    esc.appendChild(cartel);
+    const bus = document.createElement("div"); bus.className = "bus";
+    const {cont, celdas} = crearMarcos(S.tope/10, 0, "🧸", true);
+    bus.appendChild(cont);
+    const ruedas = document.createElement("div"); ruedas.className = "ruedas"; ruedas.setAttribute("aria-hidden","true");
+    ruedas.innerHTML = "<span></span><span></span>";
+    bus.appendChild(ruedas);
+    esc.appendChild(bus);
+    ponerInstruccion(t.dame(meta));
+    const contar = ()=>celdas.filter(c=>c.getAttribute("aria-pressed")==="true").length;
+    celdas.forEach(c=>{
+      c.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        const llena = c.getAttribute("aria-pressed")==="true";
+        if(llena){ c.innerHTML = ""; c.setAttribute("aria-pressed","false"); c.setAttribute("aria-label", T[S.idioma].asiento); sonPop(); }
+        else { const s = document.createElement("span"); s.className="cosa"; s.textContent="🧸"; c.appendChild(s);
+               c.setAttribute("aria-pressed","true"); c.setAttribute("aria-label", T[S.idioma].ocupado); sonBoing(); }
+        hablar(String(contar()));
+      });
+    });
+    const listo = document.createElement("button");
+    listo.className = "boton fuerte"; listo.textContent = t.listo;
+    listo.style.marginTop = "14px";
+    listo.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      const k = contar();
+      if(k === meta){
+        sonBocina();
+        if(!sinMovimiento()) setTimeout(()=>animar(bus,"arranca"), 500);
+        acertar(t.ositos(meta));
+      } else fallar(listo, t.llevas(k) + " " + elegir(t.otra));
+    });
+    esc.appendChild(listo);
+    return;
+  }
+
+  /* --- 5. El loro dice: oye y busca (K.CC.3: reconocer los numerales hasta 20) --- */
+  if(S.juego === "oye"){
+    const n = azar(0, S.tope);
+    const loro = document.createElement("span"); loro.className = "loro"; loro.textContent = "🦜"; loro.setAttribute("aria-hidden","true");
+    esc.appendChild(loro);
+    const decir = ()=>{ animar(loro,"habla"); hablar(t.loro(n)); };
+    $("txt-instruccion").textContent = t.loro(n);
+    $("btn-bocina").onclick = decir;
+    decir();
+    botonRepetir(t.escuchar, ()=>{ if(!S.bloqueado) decir(); });
+    // Distractores que se confunden: el vecino y, en los del 11 al 19, la cifra suelta (16 y 6).
+    let pool = cercanos(n, 0, S.tope, 3);
+    if(n>=11 && n<=19){ pool = [n-10, ...pool.filter(v=>v!==n-10)]; }
+    if(n>=1 && n<=9 && S.tope===20){ pool = [n+10, ...pool.filter(v=>v!==n+10)]; }
+    ponerOpciones([n, ...pool.slice(0,3)], n, ()=>{
+      $("opciones").innerHTML = ""; $("opciones").appendChild(fichaQuieta(n, true));
+      animar(loro,"baila");
+      acertar(palabra(n) + "!");
+    });
+    return;
+  }
+
+  /* --- 6. Carrera de animales: ordinales (IEL K 6.A.Ka) --- */
+  if(S.juego === "carrera"){
+    const corredores = mezclar(ANIMALES).slice(0,5);
+    const i = azar(0,4);
+    const pista = document.createElement("div"); pista.className = "carrera";
+    const bandera = document.createElement("span"); bandera.className = "meta-bandera"; bandera.textContent = "🏁";
+    bandera.setAttribute("aria-hidden","true");
+    pista.appendChild(bandera);
+    corredores.forEach((a,k)=>{
+      const b = document.createElement("button");
+      b.className = "corredor";
+      b.innerHTML = `<span aria-hidden="true" style="animation-delay:${(k*0.09).toFixed(2)}s">${a.e}</span>`;
+      b.setAttribute("aria-label", a[S.idioma]);
+      b.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        if(k===i){
+          b.classList.add("bien");
+          const medallas = ["🥇","🥈","🥉"];
+          pista.querySelectorAll(".corredor").forEach((c,j)=>{
+            const s = document.createElement("span"); s.className="sello"; s.setAttribute("aria-hidden","true");
+            s.textContent = j<3 ? medallas[j] : (S.idioma==="es" ? (j+1)+".º" : ["1st","2nd","3rd","4th","5th"][j]);
+            if(j<3){ s.style.background="transparent"; s.style.fontSize="26px"; }
+            c.appendChild(s);
+          });
+          acertar(t.esOrdinal(a,i));
+        } else fallar(b);
+      });
+      pista.appendChild(b);
+    });
+    esc.appendChild(pista);
+    const flecha = document.createElement("p"); flecha.className = "flecha"; flecha.setAttribute("aria-hidden","true");
+    flecha.textContent = "🏁 ⬅ ⬅ ⬅";
+    esc.appendChild(flecha);
+    ponerInstruccion(t.carrera(i));
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const tr = $("hoja-trazos"); tr.innerHTML = "";
+  for(let n=0;n<=20;n++){
+    const d = document.createElement("div"); d.className = "trazo";
+    d.innerHTML = `<b>${n}</b>`; tr.appendChild(d);
+  }
+  const cu = $("hoja-cuentas"); cu.innerHTML = "";
+  [[7,"🐸"],[13,"⚽"],[4,"🧸"],[18,"🐥"],[10,"🐞"],[16,"🍩"]].forEach(([n,e])=>{
+    const fila = document.createElement("div"); fila.className = "cuenta";
+    for(let m=0;m<2;m++){
+      const mini = document.createElement("div"); mini.className = "mini";
+      for(let i=0;i<10;i++){ const s=document.createElement("span"); s.textContent = (m*10+i<n) ? e : ""; mini.appendChild(s); }
+      fila.appendChild(mini);
+    }
+    const caja = document.createElement("div"); caja.className = "caja"; fila.appendChild(caja);
+    cu.appendChild(fila);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonCroac();
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){ S.juego=null; $("chip-rango").style.display=""; if(window.speechSynthesis) window.speechSynthesis.cancel(); mostrar("p-menu"); }
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerTope(n){
+  S.tope = n;
+  $("btn-10").setAttribute("aria-pressed", n===10); $("btn-20").setAttribute("aria-pressed", n===20);
+  if(S.juego) nuevaRonda();
+}
+$("btn-10").addEventListener("click", ()=>ponerTope(10));
+$("btn-20").addEventListener("click", ()=>ponerTope(20));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+/* Presentación hablada. Los navegadores bloquean la voz hasta el primer gesto,
+   así que se intenta al cargar y, si queda bloqueada, la suelta el primer toque. */
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>
