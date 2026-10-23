@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<!--
+  Kindergarten Math — Number partners
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics: K.OA.3, K.OA.4
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Parejas de números: Juegos de kindergarten" data-en="Number partners: Kindergarten games">Number partners: Kindergarten games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual kindergarten games to break apart numbers up to 10 and make ten: ducks hiding under the bridge, ladybug spots, partner cards with Adrián&#x27;s dinosaur and Génesis&#x27;s teddy bear, filling the ten-frame and bowling pins.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --agua:#D7EEF7; --hoja:#2E7D32;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile > span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile > span:nth-child(2){animation-delay:.2s}.desfile > span:nth-child(3){animation-delay:.4s}
+.desfile > span:nth-child(4){animation-delay:.6s}.desfile > span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:50ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+
+/* ---------- Fichas de números ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(36px,8vw,56px);font-weight:700;line-height:1;
+  box-shadow:var(--sombra);padding:0}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.ficha-num.grande{width:clamp(110px,24vw,160px);height:clamp(110px,24vw,160px);font-size:clamp(52px,12vw,84px)}
+.ficha-num.chica{width:clamp(64px,13vw,90px);height:clamp(64px,13vw,90px);font-size:clamp(30px,6.4vw,44px);border-width:5px}
+.ficha-num.quieta{cursor:default}
+.ficha-num.texto{width:auto;min-width:clamp(120px,24vw,170px);padding:0 16px;font-size:clamp(20px,4vw,28px);gap:6px;grid-auto-flow:column}
+.mal{animation:temblor .38s}
+
+/* ---------- Marcos de diez ---------- */
+.marcos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.marco10{display:grid;grid-template-columns:repeat(5,1fr);border:4px solid var(--tinta);border-radius:8px;background:var(--tinta)}
+.celda{width:clamp(46px,9.5vw,68px);height:clamp(46px,9.5vw,68px);background:var(--blanco);
+  display:grid;place-items:center;border:2px solid var(--tinta);padding:0;font-size:clamp(28px,6vw,44px);line-height:1}
+.marco10.vivo .celda{cursor:pointer}
+.cosa{display:inline-block;animation:aparece .35s ease-out}
+.cosa.baila{animation:rebote .55s ease-in-out 3}
+
+/* ---------- Personajes de la serie ---------- */
+/* La osita de Génesis: osito de peluche con un lacito rosado en la cabeza */
+.osita{position:relative;display:inline-block;line-height:1}
+.osita .lazo{position:absolute;top:-.12em;left:50%;transform:translateX(-10%);font-size:.42em}
+.dino{display:inline-block;line-height:1}
+.mastica{animation:mastica .25s ease-in-out 4}
+
+/* ---------- Grupos sueltos de cosas ---------- */
+.grupo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:center;
+  font-size:clamp(30px,6.4vw,46px);line-height:1}
+.grupo > span{display:inline-block}
+.plato{background:#FFF8E1;border:5px solid #E0C27A;border-radius:50%;width:clamp(140px,34vw,240px);
+  height:clamp(140px,34vw,240px);display:grid;place-items:center;padding:16px;position:relative}
+.plato.elegible{cursor:pointer}
+.plato.elegible:hover{border-color:var(--tinta)}
+.plato .grupo{font-size:clamp(24px,5vw,36px)}
+.dupla{display:flex;flex-wrap:wrap;gap:clamp(14px,4vw,40px);justify-content:center;align-items:center}
+.comensal{position:absolute;bottom:-14px;right:-14px;font-size:clamp(36px,7vw,54px)}
+.tachado{opacity:.25;filter:grayscale(1)}
+.vuela{animation:vuela .7s ease-in forwards}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#3A2580}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes aparece{0%{transform:scale(0) translateY(-30px)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes mastica{0%,100%{transform:scale(1)}50%{transform:scale(1.15,0.88)}}
+@keyframes vuela{0%{transform:translate(0,0) scale(1)}100%{transform:translate(0,-60px) scale(0);opacity:0}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+
+/* ---------- Patitos bajo el puente ---------- */
+.rio{position:relative;width:100%;max-width:680px;background:var(--agua);border-radius:18px;padding:18px 12px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:150px}
+.patos-fuera{display:flex;flex-wrap:wrap;gap:6px;font-size:clamp(30px,6.4vw,46px);flex:1 1 auto;justify-content:center}
+.puente{position:relative;flex:0 0 auto;width:clamp(130px,30vw,220px);height:clamp(100px,20vw,140px);
+  background:#8D6E63;border-radius:60% 60% 0 0 / 80% 80% 0 0;border:5px solid #5D4037;display:grid;place-items:center;
+  color:#fff;font-weight:700;font-size:clamp(34px,7vw,52px);transition:transform .7s ease-in}
+.puente.sube{transform:translateY(-130%)}
+.bajo-puente{position:absolute;right:12px;bottom:14px;width:clamp(130px,30vw,220px);display:flex;flex-wrap:wrap;
+  gap:4px;justify-content:center;font-size:clamp(26px,5.4vw,40px);z-index:0}
+.rio .puente{z-index:1}
+.total{display:flex;align-items:center;gap:10px;font-weight:700}
+
+/* ---------- La mariquita ---------- */
+.mariquita{position:relative;width:clamp(230px,52vw,330px);height:clamp(230px,52vw,330px);margin-top:30px}
+.cabeza{position:absolute;top:-34px;left:50%;transform:translateX(-50%);width:44%;height:30%;background:#1E1A3A;border-radius:50% 50% 40% 40%}
+.ala{position:absolute;top:0;width:50%;height:100%;background:#E53935;border:5px solid #1E1A3A;padding:16% 8% 8%;
+  display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;justify-content:center}
+.ala.izq{left:0;border-radius:100% 0 0 100% / 50% 0 0 50%;border-right-width:3px}
+.ala.der{right:0;border-radius:0 100% 100% 0 / 0 50% 50% 0;border-left-width:3px}
+.ala:hover{filter:brightness(1.08)}
+.ala:empty::after{content:"👆";font-size:clamp(30px,7vw,46px);opacity:.55;margin-top:20%;animation:saltito 1.4s ease-in-out infinite}
+.cabeza::before,.cabeza::after{content:"";position:absolute;top:30%;width:16%;height:22%;background:#fff;border-radius:50%}
+.cabeza::before{left:24%}.cabeza::after{right:24%}
+.punto{width:clamp(22px,5vw,32px);height:clamp(22px,5vw,32px);border-radius:50%;background:#1E1A3A;display:inline-block;animation:aparece .3s ease-out}
+.frasco{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;min-height:40px;
+  background:#F3EFFC;border:3px dashed var(--linea);border-radius:999px;padding:6px 16px}
+.maneras{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:34px}
+.manera{background:var(--acierto-fondo);color:var(--acierto);border:3px solid var(--acierto);border-radius:999px;padding:2px 12px;font-weight:700}
+
+/* ---------- Cartas de parejas ---------- */
+.parejas-cartas{display:flex;align-items:center;gap:clamp(10px,3vw,28px);flex-wrap:wrap;justify-content:center}
+.manos{display:flex;gap:16px;align-items:flex-end}
+.mano{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:clamp(40px,8vw,60px)}
+.mano .hueco-carta{width:clamp(56px,11vw,76px);height:clamp(70px,14vw,96px);border:4px dashed var(--linea);border-radius:12px;
+  display:grid;place-items:center;font-size:clamp(28px,6vw,40px);font-weight:700;background:#fff}
+.carta{width:clamp(70px,14vw,96px);height:clamp(90px,18vw,120px);border-radius:14px;border:5px solid;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;font-weight:700;font-size:clamp(30px,6vw,42px);padding:4px;box-shadow:var(--sombra)}
+.carta .pts{font-size:clamp(10px,2vw,13px);letter-spacing:1px;line-height:1.1;max-width:90%;word-break:break-all}
+.carta.elegida{outline:5px solid var(--foco);outline-offset:2px;transform:translateY(-6px)}
+
+/* ---------- Bolos ---------- */
+.pista{display:flex;flex-direction:column;align-items:center;gap:4px;background:#FFF3E0;border-radius:18px;padding:14px 24px;position:relative}
+.fila-bolos{display:flex;gap:clamp(6px,2vw,14px);font-size:clamp(24px,5vw,36px);line-height:1}
+.bolo{display:inline-block;transition:transform .4s, opacity .4s}
+.bolo.cae{transform:rotate(80deg) translateY(10px);opacity:.25}
+.bola{font-size:clamp(34px,7vw,50px);margin-top:6px}
+.bola.rueda{animation:rueda .7s ease-in}
+@keyframes rueda{0%{transform:translateY(60px) rotate(0)}100%{transform:translateY(-120px) rotate(360deg)}}
+
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco,.confeti{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:6mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 4mm;color:#333}
+  .hoja .creditos{margin-top:6mm;font-size:8.5pt;color:#444}
+  .hoja .renglon{display:flex;align-items:center;gap:6mm;border-bottom:1.2pt dotted #666;padding:3mm 0;page-break-inside:avoid}
+  .hoja .cosas{font-size:18pt;letter-spacing:2pt}
+  .hoja .caja{width:14mm;height:11mm;border:1.2pt solid #000;border-radius:2mm;display:inline-block;vertical-align:middle}
+  .hoja .redondel{width:13mm;height:13mm;border:1.4pt solid #000;border-radius:50%;display:inline-grid;place-items:center;font-size:15pt;font-weight:700;margin-right:3mm}
+  .hoja .grande{font-size:16pt;font-weight:700}
+
+  .hoja .marco-imp{display:inline-grid;grid-template-columns:repeat(5,9mm);border:1.2pt solid #000;vertical-align:middle;margin-right:4mm}
+  .hoja .marco-imp span{width:9mm;height:9mm;border:.6pt solid #000;display:grid;place-items:center;font-size:12pt}
+  .hoja .mariq{display:inline-flex;align-items:center;gap:2mm;font-size:13pt}
+  .hoja .media{width:22mm;height:22mm;border:1.4pt solid #000}
+  .hoja .media.i{border-radius:22mm 0 0 22mm}
+  .hoja .media.d{border-radius:0 22mm 22mm 0}
+
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Parejas de números" data-en="Number partners">Number partners</h1>
+    <span class="crece"></span>
+    <a class="boton casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <span data-es="Hasta" data-en="Up to">Up to</span>
+      <button id="btn-r1" aria-pressed="true"></button>
+      <button id="btn-r2" aria-pressed="false"></button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🦆</span><span>🐞</span><span>🦖</span><span>🔟</span><span>🎳</span></div>
+    <h2 data-es="¡Partir y juntar números!" data-en="Break apart and make numbers!">Break apart and make numbers!</h2>
+    <p data-es="Los patitos se esconden bajo el puente, la mariquita reparte sus puntos, el dinosaurio y la osita buscan parejas, y tumbamos bolos para formar diez. Yo te digo todo en voz alta y tú contestas tocando." data-en="The ducks hide under the bridge, the ladybug shares her spots, the dinosaur and the teddy bear look for partners, and we knock down pins to make ten. I say everything out loud and you answer by touching.">The ducks hide under the bridge, the ladybug shares her spots, the dinosaur and the teddy bear look for partners, and we knock down pins to make ten. I say everything out loud and you answer by touching.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true">🐸</span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: parejas y formar 10" data-en="🖨 Print a page: partners and make 10">🖨 Print a page: partners and make 10</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para kindergarten: K.OA.3 (descomponer los números hasta 10 en pares de más de una manera) y K.OA.4 (para cualquier número del 1 al 9, hallar el número que hay que sumarle para formar 10)." data-en="Aligned to the Illinois kindergarten mathematics standards: K.OA.3 (decompose numbers up to 10 into pairs in more than one way) and K.OA.4 (for any number from 1 to 9, find the number that makes 10 when added to it).">Aligned to the Illinois kindergarten mathematics standards: K.OA.3 (decompose numbers up to 10 into pairs in more than one way) and K.OA.4 (for any number from 1 to 9, find the number that makes 10 when added to it).</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+
+  <h2 data-es="Parejas de números" data-en="Number partners">Number partners</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Dibuja los puntos de la mariquita de dos maneras distintas." data-en="1. Draw the ladybug's spots in two different ways.">1. Draw the ladybug's spots in two different ways.</h3>
+  <div id="hoja-mariquitas"></div>
+  <h3 data-es="2. ¿Cuántos faltan para formar 10? Dibújalos y escribe el número." data-en="2. How many more make 10? Draw them and write the number.">2. How many more make 10? Draw them and write the number.</h3>
+  <div id="hoja-diez"></div>
+
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+/* =====================================================================
+   MOTOR COMÚN DE LA SERIE DE KINDERGARTEN
+   (voz, sonidos, mascota, confeti, estrellas, idioma y navegación)
+   ===================================================================== */
+
+/* Colores de los números (los mismos de prekínder del 0 al 10) */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#4B2E9A",t:"#2A1A63"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+
+const NUMERO = {
+  es:["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez"],
+  en:["zero","one","two","three","four","five","six","seven","eight","nine","ten"]
+};
+
+/* Textos comunes; cada módulo añade los suyos en TM */
+const TB = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Bravo!","¡Eso es!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez",
+    final:(n)=>`¡Terminaste! Ganaste ${NUMERO.es[n]} estrellas.`,
+    menu:"Escoge un juego.",
+    oir:"Escuchar de qué se trata este juego", bocina:"Escuchar la instrucción", estrellas:"Estrellas ganadas"
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Hooray!","That's it!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again",
+    final:(n)=>`You finished! You earned ${NUMERO.en[n]} stars.`,
+    menu:"Pick a game.",
+    oir:"Hear what this game is about", bocina:"Hear the instruction", estrellas:"Stars earned"
+  }
+};
+
+const RONDAS = 5;
+const S = {idioma:"en", tope:null, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const palabra = (n)=> (n>=0 && n<=10) ? NUMERO[S.idioma][n] : String(n);
+const mayus = (s)=>s.charAt(0).toUpperCase()+s.slice(1);
+/* Cantidad con su sustantivo: «una manzana», «dos manzanas», «one apple». fem = femenino en español */
+function cant(n, sing, plur, fem){
+  if(n===1) return S.idioma==="es" ? (fem ? "una " : "un ") + sing : "one " + sing;
+  return palabra(n) + " " + plur;
+}
+
+/* ---------- Voz ---------- */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ---------- Sonidos ---------- */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonCroac = ()=>{ tono([160],0.07,"square"); setTimeout(()=>tono([140],0.09,"square"),110); };
+const sonPop   = ()=>barrido(900,300,0.1);
+const sonNam   = ()=>{ tono([220],0.08,"square"); setTimeout(()=>tono([196],0.08,"square"),140); setTimeout(()=>tono([220],0.08,"square"),280); };
+const sonFiu   = ()=>barrido(300,1400,0.45);
+
+/* ---------- Personajes ---------- */
+/* El dinosaurio de Adrián y la osita (con lacito rosado) de Génesis */
+function htmlDino(){ return '<span class="dino" aria-hidden="true">🦖</span>'; }
+function htmlOsita(){ return '<span class="osita" aria-hidden="true">🧸<span class="lazo">🎀</span></span>'; }
+
+/* ---------- Mascota y confeti ---------- */
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = "🐸<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = "🐸<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ $("mascota").textContent = "🐸"; $("mascota").className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ---------- Constructores comunes ---------- */
+function crearFicha(n, clase){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.className = "ficha-num" + (clase ? " "+clase : "");
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function fichaQuieta(n, clase){
+  const f = crearFicha(n, clase);
+  f.classList.add("quieta"); f.setAttribute("tabindex","-1"); f.setAttribute("aria-disabled","true");
+  return f;
+}
+/* Opciones numéricas: el niño toca una ficha */
+function ponerOpciones(lista, correcto, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(f); else fallar(f);
+    });
+    cont.appendChild(f);
+  });
+}
+/* Opciones de texto o dibujo: [{html, etiqueta, ok}] */
+function ponerOpcionesTexto(lista, alAcertar){
+  const cont = $("opciones");
+  lista.forEach(op=>{
+    const b = document.createElement("button");
+    b.className = "ficha-num texto";
+    b.style.background = op.fondo || "#fff"; b.style.borderColor = op.borde || "#4B2E9A"; b.style.color = op.color || "#2A1A63";
+    b.innerHTML = op.html; b.setAttribute("aria-label", op.etiqueta);
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(op.ok) alAcertar(b); else fallar(b);
+    });
+    cont.appendChild(b);
+  });
+}
+function cercanos(correcto, min, max, cuantos){
+  const pool = [];
+  for(let d=1; d<=4; d++){ [correcto-d, correcto+d].forEach(v=>{ if(v>=min && v<=max) pool.push(v); }); }
+  return mezclar(pool).slice(0, cuantos||2);
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").textContent = texto;
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+/* Un grupo de cosas iguales, sueltas (no en fila) */
+function crearGrupo(emoji, n){
+  const g = document.createElement("div"); g.className = "grupo"; g.setAttribute("aria-hidden","true");
+  for(let i=0;i<n;i++){ const s = document.createElement("span"); s.className="cosa"; s.textContent = emoji;
+    s.style.animationDelay = (i*0.05).toFixed(2)+"s"; g.appendChild(s); }
+  return g;
+}
+/* Marcos de diez con una cosa en cada casilla llena */
+function crearMarcos(cuantosMarcos, llenas, emoji, vivo, etiquetas){
+  const cont = document.createElement("div"); cont.className = "marcos";
+  const celdas = [];
+  for(let m=0;m<cuantosMarcos;m++){
+    const marco = document.createElement("div");
+    marco.className = "marco10" + (vivo ? " vivo" : "");
+    if(!vivo) marco.setAttribute("aria-hidden","true");
+    for(let i=0;i<10;i++){
+      const idx = m*10+i;
+      const c = document.createElement(vivo ? "button" : "div");
+      c.className = "celda";
+      if(idx < llenas){
+        const s = document.createElement("span"); s.className = "cosa"; s.textContent = emoji;
+        s.style.animationDelay = (idx*0.05).toFixed(2)+"s"; c.appendChild(s);
+      }
+      if(vivo){ c.type = "button"; c.setAttribute("aria-label", etiquetas ? etiquetas.vacia : ""); c.setAttribute("aria-pressed","false"); }
+      marco.appendChild(c); celdas.push(c);
+    }
+    cont.appendChild(marco);
+  }
+  return {cont, celdas};
+}
+
+
+/* =====================================================================
+   MÓDULO 4: PAREJAS DE NÚMEROS
+   ===================================================================== */
+const RANGO = null;
+
+function igualdad(total, a, b){
+  const p = document.createElement("p"); p.className = "ecuacion"; p.setAttribute("aria-hidden","true");
+  p.style.cssText = "margin:0;font-weight:700;font-size:clamp(32px,7vw,54px)";
+  p.innerHTML = `${total} = ${a} + <span style="color:var(--acierto)">${b}</span>`;
+  return p;
+}
+function leerIgualdad(total, a, b){
+  return S.idioma==="es"
+    ? `${mayus(palabra(a))} y ${palabra(b)} forman ${palabra(total)}.`
+    : `${mayus(palabra(a))} and ${palabra(b)} make ${palabra(total)}.`;
+}
+
+const TM = {
+  es:{
+    patos:(n,v)=>`Hay ${palabra(n)} patitos. Veo ${v===1?"uno":palabra(v)} afuera. ¿Cuántos se esconden bajo el puente?`,
+    enTotal:"En total",
+    mariquita:(n)=>`La mariquita tiene ${palabra(n)} puntos. Toca sus alas para ponerle los puntos. Busca dos maneras distintas.`,
+    otraManera:"↺ Otra manera",
+    repetida:"¡Esa manera ya la encontraste! Prueba otra.",
+    unaManera:(a,b)=>`${mayus(palabra(a))} y ${palabra(b)}. ¡Una manera! Ahora busca otra.`,
+    alaIzq:(k)=>`ala izquierda, ${palabra(k)} puntos`, alaDer:(k)=>`ala derecha, ${palabra(k)} puntos`,
+    cartas:(n)=>`El dinosaurio de Adrián y la osita de Génesis quieren formar ${palabra(n)}. Toca dos cartas que juntas formen ${palabra(n)}.`,
+    cartasMal:(a,b,n)=>`${mayus(palabra(a))} y ${palabra(b)} forman ${palabra(a+b)}, no ${palabra(n)}. Prueba otra pareja.`,
+    diez:(n)=>`Hay ${cant(n,"osito","ositos")} en el marco. ¿Cuántos faltan para llegar a diez?`,
+    bolos:(k)=>`Hay diez bolos. ¡La bola tumba ${k===1?"uno":palabra(k)}! ¿Cuántos quedan de pie?`,
+    tirar:"🎳 Tirar la bola", tirarDi:"¡Tira la bola!"
+  },
+  en:{
+    patos:(n,v)=>`There are ${palabra(n)} ducks. I see ${palabra(v)} outside. How many are hiding under the bridge?`,
+    enTotal:"In all",
+    mariquita:(n)=>`The ladybug has ${palabra(n)} spots. Touch her wings to put the spots on. Find two different ways.`,
+    otraManera:"↺ Another way",
+    repetida:"You already found that way! Try a different one.",
+    unaManera:(a,b)=>`${mayus(palabra(a))} and ${palabra(b)}. One way! Now find another one.`,
+    alaIzq:(k)=>`left wing, ${palabra(k)} spots`, alaDer:(k)=>`right wing, ${palabra(k)} spots`,
+    cartas:(n)=>`Adrián's dinosaur and Génesis's teddy bear want to make ${palabra(n)}. Touch two cards that make ${palabra(n)} together.`,
+    cartasMal:(a,b,n)=>`${mayus(palabra(a))} and ${palabra(b)} make ${palabra(a+b)}, not ${palabra(n)}. Try another pair.`,
+    diez:(n)=>`There ${n===1?"is":"are"} ${palabra(n)} teddy ${n===1?"bear":"bears"} in the frame. How many more make ten?`,
+    bolos:(k)=>`There are ten pins. The ball knocks down ${palabra(k)}! How many are still standing?`,
+    tirar:"🎳 Roll the ball", tirarDi:"Roll the ball!"
+  }
+};
+
+const JUEGOS = [
+  {id:"patos", emoji:"🦆", es:"Patitos escondidos", en:"Hiding ducks", metaEs:"La parte que falta", metaEn:"The missing part"},
+  {id:"mariquita", emoji:"🐞", es:"Los puntos de la mariquita", en:"Ladybug spots", metaEs:"Muchas maneras", metaEn:"Many ways"},
+  {id:"cartas", emoji:"🃏", es:"Cartas de parejas", en:"Partner cards", metaEs:"Dos números que forman otro", metaEn:"Two numbers that make one"},
+  {id:"diez", emoji:"🔟", es:"Llena el diez", en:"Fill the ten", metaEs:"¿Cuántos faltan para 10?", metaEn:"How many more make 10?"},
+  {id:"bolos", emoji:"🎳", es:"Bolos", en:"Bowling", metaEs:"Parejas del 10", metaEn:"Partners of 10"}
+];
+
+/* Dibujo de un bolo (pino) */
+const PINO = '<svg width="1em" height="1.3em" viewBox="0 0 20 26" aria-hidden="true"><path d="M10 1c3 0 3.5 4 2.3 6.3-.6 1.2.2 2 1.4 3.9C15.8 14.5 15 21 13 25H7c-2-4-2.8-10.5-.7-13.8 1.2-1.9 2-2.7 1.4-3.9C6.5 5 7 1 10 1z" fill="#fff" stroke="#1E1A3A" stroke-width="1.4"/><path d="M7.4 7.6h5.2M7.2 9.4h5.6" stroke="#C62828" stroke-width="1.2"/></svg>';
+
+const RONDA = {
+  /* --- 1. Patitos escondidos: la parte que falta (K.OA.3) --- */
+  patos:(t,esc)=>{
+    const n = azar(3,10), oculto = azar(1, n-1), visibles = n - oculto;
+    const total = document.createElement("div"); total.className = "total";
+    total.innerHTML = `<span>${t.enTotal}:</span>`; total.appendChild(fichaQuieta(n, "chica"));
+    const rio = document.createElement("div"); rio.className = "rio";
+    rio.setAttribute("role","img");
+    rio.setAttribute("aria-label", S.idioma==="es" ? `${visibles} patitos afuera y un puente` : `${visibles} ducks outside and a bridge`);
+    const fuera = crearGrupo("🦆", visibles); fuera.className = "patos-fuera";
+    const bajo = document.createElement("div"); bajo.className = "bajo-puente"; bajo.setAttribute("aria-hidden","true");
+    bajo.textContent = "🦆".repeat(oculto);
+    const puente = document.createElement("div"); puente.className = "puente"; puente.textContent = "?"; puente.setAttribute("aria-hidden","true");
+    rio.append(fuera, bajo, puente);
+    esc.append(total, rio);
+    ponerInstruccion(t.patos(n, visibles));
+    ponerOpciones([oculto, ...cercanos(oculto, 0, 9)], oculto, ()=>{
+      puente.classList.add("sube"); sonFiu();
+      if(sinMovimiento()) puente.style.visibility = "hidden";
+      esc.appendChild(igualdad(n, visibles, oculto));
+      acertar(leerIgualdad(n, visibles, oculto));
+    });
+  },
+
+  /* --- 2. Los puntos de la mariquita: descomponer de dos maneras (K.OA.3) --- */
+  mariquita:(t,esc)=>{
+    const n = azar(4,8);
+    const halladas = [];
+    let izq = 0, der = 0;
+    const cuerpo = document.createElement("div"); cuerpo.className = "mariquita";
+    const cabeza = document.createElement("div"); cabeza.className = "cabeza"; cabeza.setAttribute("aria-hidden","true");
+    const alaI = document.createElement("button"); alaI.className = "ala izq";
+    const alaD = document.createElement("button"); alaD.className = "ala der";
+    cuerpo.append(cabeza, alaI, alaD);
+    const frasco = document.createElement("div"); frasco.className = "frasco"; frasco.setAttribute("aria-hidden","true");
+    const maneras = document.createElement("div"); maneras.className = "maneras"; maneras.setAttribute("aria-live","polite");
+    const otra = document.createElement("button"); otra.className = "boton"; otra.textContent = t.otraManera;
+    esc.append(cuerpo, frasco, maneras, otra);
+    function pintar(){
+      alaI.innerHTML = '<span class="punto"></span>'.repeat(izq);
+      alaD.innerHTML = '<span class="punto"></span>'.repeat(der);
+      alaI.setAttribute("aria-label", t.alaIzq(izq)); alaD.setAttribute("aria-label", t.alaDer(der));
+      frasco.innerHTML = '<span class="punto"></span>'.repeat(n - izq - der) || "✓";
+    }
+    function reiniciar(){ izq = 0; der = 0; pintar(); }
+    function poner(lado){
+      if(S.bloqueado || izq + der >= n) return;
+      if(lado==="i") izq++; else der++;
+      sonPop(); pintar();
+      hablar(String(izq + der));
+      if(izq + der === n) setTimeout(revisar, 500);
+    }
+    function revisar(){
+      const clave = izq + "+" + der;
+      if(halladas.includes(clave)){ fallar(null, t.repetida); setTimeout(reiniciar, 900); return; }
+      halladas.push(clave);
+      const chip = document.createElement("span"); chip.className = "manera"; chip.textContent = `${izq} + ${der}`;
+      maneras.appendChild(chip);
+      if(halladas.length >= 2){
+        otra.remove();
+        acertar(halladas.map(h=>{ const [a,b] = h.split("+").map(Number); return leerIgualdad(n,a,b).replace(/\.$/,""); }).join(". ") + ".");
+      } else {
+        sonBien(); mascotaFeliz();
+        $("aviso").className = "aviso bien"; $("aviso").textContent = t.unaManera(izq, der);
+        hablar(t.unaManera(izq, der), ()=>{});
+        setTimeout(reiniciar, 1200);
+      }
+    }
+    alaI.addEventListener("click", ()=>poner("i"));
+    alaD.addEventListener("click", ()=>poner("d"));
+    otra.addEventListener("click", ()=>{ if(!S.bloqueado){ reiniciar(); sonToque(); } });
+    pintar();
+    ponerInstruccion(t.mariquita(n));
+  },
+
+  /* --- 3. Cartas de parejas: dos números que forman otro (K.OA.3) --- */
+  cartas:(t,esc)=>{
+    const n = azar(4,10);
+    const a = azar(1, n-1), b = n - a;
+    // Otras cartas que no completan la pareja con ninguna de las demás de forma obvia
+    const pool = mezclar([0,1,2,3,4,5,6,7,8,9,10].filter(x=>x!==a && x!==b && x<=n+2)).slice(0,3);
+    const valores = mezclar([a, b, ...pool]);
+    const zona = document.createElement("div"); zona.className = "parejas-cartas";
+    const manos = document.createElement("div"); manos.className = "manos"; manos.setAttribute("aria-hidden","true");
+    const hD = document.createElement("div"); hD.className = "mano"; hD.innerHTML = htmlDino() + '<span class="hueco-carta"></span>';
+    const igual = document.createElement("div"); igual.className = "mano"; igual.innerHTML = '<span style="font-size:.6em;font-weight:700">+</span>';
+    const hO = document.createElement("div"); hO.className = "mano"; hO.innerHTML = htmlOsita() + '<span class="hueco-carta"></span>';
+    const meta = document.createElement("div"); meta.className = "mano";
+    meta.innerHTML = '<span style="font-size:.6em;font-weight:700">=</span>'; meta.appendChild(fichaQuieta(n, "chica"));
+    manos.append(hD, igual, hO, meta);
+    zona.appendChild(manos);
+    esc.appendChild(zona);
+    const huecos = [hD.querySelector(".hueco-carta"), hO.querySelector(".hueco-carta")];
+    let elegidas = [];
+    const fila = $("opciones");
+    valores.forEach(v=>{
+      const c = colorDe(v);
+      const carta = document.createElement("button");
+      carta.className = "carta"; carta.style.background = c.f; carta.style.borderColor = c.b; carta.style.color = c.t;
+      carta.innerHTML = `<span>${v}</span><span class="pts" aria-hidden="true">${"●".repeat(v)}</span>`;
+      carta.setAttribute("aria-label", palabra(v));
+      carta.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        if(carta.classList.contains("elegida")){
+          carta.classList.remove("elegida"); elegidas = elegidas.filter(x=>x.carta!==carta);
+        } else if(elegidas.length < 2){
+          carta.classList.add("elegida"); elegidas.push({carta, v}); sonPop();
+        }
+        huecos.forEach((h,k)=>{ h.textContent = elegidas[k] ? String(elegidas[k].v) : ""; });
+        if(elegidas.length === 2){
+          const [x,y] = elegidas.map(e=>e.v);
+          if(x + y === n){ sonNam(); acertar(leerIgualdad(n, x, y)); }
+          else {
+            const cs = elegidas.map(e=>e.carta);
+            fallar(cs[1], t.cartasMal(x, y, n));
+            setTimeout(()=>{ cs.forEach(k=>k.classList.remove("elegida")); elegidas = []; huecos.forEach(h=>h.textContent=""); }, 1300);
+          }
+        }
+      });
+      fila.appendChild(carta);
+    });
+    ponerInstruccion(t.cartas(n));
+  },
+
+  /* --- 4. Llena el diez: el número que forma 10 (K.OA.4) --- */
+  diez:(t,esc)=>{
+    const n = azar(1,9), falta = 10 - n;
+    const {cont} = crearMarcos(1, n, "🧸", false);
+    esc.appendChild(cont);
+    ponerInstruccion(t.diez(n));
+    ponerOpciones([falta, ...cercanos(falta, 0, 10)], falta, ()=>{
+      const celdas = cont.querySelectorAll(".celda");
+      for(let i=n;i<10;i++){
+        const s = document.createElement("span"); s.className = "cosa baila"; s.textContent = "🦖";
+        s.style.animationDelay = ((i-n)*0.08).toFixed(2)+"s";
+        celdas[i].appendChild(s);
+      }
+      sonBoing();
+      const p = document.createElement("p"); p.className = "ecuacion"; p.setAttribute("aria-hidden","true");
+      p.style.cssText = "margin:0;font-weight:700;font-size:clamp(32px,7vw,54px)";
+      p.innerHTML = `${n} + <span style="color:var(--acierto)">${falta}</span> = 10`;
+      esc.appendChild(p);
+      acertar(leerIgualdad(10, n, falta));
+    });
+  },
+
+  /* --- 5. Bolos: parejas del 10 (K.OA.3, K.OA.4) --- */
+  bolos:(t,esc)=>{
+    const caidos = azar(1,9), dePie = 10 - caidos;
+    const pista = document.createElement("div"); pista.className = "pista";
+    pista.setAttribute("role","img");
+    pista.setAttribute("aria-label", S.idioma==="es" ? "diez bolos en una pista" : "ten bowling pins on a lane");
+    const bolos = [];
+    [4,3,2,1].forEach(k=>{
+      const f = document.createElement("div"); f.className = "fila-bolos"; f.setAttribute("aria-hidden","true");
+      for(let i=0;i<k;i++){ const b = document.createElement("span"); b.className = "bolo"; b.innerHTML = PINO; f.appendChild(b); bolos.push(b); }
+      pista.appendChild(f);
+    });
+    const bola = document.createElement("span"); bola.className = "bola"; bola.textContent = "🎱"; bola.setAttribute("aria-hidden","true");
+    pista.appendChild(bola);
+    esc.appendChild(pista);
+    const tirar = document.createElement("button"); tirar.className = "boton fuerte"; tirar.textContent = t.tirar;
+    esc.appendChild(tirar);
+    let tirado = false;
+    function tirarBola(){
+      if(tirado) return; tirado = true; tirar.remove();
+      animar(bola, "rueda"); barrido(120, 60, 0.6, "sawtooth");
+      const quienes = mezclar(bolos).slice(0, caidos);
+      setTimeout(()=>{ quienes.forEach(b=>b.classList.add("cae")); tono([180,140,110],0.12,"square"); }, 650);
+      setTimeout(()=>{
+        ponerInstruccion(t.bolos(caidos));
+        ponerOpciones([dePie, ...cercanos(dePie, 0, 10)], dePie, ()=>{
+          esc.appendChild(igualdad(10, caidos, dePie));
+          acertar(leerIgualdad(10, caidos, dePie));
+        });
+      }, 1200);
+    }
+    tirar.addEventListener("click", tirarBola);
+    ponerInstruccion(t.tirarDi);
+  }
+};
+
+/* ---------- Hoja imprimible ---------- */
+function pintarHoja(){
+  const m = $("hoja-mariquitas"); m.innerHTML = "";
+  [5,6,7].forEach(n=>{
+    const r = document.createElement("div"); r.className = "renglon";
+    r.innerHTML = `<span class="redondel">${n}</span>` +
+      `<span class="mariq"><span class="media i"></span><span class="media d"></span></span>` +
+      `<span class="mariq" style="margin-left:10mm"><span class="media i"></span><span class="media d"></span></span>`;
+    m.appendChild(r);
+  });
+  const d = $("hoja-diez"); d.innerHTML = "";
+  [7,4,9,2,5].forEach(n=>{
+    const r = document.createElement("div"); r.className = "renglon";
+    let celdas = ""; for(let i=0;i<10;i++) celdas += `<span>${i<n?"●":""}</span>`;
+    r.innerHTML = `<span class="marco-imp">${celdas}</span><span class="grande">${n} + </span><span class="caja"></span><span class="grande"> = 10</span>`;
+    d.appendChild(r);
+  });
+}
+
+
+/* =====================================================================
+   NAVEGACIÓN, IDIOMA Y ARRANQUE (común)
+   ===================================================================== */
+const T = {es:Object.assign({}, TB.es, TM.es), en:Object.assign({}, TB.en, TM.en)};
+
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("btn-oir").setAttribute("aria-label", T[S.idioma].oir);
+  $("btn-bocina").setAttribute("aria-label", T[S.idioma].bocina);
+  $("marcador").setAttribute("aria-label", T[S.idioma].estrellas);
+  pintarMenu();
+  if(typeof pintarHoja === "function") pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego";
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+function mostrarChipRango(visible){ $("chip-rango").style.display = (RANGO && visible) ? "" : "none"; }
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  mostrarChipRango(JUEGOS.find(j=>j.id===id).rango);
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    hablar(T[S.idioma].final(S.estrellas));
+  } else nuevaRonda();
+}
+function nuevaRonda(){
+  limpiar();
+  RONDA[S.juego](T[S.idioma], $("escena"));
+}
+
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonCroac();
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){ S.juego=null; mostrarChipRango(true); if(window.speechSynthesis) window.speechSynthesis.cancel(); mostrar("p-menu"); }
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+
+/* Selector de rango (por ejemplo «Hasta 5 / 10»), si el módulo lo usa */
+function ponerTope(n){
+  S.tope = n;
+  $("btn-r1").setAttribute("aria-pressed", n===RANGO[0]); $("btn-r2").setAttribute("aria-pressed", n===RANGO[1]);
+  if(S.juego) nuevaRonda();
+}
+if(RANGO){
+  S.tope = RANGO[0];
+  $("btn-r1").textContent = String(RANGO[0]); $("btn-r2").textContent = String(RANGO[1]);
+  $("btn-r1").addEventListener("click", ()=>ponerTope(RANGO[0]));
+  $("btn-r2").addEventListener("click", ()=>ponerTope(RANGO[1]));
+}
+mostrarChipRango(true);
+
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>
