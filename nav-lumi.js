@@ -16,7 +16,8 @@
     { id: "prek", ancla: "prek", es: "Prekínder", en: "Pre-K" },
     { id: "k",    ancla: "k",    es: "Kínder",    en: "K" },
     { id: "1",    ancla: "g1",   es: "1.º",       en: "1st" },
-    { id: "2",    ancla: "g2",   es: "2.º",       en: "2nd" }
+    { id: "2",    ancla: "g2",   es: "2.º",       en: "2nd" },
+    { id: "3",    ancla: "g3",   es: "3.º",       en: "3rd" }
   ];
   var T = {
     es: { nav: "Navegación de Lumi", inicio: "Inicio", grados: "Grados:", grado: "Ir a ", actual: " (estás aquí)",
