@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<!--
+  Third Grade Math — Fractions
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 3: 3.NF.1, 3.NF.2, 3.NF.3
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Fracciones · Juegos de tercer grado" data-en="Fractions · Third grade games">Fractions · Third grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual third grade fraction games with Lumi: name the fraction, fractions on the number line, equivalent fractions, whole numbers as fractions, compare and order fractions.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#FBF6F2; --tinta:#2B1A12; --tinta-suave:#5C463B; --linea:#EBD8CC; --blanco:#FFFFFF;
+  --acento:#A33A12; --acento-claro:#FBE9E1;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(43,26,18,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#7A2A0C}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+</style>
+</head>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Fracciones" data-en="Fractions">Fractions</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-mascota.jpg" alt="" class="lumi-d" width="150" height="222"></span><span>🍕</span><span>📏</span><span>🟰</span><span>⚖️</span></div>
+    <h2 data-es="¡Partes iguales y fracciones!" data-en="Equal parts and fractions!">Equal parts and fractions!</h2>
+    <p data-es="Lumi reparte pizzas, cintas y barras en partes iguales: nombra fracciones, ubícalas en la recta numérica, encuentra fracciones equivalentes, descubre los enteros escondidos y compara y ordena fracciones. Con Israel, Lucía, Alejandro, Adrián y Génesis."
+       data-en="Lumi shares pizzas, ribbons and bars into equal parts: name fractions, place them on the number line, find equivalent fractions, discover hidden whole numbers and compare and order fractions. With Israel, Lucía, Alejandro, Adrián and Génesis.">Lumi shares pizzas, ribbons and bars into equal parts: name fractions, place them on the number line, find equivalent fractions, discover hidden whole numbers and compare and order fractions. With Israel, Lucía, Alejandro, Adrián and Génesis.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-mascota.jpg" alt="" class="lumi-m" width="150" height="222"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: fracciones" data-en="🖨 Print a page: fractions">🖨 Print a page: fractions</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para tercer grado: 3.NF.1 (entender 1/b como una de b partes iguales del entero, y a/b como a partes de tamaño 1/b), 3.NF.2 (representar fracciones en la recta numérica) y 3.NF.3 (explicar la equivalencia de fracciones, reconocer y generar fracciones equivalentes sencillas, expresar números enteros como fracciones y comparar dos fracciones con el mismo numerador o el mismo denominador, reconociendo que solo se pueden comparar si se refieren al mismo entero). En el nivel Fácil hay modelos visuales (barras, pizzas y saltos en la recta); en el Reto se trabaja sobre todo con los números. Denominadores 2, 3, 4, 6 y 8. Cada juego tiene su enlace directo: #nombra, #recta, #equivalentes, #enteros, #comparar y #ordenar."
+       data-en="Aligned to the Illinois third grade mathematics standards 3.NF.1 (understand 1/b as one of b equal parts of a whole, and a/b as a parts of size 1/b), 3.NF.2 (represent fractions on a number line) and 3.NF.3 (explain equivalence of fractions, recognize and generate simple equivalent fractions, express whole numbers as fractions and compare two fractions with the same numerator or the same denominator, recognizing that comparisons are valid only when they refer to the same whole). At the Easy level there are visual models (bars, pizzas and number-line jumps); at the Challenge level the work is mostly with the numbers. Denominators 2, 3, 4, 6 and 8. Each game has its own direct link: #nombra, #recta, #equivalentes, #enteros, #comparar and #ordenar.">Aligned to the Illinois third grade mathematics standards 3.NF.1 (understand 1/b as one of b equal parts of a whole, and a/b as a parts of size 1/b), 3.NF.2 (represent fractions on a number line) and 3.NF.3 (explain equivalence of fractions, recognize and generate simple equivalent fractions, express whole numbers as fractions and compare two fractions with the same numerator or the same denominator, recognizing that comparisons are valid only when they refer to the same whole). At the Easy level there are visual models (bars, pizzas and number-line jumps); at the Challenge level the work is mostly with the numbers. Denominators 2, 3, 4, 6 and 8. Each game has its own direct link: #nombra, #recta, #equivalentes, #enteros, #comparar and #ordenar.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Fracciones" data-en="Fractions">Fractions</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Escribe la fracción pintada." data-en="1. Write the shaded fraction.">1. Write the shaded fraction.</h3>
+  <div class="caja-h" id="hoja-modelos"></div>
+  <h3 data-es="2. Compara con &lt;, &gt; o =." data-en="2. Compare with &lt;, &gt; or =.">2. Compare with &lt;, &gt; or =.</h3>
+  <div class="caja-h" id="hoja-comparar"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí", no:"✘ No", comprobar:"✔ Comprobar", ninguno:"Marca al menos una opción.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    nombra:"¿Qué fracción está pintada?",
+    nombraFin:(a,b)=>`Hay ${b} partes iguales y ${a} ${a === 1 ? "está pintada" : "están pintadas"}: ${a}/${b}.`,
+    pistaAbajo:"El número de abajo cuenta todas las partes iguales del entero, no solo las que no están pintadas.",
+    pistaNombra:"Cuenta todas las partes iguales (abajo) y las pintadas (arriba).",
+    recta:"¿Qué fracción marca el punto en la recta numérica?",
+    rectaFin:(a,b)=>`Del 0 al 1 hay ${b} partes iguales. El punto está a ${a} ${a === 1 ? "parte" : "partes"} del 0: ${a}/${b}.`,
+    pistaRecta:"Cuenta en cuántas partes iguales está partido el espacio del 0 al 1, y cuántos saltos hay desde el 0.",
+    equiv:(a,b)=>`¿Qué fracción es equivalente a ${a}/${b}? Equivalente quiere decir que ocupa el mismo lugar o la misma parte del entero.`,
+    equivC:(a,b)=>`¿Qué fracción es equivalente a ${a}/${b}?`,
+    equivFin:(a,b,c,d)=>`${a}/${b} = ${c}/${d}: es la misma parte del entero, partida en piezas más pequeñas.`,
+    pistaEquiv:"Si partes cada pieza en dos, hay el doble de piezas arriba y abajo.",
+    enteros:(a,b)=>`¿Qué número entero es ${a}/${b}?`,
+    enterosR:(n,b)=>`¿Qué fracción con ${b} abajo es igual a ${n}?`,
+    enterosFin:(a,b,n)=>`${a}/${b} = ${n}: con ${b} partes de ${b} se completa un entero, y hay ${n} ${n === 1 ? "entero" : "enteros"}.`,
+    pistaEnteros:(b)=>`Cada entero tiene ${b} partes. ¿Cuántos enteros completos se forman?`,
+    comparar:"Compara las fracciones. ¿Qué signo va en el medio?",
+    ctxPizza:(n1,n2)=>`Pizzas del mismo tamaño: ${n1} y ${n2}.`,
+    mismoDen:(a,c,b)=>`Tienen el mismo denominador: piezas del mismo tamaño. ${Math.max(a,c)}/${b} tiene más piezas, así que es mayor.`,
+    mismoNum:(a,b,d)=>`Tienen el mismo numerador. Los ${DEN.es[Math.min(b,d)][1]} son más grandes que los ${DEN.es[Math.max(b,d)][1]}: con más partes, cada parte es más pequeña. Por eso ${a}/${Math.min(b,d)} es mayor.`,
+    iguales:"Son la misma fracción: el signo es =.",
+    pistaComparar:"Recuerda: solo se comparan partes del mismo entero. Mira el tamaño de las piezas y cuántas hay.",
+    ordenar:"Toca las fracciones en orden, de la menor a la mayor.",
+    ordenarFin:(l)=>`De menor a mayor: ${l}.`,
+    pistaOrdenar:"Esa no es la menor de las que quedan. Compara el tamaño de las piezas o cuántas hay.",
+    nombres:["Israel","Lucía","Alejandro","Adrián","Génesis"],
+    estrategias:[
+      ["Hice un dibujo de barras o pizzas","¡Muy bien! Dibujar el entero en partes iguales aclara cualquier fracción."],
+      ["Usé la recta numérica","¡Excelente! En la recta se ve qué fracción está más lejos del 0."],
+      ["Comparé el tamaño de las piezas","¡Buena estrategia! Con más partes, cada parte es más pequeña."],
+      ["Busqué fracciones equivalentes","¡Genial! Las fracciones equivalentes son el mismo número con otro nombre."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes", no:"✘ No", comprobar:"✔ Check", ninguno:"Mark at least one option.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    nombra:"What fraction is shaded?",
+    nombraFin:(a,b)=>`There are ${b} equal parts and ${a} ${a === 1 ? "is" : "are"} shaded: ${a}/${b}.`,
+    pistaAbajo:"The bottom number counts all the equal parts of the whole, not just the parts that aren't shaded.",
+    pistaNombra:"Count all the equal parts (bottom) and the shaded ones (top).",
+    recta:"What fraction does the point on the number line show?",
+    rectaFin:(a,b)=>`From 0 to 1 there are ${b} equal parts. The point is ${a} ${a === 1 ? "part" : "parts"} from 0: ${a}/${b}.`,
+    pistaRecta:"Count how many equal parts the space from 0 to 1 is split into, and how many jumps there are from 0.",
+    equiv:(a,b)=>`Which fraction is equivalent to ${a}/${b}? Equivalent means it is at the same point or the same part of the whole.`,
+    equivC:(a,b)=>`Which fraction is equivalent to ${a}/${b}?`,
+    equivFin:(a,b,c,d)=>`${a}/${b} = ${c}/${d}: it is the same part of the whole, cut into smaller pieces.`,
+    pistaEquiv:"If you cut every piece in two, there are twice as many pieces on top and on the bottom.",
+    enteros:(a,b)=>`What whole number is ${a}/${b}?`,
+    enterosR:(n,b)=>`Which fraction with ${b} on the bottom equals ${n}?`,
+    enterosFin:(a,b,n)=>`${a}/${b} = ${n}: ${b} parts of ${b} make one whole, and there ${n === 1 ? "is" : "are"} ${n} ${n === 1 ? "whole" : "wholes"}.`,
+    pistaEnteros:(b)=>`Each whole has ${b} parts. How many complete wholes do you get?`,
+    comparar:"Compare the fractions. Which sign goes in the middle?",
+    ctxPizza:(n1,n2)=>`Pizzas of the same size: ${n1} and ${n2}.`,
+    mismoDen:(a,c,b)=>`They have the same denominator: pieces of the same size. ${Math.max(a,c)}/${b} has more pieces, so it is greater.`,
+    mismoNum:(a,b,d)=>`They have the same numerator. ${DEN.en[Math.min(b,d)][1][0].toUpperCase() + DEN.en[Math.min(b,d)][1].slice(1)} are bigger than ${DEN.en[Math.max(b,d)][1]}: with more parts, each part is smaller. So ${a}/${Math.min(b,d)} is greater.`,
+    iguales:"They are the same fraction: the sign is =.",
+    pistaComparar:"Remember: only compare parts of the same whole. Look at the size of the pieces and how many there are.",
+    ordenar:"Touch the fractions in order, from least to greatest.",
+    ordenarFin:(l)=>`From least to greatest: ${l}.`,
+    pistaOrdenar:"That isn't the least of the ones left. Compare the size of the pieces or how many there are.",
+    nombres:["Israel","Lucía","Alejandro","Adrián","Génesis"],
+    estrategias:[
+      ["I drew bars or pizzas","Great! Drawing the whole in equal parts makes any fraction clear."],
+      ["I used the number line","Excellent! On the number line you can see which fraction is farther from 0."],
+      ["I compared the size of the pieces","Good strategy! With more parts, each part is smaller."],
+      ["I looked for equivalent fractions","Awesome! Equivalent fractions are the same number with another name."]]
+  }
+};
+const JUEGOS = [
+  {id:"nombra",      emoji:"🍕", es:"Nombra la fracción", en:"Name the fraction", metaEs:"Partes iguales", metaEn:"Equal parts"},
+  {id:"recta",       emoji:"📏", es:"En la recta numérica", en:"On the number line", metaEs:"Del 0 al 1 (y más)", metaEn:"From 0 to 1 (and more)"},
+  {id:"equivalentes",emoji:"🟰", es:"Fracciones equivalentes", en:"Equivalent fractions", metaEs:"1/2 = 2/4", metaEn:"1/2 = 2/4"},
+  {id:"enteros",     emoji:"🧱", es:"Enteros escondidos", en:"Hidden whole numbers", metaEs:"6/3 = 2", metaEn:"6/3 = 2"},
+  {id:"comparar",    emoji:"⚖️", es:"Compara fracciones", en:"Compare fractions", metaEs:"<, > o =", metaEn:"<, > or ="},
+  {id:"ordenar",     emoji:"📶", es:"Ordena fracciones", en:"Order fractions", metaEs:"De menor a mayor", metaEn:"Least to greatest"}
+];
+
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-mascota.jpg" alt="" class="lumi-m" width="150" height="222">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g3-06-fractions.html#recta */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],6:["sexto","sextos"],8:["octavo","octavos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],6:["sixth","sixths"],8:["eighth","eighths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + "/" + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Nombra la fracción (3.NF.1) --- */
+  if(S.juego === "nombra"){
+    const b = elegir(DENS), a = reto ? azar(1, b-1) : (Math.random() < 0.6 ? 1 : azar(1, b-1));
+    const caja = document.createElement("div"); caja.innerHTML = (b <= 8 && Math.random() < 0.5) ? pastelSVG(a, b) : barraSVG(a, b);
+    esc.appendChild(caja);
+    ponerInstruccion(t.nombra);
+    const bien = `${a}/${b}`, abajo = `${a}/${b-a}`;
+    const lista = unicos([bien, b-a > 0 && b-a !== b ? abajo : `${a}/${b+1}`, `${b}/${a}`, `${a+1 <= b ? a+1 : a-1}/${b}`]).filter(v=> v.split("/")[1] !== "0").slice(0,3);
+    opcionesFrac(lista, bien, ()=>acertar(t.nombraFin(a, b)), (v)=> v === abajo ? t.pistaAbajo : t.pistaNombra);
+    return;
+  }
+
+  /* --- 2. En la recta numérica: Fácil con saltos de 0 a 1; Reto de 0 a 2 sin saltos (3.NF.2) --- */
+  if(S.juego === "recta"){
+    const b = elegir(reto ? [2,3,4,6,8] : [2,3,4,6]), max = reto ? 2 : 1;
+    let a = azar(1, b*max - 1); if(reto && a % b === 0) a += 1;
+    const caja = document.createElement("div"); caja.style.width = "100%"; caja.innerHTML = rectaFrac(a, b, max, !reto, false);
+    esc.appendChild(caja);
+    ponerInstruccion(t.recta);
+    const bien = `${a}/${b}`;
+    const lista = unicos([bien, `${a+1}/${b}`, a > 1 ? `${a-1}/${b}` : `${a}/${b+1}`, `${a}/${b*max+1}`]).slice(0,3);
+    opcionesFrac(lista, bien, ()=>{ caja.innerHTML = rectaFrac(a, b, max, true, true); acertar(t.rectaFin(a, b)); }, ()=>t.pistaRecta);
+    return;
+  }
+
+  /* --- 3. Fracciones equivalentes: Fácil con barras alineadas (3.NF.3a, 3.NF.3b) --- */
+  if(S.juego === "equivalentes"){
+    const b = elegir(reto ? [2,3,4] : [2,4]), a = azar(1, b-1), k = reto ? elegir([2,2,3,4].filter(x=>b*x <= 8 || (b===3 && x===2))) : 2;
+    const c = a*k, d = b*k;
+    if(!reto){
+      const caja = document.createElement("div"); caja.className = "modelos";
+      caja.innerHTML = barraSVG(a, b) + barraSVG(0, d);
+      esc.appendChild(caja);
+    } else esc.insertAdjacentHTML("beforeend", `<div class="par-frac">${fracHTML(a, b)} <span>=</span> <span class="signo-c">?</span></div>`);
+    ponerInstruccion(t.equivC(a, b), t.equiv(a, b));
+    const bien = `${c}/${d}`;
+    const lista = unicos([bien, `${a}/${d}`, `${a+k}/${b+k}`, `${c}/${b}`].filter(v=>{ const [p,q] = v.split("/").map(Number); return p < q || v === bien; })).slice(0,3);
+    while(lista.length < 3) lista.push(`${c+1}/${d}`);
+    opcionesFrac(lista, bien, ()=>{
+      if(!reto) esc.querySelector(".modelos").innerHTML = barraSVG(a, b) + barraSVG(c, d);
+      else { const s = esc.querySelector(".signo-c"); s.innerHTML = fracHTML(c, d); s.classList.add("lleno"); }
+      acertar(t.equivFin(a, b, c, d));
+    }, ()=>t.pistaEquiv);
+    return;
+  }
+
+  /* --- 4. Enteros escondidos: números enteros como fracciones (3.NF.3c) --- */
+  if(S.juego === "enteros"){
+    const b = elegir(reto ? [2,3,4,6,8] : [2,3,4]), n = azar(1, reto ? 4 : 3), a = n*b;
+    if(!reto || Math.random() < 0.5){
+      if(!reto){ const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = barraSVG(a, b, 300); esc.appendChild(caja); }
+      else esc.insertAdjacentHTML("beforeend", `<div class="par-frac">${fracHTML(a, b)} <span>=</span> <span class="signo-c">?</span></div>`);
+      ponerInstruccion(t.enteros(a, b));
+      const lista = unicos([String(n), String(n+1), String(a), n > 1 ? String(n-1) : String(b)]).slice(0,3);
+      opcionesFrac(lista, String(n), ()=>{ const s = esc.querySelector(".signo-c"); if(s){ s.textContent = n; s.classList.add("lleno"); } acertar(t.enterosFin(a, b, n)); }, ()=>t.pistaEnteros(b));
+    } else {
+      esc.insertAdjacentHTML("beforeend", `<div class="par-frac"><span>${n}</span> <span>=</span> <span class="signo-c">?</span></div>`);
+      ponerInstruccion(t.enterosR(n, b));
+      const bien = `${a}/${b}`;
+      opcionesFrac(unicos([bien, `${n}/${b}`, `${b}/${n}`, `${a+1}/${b}`]).slice(0,3), bien, ()=>{ const s = esc.querySelector(".signo-c"); s.innerHTML = fracHTML(a, b); s.classList.add("lleno"); acertar(t.enterosFin(a, b, n)); }, ()=>t.pistaEnteros(b));
+    }
+    return;
+  }
+
+  /* --- 5. Compara fracciones: mismo denominador o mismo numerador (3.NF.3d) --- */
+  if(S.juego === "comparar"){
+    let a, b, c, d;
+    const tipo = elegir(["den","num","den","num", reto ? "igual" : "den"]);
+    if(tipo === "den"){ b = d = elegir([3,4,6,8]); a = azar(1, b-1); do{ c = azar(1, b-1); } while(c === a); }
+    else if(tipo === "num"){ b = elegir(DENS); do{ d = elegir(DENS); } while(d === b); a = c = azar(1, Math.min(b, d) - 1); }
+    else { b = d = elegir(DENS); a = c = azar(1, b-1); }
+    const v1 = a/b, v2 = c/d, signo = v1 > v2 ? ">" : v1 < v2 ? "<" : "=";
+    const [n1, n2] = mezclar(t.nombres).slice(0,2);
+    const ctx = document.createElement("p"); ctx.className = "contexto"; ctx.textContent = t.ctxPizza(n1, n2);
+    esc.appendChild(ctx);
+    if(!reto){ const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = barraSVG(a, b, 360) + barraSVG(c, d, 360); esc.appendChild(caja); }
+    const par = document.createElement("div"); par.className = "par-frac";
+    par.innerHTML = `${fracHTML(a, b)}<span class="signo-c">?</span>${fracHTML(c, d)}`;
+    esc.appendChild(par);
+    ponerInstruccion(t.comparar, `${n1}: ${a}/${b}. ${n2}: ${c}/${d}. ` + t.comparar);
+    const expl = signo === "=" ? t.iguales : (tipo === "den" ? t.mismoDen(a, c, b) : t.mismoNum(a, b, d));
+    const cont = $("opciones");
+    ["<", "=", ">"].forEach(sg=>{
+      cont.appendChild(botonTexto(sg, "opcion-texto", sg === "<" ? (S.idioma === "es" ? "menor que" : "less than") : sg === ">" ? (S.idioma === "es" ? "mayor que" : "greater than") : (S.idioma === "es" ? "igual a" : "equal to"), (bt)=>{
+        if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(expl); }
+        else fallar(bt, t.pistaComparar);
+      }));
+    });
+    S.resolver = resolverTexto(signo);
+    return;
+  }
+
+  /* --- 6. Ordena fracciones de menor a mayor (3.NF.3d) --- */
+  if(S.juego === "ordenar"){
+    let fr;
+    if(!reto || Math.random() < 0.4){ const b = elegir([4,6,8]); fr = mezclar([...Array(b-1)].map((_,i)=>i+1)).slice(0, reto ? 4 : 3).map(a=>[a, b]); }
+    else { const a = elegir([1,1,2,3]); fr = mezclar(DENS.filter(d=>d > a)).slice(0, Math.min(4, DENS.filter(d=>d > a).length)).map(d=>[a, d]); }
+    const orden = fr.slice().sort((x,y)=> x[0]/x[1] - y[0]/y[1]);
+    const fila = document.createElement("div"); fila.className = "fila-orden"; fila.setAttribute("aria-live","polite");
+    esc.appendChild(fila);
+    if(!reto){ const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = fr.map(([a,b])=>`<div style="display:flex;align-items:center;gap:10px;width:100%;justify-content:center"><span style="font-size:clamp(22px,5vw,30px)">${fracHTML(a, b)}</span>${barraSVG(a, b, 320)}</div>`).join(""); esc.appendChild(caja); }
+    ponerInstruccion(t.ordenar, t.ordenar + " " + fr.map(([a,b])=>`${a}/${b}`).join(", "));
+    let puestos = 0;
+    const cont = $("opciones");
+    fr.forEach(([a, b])=>{
+      const bt = document.createElement("button"); bt.type = "button"; bt.className = "opcion-frac"; bt.dataset.v = `${a}/${b}`;
+      bt.innerHTML = fracHTML(a, b); bt.setAttribute("aria-label", fracPalabras(a, b));
+      bt.addEventListener("click", ()=>{
+        if(S.bloqueado || bt.disabled) return; sonToque();
+        const sig = orden[puestos];
+        if(a === sig[0] && b === sig[1]){
+          fila.insertAdjacentHTML("beforeend", fracHTML(a, b)); bt.disabled = true; bt.style.opacity = ".3"; puestos++; hablar(`${a}/${b}`);
+          if(puestos === fr.length){ sonBoing(); acertar(t.ordenarFin(orden.map(([p,q])=>`${p}/${q}`).join(" < "))); }
+        } else fallar(bt, t.pistaOrdenar);
+      });
+      cont.appendChild(bt);
+    });
+    S.resolver = ()=>{ orden.forEach(([a,b])=>{ const x = [...cont.querySelectorAll("button")].find(y=>y.dataset.v === `${a}/${b}`); if(x && !x.disabled) x.click(); }); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const L = '<i class="linea"></i>';
+  $("hoja-modelos").innerHTML = [[1,4],[2,3],[5,8],[3,6]].map(([a,b])=>`<div>${barraSVG(a, b, 240)}<br>${L}</div>`).join("");
+  $("hoja-comparar").innerHTML = [["3/8","5/8"],["1/3","1/6"],["2/4","2/3"],["4/6","4/6"]]
+    .map(([x,y])=>`<div style="font-size:20pt">${x} ${L} ${y}</div>`).join("");
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="3"></script>
+</body>
+</html>
