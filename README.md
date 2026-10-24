@@ -15,7 +15,7 @@ Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 | Kindergarten | Matemáticas (7 juegos) | [kindergarten/?lang=es](kindergarten/index.html?lang=es) | [kindergarten/](kindergarten/index.html) |
 | Kindergarten | Lectura en español (6) | [kindergarten/lectura.html](kindergarten/lectura.html) | — |
 | Kindergarten | Lectura en inglés (6) | — | [kindergarten/reading.html](kindergarten/reading.html) |
-| 1.er grado | Matemáticas (3 de 9 módulos) | [1er_grado/?lang=es](1er_grado/index.html?lang=es) | [1er_grado/](1er_grado/index.html) |
+| 1.er grado | Matemáticas (5 de 9 módulos) | [1er_grado/?lang=es](1er_grado/index.html?lang=es) | [1er_grado/](1er_grado/index.html) |
 | 2.º grado | Matemáticas interactivas (7 conjuntos) | [2do_grado/](2do_grado/index.html) | [2nd_grade/](2nd_grade/index.html) |
 | 2.º grado | Detective de operaciones | [mate_detective/](mate_detective/index.html) | [math_word_detective/](math_word_detective/index.html) |
 | 2.º grado | Tablas galácticas | [galactica_tablas/](galactica_tablas/index.html) | [galactic_tables/](galactic_tables/index.html) |
