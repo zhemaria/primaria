@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-es="Dividir: repartir y agrupar · Juegos de tercer grado" data-en="Division: sharing and grouping · Third grade games">Division: sharing and grouping · Third grade games</title>
 <meta name="author" content="José M. Fernández">
-<meta name="description" content="Bilingual third grade division games with a panda: share equally, make equal groups, fact families, find the unknown number, choose multiply or divide, and word problems.">
+<meta name="description" content="Bilingual third grade division games with Lumi the firefly: share equally, make equal groups, fact families, find the unknown number, choose multiply or divide, and word problems.">
 <meta name="license" content="CC BY-NC-SA 4.0">
 <meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
@@ -77,7 +77,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
 .instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
   border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
 .instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
-/* La mascota: un panda que reacciona a cada respuesta */
+/* La mascota: Lumi, que reacciona a cada respuesta */
 .mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
 .mascota.feliz{animation:brinco .7s ease-out 2}
 .mascota.pensando{animation:ladeo .8s ease-in-out}
@@ -123,6 +123,14 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
 .mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
 .problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
 .dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
 
 /* ---------- Dividir ---------- */
 .monton{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;max-width:min(100%,420px);line-height:1.1}
@@ -135,6 +143,8 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
 .hechos .falta{color:var(--acento)}
 .ecuacion{font-weight:700;font-size:clamp(34px,8vw,56px);letter-spacing:.03em}
 .ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
 .ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
 
 /* ---------- Confeti ---------- */
@@ -187,6 +197,14 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
   *{animation:none !important;transition:none !important}
   .confeti{display:none}
 }
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
 </style>
 </head>
 <div class="marco">
@@ -207,9 +225,9 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
 
   <!-- PORTADA -->
   <section id="p-portada" class="portada">
-    <div class="desfile" aria-hidden="true"><span>🐼</span><span>🎋</span><span>➗</span><span>🍪</span><span>🧺</span></div>
-    <h2 data-es="¡Divide con el panda!" data-en="Divide with the panda!">Divide with the panda!</h2>
-    <p data-es="Al panda le gusta que todo sea justo: reparte galletas en partes iguales, arma grupos, descubre el número que falta y te enseña que dividir es la multiplicación al revés. Yo te leo todo en voz alta y tú contestas tocando." data-en="The panda likes everything to be fair: it shares cookies equally, makes equal groups, finds the missing number and shows you that division is multiplication backwards. I read everything out loud and you answer by touching.">The panda likes everything to be fair: it shares cookies equally, makes equal groups, finds the missing number and shows you that division is multiplication backwards. I read everything out loud and you answer by touching.</p>
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-mascota.jpg" alt="" class="lumi-d" width="150" height="222"></span><span>🍪</span><span>➗</span><span>🔵</span><span>🧺</span></div>
+    <h2 data-es="¡Divide con Lumi!" data-en="Divide with Lumi!">Divide with Lumi!</h2>
+    <p data-es="A Lumi le gusta que todo sea justo: reparte en partes iguales, arma grupos, descubre el número que falta y te enseña que dividir es la multiplicación al revés. Con Israel, Lucía, Alejandro, Adrián y Génesis. Puedes escuchar cada instrucción y contestas tocando." data-en="Lumi likes everything to be fair: share equally, make equal groups, find the missing number and see that division is multiplication backwards. With Israel, Lucía, Alejandro, Adrián and Génesis. You can listen to every instruction and answer by touching.">Lumi likes everything to be fair: share equally, make equal groups, find the missing number and see that division is multiplication backwards. With Israel, Lucía, Alejandro, Adrián and Génesis. You can listen to every instruction and answer by touching.</p>
     <button class="bocina grande" id="btn-oir">🔊</button>
     <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
   </section>
@@ -230,7 +248,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
     <div class="instruccion">
       <button class="bocina" id="btn-bocina">🔊</button>
       <p id="txt-instruccion"></p>
-      <span class="mascota" id="mascota" aria-hidden="true">🐼</span>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-mascota.jpg" alt="" class="lumi-m" width="150" height="222"></span>
     </div>
     <div class="escena" id="escena"></div>
     <div id="opciones" class="fila-fichas"></div>
@@ -255,8 +273,8 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
        data-es="🖨 Imprimir hoja: dividir" data-en="🖨 Print a page: division">🖨 Print a page: division</button></p>
-    <p data-es="Alineado con los estándares de matemáticas de Illinois para tercer grado: 3.OA.2 (interpretar cocientes de números enteros, por ejemplo, 56 ÷ 8 como el número de objetos en cada parte cuando 56 objetos se reparten en 8 partes iguales, o como el número de partes cuando 56 objetos se agrupan de 8 en 8), 3.OA.3 (dividir hasta 100 para resolver problemas de grupos iguales y arreglos), 3.OA.4 (encontrar el número desconocido en una ecuación de multiplicación o división) y 3.OA.6 (entender la división como un problema de factor desconocido: 32 ÷ 8 es el número que multiplicado por 8 da 32). Cada juego tiene su enlace directo: #repartir, #agrupar, #familia, #desconocido, #operacion y #problemas."
-       data-en="Aligned to the Illinois third grade mathematics standards 3.OA.2 (interpret whole-number quotients, for example 56 ÷ 8 as the number of objects in each share when 56 objects are shared equally into 8 shares, or as the number of shares when 56 objects are put into groups of 8), 3.OA.3 (use division within 100 to solve word problems with equal groups and arrays), 3.OA.4 (find the unknown number in a multiplication or division equation) and 3.OA.6 (understand division as an unknown-factor problem: 32 ÷ 8 is the number that makes 32 when multiplied by 8). Each game has its own direct link: #repartir, #agrupar, #familia, #desconocido, #operacion and #problemas.">Aligned to the Illinois third grade mathematics standards 3.OA.2 (interpret whole-number quotients, for example 56 ÷ 8 as the number of objects in each share when 56 objects are shared equally into 8 shares, or as the number of shares when 56 objects are put into groups of 8), 3.OA.3 (use division within 100 to solve word problems with equal groups and arrays), 3.OA.4 (find the unknown number in a multiplication or division equation) and 3.OA.6 (understand division as an unknown-factor problem: 32 ÷ 8 is the number that makes 32 when multiplied by 8). Each game has its own direct link: #repartir, #agrupar, #familia, #desconocido, #operacion and #problemas.</p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para tercer grado: 3.OA.2 (interpretar cocientes de números enteros, por ejemplo, 56 ÷ 8 como el número de objetos en cada parte cuando 56 objetos se reparten en 8 partes iguales, o como el número de partes cuando 56 objetos se agrupan de 8 en 8), 3.OA.3 (dividir hasta 100 para resolver problemas de grupos iguales y arreglos), 3.OA.4 (encontrar el número desconocido en una ecuación de multiplicación o división) y 3.OA.6 (entender la división como un problema de factor desconocido: 32 ÷ 8 es el número que multiplicado por 8 da 32). Cada juego tiene su enlace directo: #repartir, #agrupar, #familia, #desconocido, #operacion, #problemas y #condicion."
+       data-en="Aligned to the Illinois third grade mathematics standards 3.OA.2 (interpret whole-number quotients, for example 56 ÷ 8 as the number of objects in each share when 56 objects are shared equally into 8 shares, or as the number of shares when 56 objects are put into groups of 8), 3.OA.3 (use division within 100 to solve word problems with equal groups and arrays), 3.OA.4 (find the unknown number in a multiplication or division equation) and 3.OA.6 (understand division as an unknown-factor problem: 32 ÷ 8 is the number that makes 32 when multiplied by 8). Each game has its own direct link: #repartir, #agrupar, #familia, #desconocido, #operacion, #problemas and #condicion.">Aligned to the Illinois third grade mathematics standards 3.OA.2 (interpret whole-number quotients, for example 56 ÷ 8 as the number of objects in each share when 56 objects are shared equally into 8 shares, or as the number of shares when 56 objects are put into groups of 8), 3.OA.3 (use division within 100 to solve word problems with equal groups and arrays), 3.OA.4 (find the unknown number in a multiplication or division equation) and 3.OA.6 (understand division as an unknown-factor problem: 32 ÷ 8 is the number that makes 32 when multiplied by 8). Each game has its own direct link: #repartir, #agrupar, #familia, #desconocido, #operacion, #problemas and #condicion.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
   </footer>
@@ -319,7 +337,7 @@ const T = {
     escuchar:"🔁 Escuchar otra vez",
     repartir:(tot,k,c)=>`Reparte ${tot} ${cosa(c)} en ${k} ${recip(c)}, en partes iguales. Toca «Repartir una vuelta» hasta que no quede nada.`,
     repartirC:(tot,k,c)=>`Reparte ${tot} ${cosa(c)} en ${k} ${recip(c)}. Toca «Repartir una vuelta».`,
-    vuelta:"🐼 Repartir una vuelta",
+    vuelta:"🔄 Repartir una vuelta",
     repartirP:(c)=>`¡Ya no quedan! ¿${cuantos(c)} ${cosa(c)} hay en cada ${recip1(c)}?`,
     repartirFin:(tot,k,n)=>`${tot} ÷ ${k} = ${n}. A cada uno le tocaron ${n}.`,
     pistaRepartir:"Cuenta las que hay en un solo grupo.",
@@ -340,11 +358,29 @@ const T = {
     problemas:"Lee el problema. ¿Cuál es la respuesta?",
     pistaProblema:"Piensa en la multiplicación que corresponde a la división.",
     pm:(k,n,c)=>`Hay ${k} ${recip(c)} con ${n} ${cosa(c)} en cada ${recip1(c)}. ¿${cuantos(c)} ${cosa(c)} hay en total?`,
-    pr:(tot,k,c)=>`Lucía reparte ${tot} ${cosa(c)} en ${k} ${recip(c)} por igual. ¿${cuantos(c)} ${cosa(c)} hay en cada ${recip1(c)}?`,
+    pr:(tot,k,c)=>`Génesis reparte ${tot} ${cosa(c)} en ${k} ${recip(c)} por igual. ¿${cuantos(c)} ${cosa(c)} hay en cada ${recip1(c)}?`,
     pg:(tot,n,c)=>`Israel tiene ${tot} ${cosa(c)} y pone ${n} en cada ${recip1(c)}. ¿${cuantosR(c)} ${recip(c)} llena?`,
-    pp:(tot,n)=>`El panda tiene ${tot} cañas de bambú y se come ${n} cada día. ¿Para cuántos días le alcanzan?`,
-    pe:(tot,k)=>`${tot} niños se reparten en ${k} equipos iguales. ¿Cuántos niños hay en cada equipo?`,
+    pp:(tot,n)=>`En Texas, Alejandro tiene ${tot} canicas y le regala ${n} a cada amigo. ¿A cuántos amigos les alcanza?`,
+    pe:(tot,k)=>`En la escuela de Israel, ${tot} niños se reparten en ${k} equipos iguales. ¿Cuántos niños hay en cada equipo?`,
     probFin:(ec)=>`${ec}.`,
+    plan:"Primero planea: ¿qué operación resuelve el problema?",
+    planBien:"¡Buen plan! Ahora calcula la respuesta.",
+    pistaPlan:"Te dan el total y hay que repartir o hacer grupos iguales: eso es dividir.",
+    condicion:(tot,c)=>`Tienes ${tot} ${cosa(c)}. ¿En cuántos grupos iguales las puedes repartir sin que sobre ninguna? Marca todos los números que sirven y toca «Comprobar».`,
+    condicionMas:(tot,c,q)=>`Tienes ${tot} ${cosa(c)}. Repártelas en grupos iguales sin que sobre ninguna, y con más de ${q} en cada grupo. Marca todos los números de grupos que sirven y toca «Comprobar».`,
+    condicionC:"Marca todos los números de grupos que sirven y toca «Comprobar».",
+    comprobar:"✔ Comprobar",
+    sobra:(tot,d)=>`Con ${d} grupos sobra algo: ${tot} no se reparte exacto entre ${d}.`,
+    pocos:(tot,d,q)=>`Con ${d} grupos tocan ${tot/d} en cada uno, y la condición pide más de ${q}.`,
+    faltan:"Te faltan números que sí sirven. Prueba cada uno: ¿sobra algo?",
+    ninguno:"Marca al menos un número.",
+    condicionFin:(tot,ds)=>`Sirven: ${ds.map(d=>`${tot} ÷ ${d} = ${tot/d}`).join("; ")}.`,
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    estrategias:[
+      ["Repartí uno por uno","Repartir uno por uno siempre funciona. Para ir más rápido, piensa en la multiplicación."],
+      ["Pensé en la multiplicación","¡Excelente! Dividir es buscar el número que falta en una multiplicación."],
+      ["Conté salteado hasta el total","¡Buena idea! Contar salteado te dice cuántos grupos caben."],
+      ["Usé la familia de operaciones","¡Muy bien! Si sabes 4 × 6 = 24, ya sabes 24 ÷ 4 y 24 ÷ 6."]],
     final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`,
     menu:"Escoge un juego.",
     describeGrupos:(k,n,c)=>`${k} grupos de ${n} ${cosa(c)}`,
@@ -357,7 +393,7 @@ const T = {
     escuchar:"🔁 Listen again",
     repartir:(tot,k,c)=>`Share ${tot} ${cosa(c)} equally among ${k} ${recip(c)}. Touch "Share one round" until there are none left.`,
     repartirC:(tot,k,c)=>`Share ${tot} ${cosa(c)} among ${k} ${recip(c)}. Touch "Share one round".`,
-    vuelta:"🐼 Share one round",
+    vuelta:"🔄 Share one round",
     repartirP:(c)=>`None left! How many ${cosa(c)} are in each ${recip1(c)}?`,
     repartirFin:(tot,k,n)=>`${tot} ÷ ${k} = ${n}. Each one got ${n}.`,
     pistaRepartir:"Count the ones in just one group.",
@@ -378,11 +414,29 @@ const T = {
     problemas:"Read the problem. What is the answer?",
     pistaProblema:"Think of the multiplication that goes with the division.",
     pm:(k,n,c)=>`There are ${k} ${recip(c)} with ${n} ${cosa(c)} in each ${recip1(c)}. How many ${cosa(c)} are there in all?`,
-    pr:(tot,k,c)=>`Lucía shares ${tot} ${cosa(c)} equally among ${k} ${recip(c)}. How many ${cosa(c)} are in each ${recip1(c)}?`,
+    pr:(tot,k,c)=>`Génesis shares ${tot} ${cosa(c)} equally among ${k} ${recip(c)}. How many ${cosa(c)} are in each ${recip1(c)}?`,
     pg:(tot,n,c)=>`Israel has ${tot} ${cosa(c)} and puts ${n} in each ${recip1(c)}. How many ${recip(c)} does he fill?`,
-    pp:(tot,n)=>`The panda has ${tot} bamboo stalks and eats ${n} each day. How many days will they last?`,
-    pe:(tot,k)=>`${tot} children split into ${k} equal teams. How many children are on each team?`,
+    pp:(tot,n)=>`In Texas, Alejandro has ${tot} marbles and gives ${n} to each friend. How many friends get marbles?`,
+    pe:(tot,k)=>`At Israel's school, ${tot} children split into ${k} equal teams. How many children are on each team?`,
     probFin:(ec)=>`${ec}.`,
+    plan:"First, plan: which operation solves the problem?",
+    planBien:"Good plan! Now work out the answer.",
+    pistaPlan:"You are given the total and need to share it or make equal groups: that's division.",
+    condicion:(tot,c)=>`You have ${tot} ${cosa(c)}. Into how many equal groups can you share them with none left over? Mark every number that works and touch "Check".`,
+    condicionMas:(tot,c,q)=>`You have ${tot} ${cosa(c)}. Share them into equal groups with none left over and more than ${q} in each group. Mark every number of groups that works and touch "Check".`,
+    condicionC:"Mark every number of groups that works and touch \"Check\".",
+    comprobar:"✔ Check",
+    sobra:(tot,d)=>`With ${d} groups some are left over: ${tot} doesn't share evenly into ${d}.`,
+    pocos:(tot,d,q)=>`With ${d} groups each one gets ${tot/d}, and the rule asks for more than ${q}.`,
+    faltan:"Some numbers that work are missing. Try each one: is anything left over?",
+    ninguno:"Mark at least one number.",
+    condicionFin:(tot,ds)=>`These work: ${ds.map(d=>`${tot} ÷ ${d} = ${tot/d}`).join("; ")}.`,
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    estrategias:[
+      ["I shared one by one","Sharing one by one always works. To go faster, think of multiplication."],
+      ["I thought of multiplication","Excellent! Dividing is finding the missing number in a multiplication."],
+      ["I skip counted to the total","Good idea! Skip counting tells you how many groups fit."],
+      ["I used the fact family","Great! If you know 4 × 6 = 24, you also know 24 ÷ 4 and 24 ÷ 6."]],
     final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`,
     menu:"Pick a game.",
     describeGrupos:(k,n,c)=>`${k} groups of ${n} ${cosa(c)}`,
@@ -397,7 +451,8 @@ const JUEGOS = [
   {id:"familia",     emoji:"🔺", es:"Familias de operaciones", en:"Fact families", metaEs:"× y ÷ juntas", metaEn:"× and ÷ together"},
   {id:"desconocido", emoji:"🔍", es:"El número escondido", en:"The hidden number", metaEs:"8 × ? = 48", metaEn:"8 × ? = 48"},
   {id:"operacion",   emoji:"🤔", es:"¿Multiplico o divido?", en:"Multiply or divide?", metaEs:"Lee y decide", metaEn:"Read and decide"},
-  {id:"problemas",   emoji:"📝", es:"Problemas", en:"Word problems", metaEs:"Lee y resuelve", metaEn:"Read and solve"}
+  {id:"problemas",   emoji:"📝", es:"Problemas", en:"Word problems", metaEs:"Planea y resuelve", metaEn:"Plan and solve"},
+  {id:"condicion",   emoji:"🧩", es:"Repartos con condición", en:"Sharing with a rule", metaEs:"Compara opciones", metaEn:"Compare options"}
 ];
 
 const RONDAS = 5;
@@ -464,9 +519,10 @@ const sonTic   = ()=>tono([1500],0.03,"square");
 const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
 
 /* ============ Mascota y confeti ============ */
-function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = "🐼<span class='globo'>🎉</span>"; animar(m,"feliz"); }
-function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = "🐼<span class='globo'>🤔</span>"; animar(m,"pensando"); }
-function mascotaNormal(){ $("mascota").textContent = "🐼"; $("mascota").className = "mascota"; }
+const LUMI = '<img src="lumi-mascota.jpg" alt="" class="lumi-m" width="150" height="222">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
 function confeti(){
   if(sinMovimiento()) return;
   const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
@@ -563,7 +619,8 @@ function avanzar(){
   if(S.ronda >= RONDAS){
     pintarMarcador($("marcador-final"), S.estrellas);
     mostrar("p-final"); confeti(); setTimeout(confeti, 700);
-    hablar(T[S.idioma].final(S.estrellas));
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
   } else nuevaRonda();
 }
 
@@ -791,7 +848,7 @@ function nuevaRonda(){
     const esMult = tipo === "m";
     const pr = document.createElement("p"); pr.className = "problema"; pr.textContent = texto;
     const dib = document.createElement("div"); dib.className = "dibujito"; dib.setAttribute("aria-hidden","true");
-    dib.textContent = tipo === "p" ? "🐼🎋" : tipo === "e" ? "⚽" : c.e;
+    dib.textContent = tipo === "p" ? "🔵" : tipo === "e" ? "⚽" : c.e;
     esc.append(dib, pr);
     ponerInstruccion(t.operacion, texto + " " + t.operacion);
     const cont = $("opciones");
@@ -814,11 +871,63 @@ function nuevaRonda(){
     const div = (tipo === "r" || tipo === "e") ? k : n;
     const pr = document.createElement("p"); pr.className = "problema"; pr.textContent = texto;
     const dib = document.createElement("div"); dib.className = "dibujito"; dib.setAttribute("aria-hidden","true");
-    dib.textContent = tipo === "p" ? "🐼🎋" : tipo === "e" ? "⚽" : c.e;
+    dib.textContent = tipo === "p" ? "🔵" : tipo === "e" ? "⚽" : c.e;
     esc.append(dib, pr);
-    ponerInstruccion(t.problemas, texto);
-    ponerOpciones(cercanosA(resp, 1), resp, ()=>{ sonBoing(); acertar(t.probFin(`${tot} ÷ ${div} = ${resp}`)); }, ()=>t.pistaProblema);
-    S.resolver = resolverTexto(resp);
+    const calcular = ()=>{
+      $("opciones").innerHTML = "";
+      ponerOpciones(cercanosA(resp, 1), resp, ()=>{ sonBoing(); acertar(t.probFin(`${tot} ÷ ${div} = ${resp}`)); }, ()=>t.pistaProblema);
+      S.resolver = resolverTexto(resp);
+    };
+    if(!reto){ ponerInstruccion(t.problemas, texto); calcular(); return; }
+    // Reto: primero se planea la operación y después se calcula
+    ponerInstruccion(t.plan, texto + " " + t.plan);
+    const bien = `${tot} ÷ ${div}`, malas = [`${tot} × ${div}`, `${tot} − ${div}`];
+    const cont = $("opciones");
+    mezclar([bien, ...malas]).forEach(x=>{
+      cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{
+        if(x === bien){ sonBoing(); ponerInstruccion(t.planBien + " " + bien + " = ?"); calcular(); }
+        else fallar(b, t.pistaPlan);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(bien)(); S.resolver(); };
+    return;
+  }
+
+  /* --- 7. Repartos con condición: comparar opciones y comprobar (3.OA.2, 3.OA.6) --- */
+  if(S.juego === "condicion"){
+    const c = elegir(COSAS);
+    let tot, q, buenos;
+    do{
+      tot = elegir(reto ? [18,20,24,28,30,32,36,40,42,48] : [12,16,18,20,24,30]);
+      q = reto && Math.random() < 0.6 ? elegir([3,4,5]) : 0;
+      buenos = [2,3,4,5,6,7,8,9].filter(d=> tot % d === 0 && tot / d > q);
+    } while(buenos.length < 2);
+    esc.appendChild(montonEl(tot, c));
+    ponerInstruccion(t.condicionC, q ? t.condicionMas(tot, c, q) : t.condicion(tot, c));
+    const marcados = new Set();
+    const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+    [2,3,4,5,6,7,8,9].forEach(d=>{
+      const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = d; b.setAttribute("aria-pressed","false");
+      b.style.minWidth = "64px";
+      b.addEventListener("click", ()=>{
+        if(S.bloqueado) return; sonTic();
+        if(marcados.has(d)){ marcados.delete(d); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+        else { marcados.add(d); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+      });
+      fila.appendChild(b);
+    });
+    const cont = $("opciones");
+    cont.appendChild(fila);
+    const comprobar = botonTexto(t.comprobar, "boton fuerte", null, (b)=>{
+      if(!marcados.size){ fallar(b, t.ninguno); return; }
+      const malo = [...marcados].sort((x,y)=>x-y).find(d=>!buenos.includes(d));
+      if(malo !== undefined){ fallar(b, tot % malo ? t.sobra(tot, malo) : t.pocos(tot, malo, q)); return; }
+      if(marcados.size < buenos.length){ fallar(b, t.faltan); return; }
+      fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(+x.textContent)) x.classList.add("bien"); });
+      sonBoing(); acertar(t.condicionFin(tot, buenos));
+    });
+    cont.appendChild(comprobar);
+    S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ const d = +x.textContent; if(buenos.includes(d) !== marcados.has(d)) x.click(); }); comprobar.click(); };
     return;
   }
 }
@@ -830,6 +939,27 @@ function pintarHoja(){
     .map(x=>`<div class="ec-h">${x}</div>`).join("");
   $("hoja-familias").innerHTML = [[3,8],[6,7]].map(([a,b])=>`<div><p class="ec-h"><b>${a}, ${b}, ${a*b}</b></p>
     <p class="ec-h">${a} × ${b} = ${L}</p><p class="ec-h">${b} × ${a} = ${L}</p><p class="ec-h">${a*b} ÷ ${a} = ${L}</p><p class="ec-h">${a*b} ÷ ${b} = ${L}</p></div>`).join("");
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
 }
 
 /* ============ Eventos ============ */
