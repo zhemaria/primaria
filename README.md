@@ -1,12 +1,58 @@
-# Interactivos de matemáticas para primaria
+# Primaria · Interactivos y juegos
 
-Herramientas de práctica para segundo grado, gratuitas, en español y en inglés. Cada actividad se abre en el navegador, genera ejercicios nuevos cada vez y da retroalimentación inmediata. Están hechas para que un niño de siete años pueda usarlas solo, con un adulto cerca si hace falta.
+Actividades interactivas gratuitas para prekínder, kindergarten y segundo grado, en español y en inglés. Forman parte del portal **[Lumi](https://zhemaria.github.io/lumi/)**, donde están ordenadas por grado y por materia. Los cuentos ilustrados están en el repositorio [cuentos-educativos](https://github.com/zhemaria/cuentos-educativos).
 
-**[Abrir en español](matematicas-2do-grado/index.html)** · **[Open in English](grade2-math/index.html)**
+Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 
 ---
 
 ## Qué hay aquí
+
+| Grado | Serie | Español | English |
+|---|---|---|---|
+| Prekínder | Matemáticas (6 juegos) | [prekinder/?lang=es](prekinder/index.html?lang=es) | [prekinder/](prekinder/index.html) |
+| Prekínder | Letras: trazos y caminos (3) | [letras/](letras/index.html) | [letters/](letters/index.html) |
+| Kindergarten | Matemáticas (7 juegos) | [kindergarten/?lang=es](kindergarten/index.html?lang=es) | [kindergarten/](kindergarten/index.html) |
+| Kindergarten | Lectura en español (6) | [kindergarten/lectura.html](kindergarten/lectura.html) | — |
+| Kindergarten | Lectura en inglés (6) | — | [kindergarten/reading.html](kindergarten/reading.html) |
+| 2.º grado | Matemáticas interactivas (7 conjuntos) | [2do_grado/](2do_grado/index.html) | [2nd_grade/](2nd_grade/index.html) |
+| 2.º grado | Detective de operaciones | [mate_detective/](mate_detective/index.html) | [math_word_detective/](math_word_detective/index.html) |
+| 2.º grado | Tablas galácticas | [galactica_tablas/](galactica_tablas/index.html) | [galactic_tables/](galactic_tables/index.html) |
+| 2.º grado | Sudoku para niños | [sudoku-segundo-grado.html](sudoku-segundo-grado.html) | [sudoku-for-kids.html](sudoku-for-kids.html) |
+| 2.º grado | Grow a Sentence | — | [grow-a-sentence/](grow-a-sentence/index.html) |
+| 2.º grado | Ecosystem Adventure | — | [ecosystem-adventure/](ecosystem-adventure/index.html) |
+
+`hub-tablet/` es un tablero de uso familiar y no forma parte del portal.
+
+### El idioma en las series de prekínder y kindergarten
+
+Las páginas de prekínder y de matemáticas de kindergarten tienen los dos idiomas en un mismo archivo, con botones **Español | English**. Abren en inglés; para abrirlas en español se añade `?lang=es` a la dirección (por ejemplo, `prekinder/prek-01-numeros-conteo.html?lang=es`). Las páginas de inicio de cada serie pasan el idioma elegido a sus lecciones.
+
+## Estructura del repositorio
+
+```
+primaria/
+├── README.md
+├── prekinder/            Matemáticas de prekínder (es/en en el mismo archivo)
+├── letras/  letters/     Trazos y letras de prekínder (español / inglés)
+├── kindergarten/         Matemáticas (es/en), lectura en español (k-lectura-*)
+│                         y lectura en inglés (k-reading-*)
+├── 2do_grado/  2nd_grade/            Matemáticas de 2.º grado (español / inglés)
+├── mate_detective/  math_word_detective/
+├── galactica_tablas/  galactic_tables/
+├── sudoku-segundo-grado.html  sudoku-for-kids.html
+├── grow-a-sentence/      (solo inglés)
+├── ecosystem-adventure/  (solo inglés)
+└── hub-tablet/           (uso familiar)
+```
+
+Cada archivo es autónomo: lleva dentro su HTML, su CSS y su JavaScript, sin librerías externas. No hay proceso de compilación; basta con copiar las carpetas a GitHub Pages o abrirlas desde el disco.
+
+---
+
+## Matemáticas interactivas de 2.º grado
+
+**[Abrir en español](2do_grado/index.html)** · **[Open in English](2nd_grade/index.html)**
 
 Siete conjuntos de actividades, veintidós herramientas de práctica. Cada conjunto es un archivo HTML independiente con sus módulos en pestañas.
 
@@ -22,7 +68,7 @@ Siete conjuntos de actividades, veintidós herramientas de práctica. Cada conju
 
 Las medidas y el dinero son los del sistema estadounidense —pulgadas, pies, yardas, centímetros, metros, dólares y centavos— porque son los que los niños encuentran en la escuela. La versión en español mantiene *quarter*, *dime*, *nickel* y *penny* con su nombre en inglés y el valor explicado al lado, por la misma razón.
 
-## Cómo se usan
+### Cómo se usan
 
 No hay nada que instalar ni con qué registrarse. Se abre el enlace y se empieza.
 
@@ -33,7 +79,7 @@ No hay nada que instalar ni con qué registrarse. Se abre el enlace y se empieza
 
 Para un salón, basta con dar el enlace del hub y dejar que cada niño escoja. Para trabajo dirigido, conviene dar el enlace directo del conjunto que toque ese día.
 
-## Accesibilidad
+### Accesibilidad
 
 Diseñadas siguiendo el Diseño Universal para el Aprendizaje y verificadas contra WCAG 2.1 AA.
 
@@ -44,42 +90,15 @@ Diseñadas siguiendo el Diseño Universal para el Aprendizaje y verificadas cont
 - **Objetivos táctiles.** Ningún botón mide menos de 44 píxeles de alto, pensando en dedos de siete años.
 - **Sin distracciones.** Sin animaciones innecesarias, sin sonidos, sin publicidad.
 
-## Privacidad
+### Privacidad
 
 No se guarda ni se envía nada. No hay cuentas, ni cookies, ni seguimiento, ni almacenamiento en el navegador. Lo que el niño escribe vive en la pantalla y desaparece al cerrarla. Una vez abierta la página, sigue funcionando sin conexión.
 
-## Estructura del repositorio
-
-```
-primaria/
-├── README.md
-├── grade2-math/                  Edición en inglés
-│   ├── index.html                Hub
-│   ├── place-value.html
-│   ├── numbers.html
-│   ├── operations.html
-│   ├── measurement.html
-│   ├── time-money.html
-│   ├── data.html
-│   └── geometry-fractions.html
-└── matematicas-2do-grado/        Edición en español
-    ├── index.html                Hub
-    ├── valor-posicional.html
-    ├── numeros.html
-    ├── operaciones.html
-    ├── medicion.html
-    ├── tiempo-dinero.html
-    ├── datos.html
-    └── geometria-fracciones.html
-```
-
-Cada archivo es autónomo: lleva dentro su HTML, su CSS y su JavaScript, sin librerías externas ni dependencias. No hay proceso de compilación. Para publicarlos basta con copiar las carpetas a GitHub Pages o a cualquier servidor, o incluso abrirlos desde el disco.
-
-## Requisitos técnicos
+### Requisitos técnicos
 
 Cualquier navegador moderno en teléfono, tableta o computadora. La lectura en voz alta usa la síntesis de voz del sistema: está disponible en Chrome, Edge, Safari y Firefox recientes, y donde no lo esté, el botón simplemente no aparece y todo lo demás sigue funcionando.
 
-## Adaptar y reutilizar
+### Adaptar y reutilizar
 
 Se pueden copiar, modificar y repartir libremente para uso no comercial, dando crédito. Algunas adaptaciones fáciles:
 
@@ -97,13 +116,17 @@ Publicado bajo [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Inte
 
 ---
 
-# Grade 2 math interactives
+# English summary
+
+Free interactive activities and games for Pre-K, Kindergarten and Grade 2, in Spanish and English. All of them are listed, by grade and by subject, on the **[Lumi portal](https://zhemaria.github.io/lumi/index-en.html)**. Pages that have both languages in one file open in English by default; add `?lang=es` to the address to open them in Spanish.
+
+## Grade 2 math interactives
 
 Free practice tools for second grade, in Spanish and English. Each activity runs in the browser, builds a fresh problem every time, and gives immediate feedback. They are made so a seven-year-old can work independently, with an adult nearby if needed.
 
-**[Open in English](grade2-math/index.html)** · **[Abrir en español](matematicas-2do-grado/index.html)**
+**[Open in English](2nd_grade/index.html)** · **[Abrir en español](2do_grado/index.html)**
 
-## What is here
+### What is here
 
 Seven activity sets, twenty-two practice tools. Each set is a self-contained HTML file with its modules in tabs.
 
@@ -119,7 +142,7 @@ Seven activity sets, twenty-two practice tools. Each set is a self-contained HTM
 
 Word problems cover every unknown position — result, change and start unknown, take-apart, compare, and two-step — and ask the child to pick the matching equation before solving it.
 
-## Classroom notes
+### Classroom notes
 
 Nothing to install and no sign-up. Open the link and start.
 
@@ -128,19 +151,19 @@ Nothing to install and no sign-up. Open the link and start.
 - Feedback points at the place where the thinking went wrong rather than handing over the answer.
 - For a whole class, share the hub link. For guided work, link the single set you need.
 
-## Accessibility
+### Accessibility
 
 Built on Universal Design for Learning principles and checked against WCAG 2.1 AA: a read-aloud button on every instruction block, full keyboard operation with visible focus, described graphics, tables with `caption` and `scope`, live regions for feedback, every colour pair above 4.5:1, and touch targets no smaller than 44 pixels.
 
-## Privacy
+### Privacy
 
 Nothing is stored and nothing is sent. No accounts, no cookies, no tracking, no browser storage. Whatever a child types lives on the screen and disappears when the page closes. Once open, the pages keep working offline.
 
-## Technical notes
+### Technical notes
 
 Every file is standalone — HTML, CSS and JavaScript inside one document, no external libraries, no build step. Copy the folders to GitHub Pages or any server, or open them straight from disk. Read-aloud uses the device's own speech synthesis; where it is unavailable the button simply does not appear and everything else still works.
 
-## Credits and licence
+### Credits and licence
 
 José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.
 
