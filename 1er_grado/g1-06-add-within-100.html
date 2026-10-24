@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<!--
+  First Grade Math — Adding within 100
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 1: 1.NBT.4, 1.NBT.5, 1.NBT.6
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Sumar hasta 100: Juegos de primer grado" data-en="Adding within 100: First grade games">Adding within 100: First grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual first grade games for adding within 100 with an octopus, an elevator and a robot on the hundred chart: 10 more and 10 less, adding and subtracting tens, adding ones, jumps of ten, adding with rods and cubes, and robot paths.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F2F8F7; --tinta:#14302C; --tinta-suave:#3F5A56; --linea:#CBE3DF; --blanco:#FFFFFF;
+  --acento:#00695C; --acento-claro:#E0F2F1;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --decena:#1E88E5; --decena-borde:#0D47A1; --unidad:#FFA726; --unidad-borde:#B35400;
+  --unidad2:#AB47BC; --unidad2-borde:#6A1B9A;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,48,44,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: un pulpo que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y operaciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.mal{animation:temblor .38s}
+.operacion{font-size:clamp(34px,8vw,60px);font-weight:700;letter-spacing:.02em;text-align:center;line-height:1.2}
+.operacion .hueco{display:inline-block;min-width:1.6em;border-bottom:6px solid var(--acento);color:var(--acento)}
+.operacion .hueco.lleno{border-color:var(--acierto);color:var(--acierto)}
+.nota-cambio{font-weight:700;color:var(--unidad-borde);background:#FFF3E0;border:3px solid var(--unidad);border-radius:14px;padding:6px 14px;text-align:center}
+
+/* ---------- Bloques de base diez ---------- */
+.mesa-bloques{display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,3vw,22px);flex-wrap:wrap}
+.bloques{display:flex;gap:clamp(8px,2vw,16px);align-items:flex-end;justify-content:center}
+.grupo-barras{display:flex;gap:4px;align-items:flex-end;flex-wrap:wrap;justify-content:center}
+.barra10{width:clamp(12px,2.8vw,20px);height:clamp(110px,24vw,170px);border:2px solid var(--decena-borde);border-radius:3px;
+  background:repeating-linear-gradient(to bottom,var(--decena) 0 calc(10% - 2px),var(--decena-borde) calc(10% - 2px) 10%)}
+.barra10.tachada{opacity:.3;position:relative}
+.barra10.nueva{animation:aparece .5s ease-out}
+.grupo-cubos{display:grid;grid-template-columns:repeat(3,auto);gap:3px;align-content:end}
+.cubo{width:clamp(12px,2.8vw,20px);height:clamp(12px,2.8vw,20px);background:var(--unidad);border:2px solid var(--unidad-borde);border-radius:3px}
+.cubo.otro{background:var(--unidad2);border-color:var(--unidad2-borde)}
+.signo-mesa{font-size:clamp(28px,6vw,44px);font-weight:700;color:var(--tinta-suave);align-self:center}
+
+/* ---------- 1. El ascensor ---------- */
+.edificio{display:flex;align-items:center;gap:12px}
+.ventanas{display:grid;grid-template-columns:repeat(3,clamp(64px,15vw,96px));gap:6px}
+.ventana{height:clamp(56px,12vw,80px);border:3px solid var(--linea);border-radius:10px;display:grid;place-items:center;
+  font-weight:700;font-size:clamp(20px,4.6vw,32px);background:var(--papel)}
+.ventana.centro{background:#FFF8E1;border-color:#F9A825}
+.ventana.pregunta{border:3px dashed var(--acento);color:var(--acento);background:var(--acento-claro)}
+.ventana.pregunta.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.ventana.vacia{visibility:hidden}
+.ascensor{font-size:clamp(38px,8vw,56px);line-height:1;transition:transform .7s ease-in-out}
+.flechas-guia{display:flex;flex-direction:column;justify-content:space-between;height:100%;font-weight:700;font-size:.85em;color:var(--tinta-suave)}
+
+/* ---------- 4. Saltos de diez ---------- */
+.recta-saltos{width:100%;max-width:760px}
+.recta-saltos svg{width:100%;height:auto;display:block;overflow:visible}
+
+/* ---------- 6. El robot en la tabla del 100 ---------- */
+.programa{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;font-size:clamp(28px,6vw,44px)}
+.programa .paso{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border:3px solid var(--acento);border-radius:12px;background:var(--acento-claro)}
+.programa .paso.hecho{background:var(--acierto-fondo);border-color:var(--acierto)}
+.leyenda-flechas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-weight:700;font-size:.82em;color:var(--tinta-suave)}
+.tabla100{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:clamp(2px,.6vw,4px);width:100%;max-width:620px}
+.tabla100 button{aspect-ratio:1;border:2px solid var(--linea);border-radius:6px;background:var(--papel);font-weight:700;
+  font-size:clamp(11px,2.6vw,18px);padding:0;position:relative;min-width:0}
+.tabla100 button.salida{background:#FFF8E1;border-color:#F9A825}
+.tabla100 button.camino{background:#E3F2FD;border-color:#64B5F6}
+.tabla100 button.meta{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.tabla100 button .robot{position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(16px,4vw,28px);background:rgba(255,248,225,.85);border-radius:4px}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#004D40}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes aparece{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .lista{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm 6mm;font-size:15pt}
+  .hoja .lista span{white-space:nowrap}
+  .hoja .linea{display:inline-block;width:12mm;border-bottom:1.2pt solid #000;height:7mm;vertical-align:bottom}
+  .hoja .diezmas{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm 6mm;font-size:14pt}
+  .hoja .diezmas div{display:grid;grid-template-columns:repeat(3,11mm);grid-template-rows:repeat(3,9mm);border:0}
+  .hoja .diezmas div span{border:1pt solid #000;display:grid;place-items:center}
+  .hoja .diezmas div span.vacia{border:none}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Sumar hasta 100" data-en="Adding within 100">Adding within 100</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🐙</span><span>🛗</span><span>🧱</span><span>🐸</span><span>🤖</span></div>
+    <h2 data-es="¡Sumemos hasta 100!" data-en="Let's add within 100!">Let's add within 100!</h2>
+    <p data-es="El pulpo te ayuda con sus ocho brazos: subes y bajas en el ascensor de diez en diez, juntas barras y cubitos, saltas por la recta y guías a un robot por la tabla del 100. Yo te digo todo en voz alta y tú contestas tocando."
+       data-en="The octopus helps with all eight arms: ride the elevator up and down by tens, put rods and cubes together, jump along the number line and guide a robot across the hundred chart. I say everything out loud and you answer by touching.">The octopus helps with all eight arms: ride the elevator up and down by tens, put rods and cubes together, jump along the number line and guide a robot across the hundred chart. I say everything out loud and you answer by touching.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true">🐙</span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: sumar hasta 100" data-en="🖨 Print a page: adding within 100">🖨 Print a page: adding within 100</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para primer grado: 1.NBT.4 (sumar hasta 100 un número de dos cifras y uno de una cifra, y un número de dos cifras y un múltiplo de 10, con modelos y estrategias de valor posicional, entendiendo que se suman decenas con decenas y unidades con unidades, y que a veces diez unidades forman una decena), 1.NBT.5 (hallar mentalmente 10 más y 10 menos que un número de dos cifras) y 1.NBT.6 (restar múltiplos de 10 del 10 al 90). Cada juego tiene su enlace directo: #ascensor, #decenas, #unidades, #saltos, #bloques y #robot."
+       data-en="Aligned to the Illinois first grade mathematics standards 1.NBT.4 (add within 100, including a two-digit number and a one-digit number, and a two-digit number and a multiple of 10, using models and place-value strategies, understanding that tens are added to tens, ones to ones, and that sometimes ten ones make a ten), 1.NBT.5 (mentally find 10 more or 10 less than a two-digit number) and 1.NBT.6 (subtract multiples of 10 in the range 10–90). Each game has its own direct link: #ascensor, #decenas, #unidades, #saltos, #bloques and #robot.">Aligned to the Illinois first grade mathematics standards 1.NBT.4 (add within 100, including a two-digit number and a one-digit number, and a two-digit number and a multiple of 10, using models and place-value strategies, understanding that tens are added to tens, ones to ones, and that sometimes ten ones make a ten), 1.NBT.5 (mentally find 10 more or 10 less than a two-digit number) and 1.NBT.6 (subtract multiples of 10 in the range 10–90). Each game has its own direct link: #ascensor, #decenas, #unidades, #saltos, #bloques and #robot.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Sumar hasta 100" data-en="Adding within 100">Adding within 100</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Escribe el número de arriba (10 menos) y el de abajo (10 más)." data-en="1. Write the number above (10 less) and below (10 more).">1. Write the number above (10 less) and below (10 more).</h3>
+  <div class="diezmas" id="hoja-diezmas"></div>
+  <h3 data-es="2. Suma o resta. Primero las decenas, después las unidades." data-en="2. Add or subtract. Tens first, then ones.">2. Add or subtract. Tens first, then ones.</h3>
+  <div class="lista" id="hoja-cuentas"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#00695C",t:"#004D40"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+
+/* ============ Números en palabras, hasta 120 ============ */
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte",
+  "veintiuno","veintidós","veintitrés","veinticuatro","veinticinco","veintiséis","veintisiete","veintiocho","veintinueve"];
+const ES_DECENAS = {3:"treinta",4:"cuarenta",5:"cincuenta",6:"sesenta",7:"setenta",8:"ochenta",9:"noventa"};
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+const EN_DECENAS = {2:"twenty",3:"thirty",4:"forty",5:"fifty",6:"sixty",7:"seventy",8:"eighty",9:"ninety"};
+function enPalabrasEs(n){
+  if(n < 30) return ES_BASE[n];
+  if(n < 100){ const d = Math.floor(n/10), u = n%10; return ES_DECENAS[d] + (u ? " y " + ES_BASE[u] : ""); }
+  if(n === 100) return "cien";
+  return "ciento " + enPalabrasEs(n-100);
+}
+function enPalabrasEn(n){
+  if(n < 20) return EN_BASE[n];
+  if(n < 100){ const d = Math.floor(n/10), u = n%10; return EN_DECENAS[d] + (u ? "-" + EN_BASE[u] : ""); }
+  return "one hundred" + (n > 100 ? " " + enPalabrasEn(n-100) : "");
+}
+const palabra = (n)=> S.idioma === "es" ? enPalabrasEs(n) : enPalabrasEn(n);
+/* «treinta y cuatro más cinco» */
+function dichaCuenta(a, op, b, r){
+  const es = S.idioma === "es";
+  const s = op === "+" ? (es ? "más" : "plus") : (es ? "menos" : "minus");
+  return `${palabra(a)} ${s} ${palabra(b)}` + (r === undefined ? "" : ` ${es ? "es igual a" : "equals"} ${palabra(r)}`);
+}
+
+/* ============ Textos ============ */
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Qué bien sumas!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez",
+    ascensorMas:(n)=>`El ascensor está en el piso ${n}. Baja un piso: ¡diez más! ¿A qué número llega?`,
+    ascensorMenos:(n)=>`El ascensor está en el piso ${n}. Sube un piso: ¡diez menos! ¿A qué número llega?`,
+    ascensorMasC:(n)=>`10 más que ${n}`, ascensorMenosC:(n)=>`10 menos que ${n}`,
+    ascensorFin:(n,r,mas)=>`${mas ? "Diez más" : "Diez menos"} que ${n} es ${r}: cambian las decenas y las unidades se quedan igual.`,
+    pistaUno:"Eso es solo uno. Diez es una fila entera de la tabla: cambian las decenas.",
+    decenas:(a,op,b)=>`${dichaCuenta(a,op,b)}. Cuenta las barras de diez.`,
+    decenasFin:(a,op,b,r,da,db)=>`${da} ${op==="+"?"más":"menos"} ${db} son ${Math.abs(op==="+"?da+db:da-db)} decenas: ${r}.`,
+    pistaCero:"¡Cuidado! Son decenas: cada barra vale diez.",
+    unidades:(a,b)=>`${dichaCuenta(a,"+",b)}. Junta los cubitos con los cubitos.`,
+    unidadesFin:(a,b,r)=>`${a} + ${b} = ${r}.`,
+    cambio:"¡Diez cubitos forman una barra nueva!",
+    pistaLlevar:"Fíjate: con tantos cubitos se forma una decena nueva.",
+    saltos:(n,d,op)=>`La rana empieza en el ${n} y da ${d} ${d===1?"salto":"saltos"} de diez ${op==="+"?"hacia adelante":"hacia atrás"}. ¿Dónde cae?`,
+    saltosFin:(lista)=>`Saltó: ${lista}.`,
+    pistaSaltoUno:"Cada salto vale diez, no uno.",
+    bloques:(a,b)=>`${dichaCuenta(a,"+",b)}. Junta las barras con las barras y los cubitos con los cubitos.`,
+    bloquesFin:(dd,uu,r)=>`${dd} decenas y ${uu} unidades: ${r}.`,
+    robot:"Sigue las flechas del robot y toca la casilla donde termina.",
+    robotFin:(r)=>`¡El robot llegó al ${r}!`,
+    pistaRobot:"Recuerda: abajo es diez más, arriba es diez menos, derecha uno más, izquierda uno menos.",
+    leyenda:["⬇ 10 más","⬆ 10 menos","➡ 1 más","⬅ 1 menos"],
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`,
+    menu:"Escoge un juego.",
+    bloquesDesc:(d,u)=>`${d} barras de diez y ${u} cubitos`,
+    rectaDesc:(n,d,op)=>`Recta numérica con saltos de diez desde ${n}`,
+    edificioDesc:(n)=>`Tabla del 100 alrededor del ${n}`
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","You add so well!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again",
+    ascensorMas:(n)=>`The elevator is on floor ${n}. Go down one floor: ten more! What number does it reach?`,
+    ascensorMenos:(n)=>`The elevator is on floor ${n}. Go up one floor: ten less! What number does it reach?`,
+    ascensorMasC:(n)=>`10 more than ${n}`, ascensorMenosC:(n)=>`10 less than ${n}`,
+    ascensorFin:(n,r,mas)=>`Ten ${mas ? "more" : "less"} than ${n} is ${r}: the tens change and the ones stay the same.`,
+    pistaUno:"That is only one. Ten is a whole row of the chart: the tens change.",
+    decenas:(a,op,b)=>`${dichaCuenta(a,op,b)}. Count the ten rods.`,
+    decenasFin:(a,op,b,r,da,db)=>`${da} ${op==="+"?"plus":"minus"} ${db} is ${Math.abs(op==="+"?da+db:da-db)} tens: ${r}.`,
+    pistaCero:"Careful! These are tens: each rod is worth ten.",
+    unidades:(a,b)=>`${dichaCuenta(a,"+",b)}. Put the cubes together with the cubes.`,
+    unidadesFin:(a,b,r)=>`${a} + ${b} = ${r}.`,
+    cambio:"Ten cubes make a new rod!",
+    pistaLlevar:"Look: with that many cubes you can make a new ten.",
+    saltos:(n,d,op)=>`The frog starts at ${n} and makes ${d} ${d===1?"jump":"jumps"} of ten ${op==="+"?"forward":"back"}. Where does it land?`,
+    saltosFin:(lista)=>`It jumped: ${lista}.`,
+    pistaSaltoUno:"Each jump is worth ten, not one.",
+    bloques:(a,b)=>`${dichaCuenta(a,"+",b)}. Put rods with rods and cubes with cubes.`,
+    bloquesFin:(dd,uu,r)=>`${dd} tens and ${uu} ones: ${r}.`,
+    robot:"Follow the robot's arrows and touch the square where it stops.",
+    robotFin:(r)=>`The robot reached ${r}!`,
+    pistaRobot:"Remember: down is ten more, up is ten less, right is one more, left is one less.",
+    leyenda:["⬇ 10 more","⬆ 10 less","➡ 1 more","⬅ 1 less"],
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`,
+    menu:"Pick a game.",
+    bloquesDesc:(d,u)=>`${d} ten rods and ${u} cubes`,
+    rectaDesc:(n,d,op)=>`Number line with jumps of ten from ${n}`,
+    edificioDesc:(n)=>`Hundred chart around ${n}`
+  }
+};
+
+const JUEGOS = [
+  {id:"ascensor", emoji:"🛗", es:"El ascensor", en:"The elevator", metaEs:"10 más y 10 menos", metaEn:"10 more and 10 less"},
+  {id:"decenas",  emoji:"🧱", es:"Sumar decenas", en:"Adding tens", metaEs:"30 + 40, 70 − 30", metaEn:"30 + 40, 70 − 30"},
+  {id:"unidades", emoji:"🟧", es:"Más cubitos", en:"More cubes", metaEs:"Dos cifras + una cifra", metaEn:"Two digits + one digit"},
+  {id:"saltos",   emoji:"🐸", es:"Saltos de diez", en:"Jumps of ten", metaEs:"46 + 30", metaEn:"46 + 30"},
+  {id:"bloques",  emoji:"🐙", es:"Barras y cubitos", en:"Rods and cubes", metaEs:"Decenas con decenas", metaEn:"Tens with tens"},
+  {id:"robot",    emoji:"🤖", es:"El robot", en:"The robot", metaEs:"Camino en la tabla del 100", metaEn:"Path on the hundred chart"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+function distractores(n, min, max, cuantos, prioridad){
+  const lista = prioridad || [n+10, n-10, n+1, n-1];
+  const vistos = new Set([n]); const elegidos = [];
+  lista.forEach(v=>{ if(v!==null && v!==undefined && v>=min && v<=max && !vistos.has(v) && elegidos.length<cuantos){ vistos.add(v); elegidos.push(v); } });
+  let intentos = 0;
+  while(elegidos.length < cuantos && intentos < 60){
+    const v = azar(Math.max(min, n-12), Math.min(max, n+12)); intentos++;
+    if(!vistos.has(v)){ vistos.add(v); elegidos.push(v); }
+  }
+  return elegidos;
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien   = ()=>tono([523,659,784,1047],0.15);
+const sonOtra   = ()=>barrido(420,180,0.35,"triangle");
+const sonToque  = ()=>tono([660],0.08);
+const sonBoing  = ()=>barrido(180,620,0.22,"triangle");
+const sonPop    = ()=>barrido(900,300,0.1);
+const sonDing   = ()=>tono([1319,1047],0.25);
+const sonBip    = ()=>tono([880],0.06,"square");
+
+/* ============ Mascota y confeti ============ */
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = "🐙<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = "🐙<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ $("mascota").textContent = "🐙"; $("mascota").className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g1-06-add-within-100.html#robot */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra, extraVoz){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const bien = elegir(T[S.idioma].bien);
+  const frase = bien + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(extraVoz ? bien + " " + extraVoz : frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    hablar(T[S.idioma].final(S.estrellas));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+function crearOperacion(texto){
+  const d = document.createElement("div"); d.className = "operacion"; d.setAttribute("aria-hidden","true");
+  let hueco = null;
+  texto.split("?").forEach((parte, i)=>{
+    if(i > 0){ hueco = document.createElement("span"); hueco.className = "hueco"; hueco.textContent = "?"; d.appendChild(hueco); }
+    d.appendChild(document.createTextNode(parte));
+  });
+  return {d, llenar:(v)=>{ hueco.textContent = String(v); hueco.classList.add("lleno"); }};
+}
+/* Barras de diez y cubitos. «otros» son cubitos de otro color (los que se agregan). */
+function crearBloques(d, u, otros, tachadas){
+  const caja = document.createElement("div"); caja.className = "bloques";
+  caja.setAttribute("role","img"); caja.setAttribute("aria-label", T[S.idioma].bloquesDesc(d, u + (otros||0)));
+  const barras = document.createElement("div"); barras.className = "grupo-barras";
+  for(let i=0;i<d;i++){ const b = document.createElement("span"); b.className = "barra10" + (tachadas && i >= d - tachadas ? " tachada" : ""); barras.appendChild(b); }
+  const cubos = document.createElement("div"); cubos.className = "grupo-cubos";
+  for(let i=0;i<u;i++){ const c = document.createElement("span"); c.className = "cubo"; cubos.appendChild(c); }
+  for(let i=0;i<(otros||0);i++){ const c = document.createElement("span"); c.className = "cubo otro"; cubos.appendChild(c); }
+  if(d) caja.appendChild(barras);
+  if(u || otros) caja.appendChild(cubos);
+  return caja;
+}
+function signoMesa(s){ const e = document.createElement("span"); e.className = "signo-mesa"; e.textContent = s; e.setAttribute("aria-hidden","true"); return e; }
+/* Número de dos cifras con las unidades que piden (sin pasar de la decena o pasándola) */
+function conUnidades(min, max, filtro){ let n, k = 0; do{ n = azar(min, max); k++; }while(!filtro(n) && k < 500); return n; }
+
+/* ============ Los seis juegos ============ */
+function nuevaRonda(){
+  limpiar();
+  S.respuesta = null;
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. El ascensor: 10 más y 10 menos (1.NBT.5) --- */
+  if(S.juego === "ascensor"){
+    const mas = reto ? Math.random() < 0.5 : Math.random() < 0.7;
+    const n = mas ? azar(11, 89) : azar(21, 99);
+    const r = mas ? n + 10 : n - 10;
+    S.respuesta = r;
+    // Una ventana de 3 × 3 de la tabla del 100 alrededor del número
+    const col = ((n - 1) % 10);
+    const c0 = Math.min(Math.max(col - 1, 0), 7);
+    const ed = document.createElement("div"); ed.className = "edificio";
+    ed.setAttribute("role","img"); ed.setAttribute("aria-label", t.edificioDesc(n));
+    const ven = document.createElement("div"); ven.className = "ventanas";
+    let pregunta = null;
+    const filaN = Math.floor((n - 1) / 10);
+    for(let f = filaN - 1; f <= filaN + 1; f++){
+      for(let c = c0; c < c0 + 3; c++){
+        const v = f*10 + c + 1;
+        const cel = document.createElement("span"); cel.className = "ventana";
+        if(v < 1 || v > 100 || f < 0 || f > 9){ cel.classList.add("vacia"); }
+        else if(v === r){ cel.classList.add("pregunta"); cel.textContent = "?"; pregunta = cel; }
+        else if(v === n){ cel.classList.add("centro"); cel.textContent = String(v); }
+        else if(f === filaN){ cel.textContent = String(v); }
+        else { cel.textContent = ""; cel.style.background = "#fff"; }
+        ven.appendChild(cel);
+      }
+    }
+    const asc = document.createElement("span"); asc.className = "ascensor"; asc.textContent = "🛗"; asc.setAttribute("aria-hidden","true");
+    ed.append(ven, asc);
+    esc.appendChild(ed);
+    const op = crearOperacion(mas ? `${n} + 10 = ?` : `${n} − 10 = ?`);
+    esc.appendChild(op.d);
+    ponerInstruccion(mas ? t.ascensorMasC(n) : t.ascensorMenosC(n), mas ? t.ascensorMas(palabra(n)) : t.ascensorMenos(palabra(n)));
+    const pool = mas ? [n+1, n-10, n+100 <= 100 ? n+100 : null, n+11] : [n-1, n+10, n-11];
+    ponerOpciones([r, ...distractores(r, 0, 100, 2, pool)], r, ()=>{
+      pregunta.textContent = String(r); pregunta.classList.add("lleno");
+      op.llenar(r); sonDing();
+      if(!sinMovimiento()) asc.style.transform = `translateY(${mas ? 40 : -40}px)`;
+      acertar(t.ascensorFin(n, r, mas));
+    }, (k)=> Math.abs(k - n) === 1 ? t.pistaUno : null);
+    return;
+  }
+
+  /* --- 2. Sumar y restar decenas (1.NBT.4, 1.NBT.6) --- */
+  if(S.juego === "decenas"){
+    const resta = reto && Math.random() < 0.5;
+    let da, db;
+    if(resta){ da = azar(2, 9); db = azar(1, da-1); } else { da = azar(1, 8); db = azar(1, 9 - da); }
+    const a = da*10, b = db*10, r = resta ? a - b : a + b;
+    S.respuesta = r;
+    const mesa = document.createElement("div"); mesa.className = "mesa-bloques";
+    if(resta) mesa.append(crearBloques(da, 0, 0, db));
+    else mesa.append(crearBloques(da, 0), signoMesa("+"), crearBloques(db, 0));
+    const op = crearOperacion(`${a} ${resta ? "−" : "+"} ${b} = ?`);
+    esc.append(mesa, op.d);
+    ponerInstruccion(`${a} ${resta ? "−" : "+"} ${b}`, t.decenas(a, resta ? "−" : "+", b));
+    const digitos = resta ? da - db : da + db;
+    ponerOpciones([r, ...distractores(r, 0, 100, 2, [digitos, r+10, r-10, r+1])], r, ()=>{
+      op.llenar(r); sonPop();
+      acertar(t.decenasFin(a, resta?"−":"+", b, r, da, db));
+    }, (k)=> k === digitos ? t.pistaCero : null);
+    return;
+  }
+
+  /* --- 3. Más cubitos: dos cifras más una cifra (1.NBT.4) --- */
+  if(S.juego === "unidades"){
+    let a, b;
+    if(reto){ a = conUnidades(11, 88, (n)=> n%10 >= 3); b = azar(10 - a%10, 9); if(a + b > 99) b = 99 - a; }
+    else { a = conUnidades(11, 98, (n)=> n%10 <= 7); b = azar(1, 9 - a%10); }
+    const r = a + b;
+    S.respuesta = r;
+    const lleva = (a%10) + b >= 10;
+    const mesa = document.createElement("div"); mesa.className = "mesa-bloques";
+    mesa.append(crearBloques(Math.floor(a/10), a%10), signoMesa("+"), crearBloques(0, 0, b));
+    const op = crearOperacion(`${a} + ${b} = ?`);
+    esc.append(mesa, op.d);
+    ponerInstruccion(`${a} + ${b}`, t.unidades(a, b));
+    const sinLlevar = Math.floor(a/10)*10 + ((a%10 + b) % 10);
+    const pool = lleva ? [sinLlevar, r+1, r-1, r+10] : [r+1, r-1, a + b*10 <= 100 ? a + b*10 : null, r+10];
+    ponerOpciones([r, ...distractores(r, 0, 100, 2, pool)], r, ()=>{
+      op.llenar(r);
+      // Se juntan los cubitos; si llegan a diez, forman una barra nueva
+      mesa.innerHTML = "";
+      const nueva = crearBloques(Math.floor(r/10), r%10);
+      if(lleva){ const barras = nueva.querySelectorAll(".barra10"); barras[barras.length-1].classList.add("nueva");
+        const nota = document.createElement("div"); nota.className = "nota-cambio"; nota.textContent = t.cambio; esc.insertBefore(nota, op.d); }
+      mesa.append(nueva); sonPop();
+      acertar(t.unidadesFin(a, b, r) + (lleva ? " " + t.cambio : ""), dichaCuenta(a, "+", b, r) + (lleva ? ". " + t.cambio : "."));
+    }, (k)=> lleva && k === sinLlevar ? t.pistaLlevar : null);
+    return;
+  }
+
+  /* --- 4. Saltos de diez en la recta numérica (1.NBT.4, 1.NBT.6) --- */
+  if(S.juego === "saltos"){
+    const resta = reto && Math.random() < 0.4;
+    const d = azar(1, reto ? 5 : 3);
+    let n;
+    if(resta){ n = azar(d*10 + 1, 99); } else { n = azar(1, 99 - d*10); }
+    const r = resta ? n - d*10 : n + d*10;
+    S.respuesta = r;
+    // Recta abierta dibujada en SVG: un arco por cada salto de diez
+    const ancho = 100 + d*120, alto = 120;
+    const puntos = []; for(let k=0;k<=d;k++) puntos.push(resta ? n - k*10 : n + k*10);
+    const x = (k)=> resta ? (ancho - 50 - k*120) : (50 + k*120);
+    let svg = `<svg viewBox="0 0 ${ancho} ${alto}" role="img" aria-label="${t.rectaDesc(n,d)}"><line x1="10" y1="90" x2="${ancho-10}" y2="90" stroke="#14302C" stroke-width="4" stroke-linecap="round"/>`;
+    for(let k=0;k<d;k++){
+      const x1 = x(k), x2 = x(k+1), m = (x1+x2)/2;
+      svg += `<path d="M ${x1} 88 Q ${m} 12 ${x2} 88" fill="none" stroke="#00695C" stroke-width="4" stroke-dasharray="8 6"/>`;
+      svg += `<text x="${m}" y="34" text-anchor="middle" font-size="24" font-weight="700" fill="#00695C">${resta ? "−10" : "+10"}</text>`;
+    }
+    puntos.forEach((p,k)=>{
+      const esFin = k === d;
+      svg += `<line x1="${x(k)}" y1="80" x2="${x(k)}" y2="100" stroke="#14302C" stroke-width="4"/>`;
+      svg += `<text class="${esFin ? "fin" : ""}" x="${x(k)}" y="${alto - 0}" text-anchor="middle" font-size="26" font-weight="700" fill="${k===0 ? "#B35400" : esFin ? "#00695C" : "#B0BEC5"}">${k===0 ? n : esFin ? "?" : "·"}</text>`;
+    });
+    svg += `<text class="rana" x="${x(0)}" y="76" text-anchor="middle" font-size="38">🐸</text></svg>`;
+    const caja = document.createElement("div"); caja.className = "recta-saltos"; caja.innerHTML = svg;
+    const op = crearOperacion(`${n} ${resta ? "−" : "+"} ${d*10} = ?`);
+    esc.append(caja, op.d);
+    ponerInstruccion(`${n} ${resta ? "−" : "+"} ${d*10}`, t.saltos(palabra(n), d, resta ? "−" : "+"));
+    const deUno = resta ? n - d : n + d;
+    ponerOpciones([r, ...distractores(r, 0, 100, 2, [deUno, r+10, r-10, r+1])], r, ()=>{
+      op.llenar(r);
+      // Se escriben los números intermedios y la rana llega al final
+      const textos = caja.querySelectorAll("text");
+      let i = 0;
+      textos.forEach(tx=>{ if(tx.getAttribute("y") === String(alto)){ if(i>0) { tx.textContent = String(puntos[i]); tx.setAttribute("fill", i===d ? "#1B5E20" : "#3F5A56"); } i++; } });
+      const rana = caja.querySelector(".rana"); if(rana) rana.setAttribute("x", x(d));
+      sonBoing();
+      acertar(t.saltosFin(puntos.join(", ")));
+    }, (k)=> k === deUno ? t.pistaSaltoUno : null);
+    return;
+  }
+
+  /* --- 5. Barras y cubitos: decenas con decenas y unidades con unidades (1.NBT.4) --- */
+  if(S.juego === "bloques"){
+    let a, b, k = 0;
+    do{
+      a = azar(11, 79); b = azar(11, 89 - Math.floor(a/10)*10);
+      k++;
+    }while(k < 500 && (a + b > 99 || (reto ? (a%10 + b%10 < 10) : (a%10 + b%10 > 9)) || b%10 === 0 && !reto));
+    const r = a + b;
+    S.respuesta = r;
+    const lleva = (a%10) + (b%10) >= 10;
+    const mesa = document.createElement("div"); mesa.className = "mesa-bloques";
+    mesa.append(crearBloques(Math.floor(a/10), a%10), signoMesa("+"), crearBloques(Math.floor(b/10), 0, b%10));
+    const op = crearOperacion(`${a} + ${b} = ?`);
+    esc.append(mesa, op.d);
+    ponerInstruccion(`${a} + ${b}`, t.bloques(a, b));
+    const sinLlevar = (Math.floor(a/10) + Math.floor(b/10))*10 + ((a%10 + b%10) % 10);
+    const pool = lleva ? [sinLlevar, r+1, r-1, r+10] : [r+10, r-10, r+1, r-1];
+    ponerOpciones([r, ...distractores(r, 0, 100, 2, pool)], r, ()=>{
+      op.llenar(r);
+      mesa.innerHTML = "";
+      const nueva = crearBloques(Math.floor(r/10), r%10);
+      if(lleva){ const barras = nueva.querySelectorAll(".barra10"); barras[barras.length-1].classList.add("nueva");
+        const nota = document.createElement("div"); nota.className = "nota-cambio"; nota.textContent = t.cambio; esc.insertBefore(nota, op.d); }
+      mesa.append(nueva); sonPop();
+      acertar(`${a} + ${b} = ${r}. ` + t.bloquesFin(Math.floor(r/10), r%10, r) + (lleva ? " " + t.cambio : ""),
+              dichaCuenta(a, "+", b, r) + ". " + t.bloquesFin(Math.floor(r/10), r%10, palabra(r)) + (lleva ? " " + t.cambio : ""));
+    }, (k)=> lleva && k === sinLlevar ? t.pistaLlevar : null);
+    return;
+  }
+
+  /* --- 6. El robot en la tabla del 100: flechas de 10 y de 1 (1.NBT.4, 1.NBT.5) --- */
+  if(S.juego === "robot"){
+    const MOV = {"⬇":10, "⬆":-10, "➡":1, "⬅":-1};
+    let inicio, pasos, fin, k = 0;
+    do{
+      inicio = azar(1, 100);
+      const cuantos = reto ? azar(3, 4) : 2;
+      pasos = [];
+      if(!reto){ const f = elegir(["⬇","⬆"]); pasos = [f, f]; }
+      else for(let i=0;i<cuantos;i++) pasos.push(elegir(["⬇","⬇","⬆","➡","⬅"]));
+      // Se revisa que el robot no se salga de la tabla ni cambie de fila con las flechas de lado
+      let p = inicio, ok = true;
+      for(const s of pasos){
+        const sig = p + MOV[s];
+        if(sig < 1 || sig > 100) { ok = false; break; }
+        if((s === "➡" && p % 10 === 0) || (s === "⬅" && p % 10 === 1)) { ok = false; break; }
+        p = sig;
+      }
+      fin = p; k++;
+      if(ok && fin !== inicio) break;
+    }while(k < 500);
+    S.respuesta = fin;
+    const prog = document.createElement("div"); prog.className = "programa";
+    prog.innerHTML = `<span aria-hidden="true">🤖</span>` + pasos.map(s=>`<span class="paso" aria-hidden="true">${s}</span>`).join("");
+    const ley = document.createElement("div"); ley.className = "leyenda-flechas"; ley.innerHTML = t.leyenda.map(x=>`<span>${x}</span>`).join("");
+    const tabla = document.createElement("div"); tabla.className = "tabla100";
+    const celdas = {};
+    for(let v=1; v<=100; v++){
+      const b = document.createElement("button"); b.type = "button"; b.textContent = String(v); b.dataset.n = String(v);
+      b.setAttribute("aria-label", palabra(v));
+      if(v === inicio){ b.classList.add("salida"); b.insertAdjacentHTML("beforeend", '<span class="robot" aria-hidden="true">🤖</span>'); }
+      b.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        sonToque();
+        if(v === fin){
+          // El robot recorre su camino paso a paso
+          let p = inicio; const pausa = sinMovimiento() ? 0 : 330;
+          const marcas = prog.querySelectorAll(".paso");
+          pasos.forEach((s,i)=>setTimeout(()=>{ p += MOV[s]; celdas[p].classList.add(i === pasos.length-1 ? "meta" : "camino"); marcas[i].classList.add("hecho"); sonBip(); }, (i+1)*pausa));
+          const r = celdas[inicio].querySelector(".robot"); if(r) setTimeout(()=>r.remove(), pasos.length*pausa);
+          setTimeout(()=>celdas[fin].insertAdjacentHTML("beforeend", '<span class="robot" aria-hidden="true">🤖</span>'), pasos.length*pausa);
+          acertar(t.robotFin(fin));
+        } else fallar(b, t.pistaRobot);
+      });
+      celdas[v] = b; tabla.appendChild(b);
+    }
+    esc.append(prog, ley, tabla);
+    const nombres = S.idioma === "es" ? {"⬇":"abajo","⬆":"arriba","➡":"derecha","⬅":"izquierda"} : {"⬇":"down","⬆":"up","➡":"right","⬅":"left"};
+    const voz = t.robot + " " + (S.idioma === "es" ? `Empieza en el ${palabra(inicio)}: ` : `It starts at ${palabra(inicio)}: `) + pasos.map(s=>nombres[s]).join(", ") + ".";
+    ponerInstruccion(t.robot, voz);
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const dm = $("hoja-diezmas"); dm.innerHTML = "";
+  [34, 57, 18, 82, 45, 63, 29, 71].forEach(n=>{
+    const d = document.createElement("div");
+    d.innerHTML = `<span class="vacia"></span><span></span><span class="vacia"></span><span>${n-1}</span><span><b>${n}</b></span><span>${n+1}</span><span class="vacia"></span><span></span><span class="vacia"></span>`;
+    dm.appendChild(d);
+  });
+  const cu = $("hoja-cuentas"); cu.innerHTML = "";
+  ["30 + 40","70 − 20","52 + 6","47 + 5","38 + 30","64 + 20","23 + 45","36 + 27","90 − 50","15 + 70","58 + 9","41 + 38"].forEach(c=>{
+    const s = document.createElement("span"); s.innerHTML = `${c} = <i class="linea"></i>`; cu.appendChild(s);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>
