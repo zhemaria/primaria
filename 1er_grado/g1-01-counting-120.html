@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<!--
+  First Grade Math — Counting to 120
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 1: 1.NBT.1
+  (count to 120 starting at any number less than 120; read and write numerals;
+   represent a number of objects with a written numeral)
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Contar hasta 120: Juegos de primer grado" data-en="Counting to 120: First grade games">Counting to 120: First grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual first grade counting games with a growing caterpillar, a sneaky monkey, a rocket and a parrot: keep counting from any number, the 120 chart, before and after, boxes of ten, hear and find, and write the number up to 120.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F2F8F7; --tinta:#14302C; --tinta-suave:#3F5A56; --linea:#CBE3DF; --blanco:#FFFFFF;
+  --acento:#00695C; --acento-claro:#E0F2F1;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --oruga:#7CB342; --oruga-borde:#33691E;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,48,44,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra);scroll-margin-top:10px}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: una oruga que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+
+/* ---------- Fichas de números ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;
+  box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.ficha-num.grande{min-width:clamp(120px,26vw,180px);height:clamp(110px,24vw,160px);font-size:clamp(48px,11vw,80px)}
+.ficha-num.quieta{cursor:default}
+.mal{animation:temblor .38s}
+
+/* ---------- 1. La oruga crece ---------- */
+.oruga{display:flex;align-items:center;flex-wrap:nowrap;max-width:100%;padding:24px 4px 8px}
+.segmento{width:clamp(58px,14vw,96px);height:clamp(58px,14vw,96px);border-radius:50%;margin-left:-8px;
+  background:var(--oruga);border:5px solid var(--oruga-borde);display:grid;place-items:center;flex:0 0 auto;
+  font-weight:700;font-size:clamp(20px,4.6vw,34px);color:#fff;text-shadow:0 2px 0 #1B3A0E;position:relative}
+.segmento:first-child{margin-left:0}
+.segmento:nth-child(odd){transform:translateY(-8px)}
+.segmento.misterio{background:#fff;color:var(--acento);text-shadow:none;border-style:dashed;border-color:var(--acento)}
+.segmento.nuevo{animation:aparece .45s ease-out}
+.cabeza{width:clamp(66px,16vw,108px);height:clamp(66px,16vw,108px);border-radius:50%;margin-left:-8px;flex:0 0 auto;
+  background:#9CCC65;border:5px solid var(--oruga-borde);display:grid;place-items:center;font-size:clamp(26px,6vw,44px);position:relative}
+.cabeza::before,.cabeza::after{content:"";position:absolute;top:-22px;width:4px;height:24px;background:var(--oruga-borde);border-radius:4px}
+.cabeza::before{left:30%;transform:rotate(-18deg)}.cabeza::after{right:30%;transform:rotate(18deg)}
+.cabeza.mastica{animation:rebote .45s ease-in-out 3}
+@media (max-width:560px){ .segmento{width:clamp(48px,15vw,70px);height:clamp(48px,15vw,70px);font-size:clamp(17px,4.6vw,26px)}
+  .cabeza{width:clamp(54px,16vw,76px);height:clamp(54px,16vw,76px)} }
+
+/* ---------- 2. El mono travieso: tabla del 120 ---------- */
+.tabla120{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:clamp(3px,.8vw,6px);width:100%;max-width:760px}
+.casilla{aspect-ratio:1;border:3px solid var(--linea);border-radius:8px;display:grid;place-items:center;
+  font-weight:700;font-size:clamp(13px,3vw,24px);background:var(--papel);position:relative}
+@media (max-width:560px){ .escena{padding:12px 8px} .casilla{border-width:2px;border-radius:6px} }
+.casilla.decena{background:var(--acento-claro);border-color:#9FD3CC}
+.casilla.hueco{border:3px dashed var(--acento);background:#FFF8E1;font-size:clamp(20px,4.6vw,40px)}
+.casilla.hueco .mono{animation:meneo 1.2s ease-in-out infinite;display:inline-block}
+.casilla.hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto);font-size:clamp(13px,3vw,24px)}
+.casilla.vecina{outline:4px solid #F9A825;outline-offset:-2px}
+.mono-huye{position:absolute;font-size:clamp(36px,7vw,56px);animation:huida 1.1s ease-in forwards;pointer-events:none;z-index:2}
+
+/* ---------- 3. El cohete ---------- */
+.plataforma{display:flex;align-items:flex-end;justify-content:center;gap:clamp(14px,4vw,40px);flex-wrap:wrap}
+.cohete{font-size:clamp(80px,18vw,140px);line-height:1;display:inline-block;transform:rotate(-45deg)}
+.cohete.despega{animation:despegue 1.4s ease-in forwards}
+.cuenta-atras{display:flex;gap:10px;font-weight:700;font-size:clamp(22px,5vw,36px);color:var(--tinta-suave)}
+.flecha-pista{font-size:clamp(28px,6vw,48px);font-weight:700;color:var(--acento)}
+
+/* ---------- 4. Cajas de diez ---------- */
+.mesa{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;align-items:flex-start;width:100%}
+.cajas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:620px}
+.caja10{display:grid;grid-template-columns:repeat(5,1fr);border:4px solid #6D4C41;border-radius:8px;background:#6D4C41;gap:2px;padding:2px}
+.caja10 span{width:clamp(20px,4.2vw,30px);height:clamp(20px,4.2vw,30px);background:#FFF8E1;display:grid;place-items:center;
+  font-size:clamp(13px,2.8vw,20px);line-height:1;border-radius:3px}
+.caja10.brilla{outline:5px solid #F9A825;outline-offset:2px}
+.sueltos{display:flex;flex-wrap:wrap;gap:6px;max-width:200px;justify-content:center;font-size:clamp(28px,6vw,42px);line-height:1;
+  border:3px dashed var(--linea);border-radius:14px;padding:10px;min-height:64px}
+.sueltos span{display:inline-block}
+.sueltos span.brilla{animation:rebote .4s ease-in-out}
+.etiqueta-mesa{font-size:.8em;font-weight:700;color:var(--tinta-suave);text-align:center;margin:0 0 6px}
+
+/* ---------- 5 y 6. El loro ---------- */
+.loro{font-size:clamp(70px,16vw,120px);line-height:1;display:inline-block}
+.loro.habla{animation:cabeceo .5s ease-in-out 3}
+.loro.baila{animation:rebote .5s ease-in-out 4}
+.palabra-num{font-size:clamp(26px,5.4vw,44px);font-weight:700;background:var(--acento-claro);border:4px solid var(--acento);
+  border-radius:18px;padding:8px 20px;text-align:center}
+.casillas-escribir{display:flex;gap:10px;justify-content:center}
+.casillas-escribir span{width:clamp(64px,14vw,92px);height:clamp(78px,17vw,110px);border:5px solid var(--tinta);border-radius:14px;
+  display:grid;place-items:center;font-size:clamp(44px,10vw,72px);font-weight:700;background:#fff}
+.casillas-escribir span.activa{border-color:var(--foco);box-shadow:0 0 0 4px #BBD6FB}
+.teclado{display:grid;grid-template-columns:repeat(5,auto);gap:10px;justify-content:center;margin-top:18px}
+.teclado .ficha-num{min-width:clamp(58px,13vw,82px);height:clamp(58px,13vw,82px);font-size:clamp(28px,6vw,42px);border-width:5px;border-radius:16px}
+.acciones-teclado{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#004D40}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes meneo{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@keyframes huida{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(260px,-160px) rotate(40deg);opacity:0}}
+@keyframes aparece{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cabeceo{0%,100%{transform:rotate(0)}50%{transform:rotate(-12deg)}}
+@keyframes despegue{0%{transform:rotate(-45deg) translate(0,0)}15%{transform:rotate(-45deg) translate(-4px,4px)}100%{transform:rotate(-45deg) translate(70vh,-70vh)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .t120{display:inline-grid;grid-template-columns:repeat(10,13mm);border-top:1pt solid #000;border-left:1pt solid #000}
+  .hoja .t120 span{height:8.5mm;border-right:1pt solid #000;border-bottom:1pt solid #000;display:grid;place-items:center;font-size:11pt}
+  .hoja .siguen{display:grid;grid-template-columns:1fr 1fr;gap:3mm 10mm}
+  .hoja .siguen div{display:flex;gap:2mm;align-items:flex-end;font-size:14pt}
+  .hoja .siguen b{font-weight:400;width:13mm;text-align:center}
+  .hoja .siguen i{display:inline-block;width:13mm;border-bottom:1.2pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+  .cohete{transform:rotate(-45deg) !important}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Contar hasta 120" data-en="Counting to 120">Counting to 120</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <span data-es="Hasta" data-en="Up to">Up to</span>
+      <button id="btn-50" aria-pressed="true">50</button>
+      <button id="btn-100" aria-pressed="false">100</button>
+      <button id="btn-120" aria-pressed="false">120</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🐛</span><span>🐒</span><span>🚀</span><span>📦</span><span>🦜</span></div>
+    <h2 data-es="¡Contemos hasta 120!" data-en="Let's count to 120!">Let's count to 120!</h2>
+    <p data-es="La oruga crece con cada número, el mono travieso esconde números en la tabla, el cohete despega y el loro te dice números para buscar y escribir. Yo te digo todo en voz alta y tú contestas tocando."
+       data-en="The caterpillar grows with every number, the sneaky monkey hides numbers on the chart, the rocket blasts off and the parrot says numbers for you to find and write. I say everything out loud and you answer by touching.">The caterpillar grows with every number, the sneaky monkey hides numbers on the chart, the rocket blasts off and the parrot says numbers for you to find and write. I say everything out loud and you answer by touching.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true">🐛</span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: la tabla del 120" data-en="🖨 Print a page: the 120 chart">🖨 Print a page: the 120 chart</button></p>
+    <p data-es="Alineado con el estándar de matemáticas de Illinois para primer grado 1.NBT.1: contar hasta 120 empezando en cualquier número menor que 120; en este rango, leer y escribir los numerales y representar con un numeral la cantidad de objetos. Las cajas de diez preparan el estándar 1.NBT.2 (decenas y unidades). Cada juego tiene su enlace directo: #oruga, #mono, #cohete, #cajas, #loro y #escribe."
+       data-en="Aligned to the Illinois first grade mathematics standard 1.NBT.1: count to 120 starting at any number less than 120; in this range, read and write numerals and represent a number of objects with a written numeral. The boxes of ten prepare standard 1.NBT.2 (tens and ones). Each game has its own direct link: #oruga, #mono, #cohete, #cajas, #loro and #escribe.">Aligned to the Illinois first grade mathematics standard 1.NBT.1: count to 120 starting at any number less than 120; in this range, read and write numerals and represent a number of objects with a written numeral. The boxes of ten prepare standard 1.NBT.2 (tens and ones). Each game has its own direct link: #oruga, #mono, #cohete, #cajas, #loro and #escribe.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="La tabla del 120" data-en="The 120 chart">The 120 chart</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. El mono borró algunos números. Escríbelos otra vez." data-en="1. The monkey erased some numbers. Write them back.">1. The monkey erased some numbers. Write them back.</h3>
+  <div class="t120" id="hoja-tabla"></div>
+  <h3 data-es="2. Sigue contando. Escribe los tres números que siguen." data-en="2. Keep counting. Write the next three numbers.">2. Keep counting. Write the next three numbers.</h3>
+  <div class="siguen" id="hoja-siguen"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#00695C",t:"#004D40"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+
+/* ============ Números en palabras, hasta 120 ============ */
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte",
+  "veintiuno","veintidós","veintitrés","veinticuatro","veinticinco","veintiséis","veintisiete","veintiocho","veintinueve"];
+const ES_DECENAS = {3:"treinta",4:"cuarenta",5:"cincuenta",6:"sesenta",7:"setenta",8:"ochenta",9:"noventa"};
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+const EN_DECENAS = {2:"twenty",3:"thirty",4:"forty",5:"fifty",6:"sixty",7:"seventy",8:"eighty",9:"ninety"};
+function enPalabrasEs(n){
+  if(n < 30) return ES_BASE[n];
+  if(n < 100){ const d = Math.floor(n/10), u = n%10; return ES_DECENAS[d] + (u ? " y " + ES_BASE[u] : ""); }
+  if(n === 100) return "cien";
+  return "ciento " + enPalabrasEs(n-100);
+}
+function enPalabrasEn(n){
+  if(n < 20) return EN_BASE[n];
+  if(n < 100){ const d = Math.floor(n/10), u = n%10; return EN_DECENAS[d] + (u ? "-" + EN_BASE[u] : ""); }
+  return "one hundred" + (n > 100 ? " " + enPalabrasEn(n-100) : "");
+}
+const palabra = (n)=> S.idioma === "es" ? enPalabrasEs(n) : enPalabrasEn(n);
+
+/* Cosas divertidas para guardar en cajas de diez */
+const COSAS = [
+  {e:"⚽", es:["pelota","pelotas"], en:["ball","balls"]},
+  {e:"🐞", es:["mariquita","mariquitas"], en:["ladybug","ladybugs"]},
+  {e:"🍩", es:["dona","donas"], en:["donut","donuts"]},
+  {e:"🎈", es:["globo","globos"], en:["balloon","balloons"]},
+  {e:"🐥", es:["pollito","pollitos"], en:["chick","chicks"]},
+  {e:"🍓", es:["fresa","fresas"], en:["strawberry","strawberries"]},
+  {e:"🦖", es:["dinosaurio","dinosaurios"], en:["dinosaur","dinosaurs"]},
+  {e:"🐟", es:["pececito","pececitos"], en:["fish","fish"]}
+];
+
+/* ============ Textos ============ */
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Qué bien cuentas!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez",
+    oruga:"¡La oruga crece con cada número! Sigue contando. ¿Qué número va ahora?",
+    orugaCome:"¡Ñam, ñam! La oruga creció.",
+    mono:"¡El mono travieso escondió un número en la tabla! ¿Cuál es?",
+    monoDevuelve:"El mono lo devolvió.",
+    monoPatron:(n)=>`Mira la columna: arriba está el ${n-10} y abajo el ${n+10}.`,
+    antes:(n)=>`¿Qué número va justo antes del ${n}?`,
+    despues:(n)=>`¿Qué número va justo después del ${n}?`,
+    despega:"Tres, dos, uno… ¡Despega!",
+    cajas:(c)=>`¿Cuántos ${c.es[1]} hay? Cada caja tiene diez.`,
+    cuentaDieces:(d,u,n)=>{
+      const p = [];
+      for(let i=1;i<=d;i++) p.push(enPalabrasEs(i*10));
+      const q = [];
+      for(let i=1;i<=u;i++) q.push(enPalabrasEs(i));
+      return p.join(", ") + (u ? "… y " + q.join(", ") : "") + ". ¡Son " + enPalabrasEs(n) + "!";
+    },
+    etiquetaCajas:"Cajas de diez", etiquetaSueltos:"Sueltos",
+    descripcionCajas:(d,u,c)=>`${d} ${d===1?"caja llena":"cajas llenas"} de ${c.es[1]} y ${u} ${u===1?c.es[0]:c.es[1]} sueltos`,
+    loro:(n)=>`El loro dice: ¡${enPalabrasEs(n)}! Toca el ${enPalabrasEs(n)}.`,
+    escribe:(n)=>`Escribe el número ${enPalabrasEs(n)} con los botones.`,
+    escribiste:(k)=>`Escribiste ${k}.`,
+    vacio:"Primero toca los números.",
+    orden:"Fíjate en el orden: primero las decenas y después las unidades.",
+    borrar:"⌫ Borrar", listo:"✔ Listo",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`,
+    menu:"Escoge un juego.",
+    queSigue:"¿Qué sigue?", hueco:"número escondido por el mono",
+    casillaVacia:"casilla vacía", teclaBorrar:"Borrar el último número"
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","You count so well!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again",
+    oruga:"The caterpillar grows with every number! Keep counting. What number comes next?",
+    orugaCome:"Munch, munch! The caterpillar grew.",
+    mono:"The sneaky monkey hid a number on the chart! Which one is it?",
+    monoDevuelve:"The monkey gave it back.",
+    monoPatron:(n)=>`Look at the column: ${n-10} is above and ${n+10} is below.`,
+    antes:(n)=>`What number comes just before ${n}?`,
+    despues:(n)=>`What number comes just after ${n}?`,
+    despega:"Three, two, one… Blast off!",
+    cajas:(c)=>`How many ${c.en[1]} are there? Each box holds ten.`,
+    cuentaDieces:(d,u,n)=>{
+      const p = [];
+      for(let i=1;i<=d;i++) p.push(enPalabrasEn(i*10));
+      const q = [];
+      for(let i=1;i<=u;i++) q.push(enPalabrasEn(i));
+      return p.join(", ") + (u ? "… and " + q.join(", ") : "") + ". That makes " + enPalabrasEn(n) + "!";
+    },
+    etiquetaCajas:"Boxes of ten", etiquetaSueltos:"Extras",
+    descripcionCajas:(d,u,c)=>`${d} full ${d===1?"box":"boxes"} of ${c.en[1]} and ${u} more ${u===1?c.en[0]:c.en[1]}`,
+    loro:(n)=>`The parrot says: ${enPalabrasEn(n)}! Touch ${enPalabrasEn(n)}.`,
+    escribe:(n)=>`Write the number ${enPalabrasEn(n)} with the buttons.`,
+    escribiste:(k)=>`You wrote ${k}.`,
+    vacio:"First touch the numbers.",
+    orden:"Look at the order: tens first, then ones.",
+    borrar:"⌫ Erase", listo:"✔ Done",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`,
+    menu:"Pick a game.",
+    queSigue:"What comes next?", hueco:"number hidden by the monkey",
+    casillaVacia:"empty box", teclaBorrar:"Erase the last number"
+  }
+};
+
+const JUEGOS = [
+  {id:"oruga",  emoji:"🐛", es:"La oruga crece", en:"Growing caterpillar", metaEs:"Sigue contando", metaEn:"Keep counting"},
+  {id:"mono",   emoji:"🐒", es:"El mono travieso", en:"Sneaky monkey", metaEs:"La tabla del 120", metaEn:"The 120 chart"},
+  {id:"cohete", emoji:"🚀", es:"El cohete", en:"The rocket", metaEs:"Antes y después", metaEn:"Before and after"},
+  {id:"cajas",  emoji:"📦", es:"Cajas de diez", en:"Boxes of ten", metaEs:"¿Cuántos hay?", metaEn:"How many?"},
+  {id:"loro",   emoji:"🦜", es:"El loro dice", en:"The parrot says", metaEs:"Oye y busca el número", metaEn:"Hear and find the number"},
+  {id:"escribe",emoji:"✏️", es:"Escribe el número", en:"Write the number", metaEs:"Lee y escribe", metaEn:"Read and write"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", tope:50, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* Reinicia una animación CSS quitando y volviendo a poner la clase */
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+
+/* El número con las cifras al revés: 47 → 74. Es el error más común al escribir. */
+function alReves(n){
+  if(n >= 10 && n <= 99){ const d = Math.floor(n/10), u = n%10; if(u !== 0 && u !== d) return u*10 + d; }
+  if(n >= 101 && n <= 119){ const r = n-100; const d = Math.floor(r/10), u = r%10; if(r >= 10 && u !== 0 && u !== d) return 100 + u*10 + d; }
+  return null;
+}
+/* Distractores que se confunden de verdad, en orden de prioridad */
+function distractores(n, min, max, cuantos, prioridad){
+  const lista = (prioridad || [alReves(n), n+10, n-10, n+1, n-1, n>=100 ? n-100 : null]);
+  const vistos = new Set([n]); const elegidos = [];
+  lista.forEach(v=>{ if(v!==null && v>=min && v<=max && !vistos.has(v) && elegidos.length<cuantos){ vistos.add(v); elegidos.push(v); } });
+  let intentos = 0;
+  while(elegidos.length < cuantos && intentos < 50){
+    const v = azar(Math.max(min, n-12), Math.min(max, n+12)); intentos++;
+    if(!vistos.has(v)){ vistos.add(v); elegidos.push(v); }
+  }
+  return elegidos;
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+/* Barrido de frecuencia: sirve para el «boing» y el «fiuuu» */
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien   = ()=>tono([523,659,784,1047],0.15);
+const sonOtra   = ()=>barrido(420,180,0.35,"triangle");
+const sonToque  = ()=>tono([660],0.08);
+const sonBoing  = ()=>barrido(180,620,0.22,"triangle");
+const sonNam    = ()=>{ tono([300],0.06,"square"); setTimeout(()=>tono([260],0.06,"square"),120); setTimeout(()=>tono([300],0.06,"square"),240); };
+const sonPop    = ()=>barrido(900,300,0.1);
+const sonCohete = ()=>barrido(120,1400,1.2,"sawtooth");
+
+/* ============ Mascota y confeti ============ */
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = "🐛<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = "🐛<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ $("mascota").textContent = "🐛"; $("mascota").className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Hasta qué número jugar" : "How high to play");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g1-01-counting-120.html#loro */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    hablar(T[S.idioma].final(S.estrellas));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n, grande){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button";
+  b.className = "ficha-num" + (grande ? " grande":"");
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function fichaQuieta(n, grande){
+  const f = crearFicha(n, grande);
+  f.classList.add("quieta"); f.setAttribute("tabindex","-1"); f.setAttribute("aria-disabled","true");
+  return f;
+}
+function ponerOpciones(lista, correcto, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").textContent = texto;
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+
+/* ============ Los seis juegos ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const tope = S.tope;
+
+  /* --- 1. La oruga crece: seguir contando desde cualquier número --- */
+  if(S.juego === "oruga"){
+    // La mitad de las veces la serie cruza una decena (…38, 39, ¿40?), que es donde más se tropieza.
+    let inicio;
+    if(Math.random() < 0.5){ const b = azar(1, Math.floor(tope/10))*10; inicio = b-3; }
+    else inicio = azar(1, tope-3);
+    const serie = [inicio, inicio+1, inicio+2];
+    const resp = inicio+3;
+    const oruga = document.createElement("div"); oruga.className = "oruga";
+    const segs = serie.map(n=>{ const s = document.createElement("div"); s.className = "segmento"; s.textContent = String(n);
+      s.setAttribute("aria-label", palabra(n)); s.setAttribute("role","img"); oruga.appendChild(s); return s; });
+    const misterio = document.createElement("div"); misterio.className = "segmento misterio"; misterio.textContent = "?";
+    misterio.setAttribute("role","img"); misterio.setAttribute("aria-label", t.queSigue);
+    oruga.appendChild(misterio);
+    const cabeza = document.createElement("div"); cabeza.className = "cabeza"; cabeza.textContent = "😋"; cabeza.setAttribute("aria-hidden","true");
+    oruga.appendChild(cabeza);
+    esc.appendChild(oruga);
+    function recitar(){
+      let i = 0;
+      (function paso(){
+        if(i < segs.length){ animar(segs[i],"nuevo"); sonToque(); hablar(palabra(serie[i]), ()=>{ i++; setTimeout(paso,120); }); }
+        else hablar(t.queSigue);
+      })();
+    }
+    ponerInstruccion(t.oruga, recitar);
+    botonRepetir(t.escuchar, ()=>{ if(!S.bloqueado) recitar(); });
+    const distract = distractores(resp, 1, tope, 2, [resp+10, alReves(resp), resp-10, resp+1]);
+    ponerOpciones([resp, ...distract], resp, ()=>{
+      misterio.textContent = String(resp); misterio.classList.remove("misterio"); misterio.setAttribute("aria-label", palabra(resp));
+      animar(misterio,"nuevo"); animar(cabeza,"mastica"); sonNam();
+      acertar(t.orugaCome + " " + [...serie, resp].join(", ") + ".");
+    });
+    return;
+  }
+
+  /* --- 2. El mono travieso: la tabla del 120 --- */
+  if(S.juego === "mono"){
+    const filas = tope/10;                 // 5, 10 o 12 filas
+    const fila0 = azar(0, filas-3);        // se muestran tres filas seguidas
+    const resp = (fila0+1)*10 + azar(1,10); // el número escondido va en la fila del medio
+    const tabla = document.createElement("div"); tabla.className = "tabla120";
+    let hueco = null; const vecinas = [];
+    for(let f=fila0; f<fila0+3; f++){
+      for(let c=1; c<=10; c++){
+        const n = f*10 + c;
+        const cas = document.createElement("div");
+        cas.className = "casilla" + (c===10 ? " decena" : "");
+        if(n === resp){
+          cas.classList.add("hueco"); cas.innerHTML = '<span class="mono" aria-hidden="true">🐒</span>';
+          cas.setAttribute("role","img"); cas.setAttribute("aria-label", t.hueco); hueco = cas;
+        } else cas.textContent = String(n);
+        if(n === resp-10 || n === resp+10) vecinas.push(cas);
+        tabla.appendChild(cas);
+      }
+    }
+    esc.appendChild(tabla);
+    ponerInstruccion(t.mono);
+    const distract = distractores(resp, 1, tope, 2, [resp+10, resp-10, alReves(resp), resp+1, resp-1]);
+    ponerOpciones([resp, ...distract], resp, ()=>{
+      // El mono sale corriendo y deja el número
+      const huye = document.createElement("span"); huye.className = "mono-huye"; huye.textContent = "🙈"; huye.setAttribute("aria-hidden","true");
+      hueco.appendChild(huye); setTimeout(()=>huye.remove(), 1200);
+      barrido(300,1200,0.4);
+      hueco.querySelector(".mono").remove();
+      hueco.insertAdjacentText("afterbegin", String(resp));
+      hueco.classList.add("lleno"); hueco.removeAttribute("role"); hueco.removeAttribute("aria-label");
+      vecinas.forEach(v=>v.classList.add("vecina"));
+      acertar(t.monoDevuelve + " " + t.monoPatron(resp));
+    });
+    return;
+  }
+
+  /* --- 3. El cohete: el número de antes y el de después --- */
+  if(S.juego === "cohete"){
+    const pideDespues = Math.random() < 0.5;
+    let n;
+    if(Math.random() < 0.5){
+      // Cruce de decena: «después del 59» o «antes del 60»
+      const b = azar(2, Math.floor(tope/10))*10;
+      n = pideDespues ? b-1 : b;
+      if(n >= tope) n = tope-1;
+    } else n = azar(2, tope-1);
+    const resp = pideDespues ? n+1 : n-1;
+    const plataforma = document.createElement("div"); plataforma.className = "plataforma";
+    const flecha = document.createElement("span"); flecha.className = "flecha-pista"; flecha.setAttribute("aria-hidden","true");
+    flecha.textContent = pideDespues ? "" : "? ⬅";
+    const cohete = document.createElement("span"); cohete.className = "cohete"; cohete.textContent = "🚀"; cohete.setAttribute("aria-hidden","true");
+    const cartel = fichaQuieta(n, true);
+    const flecha2 = document.createElement("span"); flecha2.className = "flecha-pista"; flecha2.setAttribute("aria-hidden","true");
+    flecha2.textContent = pideDespues ? "➡ ?" : "";
+    plataforma.append(flecha, cartel, flecha2, cohete);
+    esc.appendChild(plataforma);
+    ponerInstruccion(pideDespues ? t.despues(n) : t.antes(n));
+    const opuesto = pideDespues ? n-1 : n+1;
+    const distract = distractores(resp, 0, tope, 2, [opuesto, resp+10, resp-10, alReves(resp)]);
+    ponerOpciones([resp, ...distract], resp, ()=>{
+      flecha.textContent = pideDespues ? "" : resp + " ⬅";
+      flecha2.textContent = pideDespues ? "➡ " + resp : "";
+      sonCohete();
+      if(!sinMovimiento()) animar(cohete,"despega");
+      acertar(t.despega);
+    });
+    return;
+  }
+
+  /* --- 4. Cajas de diez: contar de diez en diez y luego de uno en uno --- */
+  if(S.juego === "cajas"){
+    const n = azar(11, tope);
+    const d = Math.floor(n/10), u = n%10;
+    const cosa = elegir(COSAS);
+    const mesa = document.createElement("div"); mesa.className = "mesa";
+    mesa.setAttribute("role","img"); mesa.setAttribute("aria-label", t.descripcionCajas(d,u,cosa));
+    const zonaCajas = document.createElement("div");
+    const et1 = document.createElement("p"); et1.className = "etiqueta-mesa"; et1.textContent = t.etiquetaCajas; et1.setAttribute("aria-hidden","true");
+    const cajas = document.createElement("div"); cajas.className = "cajas"; cajas.setAttribute("aria-hidden","true");
+    const listaCajas = [];
+    for(let k=0;k<d;k++){
+      const caja = document.createElement("div"); caja.className = "caja10";
+      for(let i=0;i<10;i++){ const s = document.createElement("span"); s.textContent = cosa.e; caja.appendChild(s); }
+      cajas.appendChild(caja); listaCajas.push(caja);
+    }
+    zonaCajas.append(et1, cajas);
+    const zonaSueltos = document.createElement("div");
+    const et2 = document.createElement("p"); et2.className = "etiqueta-mesa"; et2.textContent = t.etiquetaSueltos; et2.setAttribute("aria-hidden","true");
+    const sueltos = document.createElement("div"); sueltos.className = "sueltos"; sueltos.setAttribute("aria-hidden","true");
+    const listaSueltos = [];
+    for(let i=0;i<u;i++){ const s = document.createElement("span"); s.textContent = cosa.e; sueltos.appendChild(s); listaSueltos.push(s); }
+    zonaSueltos.append(et2, sueltos);
+    mesa.append(zonaCajas, zonaSueltos);
+    esc.appendChild(mesa);
+    ponerInstruccion(t.cajas(cosa));
+    const distract = distractores(n, 1, tope, 2, [alReves(n), n+10, n-10, n+1, n-1]);
+    ponerOpciones([n, ...distract], n, ()=>{
+      // Se cuenta en voz alta: las cajas de diez en diez y luego los sueltos
+      const pausa = sinMovimiento() ? 0 : 380;
+      listaCajas.forEach((c,k)=>setTimeout(()=>{ c.classList.add("brilla"); sonPop(); }, k*pausa));
+      listaSueltos.forEach((s,k)=>setTimeout(()=>animar(s,"brilla"), (d+k)*pausa));
+      acertar(t.cuentaDieces(d,u,n));
+    });
+    return;
+  }
+
+  /* --- 5. El loro dice: oye y busca el número --- */
+  if(S.juego === "loro"){
+    const n = Math.random() < 0.85 ? azar(11, tope) : azar(0, 10);
+    const loro = document.createElement("span"); loro.className = "loro"; loro.textContent = "🦜"; loro.setAttribute("aria-hidden","true");
+    esc.appendChild(loro);
+    const decir = ()=>{ animar(loro,"habla"); hablar(t.loro(n)); };
+    $("txt-instruccion").textContent = t.loro(n);
+    $("btn-bocina").onclick = decir;
+    decir();
+    botonRepetir(t.escuchar, ()=>{ if(!S.bloqueado) decir(); });
+    // Distractores que se confunden: las cifras al revés (47 y 74), diez más o menos, y 115 con 15
+    const distract = distractores(n, 0, tope, 3);
+    ponerOpciones([n, ...distract], n, ()=>{
+      $("opciones").innerHTML = ""; $("opciones").appendChild(fichaQuieta(n, true));
+      animar(loro,"baila");
+      acertar(palabra(n) + "!");
+    });
+    return;
+  }
+
+  /* --- 6. Escribe el número: leer el nombre del número y escribir el numeral --- */
+  if(S.juego === "escribe"){
+    const n = azar(11, tope);
+    let escrito = "";
+    const loro = document.createElement("span"); loro.className = "loro"; loro.textContent = "🦜"; loro.setAttribute("aria-hidden","true");
+    loro.style.fontSize = "clamp(56px,12vw,90px)";
+    const nombre = document.createElement("div"); nombre.className = "palabra-num"; nombre.textContent = palabra(n);
+    const casillas = document.createElement("div"); casillas.className = "casillas-escribir";
+    casillas.setAttribute("aria-live","polite");
+    const cifras = String(n).length;
+    const cajitas = [];
+    for(let i=0;i<cifras;i++){ const s = document.createElement("span"); cajitas.push(s); casillas.appendChild(s); }
+    function pintarCasillas(){
+      cajitas.forEach((s,i)=>{ s.textContent = escrito[i] || ""; s.classList.toggle("activa", i===escrito.length); });
+      casillas.setAttribute("aria-label", escrito ? escrito : t.casillaVacia);
+    }
+    pintarCasillas();
+    esc.append(loro, nombre, casillas);
+    const decir = ()=>{ animar(loro,"habla"); hablar(t.escribe(n)); };
+    $("txt-instruccion").textContent = t.escribe(n);
+    $("btn-bocina").onclick = decir;
+    decir();
+    botonRepetir(t.escuchar, ()=>{ if(!S.bloqueado) decir(); });
+
+    const cont = $("opciones");
+    const teclado = document.createElement("div"); teclado.className = "teclado";
+    [1,2,3,4,5,6,7,8,9,0].forEach(dig=>{
+      const b = crearFicha(dig);
+      b.dataset.cifra = String(dig);
+      b.addEventListener("click", ()=>{
+        if(S.bloqueado) return;
+        if(escrito.length >= cifras){ animar(casillas,"mal"); sonOtra(); return; }
+        escrito += String(dig); sonToque(); pintarCasillas(); hablar(String(dig));
+      });
+      teclado.appendChild(b);
+    });
+    const acciones = document.createElement("div"); acciones.className = "acciones-teclado";
+    const borrar = document.createElement("button"); borrar.type = "button"; borrar.className = "boton"; borrar.textContent = t.borrar;
+    borrar.setAttribute("aria-label", t.teclaBorrar);
+    borrar.addEventListener("click", ()=>{ if(S.bloqueado) return; escrito = escrito.slice(0,-1); sonPop(); pintarCasillas(); });
+    const listo = document.createElement("button"); listo.type = "button"; listo.className = "boton fuerte"; listo.textContent = t.listo;
+    listo.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      if(!escrito){ fallar(listo, t.vacio); return; }
+      const k = parseInt(escrito, 10);
+      if(k === n){
+        cajitas.forEach(s=>s.classList.remove("activa"));
+        animar(loro,"baila");
+        acertar(String(n) + ", " + palabra(n) + ".");
+      } else {
+        const pista = (alReves(n) === k) ? " " + t.orden : "";
+        fallar(listo, t.escribiste(k) + pista + " " + elegir(t.otra));
+        escrito = ""; pintarCasillas();
+      }
+    });
+    acciones.append(borrar, listo);
+    cont.append(teclado, acciones);
+    S.teclas = (ev)=>{
+      if(S.juego !== "escribe" || S.bloqueado || $("p-juego").classList.contains("oculto")) return;
+      if(/^[0-9]$/.test(ev.key)){ const b = teclado.querySelector('[data-cifra="'+ev.key+'"]'); if(b){ b.click(); ev.preventDefault(); } }
+      else if(ev.key === "Backspace"){ borrar.click(); ev.preventDefault(); }
+      else if(ev.key === "Enter" && ev.target === document.body){ listo.click(); ev.preventDefault(); }
+    };
+    return;
+  }
+}
+/* El teclado físico también sirve para escribir el número */
+document.addEventListener("keydown", (ev)=>{ if(typeof S.teclas === "function") S.teclas(ev); });
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const tabla = $("hoja-tabla"); tabla.innerHTML = "";
+  for(let n=1;n<=120;n++){
+    const s = document.createElement("span");
+    // Se borran casillas salteadas, siempre las mismas, para que la hoja se pueda corregir con la tabla completa
+    const borrada = ((n*7 + Math.floor((n-1)/10)*3) % 10) < 3;
+    s.textContent = borrada ? "" : String(n);
+    tabla.appendChild(s);
+  }
+  const sig = $("hoja-siguen"); sig.innerHTML = "";
+  [27, 58, 96, 104, 39, 113, 68, 87].forEach(a=>{
+    const fila = document.createElement("div");
+    fila.innerHTML = `<b>${a}</b><b>${a+1}</b><i></i><i></i><i></i>`;
+    sig.appendChild(fila);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null; S.teclas=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerTope(n){
+  S.tope = n;
+  [50,100,120].forEach(v=>$("btn-"+v).setAttribute("aria-pressed", v===n));
+  if(S.juego) nuevaRonda();
+}
+[50,100,120].forEach(v=>$("btn-"+v).addEventListener("click", ()=>ponerTope(v)));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+/* Presentación hablada. Los navegadores bloquean la voz hasta el primer gesto,
+   así que se intenta al cargar y, si queda bloqueada, la suelta el primer toque. */
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>
