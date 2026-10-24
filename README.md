@@ -16,6 +16,7 @@ Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 | Kindergarten | Lectura en español (6) | [kindergarten/lectura.html](kindergarten/lectura.html) | — |
 | Kindergarten | Lectura en inglés (6) | — | [kindergarten/reading.html](kindergarten/reading.html) |
 | 1.er grado | Matemáticas (9 juegos) | [1er_grado/?lang=es](1er_grado/index.html?lang=es) | [1er_grado/](1er_grado/index.html) |
+| 1.er grado | Lectura en inglés (3 de 6 módulos) | [1er_grado/reading.html?lang=es](1er_grado/reading.html?lang=es) | [1er_grado/reading.html](1er_grado/reading.html) |
 | 2.º grado | Matemáticas interactivas (7 conjuntos) | [2do_grado/](2do_grado/index.html) | [2nd_grade/](2nd_grade/index.html) |
 | 2.º grado | Detective de operaciones | [mate_detective/](mate_detective/index.html) | [math_word_detective/](math_word_detective/index.html) |
 | 2.º grado | Tablas galácticas | [galactica_tablas/](galactica_tablas/index.html) | [galactic_tables/](galactic_tables/index.html) |
@@ -39,6 +40,7 @@ primaria/
 ├── kindergarten/         Matemáticas (es/en), lectura en español (k-lectura-*)
 │                         y lectura en inglés (k-reading-*)
 ├── 1er_grado/            Matemáticas de 1.er grado (es/en en el mismo archivo)
+│                         y lectura en inglés (g1-reading-*)
 ├── 2do_grado/  2nd_grade/            Matemáticas de 2.º grado (español / inglés)
 ├── mate_detective/  math_word_detective/
 ├── galactica_tablas/  galactic_tables/

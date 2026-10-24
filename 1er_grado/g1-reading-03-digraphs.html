@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<!--
+  First Grade Reading — Digraphs
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for English Language Arts, Grade 1: RF.1.2d, RF.1.3a, RF.1.3b
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Dígrafos: Juegos de primer grado" data-en="Digraphs: First grade games">Digraphs: First grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual first grade reading games in English with a friendly shark: read words with sh, ch, th, wh, ck and ng, find the digraph at the start and at the end, build words and count sounds.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F2F8F7; --tinta:#14302C; --tinta-suave:#3F5A56; --linea:#CBE3DF; --blanco:#FFFFFF;
+  --acento:#00695C;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --agua:#D7EEF7; --hoja:#2E7D32;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,48,44,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile > span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile > span:nth-child(2){animation-delay:.2s}.desfile > span:nth-child(3){animation-delay:.4s}
+.desfile > span:nth-child(4){animation-delay:.6s}.desfile > span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:50ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+
+/* ---------- Fichas de números ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(36px,8vw,56px);font-weight:700;line-height:1;
+  box-shadow:var(--sombra);padding:0}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.ficha-num.grande{width:clamp(110px,24vw,160px);height:clamp(110px,24vw,160px);font-size:clamp(52px,12vw,84px)}
+.ficha-num.chica{width:clamp(64px,13vw,90px);height:clamp(64px,13vw,90px);font-size:clamp(30px,6.4vw,44px);border-width:5px}
+.ficha-num.quieta{cursor:default}
+.ficha-num.texto{width:auto;min-width:clamp(120px,24vw,170px);padding:0 16px;font-size:clamp(20px,4vw,28px);gap:6px;grid-auto-flow:column}
+.mal{animation:temblor .38s}
+
+/* ---------- Marcos de diez ---------- */
+.marcos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.marco10{display:grid;grid-template-columns:repeat(5,1fr);border:4px solid var(--tinta);border-radius:8px;background:var(--tinta)}
+.celda{width:clamp(46px,9.5vw,68px);height:clamp(46px,9.5vw,68px);background:var(--blanco);
+  display:grid;place-items:center;border:2px solid var(--tinta);padding:0;font-size:clamp(28px,6vw,44px);line-height:1}
+.marco10.vivo .celda{cursor:pointer}
+.cosa{display:inline-block;animation:aparece .35s ease-out}
+.cosa.baila{animation:rebote .55s ease-in-out 3}
+
+/* ---------- Personajes de la serie ---------- */
+/* La osita de Génesis: osito de peluche con un lacito rosado en la cabeza */
+.osita{position:relative;display:inline-block;line-height:1}
+.osita .lazo{position:absolute;top:-.12em;left:50%;transform:translateX(-10%);font-size:.42em}
+.dino{display:inline-block;line-height:1}
+.mastica{animation:mastica .25s ease-in-out 4}
+
+/* ---------- Grupos sueltos de cosas ---------- */
+.grupo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-content:center;
+  font-size:clamp(30px,6.4vw,46px);line-height:1}
+.grupo > span{display:inline-block}
+.plato{background:#FFF8E1;border:5px solid #E0C27A;border-radius:50%;width:clamp(140px,34vw,240px);
+  height:clamp(140px,34vw,240px);display:grid;place-items:center;padding:16px;position:relative}
+.plato.elegible{cursor:pointer}
+.plato.elegible:hover{border-color:var(--tinta)}
+.plato .grupo{font-size:clamp(24px,5vw,36px)}
+.dupla{display:flex;flex-wrap:wrap;gap:clamp(14px,4vw,40px);justify-content:center;align-items:center}
+.comensal{position:absolute;bottom:-14px;right:-14px;font-size:clamp(36px,7vw,54px)}
+.tachado{opacity:.25;filter:grayscale(1)}
+.vuela{animation:vuela .7s ease-in forwards}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#004D40}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes aparece{0%{transform:scale(0) translateY(-30px)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes mastica{0%,100%{transform:scale(1)}50%{transform:scale(1.15,0.88)}}
+@keyframes vuela{0%{transform:translate(0,0) scale(1)}100%{transform:translate(0,-60px) scale(0);opacity:0}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Común de lectura: dibujos con su palabra ---------- */
+.ficha-num.dibujo{width:auto;height:auto;min-width:clamp(104px,22vw,150px);min-height:clamp(104px,22vw,150px);
+  padding:8px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  background:#fff;border-color:#00695C;color:#004D40}
+.dibujo .pic{font-size:clamp(46px,10.5vw,74px);line-height:1.08;display:inline-block}
+.dibujo .pal{font-size:clamp(18px,3.4vw,25px);font-weight:700;visibility:hidden;line-height:1.2}
+.dibujo.revela .pal{visibility:visible}
+.ficha-num.dibujo.elegido{border-color:var(--acierto);background:var(--acierto-fondo)}
+.dibujo-grande{display:flex;flex-direction:column;align-items:center;background:#FFF8E1;border:5px solid #E0C27A;
+  border-radius:24px;padding:10px 24px;min-width:150px}
+.dibujo-grande .pic{font-size:clamp(70px,16vw,118px)}
+.dibujo-grande .pal{font-size:clamp(24px,5vw,36px)}
+.resalta{color:#B3261E;text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:4px}
+.par-dibujos{display:flex;flex-wrap:wrap;gap:clamp(14px,4vw,36px);justify-content:center;align-items:center}
+.par-dibujos .y{font-size:clamp(30px,6vw,46px);font-weight:700;color:var(--acento)}
+/* Tarjetas de letras */
+.ficha-num.letra{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif;background:#fff;border-color:#00695C;color:#004D40}
+.letra-grande{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif;font-weight:700;
+  font-size:clamp(70px,16vw,120px);line-height:1;background:#E2E3F7;border:6px solid #3949AB;color:#283593;
+  border-radius:24px;padding:10px 28px;display:inline-block}
+.balbucea{animation:rebote .55s ease-in-out 3}
+/* Fichas de letras para leer palabras (vocal en rojo) */
+.fichas-letra{display:flex;gap:clamp(6px,1.6vw,12px);justify-content:center;align-items:flex-end}
+.ficha-letra{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif;font-weight:700;
+  font-size:clamp(44px,10vw,74px);line-height:1;width:1.35em;height:1.45em;display:grid;place-items:center;
+  background:#DDEAFB;border:5px solid #1565C0;color:#0D47A1;border-radius:16px;position:relative}
+.ficha-letra.vocal{background:#FFE3E3;border-color:#C62828;color:#7F1D1D}
+.ficha-letra.vacia{background:#fff;border-style:dashed;border-color:#3F5A56;color:#3F5A56}
+.ficha-letra.pisada::before{content:"🐸";position:absolute;top:-.95em;left:50%;transform:translateX(-50%);font-size:.55em}
+.ficha-letra.cambia{animation:temblor .38s}
+.ficha-letra .tachada{position:absolute;inset:0;display:grid;place-items:center;color:#B3261E;font-size:1.1em;opacity:.85}
+
+
+.flecha-lectura{font-size:clamp(26px,5vw,38px);color:var(--acento);font-weight:700;letter-spacing:.1em}
+.cambio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+.cambio .por{font-size:clamp(22px,4.4vw,32px);font-weight:700;color:var(--tinta-suave)}
+.familia-final{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+#opciones .ficha-num.letra.vocal-op{border-color:#C62828;color:#7F1D1D;background:#FFE3E3}
+
+
+/* ---------- Este módulo ---------- */
+.ficha-letra.doble{width:auto;min-width:1.35em;padding:0 .18em}
+.ficha-letra.digrafo{background:#FFF3E0;border-color:#E65100;color:#BF360C}
+.tarjeta{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif;font-weight:700;font-size:clamp(30px,6.6vw,48px);
+  min-width:clamp(90px,19vw,128px);height:clamp(80px,17vw,110px);border:6px solid #E65100;background:#fff;color:#BF360C;
+  border-radius:22px;box-shadow:var(--sombra);padding:0 14px}
+.tarjeta.sencilla{border-color:#1565C0;color:#0D47A1}
+.tarjeta.vocal-t{border-color:#C62828;color:#7F1D1D}
+.tarjeta:active{transform:translateY(3px);box-shadow:none}
+.tarjeta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.tarjeta:disabled{opacity:.35}
+.cajitas{display:flex;gap:8px;justify-content:center}
+.cajitas span{min-width:clamp(52px,11vw,72px);height:clamp(52px,11vw,72px);border:4px solid var(--tinta);border-radius:10px;display:grid;place-items:center;
+  font-family:"Andika","Century Gothic","Fredoka",sans-serif;font-weight:700;font-size:clamp(28px,6vw,42px);background:#fff;padding:0 6px}
+.cajitas span.dig{background:#FFF3E0;color:#BF360C}
+.cajitas span.vocal{color:#B3261E}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco,.confeti{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:6mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 4mm;color:#333}
+  .hoja .creditos{margin-top:6mm;font-size:8.5pt;color:#444}
+  .hoja .fila-h{display:flex;align-items:center;gap:8mm;margin:3mm 0;font-size:24pt}
+  .hoja .linea-h{display:inline-block;width:16mm;border-bottom:1.2pt solid #000;height:10mm}
+  .hoja .palabra-h{font-family:"Andika","Century Gothic",sans-serif;font-size:22pt;letter-spacing:1mm}
+  .hoja .opciones-h{font-family:"Andika","Century Gothic",sans-serif;font-size:16pt;color:#333}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Dígrafos" data-en="Digraphs">Digraphs</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="reading.html" data-base="reading.html" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <span data-es="Nivel" data-en="Level">Level</span>
+      <button id="btn-r1" aria-pressed="true"></button>
+      <button id="btn-r2" aria-pressed="false"></button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🦈</span><span>🐥</span><span>👍</span><span>🐳</span><span>🦆</span></div>
+    <h2 data-es="¡Dos letras, un solo sonido!" data-en="Two letters, one sound!">Two letters, one sound!</h2>
+    <p data-es="Las palabras de este juego están en inglés. El tiburón te enseña letras que van juntas y hacen un solo sonido: sh, ch, th, wh, ck y ng. Lees palabras, buscas el sonido del principio y del final, armas palabras y cuentas sonidos. Yo te leo todo en voz alta." data-en="The shark shows you letters that team up to make one sound: sh, ch, th, wh, ck and ng. You read words, find the sound at the start and the end, build words and count sounds. I read everything out loud.">The shark shows you letters that team up to make one sound: sh, ch, th, wh, ck and ng. You read words, find the sound at the start and the end, build words and count sounds. I read everything out loud.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true">🦈</span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: dígrafos" data-en="🖨 Print a page: digraphs">🖨 Print a page: digraphs</button></p>
+    <p data-es="Alineado con los estándares de lectura de Illinois para primer grado RF.1.3a (conocer la correspondencia entre letras y sonidos de los dígrafos), RF.1.3b (leer palabras regulares de una sílaba) y RF.1.2d (separar una palabra en sus sonidos: un dígrafo es un solo sonido). Cada juego tiene su enlace directo: #lee, #empieza, #termina, #arma y #sonidos." data-en="Aligned to the Illinois first grade reading standards RF.1.3a (know the spelling-sound correspondences for common consonant digraphs), RF.1.3b (decode regularly spelled one-syllable words) and RF.1.2d (segment words into their sounds: a digraph is one sound). Each game has its own direct link: #lee, #empieza, #termina, #arma and #sonidos.">Aligned to the Illinois first grade reading standards RF.1.3a (know the spelling-sound correspondences for common consonant digraphs), RF.1.3b (decode regularly spelled one-syllable words) and RF.1.2d (segment words into their sounds: a digraph is one sound). Each game has its own direct link: #lee, #empieza, #termina, #arma and #sonidos.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Dígrafos" data-en="Digraphs">Digraphs</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Di el nombre del dibujo. Escribe sh, ch o th al principio." data-en="1. Say the name of the picture. Write sh, ch or th at the start.">1. Say the name of the picture. Write sh, ch or th at the start.</h3>
+  <div id="hoja-inicio"></div>
+  <h3 data-es="2. Di el nombre del dibujo. Escribe sh, ck o ng al final." data-en="2. Say the name of the picture. Write sh, ck or ng at the end.">2. Say the name of the picture. Write sh, ck or ng at the end.</h3>
+  <div id="hoja-final"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* =====================================================================
+   MOTOR COMÚN (el mismo de la lectura de kindergarten)
+   (voz, sonidos, mascota, confeti, estrellas, idioma y navegación)
+   ===================================================================== */
+
+/* Colores de los números (los mismos de prekínder del 0 al 10) */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#00695C",t:"#004D40"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+
+const NUMERO = {
+  es:["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez"],
+  en:["zero","one","two","three","four","five","six","seven","eight","nine","ten"]
+};
+
+/* Textos comunes; cada módulo añade los suyos en TM */
+const TB = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Bravo!","¡Eso es!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez",
+    final:(n)=>`¡Terminaste! Ganaste ${NUMERO.es[n]} estrellas.`,
+    menu:"Escoge un juego.",
+    oir:"Escuchar de qué se trata este juego", bocina:"Escuchar la instrucción", estrellas:"Estrellas ganadas"
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Hooray!","That's it!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again",
+    final:(n)=>`You finished! You earned ${NUMERO.en[n]} stars.`,
+    menu:"Pick a game.",
+    oir:"Hear what this game is about", bocina:"Hear the instruction", estrellas:"Stars earned"
+  }
+};
+
+const RONDAS = 5;
+const S = {idioma:"en", tope:null, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const palabra = (n)=> (n>=0 && n<=10) ? NUMERO[S.idioma][n] : String(n);
+const mayus = (s)=>s.charAt(0).toUpperCase()+s.slice(1);
+/* Cantidad con su sustantivo: «una manzana», «dos manzanas», «one apple». fem = femenino en español */
+function cant(n, sing, plur, fem){
+  if(n===1) return S.idioma==="es" ? (fem ? "una " : "un ") + sing : "one " + sing;
+  return palabra(n) + " " + plur;
+}
+
+/* ---------- Voz ----------
+   Las palabras escritas entre ‹ › son palabras en inglés: en pantalla salen en negrita
+   y, cuando la página está en español, las dice la voz en inglés (no la española). */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* ‹escrito|dicho›: en pantalla sale «escrito» y la voz dice «dicho» (p. ej. ‹ti|tie›) */
+const paraVer = (s)=>String(s).replace(/‹([^›|]*)\|[^›]*›/g, "‹$1›");
+const paraOir = (s)=>String(s).replace(/‹[^›|]*\|([^›]*)›/g, "‹$1›");
+const sinMarcas = (s)=>String(s).replace(/[‹›]/g,"");
+const escaparHTML = (s)=>String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+/* Texto con marcas → HTML: ‹cat› → <b lang="en">cat</b> */
+const conMarcas = (s)=>escaparHTML(paraVer(s)).replace(/‹([^›]*)›/g, '<b lang="en">$1</b>');
+function trozosVoz(texto){
+  texto = paraOir(texto);
+  if(S.idioma === "en") return [{t:sinMarcas(texto), en:true}];
+  const out = [];
+  String(texto).split(/(‹[^›]*›)/).forEach(p=>{
+    if(!p) return;
+    const en = p.charAt(0) === "‹";
+    const t = en ? p.slice(1,-1) : p;
+    if(!/[A-Za-z0-9À-ÿ]/.test(t)) return;             // sin letras: nada que decir
+    const ult = out[out.length-1];
+    if(ult && ult.en === en) ult.t += " " + t; else out.push({t, en});
+  });
+  return out;
+}
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const partes = trozosVoz(texto);
+    if(!partes.length){ if(despues) setTimeout(despues,300); return; }
+    partes.forEach((p,i)=>{
+      const u = new SpeechSynthesisUtterance(p.t);
+      const idioma = p.en ? "en" : "es";
+      u.lang = p.en ? "en-US" : "es-US";
+      const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(idioma));
+      if(v) u.voice = v;
+      u.rate = 0.88; u.pitch = 1.1;
+      if(despues && i === partes.length-1) u.onend = despues;
+      window.speechSynthesis.speak(u);
+    });
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ---------- Sonidos ---------- */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonCroac = ()=>{ tono([160],0.07,"square"); setTimeout(()=>tono([140],0.09,"square"),110); };
+const sonPop   = ()=>barrido(900,300,0.1);
+const sonNam   = ()=>{ tono([220],0.08,"square"); setTimeout(()=>tono([196],0.08,"square"),140); setTimeout(()=>tono([220],0.08,"square"),280); };
+const sonFiu   = ()=>barrido(300,1400,0.45);
+
+/* ---------- Personajes ---------- */
+/* El dinosaurio de Adrián y la osita (con lacito rosado) de Génesis */
+function htmlDino(){ return '<span class="dino" aria-hidden="true">🦖</span>'; }
+function htmlOsita(){ return '<span class="osita" aria-hidden="true">🧸<span class="lazo">🎀</span></span>'; }
+
+/* ---------- Mascota y confeti ---------- */
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = "🦈<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = "🦈<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ $("mascota").textContent = "🦈"; $("mascota").className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ---------- Constructores comunes ---------- */
+function crearFicha(n, clase){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.className = "ficha-num" + (clase ? " "+clase : "");
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function fichaQuieta(n, clase){
+  const f = crearFicha(n, clase);
+  f.classList.add("quieta"); f.setAttribute("tabindex","-1"); f.setAttribute("aria-disabled","true");
+  return f;
+}
+/* Opciones numéricas: el niño toca una ficha */
+function ponerOpciones(lista, correcto, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(f); else fallar(f);
+    });
+    cont.appendChild(f);
+  });
+}
+/* Opciones de texto o dibujo: [{html, etiqueta, ok}] */
+function ponerOpcionesTexto(lista, alAcertar){
+  const cont = $("opciones");
+  lista.forEach(op=>{
+    const b = document.createElement("button");
+    b.className = "ficha-num texto";
+    b.style.background = op.fondo || "#fff"; b.style.borderColor = op.borde || "#00695C"; b.style.color = op.color || "#004D40";
+    b.innerHTML = op.html; b.setAttribute("aria-label", op.etiqueta);
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(op.ok) alAcertar(b); else fallar(b);
+    });
+    cont.appendChild(b);
+  });
+}
+function cercanos(correcto, min, max, cuantos){
+  const pool = [];
+  for(let d=1; d<=4; d++){ [correcto-d, correcto+d].forEach(v=>{ if(v>=min && v<=max) pool.push(v); }); }
+  return mezclar(pool).slice(0, cuantos||2);
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").innerHTML = conMarcas(texto);
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+/* Un grupo de cosas iguales, sueltas (no en fila) */
+function crearGrupo(emoji, n){
+  const g = document.createElement("div"); g.className = "grupo"; g.setAttribute("aria-hidden","true");
+  for(let i=0;i<n;i++){ const s = document.createElement("span"); s.className="cosa"; s.textContent = emoji;
+    s.style.animationDelay = (i*0.05).toFixed(2)+"s"; g.appendChild(s); }
+  return g;
+}
+/* Marcos de diez con una cosa en cada casilla llena */
+function crearMarcos(cuantosMarcos, llenas, emoji, vivo, etiquetas){
+  const cont = document.createElement("div"); cont.className = "marcos";
+  const celdas = [];
+  for(let m=0;m<cuantosMarcos;m++){
+    const marco = document.createElement("div");
+    marco.className = "marco10" + (vivo ? " vivo" : "");
+    if(!vivo) marco.setAttribute("aria-hidden","true");
+    for(let i=0;i<10;i++){
+      const idx = m*10+i;
+      const c = document.createElement(vivo ? "button" : "div");
+      c.className = "celda";
+      if(idx < llenas){
+        const s = document.createElement("span"); s.className = "cosa"; s.textContent = emoji;
+        s.style.animationDelay = (idx*0.05).toFixed(2)+"s"; c.appendChild(s);
+      }
+      if(vivo){ c.type = "button"; c.setAttribute("aria-label", etiquetas ? etiquetas.vacia : ""); c.setAttribute("aria-pressed","false"); }
+      marco.appendChild(c); celdas.push(c);
+    }
+    cont.appendChild(marco);
+  }
+  return {cont, celdas};
+}
+
+/* =====================================================================
+   COMÚN DE LECTURA (inglés, el mismo de kindergarten)
+   Banco de palabras con dibujo y ayudas para los juegos de sonidos.
+   ===================================================================== */
+
+/* Banco de palabras.
+   ini = primer sonido (la c dura y la k comparten el sonido "k")
+   fin = último sonido ("" = no se usa en el juego del final: vocal, z, sh…)
+   r   = familia de rima ("" = sin pareja en el banco)
+   Solo palabras que empiezan con una consonante de sonido regular (sin sh, ch ni th). */
+const PAL = [
+  ["ball","⚽","b","l",""], ["bee","🐝","b","","ee"], ["bus","🚌","b","s",""], ["bear","🐻","b","","air"],
+  ["bed","🛏️","b","d","ed"], ["bell","🔔","b","l","ell"], ["book","📖","b","k",""], ["boat","⛵","b","t","oat"],
+  ["bat","🦇","b","t","at"], ["bug","🐛","b","g","ug"], ["bike","🚲","b","k",""], ["banana","🍌","b","",""],
+  ["box","📦","b","","ox"], ["bread","🍞","b","d","ed"], ["bird","🐦","b","d",""], ["broom","🧹","b","m",""],
+  ["balloon","🎈","b","n","oon"],
+  ["cat","🐱","k","t","at"], ["cake","🍰","k","k","ake"], ["cow","🐮","k","",""], ["car","🚗","k","","ar"],
+  ["corn","🌽","k","n",""], ["carrot","🥕","k","t",""], ["coat","🧥","k","t","oat"], ["clock","🕐","k","k","ock"],
+  ["cloud","☁️","k","d",""], ["cupcake","🧁","k","k",""],
+  ["dog","🐶","d","g","og"], ["duck","🦆","d","k",""], ["drum","🥁","d","m",""], ["door","🚪","d","",""],
+  ["deer","🦌","d","",""], ["donut","🍩","d","t",""], ["dinosaur","🦖","d","",""], ["dice","🎲","d","s","ice"],
+  ["dress","👗","d","s",""],
+  ["fish","🐟","f","",""], ["fox","🦊","f","","ox"], ["frog","🐸","f","g","og"], ["fire","🔥","f","",""],
+  ["foot","🦶","f","t",""], ["fork","🍴","f","k",""],
+  ["goat","🐐","g","t","oat"], ["gift","🎁","g","t",""], ["guitar","🎸","g","","ar"], ["ghost","👻","g","t",""],
+  ["grapes","🍇","g","s",""],
+  ["hat","🎩","h","t","at"], ["horse","🐴","h","s",""], ["house","🏠","h","s","ouse"], ["heart","❤️","h","t",""],
+  ["hand","✋","h","d",""], ["hippo","🦛","h","",""], ["hotdog","🌭","h","g",""],
+  ["juice","🧃","j","s",""], ["jeans","👖","j","",""],
+  ["kite","🪁","k","t",""], ["key","🔑","k","","ee"], ["kangaroo","🦘","k","",""], ["koala","🐨","k","",""],
+  ["lion","🦁","l","n",""], ["leaf","🍃","l","f",""], ["lemon","🍋","l","n",""], ["ladybug","🐞","l","g",""],
+  ["leg","🦵","l","g",""], ["lock","🔒","l","k","ock"], ["log","🪵","l","g","og"],
+  ["moon","🌙","m","n","oon"], ["mouse","🐭","m","s","ouse"], ["monkey","🐵","m","",""], ["milk","🥛","m","k",""],
+  ["map","🗺️","m","p",""], ["mug","☕","m","g","ug"],
+  ["nose","👃","n","","ose"], ["noodles","🍜","n","",""],
+  ["pig","🐷","p","g",""], ["pizza","🍕","p","",""], ["pear","🍐","p","","air"], ["pen","🖊️","p","n","en"],
+  ["penguin","🐧","p","n",""], ["pumpkin","🎃","p","n",""], ["panda","🐼","p","",""], ["popcorn","🍿","p","n",""],
+  ["plane","✈️","p","n","ain"],
+  ["rabbit","🐰","r","t",""], ["rainbow","🌈","r","",""], ["ring","💍","r","",""], ["robot","🤖","r","t",""],
+  ["rocket","🚀","r","t",""], ["rose","🌹","r","","ose"], ["rain","🌧️","r","n","ain"], ["rock","🪨","r","k","ock"],
+  ["rice","🍚","r","s","ice"],
+  ["sun","☀️","s","n",""], ["sock","🧦","s","k","ock"], ["snake","🐍","s","k","ake"], ["star","⭐","s","","ar"],
+  ["seal","🦭","s","l",""], ["snail","🐌","s","l",""], ["spider","🕷️","s","",""], ["spoon","🥄","s","n","oon"],
+  ["sled","🛷","s","d","ed"], ["soap","🧼","s","p",""], ["snowman","⛄","s","n",""],
+  ["tiger","🐯","t","",""], ["turtle","🐢","t","",""], ["tree","🌳","t","","ee"], ["tomato","🍅","t","",""],
+  ["tooth","🦷","t","",""], ["train","🚂","t","n","ain"], ["tent","⛺","t","t",""], ["ten","🔟","t","n","en"],
+  ["van","🚐","v","n",""], ["violin","🎻","v","n",""], ["volcano","🌋","v","",""],
+  ["watch","⌚","w","",""], ["whale","🐳","w","l",""], ["wolf","🐺","w","f",""], ["web","🕸️","w","b",""],
+  ["worm","🪱","w","m",""], ["window","🪟","w","",""],
+  ["yo-yo","🪀","y","",""], ["yarn","🧶","y","n",""],
+  ["zebra","🦓","z","",""],
+  /* Sin primer sonido de consonante simple: solo sirven para el final o para rimar */
+  ["egg","🥚","","g",""], ["ship","🚢","","p",""], ["sheep","🐑","","p",""], ["shell","🐚","","l","ell"],
+  ["chair","🪑","","","air"]
+].map(([w,e,ini,fin,r])=>({w,e,ini,fin,r}));
+const palabraDe = (w)=>PAL.find(p=>p.w===w);
+
+/* Una palabra inglesa marcada para la voz en inglés */
+const Q = (w)=>"‹" + w + "›";
+/* «‹hat›, ‹sun› o ‹pig›» / «‹hat›, ‹sun›, or ‹pig›» */
+function listaO(ws){
+  const m = ws.map(Q), es = S.idioma === "es";
+  if(m.length === 1) return m[0];
+  if(m.length === 2) return m[0] + (es ? " o " : " or ") + m[1];
+  return m.slice(0,-1).join(", ") + (es ? " o " : ", or ") + m[m.length-1];
+}
+/* Escoge n palabras distintas que cumplan una condición */
+function tomar(n, cond, excluir){
+  const fuera = new Set((excluir||[]).map(p=>p.w));
+  return mezclar(PAL.filter(p=>!fuera.has(p.w) && cond(p))).slice(0, n);
+}
+
+/* ---------- Dibujos ---------- */
+function htmlDibujo(p){ return `<span class="pic" aria-hidden="true">${p.e}</span><span class="pal" lang="en">${p.w}</span>`; }
+/* Dibujo grande que no se toca; conPalabra = la palabra se ve desde el principio */
+function dibujoGrande(p, conPalabra){
+  const d = document.createElement("div");
+  d.className = "dibujo dibujo-grande" + (conPalabra ? " revela" : "");
+  d.setAttribute("role","img"); d.setAttribute("aria-label", p.w); d.setAttribute("lang","en");
+  d.innerHTML = htmlDibujo(p);
+  return d;
+}
+/* Dibujos para tocar. esCorrecto(p) decide; pista(p) da el aviso al fallar */
+function ponerDibujos(lista, esCorrecto, alAcertar, pista){
+  const cont = $("opciones");
+  return lista.map(p=>{
+    const b = document.createElement("button");
+    b.className = "ficha-num dibujo";
+    b.innerHTML = htmlDibujo(p);
+    b.setAttribute("aria-label", p.w); b.setAttribute("lang","en");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(esCorrecto(p)){ b.classList.add("revela","elegido"); alAcertar(b, p); }
+      else { b.classList.add("revela"); fallar(b, pista ? pista(p) + " " + elegir(T[S.idioma].otra) : undefined); }
+    });
+    cont.appendChild(b);
+    return b;
+  });
+}
+/* Muestra todas las palabras escritas debajo de los dibujos */
+function revelarPalabras(){ document.querySelectorAll("#p-juego .dibujo").forEach(b=>b.classList.add("revela")); }
+/* Resalta en rojo la primera letra, o el grupo de letras del último sonido */
+const LETRAS_FINAL = {t:/t(?=e?$)/, n:/n(?=e?$)/, g:/g$/, p:/p(?=e?$)/, d:/d$/, k:/(ck|k|c)(?=e?$)/, m:/m$/,
+  s:/(ss|se|ce|s)(?=e?$|$)/, l:/(ll|le|l)$/, f:/f$/, b:/b$/};
+function resaltarPalabra(el, p, donde){
+  const pal = el.querySelector(".pal"); if(!pal) return;
+  const w = p.w;
+  if(donde === "fin"){
+    const m = w.match(LETRAS_FINAL[p.fin] || /$^/);
+    if(!m){ pal.textContent = w; return; }
+    const i = m.index;
+    pal.innerHTML = escaparHTML(w.slice(0,i)) + `<span class="resalta">${escaparHTML(m[0])}</span>` + escaparHTML(w.slice(i + m[0].length));
+  } else {
+    pal.innerHTML = `<span class="resalta">${escaparHTML(w.charAt(0))}</span>` + escaparHTML(w.slice(1));
+  }
+}
+/* Hace bailar un elemento (dibujo, tarjeta…) */
+function bailar(el){ animar(el.querySelector(".pic") || el, "baila"); }
+
+/* ---------- Palabras de tres sonidos (consonante, vocal corta, consonante) ---------- */
+const CVC = [
+  ["cat","🐱"],["hat","🎩"],["bat","🦇"],["rat","🐀"],["map","🗺️"],["cap","🧢"],["can","🥫"],["pan","🍳"],
+  ["van","🚐"],["man","👨"],["bag","👜"],["ram","🐏"],
+  ["bed","🛏️"],["red","🟥"],["pen","🖊️"],["hen","🐔"],["ten","🔟"],["net","🥅"],["jet","✈️"],["web","🕸️"],["leg","🦵"],
+  ["pig","🐷"],["pin","📌"],["bin","🗑️"],["lip","👄"],["kid","🧒"],["six","6️⃣"],
+  ["dog","🐶"],["log","🪵"],["box","📦"],["fox","🦊"],["pot","🍲"],["dot","🔴"],["hot","🔥"],
+  ["sun","☀️"],["bus","🚌"],["bug","🐛"],["mug","☕"],["cup","🥤"],["nut","🥜"],["hut","🛖"],["tub","🛁"]
+].map(([w,e])=>({w,e}));
+const VOCALES = "aeiou";
+const cvcDe = (w)=>CVC.find(p=>p.w===w);
+/* Cuántas letras cambian entre dos palabras de tres letras */
+const diferencias = (a,b)=>[0,1,2].filter(i=>a[i]!==b[i]).length;
+/* Fichas de letras: las vocales van en rojo, las consonantes en azul */
+function crearFichas(letras, opciones){
+  opciones = opciones || {};
+  const fila = document.createElement("div"); fila.className = "fichas-letra"; fila.setAttribute("lang","en");
+  const fichas = letras.map(l=>{
+    const f = document.createElement("span");
+    f.className = "ficha-letra" + (l==="" ? " vacia" : (VOCALES.includes(l) ? " vocal" : ""));
+    f.textContent = l;
+    fila.appendChild(f);
+    return f;
+  });
+  if(!opciones.leible) fila.setAttribute("aria-hidden","true");
+  return {fila, fichas};
+}
+
+/* La ranita salta por una lista de elementos, uno tras otro */
+let saltos = [];
+function saltarPor(lista, despues){
+  saltos.forEach(clearTimeout); saltos = [];
+  lista.forEach((el,i)=>{
+    saltos.push(setTimeout(()=>{
+      lista.forEach(x=>x.classList.remove("pisada"));
+      el.classList.add("pisada");
+      if(!sinMovimiento()) animar(el,"balbucea");
+    }, i*520));
+  });
+  saltos.push(setTimeout(()=>{ lista.forEach(x=>x.classList.remove("pisada")); if(despues) despues(); }, lista.length*520 + 400));
+}
+
+
+
+/* =====================================================================
+   MÓDULO 3 DE LECTURA DE PRIMER GRADO: DÍGRAFOS
+   ===================================================================== */
+const RANGO = null;
+const DIGRAFOS = ["sh","ch","th","wh","ck","ng"];
+
+/* Palabras que se pueden leer, partidas en sonidos (un dígrafo es un solo sonido) */
+const LEIBLES = [
+  ["ship","🚢",["sh","i","p"]],["shell","🐚",["sh","e","ll"]],["fish","🐟",["f","i","sh"]],["dish","🍽️",["d","i","sh"]],
+  ["chick","🐥",["ch","i","ck"]],["duck","🦆",["d","u","ck"]],["sock","🧦",["s","o","ck"]],
+  ["rock","🪨",["r","o","ck"]],["lock","🔒",["l","o","ck"]],["truck","🚚",["t","r","u","ck"]],["clock","🕐",["c","l","o","ck"]],
+  ["ring","💍",["r","i","ng"]],["king","🤴",["k","i","ng"]],["bath","🛁",["b","a","th"]],["thumb","👍",["th","u","mb"]],
+  ["brush","🪥",["b","r","u","sh"]],["trash","🗑️",["t","r","a","sh"]]
+].map(([w,e,seg])=>({w,e,seg}));
+/* Dibujos para el sonido del principio y del final */
+const EMPIEZAN = [
+  ["ship","🚢","sh"],["shell","🐚","sh"],["shoe","👟","sh"],["sheep","🐑","sh"],["shark","🦈","sh"],["shirt","👕","sh"],
+  ["chick","🐥","ch"],["chair","🪑","ch"],["cheese","🧀","ch"],["cherry","🍒","ch"],["church","⛪","ch"],
+  ["thumb","👍","th"],["three","3️⃣","th"],["thread","🧵","th"],["whale","🐳","wh"],["wheel","🛞","wh"]
+].map(([w,e,g])=>({w,e,g}));
+const TERMINAN = [
+  ["fish","🐟","sh"],["dish","🍽️","sh"],["brush","🪥","sh"],["trash","🗑️","sh"],
+  ["peach","🍑","ch"],["couch","🛋️","ch"],["beach","🏖️","ch"],["lunch","🍱","ch"],
+  ["bath","🛁","th"],["tooth","🦷","th"],["mouth","👄","th"],
+  ["duck","🦆","ck"],["sock","🧦","ck"],["clock","🕐","ck"],["truck","🚚","ck"],["rock","🪨","ck"],["lock","🔒","ck"],
+  ["ring","💍","ng"],["king","🤴","ng"],["sing","🎤","ng"]
+].map(([w,e,g])=>({w,e,g}));
+const VOCALES_RE = /^[aeiou]$/;
+
+const TM = {
+  es:{
+    lee:"Lee la palabra. Las letras anaranjadas van juntas y hacen un solo sonido. La ranita salta por cada sonido. ¿Qué dibujo es?",
+    leeBien:(w)=>`¡Leíste ${Q(w)}!`,
+    leePista:(w)=>`Ese dibujo es ${Q(w)}. Mira otra vez las letras.`,
+    saltar:"🐸 Saltar otra vez",
+    empieza:(w)=>`Escucha: ${Q(w)}. ¿Con qué dígrafo empieza?`,
+    empiezaC:"¿Con qué dígrafo empieza? Escucha la palabra.",
+    termina:(w)=>`Escucha: ${Q(w)}. ¿Con qué dígrafo termina?`,
+    terminaC:"¿Con qué dígrafo termina? Escucha la palabra.",
+    digBien:(w,g)=>`${Q(w)}: ${Q(g)} hace un solo sonido.`,
+    digPista:(w)=>`Escucha otra vez ${Q(w)} y fíjate en el sonido. ‹sh› es el sonido de silencio, ‹ch› el de un tren, ‹th› saca la lengua.`,
+    arma:(w)=>`Escribe ${Q(w)}. Toca las tarjetas en orden: cada tarjeta es un sonido.`,
+    armaC:"Escucha la palabra y escríbela. Cada tarjeta es un sonido.",
+    armaBien:(w)=>`¡Escribiste ${Q(w)}!`,
+    armaPista:(w)=>`Esa no va ahí. Escucha despacio: ${Q(w)}.`,
+    sonidos:(w)=>`Escucha: ${Q(w)}. ¿Cuántos sonidos tiene? Cuidado: dos letras pueden hacer un solo sonido.`,
+    sonidosC:"¿Cuántos sonidos tiene? Cuidado: dos letras pueden hacer un solo sonido.",
+    sonidosBien:(w,seg)=>`${Q(w)} tiene ${palabra(seg.length)} sonidos: ${seg.map(Q).join(", ")}.`,
+    sonidosPista:(w)=>`Dilo despacio: ${Q(w)}. Las letras que van juntas cuentan como un sonido.`,
+    oir:"Escuchar de qué se trata este juego"
+  },
+  en:{
+    lee:"Read the word. The orange letters team up to make one sound. Froggy hops across each sound. Which picture is it?",
+    leeBien:(w)=>`You read ${Q(w)}!`,
+    leePista:(w)=>`That picture is ${Q(w)}. Look at the letters again.`,
+    saltar:"🐸 Hop again",
+    empieza:(w)=>`Listen: ${Q(w)}. Which digraph does it start with?`,
+    empiezaC:"Which digraph does it start with? Listen to the word.",
+    termina:(w)=>`Listen: ${Q(w)}. Which digraph does it end with?`,
+    terminaC:"Which digraph does it end with? Listen to the word.",
+    digBien:(w,g)=>`${Q(w)}: ${Q(g)} makes one sound.`,
+    digPista:(w)=>`Listen to ${Q(w)} again and notice the sound. ‹sh› is the quiet sound, ‹ch› is the train sound, and for ‹th› your tongue peeks out.`,
+    arma:(w)=>`Spell ${Q(w)}. Tap the cards in order: each card is one sound.`,
+    armaC:"Listen to the word and spell it. Each card is one sound.",
+    armaBien:(w)=>`You spelled ${Q(w)}!`,
+    armaPista:(w)=>`That one doesn't go there. Listen slowly: ${Q(w)}.`,
+    sonidos:(w)=>`Listen: ${Q(w)}. How many sounds does it have? Careful: two letters can make one sound.`,
+    sonidosC:"How many sounds does it have? Careful: two letters can make one sound.",
+    sonidosBien:(w,seg)=>`${Q(w)} has ${palabra(seg.length)} sounds: ${seg.map(Q).join(", ")}.`,
+    sonidosPista:(w)=>`Say it slowly: ${Q(w)}. Letters that team up count as one sound.`,
+    oir:"Hear what this game is about"
+  }
+};
+
+const JUEGOS = [
+  {id:"lee",     emoji:"🦈", es:"Lee la palabra", en:"Read the word", metaEs:"ship, duck, ring…", metaEn:"ship, duck, ring…"},
+  {id:"empieza", emoji:"🐥", es:"¿Cómo empieza?", en:"How does it start?", metaEs:"sh, ch, th, wh", metaEn:"sh, ch, th, wh"},
+  {id:"termina", emoji:"🦆", es:"¿Cómo termina?", en:"How does it end?", metaEs:"sh, ch, th, ck, ng", metaEn:"sh, ch, th, ck, ng"},
+  {id:"arma",    emoji:"🧩", es:"Arma la palabra", en:"Build the word", metaEs:"Sonido por sonido", metaEn:"Sound by sound"},
+  {id:"sonidos", emoji:"✋", es:"Cuenta los sonidos", en:"Count the sounds", metaEs:"Dos letras, un sonido", metaEn:"Two letters, one sound"}
+];
+
+function instruccion(pantalla, voz){ ponerInstruccion(voz); $("txt-instruccion").innerHTML = conMarcas(pantalla); }
+const claseTarjeta = (x)=> x.length > 1 ? "" : (VOCALES_RE.test(x) ? " vocal-t" : " sencilla");
+function ponerTarjetas(lista, alTocar){
+  const cont = $("opciones");
+  return lista.map(x=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "tarjeta" + claseTarjeta(x); b.textContent = x; b.setAttribute("lang","en");
+    b.setAttribute("aria-label", x.split("").join(" "));
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); alTocar(x, b); });
+    cont.appendChild(b); return b;
+  });
+}
+/* Fichas por sonido: los dígrafos (dos letras, un sonido) van en una sola ficha anaranjada */
+function fichasPorSonido(seg, vacias){
+  const {fila, fichas} = crearFichas(seg.map(s=>vacias ? "" : s), {leible:true});
+  fichas.forEach((f,i)=>{ if(seg[i].length > 1){ f.classList.add("doble"); if(DIGRAFOS.includes(seg[i])) f.classList.add("digrafo"); } });
+  fila.setAttribute("aria-label", seg.join(" "));
+  return {fila, fichas};
+}
+function parecidosLeibles(p){
+  const otros = LEIBLES.filter(x=>x.w!==p.w);
+  const cerca = mezclar(otros.filter(x=>x.seg.some(s=>s.length>1 && p.seg.includes(s)) || x.w[0]===p.w[0]));
+  return [...cerca, ...mezclar(otros)].filter((x,i,a)=>a.findIndex(y=>y.w===x.w)===i).slice(0,2);
+}
+function resaltarDig(esc, w, g, alFinal){
+  const pal = esc.querySelector(".pal"); if(!pal) return;
+  const i = alFinal ? w.lastIndexOf(g) : w.indexOf(g);
+  pal.innerHTML = escaparHTML(w.slice(0,i)) + `<span class="resalta">${escaparHTML(g)}</span>` + escaparHTML(w.slice(i + g.length));
+}
+
+const RONDA = {
+  /* --- 1. Lee la palabra (RF.1.3a, RF.1.3b) --- */
+  lee:(t,esc)=>{
+    const p = elegir(LEIBLES);
+    const {fila, fichas} = fichasPorSonido(p.seg);
+    const flecha = document.createElement("div"); flecha.className = "flecha-lectura"; flecha.setAttribute("aria-hidden","true"); flecha.textContent = "➜ ➜ ➜";
+    esc.append(fila, flecha);
+    const saltar = ()=>{ sonBoing(); saltarPor(fichas); };
+    ponerInstruccion(t.lee, saltar);
+    botonRepetir(t.saltar, saltar);
+    ponerDibujos(mezclar([p, ...parecidosLeibles(p)]), x=>x.w===p.w, ()=>{
+      saltarPor(fichas); revelarPalabras(); acertar(t.leeBien(p.w));
+    }, x=>t.leePista(x.w));
+  },
+
+  /* --- 2. ¿Cómo empieza? (RF.1.3a) --- */
+  empieza:(t,esc)=>{
+    const p = elegir(EMPIEZAN);
+    esc.appendChild(dibujoGrande(p, false));
+    instruccion(t.empiezaC, t.empieza(p.w));
+    botonRepetir(t.escuchar, ()=>hablar(Q(p.w)));
+    const otros = mezclar(["sh","ch","th","wh"].filter(g=>g!==p.g)).slice(0,2);
+    ponerTarjetas(mezclar([p.g, ...otros]), (g, b)=>{
+      if(g === p.g){ b.classList.add("bien"); revelarPalabras(); resaltarDig(esc, p.w, g, false); acertar(t.digBien(p.w, g)); }
+      else fallar(b, t.digPista(p.w));
+    });
+  },
+
+  /* --- 3. ¿Cómo termina? (RF.1.3a) --- */
+  termina:(t,esc)=>{
+    const p = elegir(TERMINAN);
+    esc.appendChild(dibujoGrande(p, false));
+    instruccion(t.terminaC, t.termina(p.w));
+    botonRepetir(t.escuchar, ()=>hablar(Q(p.w)));
+    const otros = mezclar(["sh","ch","th","ck","ng"].filter(g=>g!==p.g)).slice(0,2);
+    ponerTarjetas(mezclar([p.g, ...otros]), (g, b)=>{
+      if(g === p.g){ b.classList.add("bien"); revelarPalabras(); resaltarDig(esc, p.w, g, true); acertar(t.digBien(p.w, g)); }
+      else fallar(b, t.digPista(p.w));
+    });
+  },
+
+  /* --- 4. Arma la palabra, sonido por sonido (RF.1.3a, RF.1.2d) --- */
+  arma:(t,esc)=>{
+    const p = elegir(LEIBLES);
+    S.respuesta = p.seg;
+    const {fila, fichas} = fichasPorSonido(p.seg, true);
+    fila.setAttribute("aria-live","polite");
+    esc.append(dibujoGrande(p, false), fila);
+    let puestas = 0;
+    let extra; do{ extra = elegir(DIGRAFOS); }while(p.seg.includes(extra));
+    ponerTarjetas(mezclar([...p.seg, extra]), (x, b)=>{
+      if(x === p.seg[puestas]){
+        fichas[puestas].textContent = x;
+        fichas[puestas].className = "ficha-letra" + (x.length > 1 ? " doble" + (DIGRAFOS.includes(x) ? " digrafo" : "") : (VOCALES_RE.test(x) ? " vocal" : ""));
+        animar(fichas[puestas], "balbucea"); sonPop();
+        b.disabled = true; puestas++;
+        if(puestas === p.seg.length){ esc.querySelector(".dibujo").classList.add("revela"); saltarPor(fichas); acertar(t.armaBien(p.w)); }
+      } else fallar(b, t.armaPista(p.w));
+    });
+    instruccion(t.armaC, t.arma(p.w));
+    botonRepetir(t.escuchar, ()=>hablar(Q(p.w)));
+  },
+
+  /* --- 5. Cuenta los sonidos: el dígrafo es uno solo (RF.1.2d) --- */
+  sonidos:(t,esc)=>{
+    const p = elegir(LEIBLES);
+    const n = p.seg.length;
+    esc.appendChild(dibujoGrande(p, false));
+    instruccion(t.sonidosC, t.sonidos(p.w));
+    botonRepetir(t.escuchar, ()=>hablar(Q(p.w)));
+    ponerOpciones([3,4,5], n, ()=>{
+      revelarPalabras();
+      const c = document.createElement("div"); c.className = "cajitas"; c.setAttribute("lang","en");
+      c.innerHTML = p.seg.map(s=>`<span class="${s.length>1 ? "dig" : VOCALES_RE.test(s) ? "vocal" : ""}">${s}</span>`).join("");
+      esc.appendChild(c);
+      acertar(t.sonidosBien(p.w, p.seg));
+    });
+  }
+};
+
+/* ---------- Hoja imprimible ---------- */
+function pintarHoja(){
+  const a = $("hoja-inicio"); a.innerHTML = "";
+  ["ship","chair","thumb","shell","cheese"].forEach(w=>{
+    const p = EMPIEZAN.find(x=>x.w===w);
+    a.insertAdjacentHTML("beforeend", `<div class="fila-h"><span aria-hidden="true">${p.e}</span><span class="palabra-h" lang="en"><i class="linea-h"></i>${w.slice(2)}</span></div>`);
+  });
+  const b = $("hoja-final"); b.innerHTML = "";
+  ["fish","duck","ring","sock","brush"].forEach(w=>{
+    const p = TERMINAN.find(x=>x.w===w);
+    b.insertAdjacentHTML("beforeend", `<div class="fila-h"><span aria-hidden="true">${p.e}</span><span class="palabra-h" lang="en">${w.slice(0,-2)}<i class="linea-h"></i></span></div>`);
+  });
+}
+
+
+/* =====================================================================
+   NAVEGACIÓN, IDIOMA Y ARRANQUE (común)
+   ===================================================================== */
+const T = {es:Object.assign({}, TB.es, TM.es), en:Object.assign({}, TB.en, TM.en)};
+
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("btn-oir").setAttribute("aria-label", T[S.idioma].oir);
+  $("btn-bocina").setAttribute("aria-label", T[S.idioma].bocina);
+  $("marcador").setAttribute("aria-label", T[S.idioma].estrellas);
+  const casa = $("enlace-casa"); if(casa) casa.href = casa.dataset.base + (S.idioma==="es" ? "?lang=es" : "");
+  pintarMenu();
+  if(typeof pintarHoja === "function") pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+function mostrarChipRango(visible){ $("chip-rango").style.display = (RANGO && visible) ? "" : "none"; }
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrarChipRango(JUEGOS.find(j=>j.id===id).rango);
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").innerHTML = conMarcas(frase);
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").innerHTML = conMarcas(t);
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    hablar(T[S.idioma].final(S.estrellas));
+  } else nuevaRonda();
+}
+function nuevaRonda(){
+  limpiar();
+  RONDA[S.juego](T[S.idioma], $("escena"));
+}
+
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  /* Enlace directo a un juego con el ancla: …html#nombre-del-juego */
+  const ancla = (location.hash || "").replace("#","");
+  if(JUEGOS.some(j=>j.id===ancla)){ iniciarJuego(ancla); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){ S.juego=null; try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){} mostrarChipRango(true); if(window.speechSynthesis) window.speechSynthesis.cancel(); mostrar("p-menu"); }
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+
+/* Selector de rango (por ejemplo «Hasta 5 / 10»), si el módulo lo usa */
+function ponerTope(n){
+  S.tope = n;
+  $("btn-r1").setAttribute("aria-pressed", n===RANGO[0]); $("btn-r2").setAttribute("aria-pressed", n===RANGO[1]);
+  if(S.juego) nuevaRonda();
+}
+if(RANGO){
+  S.tope = RANGO[0];
+  $("btn-r1").textContent = String(RANGO[0]); $("btn-r2").textContent = String(RANGO[1]);
+  $("btn-r1").addEventListener("click", ()=>ponerTope(RANGO[0]));
+  $("btn-r2").addEventListener("click", ()=>ponerTope(RANGO[1]));
+}
+mostrarChipRango(true);
+
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>
