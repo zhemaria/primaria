@@ -1,6 +1,6 @@
 # Primaria · Interactivos y juegos
 
-Actividades interactivas gratuitas para prekínder, kindergarten y segundo grado, en español y en inglés. Forman parte del portal **[Lumi](https://zhemaria.github.io/lumi/)**, donde están ordenadas por grado y por materia. Los cuentos ilustrados están en el repositorio [cuentos-educativos](https://github.com/zhemaria/cuentos-educativos).
+Actividades interactivas gratuitas para prekínder, kindergarten, primero y segundo grado, en español y en inglés. Forman parte del portal **[Lumi](https://zhemaria.github.io/lumi/)**, donde están ordenadas por grado y por materia. Los cuentos ilustrados están en el repositorio [cuentos-educativos](https://github.com/zhemaria/cuentos-educativos).
 
 Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 
@@ -15,6 +15,7 @@ Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 | Kindergarten | Matemáticas (7 juegos) | [kindergarten/?lang=es](kindergarten/index.html?lang=es) | [kindergarten/](kindergarten/index.html) |
 | Kindergarten | Lectura en español (6) | [kindergarten/lectura.html](kindergarten/lectura.html) | — |
 | Kindergarten | Lectura en inglés (6) | — | [kindergarten/reading.html](kindergarten/reading.html) |
+| 1.er grado | Matemáticas (3 de 9 módulos) | [1er_grado/?lang=es](1er_grado/index.html?lang=es) | [1er_grado/](1er_grado/index.html) |
 | 2.º grado | Matemáticas interactivas (7 conjuntos) | [2do_grado/](2do_grado/index.html) | [2nd_grade/](2nd_grade/index.html) |
 | 2.º grado | Detective de operaciones | [mate_detective/](mate_detective/index.html) | [math_word_detective/](math_word_detective/index.html) |
 | 2.º grado | Tablas galácticas | [galactica_tablas/](galactica_tablas/index.html) | [galactic_tables/](galactic_tables/index.html) |
@@ -24,9 +25,9 @@ Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 
 `hub-tablet/` es un tablero de uso familiar y no forma parte del portal.
 
-### El idioma en las series de prekínder y kindergarten
+### El idioma en las series de prekínder, kindergarten y primer grado
 
-Las páginas de prekínder y de matemáticas de kindergarten tienen los dos idiomas en un mismo archivo, con botones **Español | English**. Abren en inglés; para abrirlas en español se añade `?lang=es` a la dirección (por ejemplo, `prekinder/prek-01-numeros-conteo.html?lang=es`). Las páginas de inicio de cada serie pasan el idioma elegido a sus lecciones.
+Las páginas de prekínder y de matemáticas de kindergarten y de primer grado tienen los dos idiomas en un mismo archivo, con botones **Español | English**. Abren en inglés; para abrirlas en español se añade `?lang=es` a la dirección (por ejemplo, `prekinder/prek-01-numeros-conteo.html?lang=es`). Las páginas de inicio de cada serie pasan el idioma elegido a sus lecciones.
 
 ## Estructura del repositorio
 
@@ -37,6 +38,7 @@ primaria/
 ├── letras/  letters/     Trazos y letras de prekínder (español / inglés)
 ├── kindergarten/         Matemáticas (es/en), lectura en español (k-lectura-*)
 │                         y lectura en inglés (k-reading-*)
+├── 1er_grado/            Matemáticas de 1.er grado (es/en en el mismo archivo)
 ├── 2do_grado/  2nd_grade/            Matemáticas de 2.º grado (español / inglés)
 ├── mate_detective/  math_word_detective/
 ├── galactica_tablas/  galactic_tables/
@@ -118,7 +120,7 @@ Publicado bajo [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Inte
 
 # English summary
 
-Free interactive activities and games for Pre-K, Kindergarten and Grade 2, in Spanish and English. All of them are listed, by grade and by subject, on the **[Lumi portal](https://zhemaria.github.io/lumi/index-en.html)**. Pages that have both languages in one file open in English by default; add `?lang=es` to the address to open them in Spanish.
+Free interactive activities and games for Pre-K, Kindergarten, Grade 1 and Grade 2, in Spanish and English. All of them are listed, by grade and by subject, on the **[Lumi portal](https://zhemaria.github.io/lumi/index-en.html)**. Pages that have both languages in one file open in English by default; add `?lang=es` to the address to open them in Spanish.
 
 ## Grade 2 math interactives
 

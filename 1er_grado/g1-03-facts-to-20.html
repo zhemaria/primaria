@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<!--
+  First Grade Math — Adding and subtracting to 20
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 1: 1.OA.3, 1.OA.5, 1.OA.6
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Sumar y restar hasta 20: Juegos de primer grado" data-en="Adding and subtracting to 20: First grade games">Adding and subtracting to 20: First grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual first grade addition and subtraction games with a hopping frog, ten-frames, a ladybug with doubles, a flipping domino, a number family house and a race car: count on and back, make ten, doubles and near doubles, turn-around facts, related facts and fluency within 10.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F2F8F7; --tinta:#14302C; --tinta-suave:#3F5A56; --linea:#CBE3DF; --blanco:#FFFFFF;
+  --acento:#00695C; --acento-claro:#E0F2F1;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --rojo:#E53935; --rojo-borde:#8E0000; --azul:#1E88E5; --azul-borde:#0D47A1;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,48,44,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: una mariquita que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y operaciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.mal{animation:temblor .38s}
+.operacion{font-size:clamp(34px,8vw,60px);font-weight:700;letter-spacing:.02em;text-align:center;line-height:1.2}
+.operacion .hueco{display:inline-block;min-width:1.4em;border-bottom:6px solid var(--acento);color:var(--acento)}
+.operacion .hueco.lleno{border-color:var(--acierto);color:var(--acierto)}
+.operacion .r{color:var(--rojo-borde)} .operacion .a{color:var(--azul-borde)}
+
+/* ---------- 1. Recta numérica de la rana ---------- */
+.recta{position:relative;width:100%;max-width:820px;padding-top:clamp(44px,9vw,62px)}
+.marcas{display:grid;border-top:5px solid var(--tinta);}
+.marca{position:relative;text-align:center;font-weight:700;font-size:clamp(12px,2.8vw,20px);padding-top:10px;min-width:0}
+.marca::before{content:"";position:absolute;top:-5px;left:50%;width:3px;height:12px;background:var(--tinta);transform:translateX(-50%)}
+.marca.inicio{color:var(--acento)}
+.marca.visitada{color:var(--rojo-borde)}
+.rana-recta{position:absolute;top:0;font-size:clamp(30px,6.6vw,48px);line-height:1;transform:translateX(-50%);transition:left .32s ease-in-out}
+.rana-recta.salta{animation:salto .32s ease-out}
+
+/* ---------- 2. Marcos de diez ---------- */
+.marcos{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.marco10{display:grid;grid-template-columns:repeat(5,1fr);border:4px solid var(--tinta);border-radius:8px;background:var(--tinta)}
+.celda{width:clamp(40px,8.6vw,60px);height:clamp(40px,8.6vw,60px);background:var(--blanco);display:grid;place-items:center;border:2px solid var(--tinta)}
+.ficha{width:72%;height:72%;border-radius:50%}
+.ficha.r{background:var(--rojo);border:3px solid var(--rojo-borde)}
+.ficha.a{background:var(--azul);border:3px solid var(--azul-borde)}
+.ficha.vuela{animation:aparece .4s ease-out}
+
+/* ---------- 3. La mariquita de los dobles ---------- */
+.mariquita{position:relative;width:clamp(200px,46vw,300px);height:clamp(170px,40vw,250px)}
+.cabeza-m{position:absolute;left:50%;top:0;width:34%;height:30%;background:#212121;border-radius:50% 50% 40% 40%;transform:translateX(-50%)}
+.cabeza-m::before,.cabeza-m::after{content:"";position:absolute;top:30%;width:14%;height:20%;background:#fff;border-radius:50%}
+.cabeza-m::before{left:24%}.cabeza-m::after{right:24%}
+.ala{position:absolute;top:18%;width:50%;height:80%;background:var(--rojo);border:4px solid #212121;display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:6%;padding:10%}
+.ala.izq{left:0;border-radius:100% 0 0 100% / 70% 0 0 70%;border-right-width:2px}
+.ala.der{right:0;border-radius:0 100% 100% 0 / 0 70% 70% 0;border-left-width:2px}
+.punto{width:clamp(14px,3.2vw,22px);height:clamp(14px,3.2vw,22px);border-radius:50%;background:#212121}
+.punto.extra{background:#FFD600;border:2px solid #212121}
+.mariquita.vuela{animation:vuelo 1.2s ease-in-out}
+.etiqueta-alas{display:flex;justify-content:space-between;width:clamp(200px,46vw,300px);font-weight:700;font-size:clamp(20px,4.4vw,32px)}
+
+/* ---------- 4. El dominó ---------- */
+.domino{display:flex;border:5px solid var(--tinta);border-radius:16px;background:#FFFDF5;transition:transform .6s}
+.domino.gira{animation:voltea .7s ease-in-out}
+.mitad{width:clamp(100px,22vw,150px);height:clamp(100px,22vw,150px);display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:10px;gap:4px}
+.mitad + .mitad{border-left:5px solid var(--tinta)}
+.mitad i{display:block;width:76%;height:76%;margin:auto;border-radius:50%}
+.mitad.r i.on{background:var(--rojo-borde)} .mitad.a i.on{background:var(--azul-borde)}
+.mitad.grande-n{display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:4px}
+.mitad.grande-n i{width:clamp(12px,2.8vw,18px);height:clamp(12px,2.8vw,18px);margin:0}
+
+/* ---------- 5. La casa de la familia ---------- */
+.casa-familia{display:flex;flex-direction:column;align-items:center}
+.techo{width:0;height:0;border-left:clamp(120px,28vw,180px) solid transparent;border-right:clamp(120px,28vw,180px) solid transparent;
+  border-bottom:clamp(70px,15vw,100px) solid #8D6E63;position:relative}
+.techo span{position:absolute;left:50%;top:clamp(26px,6vw,42px);transform:translateX(-50%);font-size:clamp(30px,6.6vw,46px);font-weight:700;color:#fff;text-shadow:0 2px 0 #3E2723}
+.cuerpo{display:flex;width:clamp(220px,52vw,330px);border:5px solid #5D4037;border-top:none;background:#FFF8E1}
+.cuarto{flex:1;display:grid;place-items:center;font-size:clamp(30px,6.6vw,46px);font-weight:700;padding:14px 0}
+.cuarto + .cuarto{border-left:5px solid #5D4037}
+.cuarto.r{color:var(--rojo-borde)} .cuarto.a{color:var(--azul-borde)}
+.ventana{font-size:clamp(28px,6vw,40px);line-height:1}
+
+/* ---------- 6. La carrera ---------- */
+.pista{position:relative;width:100%;max-width:760px;height:clamp(70px,14vw,96px);background:repeating-linear-gradient(90deg,#9E9E9E 0 24px,#757575 24px 48px);
+  border-radius:14px;border:4px solid #424242}
+.pista::after{content:"";position:absolute;right:0;top:0;bottom:0;width:22px;
+  background:repeating-conic-gradient(#000 0 25%,#fff 0 50%) 0 0/11px 11px;border-radius:0 10px 10px 0}
+.auto{position:absolute;top:50%;font-size:clamp(40px,9vw,64px);line-height:1;transform:translate(-50%,-50%) scaleX(-1);transition:left .6s ease-out}
+.auto.turbo{animation:turbo .5s ease-in-out}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#004D40}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes salto{0%{transform:translate(-50%,0)}50%{transform:translate(-50%,-26px)}100%{transform:translate(-50%,0)}}
+@keyframes aparece{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes vuelo{0%,100%{transform:translate(0,0) rotate(0)}30%{transform:translate(-20px,-30px) rotate(-10deg)}60%{transform:translate(20px,-20px) rotate(10deg)}}
+@keyframes voltea{0%{transform:rotate(0)}100%{transform:rotate(180deg)}}
+@keyframes turbo{0%,100%{transform:translate(-50%,-50%) scaleX(-1)}50%{transform:translate(-50%,-60%) scaleX(-1) rotate(-6deg)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .cuentas{display:grid;grid-template-columns:repeat(4,1fr);gap:5mm 6mm;font-size:16pt}
+  .hoja .cuentas span{white-space:nowrap}
+  .hoja .linea{display:inline-block;width:11mm;border-bottom:1.2pt solid #000;height:7mm;vertical-align:bottom}
+  .hoja .casitas{display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}
+  .hoja .casita{border:1.2pt solid #000;padding:2mm;font-size:13pt;page-break-inside:avoid}
+  .hoja .casita b{display:block;text-align:center;font-size:15pt;border-bottom:1pt solid #000;margin-bottom:2mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+  .auto{transform:translate(-50%,-50%) scaleX(-1) !important}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Sumar y restar hasta 20" data-en="Adding and subtracting to 20">Adding and subtracting to 20</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <span data-es="Hasta" data-en="Up to">Up to</span>
+      <button id="btn-10" aria-pressed="true">10</button>
+      <button id="btn-20" aria-pressed="false">20</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🐸</span><span>🔟</span><span>🐞</span><span>🏠</span><span>🏎️</span></div>
+    <h2 data-es="¡Trucos para sumar y restar!" data-en="Tricks for adding and subtracting!">Tricks for adding and subtracting!</h2>
+    <p data-es="La rana salta por la recta, los marcos de diez forman diez, la mariquita tiene dobles en las alas, el dominó da la vuelta y el carrito de carreras corre con cada respuesta. Yo te digo todo en voz alta y tú contestas tocando."
+       data-en="The frog hops on the number line, the ten-frames make ten, the ladybug has doubles on her wings, the domino turns around and the race car zooms with every answer. I say everything out loud and you answer by touching.">The frog hops on the number line, the ten-frames make ten, the ladybug has doubles on her wings, the domino turns around and the race car zooms with every answer. I say everything out loud and you answer by touching.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true">🐞</span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: sumas, restas y familias" data-en="🖨 Print a page: facts and families">🖨 Print a page: facts and families</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para primer grado: 1.OA.3 (usar las propiedades de la suma como estrategia: si 8 + 3 = 11, entonces 3 + 8 = 11), 1.OA.5 (relacionar el conteo con la suma y la resta: contar hacia adelante y hacia atrás), y 1.OA.6 (sumar y restar hasta 20, con fluidez hasta 10, usando estrategias: formar diez, dobles y casi dobles, y la relación entre la suma y la resta). Cada juego tiene su enlace directo: #rana, #diez, #dobles, #domino, #familia y #carrera."
+       data-en="Aligned to the Illinois first grade mathematics standards 1.OA.3 (apply properties of addition as strategies: if 8 + 3 = 11 is known, then 3 + 8 = 11 is also known), 1.OA.5 (relate counting to addition and subtraction: count on and count back), and 1.OA.6 (add and subtract within 20, fluently within 10, using strategies: making ten, doubles and near doubles, and the relationship between addition and subtraction). Each game has its own direct link: #rana, #diez, #dobles, #domino, #familia and #carrera.">Aligned to the Illinois first grade mathematics standards 1.OA.3 (apply properties of addition as strategies: if 8 + 3 = 11 is known, then 3 + 8 = 11 is also known), 1.OA.5 (relate counting to addition and subtraction: count on and count back), and 1.OA.6 (add and subtract within 20, fluently within 10, using strategies: making ten, doubles and near doubles, and the relationship between addition and subtraction). Each game has its own direct link: #rana, #diez, #dobles, #domino, #familia and #carrera.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Sumas, restas y familias de números" data-en="Facts and number families">Facts and number families</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Resuelve. Usa tus trucos: dobles, formar diez, contar hacia adelante." data-en="1. Solve. Use your tricks: doubles, make ten, count on.">1. Solve. Use your tricks: doubles, make ten, count on.</h3>
+  <div class="cuentas" id="hoja-cuentas"></div>
+  <h3 data-es="2. Escribe las cuatro cuentas de cada familia." data-en="2. Write the four facts of each family.">2. Write the four facts of each family.</h3>
+  <div class="casitas" id="hoja-casitas"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#00695C",t:"#004D40"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+/* La cuenta dicha en voz alta: «ocho más tres es igual a once» */
+function cuentaDicha(a, op, b, r){
+  const es = S.idioma === "es";
+  const signo = op === "+" ? (es ? "más" : "plus") : (es ? "menos" : "minus");
+  return `${palabra(a)} ${signo} ${palabra(b)} ${es ? "es igual a" : "equals"} ${palabra(r)}`;
+}
+
+/* La pregunta de la cuenta: «¿Cuánto es once menos ocho?» */
+function preguntaCuenta(a, op, b){
+  const es = S.idioma === "es";
+  const signo = op === "+" ? (es ? "más" : "plus") : (es ? "menos" : "minus");
+  return es ? `¿Cuánto es ${palabra(a)} ${signo} ${palabra(b)}?` : `What is ${palabra(a)} ${signo} ${palabra(b)}?`;
+}
+
+/* ============ Textos ============ */
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Qué buen truco!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez",
+    ranaMas:(a,b)=>`La rana está en el ${a} y salta ${b} hacia adelante. ¿Cuánto es ${a} más ${b}?`,
+    ranaMenos:(a,b)=>`La rana está en el ${a} y salta ${b} hacia atrás. ¿Cuánto es ${a} menos ${b}?`,
+    ranaFin:(lista)=>`La rana contó: ${lista}.`,
+    pistaEmpezar:"Empieza en el número grande y cuenta los saltos.",
+    diezHasta10:(a)=>`¿Cuántos faltan para llenar el marco y formar diez? ${a} más ¿cuánto es diez?`,
+    diezFin10:(a,b)=>`${a} y ${b} forman diez.`,
+    diez:(a,b)=>`Llena primero el marco rojo. ${a} más ${b} es lo mismo que diez más ¿cuánto?`,
+    diezFin:(a,b,k)=>`${a} más ${b} es diez más ${k}: ${10+k}.`,
+    dobles:(a)=>`La mariquita tiene ${a} puntos en cada ala. ¿Cuántos puntos tiene en total?`,
+    casiDobles:(a)=>`¡Le salió un punto amarillo de más! ${a} más ${a+1}: es un doble más uno. ¿Cuántos puntos hay?`,
+    doblesFin:(a,r)=>`${a} más ${a} es ${r}. ¡Un doble!`,
+    casiFin:(a,r)=>`${a} más ${a} es ${2*a}, y uno más es ${r}.`,
+    domino:(a,b,s)=>`${a} más ${b} es ${s}. Ahora el dominó da la vuelta. ¿Cuánto es ${b} más ${a}?`,
+    dominoHueco:(a,b)=>`${a} más ${b} es igual a ${b} más ¿cuánto?`,
+    dominoFin:"Si das la vuelta a los sumandos, el total no cambia.",
+    familia:(op)=>`En esta casa vive una familia de números. Completa la cuenta.`,
+    familiaFin:(s,a,b)=>`${a}, ${b} y ${s} son familia: ${a} + ${b} = ${s}, ${b} + ${a} = ${s}, ${s} − ${a} = ${b} y ${s} − ${b} = ${a}.`,
+    pistaFamilia:"El número del techo es el total. Los dos cuartos juntos forman el techo.",
+    carrera:"¡Carrera de cuentas! Cada respuesta buena hace correr el carrito.",
+    carreraFin:"¡Rrrum! ¡El carrito avanza!",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`,
+    menu:"Escoge un juego.",
+    recta:(a)=>`Recta numérica. La rana está en el ${a}.`,
+    marcosDesc:(a,b)=>`Dos marcos de diez: ${a} fichas rojas y ${b} azules`,
+    marcoDesc:(a)=>`Un marco de diez con ${a} fichas`,
+    mariquitaDesc:(a,b)=>`Mariquita con ${a} puntos en un ala y ${b} en la otra`,
+    dominoDesc:(a,b)=>`Dominó con ${a} y ${b} puntos`,
+    casaDesc:(s,a,b)=>`Casa con ${s} en el techo y ${a} y ${b} en los cuartos`,
+    hueco:"¿cuánto?"
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","What a trick!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again",
+    ranaMas:(a,b)=>`The frog is on ${a} and hops ${b} forward. What is ${a} plus ${b}?`,
+    ranaMenos:(a,b)=>`The frog is on ${a} and hops ${b} back. What is ${a} minus ${b}?`,
+    ranaFin:(lista)=>`The frog counted: ${lista}.`,
+    pistaEmpezar:"Start at the big number and count the hops.",
+    diezHasta10:(a)=>`How many more fill the frame to make ten? ${a} plus what makes ten?`,
+    diezFin10:(a,b)=>`${a} and ${b} make ten.`,
+    diez:(a,b)=>`Fill the red frame first. ${a} plus ${b} is the same as ten plus what?`,
+    diezFin:(a,b,k)=>`${a} plus ${b} is ten plus ${k}: ${10+k}.`,
+    dobles:(a)=>`The ladybug has ${a} spots on each wing. How many spots in all?`,
+    casiDobles:(a)=>`She got one extra yellow spot! ${a} plus ${a+1}: a double plus one. How many spots?`,
+    doblesFin:(a,r)=>`${a} plus ${a} is ${r}. A double!`,
+    casiFin:(a,r)=>`${a} plus ${a} is ${2*a}, and one more is ${r}.`,
+    domino:(a,b,s)=>`${a} plus ${b} is ${s}. Now the domino turns around. What is ${b} plus ${a}?`,
+    dominoHueco:(a,b)=>`${a} plus ${b} equals ${b} plus what?`,
+    dominoFin:"If you turn the addends around, the total stays the same.",
+    familia:(op)=>`A number family lives in this house. Finish the fact.`,
+    familiaFin:(s,a,b)=>`${a}, ${b} and ${s} are a family: ${a} + ${b} = ${s}, ${b} + ${a} = ${s}, ${s} − ${a} = ${b} and ${s} − ${b} = ${a}.`,
+    pistaFamilia:"The number on the roof is the total. The two rooms together make the roof.",
+    carrera:"Fact race! Every right answer makes the race car go.",
+    carreraFin:"Vroom! The car moves ahead!",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`,
+    menu:"Pick a game.",
+    recta:(a)=>`Number line. The frog is on ${a}.`,
+    marcosDesc:(a,b)=>`Two ten-frames: ${a} red counters and ${b} blue`,
+    marcoDesc:(a)=>`A ten-frame with ${a} counters`,
+    mariquitaDesc:(a,b)=>`Ladybug with ${a} spots on one wing and ${b} on the other`,
+    dominoDesc:(a,b)=>`Domino with ${a} and ${b} dots`,
+    casaDesc:(s,a,b)=>`House with ${s} on the roof and ${a} and ${b} in the rooms`,
+    hueco:"what?"
+  }
+};
+
+const JUEGOS = [
+  {id:"rana",    emoji:"🐸", es:"La rana saltarina", en:"Hopping frog", metaEs:"Contar hacia adelante y atrás", metaEn:"Count on and count back"},
+  {id:"diez",    emoji:"🔟", es:"Forma diez", en:"Make ten", metaEs:"Marcos de diez", metaEn:"Ten-frames"},
+  {id:"dobles",  emoji:"🐞", es:"La mariquita", en:"The ladybug", metaEs:"Dobles y casi dobles", metaEn:"Doubles and near doubles"},
+  {id:"domino",  emoji:"🔄", es:"El dominó da la vuelta", en:"Turn-around domino", metaEs:"El orden no cambia el total", metaEn:"Order doesn't change the total"},
+  {id:"familia", emoji:"🏠", es:"La casa de la familia", en:"Number family house", metaEs:"Sumas y restas hermanas", metaEn:"Related facts"},
+  {id:"carrera", emoji:"🏎️", es:"Carrera de cuentas", en:"Fact race", metaEs:"Rápido hasta 10", metaEn:"Fast facts to 10"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", tope:10, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+function distractores(n, min, max, cuantos, prioridad){
+  const lista = prioridad || [n+1, n-1, n+2, n-2];
+  const vistos = new Set([n]); const elegidos = [];
+  lista.forEach(v=>{ if(v!==null && v>=min && v<=max && !vistos.has(v) && elegidos.length<cuantos){ vistos.add(v); elegidos.push(v); } });
+  let intentos = 0;
+  while(elegidos.length < cuantos && intentos < 60){
+    const v = azar(Math.max(min, n-4), Math.min(max, n+4)); intentos++;
+    if(!vistos.has(v)){ vistos.add(v); elegidos.push(v); }
+  }
+  return elegidos;
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien   = ()=>tono([523,659,784,1047],0.15);
+const sonOtra   = ()=>barrido(420,180,0.35,"triangle");
+const sonToque  = ()=>tono([660],0.08);
+const sonBoing  = ()=>barrido(180,620,0.22,"triangle");
+const sonPop    = ()=>barrido(900,300,0.1);
+const sonZumbido= ()=>{ for(let i=0;i<4;i++) setTimeout(()=>barrido(500,700,0.12,"sawtooth"), i*140); };
+const sonGiro   = ()=>barrido(300,1200,0.5,"triangle");
+const sonMotor  = ()=>barrido(90,520,0.7,"sawtooth");
+
+/* ============ Mascota y confeti ============ */
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = "🐞<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = "🐞<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ $("mascota").textContent = "🐞"; $("mascota").className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Hasta qué número jugar" : "How high to play");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g1-03-facts-to-20.html#dobles */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    hablar(T[S.idioma].final(S.estrellas));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(texto, despues){
+  $("txt-instruccion").textContent = texto;
+  hablar(texto, despues);
+  $("btn-bocina").onclick = ()=>hablar(texto);
+}
+/* Una operación grande con un hueco: «8 + 5 = 10 + ▢» */
+function crearOperacion(partes){
+  const div = document.createElement("div"); div.className = "operacion";
+  div.setAttribute("aria-hidden","true");
+  let hueco = null;
+  partes.forEach(p=>{
+    if(p === "?"){ hueco = document.createElement("span"); hueco.className = "hueco"; hueco.textContent = "?"; div.appendChild(hueco); }
+    else if(typeof p === "object"){ const s = document.createElement("span"); s.className = p.c; s.textContent = p.t; div.appendChild(s); }
+    else div.appendChild(document.createTextNode(p));
+  });
+  return {div, llenar:(v)=>{ hueco.textContent = String(v); hueco.classList.add("lleno"); }};
+}
+/* Marco de diez con fichas rojas (r) y azules (a) */
+function crearMarco(rojas, azules){
+  const m = document.createElement("div"); m.className = "marco10";
+  for(let i=0;i<10;i++){
+    const c = document.createElement("span"); c.className = "celda";
+    if(i < rojas){ const f = document.createElement("span"); f.className = "ficha r"; c.appendChild(f); }
+    else if(i < rojas + azules){ const f = document.createElement("span"); f.className = "ficha a"; c.appendChild(f); }
+    m.appendChild(c);
+  }
+  return m;
+}
+/* Puntos de dominó en una cuadrícula de 3 × 3 */
+const DOMINO = {0:[],1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8],7:[0,2,3,4,5,6,8],8:[0,1,2,3,5,6,7,8],9:[0,1,2,3,4,5,6,7,8]};
+function mitadDomino(n, color){
+  const m = document.createElement("div");
+  if(n <= 9){
+    m.className = "mitad " + color;
+    for(let i=0;i<9;i++){ const p = document.createElement("i"); if(DOMINO[n].includes(i)) p.className = "on"; m.appendChild(p); }
+  } else {
+    m.className = "mitad grande-n " + color;
+    for(let i=0;i<n;i++){ const p = document.createElement("i"); p.className = "on"; m.appendChild(p); }
+  }
+  return m;
+}
+
+/* ============ Los seis juegos ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const tope = S.tope;
+
+  /* --- 1. La rana saltarina: contar hacia adelante y hacia atrás (1.OA.5) --- */
+  if(S.juego === "rana"){
+    const suma = Math.random() < 0.6;
+    const b = azar(1, 3);
+    const a = suma ? azar(Math.min(4, tope-b), tope-b) : azar(b+2, tope);
+    const r = suma ? a+b : a-b;
+    const recta = document.createElement("div"); recta.className = "recta";
+    recta.setAttribute("role","img"); recta.setAttribute("aria-label", t.recta(a));
+    const marcas = document.createElement("div"); marcas.className = "marcas";
+    marcas.style.gridTemplateColumns = `repeat(${tope+1}, minmax(0,1fr))`;
+    const lista = [];
+    for(let i=0;i<=tope;i++){ const m = document.createElement("span"); m.className = "marca" + (i===a ? " inicio" : ""); m.textContent = String(i); marcas.appendChild(m); lista.push(m); }
+    const rana = document.createElement("span"); rana.className = "rana-recta"; rana.textContent = "🐸"; rana.setAttribute("aria-hidden","true");
+    const posicion = (i)=>((i + 0.5) / (tope + 1) * 100) + "%";
+    rana.style.left = posicion(a);
+    recta.append(rana, marcas);
+    const cuenta = crearOperacion([String(a), suma ? " + " : " − ", String(b), " = ", "?"]);
+    esc.append(recta, cuenta.div);
+    ponerInstruccion(suma ? t.ranaMas(a,b) : t.ranaMenos(a,b));
+    const distract = distractores(r, 0, tope, 2, suma ? [r+1, r-1, a] : [r-1, r+1, a]);
+    ponerOpciones([r, ...distract], r, ()=>{
+      cuenta.llenar(r);
+      // La rana da sus saltos uno a uno y cuenta en voz alta
+      const pasos = [];
+      for(let k=1;k<=b;k++) pasos.push(suma ? a+k : a-k);
+      const pausa = sinMovimiento() ? 0 : 380;
+      pasos.forEach((p,k)=>setTimeout(()=>{ rana.style.left = posicion(p); animar(rana,"salta"); lista[p].classList.add("visitada"); sonBoing(); }, k*pausa));
+      acertar(t.ranaFin([a, ...pasos].join(", ")) + " " + cuentaDicha(a, suma?"+":"−", b, r) + ".");
+    }, (k)=> k === a ? t.pistaEmpezar : null);
+    return;
+  }
+
+  /* --- 2. Forma diez con los marcos de diez (1.OA.6) --- */
+  if(S.juego === "diez"){
+    if(tope === 10){
+      // Parejas que forman diez: 7 y ¿3?
+      const a = azar(1, 9), k = 10 - a;
+      const marco = crearMarco(a, 0);
+      marco.setAttribute("role","img"); marco.setAttribute("aria-label", t.marcoDesc(a));
+      const cuenta = crearOperacion([{t:String(a), c:"r"}, " + ", "?", " = 10"]);
+      esc.append(marco, cuenta.div);
+      ponerInstruccion(t.diezHasta10(a));
+      ponerOpciones([k, ...distractores(k, 0, 10, 2, [k+1, k-1, a])], k, ()=>{
+        cuenta.llenar(k);
+        const nuevo = crearMarco(a, k); nuevo.querySelectorAll(".ficha.a").forEach(f=>f.classList.add("vuela"));
+        marco.replaceWith(nuevo); sonPop();
+        acertar(t.diezFin10(a, k));
+      });
+      return;
+    }
+    // 8 + 5 = 10 + 3: se pasan fichas azules para llenar el marco rojo
+    const a = azar(6, 9);
+    const b = azar(11 - a, 9);                  // así la suma pasa de diez
+    const pasa = 10 - a, k = b - pasa;
+    const marcos = document.createElement("div"); marcos.className = "marcos";
+    marcos.setAttribute("role","img"); marcos.setAttribute("aria-label", t.marcosDesc(a,b));
+    marcos.append(crearMarco(a, 0), (()=>{ const m = document.createElement("div"); m.className = "marco10";
+      for(let i=0;i<10;i++){ const c = document.createElement("span"); c.className = "celda";
+        if(i < b){ const f = document.createElement("span"); f.className = "ficha a"; c.appendChild(f); } m.appendChild(c); } return m; })());
+    const cuenta = crearOperacion([{t:String(a), c:"r"}, " + ", {t:String(b), c:"a"}, " = 10 + ", "?"]);
+    esc.append(marcos, cuenta.div);
+    ponerInstruccion(t.diez(a, b));
+    ponerOpciones([k, ...distractores(k, 0, 10, 2, [b, k+1, k-1, pasa])], k, ()=>{
+      cuenta.llenar(k);
+      // Las fichas azules que caben pasan al primer marco
+      const lleno = crearMarco(a, pasa); lleno.querySelectorAll(".ficha.a").forEach(f=>f.classList.add("vuela"));
+      const resto = document.createElement("div"); resto.className = "marco10";
+      for(let i=0;i<10;i++){ const c = document.createElement("span"); c.className = "celda";
+        if(i < k){ const f = document.createElement("span"); f.className = "ficha a"; c.appendChild(f); } resto.appendChild(c); }
+      marcos.innerHTML = ""; marcos.append(lleno, resto); sonPop();
+      acertar(t.diezFin(a, b, k));
+    });
+    return;
+  }
+
+  /* --- 3. La mariquita: dobles y casi dobles (1.OA.6) --- */
+  if(S.juego === "dobles"){
+    const casi = tope === 20 && Math.random() < 0.45;
+    const max = tope === 10 ? 5 : (casi ? 9 : 10);
+    const a = azar(1, max);
+    const b = casi ? a+1 : a;
+    const r = a + b;
+    const bicho = document.createElement("div"); bicho.className = "mariquita";
+    bicho.setAttribute("role","img"); bicho.setAttribute("aria-label", t.mariquitaDesc(a,b));
+    const cab = document.createElement("span"); cab.className = "cabeza-m";
+    const izq = document.createElement("div"); izq.className = "ala izq";
+    const der = document.createElement("div"); der.className = "ala der";
+    for(let i=0;i<a;i++){ const p = document.createElement("span"); p.className = "punto"; izq.appendChild(p); }
+    for(let i=0;i<b;i++){ const p = document.createElement("span"); p.className = "punto" + (casi && i===b-1 ? " extra" : ""); der.appendChild(p); }
+    bicho.append(izq, der, cab);
+    const etiquetas = document.createElement("div"); etiquetas.className = "etiqueta-alas"; etiquetas.setAttribute("aria-hidden","true");
+    etiquetas.innerHTML = `<span>${a}</span><span>${b}</span>`;
+    const cuenta = crearOperacion([String(a), " + ", String(b), " = ", "?"]);
+    esc.append(bicho, etiquetas, cuenta.div);
+    ponerInstruccion(casi ? t.casiDobles(a) : t.dobles(a));
+    ponerOpciones([r, ...distractores(r, 0, 20, 2, casi ? [2*a, r+1, 2*b] : [r+1, r-1, a])], r, ()=>{
+      cuenta.llenar(r);
+      sonZumbido(); if(!sinMovimiento()) animar(bicho, "vuela");
+      acertar(casi ? t.casiFin(a, r) : t.doblesFin(a, r));
+    });
+    return;
+  }
+
+  /* --- 4. El dominó da la vuelta: propiedad conmutativa (1.OA.3) --- */
+  if(S.juego === "domino"){
+    let a, b;
+    do{ a = azar(1, tope===10 ? 7 : 9); b = azar(1, tope===10 ? 9 : 9); }while(a === b || a + b > tope);
+    const s = a + b;
+    const ficha = document.createElement("div"); ficha.className = "domino";
+    ficha.setAttribute("role","img"); ficha.setAttribute("aria-label", t.dominoDesc(a,b));
+    ficha.append(mitadDomino(a, "r"), mitadDomino(b, "a"));
+    const conHueco = Math.random() < 0.4;
+    const conocida = crearOperacion([{t:String(a), c:"r"}, " + ", {t:String(b), c:"a"}, " = " + s]);
+    const pregunta = conHueco
+      ? crearOperacion([{t:String(a), c:"r"}, " + ", {t:String(b), c:"a"}, " = ", {t:String(b), c:"a"}, " + ", "?"])
+      : crearOperacion([{t:String(b), c:"a"}, " + ", {t:String(a), c:"r"}, " = ", "?"]);
+    esc.append(ficha, conHueco ? pregunta.div : conocida.div);
+    if(!conHueco) esc.appendChild(pregunta.div);
+    ponerInstruccion(conHueco ? t.dominoHueco(a, b) : t.domino(a, b, s));
+    const resp = conHueco ? a : s;
+    const pool = conHueco ? [b, a+1, a-1, s] : [s+1, s-1, a, b];
+    ponerOpciones([resp, ...distractores(resp, 0, 20, 2, pool)], resp, ()=>{
+      pregunta.llenar(resp);
+      ficha.innerHTML = ""; ficha.append(mitadDomino(b, "a"), mitadDomino(a, "r"));
+      sonGiro(); if(!sinMovimiento()) animar(ficha, "gira");
+      acertar(t.dominoFin + " " + cuentaDicha(b, "+", a, s) + ".");
+    });
+    return;
+  }
+
+  /* --- 5. La casa de la familia: sumas y restas relacionadas (1.OA.6) --- */
+  if(S.juego === "familia"){
+    let a, b;
+    do{ a = azar(1, tope===10 ? 8 : 9); b = azar(1, tope===10 ? 8 : 10); }while(a === b || a + b > tope || a + b < 4);
+    const s = a + b;
+    const casa = document.createElement("div"); casa.className = "casa-familia";
+    casa.setAttribute("role","img"); casa.setAttribute("aria-label", t.casaDesc(s,a,b));
+    casa.innerHTML = `<div class="techo"><span>${s}</span></div>
+      <div class="cuerpo"><div class="cuarto r">${a}</div><div class="cuarto a">${b}</div></div>`;
+    // Una de las cuatro cuentas de la familia, con el hueco en el resultado
+    const tipo = azar(0, 3);
+    const cuentas = [
+      {p:[String(a), " + ", String(b), " = ", "?"], r:s, op:"+", x:a, y:b},
+      {p:[String(b), " + ", String(a), " = ", "?"], r:s, op:"+", x:b, y:a},
+      {p:[String(s), " − ", String(a), " = ", "?"], r:b, op:"−", x:s, y:a},
+      {p:[String(s), " − ", String(b), " = ", "?"], r:a, op:"−", x:s, y:b}
+    ];
+    const c = cuentas[tipo];
+    const cuenta = crearOperacion(c.p);
+    esc.append(casa, cuenta.div);
+    ponerInstruccion(t.familia(c.op) + " " + preguntaCuenta(c.x, c.op, c.y));
+    const pool = c.op === "+" ? [s+1, s-1, Math.max(a,b)] : [c.r+1, c.r-1, s, c.y];
+    ponerOpciones([c.r, ...distractores(c.r, 0, 20, 2, pool)], c.r, ()=>{
+      cuenta.llenar(c.r);
+      acertar(t.familiaFin(s, a, b));
+    }, (k)=> k === s && c.op === "−" ? t.pistaFamilia : null);
+    return;
+  }
+
+  /* --- 6. Carrera de cuentas: fluidez hasta 10 (1.OA.6) --- */
+  if(S.juego === "carrera"){
+    const max = tope;               // hasta 10 o hasta 20
+    const suma = Math.random() < 0.5;
+    let a, b, r;
+    if(suma){ a = azar(0, max === 10 ? 9 : 10); b = azar(0, max - a); if(max===20 && a+b < 6) b = azar(Math.max(0, 6-a), max-a); r = a + b; }
+    else { a = azar(2, max); b = azar(0, a); r = a - b; }
+    const pista = document.createElement("div"); pista.className = "pista"; pista.setAttribute("aria-hidden","true");
+    const auto = document.createElement("span"); auto.className = "auto"; auto.textContent = "🏎️";
+    const avance = (k)=> (10 + k * (78/RONDAS)) + "%";
+    auto.style.left = avance(S.ronda);
+    pista.appendChild(auto);
+    const cuenta = crearOperacion([String(a), suma ? " + " : " − ", String(b), " = ", "?"]);
+    esc.append(pista, cuenta.div);
+    ponerInstruccion(t.carrera + " " + preguntaCuenta(a, suma?"+":"−", b));
+    ponerOpciones([r, ...distractores(r, 0, 20, 2)], r, ()=>{
+      cuenta.llenar(r);
+      auto.style.left = avance(S.ronda + 1); sonMotor(); animar(auto, "turbo");
+      acertar(t.carreraFin + " " + cuentaDicha(a, suma?"+":"−", b, r) + ".");
+    });
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const cu = $("hoja-cuentas"); cu.innerHTML = "";
+  ["6 + 6","7 + 8","9 + 4","5 + 3","3 + 5","8 + 7","10 − 4","13 − 3","4 + 4","8 + 5","12 − 6","9 + 9","7 + 7","6 + 7","15 − 5","2 + 9"].forEach(c=>{
+    const s = document.createElement("span"); s.innerHTML = `${c} = <i class="linea"></i>`; cu.appendChild(s);
+  });
+  const ca = $("hoja-casitas"); ca.innerHTML = "";
+  [[13,6,7],[9,4,5],[16,7,9]].forEach(([s,a,b])=>{
+    const d = document.createElement("div"); d.className = "casita";
+    let html = `<b>${s} · ${a} · ${b}</b>`;
+    // Cada renglón: número, signo, número, igual, resultado
+    for(let i=0;i<4;i++) html += `<div><i class="linea"></i> ◯ <i class="linea"></i> = <i class="linea"></i></div>`;
+    d.innerHTML = html; ca.appendChild(d);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerTope(n){
+  S.tope = n;
+  [10,20].forEach(v=>$("btn-"+v).setAttribute("aria-pressed", v===n));
+  if(S.juego) nuevaRonda();
+}
+[10,20].forEach(v=>$("btn-"+v).addEventListener("click", ()=>ponerTope(v)));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>
