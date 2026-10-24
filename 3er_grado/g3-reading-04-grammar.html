@@ -879,7 +879,8 @@ const EDITOR = [
   "We visited [dallas|Dallas,] Texas, in [july.|July.]","[i|I] can't find my shoes.",
   "Lucía [cant|can't] find [genesis|Génesis] anywhere.","The [cats|cat's] tail is long and fluffy."
 ].map(s=>{
-  const toks = s.match(/\[[^\]]+\]|\S+/g).map(x=> x.startsWith("[") ? {mal:x.slice(1,-1).split("|")[0], bien:x.slice(1,-1).split("|")[1], err:true} : {mal:x, bien:x, err:false});
+  const toks = s.match(/\[[^\]]+\]\S*|\S+/g).map(x=>{ const m = x.match(/^\[([^|\]]+)\|([^\]]+)\](.*)$/);
+    return m ? {mal:m[1] + m[3], bien:m[2] + m[3], err:true} : {mal:x, bien:x, err:false}; });
   return {toks, n: toks.filter(x=>x.err).length};
 });
 
