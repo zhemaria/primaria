@@ -273,8 +273,8 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
        data-es="🖨 Imprimir hoja: problemas de dos pasos y patrones" data-en="🖨 Print a page: two-step problems and patterns">🖨 Print a page: two-step problems and patterns</button></p>
-    <p data-es="Alineado con los estándares de matemáticas de Illinois para tercer grado: 3.OA.8 (resolver problemas de dos pasos con las cuatro operaciones, representarlos con ecuaciones que usan una letra para el número desconocido y valorar si la respuesta es razonable con cálculo mental y estimación, incluido el redondeo) y 3.OA.9 (identificar patrones aritméticos, también en la tabla de sumar y en la tabla de multiplicar, y explicarlos con las propiedades de las operaciones). Cada juego tiene su enlace directo: #dospasos, #ecuacion, #razonable, #patrones, #secuencias y #misterio."
-       data-en="Aligned to the Illinois third grade mathematics standards 3.OA.8 (solve two-step word problems using the four operations, represent them with equations using a letter for the unknown, and assess whether answers are reasonable using mental computation and estimation, including rounding) and 3.OA.9 (identify arithmetic patterns, including patterns in the addition and multiplication tables, and explain them using properties of operations). Each game has its own direct link: #dospasos, #ecuacion, #razonable, #patrones, #secuencias and #misterio.">Aligned to the Illinois third grade mathematics standards 3.OA.8 (solve two-step word problems using the four operations, represent them with equations using a letter for the unknown, and assess whether answers are reasonable using mental computation and estimation, including rounding) and 3.OA.9 (identify arithmetic patterns, including patterns in the addition and multiplication tables, and explain them using properties of operations). Each game has its own direct link: #dospasos, #ecuacion, #razonable, #patrones, #secuencias and #misterio.</p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para tercer grado: 3.OA.8 (resolver problemas de dos pasos con las cuatro operaciones, representarlos con ecuaciones que usan una letra para el número desconocido y valorar si la respuesta es razonable con cálculo mental y estimación, incluido el redondeo) y 3.OA.9 (identificar patrones aritméticos, también en la tabla de sumar y en la tabla de multiplicar, y explicarlos con las propiedades de las operaciones). Nota: en el nivel Fácil las ecuaciones llevan paréntesis como apoyo para ver qué se calcula primero; en el Reto no, porque el estándar pide que los alumnos sepan realizar las operaciones en el orden convencional cuando no hay paréntesis que indiquen otro orden. Cada juego tiene su enlace directo: #dospasos, #ecuacion, #razonable, #patrones, #secuencias y #misterio."
+       data-en="Aligned to the Illinois third grade mathematics standards 3.OA.8 (solve two-step word problems using the four operations, represent them with equations using a letter for the unknown, and assess whether answers are reasonable using mental computation and estimation, including rounding) and 3.OA.9 (identify arithmetic patterns, including patterns in the addition and multiplication tables, and explain them using properties of operations). Note: at the Easy level the equations use parentheses as a support to show what is worked out first; at the Challenge level they don't, because the standard expects students to perform operations in the conventional order when there are no parentheses to specify a particular order. Each game has its own direct link: #dospasos, #ecuacion, #razonable, #patrones, #secuencias and #misterio.">Aligned to the Illinois third grade mathematics standards 3.OA.8 (solve two-step word problems using the four operations, represent them with equations using a letter for the unknown, and assess whether answers are reasonable using mental computation and estimation, including rounding) and 3.OA.9 (identify arithmetic patterns, including patterns in the addition and multiplication tables, and explain them using properties of operations). Note: at the Easy level the equations use parentheses as a support to show what is worked out first; at the Challenge level they don't, because the standard expects students to perform operations in the conventional order when there are no parentheses to specify a particular order. Each game has its own direct link: #dospasos, #ecuacion, #razonable, #patrones, #secuencias and #misterio.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
   </footer>
@@ -327,6 +327,9 @@ const T = {
     pistaDos:"Haz los dos pasos en orden. Puedes hacer un dibujo.",
     ecuacion:"¿Qué ecuación representa el problema? La letra n es el número que buscamos.",
     ecuacionFin:(e,v)=>`${e}, y n = ${v}.`,
+    ecuacionFinP:(ep,e,v)=>`${ep} es lo mismo que ${e}: sin paréntesis también se multiplica o divide primero. n = ${v}.`,
+    valorN:"¡Esa es la ecuación! Ahora, ¿cuánto vale n? Ojo con el orden.",
+    pistaOrden:"Cuando no hay paréntesis, primero se multiplica o se divide, y después se suma o se resta.",
     pistaEcuacion:"Revisa cada operación: ¿se juntan grupos iguales, se agrega, se quita o se reparte?",
     razonable:(nom,ex,r)=>`${nom} dice que ${ex} = ${r}. ¿Es razonable esa respuesta?`,
     razonableC:"¿Es razonable esa respuesta? Estima redondeando.",
@@ -364,6 +367,9 @@ const T = {
     pistaDos:"Do the two steps in order. You can draw a picture.",
     ecuacion:"Which equation matches the problem? The letter n is the number we are looking for.",
     ecuacionFin:(e,v)=>`${e}, and n = ${v}.`,
+    ecuacionFinP:(ep,e,v)=>`${ep} is the same as ${e}: without parentheses you still multiply or divide first. n = ${v}.`,
+    valorN:"That's the equation! Now, what is n? Watch the order.",
+    pistaOrden:"When there are no parentheses, multiply or divide first, then add or subtract.",
     pistaEcuacion:"Check each operation: are equal groups joined, is something added, taken away or shared?",
     razonable:(nom,ex,r)=>`${nom} says that ${ex} = ${r}. Is that answer reasonable?`,
     razonableC:"Is that answer reasonable? Estimate by rounding.",
@@ -393,23 +399,23 @@ const PROBLEMAS = [
   /* a paquetes de b, regala c */ (reto)=>{ const a = azar(3, reto?8:5), b = azar(4, reto?9:6), c = azar(2, a*b-3); const r = a*b - c;
     return {es:`Israel compra ${a} paquetes de ${b} tarjetas y le regala ${c} a Alejandro. ¿Cuántas tarjetas le quedan a Israel?`,
             en:`Israel buys ${a} packs of ${b} cards and gives ${c} to Alejandro. How many cards does Israel have left?`,
-            paso:`${a} × ${b}`, v:a*b, otros:[`${b} − ${c}`, `${a} + ${b}`], ec:`${a} × ${b} − ${c} = n`, malas:[`${a} + ${b} − ${c} = n`, `${a} × ${b} + ${c} = n`], r, e:"🃏"}; },
+            paso:`${a} × ${b}`, v:a*b, otros:[`${b} − ${c}`, `${a} + ${b}`], ec:`${a} × ${b} − ${c} = n`, ecP:`(${a} × ${b}) − ${c} = n`, malas:[`${a} + ${b} − ${c} = n`, `${a} × ${b} + ${c} = n`], malasP:[`(${a} + ${b}) − ${c} = n`, `(${a} × ${b}) + ${c} = n`], r, e:"🃏"}; },
   /* a dólares, b libros de c */ (reto)=>{ const b = azar(2, reto?5:3), c = azar(3, reto?9:6), a = b*c + azar(2, reto?20:10); const r = a - b*c;
     return {es:`Lucía tiene ${a} dólares. Compra ${b} libros de ${c} dólares cada uno. ¿Cuánto dinero le queda?`,
             en:`Lucía has ${a} dollars. She buys ${b} books that cost ${c} dollars each. How much money does she have left?`,
-            paso:`${b} × ${c}`, v:b*c, otros:[`${a} − ${b}`, `${a} − ${c}`], ec:`${a} − ${b} × ${c} = n`, malas:[`${a} − ${b} − ${c} = n`, `${a} + ${b} × ${c} = n`], r, e:"📚"}; },
+            paso:`${b} × ${c}`, v:b*c, otros:[`${a} − ${b}`, `${a} − ${c}`], ec:`${a} − ${b} × ${c} = n`, ecP:`${a} − (${b} × ${c}) = n`, malas:[`${a} − ${b} − ${c} = n`, `${a} + ${b} × ${c} = n`], malasP:[`(${a} − ${b}) − ${c} = n`, `${a} + (${b} × ${c}) = n`], trampa:(a-b)*c, r, e:"📚"}; },
   /* a collares de b + c */ (reto)=>{ const a = azar(2, reto?7:4), b = azar(4, reto?9:6), c = azar(3, reto?15:9); const r = a*b + c;
     return {es:`Génesis hace ${a} collares de ${b} cuentas y Adrián hace un collar de ${c} cuentas. ¿Cuántas cuentas usan en total?`,
             en:`Génesis makes ${a} necklaces with ${b} beads each, and Adrián makes one necklace with ${c} beads. How many beads do they use in all?`,
-            paso:`${a} × ${b}`, v:a*b, otros:[`${b} + ${c}`, `${a} + ${c}`], ec:`${a} × ${b} + ${c} = n`, malas:[`${a} + ${b} + ${c} = n`, `${a} × ${b} − ${c} = n`], r, e:"📿"}; },
+            paso:`${a} × ${b}`, v:a*b, otros:[`${b} + ${c}`, `${a} + ${c}`], ec:`${c} + ${a} × ${b} = n`, ecP:`${c} + (${a} × ${b}) = n`, malas:[`${c} + ${a} + ${b} = n`, `${c} × ${a} + ${b} = n`], malasP:[`(${c} + ${a}) + ${b} = n`, `(${c} × ${a}) + ${b} = n`], trampa:(c+a)*b, r, e:"📿"}; },
   /* a niños en equipos de b, c pelotas por equipo */ (reto)=>{ const b = azar(2, reto?6:4), eq = azar(3, reto?6:4), c = azar(2, reto?5:3), a = b*eq; const r = eq*c;
     return {es:`En la clase de Israel hay ${a} niños. Hacen equipos de ${b} y cada equipo recibe ${c} pelotas. ¿Cuántas pelotas necesitan?`,
             en:`Israel's class has ${a} children. They make teams of ${b}, and each team gets ${c} balls. How many balls do they need?`,
-            paso:`${a} ÷ ${b}`, v:eq, otros:[`${a} × ${c}`, `${b} × ${c}`], ec:`${a} ÷ ${b} × ${c} = n`, malas:[`${a} × ${b} × ${c} = n`, `${a} − ${b} × ${c} = n`], r, e:"⚽"}; },
+            paso:`${a} ÷ ${b}`, v:eq, otros:[`${a} × ${c}`, `${b} × ${c}`], ec:`${a} ÷ ${b} × ${c} = n`, ecP:`(${a} ÷ ${b}) × ${c} = n`, malas:[`${a} × ${b} × ${c} = n`, `${a} − ${b} × ${c} = n`], malasP:[`(${a} × ${b}) × ${c} = n`, `${a} − (${b} × ${c}) = n`], r, e:"⚽"}; },
   /* a + b piedras en c cajas */ (reto)=>{ const c = azar(2, reto?6:4), k = azar(3, reto?9:6), a = azar(3, c*k-3), b = c*k - a; const r = k;
     return {es:`En Texas, Alejandro junta ${a} piedras el lunes y ${b} el martes. Las pone en ${c} cajas con la misma cantidad. ¿Cuántas piedras hay en cada caja?`,
             en:`In Texas, Alejandro collects ${a} rocks on Monday and ${b} on Tuesday. He puts them in ${c} boxes with the same number in each. How many rocks are in each box?`,
-            paso:`${a} + ${b}`, v:a+b, otros:[`${b} ÷ ${c}`, `${a} × ${c}`], ec:`(${a} + ${b}) ÷ ${c} = n`, malas:[`${a} + ${b} × ${c} = n`, `${a} + ${b} − ${c} = n`], r, e:"🪨"}; }
+            paso:`${a} + ${b}`, v:a+b, otros:[`${b} ÷ ${c}`, `${a} × ${c}`], ec:`(${a} + ${b}) ÷ ${c} = n`, ecP:`(${a} + ${b}) ÷ ${c} = n`, malas:[`${a} + ${b} × ${c} = n`, `${a} + ${b} − ${c} = n`], malasP:[`${a} + (${b} × ${c}) = n`, `(${a} + ${b}) − ${c} = n`], r, e:"🪨"}; }
 ];
 /* Afirmaciones sobre patrones: [es, en, verdad, explicación es, explicación en] */
 const PATRONES = [
@@ -777,7 +783,7 @@ function nuevaRonda(){
     esc.append(...problemaEl(pr[L], pr.e));
     const responder = ()=>{
       $("opciones").innerHTML = "";
-      ponerOpciones(cercanosA(pr.r, 2), pr.r, ()=>{ sonBoing(); acertar(t.dosFin(pr.ec.replace("n", pr.r).replace(/ = (\d+)$/, (m, x)=>" = " + x))); }, ()=>t.pistaDos);
+      ponerOpciones(cercanosA(pr.r, 2), pr.r, ()=>{ sonBoing(); acertar(t.dosFin((reto ? pr.ec : pr.ecP).replace("n", pr.r))); }, ()=>t.pistaDos);
       S.resolver = resolverTexto(pr.r);
     };
     if(!reto){ ponerInstruccion(t.dospasos, pr[L]); responder(); return; }
@@ -798,7 +804,20 @@ function nuevaRonda(){
     const pr = elegir(PROBLEMAS)(reto);
     esc.append(...problemaEl(pr[L], pr.e));
     ponerInstruccion(t.ecuacion, pr[L] + " " + t.ecuacion);
-    opcionesTexto([pr.ec, ...pr.malas], pr.ec, ()=>acertar(t.ecuacionFin(pr.ec, pr.r)), t.pistaEcuacion);
+    if(!reto){
+      // Introducción guiada: los paréntesis muestran qué se calcula primero; al acertar se ven las dos formas
+      opcionesTexto([pr.ecP, ...pr.malasP], pr.ecP, ()=>acertar(pr.ecP === pr.ec ? t.ecuacionFin(pr.ec, pr.r) : t.ecuacionFinP(pr.ecP, pr.ec, pr.r)), t.pistaEcuacion);
+      return;
+    }
+    // Práctica independiente: sin paréntesis innecesarios; después se calcula n respetando el orden convencional
+    opcionesTexto([pr.ec, ...pr.malas], pr.ec, ()=>{
+      ponerInstruccion(t.valorN);
+      $("opciones").innerHTML = "";
+      const ops = [pr.r, pr.trampa, pr.r + 2, pr.r - 2].filter((v,i,a)=> v !== undefined && v > 0 && a.indexOf(v) === i).slice(0,3);
+      ponerOpciones(ops, pr.r, ()=>{ sonBoing(); acertar(t.ecuacionFin(pr.ec, pr.r)); }, (x)=> x === pr.trampa ? t.pistaOrden : t.pistaDos);
+      S.resolver = resolverTexto(pr.r);
+    }, t.pistaEcuacion);
+    S.resolver = ()=>{ resolverTexto(pr.ec)(); S.resolver(); };
     return;
   }
 
