@@ -18,6 +18,7 @@ Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 | 1.er grado | Matemáticas (9 juegos) | [1er_grado/?lang=es](1er_grado/index.html?lang=es) | [1er_grado/](1er_grado/index.html) |
 | 1.er grado | Lectura en inglés (6 juegos) | [1er_grado/reading.html?lang=es](1er_grado/reading.html?lang=es) | [1er_grado/reading.html](1er_grado/reading.html) |
 | 1.er grado | Lectura en español (6 juegos) | [1er_grado/lectura.html](1er_grado/lectura.html) | — |
+| 3.er grado | Matemáticas (en preparación: 2 de 10 juegos) | [3er_grado/?lang=es](3er_grado/index.html?lang=es) | [3er_grado/](3er_grado/index.html) |
 | 2.º grado | Matemáticas interactivas (7 conjuntos) | [2do_grado/](2do_grado/index.html) | [2nd_grade/](2nd_grade/index.html) |
 | 2.º grado | Detective de operaciones | [mate_detective/](mate_detective/index.html) | [math_word_detective/](math_word_detective/index.html) |
 | 2.º grado | Tablas galácticas | [galactica_tablas/](galactica_tablas/index.html) | [galactic_tables/](galactic_tables/index.html) |
@@ -40,6 +41,7 @@ primaria/
 ├── letras/  letters/     Trazos y letras de prekínder (español / inglés)
 ├── kindergarten/         Matemáticas (es/en), lectura en español (k-lectura-*)
 │                         y lectura en inglés (k-reading-*)
+├── 3er_grado/            3.er grado: matemáticas (es/en en el mismo archivo)
 ├── 1er_grado/            1.er grado: matemáticas y lectura en inglés (es/en en el mismo archivo) y lectura en español
 │                         y lectura en inglés (g1-reading-*)
 ├── 2do_grado/  2nd_grade/            Matemáticas de 2.º grado (español / inglés)
