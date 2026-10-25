@@ -967,21 +967,21 @@ const RAZON_EN = {
 /* 2. Progresivo: [oración, correcta, malas (otro tiempo, sin verbo que ayuda, concordancia o will sin be), cuándo, palabras de tiempo] */
 const PROG = [
   ["Right now, Israel ___ a model of the Willis Tower.","is building",["was building","building","are building"],"present","Right now"],
-  ["Yesterday at noon, Daniel and Elías ___ along Lake Michigan.","were walking",["are walking","walking","was walking"],"past","Yesterday at noon"],
+  ["Yesterday at noon, Daniel and Elías ___ along Lake Michigan.","were walking",["will be walking","walking","was walking"],"past","Yesterday at noon"],
   ["Tomorrow at this time, Sophia ___ on the L train.","will be riding",["was riding","riding","will riding"],"future","Tomorrow at this time"],
   ["Look! The squirrels ___ our snacks!","are stealing",["were stealing","stealing","is stealing"],"present","Look!"],
-  ["Last night at eight, Athena ___ her science project.","was finishing",["is finishing","finishing","were finishing"],"past","Last night at eight"],
+  ["Last night at eight, Athena ___ her science project.","was finishing",["will be finishing","finishing","were finishing"],"past","Last night at eight"],
   ["Next Saturday at ten, Salma and Selena ___ in the spelling bee.","will be competing",["were competing","competing","will competing"],"future","Next Saturday at ten"],
   ["At this moment, I ___ for the bus.","am waiting",["was waiting","waiting","will waiting"],"present","At this moment"],
-  ["When the bell rang, the kids ___ in the gym.","were playing",["are playing","playing","was playing"],"past","When the bell rang"],
+  ["When the bell rang, the kids ___ in the gym.","were playing",["will be playing","playing","was playing"],"past","When the bell rang"],
   ["Tomorrow afternoon, we ___ cookies for the bake sale.","will be baking",["were baking","baking","will baking"],"future","Tomorrow afternoon"],
   ["Shh! The baby ___.","is sleeping",["was sleeping","sleeping","are sleeping"],"present","Shh!"],
-  ["At seven this morning, Elías ___ his teeth.","was brushing",["is brushing","brushing","were brushing"],"past","At seven this morning"],
+  ["At seven this morning, Elías ___ his teeth.","was brushing",["will be brushing","brushing","were brushing"],"past","At seven this morning"],
   ["In ten minutes, Israel and Daniel ___ the game on TV.","will be watching",["were watching","watching","will watching"],"future","In ten minutes"],
   ["Right now, Selena ___ a story about a dragon.","is writing",["was writing","writing","are writing"],"present","Right now"],
-  ["While it was snowing, the friends ___ a snow fort.","were building",["are building","building","was building"],"past","While it was snowing"]
+  ["While it was snowing, the friends ___ a snow fort.","were building",["will be building","building","was building"],"past","While it was snowing"]
 ].map(([s, w, malas, c, tw])=>({s, w, malas, c, tw}));
-const CUANDO_EN = {past:"in the past", present:"right now", future:"in the future"};
+const CUANDO_EN = {past:"in the past", present:"in the present", future:"in the future"};
 
 /* 3. Adjetivos: [oración, artículo, [[adjetivo, categoría] en orden], sustantivo] */
 const ORDEN = ["op","size","age","shape","color","origin","material","purpose"];
@@ -1028,17 +1028,17 @@ const MOD = [
 /* 5. Oraciones: tipo complete | fragment | run-on; las incorrectas traen el arreglo y arreglos malos [texto, clave de pista] */
 const ORAC = [
   {s:"Ran all the way to the bus stop.", tipo:"fragment", fix:"Israel ran all the way to the bus stop.",
-   malas:[["Running all the way to the bus stop.","sinSujeto"],["Ran all the way, to the bus stop.","sinSujeto"],["Ran. All the way to the bus stop.","fragmento"]]},
+   malas:[["Running fast all the way to the bus stop.","sinSujeto"],["Ran all the way to the corner bus stop.","sinSujeto"],["Ran fast. All the way to the bus stop.","fragmento"]]},
   {s:"The tall girl with the purple backpack.", tipo:"fragment", fix:"The tall girl with the purple backpack is Salma.",
-   malas:[["The tall girl. With the purple backpack.","fragmento"],["The tall girl with the purple backpack Salma.","sinVerbo"],["The tall girl with the purple backpack at school.","sinVerbo"]]},
+   malas:[["The tall girl. With the purple backpack, Salma.","fragmento"],["The tall girl with the purple backpack, Salma.","sinVerbo"],["The tall girl with the purple backpack at school.","sinVerbo"]]},
   {s:"Because the train was late.", tipo:"fragment", fix:"We missed the movie because the train was late.",
-   malas:[["Because the train was very late.","dependiente"],["Since the train was late.","dependiente"],["Because the train was late on Monday.","dependiente"]]},
+   malas:[["Because the train was very, very late today.","dependiente"],["Since the train to the movie theater was late.","dependiente"],["Because the train was late on Monday morning again.","dependiente"]]},
   {s:"Daniel and his little brother.", tipo:"fragment", fix:"Daniel and his little brother fed the ducks.",
-   malas:[["Daniel and his little brother, the ducks.","sinVerbo"],["Daniel. And his little brother.","fragmento"],["Daniel and his little brother at the pond.","sinVerbo"]]},
+   malas:[["Daniel and his little brother, and the ducks.","sinVerbo"],["Daniel. And his little brother at the pond.","fragmento"],["Daniel and his little brother at the duck pond.","sinVerbo"]]},
   {s:"After the game on Saturday.", tipo:"fragment", fix:"After the game on Saturday, the team ate pizza.",
-   malas:[["After the game on Saturday at the park.","dependiente"],["After the game. On Saturday.","fragmento"],["The big game on Saturday.","sinVerbo"]]},
+   malas:[["After the big soccer game on Saturday at the park.","dependiente"],["After the game. On Saturday at the pizza place.","fragmento"],["The big game on Saturday with the whole team.","sinVerbo"]]},
   {s:"Sophia reading a book under the tree.", tipo:"fragment", fix:"Sophia was reading a book under the tree.",
-   malas:[["Sophia reading a book, under the tree.","sinAyuda"],["Sophia reading. A book under the tree.","fragmento"],["Sophia, reading a book under the tree.","sinAyuda"]]},
+   malas:[["Sophia reading a good book under the big tree.","sinAyuda"],["Sophia reading. A book under the shady tree.","fragmento"],["Sophia, reading a book under the tree.","sinAyuda"]]},
   {s:"Athena loves the lake she swims there every summer.", tipo:"run-on", fix:"Athena loves the lake. She swims there every summer.",
    malas:[["Athena loves the lake, she swims there every summer.","coma"],["Athena loves the lake. she swims there every summer.","mayuscula"],["Athena loves the lake she swims, there every summer.","corrida"]]},
   {s:"It started to rain we ran inside.", tipo:"run-on", fix:"It started to rain, so we ran inside.",
@@ -1237,9 +1237,9 @@ function nuevaRonda(){
     const o = elegir(pool);
     oracionEl(escaparHTML(o.s));
     esc.appendChild(botonOir(o.s, t.oirOracion));
-    if(!reto) esc.insertAdjacentHTML("beforeend", claveEl([["complete sentence","who + does what + a whole idea"],["fragment","a part is missing"],["run-on","two sentences stuck together"]]));
+    if(!reto) esc.insertAdjacentHTML("beforeend", claveEl([["complete sentence","who + does what + a whole idea"],["sentence fragment","a part is missing"],["run-on sentence","two sentences stuck together"]]));
     ponerInstruccion(t.oraciones, t.oraciones + " ‹" + o.s + "›");
-    const nombres = {complete:"complete sentence", fragment:"fragment", "run-on":"run-on"};
+    const nombres = {complete:"complete sentence", fragment:"sentence fragment", "run-on":"run-on sentence"};
     const inv = Object.fromEntries(Object.entries(nombres).map(([k, v])=>[v, k]));
     opcionesEn(Object.values(nombres), nombres[o.tipo], ()=>{
       if(!reto || o.tipo === "complete"){ acertar(t.finOrac(o.tipo)); return; }
