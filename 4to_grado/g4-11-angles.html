@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Angles: turns, degrees, protractors and adding angles
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.MD.5, 4.MD.6, 4.MD.7, 4.G.1
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Ángulos · Juegos de cuarto grado" data-en="Angles · Fourth grade games">Angles · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade angle games with Lumi: name acute, right, obtuse and straight angles, think of angles as turns of a circle, read a protractor, estimate angles, find a missing angle and measure angles in everyday scenes.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.dibujo-ang{display:flex;justify-content:center;width:100%}
+.ang-svg{width:clamp(220px,62vw,340px);height:auto;max-height:46vh;display:block}
+.reloj-svg{width:clamp(200px,56vw,280px);height:auto;display:block}
+.esc-svg{width:clamp(240px,72vw,420px);height:auto;max-height:44vh;display:block}
+.dibujo-transp{width:100%;display:flex;justify-content:center}
+.transp-svg{width:100%;max-width:620px;height:auto;display:block}
+.escena .contexto{max-width:46ch}
+.ecuacion .hueco{padding:0 .15em}
+@media (max-width:560px){ .escena .dibujo-transp{margin:0 -4px;width:calc(100% + 8px)} }
+.hoja .razon-h{margin-top:4mm}
+@media print{
+  .hoja .angs-h{display:grid;grid-template-columns:repeat(4,1fr);gap:6mm;align-items:end}
+  .hoja .ang-h{text-align:center;font-size:13pt}
+  .hoja .ang-hoja{width:36mm;height:30mm;display:block;margin:0 auto 2mm}
+  .hoja .transps-h{display:flex;gap:8mm}
+  .hoja .transp-h{text-align:center;font-size:15pt;flex:1}
+  .hoja .transp-hoja{width:82mm;height:auto;display:block}
+  .hoja #hoja-sumar div{font-size:15pt}
+}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Ángulos" data-en="Angles">Angles</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>📐</span><span>🕒</span><span>🍕</span><span>🧭</span></div>
+    <h2 data-es="¡Giros y ángulos!" data-en="Turns and angles!">Turns and angles!</h2>
+    <p data-es="Una vuelta completa tiene 360°, un cuarto de vuelta es un ángulo recto y la esquina de una hoja te ayuda a comparar. Con Lumi vas a clasificar ángulos, medir giros del reloj, leer el transportador, estimar, sumar y restar partes de un ángulo y buscar ángulos en tijeras, toboganes y libros. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="A full turn is 360°, a quarter turn is a right angle, and the corner of a sheet of paper helps you compare. With Lumi you will sort angles, measure turns on a clock, read a protractor, estimate, add and subtract the parts of an angle, and find angles in scissors, slides and books. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">A full turn is 360°, a quarter turn is a right angle, and the corner of a sheet of paper helps you compare. With Lumi you will sort angles, measure turns on a clock, read a protractor, estimate, add and subtract the parts of an angle, and find angles in scissors, slides and books. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: ángulos" data-en="🖨 Print a page: angles">🖨 Print a page: angles</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.MD.5 (reconocer los ángulos como figuras formadas por dos rayos con un extremo común y entender su medida como una fracción de la vuelta completa: un ángulo de 1° es 1/360 de vuelta), 4.MD.6 (medir ángulos en grados con el transportador), 4.MD.7 (reconocer que la medida de un ángulo es aditiva y resolver problemas de suma y resta con ángulos que faltan, escribiendo una ecuación con una letra para el número desconocido) y 4.G.1 (identificar ángulos agudos, rectos y obtusos). En el nivel Fácil hay apoyos visuales: la esquina de una hoja de papel como ángulo recto, el cuadrito que marca 90°, el círculo pintado de cada giro, el 0 del transportador siempre a la derecha, las líneas punteadas de 90° y 180° y las partes rotuladas. En el Reto los ángulos están cerca de 90° y sin marca, hay relojes, el minutero y la manecilla de las horas, el transportador se lee desde los dos lados con medidas de 5 en 5, las estimaciones son más cercanas, hay ángulos divididos en tres partes y los pasos quedan a la vista. La pregunta «¿Puede ser?» pide analizar el razonamiento de un compañero. Cada juego tiene su enlace directo: #tipo, #giro, #transportador, #estimar, #sumar y #dibujar."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.MD.5 (recognize angles as shapes formed by two rays with a common endpoint and understand angle measure as a fraction of a full turn: a 1° angle is 1/360 of a turn), 4.MD.6 (measure angles in whole-number degrees using a protractor), 4.MD.7 (recognize angle measure as additive and solve addition and subtraction problems to find unknown angles, writing an equation with a letter for the unknown) and 4.G.1 (identify right, acute and obtuse angles). At the Easy level there are visual supports: the corner of a sheet of paper as a right angle, the little square that marks 90°, the shaded circle for each turn, the protractor&#x27;s 0 always on the right, dotted 90° and 180° benchmark lines and labeled parts. At the Challenge level the angles are close to 90° with no marker, there are clocks with the minute hand and the hour hand, the protractor is read from either side in steps of 5, the estimates are closer, some angles are split into three parts, and the steps stay on screen. The question “Can that be?” asks the child to analyze a classmate&#x27;s reasoning. Each game has its own direct link: #tipo, #giro, #transportador, #estimar, #sumar and #dibujar.">Aligned to the Illinois fourth grade mathematics standards 4.MD.5 (recognize angles as shapes formed by two rays with a common endpoint and understand angle measure as a fraction of a full turn: a 1° angle is 1/360 of a turn), 4.MD.6 (measure angles in whole-number degrees using a protractor), 4.MD.7 (recognize angle measure as additive and solve addition and subtraction problems to find unknown angles, writing an equation with a letter for the unknown) and 4.G.1 (identify right, acute and obtuse angles). At the Easy level there are visual supports: the corner of a sheet of paper as a right angle, the little square that marks 90°, the shaded circle for each turn, the protractor&#x27;s 0 always on the right, dotted 90° and 180° benchmark lines and labeled parts. At the Challenge level the angles are close to 90° with no marker, there are clocks with the minute hand and the hour hand, the protractor is read from either side in steps of 5, the estimates are closer, some angles are split into three parts, and the steps stay on screen. The question “Can that be?” asks the child to analyze a classmate&#x27;s reasoning. Each game has its own direct link: #tipo, #giro, #transportador, #estimar, #sumar and #dibujar.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Ángulos" data-en="Angles">Angles</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Escribe si cada ángulo es agudo, recto, obtuso o llano." data-en="1. Write whether each angle is acute, right, obtuse or straight.">1. Write whether each angle is acute, right, obtuse or straight.</h3>
+  <div class="angs-h" id="hoja-tipos"></div>
+  <h3 data-es="2. ¿Cuánto mide cada ángulo? Lee el transportador desde el 0 del rayo de abajo." data-en="2. How much does each angle measure? Read the protractor from the 0 of the bottom ray.">2. How much does each angle measure? Read the protractor from the 0 of the bottom ray.</h3>
+  <div class="transps-h" id="hoja-transp"></div>
+  <h3 data-es="3. Encuentra el ángulo que falta. Escribe cómo lo pensaste." data-en="3. Find the missing angle. Write how you thought about it.">3. Find the missing angle. Write how you thought about it.</h3>
+  <div id="hoja-sumar"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, puede ser", no:"✘ No puede ser", comprobar:"✔ Comprobar", ninguno:"Marca al menos una opción.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    tipos:{agudo:"Agudo", recto:"Recto", obtuso:"Obtuso", llano:"Llano"},
+    tipoMin:{agudo:"agudo", recto:"recto", obtuso:"obtuso", llano:"llano"},
+    /* Descripciones para el lector de pantalla (no dan la respuesta) */
+    angEtq:"Ángulo formado por dos rayos que salen del mismo punto",
+    angPartesEtq:(n)=>`Ángulo dividido en ${n} partes por rayos que salen del vértice`,
+    relojEtq:(h)=>`Reloj que marca las ${h} en punto`,
+    relojMinEtq:(n)=>`Reloj: el minutero gira desde el 12 hasta el ${n}`,
+    giroEtq:"Círculo con una flecha que gira desde arriba",
+    transpEtq:(lado)=>`Transportador con un ángulo; un rayo pasa por el 0 de la ${lado === "der" ? "derecha" : "izquierda"}`,
+    escenaEtq:{tijeras:"Unas tijeras abiertas", laptop:"Una computadora portátil abierta", tobogan:"Un tobogán del parque con su escalera",
+               escalera:"Un tobogán del parque con su escalera", reloj:"Un reloj", libro:"Un libro abierto", rampa:"Una rampa para patinetas"},
+    /* 1. ¿Qué tipo de ángulo? */
+    tipoF:"¿Qué tipo de ángulo es? Compáralo con la esquina de una hoja.",
+    tipoHoja:"La parte amarilla es la esquina de una hoja de papel: un ángulo recto.",
+    tipoR:"¿Qué tipo de ángulo es?",
+    tipoMide:(a)=>`Este ángulo mide ${a}°. ¿Qué tipo de ángulo es?`,
+    tipoReloj:(h)=>`El reloj marca las ${h} en punto. ¿Qué tipo de ángulo forman las manecillas?`,
+    defTipo:{agudo:"Un ángulo agudo mide menos de 90°: es más cerrado que la esquina de una hoja.",
+             recto:"Un ángulo recto mide exactamente 90°: es igual a la esquina de una hoja.",
+             obtuso:"Un ángulo obtuso mide más de 90° y menos de 180°: es más abierto que la esquina de una hoja.",
+             llano:"Un ángulo llano mide 180°: sus dos rayos forman una línea recta."},
+    pistaTipo:(x)=>T.es.defTipo[x] + " ¿Este ángulo es así? Compáralo con la esquina.",
+    pistaCasi:(a)=>`${a}° está muy cerca de 90°, pero un ángulo recto mide exactamente 90°. ¿${a} es menos o más que 90?`,
+    pistaMideTipo:(x, a)=>T.es.defTipo[x] + ` Este mide ${a}°.`,
+    pistaReloj:(x)=>T.es.defTipo[x] + " Entre dos números del reloj hay 30°; de las 12 a las 3 hay un ángulo recto.",
+    tipoFin:{agudo:"Es agudo: es más cerrado que la esquina de la hoja, así que mide menos de 90°.",
+             recto:"Es recto: coincide con la esquina de la hoja; el cuadrito marca los 90°.",
+             obtuso:"Es obtuso: es más abierto que la esquina de la hoja, pero no llega a una línea recta. Mide entre 90° y 180°.",
+             llano:"Es llano: los dos rayos forman una línea recta, que es media vuelta: 180°."},
+    tipoMideFin:(a, x)=>`${a}° es ${a < 90 ? "menos" : a > 90 ? "más" : "exactamente"} ${a === 90 ? "90°" : "que 90°"}, así que es un ángulo ${x}.`,
+    relojFin:(h, e, g, x)=>`Entre dos números del reloj hay 30°. Entre las manecillas hay ${e} ${e === 1 ? "espacio" : "espacios"}: ${e} × 30° = ${g}°. Es un ángulo ${x}.`,
+    /* 2. Giros de un círculo */
+    vueltaTxt:{90:"un cuarto de vuelta", 180:"media vuelta", 270:"tres cuartos de vuelta", 360:"una vuelta completa"},
+    vueltaFrac:{90:" (1/4)", 180:" (1/2)", 270:" (3/4)", 360:""},
+    giroF:(g)=>`La flecha da ${T.es.vueltaTxt[g]}${T.es.vueltaFrac[g]}. ¿Cuántos grados gira?`,
+    giroV:(g)=>`La flecha da ${T.es.vueltaTxt[g]}. ¿Cuántos grados gira?`,
+    giroRelojF:(n)=>`El minutero va de las 12 a las ${n}. ¿Cuántos grados gira?`,
+    giroFin:(g)=>({90:"Una vuelta completa tiene 360°. Un cuarto de vuelta es 360 ÷ 4 = 90°.",
+                   180:"Una vuelta completa tiene 360°. Media vuelta es 360 ÷ 2 = 180°.",
+                   270:"Una vuelta completa tiene 360°. Un cuarto es 360 ÷ 4 = 90°, y tres cuartos son 3 × 90 = 270°.",
+                   360:"Una vuelta completa, hasta volver al principio, tiene 360°."})[g],
+    pistaCien:"Una vuelta completa tiene 360°, no 100. ¿Qué parte de 360 está pintada?",
+    pistaVuelta:(v)=>`${v}° sería ${T.es.vueltaTxt[v] || "otra parte de la vuelta"}. Mira cuánto del círculo está pintado.`,
+    pistaVueltaOtro:"Mira cuánto del círculo está pintado y recuerda que una vuelta completa tiene 360°.",
+    minF:(m)=>`¿Cuántos grados gira el minutero en ${m} minutos?`,
+    pasosMin:["En 60 minutos el minutero da una vuelta: 360°.","En 1 minuto gira 360 ÷ 60 = 6°.","Multiplica los minutos por 6."],
+    minFin:(m, g)=>`En 60 minutos el minutero gira 360°, así que en 1 minuto gira 360 ÷ 60 = 6°. En ${m} minutos gira ${m} × 6 = ${g}°.`,
+    pistaMin1:"En 1 minuto el minutero no gira 1°: da una vuelta de 360° en 60 minutos. ¿Cuántos grados gira en 1 minuto?",
+    pistaMin10:"Revisa cuánto gira en 1 minuto: 360 ÷ 60. No son 10°.",
+    pistaMinOtro:"Esa es la parte que falta para completar la vuelta. Mide desde el 12 en el sentido de la flecha.",
+    horF:(h)=>`La manecilla de las horas va de las 12 a las ${h}. ¿Cuántos grados gira?`,
+    pasosHor:["Una vuelta completa tiene 360°.","El reloj tiene 12 espacios iguales: 360 ÷ 12 = 30°.","Cuenta los espacios y multiplica por 30."],
+    horFin:(h, g)=>`Una vuelta tiene 360° y el reloj tiene 12 espacios, así que cada espacio es 360 ÷ 12 = 30°. De las 12 a las ${h} hay ${h} espacios: ${h} × 30 = ${g}°.`,
+    pistaHor6:"6° es lo que gira el minutero en un minuto. Entre dos números del reloj hay 360 ÷ 12 grados.",
+    pistaHorOtro:"Esa es la parte que falta para completar la vuelta. Cuenta los espacios desde el 12 en el sentido de la flecha.",
+    unoF:(a)=>`Un ángulo de 1° es 1/360 de vuelta. ¿Cuántos ángulos de 1° caben en un ángulo de ${a}°?`,
+    unoFin:(a)=>`Un ángulo de ${a}° está formado por ${a} ángulos de 1°, porque cada grado es 1/360 de vuelta y ${a}° son ${a}/360 de vuelta.`,
+    pistaUno360:"360 es la cantidad de ángulos de 1° en una vuelta completa, no en este ángulo.",
+    pistaUnoDiv:(a)=>`Dividiste 360 ÷ ${a}: eso dice cuántos ángulos de ${a}° caben en una vuelta. Aquí se pregunta cuántos de 1° caben en ${a}°.`,
+    pistaUnoResta:(a)=>`360 − ${a} es lo que falta para la vuelta completa. ¿Cuántos grados de 1 en 1 hay en ${a}°?`,
+    patF:(n, g)=>`${n} gira ${T.es.vueltaTxt[g]} en su patineta. ¿Cuántos grados gira?`,
+    /* 3. Lee el transportador */
+    transpF:"¿Cuánto mide el ángulo? Lee el transportador.",
+    transpAyuda:"Los números de afuera (negros) empiezan en 0 a la izquierda. Los de adentro (morados) empiezan en 0 a la derecha.",
+    pasosTransp:["El centro del transportador está en el vértice.","Busca el rayo que pasa por un 0.","Lee la escala que empieza en ese 0."],
+    transpFin:(lado, g, otro)=>`El rayo de abajo pasa por el 0 de la ${lado === "der" ? "derecha" : "izquierda"}. En la escala que empieza en ese 0 (los números de ${lado === "der" ? "adentro" : "afuera"}), el otro rayo pasa por el ${g}: el ángulo mide ${g}°. ${otro !== g ? `En la otra escala se lee ${otro}, pero esa empieza en el otro lado.` : ""}`.trim(),
+    pistaEscala:(lado)=>`Leíste la otra escala. Mira desde qué lado empieza el 0: el rayo de abajo pasa por el 0 de la ${lado === "der" ? "derecha" : "izquierda"}, así que usa los números que empiezan en 0 de ese lado (los de ${lado === "der" ? "adentro" : "afuera"}).`,
+    pistaRayitas:"Cuenta las rayitas con cuidado: cada rayita larga marca 10° y cada rayita corta, 5°.",
+    /* 4. Estima el ángulo */
+    estF:"Sin transportador: ¿cuál es la mejor estimación de este ángulo?",
+    estAyuda:"La línea punteada marca un ángulo recto: 90°.",
+    estFin:(c)=> c === 90 ? "El ángulo es igual a la esquina de una hoja: unos 90°." :
+      c < 90 ? `El ángulo es más cerrado que un recto (90°), así que mide menos de 90°. Lo más cercano es ${c}°.` :
+      `El ángulo es más abierto que un recto (90°) y no llega a 180°. Lo más cercano es ${c}°.`,
+    pistaEstLado:(v, c)=> c > 90 ? `${v}° es menos que un ángulo recto, pero este ángulo es más abierto que la esquina de una hoja: mide más de 90°.`
+                                 : `${v}° es más que un ángulo recto, pero este ángulo es más cerrado que la esquina de una hoja: mide menos de 90°.`,
+    pistaEstMenos:(v)=>`El ángulo es más abierto que ${v}°. Usa 90° y 45° (la mitad de un recto) como referencia.`,
+    pistaEstMas:(v)=>`El ángulo es más cerrado que ${v}°. Usa 90° y 45° (la mitad de un recto) como referencia.`,
+    pistaEst90:(v)=> v === 90 ? "No es un ángulo recto: compáralo con la esquina de una hoja." : "Este ángulo coincide con la línea punteada, que es la esquina de una hoja. ¿Cuánto mide esa esquina?",
+    /* 5. Ángulos que se suman */
+    sumF:"¿Cuánto vale n?",
+    sumFTodo:(n)=>`Busca n. El ángulo completo es la suma de las partes.`,
+    pasosSum:["Escribe la ecuación: el ángulo completo es la suma de las partes.","Resta las partes conocidas del ángulo completo (o súmalas si buscas el entero).","Comprueba: las partes deben sumar el ángulo completo."],
+    ctxRecto:(n1)=>`${n1} dibuja un ángulo recto (90°) y lo divide en dos partes con un rayo.`,
+    ctxLlano:(n1)=>`${n1} dibuja una línea recta, un ángulo llano (180°), y la divide en dos partes con un rayo.`,
+    ctxPizzaR:(n1)=>`${n1} tiene un cuarto de pizza: su punta es un ángulo recto (90°). Lo corta en dos porciones.`,
+    ctxPizzaL:(n1)=>`${n1} tiene media pizza: su borde recto es un ángulo llano (180°). La corta en dos porciones.`,
+    ctxPuerta:(n1, a)=>`${n1} abrió la puerta ${a}°. Después la siguió abriendo hasta formar un ángulo recto (90°) con la pared.`,
+    ctxRampa:(n1, a)=>`Una rampa del parque forma un ángulo de ${a}° con el suelo. El suelo es una línea recta (180°). ¿Cuánto mide el ángulo del otro lado de la rampa?`,
+    ctxGeneral:(n1, w)=>`${n1} dibuja un ángulo de ${w}° y lo divide en dos partes con un rayo.`,
+    ctxPorcion:(n1, w)=>`${n1} tiene una porción de pizza con un ángulo de ${w}° en la punta. La corta otra vez en dos porciones.`,
+    ctxTres:(n1, w)=>`${n1} divide un ángulo de ${w}° en tres partes.`,
+    ctxTresPizza:(n1)=>`${n1} corta media pizza (180°) en tres porciones.`,
+    ctxSumaPuerta:(n1, a, b)=>`${n1} abre la puerta ${a}° y después la abre ${b}° más. ¿Cuántos grados se abrió en total?`,
+    ctxSumaAbanico:(n1, a, b)=>`${n1} junta dos porciones de pizza: una de ${a}° y otra de ${b}°. ¿Qué ángulo forman juntas?`,
+    sumFin:(w, ps, n)=>`${w} = ${ps.join(" + ")} + n, así que n = ${w} − ${ps.join(" − ")} = ${n}. Comprueba: ${[...ps, n].join("° + ")}° = ${w}°.`,
+    sumaFin:(a, b, n)=>`n = ${a} + ${b} = ${n}. Las dos partes juntas forman un ángulo de ${n}°.`,
+    pistaSumo:(w, a)=>`Sumaste. El ángulo completo (${w}°) es la suma de las partes: busca qué número más ${a} da ${w}. Puedes restar ${w} − ${a}.`,
+    pistaOtroEntero:(w)=> w === 90 ? "Mira el cuadrito: el ángulo completo es recto, mide 90°, no 180°." : "El ángulo completo es una línea recta: mide 180°, no 90°.",
+    pistaPequeno:"Revisa la resta de las unidades: si el número de arriba es menor, no lo cambies de lugar; desagrupa una decena.",
+    pistaEntero:(w)=>`${w}° es el ángulo completo. n es solo una de las partes, así que debe ser menor.`,
+    pistaFaltaParte:"Te faltó restar una de las partes. Hay tres partes: resta las dos que conoces.",
+    pistaSoloSuma:(s, w)=>`${s}° es lo que miden juntas las dos partes que conoces. Falta restarlo del ángulo completo: ${w} − ${s}.`,
+    pistaSumaResta:"Restaste, pero aquí se juntan las dos partes: hay que sumarlas.",
+    pistaLlevar:"Revisa la suma: cuando las unidades pasan de 9, lleva una decena.",
+    pistaSumGen:"Escribe la ecuación con las partes y el entero, y resuelve paso a paso.",
+    puedeF:(n1, p, q, w)=>`${n1} dice que dividió un ángulo ${w === 90 ? "recto" : "llano"} en dos partes de ${p}° y ${q}°. ¿Puede ser?`,
+    puedeG:"¿Puede ser? Suma las partes y decide.",
+    puedeSi:(p, q, w)=>`Sí puede ser: ${p}° + ${q}° = ${w}°, que es lo que mide un ángulo ${w === 90 ? "recto" : "llano"}.`,
+    puedeNo:(p, q, w, s)=>`No puede ser: ${p}° + ${q}° = ${s}°, y un ángulo ${w === 90 ? "recto" : "llano"} mide ${w}°. Las partes deben sumar el ángulo completo.`,
+    pistaPuede:(w)=>`Suma las dos partes y compara con ${w}°.`,
+    /* 6. Mide en la escena */
+    escF:{tijeras:"¿Cuánto mide, más o menos, el ángulo marcado entre las hojas de las tijeras?",
+          laptop:"¿Cuánto mide, más o menos, el ángulo marcado entre la pantalla y el teclado?",
+          tobogan:"¿Cuánto mide, más o menos, el ángulo marcado entre el tobogán y el suelo?",
+          escalera:"¿Cuánto mide, más o menos, el ángulo marcado entre la escalera y el suelo?",
+          reloj:"¿Cuánto mide, más o menos, el ángulo marcado entre las manecillas?",
+          libro:"¿Cuánto mide, más o menos, el ángulo marcado entre las páginas del libro?",
+          rampa:"¿Cuánto mide, más o menos, el ángulo marcado entre la rampa y el suelo?"},
+    escTipo:{tijeras:"¿Qué tipo de ángulo forman las hojas de las tijeras?",
+          laptop:"¿Qué tipo de ángulo forman la pantalla y el teclado?",
+          tobogan:"¿Qué tipo de ángulo forman el tobogán y el suelo?",
+          escalera:"¿Qué tipo de ángulo forman la escalera y el suelo?",
+          reloj:"¿Qué tipo de ángulo forman las manecillas del reloj?",
+          libro:"¿Qué tipo de ángulo forman las páginas del libro?",
+          rampa:"¿Qué tipo de ángulo forman la rampa y el suelo?"},
+    pasosEsc:["Decide el tipo de ángulo comparándolo con la esquina de una hoja.","Escoge la medida que va con ese tipo."],
+    unos:(v)=>`unos ${v}°`,
+    escFin:(v, x)=>`Mide unos ${v}°: es un ángulo ${x}.`,
+    escFinRecto:"La escalera está derecha, como la esquina de una hoja: 90°, un ángulo recto.",
+    pistaEscTipo:(v, xv, xb)=>`Unos ${v}° sería un ángulo ${xv}. Este ángulo es ${xb}: compáralo con la esquina de una hoja.`,
+    pistaEscMenos:(v)=>`El ángulo es más abierto que ${v}°.`,
+    pistaEscMas:(v)=>`El ángulo es más cerrado que ${v}°.`,
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["Comparé con un ángulo recto","¡Excelente! La esquina de una hoja es una regla muy útil: más cerrado es agudo, más abierto es obtuso."],
+      ["Pensé en la vuelta completa como 360°","¡Muy bien! Con 360° puedes calcular un cuarto, media vuelta o lo que gira el minutero."],
+      ["Leí el transportador desde el 0","¡Buena idea! Empezar en el 0 del rayo de abajo evita leer la escala equivocada."],
+      ["Sumé y resté las partes del ángulo","¡Genial! Las partes de un ángulo suman el ángulo completo, así puedes encontrar la que falta."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, it can be", no:"✘ No, it can't be", comprobar:"✔ Check", ninguno:"Mark at least one option.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    tipos:{agudo:"Acute", recto:"Right", obtuso:"Obtuse", llano:"Straight"},
+    tipoMin:{agudo:"an acute", recto:"a right", obtuso:"an obtuse", llano:"a straight"},
+    angEtq:"Angle made by two rays that start at the same point",
+    angPartesEtq:(n)=>`Angle split into ${n} parts by rays that start at the vertex`,
+    relojEtq:(h)=>`Clock showing ${h} o'clock`,
+    relojMinEtq:(n)=>`Clock: the minute hand turns from 12 to ${n}`,
+    giroEtq:"Circle with an arrow that turns from the top",
+    transpEtq:(lado)=>`Protractor with an angle; one ray goes through the 0 on the ${lado === "der" ? "right" : "left"}`,
+    escenaEtq:{tijeras:"An open pair of scissors", laptop:"An open laptop", tobogan:"A park slide with its ladder",
+               escalera:"A park slide with its ladder", reloj:"A clock", libro:"An open book", rampa:"A skateboard ramp"},
+    tipoF:"What kind of angle is it? Compare it with the corner of a sheet of paper.",
+    tipoHoja:"The yellow part is the corner of a sheet of paper: a right angle.",
+    tipoR:"What kind of angle is it?",
+    tipoMide:(a)=>`This angle measures ${a}°. What kind of angle is it?`,
+    tipoReloj:(h)=>`The clock shows ${h} o'clock. What kind of angle do the hands make?`,
+    defTipo:{agudo:"An acute angle measures less than 90°: it is narrower than the corner of a sheet of paper.",
+             recto:"A right angle measures exactly 90°: it matches the corner of a sheet of paper.",
+             obtuso:"An obtuse angle measures more than 90° and less than 180°: it is wider than the corner of a sheet of paper.",
+             llano:"A straight angle measures 180°: its two rays make a straight line."},
+    pistaTipo:(x)=>T.en.defTipo[x] + " Is this angle like that? Compare it with the corner.",
+    pistaCasi:(a)=>`${a}° is very close to 90°, but a right angle measures exactly 90°. Is ${a} less than or more than 90?`,
+    pistaMideTipo:(x, a)=>T.en.defTipo[x] + ` This one measures ${a}°.`,
+    pistaReloj:(x)=>T.en.defTipo[x] + " Between two numbers on a clock there are 30°; from 12 to 3 is a right angle.",
+    tipoFin:{agudo:"It is acute: it is narrower than the corner of the paper, so it measures less than 90°.",
+             recto:"It is a right angle: it matches the corner of the paper; the little square marks the 90°.",
+             obtuso:"It is obtuse: it is wider than the corner of the paper, but it is not a straight line. It measures between 90° and 180°.",
+             llano:"It is a straight angle: the two rays make a straight line, which is a half turn: 180°."},
+    tipoMideFin:(a, x)=>`${a}° is ${a < 90 ? "less than 90°" : a > 90 ? "more than 90°" : "exactly 90°"}, so it is ${x} angle.`,
+    relojFin:(h, e, g, x)=>`Between two numbers on a clock there are 30°. There ${e === 1 ? "is 1 space" : `are ${e} spaces`} between the hands: ${e} × 30° = ${g}°. It is ${x} angle.`,
+    vueltaTxt:{90:"a quarter turn", 180:"a half turn", 270:"a three-quarter turn", 360:"a full turn"},
+    vueltaFrac:{90:" (1/4)", 180:" (1/2)", 270:" (3/4)", 360:""},
+    giroF:(g)=>`The arrow makes ${T.en.vueltaTxt[g]}${T.en.vueltaFrac[g]}. How many degrees does it turn?`,
+    giroV:(g)=>`The arrow makes ${T.en.vueltaTxt[g]}. How many degrees does it turn?`,
+    giroRelojF:(n)=>`The minute hand goes from 12 to ${n}. How many degrees does it turn?`,
+    giroFin:(g)=>({90:"A full turn is 360°. A quarter turn is 360 ÷ 4 = 90°.",
+                   180:"A full turn is 360°. A half turn is 360 ÷ 2 = 180°.",
+                   270:"A full turn is 360°. One quarter is 360 ÷ 4 = 90°, and three quarters are 3 × 90 = 270°.",
+                   360:"A full turn, all the way back to the start, is 360°."})[g],
+    pistaCien:"A full turn is 360°, not 100. What part of 360 is shaded?",
+    pistaVuelta:(v)=>`${v}° would be ${T.en.vueltaTxt[v] || "a different part of the turn"}. Look at how much of the circle is shaded.`,
+    pistaVueltaOtro:"Look at how much of the circle is shaded and remember that a full turn is 360°.",
+    minF:(m)=>`How many degrees does the minute hand turn in ${m} minutes?`,
+    pasosMin:["In 60 minutes the minute hand makes a full turn: 360°.","In 1 minute it turns 360 ÷ 60 = 6°.","Multiply the minutes by 6."],
+    minFin:(m, g)=>`In 60 minutes the minute hand turns 360°, so in 1 minute it turns 360 ÷ 60 = 6°. In ${m} minutes it turns ${m} × 6 = ${g}°.`,
+    pistaMin1:"In 1 minute the minute hand does not turn 1°: it makes a 360° turn in 60 minutes. How many degrees does it turn in 1 minute?",
+    pistaMin10:"Check how much it turns in 1 minute: 360 ÷ 60. It is not 10°.",
+    pistaMinOtro:"That is the part still missing to finish the turn. Measure from 12 in the direction of the arrow.",
+    horF:(h)=>`The hour hand goes from 12 to ${h}. How many degrees does it turn?`,
+    pasosHor:["A full turn is 360°.","The clock has 12 equal spaces: 360 ÷ 12 = 30°.","Count the spaces and multiply by 30."],
+    horFin:(h, g)=>`A full turn is 360° and the clock has 12 spaces, so each space is 360 ÷ 12 = 30°. From 12 to ${h} there are ${h} spaces: ${h} × 30 = ${g}°.`,
+    pistaHor6:"6° is how far the minute hand turns in one minute. Between two numbers on the clock there are 360 ÷ 12 degrees.",
+    pistaHorOtro:"That is the part still missing to finish the turn. Count the spaces from 12 in the direction of the arrow.",
+    unoF:(a)=>`A 1° angle is 1/360 of a turn. How many 1° angles fit in a ${a}° angle?`,
+    unoFin:(a)=>`A ${a}° angle is made of ${a} angles of 1°, because each degree is 1/360 of a turn and ${a}° is ${a}/360 of a turn.`,
+    pistaUno360:"360 is the number of 1° angles in a full turn, not in this angle.",
+    pistaUnoDiv:(a)=>`You divided 360 ÷ ${a}: that tells how many ${a}° angles fit in a full turn. The question asks how many 1° angles fit in ${a}°.`,
+    pistaUnoResta:(a)=>`360 − ${a} is what is left to finish the full turn. How many single degrees are in ${a}°?`,
+    patF:(n, g)=>`${n} makes ${T.en.vueltaTxt[g]} on a skateboard. How many degrees does ${n} turn?`,
+    transpF:"How much does the angle measure? Read the protractor.",
+    transpAyuda:"The outside numbers (black) start at 0 on the left. The inside numbers (purple) start at 0 on the right.",
+    pasosTransp:["The center of the protractor is on the vertex.","Find the ray that goes through a 0.","Read the scale that starts at that 0."],
+    transpFin:(lado, g, otro)=>`The bottom ray goes through the 0 on the ${lado === "der" ? "right" : "left"}. On the scale that starts at that 0 (the ${lado === "der" ? "inside" : "outside"} numbers), the other ray goes through ${g}: the angle measures ${g}°. ${otro !== g ? `The other scale shows ${otro}, but that one starts on the other side.` : ""}`.trim(),
+    pistaEscala:(lado)=>`You read the other scale. Look at which side the 0 starts on: the bottom ray goes through the 0 on the ${lado === "der" ? "right" : "left"}, so use the numbers that start at 0 on that side (the ${lado === "der" ? "inside" : "outside"} ones).`,
+    pistaRayitas:"Count the marks carefully: each long mark is 10° and each short mark is 5°.",
+    estF:"No protractor: which is the best estimate for this angle?",
+    estAyuda:"The dotted line shows a right angle: 90°.",
+    estFin:(c)=> c === 90 ? "The angle matches the corner of a sheet of paper: about 90°." :
+      c < 90 ? `The angle is narrower than a right angle (90°), so it measures less than 90°. The closest is ${c}°.` :
+      `The angle is wider than a right angle (90°) and does not reach 180°. The closest is ${c}°.`,
+    pistaEstLado:(v, c)=> c > 90 ? `${v}° is less than a right angle, but this angle is wider than the corner of a sheet of paper: it measures more than 90°.`
+                                 : `${v}° is more than a right angle, but this angle is narrower than the corner of a sheet of paper: it measures less than 90°.`,
+    pistaEstMenos:(v)=>`The angle is wider than ${v}°. Use 90° and 45° (half of a right angle) as benchmarks.`,
+    pistaEstMas:(v)=>`The angle is narrower than ${v}°. Use 90° and 45° (half of a right angle) as benchmarks.`,
+    pistaEst90:(v)=> v === 90 ? "It is not a right angle: compare it with the corner of a sheet of paper." : "This angle matches the dotted line, which is the corner of a sheet of paper. How big is that corner?",
+    sumF:"What is n?",
+    sumFTodo:(n)=>`Find n. The whole angle is the sum of its parts.`,
+    pasosSum:["Write the equation: the whole angle is the sum of its parts.","Subtract the known parts from the whole (or add them if you are looking for the whole).","Check: the parts must add up to the whole angle."],
+    ctxRecto:(n1)=>`${n1} draws a right angle (90°) and splits it into two parts with a ray.`,
+    ctxLlano:(n1)=>`${n1} draws a straight line, a straight angle (180°), and splits it into two parts with a ray.`,
+    ctxPizzaR:(n1)=>`${n1} has a quarter of a pizza: its tip is a right angle (90°). ${n1} cuts it into two slices.`,
+    ctxPizzaL:(n1)=>`${n1} has half a pizza: its straight edge is a straight angle (180°). ${n1} cuts it into two slices.`,
+    ctxPuerta:(n1, a)=>`${n1} opened the door ${a}°. Then ${n1} kept opening it until it made a right angle (90°) with the wall.`,
+    ctxRampa:(n1, a)=>`A ramp at the park makes a ${a}° angle with the ground. The ground is a straight line (180°). How big is the angle on the other side of the ramp?`,
+    ctxGeneral:(n1, w)=>`${n1} draws a ${w}° angle and splits it into two parts with a ray.`,
+    ctxPorcion:(n1, w)=>`${n1} has a slice of pizza with a ${w}° angle at the tip. ${n1} cuts it again into two slices.`,
+    ctxTres:(n1, w)=>`${n1} splits a ${w}° angle into three parts.`,
+    ctxTresPizza:(n1)=>`${n1} cuts half a pizza (180°) into three slices.`,
+    ctxSumaPuerta:(n1, a, b)=>`${n1} opens the door ${a}° and then opens it ${b}° more. How many degrees did it open in all?`,
+    ctxSumaAbanico:(n1, a, b)=>`${n1} puts two pizza slices together: one is ${a}° and the other is ${b}°. What angle do they make together?`,
+    sumFin:(w, ps, n)=>`${w} = ${ps.join(" + ")} + n, so n = ${w} − ${ps.join(" − ")} = ${n}. Check: ${[...ps, n].join("° + ")}° = ${w}°.`,
+    sumaFin:(a, b, n)=>`n = ${a} + ${b} = ${n}. The two parts together make a ${n}° angle.`,
+    pistaSumo:(w, a)=>`You added. The whole angle (${w}°) is the sum of the parts: find what number plus ${a} makes ${w}. You can subtract ${w} − ${a}.`,
+    pistaOtroEntero:(w)=> w === 90 ? "Look at the little square: the whole angle is a right angle, 90°, not 180°." : "The whole angle is a straight line: it measures 180°, not 90°.",
+    pistaPequeno:"Check the subtraction in the ones: if the top digit is smaller, do not switch them around; regroup a ten.",
+    pistaEntero:(w)=>`${w}° is the whole angle. n is only one of the parts, so it must be smaller.`,
+    pistaFaltaParte:"You forgot to subtract one of the parts. There are three parts: subtract the two you know.",
+    pistaSoloSuma:(s, w)=>`${s}° is what the two known parts measure together. Now subtract it from the whole angle: ${w} − ${s}.`,
+    pistaSumaResta:"You subtracted, but here the two parts are put together: add them.",
+    pistaLlevar:"Check the addition: when the ones go past 9, carry a ten.",
+    pistaSumGen:"Write the equation with the parts and the whole, and solve it step by step.",
+    puedeF:(n1, p, q, w)=>`${n1} says they split a ${w === 90 ? "right" : "straight"} angle into two parts of ${p}° and ${q}°. Can that be?`,
+    puedeG:"Can that be? Add the parts and decide.",
+    puedeSi:(p, q, w)=>`Yes, it can be: ${p}° + ${q}° = ${w}°, which is the size of a ${w === 90 ? "right" : "straight"} angle.`,
+    puedeNo:(p, q, w, s)=>`No, it can't be: ${p}° + ${q}° = ${s}°, and a ${w === 90 ? "right" : "straight"} angle measures ${w}°. The parts must add up to the whole angle.`,
+    pistaPuede:(w)=>`Add the two parts and compare with ${w}°.`,
+    escF:{tijeras:"About how big is the marked angle between the blades of the scissors?",
+          laptop:"About how big is the marked angle between the screen and the keyboard?",
+          tobogan:"About how big is the marked angle between the slide and the ground?",
+          escalera:"About how big is the marked angle between the ladder and the ground?",
+          reloj:"About how big is the marked angle between the clock hands?",
+          libro:"About how big is the marked angle between the pages of the book?",
+          rampa:"About how big is the marked angle between the ramp and the ground?"},
+    escTipo:{tijeras:"What kind of angle do the blades of the scissors make?",
+          laptop:"What kind of angle do the screen and the keyboard make?",
+          tobogan:"What kind of angle do the slide and the ground make?",
+          escalera:"What kind of angle do the ladder and the ground make?",
+          reloj:"What kind of angle do the clock hands make?",
+          libro:"What kind of angle do the pages of the book make?",
+          rampa:"What kind of angle do the ramp and the ground make?"},
+    pasosEsc:["Decide the kind of angle by comparing it with the corner of a sheet of paper.","Pick the measure that goes with that kind."],
+    unos:(v)=>`about ${v}°`,
+    escFin:(v, x)=>`It measures about ${v}°: it is ${x} angle.`,
+    escFinRecto:"The ladder stands straight up, like the corner of a sheet of paper: 90°, a right angle.",
+    pistaEscTipo:(v, xv, xb)=>`About ${v}° would be ${xv} angle. This angle is ${xb} angle: compare it with the corner of a sheet of paper.`,
+    pistaEscMenos:(v)=>`The angle is wider than ${v}°.`,
+    pistaEscMas:(v)=>`The angle is narrower than ${v}°.`,
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["I compared with a right angle","Excellent! The corner of a sheet of paper is a great tool: narrower is acute, wider is obtuse."],
+      ["I thought of a full turn as 360°","Great! With 360° you can find a quarter turn, a half turn or how far the minute hand turns."],
+      ["I read the protractor from 0","Good idea! Starting at the 0 of the bottom ray keeps you from reading the wrong scale."],
+      ["I added and subtracted the parts of the angle","Awesome! The parts of an angle add up to the whole angle, so you can find the missing one."]]
+  }
+};
+const JUEGOS = [
+  {id:"tipo",          emoji:"📐", es:"¿Qué tipo de ángulo?", en:"What kind of angle?", metaEs:"Agudo, recto, obtuso, llano", metaEn:"Acute, right, obtuse, straight"},
+  {id:"giro",          emoji:"🕒", es:"Giros de un círculo", en:"Turns of a circle", metaEs:"1/4 de vuelta = 90°", metaEn:"1/4 turn = 90°"},
+  {id:"transportador", emoji:"🧭", es:"Lee el transportador", en:"Read the protractor", metaEs:"Empieza en el 0", metaEn:"Start at 0"},
+  {id:"estimar",       emoji:"👀", es:"Estima el ángulo", en:"Estimate the angle", metaEs:"Compara con 90° y 180°", metaEn:"Compare with 90° and 180°"},
+  {id:"sumar",         emoji:"🍕", es:"Ángulos que se suman", en:"Angles that add up", metaEs:"90 = 35 + n", metaEn:"90 = 35 + n"},
+  {id:"dibujar",       emoji:"✂️", es:"Mide en la escena", en:"Measure in the scene", metaEs:"Tijeras, reloj, tobogán", metaEn:"Scissors, clock, slide"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-11-angles.html#transportador */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Ángulos ============
+   Los ángulos se miden como en matemáticas: 0° apunta a la derecha y se abre en contra de las manecillas del reloj.
+   En el SVG la y crece hacia abajo, por eso el seno lleva signo menos. */
+const RAD = Math.PI / 180;
+const r1 = (x)=> Math.round(x*10)/10;
+const punto = (cx, cy, r, g)=> [r1(cx + r*Math.cos(g*RAD)), r1(cy - r*Math.sin(g*RAD))];
+/* Arco de g1 a g2 (g2 > g1), en contra de las manecillas */
+function arcoD(cx, cy, r, g1, g2){
+  const [x1, y1] = punto(cx, cy, r, g1), [x2, y2] = punto(cx, cy, r, g2);
+  return `M${x1},${y1} A${r},${r} 0 ${g2 - g1 > 180 ? 1 : 0} 0 ${x2},${y2}`;
+}
+const sectorD = (cx, cy, r, g1, g2)=> `M${cx},${cy} L${punto(cx, cy, r, g1).join(",")} ${arcoD(cx, cy, r, g1, g2).replace(/^M[^A]*/, "")} Z`;
+const tipoDe = (a)=> a < 90 ? "agudo" : a === 90 ? "recto" : a < 180 ? "obtuso" : "llano";
+const FUENTE = 'font-family="Trebuchet MS, sans-serif" font-weight="700"';
+const HALO = 'stroke="#fff" stroke-width="5" paint-order="stroke" stroke-linejoin="round"';
+const COLORES_P = ["#FFCC80", "#90CAF9", "#A5D6A7"];
+
+/* La voz lee «90°» como «90 grados» y «+» como «más» */
+const _hablarA = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  _hablarA(String(texto).replace(/(\d+)\/360/g, (m, n)=> n === "1" ? (es ? "un trescientos sesentavo" : "one three hundred sixtieth") : n + (es ? " trescientos sesentavos" : " three hundred sixtieths")).replace(/(\d+)°/g, (m, n)=> n + (es ? (n === "1" ? " grado" : " grados") : (n === "1" ? " degree" : " degrees")))
+    .replace(/ \+ /g, es ? " más " : " plus "), despues);
+};
+
+/* Caja que contiene todos los puntos: el viewBox se ajusta al dibujo */
+function cajaVista(puntos, pad){
+  const xs = puntos.map(p=>p[0]), ys = puntos.map(p=>p[1]);
+  const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad;
+  return `${r1(x0)} ${r1(y0)} ${r1(Math.max(...xs) - x0 + pad)} ${r1(Math.max(...ys) - y0 + pad)}`;
+}
+
+/* Un ángulo con vértice en (0,0).
+   o.a: medida; o.rot: dirección del primer rayo; o.partes: medidas de las partes (rayos interiores);
+   o.etqs: rótulos de cada parte; o.cuadro: cuadrito de ángulo recto; o.hoja: esquina de una hoja de papel;
+   o.ref: líneas punteadas de 90° y 180°; o.clase y o.aria. */
+function anguloSVG(o){
+  const a = o.a, rot = o.rot || 0, L = o.len || 150, pts = [[0, 0]];
+  const tinta = o.negro ? "#000" : "var(--tinta)";
+  let s = "";
+  if(o.hoja){
+    const p1 = punto(0, 0, 100, rot), p3 = punto(0, 0, 100, rot + 90), p2 = [r1(p1[0] + p3[0]), r1(p1[1] + p3[1])];
+    s += `<polygon points="0,0 ${p1} ${p2} ${p3}" fill="#FFE082" fill-opacity=".7" stroke="#F9A825" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+    pts.push(p1, p2, p3);
+  }
+  if(o.ref){
+    const q = punto(0, 0, L*0.8, rot + 90), w = punto(0, 0, L*0.8, rot + 180);
+    s += `<line x1="0" y1="0" x2="${q[0]}" y2="${q[1]}" stroke="var(--tinta-suave)" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round"/>`;
+    s += `<line x1="0" y1="0" x2="${w[0]}" y2="${w[1]}" stroke="var(--tinta-suave)" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round"/>`;
+    /* Rótulos al lado de cada línea punteada, para que ningún rayo los tape */
+    const e90 = punto(0, 0, L*0.8, rot + 90), e180 = punto(0, 0, L*0.8, rot + 180);
+    const t90 = punto(e90[0], e90[1], 34, rot + 90 + 90), t180 = punto(e180[0], e180[1], 26, rot + 180 - 90);
+    s += `<text x="${t90[0]}" y="${t90[1]}" text-anchor="middle" dominant-baseline="central" font-size="24" ${FUENTE} ${HALO} fill="var(--tinta-suave)">90°</text>`;
+    s += `<text x="${t180[0]}" y="${t180[1]}" text-anchor="middle" dominant-baseline="central" font-size="24" ${FUENTE} ${HALO} fill="var(--tinta-suave)">180°</text>`;
+    pts.push(punto(t90[0], t90[1], 26, 180), punto(t180[0], t180[1], 30, 180), punto(t180[0], t180[1], 16, 90));
+  }
+  const partes = o.partes || [a];
+  let acum = rot;
+  partes.forEach((p, i)=>{
+    const radio = o.partes ? 64 : 44;
+    s += `<path d="${sectorD(0, 0, radio, acum, acum + p)}" fill="${o.partes ? COLORES_P[i % 3] : "var(--acento-claro)"}" stroke="${o.negro ? "#000" : "var(--acento)"}" stroke-width="3"/>`;
+    acum += p;
+  });
+  const rayos = [rot]; acum = rot; partes.forEach(p=>{ acum += p; rayos.push(acum); });
+  rayos.forEach((g, i)=>{
+    const q = punto(0, 0, L, g); pts.push(q);
+    const interior = i > 0 && i < rayos.length - 1;
+    s += `<line x1="0" y1="0" x2="${q[0]}" y2="${q[1]}" stroke="${interior ? "var(--acento)" : tinta}" stroke-width="${interior ? 5 : 6}" stroke-linecap="round"/>`;
+  });
+  if(o.cuadro){
+    const p1 = punto(0, 0, 22, rot), p3 = punto(0, 0, 22, rot + 90), p2 = [r1(p1[0] + p3[0]), r1(p1[1] + p3[1])];
+    s += `<polyline points="${p1} ${p2} ${p3}" fill="none" stroke="${tinta}" stroke-width="3"/>`;
+  }
+  if(o.etqs){
+    acum = rot;
+    partes.forEach((p, i)=>{
+      /* Las partes angostas llevan el rótulo afuera, más allá de los rayos */
+      const rr = p < 30 ? L + 34 : p < 50 ? 104 : 92, q = punto(0, 0, rr, acum + p/2);
+      pts.push(punto(q[0], q[1], 30, 0), punto(q[0], q[1], 30, 180), punto(q[0], q[1], 20, 90), punto(q[0], q[1], 20, 270));
+      s += `<text x="${q[0]}" y="${q[1]}" text-anchor="middle" dominant-baseline="central" font-size="28" ${FUENTE} ${HALO} fill="${o.etqs[i] === "n" ? "var(--acento)" : tinta}">${o.etqs[i]}</text>`;
+      acum += p;
+    });
+  }
+  s += `<circle cx="0" cy="0" r="6" fill="${tinta}"/>`;
+  return `<svg class="${o.clase || "ang-svg"}" viewBox="${cajaVista(pts, 18)}" role="img" aria-label="${escaparHTML(o.aria || T[S.idioma].angEtq)}">${s}</svg>`;
+}
+
+/* Reloj. manecillas: [{g, largo, color, ancho, tenue}] en grados de reloj (0 = las 12, en el sentido de las manecillas).
+   marca: [desde, hasta] en grados de reloj, sector marcado en el sentido de las manecillas */
+const gradoReloj = (c)=> 90 - c;
+function relojSVG(manecillas, marca, aria, clase){
+  const R = 120;
+  let s = `<circle cx="0" cy="0" r="${R}" fill="#fff" stroke="var(--tinta)" stroke-width="6"/>`;
+  if(marca){
+    const [d, h] = marca;
+    s += `<path d="${sectorD(0, 0, 58, gradoReloj(h), gradoReloj(d))}" fill="var(--acento-claro)" stroke="var(--acento)" stroke-width="3"/>`;
+  }
+  for(let n=1;n<=12;n++){
+    const g = gradoReloj(n*30), [x1, y1] = punto(0, 0, R - 4, g), [x2, y2] = punto(0, 0, R - 13, g), [tx, ty] = punto(0, 0, R - 30, g);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--tinta)" stroke-width="3"/>`;
+    s += `<text x="${tx}" y="${ty}" text-anchor="middle" dominant-baseline="central" font-size="24" ${FUENTE} fill="var(--tinta)">${n}</text>`;
+  }
+  manecillas.forEach(m=>{
+    const [x, y] = punto(0, 0, m.largo, gradoReloj(m.g));
+    s += `<line x1="0" y1="0" x2="${x}" y2="${y}" stroke="${m.color || "var(--tinta)"}" stroke-width="${m.ancho || 7}" stroke-linecap="round" ${m.tenue ? 'stroke-dasharray="4 8" opacity=".6"' : ""}/>`;
+  });
+  s += `<circle cx="0" cy="0" r="8" fill="var(--tinta)"/>`;
+  return `<svg class="${clase || "reloj-svg"}" viewBox="-130 -130 260 260" role="img" aria-label="${escaparHTML(aria)}">${s}</svg>`;
+}
+/* Manecillas a las h en punto, con el ángulo menor marcado */
+function relojHora(h, clase){
+  const gh = (h % 12)*30, e = Math.min(h % 12, 12 - h % 12);
+  const marca = (h % 12) <= 6 ? [0, gh] : [gh, 360];
+  return relojSVG([{g:gh, largo:54, ancho:9}, {g:0, largo:74, ancho:6, color:"var(--acento)"}], marca, T[S.idioma].relojEtq(h), clase) ;
+}
+/* Círculo con un giro desde arriba en el sentido de las manecillas */
+function giroSVG(g){
+  const R = 110;
+  let s = `<circle cx="0" cy="0" r="${R}" fill="#fff" stroke="var(--tinta)" stroke-width="4"/>`;
+  s += g >= 360 ? `<circle cx="0" cy="0" r="${R}" fill="var(--acento-claro)"/>` : `<path d="${sectorD(0, 0, R, 90 - g, 90)}" fill="var(--acento-claro)"/>`;
+  s += `<line x1="0" y1="${-R}" x2="0" y2="${R}" stroke="var(--linea)" stroke-width="3" stroke-dasharray="6 6"/><line x1="${-R}" y1="0" x2="${R}" y2="0" stroke="var(--linea)" stroke-width="3" stroke-dasharray="6 6"/>`;
+  s += `<line x1="0" y1="0" x2="0" y2="${-R}" stroke="var(--tinta)" stroke-width="6" stroke-linecap="round"/>`;
+  const fin = punto(0, 0, R, 90 - g);
+  if(g < 360) s += `<line x1="0" y1="0" x2="${fin[0]}" y2="${fin[1]}" stroke="var(--tinta)" stroke-width="6" stroke-linecap="round"/>`;
+  /* Flecha del giro: arco en el sentido de las manecillas y punta al final */
+  const rr = 56, th = 90 - g + 6, pt = punto(0, 0, rr, th);
+  s += `<path d="${arcoD(0, 0, rr, th, 90 - 4)}" fill="none" stroke="var(--acento)" stroke-width="6" stroke-linecap="round"/>`;
+  s += `<polyline points="${punto(pt[0], pt[1], 17, th + 120)} ${pt} ${punto(pt[0], pt[1], 17, th + 60)}" fill="none" stroke="var(--acento)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`;
+  s += `<circle cx="0" cy="0" r="7" fill="var(--tinta)"/>`;
+  return `<svg class="reloj-svg" viewBox="-122 -122 244 244" role="img" aria-label="${escaparHTML(T[S.idioma].giroEtq)}">${s}</svg>`;
+}
+
+/* Transportador: escala de afuera con 0 a la izquierda, escala de adentro (morada) con 0 a la derecha.
+   lado "der": el primer rayo pasa por el 0 de la derecha; "izq": por el de la izquierda. */
+function transpSVG(g, lado, clase, negro){
+  const cx = 250, cy = 252, R = 240, tinta = negro ? "#000" : "var(--tinta)", morado = negro ? "#555" : "var(--acento)";
+  let s = `<path d="M${cx - R},${cy} A${R},${R} 0 0 1 ${cx + R},${cy} Z" fill="${negro ? "#fff" : "#EEF5FB"}" stroke="${tinta}" stroke-width="3"/>`;
+  s += `<path d="M${cx - 148},${cy} A148,148 0 0 1 ${cx + 148},${cy}" fill="none" stroke="${negro ? "#999" : "#B0BEC5"}" stroke-width="2"/>`;
+  for(let d=0; d<=180; d+=5){
+    const largo = d % 10 === 0 ? 17 : 9, [x1, y1] = punto(cx, cy, R, d), [x2, y2] = punto(cx, cy, R - largo, d);
+    s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${tinta}" stroke-width="${d % 10 === 0 ? 2.5 : 1.6}"/>`;
+  }
+  /* Rayos del ángulo */
+  const g1 = lado === "der" ? 0 : 180, g2 = lado === "der" ? g : 180 - g;
+  const [lo, hi] = g1 < g2 ? [g1, g2] : [g2, g1];
+  if(g !== null){
+    s += `<path d="${sectorD(cx, cy, 46, lo, hi)}" fill="${negro ? "none" : "#FFE0B2"}" stroke="${negro ? "#000" : "#E65100"}" stroke-width="3"/>`;
+    [g1, g2].forEach(x=>{ const [px, py] = punto(cx, cy, R + 6, x); s += `<line x1="${cx}" y1="${cy}" x2="${px}" y2="${py}" stroke="${negro ? "#000" : "#E65100"}" stroke-width="${negro ? 3 : 5}" stroke-linecap="round"/>`; });
+  }
+  /* Rótulos derechos, como en un transportador real; los de 3 cifras se estrechan un poco para que no se junten.
+     El 0 y el 180 van debajo de la línea de base para no taparse con ella. */
+  const rotulo = (d, r, txt, tam, color, ancho3)=>{
+    let [x, y] = punto(cx, cy, r, d);
+    if(d === 0 || d === 180) y = cy + tam*0.75;
+    const ajuste = String(txt).length === 3 ? ` textLength="${ancho3}" lengthAdjust="spacingAndGlyphs"` : "";
+    return `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-size="${tam}"${ajuste} ${FUENTE} ${HALO} fill="${color}">${txt}</text>`;
+  };
+  for(let d=0; d<=180; d+=10){
+    s += rotulo(d, 203, 180 - d, 24, tinta, 34);
+    s += rotulo(d, 167, d, 20, morado, 26);
+  }
+  s += `<line x1="${cx - R}" y1="${cy}" x2="${cx + R}" y2="${cy}" stroke="${tinta}" stroke-width="3"/>`;
+  s += `<circle cx="${cx}" cy="${cy}" r="6" fill="${tinta}"/>`;
+  return `<svg class="${clase || "transp-svg"}" viewBox="0 0 500 278" role="img" aria-label="${escaparHTML(T[S.idioma].transpEtq(lado))}">${s}</svg>`;
+}
+
+/* ============ Escenas de la vida diaria ============
+   Cada una devuelve [contenido del SVG, puntos para la caja]; el ángulo marcado se pinta en naranja. */
+const MARCA = 'fill="#FFE0B2" stroke="#E65100" stroke-width="4"';
+function escenaSVG(tipo, a){
+  let s = "", pts = [];
+  if(tipo === "tijeras"){
+    [a/2, -a/2].forEach(g=>{
+      const pun = punto(0, 0, 165, g), b1 = punto(0, 0, 12, g + 90), b2 = punto(0, 0, 12, g - 90);
+      s += `<polygon points="${b1} ${pun} ${b2}" fill="#CFD8DC" stroke="#455A64" stroke-width="3" stroke-linejoin="round"/>`;
+      const asa = punto(0, 0, 62, 180 + g);
+      s += `<line x1="0" y1="0" x2="${asa[0]}" y2="${asa[1]}" stroke="#C62828" stroke-width="10" stroke-linecap="round"/><circle cx="${asa[0]}" cy="${asa[1]}" r="24" fill="none" stroke="#C62828" stroke-width="9"/>`;
+      pts.push(pun, punto(asa[0], asa[1], 30, 180 + g), punto(asa[0], asa[1], 30, 90 + g), punto(asa[0], asa[1], 30, g - 90));
+    });
+    s = `<path d="${sectorD(0, 0, 54, -a/2, a/2)}" ${MARCA}/>` + s + `<circle cx="0" cy="0" r="7" fill="#263238"/>`;
+  } else if(tipo === "laptop"){
+    const tec = punto(0, 0, 190, 0), pan = punto(0, 0, 150, a);
+    s += `<path d="${sectorD(0, 0, 48, 0, a)}" ${MARCA}/>`;
+    s += `<line x1="0" y1="0" x2="${tec[0]}" y2="${tec[1]}" stroke="#546E7A" stroke-width="16" stroke-linecap="round"/>`;
+    for(let k=1;k<=5;k++){ const x = 30 + k*24; s += `<rect x="${x}" y="-4" width="16" height="8" rx="2" fill="#ECEFF1"/>`; }
+    s += `<line x1="0" y1="0" x2="${pan[0]}" y2="${pan[1]}" stroke="#37474F" stroke-width="16" stroke-linecap="round"/>`;
+    const p1 = punto(0, 0, 20, a), p2 = punto(0, 0, 140, a);
+    s += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#81D4FA" stroke-width="7" stroke-linecap="round"/>`;
+    s += `<line x1="-40" y1="14" x2="230" y2="14" stroke="#8D6E63" stroke-width="6" stroke-linecap="round"/>`;
+    pts.push([-40, 20], [230, 20], tec, punto(0, 0, 160, a), [0, -40]);
+  } else if(tipo === "tobogan" || tipo === "escalera"){
+    const h = 120, xl = 230, xs = r1(xl - h/Math.tan(a*RAD));
+    s += `<line x1="${Math.min(xs, 0) - 20}" y1="0" x2="${xl + 70}" y2="0" stroke="#6D4C41" stroke-width="6" stroke-linecap="round"/>`;
+    if(tipo === "tobogan") s += `<path d="${sectorD(xs, 0, 46, 0, a)}" ${MARCA}/>`;
+    else s += `<path d="${sectorD(xl + 26, 0, 40, 0, 90)}" ${MARCA}/>`;
+    s += `<line x1="${xs}" y1="0" x2="${xl}" y2="${-h}" stroke="#F57C00" stroke-width="12" stroke-linecap="round"/>`;
+    [xl, xl + 26].forEach(x=>{ s += `<line x1="${x}" y1="0" x2="${x}" y2="${-h - 14}" stroke="#1565C0" stroke-width="6" stroke-linecap="round"/>`; });
+    for(let y=-22; y>-h; y-=24) s += `<line x1="${xl}" y1="${y}" x2="${xl + 26}" y2="${y}" stroke="#1565C0" stroke-width="5"/>`;
+    pts.push([Math.min(xs, 0) - 20, 10], [xl + 70, 10], [xl, -h - 20]);
+  } else if(tipo === "libro"){
+    const gi = 90 + a/2, gd = 90 - a/2;
+    s += `<path d="${sectorD(0, 0, 46, gd, gi)}" ${MARCA}/>`;
+    [gi, gd].forEach(g=>{
+      for(let k=1;k<=3;k++){ const q = punto(0, 0, 135 - k*10, g + (g > 90 ? -k*4 : k*4)); s += `<line x1="0" y1="0" x2="${q[0]}" y2="${q[1]}" stroke="#BCAAA4" stroke-width="3"/>`; }
+      const q = punto(0, 0, 140, g); s += `<line x1="0" y1="0" x2="${q[0]}" y2="${q[1]}" stroke="#2E7D32" stroke-width="10" stroke-linecap="round"/>`;
+      pts.push(q);
+    });
+    s += `<circle cx="0" cy="0" r="7" fill="#1B5E20"/>`;
+    pts.push([0, 16], [0, -40]);
+  } else if(tipo === "rampa"){
+    const base = 230, alto = r1(base*Math.tan(a*RAD));
+    s += `<line x1="-30" y1="0" x2="${base + 50}" y2="0" stroke="#6D4C41" stroke-width="6" stroke-linecap="round"/>`;
+    s += `<polygon points="0,0 ${base},0 ${base},${-alto}" fill="#B0BEC5" stroke="#455A64" stroke-width="4" stroke-linejoin="round"/>`;
+    s += `<path d="${sectorD(0, 0, 60, 0, a)}" ${MARCA}/>`;
+    const tabla = punto(0, 0, 150, a), t2 = punto(0, 0, 200, a);
+    s += `<line x1="${tabla[0]}" y1="${tabla[1] - 14}" x2="${t2[0]}" y2="${t2[1] - 14}" stroke="#7B1FA2" stroke-width="8" stroke-linecap="round"/>`;
+    [tabla, t2].forEach(p=>{ s += `<circle cx="${r1(p[0] + 4)}" cy="${r1(p[1] - 5)}" r="5" fill="#263238"/>`; });
+    pts.push([-30, 10], [base + 50, 10], [base, -alto - 30]);
+  }
+  return `<svg class="esc-svg" viewBox="${cajaVista(pts, 16)}" role="img" aria-label="${escaparHTML(T[S.idioma].escenaEtq[tipo])}">${s}</svg>`;
+}
+
+/* Botones con grados («90°»); cada uno guarda su valor en data-v */
+function opcionesGrados(lista, bien, alAcertar, pista, rotulo){
+  const cont = $("opciones"), r = rotulo || ((v)=>`${v}°`);
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(r(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, pista(v)); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Botones de los cuatro tipos */
+function opcionesTipo(bien, alAcertar, pista){
+  const t = T[S.idioma], claves = ["agudo","recto","obtuso","llano"];
+  const cont = $("opciones");
+  claves.forEach(k=>{
+    cont.appendChild(botonTexto(t.tipos[k], "opcion-texto", null, (bt)=>{ if(k === bien){ sonBoing(); alAcertar(); } else fallar(bt, pista(k)); }));
+  });
+  S.resolver = resolverTexto(t.tipos[bien]);
+}
+function caja(html, clase){ const d = document.createElement("div"); d.className = clase || "dibujo-ang"; d.innerHTML = html; $("escena").appendChild(d); return d; }
+function parrafo(txt, clase){ const p = document.createElement("p"); p.className = clase || "problema"; p.textContent = txt; $("escena").appendChild(p); return p; }
+/* Ecuación con la incógnita n en un hueco */
+function ecuacionN(txt){
+  const d = document.createElement("div"); d.className = "ecuacion";
+  d.innerHTML = escaparHTML(txt).replace(/\bn\b/, '<span class="hueco">n</span>');
+  $("escena").appendChild(d); return d;
+}
+const llenarN = (ec, v)=>{ const h = ec.querySelector(".hueco"); h.textContent = v; h.classList.add("lleno"); };
+/* Resta de dos cifras «al revés» en las unidades: 90 − 35 → 65 */
+function restaAlReves(w, a){
+  const u = Math.abs(w % 10 - a % 10), d = Math.floor(w/10) - Math.floor(a/10);
+  return d*10 + u;
+}
+const rotAzar = ()=> elegir([0, 0, 15, 30, 45, 60, 100, 160, 200, 250, 300, 330]);
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. ¿Qué tipo de ángulo? (4.G.1, 4.MD.5) --- */
+  if(S.juego === "tipo"){
+    if(!reto){
+      const tipo = elegir(["agudo","recto","obtuso","llano"]);
+      const a = tipo === "agudo" ? azar(5, 15)*5 : tipo === "recto" ? 90 : tipo === "obtuso" ? azar(21, 33)*5 : 180;
+      caja(anguloSVG({a, hoja:true, cuadro: a === 90}));
+      parrafo(t.tipoHoja, "contexto");
+      ponerInstruccion(t.tipoF, t.tipoF + " " + t.tipoHoja);
+      opcionesTipo(tipo, ()=>acertar(t.tipoFin[tipo]), (k)=>t.pistaTipo(k));
+      return;
+    }
+    const modo = elegir(["casi","casi","libre","reloj","reloj"]);
+    if(modo === "casi"){
+      const a = elegir([80, 85, 87, 93, 95, 100]), tipo = tipoDe(a);
+      caja(anguloSVG({a, rot:rotAzar()}));
+      ponerInstruccion(t.tipoMide(a));
+      opcionesTipo(tipo, ()=>acertar(t.tipoMideFin(a, t.tipoMin[tipo])), (k)=> k === "recto" ? t.pistaCasi(a) : t.pistaMideTipo(k, a));
+      return;
+    }
+    if(modo === "libre"){
+      const tipo = elegir(["agudo","obtuso","agudo","obtuso","llano","recto"]);
+      const a = tipo === "agudo" ? azar(4, 14)*5 : tipo === "recto" ? 90 : tipo === "obtuso" ? azar(23, 33)*5 : 180;
+      caja(anguloSVG({a, rot:rotAzar()}));
+      ponerInstruccion(t.tipoR);
+      opcionesTipo(tipo, ()=>acertar(t.tipoFin[tipo]), (k)=>t.pistaTipo(k));
+      return;
+    }
+    const h = elegir([1,2,3,4,5,6,7,8,9,10,11]), e = Math.min(h, 12 - h), g = e*30, tipo = tipoDe(g);
+    caja(relojHora(h));
+    ponerInstruccion(t.tipoReloj(h));
+    opcionesTipo(tipo, ()=>acertar(t.relojFin(h, e, g, t.tipoMin[tipo])), (k)=>t.pistaReloj(k));
+    return;
+  }
+
+  /* --- 2. Giros de un círculo (4.MD.5) --- */
+  if(S.juego === "giro"){
+    const vueltas = [90, 180, 270, 360];
+    const opcVuelta = (g)=>{
+      const cien = g*100/360, otra = elegir(vueltas.filter(x=>x !== g));
+      opcionesGrados([g, otra, cien], g, ()=>acertar(t.giroFin(g)), (v)=> v === cien ? t.pistaCien : t.pistaVuelta(v));
+    };
+    if(!reto){
+      if(Math.random() < 0.4){
+        const n = elegir([3, 6, 9]), g = n*30;
+        caja(relojSVG([{g:0, largo:74, ancho:6, tenue:true}, {g, largo:74, ancho:7, color:"var(--acento)"}], [0, g], t.relojMinEtq(n)));
+        ponerInstruccion(t.giroRelojF(n));
+        opcVuelta(g);
+        return;
+      }
+      const g = elegir(vueltas);
+      caja(giroSVG(g));
+      ponerInstruccion(t.giroF(g));
+      opcVuelta(g);
+      return;
+    }
+    const modo = elegir(["min","min","hor","uno","pat"]);
+    if(modo === "min"){
+      const m = elegir([5, 10, 15, 20, 30, 40, 45]), g = 6*m;
+      esc.appendChild(pasosEl(t.pasosMin));
+      ponerInstruccion(t.minF(m), t.minF(m) + " " + t.pasosMin.join(" "));
+      const mapa = {[m]: t.pistaMin1, [10*m]: t.pistaMin10, [360 - g]: t.pistaMinOtro};
+      opcionesGrados([g, m, 10*m, 360 - g], g, ()=>acertar(t.minFin(m, g)), (v)=>mapa[v] || t.pistaVueltaOtro);
+      return;
+    }
+    if(modo === "hor"){
+      const h = elegir([1, 2, 3, 4, 5, 7, 8, 9, 11]), g = 30*h;
+      esc.appendChild(pasosEl(t.pasosHor));
+      ponerInstruccion(t.horF(h), t.horF(h) + " " + t.pasosHor.join(" "));
+      const mapa = {[6*h]: t.pistaHor6, [360 - g]: t.pistaHorOtro};
+      opcionesGrados([g, 6*h, 360 - g], g, ()=>acertar(t.horFin(h, g)), (v)=>mapa[v] || t.pistaVueltaOtro);
+      return;
+    }
+    if(modo === "uno"){
+      const a = elegir([30, 45, 60, 90, 120]);
+      caja(anguloSVG({a, rot:rotAzar()}));
+      ponerInstruccion(t.unoF(a));
+      const mapa = {360: t.pistaUno360, [360/a]: t.pistaUnoDiv(a), [360 - a]: t.pistaUnoResta(a)};
+      const lista = [a, 360, 360/a, 360 - a];
+      const cont = $("opciones");
+      mezclar(lista).forEach(v=>{
+        const b = botonTexto(String(v), "opcion-texto", null, (bt)=>{ if(v === a){ sonBoing(); acertar(t.unoFin(a)); } else fallar(bt, mapa[v]); });
+        b.dataset.v = v; cont.appendChild(b);
+      });
+      S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === a).click(); };
+      return;
+    }
+    const g = elegir(vueltas), [n1] = nombresAzar(1);
+    ponerInstruccion(t.patF(n1, g));
+    parrafo("🛹", "dibujito");
+    opcVuelta(g);
+    return;
+  }
+
+  /* --- 3. Lee el transportador (4.MD.6) --- */
+  if(S.juego === "transportador"){
+    let g, lado;
+    if(!reto){ lado = "der"; do{ g = azar(1, 17)*10; } while(g === 90); }
+    else { lado = elegir(["der","izq"]); do{ g = azar(2, 34)*5; } while(g === 90); }
+    const otro = 180 - g, paso = reto && g % 10 ? 5 : 10;
+    const vecino = mezclar([g + paso, g - paso, g + 2*paso, g - 2*paso].filter(x=>x > 0 && x < 180 && x !== otro && x !== g))[0];
+    caja(transpSVG(g, lado), "dibujo-transp");
+    if(!reto) parrafo(t.transpAyuda, "contexto");
+    else esc.appendChild(pasosEl(t.pasosTransp));
+    ponerInstruccion(t.transpF, t.transpF + " " + (reto ? t.pasosTransp.join(" ") : t.transpAyuda));
+    const lista = [g, otro, vecino];
+    opcionesGrados(lista, g, ()=>acertar(t.transpFin(lado, g, otro)), (v)=> v === otro ? t.pistaEscala(lado) : t.pistaRayitas);
+    return;
+  }
+
+  /* --- 4. Estima el ángulo: 90° y 180° como referencia --- */
+  if(S.juego === "estimar"){
+    let c, lista, drawn, rot = 0;
+    if(!reto){
+      c = elegir([30, 60, 90, 120, 150]);
+      lista = [c, ...mezclar([30, 60, 90, 120, 150].filter(x=>Math.abs(x - c) >= 60)).slice(0, 2)];
+      drawn = c === 90 ? 90 : c + azar(-3, 3);
+    } else {
+      do{ c = azar(2, 16)*10; } while(c === 90);
+      lista = [c, c - 20, c + 20].filter(x=>x > 0 && x < 180);
+      if(lista.length < 3) lista.push(c < 90 ? c + 40 : c - 40);
+      drawn = c + azar(-2, 2); rot = rotAzar();
+    }
+    caja(anguloSVG({a:drawn, rot, ref:!reto}));
+    if(!reto) parrafo(t.estAyuda, "contexto");
+    ponerInstruccion(t.estF, t.estF + (reto ? "" : " " + t.estAyuda));
+    opcionesGrados(lista, c, ()=>acertar(t.estFin(c)), (v)=>
+      (v === 90 || c === 90) ? t.pistaEst90(v) : (v < 90) !== (c < 90) ? t.pistaEstLado(v, c) : v < c ? t.pistaEstMenos(v) : t.pistaEstMas(v));
+    return;
+  }
+
+  /* --- 5. Ángulos que se suman (4.MD.7) --- */
+  if(S.juego === "sumar"){
+    const [n1, n2] = nombresAzar(2);
+    /* Busca la parte que falta: w = suma de partes conocidas + n */
+    const parteQueFalta = (w, conocidas, contexto, cuadro)=>{
+      const n = w - conocidas.reduce((x, y)=>x + y, 0);
+      parrafo(contexto, "contexto");
+      caja(anguloSVG({a:w, partes:[...conocidas, n], etqs:[...conocidas.map(x=>x + "°"), "n"], cuadro, len:170}));
+      if(reto) esc.appendChild(pasosEl(t.pasosSum));
+      const txt = `${w} = ${conocidas.join(" + ")} + n`;
+      const ec = ecuacionN(txt);
+      ponerInstruccion(t.sumF, contexto + " " + txt + ". " + t.sumF + (reto ? " " + t.pasosSum.join(" ") : ""));
+      const mapa = {};
+      if(conocidas.length === 1){
+        const a = conocidas[0];
+        mapa[w + a] = t.pistaSumo(w, a);
+        const otroW = w === 90 ? 180 : w === 180 ? 90 : 0;
+        if(otroW && otroW - a > 0) mapa[otroW - a] = t.pistaOtroEntero(w);
+        const rm = restaAlReves(w, a); if(rm !== n && rm > 0) mapa[rm] = t.pistaPequeno;
+      } else {
+        conocidas.forEach(x=>{ mapa[w - x] = t.pistaFaltaParte; });
+        mapa[conocidas[0] + conocidas[1]] = t.pistaSoloSuma(conocidas[0] + conocidas[1], w);
+      }
+      mapa[w] = t.pistaEntero(w);
+      delete mapa[n];
+      const malas = mezclar(Object.keys(mapa).map(Number)).slice(0, 2);
+      const lista = [n, ...malas];
+      rellenar(lista, (i)=> n + 10*i);
+      opcionesGrados(lista, n, ()=>{ llenarN(ec, n); acertar(t.sumFin(w, conocidas, n)); }, (v)=>mapa[v] || t.pistaSumGen, String);
+    };
+    if(!reto){
+      const w = elegir([90, 180]);
+      const a = w === 90 ? azar(3, 15)*5 : azar(5, 31)*5;
+      const ctxs = w === 90 ? [t.ctxRecto(n1), t.ctxPizzaR(n1), t.ctxPuerta(n1, a)] : [t.ctxLlano(n1), t.ctxPizzaL(n1), t.ctxRampa(n1, a)];
+      parteQueFalta(w, [a], elegir(ctxs), w === 90);
+      return;
+    }
+    const modo = elegir(["dos","dos","tres","suma","puede","puede"]);
+    if(modo === "dos"){
+      const w = azar(8, 36)*5, a = azar(3, w/5 - 3)*5;
+      parteQueFalta(w, [a], w <= 90 && Math.random() < 0.5 ? t.ctxPorcion(n1, w) : t.ctxGeneral(n1, w), false);
+      return;
+    }
+    if(modo === "tres"){
+      const pizza = Math.random() < 0.5, w = pizza ? 180 : azar(18, 34)*5;
+      let a, b; do{ a = azar(3, 12)*5; b = azar(3, 12)*5; } while(w - a - b < 20 || a === b);
+      parteQueFalta(w, [a, b], pizza ? t.ctxTresPizza(n1) : t.ctxTres(n1, w), false);
+      return;
+    }
+    if(modo === "suma"){
+      let a, b; do{ a = azar(15, 95); b = azar(15, 80); } while(a + b > 180 || a % 10 + b % 10 < 10 || a === b);
+      const n = a + b, puerta = Math.random() < 0.5;
+      const contexto = puerta ? t.ctxSumaPuerta(n1, a, b) : t.ctxSumaAbanico(n1, a, b);
+      parrafo(contexto, "contexto");
+      caja(anguloSVG({a:n, partes:[a, b], etqs:[a + "°", b + "°"], len:170}));
+      esc.appendChild(pasosEl(t.pasosSum));
+      const ec = ecuacionN(`n = ${a} + ${b}`);
+      ponerInstruccion(t.sumF, contexto + " " + `n = ${a} + ${b}. ` + t.sumF + " " + t.pasosSum.join(" "));
+      const sinLlevar = n - 10, resta = Math.abs(a - b);
+      const mapa = {[sinLlevar]: t.pistaLlevar, [resta]: t.pistaSumaResta};
+      opcionesGrados([n, sinLlevar, resta], n, ()=>{ llenarN(ec, n); acertar(t.sumaFin(a, b, n)); }, (v)=>mapa[v] || t.pistaSumGen, String);
+      return;
+    }
+    const w = elegir([90, 90, 180]), verdad = Math.random() < 0.45;
+    let p, q;
+    if(verdad){ p = azar(2, w/5 - 2)*5; q = w - p; }
+    else { const s = w + elegir([-20, -10, 10, 20]); p = azar(2, s/5 - 2)*5; q = s - p; }
+    const texto = t.puedeF(n2, p, q, w);
+    const dicho = document.createElement("p"); dicho.className = "problema"; dicho.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(texto)}`;
+    esc.appendChild(dicho);
+    caja(anguloSVG({a:w, partes:[w*p/(p + q), w*q/(p + q)], etqs:[p + "°", q + "°"], cuadro: w === 90, len:170}));
+    ponerInstruccion(t.puedeG, texto + " " + t.puedeG);
+    const expl = verdad ? t.puedeSi(p, q, w) : t.puedeNo(p, q, w, p + q);
+    const cont = $("opciones");
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(v === verdad){ sonBoing(); acertar(expl); } else fallar(bt, t.pistaPuede(w)); }));
+    });
+    S.resolver = resolverTexto(verdad ? t.si : t.no);
+    return;
+  }
+
+  /* --- 6. Mide en la escena (4.MD.5, 4.MD.6, 4.G.1) --- */
+  if(S.juego === "dibujar"){
+    const escena = elegir(["tijeras","laptop","tobogan","escalera","reloj","libro","rampa"]);
+    let c, h = 0;
+    if(escena === "tijeras") c = elegir([30, 45, 60]);
+    else if(escena === "laptop") c = elegir([90, 110, 120, 135]);
+    else if(escena === "tobogan") c = elegir([30, 40, 45]);
+    else if(escena === "escalera") c = elegir([30, 40, 45]);
+    else if(escena === "libro") c = elegir([60, 90, 120, 150]);
+    else if(escena === "rampa") c = elegir([20, 25, 30]);
+    else { h = elegir([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]); c = 30*Math.min(h, 12 - h); }
+    const medida = escena === "escalera" ? 90 : c, tipo = tipoDe(medida);
+    caja(escena === "reloj" ? relojHora(h, "esc-svg") : escenaSVG(escena, c));
+    const tipoV = (v)=> t.tipoMin[tipoDe(v)];
+    let lista;
+    if(tipo === "recto") lista = reto ? [90, 180, 45, 135] : [90, 180, elegir([45, 30])];
+    else if(tipo === "llano") lista = reto ? [180, 90, 150, 120] : [180, 90, elegir([135, 150])];
+    else if(!reto) lista = [medida, 180 - medida, elegir([90, 180])];
+    else {
+      const cerca = tipo === "agudo" ? (medida <= 45 ? medida + 15 : medida - 15) : (medida <= 120 ? medida + 15 : medida - 15);
+      lista = [medida, cerca, 180 - medida, 90];
+    }
+    const fin = ()=> acertar(escena === "escalera" ? t.escFinRecto : t.escFin(medida, t.tipoMin[tipo]) + " " + t.defTipo[tipo]);
+    const pistaMed = (v)=> tipoDe(v) !== tipo ? t.pistaEscTipo(v, tipoV(v), t.tipoMin[tipo]) : v < medida ? t.pistaEscMenos(v) : t.pistaEscMas(v);
+    if(reto) esc.appendChild(pasosEl(t.pasosEsc));
+    ponerInstruccion(t.escF[escena], t.escF[escena] + (reto ? " " + t.pasosEsc.join(" ") : ""));
+    opcionesGrados(lista, medida, fin, pistaMed, t.unos);
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const L = '<i class="linea"></i>', t = T[S.idioma];
+  $("hoja-tipos").innerHTML = [[40, 0], [90, 30], [135, 0], [180, 0]]
+    .map(([a, rot])=>`<div class="ang-h">${anguloSVG({a, rot, negro:true, clase:"ang-hoja", len:110, cuadro: a === 90})}<div>${L}${L}</div></div>`).join("");
+  $("hoja-transp").innerHTML = [[60, "der"], [125, "izq"]]
+    .map(([g, lado])=>`<div class="transp-h">${transpSVG(g, lado, "transp-hoja", true)}<div>${L}°</div></div>`).join("");
+  $("hoja-sumar").innerHTML = [t.ctxRecto("Sophia") + " 90 = 35 + n", t.ctxSumaPuerta("Daniel", 45, 70) + " n = 45 + 70"]
+    .map(x=>`<p class="razon-h">${escaparHTML(x)}</p><div>n = ${L}</div><div class="renglon"></div>`).join("");
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>

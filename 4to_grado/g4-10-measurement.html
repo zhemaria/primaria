@@ -1,0 +1,2013 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Measurement, area and perimeter
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.MD.1, 4.MD.2, 4.MD.3, 4.MD.4
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Medidas, área y perímetro · Juegos de cuarto grado" data-en="Measurement, area and perimeter · Fourth grade games">Measurement, area and perimeter · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade measurement games with Lumi: convert units, find the rule of a conversion table, solve problems with time, distance, volume, mass and money, find area and perimeter, design gardens and read line plots.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.tabla-conv{border-collapse:collapse;margin:0 auto;font-weight:700;background:#fff}
+.tabla-conv th{font-size:clamp(16px,3.6vw,22px);color:var(--tinta-suave);padding:6px 18px;border-bottom:4px solid var(--acento);text-transform:none}
+.tabla-conv td{font-size:clamp(24px,5.6vw,36px);text-align:center;padding:4px 18px;border-bottom:2px solid var(--linea);min-width:3.2em}
+.tabla-conv td:first-child{border-right:3px solid var(--linea)}
+.falta{display:inline-block;min-width:1.6em;padding:0 .2em;border:3px dashed var(--acento);border-radius:10px;color:var(--acento);text-align:center;line-height:1.2}
+.falta.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.ecuacion-m{font-weight:700;font-size:clamp(26px,6.4vw,42px);margin:0;text-align:center;line-height:1.4;max-width:100%;overflow-wrap:anywhere}
+.rect-svg{width:100%;height:auto;display:block}
+.lp-svg{width:100%;max-width:560px;height:auto;display:block}
+.jardines{display:flex;flex-wrap:wrap;gap:14px 20px;justify-content:center;align-items:flex-end;max-width:100%}
+.jardin{display:flex;flex-direction:column;align-items:center;gap:4px;max-width:100%}
+.jardin b{font-size:clamp(22px,5vw,30px);color:var(--acento)}
+.jardin span{font-weight:700;font-size:clamp(16px,3.8vw,20px)}
+.jardin-svg{max-width:100%;height:auto;display:block}
+#opciones .opcion-texto.frase{font-size:clamp(17px,3.9vw,23px);max-width:560px;width:100%;text-align:left;padding:10px 18px;min-height:60px}
+#opciones .opcion-texto{font-size:clamp(20px,4.6vw,30px)}
+.mixto{display:inline-flex;align-items:center;gap:.12em;font-weight:700}
+.mixto .frac{font-size:.7em}
+.dec-n{font-weight:700;font-size:1.2em}
+.fila-fichas .carta{font-size:clamp(18px,4.2vw,26px)}
+@media print{
+  .hoja .tabla-h{border-collapse:collapse;font-size:14pt;margin:1mm 0 2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:1.5mm 8mm;text-align:center}
+  .hoja .tabla-h .linea{width:14mm}
+  .hoja .rect-h{display:flex;gap:10mm;align-items:center}
+  .hoja .rect-h svg{width:70mm;height:auto}
+  .hoja .rect-h p{font-size:14pt;margin:3mm 0}
+  .hoja .puntos-h svg{width:110mm;height:auto}
+}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Medidas, área y perímetro" data-en="Measurement, area and perimeter">Measurement, area and perimeter</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>📏</span><span>⏱️</span><span>🌻</span><span>⚖️</span></div>
+    <h2 data-es="¡A medir!" data-en="Let&#x27;s measure!">Let&#x27;s measure!</h2>
+    <p data-es="Un pie tiene 12 pulgadas, una libra tiene 16 onzas y una hora tiene 60 minutos. Con Lumi vas a convertir unidades, buscar la regla de una tabla, resolver problemas de tiempo, distancia y dinero, hallar el área y el perímetro, diseñar jardines y leer diagramas de puntos. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="A foot has 12 inches, a pound has 16 ounces and an hour has 60 minutes. With Lumi you will convert units, find the rule of a table, solve problems about time, distance and money, find area and perimeter, design gardens and read line plots. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">A foot has 12 inches, a pound has 16 ounces and an hour has 60 minutes. With Lumi you will convert units, find the rule of a table, solve problems about time, distance and money, find area and perimeter, design gardens and read line plots. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: medidas" data-en="🖨 Print a page: measurement">🖨 Print a page: measurement</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.MD.1 (conocer el tamaño relativo de las unidades de un mismo sistema, como km, m, cm; kg, g; lb, oz; L, mL; h, min, s, y expresar una medida de una unidad grande en una unidad más pequeña, anotando las equivalencias en una tabla de dos columnas), 4.MD.2 (resolver problemas de distancias, intervalos de tiempo, volúmenes de líquido, masas y dinero, con fracciones o decimales sencillos y conversiones de una unidad grande a una más pequeña, representándolos con diagramas como la recta numérica), 4.MD.3 (aplicar las fórmulas del área y del perímetro de rectángulos en problemas reales y matemáticos, incluso para hallar un lado que falta) y 4.MD.4 (hacer un diagrama de puntos con medidas en fracciones de unidad, 1/2, 1/4 y 1/8, y resolver problemas de suma y resta de fracciones con los datos). Se usan sobre todo las unidades de los Estados Unidos (pies, pulgadas, yardas, libras, onzas, galones, cuartos de galón, pintas, horas, minutos y segundos) y también las del sistema métrico. En el nivel Fácil hay tablas de conversión, rectas numéricas del tiempo, rectángulos sobre cuadrícula y jardines dibujados; en el Reto hay unidades mezcladas, problemas de dos pasos con los pasos a la vista, lados que faltan y octavos de pulgada. El juego «Diseña el jardín» pide justificar: mismo perímetro con distinta área, misma área con distinto perímetro, y decidir quién tiene razón. Cada juego tiene su enlace directo: #convertir, #tabla, #problemas, #area, #diseno y #puntos."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.MD.1 (know relative sizes of measurement units within one system, including km, m, cm; kg, g; lb, oz; L, mL; hr, min, sec, and express measurements in a larger unit in terms of a smaller unit, recording equivalents in a two-column table), 4.MD.2 (solve word problems involving distances, intervals of time, liquid volumes, masses of objects and money, including simple fractions or decimals and expressing measurements given in a larger unit in terms of a smaller unit, using diagrams such as number lines), 4.MD.3 (apply the area and perimeter formulas for rectangles in real world and mathematical problems, including finding a missing side) and 4.MD.4 (make a line plot to display measurements in fractions of a unit, 1/2, 1/4 and 1/8, and solve problems involving addition and subtraction of fractions using the data). US customary units (feet, inches, yards, pounds, ounces, gallons, quarts, pints, hours, minutes and seconds) are used most, along with metric units. At the Easy level there are conversion tables, time number lines, rectangles on a grid and drawn gardens; at the Challenge level there are mixed units, two-step problems with the steps on screen, missing sides and eighths of an inch. The game “Design the garden” asks the child to justify: same perimeter with different areas, same area with different perimeters, and deciding who is right. Each game has its own direct link: #convertir, #tabla, #problemas, #area, #diseno and #puntos.">Aligned to the Illinois fourth grade mathematics standards 4.MD.1 (know relative sizes of measurement units within one system, including km, m, cm; kg, g; lb, oz; L, mL; hr, min, sec, and express measurements in a larger unit in terms of a smaller unit, recording equivalents in a two-column table), 4.MD.2 (solve word problems involving distances, intervals of time, liquid volumes, masses of objects and money, including simple fractions or decimals and expressing measurements given in a larger unit in terms of a smaller unit, using diagrams such as number lines), 4.MD.3 (apply the area and perimeter formulas for rectangles in real world and mathematical problems, including finding a missing side) and 4.MD.4 (make a line plot to display measurements in fractions of a unit, 1/2, 1/4 and 1/8, and solve problems involving addition and subtraction of fractions using the data). US customary units (feet, inches, yards, pounds, ounces, gallons, quarts, pints, hours, minutes and seconds) are used most, along with metric units. At the Easy level there are conversion tables, time number lines, rectangles on a grid and drawn gardens; at the Challenge level there are mixed units, two-step problems with the steps on screen, missing sides and eighths of an inch. The game “Design the garden” asks the child to justify: same perimeter with different areas, same area with different perimeters, and deciding who is right. Each game has its own direct link: #convertir, #tabla, #problemas, #area, #diseno and #puntos.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Medidas, área y perímetro" data-en="Measurement, area and perimeter">Measurement, area and perimeter</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Completa la tabla de conversión." data-en="1. Complete the conversion table.">1. Complete the conversion table.</h3>
+  <div class="tabla-caja" id="hoja-tabla"></div>
+  <h3 data-es="2. Convierte a la unidad más pequeña." data-en="2. Convert to the smaller unit.">2. Convert to the smaller unit.</h3>
+  <div class="caja-h" id="hoja-conv"></div>
+  <h3 data-es="3. Halla el área y el perímetro del rectángulo. Cada cuadrito mide 1 m²." data-en="3. Find the area and the perimeter of the rectangle. Each small square is 1 m².">3. Find the area and the perimeter of the rectangle. Each small square is 1 m².</h3>
+  <div class="rect-h" id="hoja-rect"></div>
+  <h3 data-es="4. Halla el lado que falta. Muestra cómo lo pensaste." data-en="4. Find the missing side. Show how you thought about it.">4. Find the missing side. Show how you thought about it.</h3>
+  <p class="razon-h" id="hoja-lado"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3 data-es="5. Lee el diagrama de puntos y contesta." data-en="5. Read the line plot and answer.">5. Read the line plot and answer.</h3>
+  <div class="puntos-h" id="hoja-puntos"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, tiene razón", no:"✘ No tiene razón", comprobar:"✔ Comprobar", ninguno:"Marca al menos un jardín.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    /* Unidades: [singular, plural, género] */
+    un:{ft:["pie","pies","m"], inch:["pulgada","pulgadas","f"], yd:["yarda","yardas","f"],
+        lb:["libra","libras","f"], oz:["onza","onzas","f"],
+        gal:["galón","galones","m"], qt:["cuarto de galón","cuartos de galón","m"], pt:["pinta","pintas","f"], cup:["taza","tazas","f"],
+        h:["hora","horas","f"], min:["minuto","minutos","m"], s:["segundo","segundos","m"],
+        km:["kilómetro","kilómetros","m"], m:["metro","metros","m"], cm:["centímetro","centímetros","m"],
+        kg:["kilogramo","kilogramos","m"], g:["gramo","gramos","m"], L:["litro","litros","m"], mL:["mililitro","mililitros","m"]},
+    cuantos:(c, gtxt)=>`¿${T.es.un[c][2] === "f" ? "Cuántas" : "Cuántos"} ${T.es.un[c][1]} hay en ${gtxt}?`,
+    tablaEtq:(g, c)=>`Tabla de conversión de ${T.es.un[g][1]} a ${T.es.un[c][1]}`,
+    /* 1. Convertir unidades */
+    convTabla:(q)=>`Completa la tabla. ${q}`,
+    convFin:(uno, k, f, res)=>`${uno}. Para pasar a una unidad más pequeña se multiplica: ${k} × ${f} = ${res}.`,
+    pistaFactor:(uno, mal)=>`Revisa la regla: ${uno}, no ${mal}.`,
+    pistaSumaF:(k, f, g1, cP)=>`Sumaste ${k} + ${f}, pero cada ${g1} vale ${f} ${cP}: hay que multiplicar ${k} × ${f}.`,
+    pistaRegla:(uno)=>`Usa la regla de la tabla: ${uno}. Multiplica.`,
+    pistaFila:(txt)=>`Ese número va en la fila de ${txt}. Mira la fila que tiene el signo de pregunta.`,
+    pistaDividir:(f, k)=>`Dividiste ${f} ÷ ${k}. Al cambiar a una unidad más pequeña se necesitan más unidades, así que el número crece: multiplica.`,
+    pasosMix:["Convierte la unidad grande a la pequeña: multiplica.","Suma la parte que ya estaba en la unidad pequeña."],
+    mixFin:(aTxt, a, f, afU, bU, totU)=>`Primero, ${aTxt} = ${a} × ${f} = ${afU}. Después, ${afU} + ${bU} = ${totU}.`,
+    pistaOlvido:(bU)=>`Te faltó sumar ${bU}. Convertiste solo la unidad grande.`,
+    pistaJuntar:(x)=>`${x} sale de escribir los dos números juntos. Primero convierte la unidad grande multiplicando, y después suma.`,
+    /* 2. Tabla de conversión */
+    reglaF:"¿Cuál es la regla de esta tabla?",
+    regla:(g1, f, cP)=>`Cada ${g1} son ${f} ${cP}`,
+    reglaFin:(k, f, kf, g1, cP)=>`En cada fila, el número de la derecha es ${f} veces el de la izquierda: ${k} × ${f} = ${kf}. Así que cada ${g1} son ${f} ${cP}.`,
+    pistaReglaFila:(kf, kTxt, unoTxt, k)=>`${kf} va con ${kTxt} en la tabla, no con ${unoTxt}. Divide ${kf} ÷ ${k} para saber cuánto vale 1.`,
+    pistaReglaMal:(k, mal, kmal, kf)=>`Pruébalo con una fila: ${k} × ${mal} = ${kmal}, pero la tabla dice ${kf}.`,
+    extF:(q)=>`Ahora extiende la tabla. ${q}`,
+    extFin:(n, f, res)=>`Con la regla: ${n} × ${f} = ${res}.`,
+    pistaExtSalto:(txt)=>`Ese sería el valor de ${txt}. Entre la última fila y la nueva hay más de un paso: usa la regla y multiplica.`,
+    verdadF:"¿Qué afirmación sobre la tabla es verdadera?",
+    vMas:(g1, f, cP)=>`Por cada ${g1} más, hay ${f} ${cP} más.`,
+    vVeces:(gP, cP, f)=>`El número de ${cP} es siempre ${f} veces el número de ${gP}.`,
+    vExt:(mTxt, rTxt)=>`${mTxt} equivalen a ${rTxt}.`,
+    fSuma:(gP, cP, f)=>`El número de ${cP} es siempre ${f} más que el número de ${gP}.`,
+    fReves:(gP, cP, f)=>`El número de ${gP} es siempre ${f} veces el número de ${cP}.`,
+    vMasE:(g1, f, cP)=>`Es verdad: cada ${g1} vale ${f} ${cP}, así que por cada ${g1} más se suman ${f} ${cP}.`,
+    vVecesE:(k, f, kf)=>`Es verdad: en cada fila se multiplica por ${f}, por ejemplo ${k} × ${f} = ${kf}.`,
+    vExtE:(m, f, r)=>`Es verdad: con la regla, ${m} × ${f} = ${r}.`,
+    fSumaP:(k, f, ks, kf)=>`Pruébalo con una fila: ${k} + ${f} = ${ks}, pero la tabla dice ${kf}. La tabla multiplica, no suma.`,
+    fRevesP:"Está al revés: la unidad más pequeña es la que tiene el número mayor. Mira cualquier fila.",
+    fExtP:(m, mal, f)=>`${m} × ${mal} usa un número equivocado. La regla de la tabla es multiplicar por ${f}.`,
+    /* 3. Problemas de medida */
+    acts:["la práctica de fútbol","la tarea","un rompecabezas","la clase de natación"],
+    leeF:"Lee el problema y elige la respuesta.",
+    durP:(n, act, t1, t2)=>`${n} empieza ${act} a ${t1} y termina a ${t2}. ¿Cuántos minutos dura?`,
+    durFin:(t1, t2, k, tot)=>`De ${t1} a ${t2} hay ${k} saltos de 15 minutos: ${k} × 15 = ${tot} minutos.`,
+    pistaDur100:"Restaste las horas como si fueran números comunes. Una hora tiene 60 minutos, no 100: cuenta los saltos en la recta.",
+    pistaDur15:"Cuenta otra vez los saltos de 15 minutos en la recta, desde el primer punto hasta el segundo.",
+    mediaP:(n, m)=>`${n} leyó media hora el lunes y ${m} minutos el martes. ¿Cuántos minutos leyó en total?`,
+    mediaFin:(m, tot)=>`Media hora son 30 minutos, porque la mitad de 60 es 30. Después, 30 + ${m} = ${tot} minutos.`,
+    pistaMedia50:"Media hora no son 50 minutos: una hora tiene 60 minutos, y la mitad de 60 es 30.",
+    pistaMediaSin:(m)=>`Falta sumar la media hora del lunes a los ${m} minutos del martes.`,
+    rectaTiempo:(a, b)=>`Recta numérica del tiempo, de ${a} a ${b}`,
+    cintaP:(n, m, cm)=>`${n} tiene una cinta de ${m} metros y corta un pedazo de ${cm} centímetros. ¿Cuántos centímetros de cinta le quedan?`,
+    cintaFin:(m, M, cm, r)=>`${m} metros = ${m} × 100 = ${M} centímetros. Después, ${M} − ${cm} = ${r} centímetros.`,
+    cintaEtq:(m, cm)=>`Cinta de ${m} metros, partida en tramos de 100 centímetros, con un pedazo de ${cm} centímetros cortado`,
+    pistaSinConv:"Los dos números están en unidades distintas. Primero convierte los metros a centímetros: 1 metro = 100 centímetros.",
+    pistaSumo:"La cinta se corta, así que queda menos: hay que restar.",
+    cosas:[["un jugo","una galleta"],["un cuaderno","un lápiz"],["una manzana","un yogur"]],
+    compraP:(n, c1, a, c2, b)=>`${n} compra ${c1} de ${a} y ${c2} de ${b}. ¿Cuánto paga en total?`,
+    compraFin:(ca, cb, da, db, tot)=>`Primero los centavos: ${ca} + ${cb} = ${ca+cb} centavos, que son 1 dólar y ${ca+cb-100} centavos. Después los dólares: ${da} + ${db} + 1 = ${da+db+1}. En total, ${tot}.`,
+    pistaLlevarD:(ca, cb)=>`${ca} + ${cb} = ${ca+cb} centavos: cambia 100 centavos por 1 dólar y no olvides sumarlo.`,
+    pistaRestaD:"Restaste. Para saber cuánto paga en total, suma los dos precios.",
+    llegaP:(n, t1, dur)=>`${n} toma el tren a ${t1}. El viaje dura ${dur}. ¿A qué hora llega?`,
+    pasosLlega:["Suma las horas.","Suma los minutos.","Si hay 60 minutos o más, cambia 60 minutos por 1 hora."],
+    llegaFin:(h1, dh, h2, M, m, mm, r, t2)=>`Las horas: ${h1} + ${dh} = ${h2}. Los minutos: ${M} + ${m} = ${mm} minutos, que son 1 hora y ${r} minutos. Así que llega a ${t2}.`,
+    pistaReloj:(x, mm, r)=>`La hora ${x} no existe en el reloj: ${mm} minutos son 1 hora y ${r} minutos.`,
+    pistaSinHoras:"Te faltó sumar las horas que dura el viaje.",
+    pistaSinLlevar:"Cambiaste 60 minutos por 1 hora, pero no sumaste esa hora.",
+    correrP:(n, a, b)=>`${n} corrió ${a} el sábado y ${b} el domingo. ¿Cuántos metros corrió en total?`,
+    pasosCorrer:()=>[`Convierte los kilómetros a metros: 1 kilómetro = ${fmt(1000)} metros.`,"Suma todos los metros."],
+    correrFin:(aTxt, M, m1, M1, m2, tot)=>`${aTxt} = ${M} + ${m1} = ${M1} metros. Después, ${M1} + ${m2} = ${tot} metros.`,
+    pistaSinKm:"Te faltaron los kilómetros: conviértelos a metros y súmalos.",
+    pistaKm100:()=>`1 kilómetro = ${fmt(1000)} metros, no 100.`,
+    pistaKmSinConv:()=>`Sumaste los kilómetros como si fueran metros. Primero conviértelos: multiplica por ${fmt(1000)}.`,
+    jarraP:(n, L, k, ml)=>`Una jarra tiene ${L} litros de jugo. ${n} sirve ${k} vasos de ${ml} mililitros. ¿Cuántos mililitros de jugo quedan en la jarra?`,
+    pasosJarra:["Convierte los litros a mililitros.","Multiplica para saber cuánto se sirvió.","Resta lo que se sirvió."],
+    jarraFin:(L, M, k, ml, s, r)=>`${L} litros = ${M} mililitros. Se sirvieron ${k} × ${ml} = ${s} mililitros. Quedan ${M} − ${s} = ${r} mililitros.`,
+    pistaUnVaso:"Restaste un solo vaso. Primero multiplica para saber cuánto jugo se sirvió en todos los vasos.",
+    pistaServido:"Ese es el jugo que se sirvió. La pregunta es cuánto queda en la jarra: resta.",
+    pistaSumoJ:"Al servir, el jugo de la jarra disminuye: hay que restar, no sumar.",
+    arrozP:(k, aTxt)=>`En la tienda hay ${k} bolsas de arroz. Cada bolsa pesa ${aTxt}. ¿Cuántas onzas pesan todas juntas?`,
+    pasosArroz:["Convierte el peso de una bolsa a onzas: 1 libra = 16 onzas.","Multiplica por el número de bolsas."],
+    arrozFin:(a, A, b, B, k, tot)=>`Una bolsa: ${a} × 16 = ${A} onzas, y ${A} + ${b} = ${B} onzas. Todas: ${k} × ${B} = ${tot} onzas.`,
+    pistaLb10:"Una libra tiene 16 onzas, no 10.",
+    pistaOzUna:"Sumaste las onzas de una sola bolsa. Cada bolsa tiene esas onzas: multiplica el peso completo de una bolsa.",
+    pistaSinOz:"Te faltaron las onzas que sobran en cada bolsa.",
+    cosasCambio:[{pl:"lápices", cada:"cada uno", otro:"una goma"},{pl:"galletas", cada:"cada una", otro:"un jugo"},{pl:"stickers", cada:"cada uno", otro:"un cuaderno"}],
+    cambioP:(n, k, c, p, q, pago)=>`${n} compra ${k} ${c.pl} de ${p} ${c.cada} y ${c.otro} de ${q}. Paga con ${pago}. ¿Cuánto le dan de cambio?`,
+    pasosCambio:["Multiplica para saber cuánto cuestan las cosas iguales.","Suma el otro precio.","Resta el total del dinero con el que paga."],
+    cambioFin:(k, p, s, q, tot, pago, r)=>`${k} × ${p} = ${s}. Después, ${s} + ${q} = ${tot}. El cambio es ${pago} − ${tot} = ${r}.`,
+    pistaSinOtro:"Te faltó restar el precio de la otra cosa que compra.",
+    pistaSinMult:"Contaste el precio de una sola de las cosas iguales. Primero multiplica.",
+    pistaCosto:"Eso es lo que cuesta todo. El cambio es lo que sobra: resta del dinero con el que paga.",
+    practicaP:(n, m, d)=>`${n} practica el piano ${m} minutos cada día. ¿Cuánto tiempo practica en ${d} días?`,
+    pasosPractica:["Multiplica para saber cuántos minutos son en total.","Cambia cada 60 minutos por 1 hora."],
+    practicaFin:(d, m, tot, h, h60, r)=>`${d} × ${m} = ${tot} minutos. Como ${h} × 60 = ${h60} y ${tot} − ${h60} = ${r}, son ${h} horas y ${r} minutos.`,
+    pistaHora100:"Una hora tiene 60 minutos, no 100. Cambia cada 60 minutos por 1 hora.",
+    pistaSinCambiar:(r)=>`Ese tiempo es correcto, pero ${r} minutos son más de una hora: todavía puedes cambiar 60 minutos por 1 hora.`,
+    hm:(h, m)=>`${h} ${h === 1 ? "hora" : "horas"} y ${m} ${m === 1 ? "minuto" : "minutos"}`,
+    /* 4. Área y perímetro */
+    rectEtq:(a, b)=>`Rectángulo de ${a} de largo y ${b} de ancho`,
+    cuadrito:(u)=>`1 cuadrito = ${u}`,
+    areaQ:"¿Cuál es el área del rectángulo?", perQ:"¿Cuál es el perímetro del rectángulo?",
+    areaFinF:(l, w, a)=>`Hay ${w} filas de ${l} cuadritos: ${l} × ${w} = ${a}. El área es el espacio de adentro.`,
+    areaFin:(l, w, a)=>`El área es el espacio de adentro: largo × ancho, ${l} × ${w} = ${a}.`,
+    perFin:(l, w, p)=>`El perímetro es la medida del borde: ${l} + ${w} + ${l} + ${w} = ${p}.`,
+    pistaEsPer:"Ese es el perímetro, la medida del borde. El área es el espacio de adentro: multiplica largo × ancho.",
+    pistaEsArea:"Esa es el área, el espacio de adentro. El perímetro es la medida del borde: suma los cuatro lados.",
+    pistaDosLados:"Sumaste solo dos lados. El rectángulo tiene cuatro lados: suma los cuatro.",
+    pistaSumaArea:"Sumaste el largo y el ancho. Para el área se multiplica: largo × ancho.",
+    ladoAQ:(A, s)=>`Un rectángulo tiene un área de ${A}. Su largo mide ${s}. ¿Cuánto mide su ancho?`,
+    pasosLadoA:["Área = largo × ancho.","Busca el número que, multiplicado por el largo, da el área: divide."],
+    ladoAFin:(A, s, x, xu)=>`Hay que buscar el número que, multiplicado por ${s}, da ${A}: ${A} ÷ ${s} = ${x}. El ancho mide ${xu}.`,
+    pistaRestaA:"Restaste. El área se encuentra multiplicando, así que para buscar el lado que falta hay que dividir.",
+    pistaComoPer:"Trabajaste como si fuera el perímetro. El área es largo × ancho: divide el área entre el largo.",
+    ladoPQ:(P, s)=>`Un rectángulo tiene un perímetro de ${P}. Su largo mide ${s}. ¿Cuánto mide su ancho?`,
+    pasosLadoP:["Suma los dos largos.","Resta eso del perímetro.","Lo que queda son los dos anchos: divide entre 2."],
+    ladoPFin:(s, ss, P, r, x)=>`Los dos largos miden ${s} + ${s} = ${ss}. Quedan ${P} − ${ss} = ${r} para los dos anchos, y ${r} ÷ 2 = ${x}.`,
+    pistaRestaUna:"Restaste solo un largo. El rectángulo tiene dos largos y dos anchos.",
+    pistaSinMitad:"Esos son los dos anchos juntos. Divide entre 2 para saber cuánto mide uno.",
+    pistaComoArea:"Dividiste el perímetro entre el largo, como si fuera el área. El perímetro es la suma de los cuatro lados.",
+    /* 5. Diseña el jardín */
+    jardinEtq:(L, l, w)=>`Jardín ${L}: ${l} metros por ${w} metros`,
+    cercaF:(n, P)=>`${n} tiene ${P} m de cerca. ¿Con qué jardín usa toda la cerca, sin que sobre ni falte?`,
+    areaJF:(n, A)=>`${n} quiere un jardín con ${A} m² para plantar. ¿Qué jardín tiene esa área?`,
+    espacioF:(P)=>`Los jardines A y B usan ${P} m de cerca cada uno. ¿Cuál tiene más espacio para plantar?`,
+    igual:"Los dos igual",
+    cercaFin:(L, l, w, P)=>`El jardín ${L} usa toda la cerca: la cerca va por el borde, y ${l} + ${w} + ${l} + ${w} = ${P} m.`,
+    areaJFin:(L, l, w, A)=>`El jardín ${L} tiene ${l} × ${w} = ${A} m²: son los cuadritos de adentro.`,
+    espacioFin:(A, B, L)=>`El jardín A tiene ${A[0]} × ${A[1]} = ${A[2]} m² y el B tiene ${B[0]} × ${B[1]} = ${B[2]} m². Con la misma cerca, el jardín ${L} tiene más espacio: el más parecido a un cuadrado tiene más área.`,
+    jArea:(L, l, w, a)=>`El jardín ${L} tiene ${l} × ${w} = ${a} m²`,
+    pistaJPer:(L, p, P)=>`La cerca del jardín ${L} mide ${p} m, no ${P} m. Suma los cuatro lados.`,
+    pistaJAreaEsPer:(L, P)=>`El jardín ${L} tiene un área de ${P} m², pero la cerca va por el borde, no por adentro.`,
+    pistaJDos:(L, P)=>`En el jardín ${L}, solo dos lados suman ${P} m. La cerca rodea los cuatro lados.`,
+    pistaJA:(L, a, A)=>`El jardín ${L} tiene un área de ${a} m², no ${A} m². Cuenta los cuadritos o multiplica largo × ancho.`,
+    pistaJAPer:(L, A)=>`El perímetro del jardín ${L} es ${A} m, pero el área son los cuadritos de adentro.`,
+    pistaIgual:"Usan la misma cerca, pero no tienen la misma área: cuenta los cuadritos de cada uno.",
+    pistaEspacio:"Cuenta los cuadritos de cada jardín: el que tenga más tiene más espacio para plantar.",
+    marcarAF:(A)=>`Marca todos los jardines que tienen un área de ${A} m². Después toca Comprobar.`,
+    marcarPF:(P)=>`Marca todos los jardines que se pueden cercar con ${P} m de cerca, sin que sobre ni falte. Después toca Comprobar.`,
+    marcarAP:(A)=>`Busca todos los jardines con ${A} m² para plantar. ¿Tendrán todos la misma cerca?`,
+    marcarPP:(P)=>`Hay ${P} m de cerca. ¿Qué jardines se pueden hacer con ella? ¿Tendrán todos la misma área?`,
+    maloA:(x, a, A, esPer)=>`${x} tiene un área de ${a} m², no ${A} m².` + (esPer ? ` Su perímetro sí es ${A} m, pero el perímetro no es el área.` : ""),
+    maloP:(x, p, P, esArea)=>`${x} necesita ${p} m de cerca, no ${P} m.` + (esArea ? ` Su área sí es ${P} m², pero la cerca va por el borde.` : ""),
+    faltanA:(A)=>`Todavía falta al menos un jardín. Busca otros dos números que, multiplicados, den ${A}.`,
+    faltanP:(P)=>`Todavía falta al menos un jardín. El largo y el ancho juntos deben sumar la mitad de ${P}.`,
+    marcarAFin:(l, A, ps)=>`Todos tienen ${A} m²: ${l}. Tienen la misma área, pero su cerca es distinta: ${ps}.`,
+    marcarPFin:(l, P, as)=>`Todos necesitan ${P} m de cerca: ${l}. Tienen el mismo perímetro, pero distinta área: ${as}.`,
+    razonF:"¿Tiene razón? Lee lo que dice y decide.",
+    dice:(n, x)=>`${n} dice: «${x}»`,
+    rMismaArea:"Si dos jardines tienen el mismo perímetro, tienen la misma área.",
+    rMismaAreaE:(n, a, b, P, A1, A2)=>`${n} no tiene razón: ${a} y ${b} tienen los dos un perímetro de ${P} m, pero sus áreas son ${A1} m² y ${A2} m².`,
+    rCercaMult:"Para saber cuánta cerca necesito, multiplico el largo por el ancho.",
+    rCercaMultE:(n)=>`${n} no tiene razón: largo × ancho da el área. La cerca va por el borde, así que hay que sumar los cuatro lados.`,
+    rCerca:(l, w, P)=>`Un jardín de ${l} m × ${w} m necesita ${P} m de cerca.`,
+    rCercaE:(n, l, w, P)=>`${n} tiene razón: ${l} + ${w} + ${l} + ${w} = ${P} m.`,
+    rCuadrado:(P, c, l, w)=>`Con ${P} m de cerca, un jardín de ${c} m × ${c} m tiene más área que uno de ${l} m × ${w} m.`,
+    rCuadradoE:(n, c, cc, l, w, lw)=>`${n} tiene razón: ${c} × ${c} = ${cc} m² y ${l} × ${w} = ${lw} m².`,
+    rCercaFE:(n, l, w, a, P)=>`${n} no tiene razón: ${l} × ${w} = ${a} es el área. La cerca va por el borde: ${l} + ${w} + ${l} + ${w} = ${P} m.`,
+    rAreaPer:(l, w, x)=>`Un jardín de ${l} m × ${w} m tiene un área de ${x} m².`,
+    rAreaPerE:(n, l, w, a, x)=>`${n} no tiene razón: ${x} m es el perímetro. El área es ${l} × ${w} = ${a} m².`,
+    pistaRazon:"Vuelve a leer. ¿Habla del borde (perímetro) o del espacio de adentro (área)? Haz un dibujo si te ayuda.",
+    /* 6. Diagrama de puntos */
+    ctxP:[{pl:"conchas", uno:"una concha"},{pl:"semillas", uno:"una semilla"},{pl:"orugas", uno:"una oruga"},{pl:"piedritas", uno:"una piedrita"}],
+    lpEtq:(pl, n)=>`Diagrama de puntos con el largo de ${n} ${pl}, en pulgadas`,
+    lpEje:"Largo (pulgadas)",
+    lpIntro:(n, c)=>`La clase midió ${n} ${c.pl} y anotó los largos en un diagrama de puntos. Cada X es ${c.uno}.`,
+    med:(txt, v, d)=> v < d ? `${txt} de pulgada` : v === d ? `${txt} pulgada` : `${txt} pulgadas`,
+    cuantasMid:(c, med)=>`¿Cuántas ${c.pl} midieron ${med}?`,
+    cuentaFin:(val, k, c, med)=>`Encima de ${val} hay ${k} X, así que ${k === 1 ? c.uno + " midió" : k + " " + c.pl + " midieron"} ${med}.`,
+    pistaVecina:(otro, val)=>`Esa es la columna de ${otro}. Busca ${val} en la recta y cuenta las X que tiene encima.`,
+    pistaTotal:(n, c, val)=>`${n} es el total de ${c.pl}. Cuenta solo las X que están encima de ${val}.`,
+    difF:(c)=>`¿Cuál es la diferencia de largo entre la más larga y la más corta de las ${c.pl}?`,
+    difFin:(mx, mn, cuenta, res)=>`La más larga mide ${mx} y la más corta, ${mn}. Con el mismo denominador: ${cuenta}. La diferencia es ${res}.`,
+    pistaDifSuma:"Sumaste los dos largos. La diferencia se encuentra restando: la más larga menos la más corta.",
+    pistaDifRayas:(d)=>`Contaste las rayitas. Cuenta los espacios entre la más corta y la más larga: cada espacio es 1/${d} de pulgada.`,
+    pistaDifOtra:"Revisa cuál es la X más a la derecha y cuál la más a la izquierda.",
+    totalF:(c, med)=>`Si pones en fila todas las ${c.pl} que midieron ${med}, una detrás de otra, ¿cuánto mide la fila?`,
+    totalFin:(k, c, med, suma, res)=>`Hay ${k} ${c.pl} que midieron ${med}: ${suma}. La fila mide ${res}.`,
+    pistaUna:(k)=>`Esa es la medida de una sola. Hay ${k}: súmalas todas.`,
+    pistaDenSuma:"Sumaste también los números de abajo. Al sumar fracciones con el mismo denominador, el de abajo se queda igual.",
+    pistaContar:(val)=>`Cuenta otra vez cuántas X hay encima de ${val}.`,
+    masDeF:(c, med)=>`¿Cuántas ${c.pl} midieron más de ${med}?`,
+    masDeFin:(val, k)=>`Las que midieron más de ${val} son las X que están a la derecha de ${val}: hay ${k}.`,
+    pistaIncluye:(val)=>`Contaste también las que midieron exactamente ${val}. Esas no son más largas.`,
+    pistaMenos:(val)=>`Esas son las que midieron menos de ${val}. Mira a la derecha de ${val}.`,
+    pulg:(v, d)=> v === d ? "pulgada" : "pulgadas",
+    patronF:(q)=>`Mira el patrón de la tabla. ${q}`,
+    pistaDeUno:(f)=>`La tabla no crece de 1 en 1: cada fila tiene ${f} más que la anterior.`,
+    pistaPatron:(f)=>`Mira cómo crece la tabla: cada fila tiene ${f} más que la anterior.`,
+    pistaMedia60:"Media hora es la mitad de una hora: 30 minutos, no 60.",
+    pistaM1000:"1 metro = 100 centímetros, no 1000.",
+    pistaReagrupa:"En cada columna restaste el número pequeño del grande. Hay que reagrupar: cambia 1 centena por 10 decenas.",
+    pistaSinDolar:"Te faltaron los dólares de uno de los precios. Suma los dólares y los centavos de los dos.",
+    pistaCuantas60:(tot)=>`Cuenta de 60 en 60 hasta ${tot}: 60, 120, 180… Cada 60 minutos es 1 hora.`,
+    pistaMismoLado:"Ese es el largo, que ya conoces. Busca el otro lado: divide el área entre el largo.",
+    pistaTresLados:"Sumaste solo tres lados. El rectángulo tiene cuatro lados: dos largos y dos anchos.",
+    hojaRegla:"¿Cuál es la regla de la tabla?",
+    hojaArea:"Área =",
+    hojaPer:"Perímetro =",
+    hojaPuntos:"El diagrama muestra el largo de 10 conchas, en pulgadas. ¿Cuántas conchas midieron 1/2 pulgada? ¿Cuánto miden juntas todas las de 1/2 pulgada?",
+    mixTxt:(a, b)=>`${a} y ${b}`,
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["Usé una tabla de conversión","¡Muy bien! En la tabla se ve la regla: cada unidad grande vale siempre lo mismo en unidades pequeñas."],
+      ["Hice un dibujo de la figura","¡Excelente! En el dibujo se ve qué es el borde (perímetro) y qué es el espacio de adentro (área)."],
+      ["Usé la fórmula","¡Buena idea! Largo × ancho da el área, y sumar los cuatro lados da el perímetro."],
+      ["Usé una recta numérica para el tiempo","¡Genial! Con saltos en la recta se cuentan los minutos sin perderse en las horas."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong", comprobar:"✔ Check", ninguno:"Mark at least one garden.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    un:{ft:["foot","feet"], inch:["inch","inches"], yd:["yard","yards"],
+        lb:["pound","pounds"], oz:["ounce","ounces"],
+        gal:["gallon","gallons"], qt:["quart","quarts"], pt:["pint","pints"], cup:["cup","cups"],
+        h:["hour","hours"], min:["minute","minutes"], s:["second","seconds"],
+        km:["kilometer","kilometers"], m:["meter","meters"], cm:["centimeter","centimeters"],
+        kg:["kilogram","kilograms"], g:["gram","grams"], L:["liter","liters"], mL:["milliliter","milliliters"]},
+    cuantos:(c, gtxt)=>`How many ${T.en.un[c][1]} are in ${gtxt}?`,
+    tablaEtq:(g, c)=>`Conversion table from ${T.en.un[g][1]} to ${T.en.un[c][1]}`,
+    convTabla:(q)=>`Complete the table. ${q}`,
+    convFin:(uno, k, f, res)=>`${uno}. To change to a smaller unit, you multiply: ${k} × ${f} = ${res}.`,
+    pistaFactor:(uno, mal)=>`Check the rule: ${uno}, not ${mal}.`,
+    pistaSumaF:(k, f, g1, cP)=>`You added ${k} + ${f}, but each ${g1} is ${f} ${cP}: multiply ${k} × ${f}.`,
+    pistaRegla:(uno)=>`Use the rule of the table: ${uno}. Multiply.`,
+    pistaFila:(txt)=>`That number belongs in the row for ${txt}. Look at the row with the question mark.`,
+    pistaDividir:(f, k)=>`You divided ${f} ÷ ${k}. When you change to a smaller unit you need more units, so the number gets bigger: multiply.`,
+    pasosMix:["Change the larger unit to the smaller one: multiply.","Add the part that was already in the smaller unit."],
+    mixFin:(aTxt, a, f, afU, bU, totU)=>`First, ${aTxt} = ${a} × ${f} = ${afU}. Then ${afU} + ${bU} = ${totU}.`,
+    pistaOlvido:(bU)=>`You forgot to add the ${bU}. You only converted the larger unit.`,
+    pistaJuntar:(x)=>`${x} comes from writing the two numbers side by side. First change the larger unit by multiplying, then add.`,
+    reglaF:"What is the rule for this table?",
+    regla:(g1, f, cP)=>`Each ${g1} is ${f} ${cP}`,
+    reglaFin:(k, f, kf, g1, cP)=>`In every row, the number on the right is ${f} times the number on the left: ${k} × ${f} = ${kf}. So each ${g1} is ${f} ${cP}.`,
+    pistaReglaFila:(kf, kTxt, unoTxt, k)=>`${kf} goes with ${kTxt} in the table, not with ${unoTxt}. Divide ${kf} ÷ ${k} to find the value of 1.`,
+    pistaReglaMal:(k, mal, kmal, kf)=>`Test it on a row: ${k} × ${mal} = ${kmal}, but the table says ${kf}.`,
+    extF:(q)=>`Now extend the table. ${q}`,
+    extFin:(n, f, res)=>`Using the rule: ${n} × ${f} = ${res}.`,
+    pistaExtSalto:(txt)=>`That would be the value for ${txt}. There is more than one step between the last row and the new one: use the rule and multiply.`,
+    verdadF:"Which statement about the table is true?",
+    vMas:(g1, f, cP)=>`For each additional ${g1}, there are ${f} more ${cP}.`,
+    vVeces:(gP, cP, f)=>`The number of ${cP} is always ${f} times the number of ${gP}.`,
+    vExt:(mTxt, rTxt)=>`${mTxt} equal ${rTxt}.`,
+    fSuma:(gP, cP, f)=>`The number of ${cP} is always ${f} more than the number of ${gP}.`,
+    fReves:(gP, cP, f)=>`The number of ${gP} is always ${f} times the number of ${cP}.`,
+    vMasE:(g1, f, cP)=>`It is true: each ${g1} is ${f} ${cP}, so for each additional ${g1} you add ${f} ${cP}.`,
+    vVecesE:(k, f, kf)=>`It is true: every row is multiplied by ${f}, for example ${k} × ${f} = ${kf}.`,
+    vExtE:(m, f, r)=>`It is true: using the rule, ${m} × ${f} = ${r}.`,
+    fSumaP:(k, f, ks, kf)=>`Test it on a row: ${k} + ${f} = ${ks}, but the table says ${kf}. The table multiplies; it does not add.`,
+    fRevesP:"It is backwards: the smaller unit is the one with the bigger number. Look at any row.",
+    fExtP:(m, mal, f)=>`${m} × ${mal} uses the wrong number. The rule in the table is to multiply by ${f}.`,
+    acts:["soccer practice","homework","a puzzle","swim class"],
+    leeF:"Read the problem and choose the answer.",
+    durP:(n, act, t1, t2)=>`${n} starts ${act} at ${t1} and finishes at ${t2}. How many minutes does it last?`,
+    durFin:(t1, t2, k, tot)=>`From ${t1} to ${t2} there are ${k} jumps of 15 minutes: ${k} × 15 = ${tot} minutes.`,
+    pistaDur100:"You subtracted the times like regular numbers. An hour has 60 minutes, not 100: count the jumps on the number line.",
+    pistaDur15:"Count the 15-minute jumps on the number line again, from the first point to the second.",
+    mediaP:(n, m)=>`${n} read for half an hour on Monday and for ${m} minutes on Tuesday. How many minutes did ${n} read in all?`,
+    mediaFin:(m, tot)=>`Half an hour is 30 minutes, because half of 60 is 30. Then 30 + ${m} = ${tot} minutes.`,
+    pistaMedia50:"Half an hour is not 50 minutes: an hour has 60 minutes, and half of 60 is 30.",
+    pistaMediaSin:(m)=>`You still need to add Monday's half hour to Tuesday's ${m} minutes.`,
+    rectaTiempo:(a, b)=>`Time number line from ${a} to ${b}`,
+    cintaP:(n, m, cm)=>`${n} has a ribbon that is ${m} meters long and cuts off a piece that is ${cm} centimeters long. How many centimeters of ribbon are left?`,
+    cintaFin:(m, M, cm, r)=>`${m} meters = ${m} × 100 = ${M} centimeters. Then ${M} − ${cm} = ${r} centimeters.`,
+    cintaEtq:(m, cm)=>`A ribbon ${m} meters long, split into parts of 100 centimeters, with a ${cm} centimeter piece cut off`,
+    pistaSinConv:"The two numbers are in different units. First change the meters to centimeters: 1 meter = 100 centimeters.",
+    pistaSumo:"The ribbon gets cut, so there is less left: subtract.",
+    cosas:[["a juice","a cookie"],["a notebook","a pencil"],["an apple","a yogurt"]],
+    compraP:(n, c1, a, c2, b)=>`${n} buys ${c1} for ${a} and ${c2} for ${b}. How much does ${n} pay in all?`,
+    compraFin:(ca, cb, da, db, tot)=>`First the cents: ${ca} + ${cb} = ${ca+cb} cents, which is 1 dollar and ${ca+cb-100} cents. Then the dollars: ${da} + ${db} + 1 = ${da+db+1}. In all, ${tot}.`,
+    pistaLlevarD:(ca, cb)=>`${ca} + ${cb} = ${ca+cb} cents: trade 100 cents for 1 dollar, and do not forget to add it.`,
+    pistaRestaD:"You subtracted. To find how much is paid in all, add the two prices.",
+    llegaP:(n, t1, dur)=>`${n} gets on the train at ${t1}. The trip takes ${dur}. What time does the train arrive?`,
+    pasosLlega:["Add the hours.","Add the minutes.","If there are 60 minutes or more, trade 60 minutes for 1 hour."],
+    llegaFin:(h1, dh, h2, M, m, mm, r, t2)=>`The hours: ${h1} + ${dh} = ${h2}. The minutes: ${M} + ${m} = ${mm} minutes, which is 1 hour and ${r} minutes. So it arrives at ${t2}.`,
+    pistaReloj:(x, mm, r)=>`${x} does not exist on a clock: ${mm} minutes are 1 hour and ${r} minutes.`,
+    pistaSinHoras:"You forgot to add the hours of the trip.",
+    pistaSinLlevar:"You traded 60 minutes for 1 hour, but you did not add that hour.",
+    correrP:(n, a, b)=>`${n} ran ${a} on Saturday and ${b} on Sunday. How many meters did ${n} run in all?`,
+    pasosCorrer:()=>[`Change the kilometers to meters: 1 kilometer = ${fmt(1000)} meters.`,"Add all the meters."],
+    correrFin:(aTxt, M, m1, M1, m2, tot)=>`${aTxt} = ${M} + ${m1} = ${M1} meters. Then ${M1} + ${m2} = ${tot} meters.`,
+    pistaSinKm:"You left out the kilometers: change them to meters and add them.",
+    pistaKm100:()=>`1 kilometer = ${fmt(1000)} meters, not 100.`,
+    pistaKmSinConv:()=>`You added the kilometers as if they were meters. First change them: multiply by ${fmt(1000)}.`,
+    jarraP:(n, L, k, ml)=>`A pitcher has ${L} liters of juice. ${n} pours ${k} glasses of ${ml} milliliters each. How many milliliters of juice are left in the pitcher?`,
+    pasosJarra:["Change the liters to milliliters.","Multiply to find how much was poured.","Subtract what was poured."],
+    jarraFin:(L, M, k, ml, s, r)=>`${L} liters = ${M} milliliters. ${k} × ${ml} = ${s} milliliters were poured. ${M} − ${s} = ${r} milliliters are left.`,
+    pistaUnVaso:"You subtracted only one glass. First multiply to find how much juice went into all the glasses.",
+    pistaServido:"That is the juice that was poured. The question asks how much is left in the pitcher: subtract.",
+    pistaSumoJ:"When you pour, the juice in the pitcher goes down: subtract, do not add.",
+    arrozP:(k, aTxt)=>`The store has ${k} bags of rice. Each bag weighs ${aTxt}. How many ounces do all the bags weigh together?`,
+    pasosArroz:["Change the weight of one bag to ounces: 1 pound = 16 ounces.","Multiply by the number of bags."],
+    arrozFin:(a, A, b, B, k, tot)=>`One bag: ${a} × 16 = ${A} ounces, and ${A} + ${b} = ${B} ounces. All of them: ${k} × ${B} = ${tot} ounces.`,
+    pistaLb10:"A pound has 16 ounces, not 10.",
+    pistaOzUna:"You added the extra ounces of only one bag. Every bag has them: multiply the full weight of one bag.",
+    pistaSinOz:"You left out the extra ounces in each bag.",
+    cosasCambio:[{pl:"pencils", cada:"each", otro:"an eraser"},{pl:"cookies", cada:"each", otro:"a juice"},{pl:"stickers", cada:"each", otro:"a notebook"}],
+    cambioP:(n, k, c, p, q, pago)=>`${n} buys ${k} ${c.pl} for ${p} ${c.cada} and ${c.otro} for ${q}. ${n} pays with ${pago}. How much change does ${n} get?`,
+    pasosCambio:["Multiply to find the cost of the matching items.","Add the other price.","Subtract the total from the money used to pay."],
+    cambioFin:(k, p, s, q, tot, pago, r)=>`${k} × ${p} = ${s}. Then ${s} + ${q} = ${tot}. The change is ${pago} − ${tot} = ${r}.`,
+    pistaSinOtro:"You forgot to subtract the price of the other item.",
+    pistaSinMult:"You counted the price of only one of the matching items. Multiply first.",
+    pistaCosto:"That is the total cost. The change is what is left over: subtract from the money used to pay.",
+    practicaP:(n, m, d)=>`${n} practices piano for ${m} minutes every day. How much time does ${n} practice in ${d} days?`,
+    pasosPractica:["Multiply to find the total number of minutes.","Trade every 60 minutes for 1 hour."],
+    practicaFin:(d, m, tot, h, h60, r)=>`${d} × ${m} = ${tot} minutes. Since ${h} × 60 = ${h60} and ${tot} − ${h60} = ${r}, that is ${h} hours and ${r} minutes.`,
+    pistaHora100:"An hour has 60 minutes, not 100. Trade every 60 minutes for 1 hour.",
+    pistaSinCambiar:(r)=>`That time is correct, but ${r} minutes is more than an hour: you can still trade 60 minutes for 1 hour.`,
+    hm:(h, m)=>`${h} ${h === 1 ? "hour" : "hours"} ${m} ${m === 1 ? "minute" : "minutes"}`,
+    rectEtq:(a, b)=>`Rectangle with a length of ${a} and a width of ${b}`,
+    cuadrito:(u)=>`1 small square = ${u}`,
+    areaQ:"What is the area of the rectangle?", perQ:"What is the perimeter of the rectangle?",
+    areaFinF:(l, w, a)=>`There are ${w} rows of ${l} squares: ${l} × ${w} = ${a}. Area is the space inside.`,
+    areaFin:(l, w, a)=>`Area is the space inside: length × width, ${l} × ${w} = ${a}.`,
+    perFin:(l, w, p)=>`Perimeter is the distance around: ${l} + ${w} + ${l} + ${w} = ${p}.`,
+    pistaEsPer:"That is the perimeter, the distance around. Area is the space inside: multiply length × width.",
+    pistaEsArea:"That is the area, the space inside. Perimeter is the distance around: add all four sides.",
+    pistaDosLados:"You added only two sides. A rectangle has four sides: add all four.",
+    pistaSumaArea:"You added the length and the width. For area, you multiply: length × width.",
+    ladoAQ:(A, s)=>`A rectangle has an area of ${A}. Its length is ${s}. What is its width?`,
+    pasosLadoA:["Area = length × width.","Find the number that, multiplied by the length, gives the area: divide."],
+    ladoAFin:(A, s, x, xu)=>`Find the number that, multiplied by ${s}, gives ${A}: ${A} ÷ ${s} = ${x}. The width is ${xu}.`,
+    pistaRestaA:"You subtracted. Area is found by multiplying, so to find the missing side you divide.",
+    pistaComoPer:"You worked as if it were the perimeter. Area is length × width: divide the area by the length.",
+    ladoPQ:(P, s)=>`A rectangle has a perimeter of ${P}. Its length is ${s}. What is its width?`,
+    pasosLadoP:["Add the two lengths.","Subtract that from the perimeter.","What is left is the two widths: divide by 2."],
+    ladoPFin:(s, ss, P, r, x)=>`The two lengths are ${s} + ${s} = ${ss}. That leaves ${P} − ${ss} = ${r} for the two widths, and ${r} ÷ 2 = ${x}.`,
+    pistaRestaUna:"You subtracted only one length. A rectangle has two lengths and two widths.",
+    pistaSinMitad:"That is both widths together. Divide by 2 to find one of them.",
+    pistaComoArea:"You divided the perimeter by the length, as if it were the area. Perimeter is the sum of all four sides.",
+    jardinEtq:(L, l, w)=>`Garden ${L}: ${l} meters by ${w} meters`,
+    cercaF:(n, P)=>`${n} has ${P} m of fence. Which garden uses all of the fence, with none left over or missing?`,
+    areaJF:(n, A)=>`${n} wants a garden with ${A} m² for planting. Which garden has that area?`,
+    espacioF:(P)=>`Gardens A and B each use ${P} m of fence. Which one has more space for planting?`,
+    igual:"Both the same",
+    cercaFin:(L, l, w, P)=>`Garden ${L} uses all of the fence: the fence goes around the edge, and ${l} + ${w} + ${l} + ${w} = ${P} m.`,
+    areaJFin:(L, l, w, A)=>`Garden ${L} has ${l} × ${w} = ${A} m²: those are the squares inside.`,
+    espacioFin:(A, B, L)=>`Garden A has ${A[0]} × ${A[1]} = ${A[2]} m² and garden B has ${B[0]} × ${B[1]} = ${B[2]} m². With the same fence, garden ${L} has more space: the one closest to a square has more area.`,
+    jArea:(L, l, w, a)=>`Garden ${L} has ${l} × ${w} = ${a} m²`,
+    pistaJPer:(L, p, P)=>`The fence for garden ${L} is ${p} m, not ${P} m. Add all four sides.`,
+    pistaJAreaEsPer:(L, P)=>`Garden ${L} has an area of ${P} m², but the fence goes around the edge, not inside.`,
+    pistaJDos:(L, P)=>`In garden ${L}, only two sides add up to ${P} m. The fence goes around all four sides.`,
+    pistaJA:(L, a, A)=>`Garden ${L} has an area of ${a} m², not ${A} m². Count the squares or multiply length × width.`,
+    pistaJAPer:(L, A)=>`The perimeter of garden ${L} is ${A} m, but area is the squares inside.`,
+    pistaIgual:"They use the same fence, but they do not have the same area: count the squares in each one.",
+    pistaEspacio:"Count the squares in each garden: the one with more squares has more space for planting.",
+    marcarAF:(A)=>`Mark every garden that has an area of ${A} m². Then touch Check.`,
+    marcarPF:(P)=>`Mark every garden that can be fenced with ${P} m of fence, with none left over or missing. Then touch Check.`,
+    marcarAP:(A)=>`Find every garden with ${A} m² for planting. Will they all need the same fence?`,
+    marcarPP:(P)=>`There are ${P} m of fence. Which gardens can you make with it? Will they all have the same area?`,
+    maloA:(x, a, A, esPer)=>`${x} has an area of ${a} m², not ${A} m².` + (esPer ? ` Its perimeter is ${A} m, but perimeter is not area.` : ""),
+    maloP:(x, p, P, esArea)=>`${x} needs ${p} m of fence, not ${P} m.` + (esArea ? ` Its area is ${P} m², but the fence goes around the edge.` : ""),
+    faltanA:(A)=>`At least one garden is still missing. Look for two other numbers that multiply to ${A}.`,
+    faltanP:(P)=>`At least one garden is still missing. The length and the width together must add up to half of ${P}.`,
+    marcarAFin:(l, A, ps)=>`They all have ${A} m²: ${l}. They have the same area, but their fences are different: ${ps}.`,
+    marcarPFin:(l, P, as)=>`They all need ${P} m of fence: ${l}. They have the same perimeter, but different areas: ${as}.`,
+    razonF:"Is that right? Read what they say and decide.",
+    dice:(n, x)=>`${n} says: “${x}”`,
+    rMismaArea:"If two gardens have the same perimeter, they have the same area.",
+    rMismaAreaE:(n, a, b, P, A1, A2)=>`${n} is not right: ${a} and ${b} both have a perimeter of ${P} m, but their areas are ${A1} m² and ${A2} m².`,
+    rCercaMult:"To find how much fence I need, I multiply the length by the width.",
+    rCercaMultE:(n)=>`${n} is not right: length × width gives the area. The fence goes around the edge, so you add all four sides.`,
+    rCerca:(l, w, P)=>`A ${l} m × ${w} m garden needs ${P} m of fence.`,
+    rCercaE:(n, l, w, P)=>`${n} is right: ${l} + ${w} + ${l} + ${w} = ${P} m.`,
+    rCuadrado:(P, c, l, w)=>`With ${P} m of fence, a ${c} m × ${c} m garden has more area than a ${l} m × ${w} m garden.`,
+    rCuadradoE:(n, c, cc, l, w, lw)=>`${n} is right: ${c} × ${c} = ${cc} m² and ${l} × ${w} = ${lw} m².`,
+    rCercaFE:(n, l, w, a, P)=>`${n} is not right: ${l} × ${w} = ${a} is the area. The fence goes around the edge: ${l} + ${w} + ${l} + ${w} = ${P} m.`,
+    rAreaPer:(l, w, x)=>`A ${l} m × ${w} m garden has an area of ${x} m².`,
+    rAreaPerE:(n, l, w, a, x)=>`${n} is not right: ${x} m is the perimeter. The area is ${l} × ${w} = ${a} m².`,
+    pistaRazon:"Read it again. Is it about the edge (perimeter) or the space inside (area)? Draw a picture if it helps.",
+    ctxP:[{pl:"shells", uno:"one shell"},{pl:"seeds", uno:"one seed"},{pl:"caterpillars", uno:"one caterpillar"},{pl:"pebbles", uno:"one pebble"}],
+    lpEtq:(pl, n)=>`Line plot with the lengths of ${n} ${pl}, in inches`,
+    lpEje:"Length (inches)",
+    lpIntro:(n, c)=>`The class measured ${n} ${c.pl} and recorded the lengths on a line plot. Each X is ${c.uno}.`,
+    med:(txt, v, d)=> v <= d ? `${txt} inch` : `${txt} inches`,
+    cuantasMid:(c, med)=>`How many ${c.pl} measured ${med}?`,
+    cuentaFin:(val, k, c, med)=>`There ${k === 1 ? "is 1 X" : "are " + k + " Xs"} above ${val}, so ${k === 1 ? c.uno + " measured" : k + " " + c.pl + " measured"} ${med}.`,
+    pistaVecina:(otro, val)=>`That is the column for ${otro}. Find ${val} on the line and count the Xs above it.`,
+    pistaTotal:(n, c, val)=>`${n} is the total number of ${c.pl}. Count only the Xs above ${val}.`,
+    difF:(c)=>`What is the difference in length between the longest and the shortest of the ${c.pl}?`,
+    difFin:(mx, mn, cuenta, res)=>`The longest is ${mx} and the shortest is ${mn}. With the same denominator: ${cuenta}. The difference is ${res}.`,
+    pistaDifSuma:"You added the two lengths. To find the difference, subtract: the longest minus the shortest.",
+    pistaDifRayas:(d)=>`You counted the tick marks. Count the spaces between the shortest and the longest: each space is 1/${d} inch.`,
+    pistaDifOtra:"Check which X is farthest to the right and which one is farthest to the left.",
+    totalF:(c, med)=>`If you line up all the ${c.pl} that measured ${med}, end to end, how long is the line?`,
+    totalFin:(k, c, med, suma, res)=>`There are ${k} ${c.pl} that measured ${med}: ${suma}. The line is ${res} long.`,
+    pistaUna:(k)=>`That is the length of only one. There are ${k}: add them all.`,
+    pistaDenSuma:"You also added the bottom numbers. When you add fractions with the same denominator, the bottom number stays the same.",
+    pistaContar:(val)=>`Count again how many Xs are above ${val}.`,
+    masDeF:(c, med)=>`How many ${c.pl} measured more than ${med}?`,
+    masDeFin:(val, k)=>`The ones that measured more than ${val} are the Xs to the right of ${val}: there are ${k}.`,
+    pistaIncluye:(val)=>`You also counted the ones that measured exactly ${val}. Those are not longer.`,
+    pistaMenos:(val)=>`Those are the ones that measured less than ${val}. Look to the right of ${val}.`,
+    pulg:(v, d)=> v === d ? "inch" : "inches",
+    patronF:(q)=>`Look at the pattern in the table. ${q}`,
+    pistaDeUno:(f)=>`The table does not grow by 1: each row has ${f} more than the one before.`,
+    pistaPatron:(f)=>`Look at how the table grows: each row has ${f} more than the one before.`,
+    pistaMedia60:"Half an hour is half of an hour: 30 minutes, not 60.",
+    pistaM1000:"1 meter = 100 centimeters, not 1,000.",
+    pistaReagrupa:"In each column you subtracted the smaller digit from the larger one. You need to regroup: trade 1 hundred for 10 tens.",
+    pistaSinDolar:"You left out the dollars of one of the prices. Add the dollars and the cents of both.",
+    pistaCuantas60:(tot)=>`Count by 60s up to ${tot}: 60, 120, 180… Every 60 minutes is 1 hour.`,
+    pistaMismoLado:"That is the length, which you already know. Find the other side: divide the area by the length.",
+    pistaTresLados:"You added only three sides. A rectangle has four sides: two lengths and two widths.",
+    hojaRegla:"What is the rule for the table?",
+    hojaArea:"Area =",
+    hojaPer:"Perimeter =",
+    hojaPuntos:"The line plot shows the lengths of 10 shells, in inches. How many shells measured 1/2 inch? How long are all the 1/2 inch shells put together?",
+    mixTxt:(a, b)=>`${a} ${b}`,
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["I used a conversion table","Great! The table shows the rule: each large unit is always worth the same number of small units."],
+      ["I drew the shape","Excellent! A drawing shows what the edge is (perimeter) and what the space inside is (area)."],
+      ["I used the formula","Good idea! Length × width gives the area, and adding all four sides gives the perimeter."],
+      ["I used a number line for time","Awesome! With jumps on the number line you can count minutes without getting lost in the hours."]]
+  }
+};
+const JUEGOS = [
+  {id:"convertir", emoji:"📏", es:"Convertir unidades", en:"Convert units", metaEs:"3 pies = 36 pulgadas", metaEn:"3 feet = 36 inches"},
+  {id:"tabla",     emoji:"📋", es:"Tabla de conversión", en:"Conversion table", metaEs:"Busca la regla", metaEn:"Find the rule"},
+  {id:"problemas", emoji:"⏱️", es:"Problemas de medida", en:"Measurement problems", metaEs:"Tiempo, distancia, dinero", metaEn:"Time, distance, money"},
+  {id:"area",      emoji:"🟪", es:"Área y perímetro", en:"Area and perimeter", metaEs:"Adentro y alrededor", metaEn:"Inside and around"},
+  {id:"diseno",    emoji:"🌻", es:"Diseña el jardín", en:"Design the garden", metaEs:"Explica el porqué", metaEn:"Explain why"},
+  {id:"puntos",    emoji:"📊", es:"Diagrama de puntos", en:"Line plot", metaEs:"Medidas en fracciones", metaEn:"Fraction measurements"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-10-measurement.html#area */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Ayudas de este módulo ============ */
+/* Unidades: nombre en singular o plural, y cantidad con su unidad («3 pies», «1 libra») */
+const UN = (c, n)=> T[S.idioma].un[c][n === 1 ? 0 : 1];
+const cant = (n, c)=> `${fmt(n)} ${UN(c, n)}`;
+const cap = (s)=> s.charAt(0).toUpperCase() + s.slice(1);
+/* De unidad grande (g) a pequeña (c): f es el factor; mal, el factor equivocado más común */
+const CONV = [
+  {g:"ft", c:"inch", f:12, mal:10}, {g:"yd", c:"ft", f:3, mal:12}, {g:"lb", c:"oz", f:16, mal:10},
+  {g:"gal", c:"qt", f:4, mal:2}, {g:"qt", c:"pt", f:2, mal:4}, {g:"h", c:"min", f:60, mal:100},
+  {g:"min", c:"s", f:60, mal:100}, {g:"km", c:"m", f:1000, mal:100}, {g:"m", c:"cm", f:100, mal:10},
+  {g:"kg", c:"g", f:1000, mal:100}, {g:"L", c:"mL", f:1000, mal:100}];
+const reglaUno = (cv)=> `1 ${UN(cv.g, 1)} = ${cant(cv.f, cv.c)}`;
+/* Dinero en centavos → «$1.75» */
+const dinero = (c)=> "$" + Math.floor(c/100) + "." + String(c % 100).padStart(2, "0");
+function palabraUn(n){ let s = enPalabras(n); if(S.idioma === "es") s = s.replace(/veintiuno$/, "veintiún").replace(/uno$/, "un"); return s; }
+function dineroPalabras(w, cc){
+  const es = S.idioma === "es", d = +w, c = +cc;
+  const dol = d === 0 ? "" : palabraUn(d) + " " + (es ? (d === 1 ? "dólar" : "dólares") : (d === 1 ? "dollar" : "dollars"));
+  const cen = c === 0 ? "" : palabraUn(c) + " " + (es ? (c === 1 ? "centavo" : "centavos") : (c === 1 ? "cent" : "cents"));
+  return dol && cen ? dol + (es ? " con " : " and ") + cen : (dol || cen || (es ? "cero dólares" : "zero dollars"));
+}
+/* Horas del reloj: 3:05 */
+const hora = (h, m)=> `${h}:${String(m).padStart(2, "0")}`;
+const horaTxt = (h, m)=> S.idioma === "es" ? `${h === 1 ? "la" : "las"} ${hora(h, m)}` : hora(h, m);
+/* La voz: «m²» como «metros cuadrados», «m» como «metros», dinero y números mixtos con palabras */
+const _hablarM = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const N1 = es ? {km:["kilómetro","kilómetros"], m:["metro","metros"], cm:["centímetro","centímetros"]}
+                : {km:["kilometer","kilometers"], m:["meter","meters"], cm:["centimeter","centimeters"]};
+  const N2 = es ? {m:["metro cuadrado","metros cuadrados"], cm:["centímetro cuadrado","centímetros cuadrados"]}
+                : {m:["square meter","square meters"], cm:["square centimeter","square centimeters"]};
+  const t = String(texto)
+    .replace(/\$(\d+)\.(\d\d)/g, (x, w, c)=>dineroPalabras(w, c))
+    .replace(/(\d+) (cm|m)²/g, (x, n, u)=> n + " " + N2[u][+n === 1 ? 0 : 1])
+    .replace(/(\d+) (km|cm|m)(?![A-Za-zÀ-ÿ²])/g, (x, n, u)=> n + " " + N1[u][+n === 1 ? 0 : 1])
+    .replace(/(\d+) (\d+)\/(\d+)/g, (x, w, a, b)=> `${w}${es ? " y " : " and "}${a}/${b}`)
+    .replace(/ − /g, es ? " menos " : " minus ").replace(/ \+ /g, es ? " más " : " plus ");
+  _hablarM(t, despues);
+};
+/* Pasa a una segunda pantalla dentro de la misma ronda (como en mods/05) */
+function segundaPantalla(){ $("opciones").innerHTML = ""; $("aviso").className = "aviso"; $("aviso").textContent = ""; mascotaNormal(); }
+function encadenar(){ const r1 = S.resolver; S.resolver = function todo(){ r1(); if(S.resolver !== todo) S.resolver(); }; }
+/* Opciones con una pista para cada error: pares [valor, pista]; se quitan repetidos y los que no sirven */
+function conPistas(bien, pares, max, valido){
+  const m = new Map(), ok = valido || ((v)=> typeof v !== "number" || (Number.isInteger(v) && v > 0));
+  pares.forEach(([v, p])=>{ if(v !== bien && ok(v) && !m.has(v)) m.set(v, p); });
+  const otros = mezclar([...m.keys()]).slice(0, (max || 4) - 1);
+  return {lista:[bien, ...otros], pista:(v)=> m.get(v) || elegir(T[S.idioma].otra)};
+}
+/* Botones de texto con otra clase (para frases largas) */
+function opcionesClase(lista, bien, alAcertar, pista, clase){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto " + clase, null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, pista(x)); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Botones con HTML (fracciones, números mixtos); cada uno guarda su clave en data-v */
+function opcionesHTML(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = o.v; b.innerHTML = o.html;
+    if(o.aria) b.setAttribute("aria-label", o.aria);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(o.v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(o.v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+function parrafo(txt, cls){ const p = document.createElement("p"); p.className = cls || "problema"; p.textContent = txt; $("escena").appendChild(p); return p; }
+function dibujito(e){ $("escena").insertAdjacentHTML("beforeend", `<div class="dibujito" aria-hidden="true">${e}</div>`); }
+const falta = '<span class="falta">?</span>';
+function ecuacionM(html){ const p = document.createElement("p"); p.className = "ecuacion-m"; p.innerHTML = html; $("escena").appendChild(p); return p; }
+function llenarFalta(el, txt){ const f = el.querySelector(".falta"); if(f){ f.textContent = txt; f.classList.add("lleno"); } }
+
+/* ============ Dibujos ============ */
+/* Tabla de conversión: filas [n, valor o null]; la fila con null lleva «?» */
+function tablaConv(g, c, filas){
+  const t = T[S.idioma];
+  let h = `<table class="tabla-conv"><caption class="sr-only">${escaparHTML(t.tablaEtq(g, c))}</caption><thead><tr><th scope="col">${cap(UN(g, 2))}</th><th scope="col">${cap(UN(c, 2))}</th></tr></thead><tbody>`;
+  filas.forEach(([n, v])=>{ h += `<tr><td>${fmt(n)}</td><td>${v === null ? falta : fmt(v)}</td></tr>`; });
+  const d = document.createElement("div"); d.className = "modelos"; d.innerHTML = h + "</tbody></table>";
+  $("escena").appendChild(d); return d;
+}
+/* Rectángulo con su largo arriba y su ancho a la derecha; con o sin cuadrícula; texto opcional adentro */
+function rectSVG(l, w, o){
+  const u = o.u || Math.min(38, 300/l, 190/w), mx = 8, my = 46, wR = l*u, hR = w*u;
+  const W = mx + wR + 100, H = my + hR + 12;
+  const txt = (x, y, s, a, c, f)=> `<text x="${x}" y="${y}" text-anchor="${a}" font-size="${f || 28}" font-weight="700" fill="${c || "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${escaparHTML(s)}</text>`;
+  let s = `<svg class="rect-svg" viewBox="0 0 ${W} ${H}" style="max-width:${Math.round(W*1.25)}px" role="img" aria-label="${escaparHTML(o.aria)}">`;
+  s += `<rect x="${mx}" y="${my}" width="${wR}" height="${hR}" fill="var(--acento-claro)"/>`;
+  if(o.grid){
+    for(let i=1;i<l;i++) s += `<line x1="${mx + i*u}" y1="${my}" x2="${mx + i*u}" y2="${my + hR}" stroke="#A99BC4" stroke-width="1.5"/>`;
+    for(let j=1;j<w;j++) s += `<line x1="${mx}" y1="${my + j*u}" x2="${mx + wR}" y2="${my + j*u}" stroke="#A99BC4" stroke-width="1.5"/>`;
+  }
+  s += `<rect x="${mx}" y="${my}" width="${wR}" height="${hR}" fill="none" stroke="var(--acento)" stroke-width="5"/>`;
+  s += txt(mx + wR/2, my - 12, o.top, "middle", o.top === "?" ? "var(--acento)" : null);
+  s += txt(mx + wR + 10, my + hR/2 + 10, o.side, "start", o.side === "?" ? "var(--acento)" : null);
+  if(o.dentro) s += txt(mx + wR/2, my + hR/2 + 10, o.dentro, "middle", "var(--tinta)", Math.min(28, wR/6));
+  return s + "</svg>";
+}
+/* Jardines pequeños en cuadrícula, con su letra y sus medidas */
+function jardinesEl(lista){
+  const t = T[S.idioma], u = 16;
+  const d = document.createElement("div"); d.className = "jardines";
+  d.innerHTML = lista.map(j=>{
+    let s = `<svg class="jardin-svg" width="${j.l*u + 6}" height="${j.w*u + 6}" viewBox="0 0 ${j.l*u + 6} ${j.w*u + 6}" aria-hidden="true">`;
+    for(let i=0;i<j.l;i++) for(let k=0;k<j.w;k++) s += `<rect x="${3 + i*u}" y="${3 + k*u}" width="${u}" height="${u}" fill="#C8E6C9" stroke="#6A9F6E" stroke-width="1"/>`;
+    s += `<rect x="3" y="3" width="${j.l*u}" height="${j.w*u}" fill="none" stroke="#5D4037" stroke-width="4"/></svg>`;
+    return `<div class="jardin" role="img" aria-label="${escaparHTML(t.jardinEtq(j.L, j.l, j.w))}"><b aria-hidden="true">${j.L}</b>${s}<span aria-hidden="true">${j.l} m × ${j.w} m</span></div>`;
+  }).join("");
+  $("escena").appendChild(d); return d;
+}
+/* Recta numérica del tiempo, de hora en hora, con rayitas cada 15 minutos y saltos de t1 a t2 (en minutos) */
+function rectaTiempo(t1, t2){
+  const ini = Math.floor(t1/60)*60, fin = Math.ceil(t2/60)*60, W = 680, x0 = 40, x1 = 640, y = 120;
+  const X = (v)=> x0 + (x1 - x0)*(v - ini)/(fin - ini);
+  const hh = (v)=> hora(Math.floor(v/60), v % 60);
+  let s = `<svg class="recta" viewBox="0 0 ${W} 190" role="img" aria-label="${escaparHTML(T[S.idioma].rectaTiempo(hh(ini), hh(fin)))}">`;
+  s += `<line x1="${x0 - 12}" y1="${y}" x2="${x1 + 12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let v=ini; v<=fin; v+=15){
+    const g = v % 60 === 0 ? 16 : 9;
+    s += `<line x1="${X(v)}" y1="${y - g}" x2="${X(v)}" y2="${y + g}" stroke="var(--tinta)" stroke-width="${g > 9 ? 3.5 : 2.5}"/>`;
+    if(v % 60 === 0) s += `<text x="${X(v)}" y="${y + 50}" text-anchor="middle" font-size="30" font-weight="700" fill="var(--tinta)" font-family="Trebuchet MS, sans-serif">${hh(v)}</text>`;
+  }
+  for(let v=t1; v<t2; v+=15){ const p = X(v), q = X(v + 15), m = (p + q)/2; s += `<path d="M${p},${y - 6} Q${m},${y - 44} ${q},${y - 6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  [t1, t2].forEach(v=>{
+    s += `<circle cx="${X(v)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+    s += `<text x="${X(v)}" y="${y - 50}" text-anchor="middle" font-size="30" font-weight="700" fill="var(--acento)" font-family="Trebuchet MS, sans-serif">${hh(v)}</text>`;
+  });
+  return s + "</svg>";
+}
+/* Cinta de m metros partida en tramos de 100 cm, con el pedazo cortado al final */
+function cintaSVG(m, cm){
+  const W = 640, x0 = 10, L = W - 20, y = 40, h = 46, tr = L/m, corte = tr*cm/100;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 130" role="img" aria-label="${escaparHTML(T[S.idioma].cintaEtq(m, cm))}">`;
+  for(let i=0;i<m;i++) s += `<rect x="${x0 + i*tr}" y="${y}" width="${tr}" height="${h}" fill="#F8BBD0" stroke="var(--tinta)" stroke-width="3"/>` +
+    `<text x="${x0 + i*tr + tr/2}" y="${y + 31}" text-anchor="middle" font-size="24" font-weight="700" fill="var(--tinta)" font-family="Trebuchet MS, sans-serif">100 cm</text>`;
+  const xc = x0 + L - corte;
+  s += `<rect x="${xc}" y="${y}" width="${corte}" height="${h}" fill="#fff" stroke="var(--acento)" stroke-width="3" stroke-dasharray="7 5"/>`;
+  s += `<text x="${xc}" y="${y - 8}" text-anchor="middle" font-size="26">✂️</text>`;
+  s += `<text x="${xc + corte/2}" y="${y + h + 32}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acento)" font-family="Trebuchet MS, sans-serif">${cm} cm</text>`;
+  return s + "</svg>";
+}
+/* Fracciones de pulgada: v está en unidades de 1/d */
+function simp(v, d){ const g = mcd(v, d) || 1, n = v/g, q = d/g; return {w:Math.floor(n/q), a:n % q, b:q}; }
+function fTxt(v, d){ const {w, a, b} = simp(v, d); return w && a ? `${w} ${a}/${b}` : a ? `${a}/${b}` : String(w); }
+function fHTML(v, d){ const {w, a, b} = simp(v, d); return w && a ? `<span class="mixto">${w}${fracHTML(a, b)}</span>` : a ? fracHTML(a, b) : `<span class="dec-n">${w}</span>`; }
+function fAria(v, d){ const {w, a, b} = simp(v, d); return w && a ? `${w} ${S.idioma === "es" ? "y" : "and"} ${fracPalabras(a, b)}` : a ? fracPalabras(a, b) : String(w); }
+const medida = (v, d)=> T[S.idioma].med(fTxt(v, d), v, d);
+/* Diagrama de puntos: rayitas de ini a ini + n (en 1/d), cuentas[i] X sobre la rayita i */
+function lineaPuntos(d, ini, n, cuentas, contexto, total){
+  const t = T[S.idioma], W = 560, x0 = 34, x1 = 526, alto = Math.max(3, ...cuentas)*30, y = 40 + alto;
+  const X = (i)=> x0 + (x1 - x0)*i/n, F = "Trebuchet MS, sans-serif";
+  let s = `<svg class="lp-svg" viewBox="0 0 ${W} ${y + 112}" role="img" aria-label="${escaparHTML(t.lpEtq(contexto.pl, total))}">`;
+  s += `<line x1="${x0 - 14}" y1="${y}" x2="${x1 + 14}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let i=0;i<=n;i++){
+    const v = ini + i, ent = v % d === 0, x = X(i);
+    s += `<line x1="${x}" y1="${y - (ent ? 13 : 8)}" x2="${x}" y2="${y + (ent ? 13 : 8)}" stroke="var(--tinta)" stroke-width="${ent ? 3.5 : 2.5}"/>`;
+    const {w, a, b} = simp(v, d), yt = y + 40;
+    if(!a) s += `<text x="${x}" y="${yt + 8}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--tinta)" font-family="${F}">${w}</text>`;
+    else {
+      const fx = w ? x + 8 : x;
+      if(w) s += `<text x="${x - 9}" y="${yt + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--tinta)" font-family="${F}">${w}</text>`;
+      s += `<text x="${fx}" y="${yt - 4}" text-anchor="middle" font-size="19" font-weight="700" fill="var(--tinta)" font-family="${F}">${a}</text>`;
+      s += `<line x1="${fx - 9}" y1="${yt + 1}" x2="${fx + 9}" y2="${yt + 1}" stroke="var(--tinta)" stroke-width="2"/>`;
+      s += `<text x="${fx}" y="${yt + 20}" text-anchor="middle" font-size="19" font-weight="700" fill="var(--tinta)" font-family="${F}">${b}</text>`;
+    }
+    for(let k=0;k<cuentas[i];k++) s += `<text x="${x}" y="${y - 16 - k*30}" text-anchor="middle" font-size="28" font-weight="700" fill="var(--acento)" font-family="${F}">X</text>`;
+  }
+  s += `<text x="${W/2}" y="${y + 100}" text-anchor="middle" font-size="22" font-weight="700" fill="var(--tinta-suave)" font-family="${F}">${escaparHTML(t.lpEje)}</text>`;
+  return s + "</svg>";
+}
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Convertir unidades (4.MD.1): de una unidad grande a una más pequeña --- */
+  if(S.juego === "convertir"){
+    const cv = elegir(CONV), {g, c, f} = cv, uno = reglaUno(cv);
+    if(!reto){
+      const k = azar(2, 5), bien = k*f;
+      const filas = [1,2,3,4,5].map(n=>[n, n === k ? null : n*f]);
+      const caja = tablaConv(g, c, filas);
+      const q = t.cuantos(c, cant(k, g));
+      ponerInstruccion(t.convTabla(q));
+      const otra = k < 5 ? k + 1 : k - 1;
+      const {lista, pista} = conPistas(bien, [[k*cv.mal, t.pistaRegla(uno)], [k + f, t.pistaSumaF(k, fmt(f), UN(g, 1), UN(c, 2))], [otra*f, t.pistaFila(cant(otra, g))]]);
+      opcionesNum(lista, bien, ()=>{ llenarFalta(caja, fmt(bien)); acertar(t.convFin(uno, k, fmt(f), fmt(bien))); }, pista);
+      return;
+    }
+    if(Math.random() < 0.45){
+      const k = f >= 60 ? azar(2, 9) : azar(3, 12), bien = k*f;
+      const p = ecuacionM(`${escaparHTML(cant(k, g))} = ${falta} ${escaparHTML(UN(c, 2))}`);
+      ponerInstruccion(t.cuantos(c, cant(k, g)));
+      const pares = [[k*cv.mal, t.pistaRegla(uno)], [k + f, t.pistaSumaF(k, fmt(f), UN(g, 1), UN(c, 2))]];
+      if(f % k === 0) pares.push([f/k, t.pistaDividir(fmt(f), k)]);
+      pares.push([(k + 1)*f, t.pistaRegla(uno)]);
+      const {lista, pista} = conPistas(bien, pares);
+      opcionesNum(lista, bien, ()=>{ llenarFalta(p, fmt(bien)); acertar(t.convFin(uno, k, fmt(f), fmt(bien))); }, pista);
+      return;
+    }
+    /* Unidades mezcladas: 5 pies 4 pulgadas = ? pulgadas */
+    const a = f >= 1000 ? azar(2, 6) : azar(2, 9);
+    const b = f === 1000 ? elegir([azar(1, 9)*5, azar(1, 19)*50]) : f === 100 ? elegir([azar(1, 9), azar(11, 99)]) : f === 60 ? azar(1, 11)*5 : azar(1, f - 1);
+    const bien = a*f + b, aTxt = cant(a, g), bTxt = cant(b, c), abTxt = t.mixTxt(aTxt, bTxt);
+    esc.appendChild(pasosEl(t.pasosMix));
+    const p = ecuacionM(`${escaparHTML(abTxt)} = ${falta} ${escaparHTML(UN(c, 2))}`);
+    const q = t.cuantos(c, abTxt);
+    ponerInstruccion(q, q + " " + t.pasosMix.join(" "));
+    const {lista, pista} = conPistas(bien, [[a*f, t.pistaOlvido(bTxt)], [Number(`${a}${b}`), t.pistaJuntar(fmt(Number(`${a}${b}`)))], [a*cv.mal + b, t.pistaRegla(uno)]]);
+    opcionesNum(lista, bien, ()=>{ llenarFalta(p, fmt(bien)); acertar(t.mixFin(aTxt, a, fmt(f), cant(a*f, c), bTxt, cant(bien, c))); }, pista);
+    return;
+  }
+
+  /* --- 2. Tabla de conversión (4.MD.1): completar el patrón y hallar la regla --- */
+  if(S.juego === "tabla"){
+    const cv = elegir(CONV), {g, c, f} = cv, uno = reglaUno(cv);
+    if(!reto){
+      /* Primera pantalla: continuar el patrón (2, 3, 4, 5 → 6). Segunda: la regla. */
+      const filas = [2,3,4,5].map(n=>[n, n*f]), caja = tablaConv(g, c, [...filas, [6, null]]);
+      const q = t.cuantos(c, cant(6, g));
+      ponerInstruccion(t.patronF(q));
+      const {lista, pista} = conPistas(6*f, [[5*f + 1, t.pistaDeUno(fmt(f))], [6 + f, t.pistaSumaF(6, fmt(f), UN(g, 1), UN(c, 2))], [7*f, t.pistaFila(cant(7, g))], [6*cv.mal, t.pistaPatron(fmt(f))]]);
+      opcionesNum(lista, 6*f, ()=>{
+        llenarFalta(caja, fmt(6*f));
+        segundaPantalla();
+        ponerInstruccion(t.reglaF);
+        const bienR = t.regla(UN(g, 1), fmt(f), UN(c, 2));
+        const r2 = t.regla(UN(g, 1), fmt(2*f), UN(c, 2)), rm = t.regla(UN(g, 1), fmt(cv.mal), UN(c, 2));
+        const mapa = new Map([[r2, t.pistaReglaFila(fmt(2*f), cant(2, g), cant(1, g), 2)], [rm, t.pistaReglaMal(3, fmt(cv.mal), fmt(3*cv.mal), fmt(3*f))]]);
+        opcionesClase([bienR, ...mapa.keys()], bienR, ()=>acertar(t.reglaFin(3, fmt(f), fmt(3*f), UN(g, 1), UN(c, 2))), (x)=>mapa.get(x), "frase");
+      }, pista);
+      encadenar();
+      return;
+    }
+    const filas = mezclar([1,2,3,4,5,6,7,8]).slice(0, 4).sort((x, y)=>x - y);
+    const m = elegir([10, 12, 15, 20]);
+    if(Math.random() < 0.4){
+      const caja = tablaConv(g, c, [...filas.map(n=>[n, n*f]), [m, null]]);
+      const q = t.cuantos(c, cant(m, g)), ult = filas[3];
+      ponerInstruccion(t.extF(q));
+      const {lista, pista} = conPistas(m*f, [[(ult + 1)*f, t.pistaExtSalto(cant(ult + 1, g))], [m*cv.mal, t.pistaRegla(uno)], [m + f, t.pistaSumaF(m, fmt(f), UN(g, 1), UN(c, 2))]]);
+      opcionesNum(lista, m*f, ()=>{ llenarFalta(caja, fmt(m*f)); acertar(t.extFin(m, fmt(f), fmt(m*f))); }, pista);
+      return;
+    }
+    tablaConv(g, c, filas.map(n=>[n, n*f]));
+    ponerInstruccion(t.verdadF);
+    const gP = UN(g, 2), cP = UN(c, 2), k = filas.find(n=>n + f !== n*f) || filas[3];
+    const verdades = [
+      [t.vVeces(gP, cP, fmt(f)), t.vVecesE(k, fmt(f), fmt(k*f))],
+      [t.vMas(UN(g, 1), fmt(f), cP), t.vMasE(UN(g, 1), fmt(f), cP)],
+      [t.vExt(cant(m, g), cant(m*f, c)), t.vExtE(m, fmt(f), fmt(m*f))]];
+    const falsas = [
+      [t.fSuma(gP, cP, fmt(f)), t.fSumaP(k, fmt(f), fmt(k + f), fmt(k*f))],
+      [t.fReves(gP, cP, fmt(f)), t.fRevesP],
+      [t.vExt(cant(m, g), cant(m*cv.mal, c)), t.fExtP(m, fmt(cv.mal), fmt(f))]];
+    const [bienT, expl] = elegir(verdades), malas = mezclar(falsas).slice(0, 2), mapa = new Map(malas);
+    opcionesClase([bienT, ...mapa.keys()], bienT, ()=>acertar(expl), (x)=>mapa.get(x), "frase");
+    return;
+  }
+
+  /* --- 3. Problemas de medida (4.MD.2): tiempo, distancia, volumen, masa y dinero --- */
+  if(S.juego === "problemas"){
+    const [n] = nombresAzar(1);
+    const tipo = reto ? elegir(["llega","correr","jarra","arroz","cambio","practica"]) : elegir(["dur","dur","media","cinta","compra"]);
+    if(tipo === "dur"){
+      const h1 = azar(1, 9), m1 = elegir([0, 15, 30, 45]), k = azar(2, 6), a = h1*60 + m1, b = a + k*15;
+      const t1 = horaTxt(h1, m1), t2 = horaTxt(Math.floor(b/60), b % 60);
+      const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = rectaTiempo(a, b); esc.appendChild(caja);
+      const txt = t.durP(n, elegir(t.acts), t1, t2); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.leeF);
+      const resta100 = (Math.floor(b/60)*100 + b % 60) - (h1*100 + m1);
+      const {lista, pista} = conPistas(k*15, [[resta100, t.pistaDur100], [k*15 + 15, t.pistaDur15], [k*15 - 15, t.pistaDur15]]);
+      opcionesNum(lista, k*15, ()=>acertar(t.durFin(t1, t2, k, k*15)), pista);
+      return;
+    }
+    if(tipo === "media"){
+      const m = elegir([10, 15, 20, 25, 35, 40, 45]);
+      dibujito("📚");
+      const txt = t.mediaP(n, m); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.leeF);
+      const {lista, pista} = conPistas(30 + m, [[50 + m, t.pistaMedia50], [m, t.pistaMediaSin(m)], [60 + m, t.pistaMedia60]]);
+      opcionesNum(lista, 30 + m, ()=>acertar(t.mediaFin(m, 30 + m)), pista);
+      return;
+    }
+    if(tipo === "cinta"){
+      const m = azar(2, 5), cm = azar(3, 19)*5, M = m*100;
+      const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = cintaSVG(m, cm); esc.appendChild(caja);
+      const txt = t.cintaP(n, m, cm); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.leeF);
+      const sinReag = Number(String(M).split("").map((x, i, arr)=>{ const y = +(String(cm).padStart(arr.length, "0")[i]); return Math.abs(+x - y); }).join(""));
+      const {lista, pista} = conPistas(M - cm, [[m*1000 - cm, t.pistaM1000], [M + cm, t.pistaSumo], [sinReag, t.pistaReagrupa]]);
+      opcionesNum(lista, M - cm, ()=>acertar(t.cintaFin(m, M, cm, M - cm)), pista);
+      return;
+    }
+    if(tipo === "compra"){
+      let ca, cb; do{ ca = azar(5, 19)*5; cb = azar(5, 19)*5; } while(ca + cb <= 100);
+      const da = azar(0, 3), db = azar(1, 3), A = da*100 + ca, B = db*100 + cb, tot = A + B;
+      const [c1, c2] = mezclar(elegir(t.cosas));
+      dibujito("🛒");
+      const txt = t.compraP(n, c1, dinero(A), c2, dinero(B)); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.leeF);
+      const sinLlevar = (da + db)*100 + (ca + cb - 100);
+      const {lista, pista} = conPistas(dinero(tot), [[dinero(sinLlevar), t.pistaLlevarD(ca, cb)], [dinero(Math.abs(A - B)), t.pistaRestaD], [dinero(A + cb), t.pistaSinDolar]]);
+      opcionesTexto(lista, dinero(tot), ()=>acertar(t.compraFin(ca, cb, da, db, dinero(tot))), pista);
+      return;
+    }
+    /* Reto: dos pasos, con los pasos a la vista */
+    if(tipo === "llega"){
+      let h1, M, dh, m; do{ h1 = azar(1, 8); M = azar(6, 11)*5; dh = azar(1, 2); m = azar(4, 11)*5; } while(M + m < 65 || M + m >= 120);
+      const mm = M + m, r = mm - 60, h2 = h1 + dh + 1;
+      esc.appendChild(pasosEl(t.pasosLlega));
+      const txt = t.llegaP(n, horaTxt(h1, M), t.hm(dh, m)); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.pasosLlega.join(" "));
+      const bien = hora(h2, r), malo = `${h1 + dh}:${mm}`;
+      const {lista, pista} = conPistas(bien, [[malo, t.pistaReloj(malo, mm, r)], [hora(h1 + dh, r), t.pistaSinLlevar], [hora(h1 + 1, r), t.pistaSinHoras]]);
+      opcionesTexto(lista, bien, ()=>acertar(t.llegaFin(h1, dh, h1 + dh, M, m, mm, r, horaTxt(h2, r))), pista);
+      return;
+    }
+    if(tipo === "correr"){
+      const k = azar(1, 3), m1 = azar(1, 9)*100 + elegir([0, 50]), m2 = azar(3, 9)*100, M = k*1000, M1 = M + m1, tot = M1 + m2;
+      esc.appendChild(pasosEl(t.pasosCorrer()));
+      const aTxt = t.mixTxt(cant(k, "km"), cant(m1, "m")), txt = t.correrP(n, aTxt, cant(m2, "m")); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.pasosCorrer().join(" "));
+      const {lista, pista} = conPistas(tot, [[m1 + m2, t.pistaSinKm], [k*100 + m1 + m2, t.pistaKm100()], [k + m1 + m2, t.pistaKmSinConv()]]);
+      opcionesNum(lista, tot, ()=>acertar(t.correrFin(aTxt, fmt(M), m1, fmt(M1), m2, fmt(tot))), pista);
+      return;
+    }
+    if(tipo === "jarra"){
+      let L, k, ml; do{ L = azar(2, 4); k = azar(3, 6); ml = elegir([150, 200, 250, 300]); } while(k*ml >= L*1000);
+      const M = L*1000, s = k*ml, r = M - s;
+      esc.appendChild(pasosEl(t.pasosJarra));
+      const txt = t.jarraP(n, L, k, ml); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.pasosJarra.join(" "));
+      const {lista, pista} = conPistas(r, [[M - ml, t.pistaUnVaso], [s, t.pistaServido], [M + s, t.pistaSumoJ]]);
+      opcionesNum(lista, r, ()=>acertar(t.jarraFin(L, fmt(M), k, ml, fmt(s), fmt(r))), pista);
+      return;
+    }
+    if(tipo === "arroz"){
+      const k = azar(2, 5), a = azar(1, 3), b = azar(2, 12), A = 16*a, B = A + b, tot = k*B;
+      esc.appendChild(pasosEl(t.pasosArroz));
+      const aTxt = t.mixTxt(cant(a, "lb"), cant(b, "oz")), txt = t.arrozP(k, aTxt); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.pasosArroz.join(" "));
+      const {lista, pista} = conPistas(tot, [[k*(10*a + b), t.pistaLb10], [k*A + b, t.pistaOzUna], [k*A, t.pistaSinOz]]);
+      opcionesNum(lista, tot, ()=>acertar(t.arrozFin(a, A, b, B, k, fmt(tot))), pista);
+      return;
+    }
+    if(tipo === "cambio"){
+      let k, p, q, pago; do{ k = azar(2, 4); p = azar(5, 19)*5; q = azar(10, 50)*5; pago = elegir([500, 1000]); } while(k*p + q >= pago || k*p + q < pago - 600);
+      const s = k*p, tot = s + q, r = pago - tot, c = elegir(t.cosasCambio);
+      esc.appendChild(pasosEl(t.pasosCambio));
+      const txt = t.cambioP(n, k, c, dinero(p), dinero(q), dinero(pago)); parrafo(txt);
+      ponerInstruccion(t.leeF, txt + " " + t.pasosCambio.join(" "));
+      const {lista, pista} = conPistas(dinero(r), [[dinero(pago - s), t.pistaSinOtro], [dinero(pago - p - q), t.pistaSinMult], [dinero(tot), t.pistaCosto]]);
+      opcionesTexto(lista, dinero(r), ()=>acertar(t.cambioFin(k, dinero(p), dinero(s), dinero(q), dinero(tot), dinero(pago), dinero(r))), pista);
+      return;
+    }
+    /* practica: minutos por día → horas y minutos */
+    let m, d; do{ m = elegir([15, 20, 25, 35, 40, 45, 50]); d = azar(3, 7); } while(d*m < 125 || (d*m) % 60 === 0 || (d*m) % 100 >= 60 || Math.floor(d*m/100) === Math.floor(d*m/60));
+    const tot = d*m, h = Math.floor(tot/60), r = tot % 60;
+    esc.appendChild(pasosEl(t.pasosPractica));
+    const txt = t.practicaP(n, m, d); parrafo(txt);
+    ponerInstruccion(t.leeF, txt + " " + t.pasosPractica.join(" "));
+    const bien = t.hm(h, r);
+    const {lista, pista} = conPistas(bien, [[t.hm(Math.floor(tot/100), tot % 100), t.pistaHora100], [t.hm(h - 1, r), t.pistaCuantas60(tot)], [t.hm(h + 1, r), t.pistaCuantas60(tot)]]);
+    opcionesTexto(lista, bien, ()=>acertar(t.practicaFin(d, m, tot, h, h*60, r)), pista);
+    return;
+  }
+
+  /* --- 4. Área y perímetro (4.MD.3) --- */
+  if(S.juego === "area"){
+    const u = elegir(["m", "m", "cm"]);
+    if(reto && Math.random() < 0.5){
+      if(Math.random() < 0.5){
+        /* Lado que falta, sabiendo el área */
+        let s, x; do{ s = azar(4, 9); x = azar(3, 9); } while(s === x || (s*x) % 2 !== 0);
+        const A = s*x;
+        esc.appendChild(pasosEl(t.pasosLadoA));
+        const q = t.ladoAQ(`${A} ${u}²`, `${s} ${u}`);
+        const caja = document.createElement("div"); caja.className = "modelos";
+        const dib = (lado)=> rectSVG(s, x, {top:`${s} ${u}`, side:lado, dentro:`${A} ${u}²`, aria:q});
+        caja.innerHTML = dib("?"); esc.appendChild(caja);
+        ponerInstruccion(q, q + " " + t.pasosLadoA.join(" "));
+        const {lista, pista} = conPistas(x, [[A - s, t.pistaRestaA], [(A - 2*s)/2, t.pistaComoPer], [s, t.pistaMismoLado]]);
+        opcionesTexto(lista.map(v=>`${v} ${u}`), `${x} ${u}`, ()=>{ caja.innerHTML = dib(`${x} ${u}`); acertar(t.ladoAFin(`${A} ${u}²`, `${s} ${u}`, x, `${x} ${u}`)); }, (v)=>pista(parseInt(v)));
+        return;
+      }
+      /* Lado que falta, sabiendo el perímetro */
+      const s = azar(5, 12), x = azar(2, s - 1), P = 2*(s + x);
+      esc.appendChild(pasosEl(t.pasosLadoP));
+      const q = t.ladoPQ(`${P} ${u}`, `${s} ${u}`);
+      const caja = document.createElement("div"); caja.className = "modelos";
+      const dib = (lado)=> rectSVG(s, x, {top:`${s} ${u}`, side:lado, dentro:`P = ${P} ${u}`, aria:q});
+      caja.innerHTML = dib("?"); esc.appendChild(caja);
+      ponerInstruccion(q, q + " " + t.pasosLadoP.join(" "));
+      const {lista, pista} = conPistas(x, [[P - 2*s, t.pistaSinMitad], [P - s, t.pistaRestaUna], [P % s === 0 ? P/s : 0, t.pistaComoArea], [(P - s) % 2 === 0 ? (P - s)/2 : 0, t.pistaRestaUna]]);
+      opcionesTexto(lista.map(v=>`${v} ${u}`), `${x} ${u}`, ()=>{ caja.innerHTML = dib(`${x} ${u}`); acertar(t.ladoPFin(s, 2*s, P, P - 2*s, x)); }, (v)=>pista(parseInt(v)));
+      return;
+    }
+    S.altArea = !S.altArea;
+    const pideArea = S.altArea;
+    let l, w; do{ l = reto ? azar(6, 15) : azar(3, 9); w = reto ? azar(3, 12) : azar(2, 6); } while(l === w || l*w === 2*(l + w) || w > l);
+    const A = l*w, P = 2*(l + w), q = pideArea ? t.areaQ : t.perQ;
+    const caja = document.createElement("div"); caja.className = "modelos";
+    caja.innerHTML = rectSVG(l, w, {grid:!reto, top:`${l} ${u}`, side:`${w} ${u}`, aria:t.rectEtq(`${l} ${u}`, `${w} ${u}`)});
+    if(!reto) caja.insertAdjacentHTML("beforeend", `<p class="rotulo">${escaparHTML(t.cuadrito(`1 ${u}²`))}</p>`);
+    esc.appendChild(caja);
+    ponerInstruccion(q, t.rectEtq(`${l} ${u}`, `${w} ${u}`) + ". " + q);
+    if(pideArea){
+      const {lista, pista} = conPistas(A, [[P, t.pistaEsPer], [l + w, t.pistaSumaArea]]);
+      opcionesTexto(lista.map(v=>`${v} ${u}²`), `${A} ${u}²`, ()=>acertar((reto ? t.areaFin : t.areaFinF)(l, w, `${A} ${u}²`)), (v)=>pista(parseInt(v)));
+    } else {
+      const {lista, pista} = conPistas(P, [[A, t.pistaEsArea], [l + w, t.pistaDosLados], [2*l + w, t.pistaTresLados]]);
+      opcionesTexto(lista.map(v=>`${v} ${u}`), `${P} ${u}`, ()=>acertar(t.perFin(l, w, `${P} ${u}`)), (v)=>pista(parseInt(v)));
+    }
+    return;
+  }
+
+  /* --- 5. Diseña el jardín (4.MD.3): mismo perímetro, distinta área; misma área, distinto perímetro --- */
+  if(S.juego === "diseno"){
+    const [n] = nombresAzar(1);
+    const per = ([l, w])=> 2*(l + w), ar = ([l, w])=> l*w, txtJ = ([l, w])=> `${l} m × ${w} m`;
+    if(!reto){
+      const pares = []; for(let l=2;l<=9;l++) for(let w=1;w<=Math.min(l, 6);w++) pares.push([l, w]);
+      const tipo = elegir(["cerca", "area", "espacio"]);
+      const L3 = ["A", "B", "C"];
+      if(tipo === "espacio"){
+        const P = elegir([14, 16, 18, 20]);
+        const cand = mezclar(pares.filter(p=>per(p) === P)), j1 = cand[0], j2 = cand.find(p=>ar(p) !== ar(j1));
+        const js = [{L:"A", l:j1[0], w:j1[1]}, {L:"B", l:j2[0], w:j2[1]}];
+        jardinesEl(js);
+        const q = t.espacioF(P), mejor = ar(j1) > ar(j2) ? "A" : "B";
+        ponerInstruccion(q, js.map(j=>t.jardinEtq(j.L, j.l, j.w)).join(". ") + ". " + q);
+        const fin = t.espacioFin([j1[0], j1[1], ar(j1)], [j2[0], j2[1], ar(j2)], mejor);
+        opcionesTexto(["A", "B", t.igual], mejor, ()=>acertar(fin), (x)=> x === t.igual ? t.pistaIgual : t.pistaEspacio);
+        return;
+      }
+      let bien, trampas, otros, meta;
+      for(let i=0;i<200;i++){
+        if(tipo === "cerca"){
+          meta = elegir([12, 14, 16, 18, 20]);
+          const b = pares.filter(p=>per(p) === meta && p[1] >= 2);
+          trampas = [...pares.filter(p=>ar(p) === meta && per(p) !== meta).map(p=>[p, "area"]), ...pares.filter(p=>p[0] + p[1] === meta && per(p) !== meta).map(p=>[p, "dos"])];
+          otros = pares.filter(p=>per(p) !== meta && ar(p) !== meta && p[0] + p[1] !== meta && Math.abs(per(p) - meta) <= 6);
+          if(b.length && trampas.length){ bien = elegir(b); break; }
+        } else {
+          meta = elegir([12, 16, 18, 20, 24]);
+          const b = pares.filter(p=>ar(p) === meta && p[1] >= 2);
+          trampas = pares.filter(p=>per(p) === meta && ar(p) !== meta).map(p=>[p, "per"]);
+          otros = pares.filter(p=>ar(p) !== meta && per(p) !== meta && Math.abs(ar(p) - meta) <= 6 && p[1] >= 2);
+          if(b.length && trampas.length){ bien = elegir(b); break; }
+        }
+      }
+      const tr = elegir(trampas), ot = elegir(otros.filter(p=>txtJ(p) !== txtJ(tr[0]) && txtJ(p) !== txtJ(bien)));
+      const orden = mezclar([[bien, "bien"], tr, [ot, "otro"]]);
+      const js = orden.map(([p, k], i)=>({L:L3[i], l:p[0], w:p[1], k}));
+      jardinesEl(js);
+      const q = tipo === "cerca" ? t.cercaF(n, meta) : t.areaJF(n, meta);
+      ponerInstruccion(q, js.map(j=>t.jardinEtq(j.L, j.l, j.w)).join(". ") + ". " + q);
+      const jb = js.find(j=>j.k === "bien");
+      const pistaJ = (L)=>{
+        const j = js.find(x=>x.L === L), p = [j.l, j.w];
+        if(tipo === "cerca") return j.k === "area" ? t.pistaJAreaEsPer(L, meta) : j.k === "dos" ? t.pistaJDos(L, meta) : t.pistaJPer(L, per(p), meta);
+        return j.k === "per" ? t.pistaJAPer(L, meta) : t.pistaJA(L, ar(p), meta);
+      };
+      opcionesTexto(L3, jb.L, ()=>acertar(tipo === "cerca" ? t.cercaFin(jb.L, jb.l, jb.w, meta) : t.areaJFin(jb.L, jb.l, jb.w, meta)), pistaJ);
+      return;
+    }
+    if(Math.random() < 0.6){
+      /* Marca todos los jardines con esa área (o con ese perímetro) */
+      const pares = []; for(let l=2;l<=18;l++) for(let w=1;w<=Math.min(l, 9);w++) pares.push([l, w]);
+      const porArea = Math.random() < 0.5;
+      let buenas, malas, meta;
+      if(porArea){
+        meta = elegir([12, 16, 18, 24, 36]);
+        buenas = mezclar(pares.filter(p=>ar(p) === meta && p[1] >= 2)).slice(0, 3);
+        const t1 = mezclar(pares.filter(p=>per(p) === meta && ar(p) !== meta)).slice(0, 1);
+        const t2 = mezclar(pares.filter(p=>ar(p) !== meta && Math.abs(ar(p) - meta) <= 3 && per(p) !== meta && p[1] >= 2)).slice(0, 2);
+        malas = [...t1, ...t2];
+      } else {
+        meta = elegir([16, 18, 20, 24]);
+        buenas = mezclar(pares.filter(p=>per(p) === meta)).slice(0, 3);
+        const t1 = mezclar(pares.filter(p=>ar(p) === meta && per(p) !== meta)).slice(0, 1);
+        const t2 = mezclar(pares.filter(p=>p[0] + p[1] === meta && ar(p) !== meta)).slice(0, 1);
+        const t3 = mezclar(pares.filter(p=>Math.abs(per(p) - meta) === 2 && ar(p) !== meta && p[0] + p[1] !== meta)).slice(0, 1);
+        malas = [...t1, ...t2, ...t3];
+      }
+      const bT = buenas.map(txtJ), mapa = new Map([...buenas, ...malas].map(p=>[txtJ(p), p]));
+      const q = porArea ? t.marcarAF(meta) : t.marcarPF(meta);
+      dibujito(porArea ? "🌻" : "🚧"); parrafo(porArea ? t.marcarAP(meta) : t.marcarPP(meta));
+      ponerInstruccion(q);
+      marcarVarios(mezclar([...bT, ...malas.map(txtJ)]), bT,
+        {comprobar:t.comprobar, ninguno:t.ninguno,
+         malo:(x)=>{ const p = mapa.get(x); return porArea ? t.maloA(x, ar(p), meta, per(p) === meta) : t.maloP(x, per(p), meta, ar(p) === meta); },
+         faltan: porArea ? t.faltanA(meta) : t.faltanP(meta)},
+        ()=> acertar(porArea ? t.marcarAFin(bT.join(", "), meta, buenas.map(p=>`${per(p)} m`).join(", "))
+                             : t.marcarPFin(bT.join(", "), meta, buenas.map(p=>`${ar(p)} m²`).join(", "))));
+      return;
+    }
+    /* ¿Tiene razón? */
+    const tipo = elegir(["misma", "mult", "cerca", "cuadrado", "areaPer"]);
+    let dicho, verdad, expl;
+    if(tipo === "misma"){
+      const s = azar(6, 10), w1 = azar(1, Math.floor(s/2) - 1), w2 = Math.floor(s/2);
+      const a = [s - w1, w1], b = [s - w2, w2];
+      dicho = t.rMismaArea; verdad = false; expl = t.rMismaAreaE(n, txtJ(a), txtJ(b), 2*s, ar(a), ar(b));
+    } else if(tipo === "mult"){
+      dicho = t.rCercaMult; verdad = false; expl = t.rCercaMultE(n);
+    } else if(tipo === "cerca"){
+      const l = azar(4, 12), w = azar(2, l - 1);
+      if(Math.random() < 0.5){ dicho = t.rCerca(l, w, 2*(l + w)); verdad = true; expl = t.rCercaE(n, l, w, 2*(l + w)); }
+      else { dicho = t.rCerca(l, w, l*w); verdad = false; expl = t.rCercaFE(n, l, w, l*w, 2*(l + w)); }
+      if(l*w === 2*(l + w)){ dicho = t.rCerca(l, w, 2*(l + w)); verdad = true; expl = t.rCercaE(n, l, w, 2*(l + w)); }
+    } else if(tipo === "cuadrado"){
+      const c = azar(4, 8), d = azar(2, c - 1);
+      dicho = t.rCuadrado(4*c, c, c + d, c - d); verdad = true; expl = t.rCuadradoE(n, c, c*c, c + d, c - d, (c + d)*(c - d));
+    } else {
+      let l, w; do{ l = azar(4, 10); w = azar(2, l - 1); } while(l*w === 2*(l + w));
+      dicho = t.rAreaPer(l, w, 2*(l + w)); verdad = false; expl = t.rAreaPerE(n, l, w, l*w, 2*(l + w));
+    }
+    const texto = t.dice(n, dicho);
+    const p = document.createElement("p"); p.className = "problema"; dibujito("🌻"); p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(texto)}`; esc.appendChild(p);
+    ponerInstruccion(t.razonF, texto + " " + t.razonF);
+    const cont = $("opciones");
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(v === verdad){ sonBoing(); acertar(expl); } else fallar(bt, t.pistaRazon); }));
+    });
+    S.resolver = resolverTexto(verdad ? t.si : t.no);
+    return;
+  }
+
+  /* --- 6. Diagrama de puntos (4.MD.4): medidas en fracciones de pulgada --- */
+  if(S.juego === "puntos"){
+    const c = elegir(t.ctxP), d = reto ? 8 : 4, n = 8;
+    const tipo = elegir(reto ? ["dif","dif","total","total","masDe","cuenta"] : ["cuenta","cuenta","total","masDe","dif"]);
+    const ini = (tipo === "total" || !reto) ? 0 : elegir([0, 4]);
+    let cuentas;
+    for(;;){
+      cuentas = Array(n + 1).fill(0);
+      const pos = mezclar([1,2,3,4,5,6,7,8].filter(i=>ini + i > 0)).slice(0, reto ? azar(5, 7) : azar(4, 5));
+      pos.forEach(i=>{ cuentas[i] = azar(1, reto ? 5 : 4); });
+      if(tipo === "total" && !cuentas.some((k, i)=>k >= 2 && ini + i < d)) continue;
+      break;
+    }
+    const N = cuentas.reduce((a, b)=>a + b, 0), con = cuentas.map((k, i)=>k ? i : -1).filter(i=>i >= 0);
+    const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = lineaPuntos(d, ini, n, cuentas, c, N); esc.appendChild(caja);
+    const intro = t.lpIntro(N, c); parrafo(intro, "contexto");
+    const decir = (q)=> ponerInstruccion(q, intro + " " + q);
+    if(tipo === "cuenta"){
+      const i = elegir(con), k = cuentas[i], val = fTxt(ini + i, d), med = medida(ini + i, d);
+      const q = t.cuantasMid(c, med); decir(q);
+      const pares = [];
+      [i - 1, i + 1].forEach(j=>{ if(j >= 0 && j <= n && cuentas[j]) pares.push([cuentas[j], t.pistaVecina(fTxt(ini + j, d), val)]); });
+      pares.push([N, t.pistaTotal(N, c, val)], [k + 1, t.pistaContar(val)]);
+      const {lista, pista} = conPistas(k, pares);
+      opcionesNum(lista, k, ()=>acertar(t.cuentaFin(val, k, c, med)), pista);
+      return;
+    }
+    if(tipo === "masDe"){
+      const opc = con.filter(i=> cuentas.some((k, j)=>k && j > i) && cuentas.some((k, j)=>k && j < i));
+      const i = opc.length ? elegir(opc) : con[0], k = cuentas[i], val = fTxt(ini + i, d), med = medida(ini + i, d);
+      const R = cuentas.reduce((a, b, j)=> a + (j > i ? b : 0), 0), Lm = cuentas.reduce((a, b, j)=> a + (j < i ? b : 0), 0);
+      const q = t.masDeF(c, med); decir(q);
+      const {lista, pista} = conPistas(R, [[R + k, t.pistaIncluye(val)], [Lm, t.pistaMenos(val)], [R + 1, t.pistaContar(val)]], 3);
+      opcionesNum(lista, R, ()=>acertar(t.masDeFin(val, R)), pista);
+      return;
+    }
+    if(tipo === "dif"){
+      const a = con[0], b = con[con.length - 1], dv = b - a, va = ini + a, vb = ini + b;
+      const q = t.difF(c); decir(q);
+      const op = (v, key)=>({v:key, html:fHTML(v, d), aria:fAria(v, d)});
+      const lista = [op(dv, "ok"), op(va + vb, "suma"), op(dv + 1, "rayas")];
+      const mapa = {suma:t.pistaDifSuma, rayas:t.pistaDifRayas(d)};
+      const res = fTxt(dv, d), cuenta = `${vb}/${d} − ${va}/${d} = ${dv}/${d}` + (res !== `${dv}/${d}` ? ` = ${res}` : "");
+      opcionesHTML(lista, "ok", ()=>acertar(t.difFin(medida(vb, d), medida(va, d), cuenta, medida(dv, d))), (v)=>mapa[v]);
+      return;
+    }
+    /* total: sumar las que midieron lo mismo (mismo denominador) */
+    const opc = con.filter(i=>cuentas[i] >= 2 && ini + i < d), i = elegir(opc), k = cuentas[i], v = ini + i;
+    const {a, b} = simp(v, d), med = medida(v, d);
+    const q = t.totalF(c, med); decir(q);
+    const fr = `${a}/${b}`, suma = Array(k).fill(fr).join(" + ") + ` = ${k*a}/${b}`, res = fTxt(k*a, b);
+    const lista = [{v:"ok", html:fHTML(k*a, b), aria:fAria(k*a, b)},
+                   {v:"den", html:fracHTML(k*a, k*b), aria:fracPalabras(k*a, k*b)},
+                   {v:"mas", html:fHTML((k + 1)*a, b), aria:fAria((k + 1)*a, b)}];
+    const mapa = {den:t.pistaDenSuma, mas:t.pistaContar(fTxt(v, d))};
+    opcionesHTML(lista, "ok", ()=>acertar(t.totalFin(k, c, med, suma + (res !== `${k*a}/${b}` ? ` = ${res}` : ""), t.med(res, k*a, b))), (x)=>mapa[x]);
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const t = T[S.idioma], L = '<i class="linea"></i>';
+  $("hoja-tabla").innerHTML = `<table class="tabla-h"><thead><tr><th>${cap(UN("ft", 2))}</th><th>${cap(UN("inch", 2))}</th></tr></thead><tbody>` +
+    [[1, "12"], [2, L], [3, L], [4, L], [5, L]].map(([a, b])=>`<tr><td>${a}</td><td>${b}</td></tr>`).join("") + "</tbody></table>" +
+    `<p class="razon-h">${escaparHTML(t.hojaRegla)}</p><div class="renglon"></div>`;
+  $("hoja-conv").innerHTML = [`${cant(4, "yd")} = ${L} ${UN("ft", 2)}`, `${t.mixTxt(cant(3, "lb"), cant(5, "oz"))} = ${L} ${UN("oz", 2)}`,
+    `${t.mixTxt(cant(2, "h"), cant(15, "min"))} = ${L} ${UN("min", 2)}`, `${cant(3, "L")} = ${L} ${UN("mL", 2)}`].map(x=>`<div>${x}</div>`).join("");
+  $("hoja-rect").innerHTML = rectSVG(7, 4, {grid:true, top:"7 m", side:"4 m", aria:t.rectEtq("7 m", "4 m"), u:30}) +
+    `<div><p>${escaparHTML(t.hojaArea)} ${L} m²</p><p>${escaparHTML(t.hojaPer)} ${L} m</p></div>`;
+  $("hoja-lado").textContent = t.ladoAQ("48 m²", "8 m");
+  const cuentas = [0, 1, 3, 2, 0, 1, 2, 0, 1];
+  $("hoja-puntos").innerHTML = lineaPuntos(4, 0, 8, cuentas, t.ctxP[0], 10) +
+    `<p class="razon-h">${escaparHTML(t.hojaPuntos)}</p><div class="renglon"></div>`;
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>

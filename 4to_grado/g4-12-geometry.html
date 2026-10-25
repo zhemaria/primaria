@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Lines, shapes and symmetry
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.G.1, 4.G.2, 4.G.3
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Rectas, figuras y simetría · Juegos de cuarto grado" data-en="Lines, shapes and symmetry · Fourth grade games">Lines, shapes and symmetry · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade geometry games with Lumi: points, lines, line segments and rays, parallel and perpendicular lines, classifying quadrilaterals and triangles, a shape detective, lines of symmetry and completing symmetric shapes.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.fig-svg{width:clamp(220px,64vw,330px);height:auto;max-height:300px;display:block}
+.linea-svg{width:clamp(260px,80vw,420px);height:auto;display:block}
+.dos-svg{width:clamp(260px,82vw,440px);height:auto;display:block;border-radius:14px}
+.sim-svg{width:clamp(200px,58vw,280px);height:auto;display:block}
+.comp-svg{width:100%;height:auto;display:block;max-height:180px}
+.comp-svg.grande{width:auto;max-width:100%;height:clamp(170px,46vw,240px);max-height:none}
+.leyenda{margin:0;font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);text-align:center;max-width:46ch;font-weight:600}
+.opciones-fig{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;max-width:640px}
+@media (min-width:700px){ .opciones-fig{grid-template-columns:repeat(4,minmax(0,1fr));max-width:900px} }
+.opcion-fig{display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;padding:10px 6px;font-size:clamp(16px,3.6vw,20px);min-width:0}
+.opcion-fig svg{max-width:100%;height:auto}
+.fig-carta{width:100%;height:auto;max-height:150px;display:block}
+.opcion-fig.bien{border-color:var(--acierto);background:var(--acierto-fondo)}
+.opcion-fig.tachada{opacity:.45;border-color:var(--linea)}
+.opcion-texto.larga,.opcion-vf.larga{font-size:clamp(17px,3.8vw,24px);padding:10px 16px}
+.hoja .caja-h.tres{grid-template-columns:1fr 1fr 1fr}
+.hoja .caja-h.dos{grid-template-columns:1fr 1.3fr;align-items:center}
+.hoja .fig-h{text-align:center;font-size:12pt}
+.hoja .lineas-h div{font-size:13pt;margin:4mm 0}
+@media print{ .hoja .caja-h svg.hoja-svg{width:48mm;height:auto;display:block;margin:0 auto 2mm} .hoja .caja-h.dos svg.hoja-svg{width:62mm} }
+.hoja .caja-h.tres{align-items:end}
+@media print{ .hoja svg.hoja-p{width:30mm;height:auto;display:block} }
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Rectas, figuras y simetría" data-en="Lines, shapes and symmetry">Lines, shapes and symmetry</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>🔷</span><span>📏</span><span>🦋</span><span>🏗️</span></div>
+    <h2 data-es="¡Figuras con estilo!" data-en="Shapes with style!">Shapes with style!</h2>
+    <p data-es="Las rectas, los ángulos y las figuras están en todas partes: en una escalera, en las vías del tren, en las calles de la ciudad y en las alas de una mariposa. Con Lumi vas a reconocer rectas, segmentos y semirrectas, buscar rectas paralelas y perpendiculares, clasificar figuras, resolver misterios de detective y doblar figuras en tu mente para encontrar sus ejes de simetría. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="Lines, angles and shapes are everywhere: on a ladder, on train tracks, on city streets and on the wings of a butterfly. With Lumi you will recognize lines, line segments and rays, find parallel and perpendicular lines, classify shapes, solve detective mysteries and fold shapes in your mind to find their lines of symmetry. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">Lines, angles and shapes are everywhere: on a ladder, on train tracks, on city streets and on the wings of a butterfly. With Lumi you will recognize lines, line segments and rays, find parallel and perpendicular lines, classify shapes, solve detective mysteries and fold shapes in your mind to find their lines of symmetry. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: rectas, figuras y simetría" data-en="🖨 Print a page: lines, shapes and symmetry">🖨 Print a page: lines, shapes and symmetry</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.G.1 (dibujar e identificar puntos, rectas, segmentos, semirrectas, ángulos rectos, agudos y obtusos, y rectas perpendiculares y paralelas), 4.G.2 (clasificar figuras de dos dimensiones según tengan o no rectas paralelas o perpendiculares y ángulos de cierto tamaño, y reconocer los triángulos rectángulos) y 4.G.3 (reconocer un eje de simetría como una recta por la que la figura se puede doblar y sus partes coinciden, identificar figuras simétricas y dibujar ejes de simetría). Se usa la definición inclusiva: un trapecio tiene al menos un par de lados paralelos, así que todo paralelogramo es también un trapecio; y un cuadrado es también rectángulo, rombo y paralelogramo. En el nivel Fácil hay marcas en las figuras (cuadradito para el ángulo recto, rayitas para los lados iguales y flechitas para los lados paralelos) y, al acertar, se ve el doblez de la figura; en el Reto se nombran con letras (segmento AB, semirrecta CD), se buscan rectas en dibujos de la vida diaria, se marcan todos los nombres de una figura, se cuentan los ejes de simetría y el eje puede ser horizontal o diagonal. Los juegos «Clasifica la figura» y «¿Quién soy?» piden justificar con las propiedades. Cada juego tiene su enlace directo: #rectas, #paralelas, #clasificar, #propiedades, #simetria y #completar."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.G.1 (draw and identify points, lines, line segments, rays, right, acute and obtuse angles, and perpendicular and parallel lines), 4.G.2 (classify two-dimensional figures based on the presence or absence of parallel or perpendicular lines and of angles of a specified size, and recognize right triangles) and 4.G.3 (recognize a line of symmetry as a line across the figure such that it can be folded into matching parts, identify line-symmetric figures and draw lines of symmetry). The inclusive definition is used: a trapezoid has at least one pair of parallel sides, so every parallelogram is also a trapezoid; and a square is also a rectangle, a rhombus and a parallelogram. At the Easy level the shapes carry marks (a small square for a right angle, ticks for equal sides and arrows for parallel sides) and, after a correct answer, the fold of the shape is shown; at the Challenge level figures are named with letters (line segment AB, ray CD), lines are found in everyday pictures, every name of a shape is marked, lines of symmetry are counted and the line of symmetry can be horizontal or diagonal. The games “Classify the shape” and “Who am I?” ask the child to justify with properties. Each game has its own direct link: #rectas, #paralelas, #clasificar, #propiedades, #simetria and #completar.">Aligned to the Illinois fourth grade mathematics standards 4.G.1 (draw and identify points, lines, line segments, rays, right, acute and obtuse angles, and perpendicular and parallel lines), 4.G.2 (classify two-dimensional figures based on the presence or absence of parallel or perpendicular lines and of angles of a specified size, and recognize right triangles) and 4.G.3 (recognize a line of symmetry as a line across the figure such that it can be folded into matching parts, identify line-symmetric figures and draw lines of symmetry). The inclusive definition is used: a trapezoid has at least one pair of parallel sides, so every parallelogram is also a trapezoid; and a square is also a rectangle, a rhombus and a parallelogram. At the Easy level the shapes carry marks (a small square for a right angle, ticks for equal sides and arrows for parallel sides) and, after a correct answer, the fold of the shape is shown; at the Challenge level figures are named with letters (line segment AB, ray CD), lines are found in everyday pictures, every name of a shape is marked, lines of symmetry are counted and the line of symmetry can be horizontal or diagonal. The games “Classify the shape” and “Who am I?” ask the child to justify with properties. Each game has its own direct link: #rectas, #paralelas, #clasificar, #propiedades, #simetria and #completar.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Rectas, figuras y simetría" data-en="Lines, shapes and symmetry">Lines, shapes and symmetry</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Escribe si cada figura es una recta, un segmento o una semirrecta, con sus letras (por ejemplo, segmento CD)." data-en="1. Write whether each figure is a line, a line segment or a ray, with its letters (for example, line segment CD).">1. Write whether each figure is a line, a line segment or a ray, with its letters (for example, line segment CD).</h3>
+  <div class="caja-h tres" id="hoja-rectas"></div>
+  <h3 data-es="2. Dibuja una semirrecta que empiece en el punto P, y un par de rectas paralelas." data-en="2. Draw a ray that starts at point P, and a pair of parallel lines.">2. Draw a ray that starts at point P, and a pair of parallel lines.</h3>
+  <div id="hoja-p"></div>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3 data-es="3. Repasa con un color los lados paralelos. Marca con un cuadradito los ángulos rectos. Completa." data-en="3. Trace the parallel sides with a color. Mark the right angles with a small square. Fill in.">3. Trace the parallel sides with a color. Mark the right angles with a small square. Fill in.</h3>
+  <div class="caja-h dos" id="hoja-lados"></div>
+  <h3 data-es="4. Escribe el mejor nombre de cada figura." data-en="4. Write the best name for each shape.">4. Write the best name for each shape.</h3>
+  <div class="caja-h tres" id="hoja-clasificar"></div>
+  <h3 data-es="5. Dibuja todos los ejes de simetría de cada figura y escribe cuántos tiene." data-en="5. Draw all the lines of symmetry of each shape and write how many it has.">5. Draw all the lines of symmetry of each shape and write how many it has.</h3>
+  <div class="caja-h tres" id="hoja-simetria"></div>
+  <h3 data-es="6. ¿Un cuadrado es también un rectángulo? Explica por qué." data-en="6. Is a square also a rectangle? Explain why.">6. Is a square also a rectangle? Explain why.</h3>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, es un eje de simetría", no:"✘ No es un eje de simetría", comprobar:"✔ Comprobar", ninguno:"Marca al menos un nombre.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    y:"y", ni:"ni", opcion:(L)=>`Opción ${L}`, figura:(L)=>`Figura ${L}`,
+    /* 1. Puntos, rectas y semirrectas */
+    tipos:{punto:"Punto", recta:"Recta", segmento:"Segmento", semirrecta:"Semirrecta"},
+    unTipo:{punto:"un punto", recta:"una recta", segmento:"un segmento", semirrecta:"una semirrecta"},
+    rectasF:"¿Qué figura es? Mira bien cómo terminan sus extremos.",
+    rectasR:"¿Cuál es el nombre correcto de esta figura?",
+    rectasAria:(k)=>({punto:"Un punto", recta:"Una línea con una flecha en cada extremo", segmento:"Una línea con un punto en cada extremo",
+                      semirrecta:"Una línea con un punto en un extremo y una flecha en el otro"})[k],
+    rectasAriaR:(k,a,b)=>({recta:`Una línea que pasa por los puntos ${a} y ${b}, con una flecha en cada extremo`,
+                           segmento:`Una línea con extremos en los puntos ${a} y ${b}`,
+                           semirrecta:`Una línea que empieza en el punto ${a}, pasa por el punto ${b} y termina en una flecha`})[k],
+    def:{punto:"Un punto marca un lugar exacto; no tiene largo.",
+         recta:"Una recta sigue sin fin hacia los dos lados: lleva una flecha en cada extremo.",
+         segmento:"Un segmento tiene dos extremos: empieza en un punto y termina en otro.",
+         semirrecta:"Una semirrecta empieza en un punto y sigue sin fin hacia un solo lado: tiene un extremo y una flecha."},
+    mira:{punto:"Esta figura es solo un punto, sin largo.",
+          recta:"Mira esta figura: tiene una flecha en cada extremo.",
+          segmento:"Mira esta figura: tiene un punto en cada extremo y ninguna flecha.",
+          semirrecta:"Mira esta figura: tiene un punto en un extremo y una flecha en el otro."},
+    finTipo:{punto:"Es un punto: marca un lugar exacto y no tiene largo.",
+             recta:"Es una recta: tiene una flecha en cada extremo, porque sigue sin fin hacia los dos lados.",
+             segmento:"Es un segmento: tiene dos extremos, uno a cada lado, y no sigue más allá.",
+             semirrecta:"Es una semirrecta: empieza en un punto y sigue sin fin hacia un solo lado, como la luz de una linterna."},
+    finR:{recta:(a,b)=>`Es la recta ${a}${b}: pasa por ${a} y por ${b} y sigue sin fin hacia los dos lados. También se puede llamar recta ${b}${a}.`,
+          segmento:(a,b)=>`Es el segmento ${a}${b}: sus extremos son ${a} y ${b}. También se puede llamar segmento ${b}${a}.`,
+          semirrecta:(a,b)=>`Es la semirrecta ${a}${b}: empieza en ${a}, pasa por ${b} y sigue sin fin. La semirrecta siempre se nombra empezando por su extremo.`},
+    ordenRay:(a,b)=>`Casi: es una semirrecta, pero se nombra empezando por su extremo, el punto donde empieza. Aquí empieza en ${a}, no en ${b}.`,
+    /* 2. Paralelas o perpendiculares */
+    rel:{par:"Paralelas", perp:"Perpendiculares", corta:"Se cortan, pero no son perpendiculares"},
+    parF:"¿Cómo son estas dos rectas?",
+    parR:"Mira la línea naranja y la línea azul. ¿Cómo son?",
+    parAria:(k)=>({par:"Dos rectas que van en la misma dirección sin tocarse", perp:"Dos rectas que se cruzan, con un cuadradito en el cruce",
+                   corta:"Dos rectas que se cruzan, inclinadas una respecto a la otra"})[k],
+    escenaAria:(n)=>`${n}, con una línea naranja y una línea azul marcadas`,
+    finRel:{par:"Son paralelas: van en la misma dirección, siempre a la misma distancia, y nunca se cruzan aunque las alargues.",
+            perp:"Son perpendiculares: se cortan y forman ángulos rectos, como la esquina de una hoja de papel.",
+            corta:"Se cortan, pero no son perpendiculares: los ángulos que forman no son rectos. Uno es agudo (más cerrado que la esquina de una hoja) y el otro es obtuso (más abierto)."},
+    pistaRel:{
+      "par-perp":"Las rectas paralelas nunca se cruzan. Estas sí se cruzan en un punto.",
+      "par-corta":"Las rectas paralelas nunca se cruzan, aunque las alargues. Estas sí se cruzan en un punto.",
+      "perp-par":"Las rectas perpendiculares se cruzan formando una esquina. Estas no se cruzan nunca: siempre están a la misma distancia.",
+      "perp-corta":"Sí se cortan, pero no forman ángulos rectos. Compara con la esquina de una hoja: un ángulo es más cerrado y el otro, más abierto.",
+      "corta-par":"Estas rectas no se cruzan, ni siquiera si las alargas: siempre están a la misma distancia.",
+      "corta-perp":"Sí se cortan, pero forman una esquina perfecta, un ángulo recto, como la esquina de una hoja. Las rectas que se cortan en ángulo recto son perpendiculares."},
+    pistaPerpF:"Mira el cuadradito en el cruce: marca un ángulo recto. ",
+    escenas:{escalera:"Una escalera", vias:"Las vías del tren", mapa:"Un mapa de calles de la ciudad", letraH:"La letra H",
+             ventana:"Una ventana", letraZ:"La letra Z", letraA:"La letra A"},
+    /* 3. Clasifica la figura */
+    nom:{cuadrilatero:"Cuadrilátero", trapecio:"Trapecio", paralelogramo:"Paralelogramo", rectangulo:"Rectángulo", rombo:"Rombo", cuadrado:"Cuadrado",
+         triangulo:"Triángulo", triRect:"Triángulo rectángulo", triAcu:"Triángulo acutángulo", triObt:"Triángulo obtusángulo"},
+    un:{cuadrilatero:"un cuadrilátero", trapecio:"un trapecio", paralelogramo:"un paralelogramo", rectangulo:"un rectángulo", rombo:"un rombo", cuadrado:"un cuadrado",
+        triangulo:"un triángulo", triRect:"un triángulo rectángulo", triAcu:"un triángulo acutángulo", triObt:"un triángulo obtusángulo"},
+    clasF:"¿Cuál es el mejor nombre para esta figura? Escoge el que dice más.",
+    clasR:"Marca todos los nombres que le quedan bien a esta figura. Después toca Comprobar.",
+    leyenda:"Marcas: cuadradito = ángulo recto; rayitas iguales = lados iguales; flechitas iguales = lados paralelos.",
+    leyendaR:"Marcas: cuadradito = ángulo recto; rayitas iguales = lados iguales. Usa la cuadrícula para ver si hay lados paralelos.",
+    figAria:(n,r)=>`Figura de ${n} lados dibujada en una cuadrícula` + (r ? `, con ${r === 1 ? "un ángulo recto marcado" : r + " ángulos rectos marcados"}` : ""),
+    hechos:(A)=>{
+      if(A.n === 3) return A.rectos ? "tiene un ángulo recto" : A.obtusos ? "tiene un ángulo obtuso" : "sus 3 ángulos son agudos";
+      const p = A.par === 2 ? "dos pares de lados paralelos" : A.par === 1 ? "solo un par de lados paralelos" : "ningún par de lados paralelos";
+      const r = A.rectos === 4 ? "cuatro ángulos rectos" : A.rectos === 0 ? "ningún ángulo recto" : A.rectos === 1 ? "un ángulo recto" : A.rectos + " ángulos rectos";
+      return `tiene ${p}, ${r} y ${A.iguales ? "sus 4 lados iguales" : "lados que no miden todos lo mismo"}`;
+    },
+    clasFin:(un,h)=>`Es ${un}, porque ${h}.`,
+    clasRFin:(l,h)=>`Le quedan bien estos nombres: ${l}, porque ${h}.`,
+    falta:{
+      cuadrilatero:(A)=>`Un cuadrilátero tiene 4 lados, y esta figura tiene ${A.n}.`,
+      trapecio:(A)=> A.n === 3 ? "Un trapecio es un cuadrilátero: tiene 4 lados, y esta figura tiene 3." : "Un trapecio tiene al menos un par de lados paralelos, y esta figura no tiene ninguno.",
+      paralelogramo:(A)=> A.n === 3 ? "Un paralelogramo tiene 4 lados, y esta figura tiene 3." : `Un paralelogramo tiene dos pares de lados paralelos, y esta figura ${A.par === 1 ? "solo tiene uno" : "no tiene ninguno"}.`,
+      rectangulo:(A)=> A.n === 3 ? "Un rectángulo tiene 4 lados, y esta figura tiene 3. Ojo: «triángulo rectángulo» es otra cosa." : `Un rectángulo tiene 4 ángulos rectos, y esta figura ${A.rectos === 0 ? "no tiene ninguno" : A.rectos === 1 ? "solo tiene uno" : "solo tiene " + A.rectos}.`,
+      rombo:(A)=> A.n === 3 ? "Un rombo tiene 4 lados, y esta figura tiene 3." : "Un rombo tiene sus 4 lados iguales, y en esta figura no miden todos lo mismo.",
+      cuadrado:(A)=> A.n === 3 ? "Un cuadrado tiene 4 lados, y esta figura tiene 3." : A.rectos !== 4 ? "Un cuadrado tiene 4 ángulos rectos, y esta figura no los tiene." : "Un cuadrado tiene sus 4 lados iguales, y en esta figura no miden todos lo mismo.",
+      triangulo:(A)=>`Un triángulo tiene 3 lados, y esta figura tiene ${A.n}.`,
+      triRect:(A)=>`Un triángulo rectángulo tiene un ángulo recto, y este no tiene ninguno: ${A.obtusos ? "tiene un ángulo obtuso" : "sus 3 ángulos son agudos"}.`,
+      triAcu:(A)=>`En un triángulo acutángulo los 3 ángulos son agudos (más cerrados que un ángulo recto), y este tiene un ángulo ${A.rectos ? "recto" : "obtuso"}.`,
+      triObt:(A)=>`Un triángulo obtusángulo tiene un ángulo obtuso (más abierto que un ángulo recto), y este no tiene ninguno${A.rectos ? ": tiene un ángulo recto" : ""}.`},
+    masPreciso:(un,mejor)=>`Es verdad que es ${un}, pero hay un nombre que dice más. ${({cuadrado:"Fíjate en sus ángulos y en sus lados.", rectangulo:"Fíjate en sus ángulos.",
+      rombo:"Fíjate en sus lados.", paralelogramo:"¿Cuántos pares de lados paralelos tiene?", trapecio:"¿Tiene lados paralelos?",
+      triRect:"Fíjate en sus ángulos.", triAcu:"Fíjate en sus ángulos.", triObt:"Fíjate en sus ángulos."})[mejor] || ""}`.trim(),
+    faltanN:(h)=>`Todavía falta al menos un nombre. Fíjate: ${h}. ¿Qué otros nombres le quedan bien? Recuerda que una figura puede tener varios nombres.`,
+    /* 4. ¿Quién soy? */
+    detF:"¿Quién soy? Lee las pistas y toca la figura que cumple todas.",
+    pistaN:(j)=>`Pista ${j}:`,
+    cl:{
+      c4:{txt:"Tengo 4 lados.", si:"tiene 4 lados", por:(A)=>`tiene ${A.n} lados`},
+      c3:{txt:"Tengo 3 lados.", si:"tiene 3 lados", por:(A)=>`tiene ${A.n} lados`},
+      cParOp:{txt:"Mis lados opuestos son paralelos.", si:"sus lados opuestos son paralelos",
+              por:(A)=> A.n === 3 ? "es un triángulo, así que no tiene pares de lados opuestos" : A.par === 1 ? "solo tiene un par de lados paralelos" : "no tiene lados paralelos"},
+      cUnPar:{txt:"Tengo exactamente un par de lados paralelos.", si:"tiene exactamente un par de lados paralelos",
+              por:(A)=> A.n === 3 ? "es un triángulo y no tiene lados paralelos" : A.par === 2 ? "tiene dos pares de lados paralelos" : "no tiene lados paralelos"},
+      cRectos4:{txt:"Tengo 4 ángulos rectos.", si:"tiene 4 ángulos rectos", por:(A)=> A.rectos === 0 ? "no tiene ángulos rectos" : A.rectos === 1 ? "solo tiene un ángulo recto" : `solo tiene ${A.rectos} ángulos rectos`},
+      cRectos2:{txt:"Tengo exactamente 2 ángulos rectos.", si:"tiene exactamente 2 ángulos rectos", por:(A)=> A.rectos === 0 ? "no tiene ángulos rectos" : A.rectos === 1 ? "tiene un solo ángulo recto" : `tiene ${A.rectos} ángulos rectos`},
+      cSinRecto:{txt:"No tengo ángulos rectos.", si:"no tiene ángulos rectos", por:(A)=> A.rectos === 1 ? "tiene un ángulo recto" : `tiene ${A.rectos} ángulos rectos`},
+      cUnRecto:{txt:"Tengo un ángulo recto.", si:"tiene un ángulo recto", por:(A)=> A.rectos > 1 ? `tiene ${A.rectos} ángulos rectos` : A.obtusos ? "no tiene ángulo recto: tiene un ángulo obtuso" : "no tiene ángulo recto: sus ángulos son agudos"},
+      cIguales:{txt:"Todos mis lados miden lo mismo.", si:"todos sus lados miden lo mismo", por:()=> "sus lados no miden todos lo mismo"},
+      cNoIguales:{txt:"No todos mis lados miden lo mismo.", si:"no todos sus lados miden lo mismo", por:()=> "todos sus lados miden lo mismo"},
+      cObt:{txt:"Tengo un ángulo obtuso.", si:"tiene un ángulo obtuso", por:(A)=> A.rectos ? "no tiene ángulo obtuso: tiene un ángulo recto" : "no tiene ángulo obtuso: sus 3 ángulos son agudos"},
+      cAgudos:{txt:"Mis 3 ángulos son agudos.", si:"sus 3 ángulos son agudos", por:(A)=> A.rectos ? "tiene un ángulo recto" : "tiene un ángulo obtuso"},
+      cDosIguales:{txt:"Dos de mis lados miden lo mismo.", si:"dos de sus lados miden lo mismo", por:()=> "sus 3 lados miden distinto"}},
+    noCumple:(L,j,txt,por)=>`La figura ${L} no cumple la pista ${j} («${txt}»): ${por}.`,
+    detFin:(L,un,l)=>`La figura ${L} es ${un}: ${l}.`,
+    /* 5. Ejes de simetría */
+    simF:"Imagina que doblas la figura por la línea punteada. ¿Es un eje de simetría?",
+    simR:"¿Cuántos ejes de simetría tiene esta figura?",
+    simAria:(n)=>`${n} con una línea punteada`,
+    simAriaR:(n)=>`${n}`,
+    fig:{cuadrado:"El cuadrado", rectangulo:"El rectángulo", triEq:"El triángulo equilátero", hexagono:"El hexágono regular", triIso:"El triángulo isósceles",
+         paralelogramo:"El paralelogramo", rombo:"El rombo", trapecio:"El trapecio", A:"La letra A", H:"La letra H", M:"La letra M", Z:"La letra Z",
+         E:"La letra E", T:"La letra T", N:"La letra N"},
+    ejeSiFin:"Sí: al doblar por esa línea, las dos mitades coinciden exactamente. La parte naranja muestra el doblez: cae justo encima de la otra mitad.",
+    ejeNoFin:"No: al doblar por esa línea, las mitades no coinciden. La parte naranja muestra dónde caería la mitad doblada.",
+    pistaSiNo:"Imagina el doblez: ¿cada punto de un lado cae encima de un punto de la figura del otro lado? Aquí las mitades no coinciden.",
+    pistaNoSi:"Dobla la figura en tu mente por la línea punteada: cada punto de un lado tiene su pareja a la misma distancia, del otro lado. Las mitades sí coinciden.",
+    pistaCentro:"Esa línea no pasa por la mitad de la figura: un lado queda más grande que el otro.",
+    notaFig:{rectangulo:"La diagonal de un rectángulo no es un eje de simetría: si doblas por ahí, las esquinas no caen una sobre otra.",
+             paralelogramo:"Un paralelogramo no tiene ejes de simetría: al doblarlo, una mitad queda torcida respecto a la otra.",
+             Z:"La Z se ve igual si la giras de cabeza, pero girar no es doblar: no tiene ejes de simetría.",
+             N:"La N se ve igual si la giras de cabeza, pero girar no es doblar: no tiene ejes de simetría.",
+             rombo:"Los ejes de un rombo son sus diagonales, las líneas que unen esquinas opuestas.",
+             hexagono:"Un hexágono regular tiene ejes que unen esquinas opuestas y otros que unen las mitades de lados opuestos.",
+             triEq:"Cada eje de un triángulo equilátero va de una esquina a la mitad del lado de enfrente.",
+             cuadrado:"Un cuadrado se puede doblar en vertical, en horizontal y por sus dos diagonales."},
+    pistaMas:"Algunos de esos dobleces no hacen coincidir las dos mitades.",
+    pistaMenos:"Hay más ejes: prueba a doblar también en vertical, en horizontal y por las diagonales.",
+    pistaCero:"Busca bien: hay al menos una línea por donde se puede doblar y las mitades coinciden.",
+    cuantosFin:(f,n)=> n === 0 ? `${f} no tiene ningún eje de simetría: no hay ninguna línea por donde doblarla y que las mitades coincidan.`
+                     : n === 1 ? `${f} tiene un solo eje de simetría: es la línea punteada.` : `${f} tiene ${n} ejes de simetría: son las líneas punteadas.`,
+    /* 6. Completa la figura simétrica */
+    compF:"La línea punteada es un eje de simetría. ¿Cuál es la figura completa?",
+    compAria:"Media figura en una cuadrícula, junto a una línea punteada que es el eje de simetría",
+    compFin:"Esa es: cada punto de la mitad nueva está a la misma distancia del eje que su pareja, del otro lado. Es como el reflejo en un espejo.",
+    pistaComp:{
+      copia:"Esa mitad está copiada sin voltear. En una figura simétrica la otra mitad es como un reflejo: lo que está lejos del eje de un lado queda lejos del eje del otro lado.",
+      gira:"Esa mitad quedó de cabeza, girada. Al reflejar, cada punto cruza el eje en línea recta hasta el otro lado, sin cambiar de lugar a lo largo del eje.",
+      lejos:"Cuenta los cuadritos: cada punto debe quedar a la misma distancia del eje en los dos lados. Aquí la mitad nueva queda más lejos del eje."},
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["Busqué ángulos rectos","¡Muy bien! La esquina de una hoja te ayuda a saber si un ángulo es recto."],
+      ["Revisé si había lados paralelos","¡Excelente! Los lados paralelos van en la misma dirección y nunca se cruzan."],
+      ["Doblé la figura en mi mente","¡Genial! Imaginar el doblez te dice si las dos mitades coinciden."],
+      ["Usé las propiedades como pistas","¡Buena idea! Cada propiedad descarta figuras hasta que solo queda una."]],
+    /* Hoja */
+    hojaEs:"Es ___________________",
+    hojaCuantos:"Ejes: _____",
+    hojaPar:"Lados paralelos: _____ y _____", hojaPerp:"Lados perpendiculares: _____ y _____"
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, it is a line of symmetry", no:"✘ No, it is not a line of symmetry", comprobar:"✔ Check", ninguno:"Mark at least one name.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    y:"and", ni:"or", opcion:(L)=>`Option ${L}`, figura:(L)=>`Shape ${L}`,
+    tipos:{punto:"Point", recta:"Line", segmento:"Line segment", semirrecta:"Ray"},
+    unTipo:{punto:"a point", recta:"a line", segmento:"a line segment", semirrecta:"a ray"},
+    rectasF:"What is this figure? Look carefully at how its ends finish.",
+    rectasR:"What is the correct name for this figure?",
+    rectasAria:(k)=>({punto:"A point", recta:"A line with an arrow at each end", segmento:"A line with a dot at each end",
+                      semirrecta:"A line with a dot at one end and an arrow at the other"})[k],
+    rectasAriaR:(k,a,b)=>({recta:`A line through points ${a} and ${b}, with an arrow at each end`,
+                           segmento:`A line with endpoints ${a} and ${b}`,
+                           semirrecta:`A line that starts at point ${a}, goes through point ${b} and ends in an arrow`})[k],
+    def:{punto:"A point marks an exact location; it has no length.",
+         recta:"A line goes on forever in both directions: it has an arrow at each end.",
+         segmento:"A line segment has two endpoints: it starts at one point and stops at another.",
+         semirrecta:"A ray starts at a point and goes on forever in one direction: it has one endpoint and one arrow."},
+    mira:{punto:"This figure is just a point, with no length.",
+          recta:"Look at this figure: it has an arrow at each end.",
+          segmento:"Look at this figure: it has a dot at each end and no arrows.",
+          semirrecta:"Look at this figure: it has a dot at one end and an arrow at the other."},
+    finTipo:{punto:"It is a point: it marks an exact location and has no length.",
+             recta:"It is a line: it has an arrow at each end, because it goes on forever in both directions.",
+             segmento:"It is a line segment: it has two endpoints, one at each end, and does not go any farther.",
+             semirrecta:"It is a ray: it starts at a point and goes on forever in one direction, like the light from a flashlight."},
+    finR:{recta:(a,b)=>`It is line ${a}${b}: it goes through ${a} and ${b} and goes on forever in both directions. You can also call it line ${b}${a}.`,
+          segmento:(a,b)=>`It is line segment ${a}${b}: its endpoints are ${a} and ${b}. You can also call it line segment ${b}${a}.`,
+          semirrecta:(a,b)=>`It is ray ${a}${b}: it starts at ${a}, goes through ${b} and goes on forever. A ray is always named starting with its endpoint.`},
+    ordenRay:(a,b)=>`Almost: it is a ray, but a ray is named starting with its endpoint, the point where it begins. Here it begins at ${a}, not at ${b}.`,
+    rel:{par:"Parallel", perp:"Perpendicular", corta:"Intersecting, but not perpendicular"},
+    parF:"What kind of lines are these?",
+    parR:"Look at the orange line and the blue line. What kind of lines are they?",
+    parAria:(k)=>({par:"Two lines going in the same direction without touching", perp:"Two lines that cross, with a small square where they cross",
+                   corta:"Two lines that cross, slanted to each other"})[k],
+    escenaAria:(n)=>`${n}, with an orange line and a blue line marked`,
+    finRel:{par:"They are parallel: they go in the same direction, always the same distance apart, and never cross even if you extend them.",
+            perp:"They are perpendicular: they cross and make right angles, like the corner of a sheet of paper.",
+            corta:"They intersect, but they are not perpendicular: the angles they make are not right angles. One is acute (narrower than the corner of a sheet of paper) and the other is obtuse (wider)."},
+    pistaRel:{
+      "par-perp":"Parallel lines never cross. These lines do cross at a point.",
+      "par-corta":"Parallel lines never cross, even if you extend them. These lines do cross at a point.",
+      "perp-par":"Perpendicular lines cross and make a corner. These never cross: they are always the same distance apart.",
+      "perp-corta":"They do cross, but they do not make right angles. Compare with the corner of a sheet of paper: one angle is narrower and the other is wider.",
+      "corta-par":"These lines do not cross, not even if you extend them: they are always the same distance apart.",
+      "corta-perp":"They do cross, but they make a perfect corner, a right angle, like the corner of a sheet of paper. Lines that cross at a right angle are perpendicular."},
+    pistaPerpF:"Look at the small square where they cross: it marks a right angle. ",
+    escenas:{escalera:"A ladder", vias:"Train tracks", mapa:"A city street map", letraH:"The letter H",
+             ventana:"A window", letraZ:"The letter Z", letraA:"The letter A"},
+    nom:{cuadrilatero:"Quadrilateral", trapecio:"Trapezoid", paralelogramo:"Parallelogram", rectangulo:"Rectangle", rombo:"Rhombus", cuadrado:"Square",
+         triangulo:"Triangle", triRect:"Right triangle", triAcu:"Acute triangle", triObt:"Obtuse triangle"},
+    un:{cuadrilatero:"a quadrilateral", trapecio:"a trapezoid", paralelogramo:"a parallelogram", rectangulo:"a rectangle", rombo:"a rhombus", cuadrado:"a square",
+        triangulo:"a triangle", triRect:"a right triangle", triAcu:"an acute triangle", triObt:"an obtuse triangle"},
+    clasF:"What is the best name for this shape? Pick the one that tells the most.",
+    clasR:"Mark every name that fits this shape. Then touch Check.",
+    leyenda:"Marks: small square = right angle; matching ticks = equal sides; matching arrows = parallel sides.",
+    leyendaR:"Marks: small square = right angle; matching ticks = equal sides. Use the grid to see if any sides are parallel.",
+    figAria:(n,r)=>`A shape with ${n} sides drawn on a grid` + (r ? `, with ${r === 1 ? "one right angle" : r + " right angles"} marked` : ""),
+    hechos:(A)=>{
+      if(A.n === 3) return A.rectos ? "it has one right angle" : A.obtusos ? "it has one obtuse angle" : "all 3 of its angles are acute";
+      const p = A.par === 2 ? "two pairs of parallel sides" : A.par === 1 ? "only one pair of parallel sides" : "no pairs of parallel sides";
+      const r = A.rectos === 4 ? "four right angles" : A.rectos === 0 ? "no right angles" : A.rectos === 1 ? "one right angle" : A.rectos + " right angles";
+      return `it has ${p}, ${r} and ${A.iguales ? "4 equal sides" : "sides that are not all the same length"}`;
+    },
+    clasFin:(un,h)=>`It is ${un}, because ${h}.`,
+    clasRFin:(l,h)=>`These names fit: ${l}, because ${h}.`,
+    falta:{
+      cuadrilatero:(A)=>`A quadrilateral has 4 sides, and this shape has ${A.n}.`,
+      trapecio:(A)=> A.n === 3 ? "A trapezoid is a quadrilateral: it has 4 sides, and this shape has 3." : "A trapezoid has at least one pair of parallel sides, and this shape has none.",
+      paralelogramo:(A)=> A.n === 3 ? "A parallelogram has 4 sides, and this shape has 3." : `A parallelogram has two pairs of parallel sides, and this shape has ${A.par === 1 ? "only one" : "none"}.`,
+      rectangulo:(A)=> A.n === 3 ? "A rectangle has 4 sides, and this shape has 3. Careful: a “right triangle” is something else." : `A rectangle has 4 right angles, and this shape has ${A.rectos === 0 ? "none" : "only " + A.rectos}.`,
+      rombo:(A)=> A.n === 3 ? "A rhombus has 4 sides, and this shape has 3." : "A rhombus has 4 equal sides, and the sides of this shape are not all the same length.",
+      cuadrado:(A)=> A.n === 3 ? "A square has 4 sides, and this shape has 3." : A.rectos !== 4 ? "A square has 4 right angles, and this shape does not." : "A square has 4 equal sides, and the sides of this shape are not all the same length.",
+      triangulo:(A)=>`A triangle has 3 sides, and this shape has ${A.n}.`,
+      triRect:(A)=>`A right triangle has one right angle, and this one has none: ${A.obtusos ? "it has an obtuse angle" : "all 3 of its angles are acute"}.`,
+      triAcu:(A)=>`In an acute triangle all 3 angles are acute (narrower than a right angle), and this one has ${A.rectos ? "a right" : "an obtuse"} angle.`,
+      triObt:(A)=>`An obtuse triangle has one obtuse angle (wider than a right angle), and this one has none${A.rectos ? ": it has a right angle" : ""}.`},
+    masPreciso:(un,mejor)=>`It is true that it is ${un}, but there is a name that tells more. ${({cuadrado:"Look at its angles and its sides.", rectangulo:"Look at its angles.",
+      rombo:"Look at its sides.", paralelogramo:"How many pairs of parallel sides does it have?", trapecio:"Does it have parallel sides?",
+      triRect:"Look at its angles.", triAcu:"Look at its angles.", triObt:"Look at its angles."})[mejor] || ""}`.trim(),
+    faltanN:(h)=>`At least one name is still missing. Look: ${h}. What other names fit? Remember that a shape can have several names.`,
+    detF:"Who am I? Read the clues and touch the shape that fits them all.",
+    pistaN:(j)=>`Clue ${j}:`,
+    cl:{
+      c4:{txt:"I have 4 sides.", si:"it has 4 sides", por:(A)=>`it has ${A.n} sides`},
+      c3:{txt:"I have 3 sides.", si:"it has 3 sides", por:(A)=>`it has ${A.n} sides`},
+      cParOp:{txt:"My opposite sides are parallel.", si:"its opposite sides are parallel",
+              por:(A)=> A.n === 3 ? "it is a triangle, so it has no pairs of opposite sides" : A.par === 1 ? "it has only one pair of parallel sides" : "it has no parallel sides"},
+      cUnPar:{txt:"I have exactly one pair of parallel sides.", si:"it has exactly one pair of parallel sides",
+              por:(A)=> A.n === 3 ? "it is a triangle and has no parallel sides" : A.par === 2 ? "it has two pairs of parallel sides" : "it has no parallel sides"},
+      cRectos4:{txt:"I have 4 right angles.", si:"it has 4 right angles", por:(A)=> A.rectos === 0 ? "it has no right angles" : A.rectos === 1 ? "it has only one right angle" : `it has only ${A.rectos} right angles`},
+      cRectos2:{txt:"I have exactly 2 right angles.", si:"it has exactly 2 right angles", por:(A)=> A.rectos === 0 ? "it has no right angles" : A.rectos === 1 ? "it has only one right angle" : `it has ${A.rectos} right angles`},
+      cSinRecto:{txt:"I have no right angles.", si:"it has no right angles", por:(A)=> A.rectos === 1 ? "it has a right angle" : `it has ${A.rectos} right angles`},
+      cUnRecto:{txt:"I have a right angle.", si:"it has a right angle", por:(A)=> A.rectos > 1 ? `it has ${A.rectos} right angles` : A.obtusos ? "it has no right angle: it has an obtuse angle" : "it has no right angle: its angles are acute"},
+      cIguales:{txt:"All my sides are the same length.", si:"all its sides are the same length", por:()=> "its sides are not all the same length"},
+      cNoIguales:{txt:"My sides are not all the same length.", si:"its sides are not all the same length", por:()=> "all its sides are the same length"},
+      cObt:{txt:"I have an obtuse angle.", si:"it has an obtuse angle", por:(A)=> A.rectos ? "it has no obtuse angle: it has a right angle" : "it has no obtuse angle: all 3 of its angles are acute"},
+      cAgudos:{txt:"My 3 angles are acute.", si:"its 3 angles are acute", por:(A)=> A.rectos ? "it has a right angle" : "it has an obtuse angle"},
+      cDosIguales:{txt:"Two of my sides are the same length.", si:"two of its sides are the same length", por:()=> "its 3 sides all have different lengths"}},
+    noCumple:(L,j,txt,por)=>`Shape ${L} breaks clue ${j} (“${txt}”): ${por}.`,
+    detFin:(L,un,l)=>`Shape ${L} is ${un}: ${l}.`,
+    simF:"Imagine folding the shape along the dashed line. Is it a line of symmetry?",
+    simR:"How many lines of symmetry does this shape have?",
+    simAria:(n)=>`${n} with a dashed line`,
+    simAriaR:(n)=>`${n}`,
+    fig:{cuadrado:"The square", rectangulo:"The rectangle", triEq:"The equilateral triangle", hexagono:"The regular hexagon", triIso:"The isosceles triangle",
+         paralelogramo:"The parallelogram", rombo:"The rhombus", trapecio:"The trapezoid", A:"The letter A", H:"The letter H", M:"The letter M", Z:"The letter Z",
+         E:"The letter E", T:"The letter T", N:"The letter N"},
+    ejeSiFin:"Yes: when you fold along that line, the two halves match exactly. The orange part shows the fold: it lands right on top of the other half.",
+    ejeNoFin:"No: when you fold along that line, the halves do not match. The orange part shows where the folded half would land.",
+    pistaSiNo:"Picture the fold: does every point on one side land on a point of the shape on the other side? Here the halves do not match.",
+    pistaNoSi:"Fold the shape in your mind along the dashed line: every point on one side has a partner the same distance away on the other side. The halves do match.",
+    pistaCentro:"That line does not go through the middle of the shape: one side is bigger than the other.",
+    notaFig:{rectangulo:"The diagonal of a rectangle is not a line of symmetry: if you fold there, the corners do not land on each other.",
+             paralelogramo:"A parallelogram has no lines of symmetry: when you fold it, one half ends up slanted compared with the other.",
+             Z:"The Z looks the same if you turn it upside down, but turning is not folding: it has no lines of symmetry.",
+             N:"The N looks the same if you turn it upside down, but turning is not folding: it has no lines of symmetry.",
+             rombo:"The lines of symmetry of a rhombus are its diagonals, the lines that join opposite corners.",
+             hexagono:"A regular hexagon has lines that join opposite corners and lines that join the middles of opposite sides.",
+             triEq:"Each line of symmetry of an equilateral triangle goes from a corner to the middle of the opposite side.",
+             cuadrado:"A square can be folded vertically, horizontally and along both of its diagonals."},
+    pistaMas:"Some of those folds do not make the two halves match.",
+    pistaMenos:"There are more: try folding vertically, horizontally and along the diagonals too.",
+    pistaCero:"Look carefully: there is at least one line where you can fold it and the halves match.",
+    cuantosFin:(f,n)=> n === 0 ? `${f} has no lines of symmetry: there is no line where you can fold it and have the halves match.`
+                     : n === 1 ? `${f} has just one line of symmetry: it is the dashed line.` : `${f} has ${n} lines of symmetry: they are the dashed lines.`,
+    compF:"The dashed line is a line of symmetry. Which one is the complete shape?",
+    compAria:"Half of a shape on a grid, next to a dashed line that is the line of symmetry",
+    compFin:"That's it: every point of the new half is the same distance from the line as its partner on the other side. It is like a reflection in a mirror.",
+    pistaComp:{
+      copia:"That half was copied without flipping it. In a symmetric shape the other half is like a reflection: what is far from the line on one side is far from the line on the other side.",
+      gira:"That half ended up upside down, turned around. When you reflect, every point crosses the line straight to the other side, without moving along the line.",
+      lejos:"Count the squares: every point must be the same distance from the line on both sides. Here the new half is farther from the line."},
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["I looked for right angles","Great! The corner of a sheet of paper helps you tell whether an angle is a right angle."],
+      ["I checked for parallel sides","Excellent! Parallel sides go in the same direction and never cross."],
+      ["I folded the shape in my mind","Awesome! Picturing the fold tells you whether the two halves match."],
+      ["I used the properties as clues","Good idea! Each property rules out shapes until only one is left."]],
+    hojaEs:"It is ___________________",
+    hojaCuantos:"Lines: _____",
+    hojaPar:"Parallel sides: _____ and _____", hojaPerp:"Perpendicular sides: _____ and _____"
+  }
+};
+const JUEGOS = [
+  {id:"rectas",      emoji:"📏", es:"Puntos, rectas y semirrectas", en:"Points, lines and rays", metaEs:"Mira los extremos", metaEn:"Look at the ends"},
+  {id:"paralelas",   emoji:"🛤️", es:"Paralelas o perpendiculares", en:"Parallel or perpendicular", metaEs:"¿Se cruzan?", metaEn:"Do they cross?"},
+  {id:"clasificar",  emoji:"🔷", es:"Clasifica la figura", en:"Classify the shape", metaEs:"Lados y ángulos", metaEn:"Sides and angles"},
+  {id:"propiedades", emoji:"🕵️", es:"¿Quién soy?", en:"Who am I?", metaEs:"Cumple todas las pistas", metaEn:"Fits all the clues"},
+  {id:"simetria",    emoji:"🦋", es:"Ejes de simetría", en:"Lines of symmetry", metaEs:"Dobla en tu mente", metaEn:"Fold in your mind"},
+  {id:"completar",   emoji:"🪞", es:"Completa la figura simétrica", en:"Complete the symmetric shape", metaEs:"Como en un espejo", metaEn:"Like a mirror"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-12-geometry.html#simetria */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Geometría: utilidades ============ */
+const listaY = (l)=> l.length < 2 ? l.join("") : l.slice(0, -1).join(", ") + " " + T[S.idioma].y + " " + l[l.length - 1];
+const LETRAS4 = ["A","B","C","D"];
+let idSVG = 0;
+const COL = {tinta:"#1F1A2B", figura:"#E1D5F5", borde:"#3A2470", rejilla:"#DDD6EA", naranja:"#E65100", azul:"#1565C0",
+             recto:"#1F1A2B", marca:"#C2185B", paralela:"#1565C0", eje:"#1F1A2B", fantasma:"#FF9800", ok:"#1B5E20"};
+const r2 = (v)=> Math.round(v * 100) / 100;
+const pts = (P)=> P.map(p=>`${r2(p[0])},${r2(p[1])}`).join(" ");
+const unit = (v)=>{ const l = Math.hypot(v[0], v[1]); return [v[0]/l, v[1]/l]; };
+
+/* Propiedades de un polígono de la cuadrícula (coordenadas enteras): lados paralelos, ángulos rectos y obtusos, lados iguales */
+function propiedades(P){
+  const n = P.length, l = P.map((p, i)=>[P[(i+1)%n][0] - p[0], P[(i+1)%n][1] - p[1]]), L2 = l.map(v=>v[0]*v[0] + v[1]*v[1]);
+  const cruz = (u, v)=> u[0]*v[1] - u[1]*v[0];
+  let par = 0;
+  if(n === 4){ if(cruz(l[0], l[2]) === 0) par++; if(cruz(l[1], l[3]) === 0) par++; }
+  let rectos = 0, obtusos = 0; const esRecto = [];
+  P.forEach((v, i)=>{
+    const a = [P[(i-1+n)%n][0] - v[0], P[(i-1+n)%n][1] - v[1]], b = [P[(i+1)%n][0] - v[0], P[(i+1)%n][1] - v[1]], d = a[0]*b[0] + a[1]*b[1];
+    esRecto.push(d === 0); if(d === 0) rectos++; else if(d < 0) obtusos++;
+  });
+  const iguales = L2.every(x=>x === L2[0]);
+  const pares = L2.filter((x, i)=>L2.indexOf(x) !== i).length;
+  return {n, par, rectos, obtusos, iguales, iso: n === 3 && pares === 1, esRecto, L2, l};
+}
+const CUMPLE = {
+  cuadrilatero:(A)=>A.n === 4, trapecio:(A)=>A.n === 4 && A.par >= 1, paralelogramo:(A)=>A.n === 4 && A.par === 2,
+  rectangulo:(A)=>A.n === 4 && A.rectos === 4, rombo:(A)=>A.n === 4 && A.iguales, cuadrado:(A)=>A.n === 4 && A.rectos === 4 && A.iguales,
+  triangulo:(A)=>A.n === 3, triRect:(A)=>A.n === 3 && A.rectos === 1, triAcu:(A)=>A.n === 3 && !A.rectos && !A.obtusos, triObt:(A)=>A.n === 3 && A.obtusos > 0};
+function mejorNombre(A){
+  if(A.n === 3) return A.rectos ? "triRect" : A.obtusos ? "triObt" : "triAcu";
+  if(A.rectos === 4) return A.iguales ? "cuadrado" : "rectangulo";
+  if(A.iguales) return "rombo";
+  return A.par === 2 ? "paralelogramo" : A.par ? "trapecio" : "cuadrilatero";
+}
+/* Catálogo de figuras en la cuadrícula (revisado: cada una tiene exactamente el nombre de su grupo como mejor nombre) */
+const CAT = {
+  cuadrado:[[[0,0],[4,0],[4,4],[0,4]], [[3,0],[6,3],[3,6],[0,3]], [[1,0],[5,1],[4,5],[0,4]]],
+  rectangulo:[[[0,0],[6,0],[6,3],[0,3]], [[0,0],[3,0],[3,5],[0,5]], [[0,2],[2,0],[6,4],[4,6]]],
+  rombo:[[[2,0],[4,3],[2,6],[0,3]], [[0,0],[5,0],[8,4],[3,4]], [[0,2],[3,0],[6,2],[3,4]]],
+  paralelogramo:[[[0,0],[5,0],[7,3],[2,3]], [[2,0],[6,0],[4,4],[0,4]], [[0,3],[3,0],[7,0],[4,3]]],
+  trapecio:[[[2,0],[5,0],[7,4],[0,4]], [[0,0],[4,0],[7,4],[0,4]], [[0,0],[6,0],[4,3],[1,3]], [[0,0],[3,0],[3,4],[0,2]]],
+  cuadrilatero:[[[3,0],[6,4],[2,5],[0,5]], [[3,0],[6,1],[3,5],[0,0]], [[0,0],[6,4],[1,5],[0,5]], [[4,0],[6,5],[1,5],[0,4]]],
+  triRect:[[[0,0],[0,4],[5,4]], [[1,0],[5,2],[3,6]], [[0,0],[6,0],[0,3]], [[0,0],[4,0],[0,4]]],
+  triAcu:[[[0,5],[3,0],[6,4]], [[0,4],[3,0],[5,5]], [[0,4],[3,0],[6,4]]],
+  triObt:[[[0,4],[5,2],[8,4]], [[0,1],[3,0],[7,4]], [[1,0],[7,0],[0,3]], [[0,3],[4,1],[8,3]]]};
+/* Gira o refleja la figura en la cuadrícula (no cambia sus propiedades) */
+function variar(P){
+  const op = azar(0, 3);
+  let Q = P.map(([x, y])=> op === 1 ? [-x, y] : op === 2 ? [x, -y] : op === 3 ? [y, x] : [x, y]);
+  const mx = Math.min(...Q.map(p=>p[0])), my = Math.min(...Q.map(p=>p[1]));
+  return Q.map(([x, y])=>[x - mx, y - my]);
+}
+
+/* Polígono en la cuadrícula, con marcas: ángulo recto (cuadradito), lados iguales (rayitas) y lados paralelos (flechitas) */
+function figuraSVG(P, o){
+  o = o || {};
+  const u = o.u || 34, pad = o.pad || 0.7, A = propiedades(P);
+  const xs = P.map(p=>p[0]), ys = P.map(p=>p[1]);
+  const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad, x1 = Math.max(...xs) + pad, y1 = Math.max(...ys) + pad;
+  const X = (p)=>[(p[0] - x0) * u, (p[1] - y0) * u];
+  const W = (x1 - x0) * u, H = (y1 - y0) * u;
+  let s = `<svg class="${o.clase || "fig-svg"}" viewBox="0 0 ${r2(W)} ${r2(H)}" role="img" aria-label="${escaparHTML(o.aria || T[S.idioma].figAria(A.n, o.rectos === false ? 0 : A.rectos))}">`;
+  if(o.rejilla !== false){
+    for(let x = Math.ceil(x0); x <= x1; x++) s += `<line x1="${r2((x - x0)*u)}" y1="0" x2="${r2((x - x0)*u)}" y2="${r2(H)}" stroke="${COL.rejilla}" stroke-width="1.5"/>`;
+    for(let y = Math.ceil(y0); y <= y1; y++) s += `<line x1="0" y1="${r2((y - y0)*u)}" x2="${r2(W)}" y2="${r2((y - y0)*u)}" stroke="${COL.rejilla}" stroke-width="1.5"/>`;
+  }
+  const Q = P.map(X), n = Q.length;
+  s += `<polygon points="${pts(Q)}" fill="${o.relleno || COL.figura}" stroke="${COL.borde}" stroke-width="4" stroke-linejoin="round"/>`;
+  /* Ángulos rectos */
+  if(o.rectos !== false) Q.forEach((v, i)=>{
+    if(!A.esRecto[i]) return;
+    const e1 = unit([Q[(i-1+n)%n][0] - v[0], Q[(i-1+n)%n][1] - v[1]]), e2 = unit([Q[(i+1)%n][0] - v[0], Q[(i+1)%n][1] - v[1]]), k = 13;
+    s += `<path d="M${r2(v[0]+e1[0]*k)},${r2(v[1]+e1[1]*k)} L${r2(v[0]+(e1[0]+e2[0])*k)},${r2(v[1]+(e1[1]+e2[1])*k)} L${r2(v[0]+e2[0]*k)},${r2(v[1]+e2[1]*k)}" fill="none" stroke="${COL.recto}" stroke-width="2.5"/>`;
+  });
+  /* Lados iguales: 1 o 2 rayitas en la mitad del lado */
+  if(o.iguales !== false){
+    const grupos = unicos(A.L2).filter(v=>A.L2.filter(x=>x === v).length >= 2);
+    grupos.forEach((v, g)=>{
+      A.L2.forEach((x, i)=>{
+        if(x !== v) return;
+        const a = Q[i], b = Q[(i+1)%n], d = unit([b[0]-a[0], b[1]-a[1]]), m = [(a[0]+b[0])/2, (a[1]+b[1])/2], nn = [-d[1], d[0]];
+        for(let k = 0; k <= g; k++){
+          const c = [m[0] + d[0]*(k - g/2)*7, m[1] + d[1]*(k - g/2)*7];
+          s += `<line x1="${r2(c[0]-nn[0]*8)}" y1="${r2(c[1]-nn[1]*8)}" x2="${r2(c[0]+nn[0]*8)}" y2="${r2(c[1]+nn[1]*8)}" stroke="${COL.marca}" stroke-width="3"/>`;
+        }
+      });
+    });
+  }
+  /* Lados paralelos: flechitas (solo en Fácil) */
+  if(o.paralelos && n === 4){
+    let g = 0;
+    [[0, 2], [1, 3]].forEach(([i, j])=>{
+      if(A.l[i][0]*A.l[j][1] - A.l[i][1]*A.l[j][0] !== 0) return;
+      const d = unit(A.l[i]), nn = [-d[1], d[0]];
+      [i, j].forEach(k=>{
+        const a = Q[k], b = Q[(k+1)%n], c0 = [a[0] + (b[0]-a[0])*0.27, a[1] + (b[1]-a[1])*0.27];
+        for(let q = 0; q <= g; q++){
+          const c = [c0[0] + d[0]*q*8, c0[1] + d[1]*q*8];
+          s += `<path d="M${r2(c[0]-d[0]*6+nn[0]*6)},${r2(c[1]-d[1]*6+nn[1]*6)} L${r2(c[0]+d[0]*2)},${r2(c[1]+d[1]*2)} L${r2(c[0]-d[0]*6-nn[0]*6)},${r2(c[1]-d[1]*6-nn[1]*6)}" fill="none" stroke="${COL.paralela}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+        }
+      });
+      g++;
+    });
+  }
+  /* Letras en los vértices (hoja imprimible) */
+  if(o.letras){
+    const cx = Q.reduce((a, p)=>a + p[0], 0)/n, cy = Q.reduce((a, p)=>a + p[1], 0)/n;
+    Q.forEach((p, i)=>{ const d = unit([p[0]-cx, p[1]-cy]); s += `<text x="${r2(p[0]+d[0]*17)}" y="${r2(p[1]+d[1]*17+7)}" text-anchor="middle" font-size="20" font-weight="700" fill="${COL.tinta}" font-family="Trebuchet MS, sans-serif">${o.letras[i]}</text>`; });
+  }
+  return s + "</svg>";
+}
+
+/* ---- Rectas, segmentos y semirrectas ---- */
+function flechaSVG(x, y, d, color){
+  const nn = [-d[1], d[0]], k = 20;
+  return `<polygon points="${pts([[x + d[0]*6, y + d[1]*6], [x - d[0]*k + nn[0]*11, y - d[1]*k + nn[1]*11], [x - d[0]*k - nn[0]*11, y - d[1]*k - nn[1]*11]])}" fill="${color}"/>`;
+}
+const puntoSVG = (x, y, color)=> `<circle cx="${r2(x)}" cy="${r2(y)}" r="8" fill="${color || COL.tinta}"/>`;
+const letraSVG = (x, y, L)=> `<text x="${r2(x)}" y="${r2(y)}" text-anchor="middle" font-size="28" font-weight="700" fill="${COL.borde}" font-family="Trebuchet MS, sans-serif">${L}</text>`;
+/* tipo: punto | recta | segmento | semirrecta; letras opcionales [a, b] (a es el extremo de la semirrecta) */
+function rectaTipoSVG(tipo, ang, letras, aria, clase){
+  const W = 360, H = 200, cx = W/2, cy = H/2, rad = ang*Math.PI/180, d = [Math.cos(rad), Math.sin(rad)], nn = [-d[1], d[0]];
+  const L = Math.min(140 / Math.abs(d[0] || 1e-9), 70 / Math.abs(d[1] || 1e-9), 150);
+  const P = (t)=>[cx + d[0]*t, cy + d[1]*t];
+  let s = `<svg class="${clase || "linea-svg"}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(aria)}">`;
+  const lab = (t, Lt)=>{ const p = P(t); const o = nn[1] > 0 ? -1 : 1; return letraSVG(p[0] + nn[0]*30*o, p[1] + nn[1]*30*o + 10, Lt); };
+  if(tipo === "punto"){
+    s += puntoSVG(cx, cy) + (letras ? letraSVG(cx, cy - 22, letras[0]) : "");
+    return s + "</svg>";
+  }
+  const [a, b] = [P(-L), P(L)];
+  s += `<line x1="${r2(a[0])}" y1="${r2(a[1])}" x2="${r2(b[0])}" y2="${r2(b[1])}" stroke="${COL.tinta}" stroke-width="5" stroke-linecap="round"/>`;
+  if(tipo === "recta"){
+    s += flechaSVG(b[0], b[1], d, COL.tinta) + flechaSVG(a[0], a[1], [-d[0], -d[1]], COL.tinta);
+    if(letras){ const pa = P(-L*0.45), pb = P(L*0.45); s += puntoSVG(pa[0], pa[1]) + puntoSVG(pb[0], pb[1]) + lab(-L*0.45, letras[0]) + lab(L*0.45, letras[1]); }
+  } else if(tipo === "segmento"){
+    const ea = P(-L + 6), eb = P(L - 6);
+    s += puntoSVG(ea[0], ea[1]) + puntoSVG(eb[0], eb[1]);
+    if(letras) s += lab(-L + 6, letras[0]) + lab(L - 6, letras[1]);
+  } else {
+    const ea = P(-L + 6);
+    s += puntoSVG(ea[0], ea[1]) + flechaSVG(b[0], b[1], d, COL.tinta);
+    if(letras){ const pb = P(L*0.3); s += puntoSVG(pb[0], pb[1]) + lab(-L + 6, letras[0]) + lab(L*0.3, letras[1]); }
+  }
+  return s + "</svg>";
+}
+
+/* ---- Dos rectas: paralelas, perpendiculares o que se cortan ---- */
+function recortar(px, py, d, W, H, m){
+  let t0 = -1e9, t1 = 1e9;
+  [[d[0], px, W], [d[1], py, H]].forEach(([dd, p, lim])=>{
+    if(Math.abs(dd) < 1e-9) return;
+    const a = (m - p)/dd, b = (lim - m - p)/dd; t0 = Math.max(t0, Math.min(a, b)); t1 = Math.min(t1, Math.max(a, b));
+  });
+  return [[px + d[0]*t0, py + d[1]*t0], [px + d[0]*t1, py + d[1]*t1]];
+}
+function rectaLarga(p, d, color, W, H){
+  const [a, b] = recortar(p[0], p[1], d, W, H, 22);
+  return `<line x1="${r2(a[0])}" y1="${r2(a[1])}" x2="${r2(b[0])}" y2="${r2(b[1])}" stroke="${color}" stroke-width="6" stroke-linecap="round"/>` +
+         flechaSVG(b[0], b[1], d, color) + flechaSVG(a[0], a[1], [-d[0], -d[1]], color);
+}
+function dosRectasSVG(k, aria){
+  const W = 360, H = 240, c = [W/2 + azar(-20, 20), H/2 + azar(-12, 12)];
+  const th = elegir([0, 15, 25, 35, 60, 75, 90, 110, 130, 150, 165]) * Math.PI/180, d1 = [Math.cos(th), Math.sin(th)];
+  let s = `<svg class="dos-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(aria)}">`;
+  if(k === "par"){
+    const nn = [-d1[1], d1[0]], sep = azar(30, 42);
+    s += rectaLarga([c[0] + nn[0]*sep, c[1] + nn[1]*sep], d1, COL.naranja, W, H) + rectaLarga([c[0] - nn[0]*sep, c[1] - nn[1]*sep], d1, COL.azul, W, H);
+  } else {
+    const ph = (k === "perp" ? 90 : elegir([35, 42, 50, 130, 138, 145])) * Math.PI/180, d2 = [Math.cos(th + ph), Math.sin(th + ph)];
+    s += rectaLarga(c, d1, COL.naranja, W, H) + rectaLarga(c, d2, COL.azul, W, H);
+    if(k === "perp"){
+      const q = 16;
+      s += `<path d="M${r2(c[0]+d1[0]*q)},${r2(c[1]+d1[1]*q)} L${r2(c[0]+(d1[0]+d2[0])*q)},${r2(c[1]+(d1[1]+d2[1])*q)} L${r2(c[0]+d2[0]*q)},${r2(c[1]+d2[1]*q)}" fill="none" stroke="${COL.tinta}" stroke-width="3"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+/* Escenas de la vida real: dibujo y pares de líneas marcadas [línea naranja, línea azul, relación] */
+const raya = (a, b, color, w)=> `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${color}" stroke-width="${w}" stroke-linecap="round"/>`;
+const ESCENAS = {
+  escalera:{dib:()=>{ let s = `<rect x="0" y="0" width="360" height="240" fill="#E3F2FD"/>` + raya([130,12],[130,228],"#8D6E63",12) + raya([230,12],[230,228],"#8D6E63",12);
+      for(let y = 40; y <= 200; y += 40) s += raya([130,y],[230,y],"#A1887F",10); return s; },
+    pares:[[[[130,12],[130,228]], [[230,12],[230,228]], "par"], [[[130,12],[130,228]], [[130,120],[230,120]], "perp"], [[[130,80],[230,80]], [[130,160],[230,160]], "par"]]},
+  vias:{dib:()=>{ let s = `<rect x="0" y="0" width="360" height="240" fill="#EFEBE9"/>`;
+      for(let x = 30; x <= 330; x += 50) s += `<rect x="${x-9}" y="72" width="18" height="96" fill="#8D6E63"/>`;
+      return s + raya([8,95],[352,95],"#78909C",8) + raya([8,145],[352,145],"#78909C",8); },
+    pares:[[[[8,95],[352,95]], [[8,145],[352,145]], "par"], [[[8,95],[352,95]], [[180,72],[180,168]], "perp"], [[[130,72],[130,168]], [[230,72],[230,168]], "par"]]},
+  mapa:{dib:()=>{ let s = `<rect x="0" y="0" width="360" height="240" fill="#E8F5E9"/>`;
+      [60,140,220,300].forEach(x=>s += raya([x,0],[x,240],"#CFD8DC",18)); [50,120,190].forEach(y=>s += raya([0,y],[360,y],"#CFD8DC",18));
+      return s + raya([20,236],[340,4],"#CFD8DC",18); },
+    pares:[[[[60,8],[60,232]], [[220,8],[220,232]], "par"], [[[140,8],[140,232]], [[8,120],[352,120]], "perp"], [[[24,233],[336,7]], [[8,190],[352,190]], "corta"], [[[24,233],[336,7]], [[300,8],[300,232]], "corta"]]},
+  letraH:{dib:()=> `<rect x="90" y="20" width="44" height="200" rx="6" fill="#B39DDB"/><rect x="226" y="20" width="44" height="200" rx="6" fill="#B39DDB"/><rect x="130" y="100" width="100" height="40" fill="#B39DDB"/>`,
+    pares:[[[[112,24],[112,216]], [[248,24],[248,216]], "par"], [[[112,24],[112,216]], [[112,120],[248,120]], "perp"]]},
+  ventana:{dib:()=> `<rect x="0" y="0" width="360" height="240" fill="#FFF8E1"/><rect x="80" y="20" width="200" height="200" fill="#BBDEFB" stroke="#6D4C41" stroke-width="12"/>` + raya([180,20],[180,220],"#6D4C41",8) + raya([80,120],[280,120],"#6D4C41",8),
+    pares:[[[[80,20],[80,220]], [[280,20],[280,220]], "par"], [[[80,20],[280,20]], [[80,20],[80,220]], "perp"], [[[180,20],[180,220]], [[80,120],[280,120]], "perp"], [[[80,20],[280,20]], [[80,220],[280,220]], "par"]]},
+  letraZ:{dib:()=> `<rect x="90" y="24" width="180" height="36" rx="6" fill="#B39DDB"/><rect x="90" y="180" width="180" height="36" rx="6" fill="#B39DDB"/><polygon points="230,60 270,60 130,180 90,180" fill="#B39DDB"/>`,
+    pares:[[[[94,42],[266,42]], [[94,198],[266,198]], "par"], [[[94,42],[266,42]], [[268,44],[92,196]], "corta"]]},
+  letraA:{dib:()=> `<polygon points="160,20 200,20 290,220 250,220" fill="#B39DDB"/><polygon points="160,20 200,20 110,220 70,220" fill="#B39DDB"/><rect x="120" y="140" width="120" height="34" fill="#B39DDB"/>`,
+    pares:[[[[180,24],[90,218]], [[180,24],[270,218]], "corta"], [[[90,218],[180,24]], [[122,157],[238,157]], "corta"]]}
+};
+function escenaSVG(clave, par, aria){
+  const [a, b] = par;
+  return `<svg class="dos-svg" viewBox="0 0 360 240" role="img" aria-label="${escaparHTML(aria)}">${ESCENAS[clave].dib()}` +
+         raya(a[0], a[1], COL.naranja, 7) + raya(b[0], b[1], COL.azul, 7) + "</svg>";
+}
+
+/* ---- Simetría: figuras centradas en (0, 0) con sus ejes (ángulos en grados, y hacia abajo) ---- */
+const rectP = (x, y, w, h)=>[[x, y], [x + w, y], [x + w, y + h], [x, y + h]];
+const SIM = {
+  cuadrado:{polys:[rectP(-2,-2,4,4)], ejes:[0,45,90,135], err:[2,1], falsos:[{a:90,o:1},{a:0,o:-1}], linea:true},
+  rectangulo:{polys:[rectP(-3,-1.5,6,3)], ejes:[0,90], err:[4,1], falsos:[{a:26.57,o:0},{a:153.43,o:0},{a:90,o:1.2}], linea:true},
+  triEq:{polys:[[[0,-2.31],[2,1.155],[-2,1.155]]], ejes:[90,30,150], err:[1,6], falsos:[{a:0,o:0},{a:90,o:0.9}], linea:true},
+  hexagono:{polys:[[0,60,120,180,240,300].map(g=>[2.3*Math.cos(g*Math.PI/180), 2.3*Math.sin(g*Math.PI/180)])], ejes:[0,30,60,90,120,150], err:[3,2], falsos:[{a:90,o:0.9},{a:15,o:0}], linea:true},
+  triIso:{polys:[[[0,-2.5],[2,2],[-2,2]]], ejes:[90], err:[0,3], falsos:[{a:0,o:0},{a:90,o:0.9}], linea:true},
+  paralelogramo:{polys:[[[-1.5,-1.5],[3.5,-1.5],[1.5,1.5],[-3.5,1.5]]], ejes:[], err:[2,1], falsos:[{a:90,o:0},{a:0,o:0},{a:45,o:0},{a:156.8,o:0}], linea:true},
+  rombo:{polys:[[[0,-2.5],[1.6,0],[0,2.5],[-1.6,0]]], ejes:[0,90], err:[4,1], falsos:[{a:57.4,o:0},{a:122.6,o:0},{a:90,o:0.7}], linea:true},
+  trapecio:{polys:[[[-1.5,-1.5],[1.5,-1.5],[3,1.5],[-3,1.5]]], ejes:[90], err:[0,2], falsos:[{a:0,o:0},{a:90,o:1}], linea:true},
+  A:{polys:[[[-0.6,-2.5],[0.6,-2.5],[-1,2.5],[-2.2,2.5]], [[-0.6,-2.5],[0.6,-2.5],[2.2,2.5],[1,2.5]], rectP(-1.3,0.4,2.6,0.9)], ejes:[90], err:[0,2], falsos:[{a:0,o:0}]},
+  H:{polys:[[[-2,-2.5],[-1,-2.5],[-1,-0.5],[1,-0.5],[1,-2.5],[2,-2.5],[2,2.5],[1,2.5],[1,0.5],[-1,0.5],[-1,2.5],[-2,2.5]]], ejes:[0,90], err:[1,4], falsos:[{a:90,o:0.8},{a:45,o:0}]},
+  M:{polys:[rectP(-2.2,-2.5,1,5), rectP(1.2,-2.5,1,5), [[-2.2,-2.5],[-1,-2.5],[0.6,1],[-0.6,1]], [[2.2,-2.5],[1,-2.5],[-0.6,1],[0.6,1]]], ejes:[90], err:[0,2], falsos:[{a:0,o:0}]},
+  Z:{polys:[rectP(-2,-2.5,4,1), rectP(-2,1.5,4,1), [[1,-1.5],[2,-1.5],[-1,1.5],[-2,1.5]]], ejes:[], err:[1,2], falsos:[{a:90,o:0},{a:0,o:0}]},
+  E:{polys:[rectP(-2,-2.5,1,5), rectP(-1,-2.5,3,1), rectP(-1,-0.5,2.2,1), rectP(-1,1.5,3,1)], ejes:[0], err:[0,2], falsos:[{a:90,o:0}]},
+  T:{polys:[rectP(-2,-2.5,4,1), rectP(-0.5,-1.5,1,4)], ejes:[90], err:[0,2], falsos:[{a:0,o:0},{a:90,o:0.8}]},
+  N:{polys:[rectP(-2,-2.5,1,5), rectP(1,-2.5,1,5), [[-2,-2.5],[-1,-2.5],[2,2.5],[1,2.5]]], ejes:[], err:[1,2], falsos:[{a:90,o:0},{a:0,o:0}]}
+};
+function reflejar(p, a, o){
+  const r = a*Math.PI/180, nn = [-Math.sin(r), Math.cos(r)], k = 2*(p[0]*nn[0] + p[1]*nn[1] - o);
+  return [p[0] - k*nn[0], p[1] - k*nn[1]];
+}
+/* lineas: [{a, o, color, punteada}]; doblez: {a, o} muestra la mitad doblada (clara) */
+function simSVG(clave, lineas, doblez, aria, clase){
+  const f = SIM[clave], u = 30, R = 3.6, W = 2*R*u, id = "c" + (idSVG++);
+  const g = (x)=> r2((x + R)*u);
+  const P = (Q)=> Q.map(p=>`${g(p[0])},${g(p[1])}`).join(" ");
+  const relleno = (f.linea || clase === "hoja-svg") ? `fill="${COL.figura}" stroke="${COL.borde}" stroke-width="4" stroke-linejoin="round"` : `fill="#7E57C2" stroke="#7E57C2" stroke-width="1.5" stroke-linejoin="round"`;
+  let s = `<svg class="${clase || "sim-svg"}" viewBox="0 0 ${W} ${W}" role="img" aria-label="${escaparHTML(aria)}">`;
+  s += f.polys.map(Q=>`<polygon points="${P(Q)}" ${relleno}/>`).join("");
+  if(doblez){
+    const r = doblez.a*Math.PI/180, d = [Math.cos(r), Math.sin(r)], nn = [-d[1], d[0]], p0 = [nn[0]*doblez.o, nn[1]*doblez.o], B = 20;
+    const lado = [[p0[0] - d[0]*B, p0[1] - d[1]*B], [p0[0] + d[0]*B, p0[1] + d[1]*B], [p0[0] + d[0]*B + nn[0]*B, p0[1] + d[1]*B + nn[1]*B], [p0[0] - d[0]*B + nn[0]*B, p0[1] - d[1]*B + nn[1]*B]];
+    s += `<clipPath id="${id}"><polygon points="${P(lado)}"/></clipPath><g clip-path="url(#${id})">` +
+      f.polys.map(Q=>`<polygon points="${P(Q.map(p=>reflejar(p, doblez.a, doblez.o)))}" fill="${COL.fantasma}" fill-opacity=".45" stroke="${COL.naranja}" stroke-width="3" stroke-dasharray="7 5"/>`).join("") + "</g>";
+  }
+  (lineas || []).forEach(L=>{
+    const r = L.a*Math.PI/180, d = [Math.cos(r), Math.sin(r)], nn = [-d[1], d[0]], p0 = [nn[0]*L.o, nn[1]*L.o];
+    const [a, b] = recortar(g(p0[0]), g(p0[1]), d, W, W, 6);
+    s += `<line x1="${r2(a[0])}" y1="${r2(a[1])}" x2="${r2(b[0])}" y2="${r2(b[1])}" stroke="${L.color || COL.eje}" stroke-width="4" stroke-dasharray="12 8" stroke-linecap="round"/>`;
+  });
+  return s + "</svg>";
+}
+
+/* ---- Completar la figura simétrica: medias figuras junto a un eje vertical x = 0 (lado izquierdo) ---- */
+const MEDIAS = [
+  [[0,0],[-3,3],[-2,3],[-2,6],[0,6]],
+  [[0,1],[-1,0],[-3,0],[-3,2],[0,5]],
+  [[0,0],[-2,2],[-1,2],[-3,4],[-1,4],[-1,6],[0,6]],
+  [[0,0],[-1,0],[-1,2],[-3,2],[-3,4],[-2,5],[0,5]],
+  [[0,0],[-1,2],[-1,4],[-3,6],[0,6]],
+  [[0,1],[-2,0],[-4,1],[-3,3],[-4,5],[-2,6],[0,5]],
+  [[0,0],[-2,0],[-2,1],[-3,1],[-3,4],[-1,4],[-1,5],[0,5]],
+  [[0,2],[-2,0],[-3,1],[-1,3],[-3,5],[0,5]]
+];
+const llave = (Q)=> Q.map(p=>p.join(",")).sort().join(" ");
+function completarSVG(polys, eje, caja, aria, clase){
+  const [x0, y0, x1, y1] = caja, u = 26, W = (x1 - x0)*u, H = (y1 - y0)*u;
+  const X = (p)=>`${r2((p[0] - x0)*u)},${r2((p[1] - y0)*u)}`;
+  let s = `<svg class="${clase || "comp-svg"}" viewBox="0 0 ${r2(W)} ${r2(H)}" role="img" aria-label="${escaparHTML(aria)}">`;
+  for(let x = Math.ceil(x0); x <= x1; x++) s += `<line x1="${r2((x - x0)*u)}" y1="0" x2="${r2((x - x0)*u)}" y2="${r2(H)}" stroke="${COL.rejilla}" stroke-width="1.5"/>`;
+  for(let y = Math.ceil(y0); y <= y1; y++) s += `<line x1="0" y1="${r2((y - y0)*u)}" x2="${r2(W)}" y2="${r2((y - y0)*u)}" stroke="${COL.rejilla}" stroke-width="1.5"/>`;
+  polys.forEach(([Q, nuevo])=>{ s += `<polygon points="${Q.map(X).join(" ")}" fill="${nuevo ? "#FFE0B2" : COL.figura}" stroke="${nuevo ? COL.naranja : COL.borde}" stroke-width="3.5" stroke-linejoin="round"/>`; });
+  s += `<line x1="${X(eje[0]).split(",")[0]}" y1="${X(eje[0]).split(",")[1]}" x2="${X(eje[1]).split(",")[0]}" y2="${X(eje[1]).split(",")[1]}" stroke="${COL.eje}" stroke-width="4" stroke-dasharray="10 7"/>`;
+  return s + "</svg>";
+}
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Puntos, rectas y semirrectas (4.G.1) --- */
+  if(S.juego === "rectas"){
+    const ang = elegir([0, 0, 12, -12, 25, -25, 35, -35, 180, 192, 168]);
+    if(!reto){
+      const k = elegir(["punto", "recta", "recta", "segmento", "segmento", "semirrecta", "semirrecta", "semirrecta"]);
+      esc.insertAdjacentHTML("beforeend", rectaTipoSVG(k, ang, null, t.rectasAria(k)));
+      ponerInstruccion(t.rectasF);
+      const claves = ["punto", "recta", "segmento", "semirrecta"], porTexto = new Map(claves.map(c=>[t.tipos[c], c]));
+      opcionesTexto(claves.map(c=>t.tipos[c]), t.tipos[k], ()=>acertar(t.finTipo[k]), (x)=>`${t.def[porTexto.get(x)]} ${t.mira[k]}`);
+      return;
+    }
+    const k = elegir(["recta", "segmento", "semirrecta", "semirrecta"]);
+    const [a, b] = mezclar(["A","B","C","D","E","F","G","M","N","P","Q","R","S","T","X","Y"]).slice(0, 2);
+    esc.insertAdjacentHTML("beforeend", rectaTipoSVG(k, ang, [a, b], t.rectasAriaR(k, a, b)));
+    ponerInstruccion(t.rectasR);
+    const nom = (c, p, q)=> `${t.tipos[c]} ${p}${q}`;
+    const ops = [[nom(k, a, b), k, false]];
+    if(k === "semirrecta") ops.push([nom("semirrecta", b, a), "semirrecta", true], [nom("segmento", a, b), "segmento", false], [nom("recta", a, b), "recta", false]);
+    else ops.push(...["recta", "segmento", "semirrecta"].filter(c=>c !== k).map(c=>[nom(c, a, b), c, false]), [nom("semirrecta", b, a), "semirrecta", false]);
+    const info = new Map(ops.map(([txt, c, orden])=>[txt, {c, orden}]));
+    opcionesTexto(ops.map(o=>o[0]), ops[0][0], ()=>acertar(t.finR[k](a, b)),
+      (x)=>{ const i = info.get(x); return i.orden ? t.ordenRay(a, b) : `${t.def[i.c]} ${t.mira[k]}`; });
+    $("opciones").querySelectorAll("button").forEach(bt=>bt.classList.add("larga"));
+    return;
+  }
+
+  /* --- 2. Paralelas o perpendiculares (4.G.1) --- */
+  if(S.juego === "paralelas"){
+    let k;
+    if(!reto){
+      k = elegir(["par", "perp", "corta"]);
+      esc.insertAdjacentHTML("beforeend", dosRectasSVG(k, t.parAria(k)));
+      ponerInstruccion(t.parF);
+    } else {
+      const clave = elegir(Object.keys(ESCENAS)), par = elegir(ESCENAS[clave].pares);
+      k = par[2];
+      esc.insertAdjacentHTML("beforeend", `<p class="rotulo">${escaparHTML(t.escenas[clave])}</p>` + escenaSVG(clave, par, t.escenaAria(t.escenas[clave])));
+      ponerInstruccion(t.parR, t.escenas[clave] + ". " + t.parR);
+    }
+    const claves = ["par", "perp", "corta"], porTexto = new Map(claves.map(c=>[t.rel[c], c]));
+    opcionesTexto(claves.map(c=>t.rel[c]), t.rel[k], ()=>acertar(t.finRel[k]),
+      (x)=> (!reto && k === "perp" ? t.pistaPerpF : "") + t.pistaRel[porTexto.get(x) + "-" + k]);
+    $("opciones").querySelectorAll("button").forEach(bt=>bt.classList.add("larga"));
+    return;
+  }
+
+  /* --- 3. Clasifica la figura (4.G.2) --- */
+  if(S.juego === "clasificar"){
+    const tipo = elegir(["cuadrado","rectangulo","rombo","paralelogramo","trapecio","cuadrilatero","triRect","triAcu","triObt"]);
+    const P = variar(elegir(CAT[tipo])), A = propiedades(P), mejor = mejorNombre(A);
+    esc.insertAdjacentHTML("beforeend", figuraSVG(P, {paralelos:!reto}));
+    esc.insertAdjacentHTML("beforeend", `<p class="leyenda">${escaparHTML(reto ? t.leyendaR : t.leyenda)}</p>`);
+    const porTexto = new Map(Object.keys(t.nom).map(c=>[t.nom[c], c]));
+    const pista = (x)=>{ const c = porTexto.get(x); return CUMPLE[c](A) ? t.masPreciso(t.un[c], mejor) : t.falta[c](A); };
+    if(!reto){
+      ponerInstruccion(t.clasF);
+      const DIS = {cuadrado:["rectangulo","rombo","paralelogramo","trapecio"], rectangulo:["cuadrado","paralelogramo","rombo","trapecio"],
+        rombo:["cuadrado","paralelogramo","rectangulo","trapecio"], paralelogramo:["rectangulo","rombo","trapecio","cuadrilatero"],
+        trapecio:["paralelogramo","rectangulo","cuadrilatero","rombo"], cuadrilatero:["trapecio","paralelogramo","rombo","rectangulo"],
+        triRect:["triAcu","triObt","rectangulo"], triAcu:["triRect","triObt","triangulo"], triObt:["triRect","triAcu","triangulo"]};
+      const lista = [mejor, ...mezclar(DIS[mejor]).slice(0, 3)];
+      opcionesTexto(lista.map(c=>t.nom[c]), t.nom[mejor], ()=>acertar(t.clasFin(t.un[mejor], t.hechos(A))), pista);
+      $("opciones").querySelectorAll("button").forEach(bt=>bt.classList.add("larga"));
+      return;
+    }
+    ponerInstruccion(t.clasR);
+    const claves = A.n === 4 ? ["cuadrilatero","trapecio","paralelogramo","rectangulo","rombo","cuadrado"] : ["triangulo","triRect","triAcu","triObt","rectangulo"];
+    const buenas = claves.filter(c=>CUMPLE[c](A));
+    marcarVarios(mezclar(claves.map(c=>t.nom[c])), buenas.map(c=>t.nom[c]),
+      {comprobar:t.comprobar, ninguno:t.ninguno, malo:(x)=>t.falta[porTexto.get(x)](A), faltan:t.faltanN(t.hechos(A))},
+      ()=>acertar(t.clasRFin(listaY(buenas.map(c=>t.nom[c].toLowerCase())), t.hechos(A))));
+    return;
+  }
+
+  /* --- 4. ¿Quién soy? (4.G.2): detective con propiedades --- */
+  if(S.juego === "propiedades"){
+    const DET = [
+      {tipo:"cuadrado", cl:["c4","cRectos4","cIguales"]}, {tipo:"rectangulo", cl:["c4","cRectos4","cNoIguales"]},
+      {tipo:"rombo", cl:["c4","cParOp","cSinRecto","cIguales"]}, {tipo:"paralelogramo", cl:["c4","cParOp","cSinRecto","cNoIguales"]},
+      {tipo:"trapecio", cl:["c4","cUnPar"]}, {tipo:"triRect", cl:["c3","cUnRecto"]}];
+    const DETR = [
+      {tipo:"rombo", cl:["c4","cParOp","cSinRecto","cIguales"]}, {tipo:"paralelogramo", cl:["c4","cParOp","cSinRecto","cNoIguales"]},
+      {tipo:"trapecio", cl:["c4","cUnPar","cRectos2"]}, {tipo:"trapecio", cl:["c4","cUnPar","cSinRecto"]}, {tipo:"rectangulo", cl:["c4","cRectos4","cNoIguales"]},
+      {tipo:"triObt", cl:["c3","cObt"]}, {tipo:"triAcu", cl:["c3","cAgudos"]}, {tipo:"triRect", cl:["c3","cUnRecto","cDosIguales"]}];
+    const PRED = {c4:(A)=>A.n === 4, c3:(A)=>A.n === 3, cParOp:(A)=>A.n === 4 && A.par === 2, cUnPar:(A)=>A.n === 4 && A.par === 1,
+      cRectos4:(A)=>A.rectos === 4, cRectos2:(A)=>A.rectos === 2, cSinRecto:(A)=>A.rectos === 0, cUnRecto:(A)=>A.rectos === 1,
+      cIguales:(A)=>A.iguales, cNoIguales:(A)=>!A.iguales, cObt:(A)=>A.obtusos > 0, cAgudos:(A)=>A.n === 3 && !A.rectos && !A.obtusos, cDosIguales:(A)=>A.iso};
+    const caso = elegir(reto ? DETR : DET), pistas = caso.cl.map(c=>({...t.cl[c], ok:PRED[c]}));
+    const todas = [];
+    Object.keys(CAT).forEach(k=>CAT[k].forEach(P=>todas.push({k, P, A:propiedades(P)})));
+    const falla = (F)=> pistas.map((c, j)=> c.ok(F.A) ? -1 : j).filter(j=>j >= 0);
+    const meta = elegir(todas.filter(F=>falla(F).length === 0 && F.k === caso.tipo));
+    const malos = [], usado = (F)=> malos.some(m=>m.k === F.k && m.k !== meta.k) || malos.includes(F);
+    for(const j of mezclar([...pistas.keys()])){
+      if(malos.length >= 3) break;
+      const solo = mezclar(todas.filter(F=>F !== meta && !usado(F) && falla(F).length === 1 && falla(F)[0] === j));
+      if(solo.length) malos.push(solo[0]);
+    }
+    for(const lim of [2, 9]){ const resto = mezclar(todas.filter(F=>F !== meta && !usado(F) && falla(F).length >= 1 && falla(F).length <= lim && F.k !== meta.k));
+      while(malos.length < 3 && resto.length) malos.push(resto.pop()); }
+    esc.appendChild(pasosEl(pistas.map(c=>c.txt)));
+    ponerInstruccion(t.detF, t.detF + " " + pistas.map((c, j)=>t.pistaN(j + 1) + " " + c.txt).join(" "));
+    const grilla = document.createElement("div"); grilla.className = "opciones-fig"; $("opciones").appendChild(grilla);
+    mezclar([meta, ...malos]).forEach((F, i)=>{
+      const L = LETRAS4[i], Q = variar(F.P);
+      const b = botonTexto("", "opcion-texto opcion-fig", t.figura(L) + ". " + t.figAria(F.A.n, F.A.rectos), (bt)=>{
+        if(F === meta){ bt.classList.add("bien"); sonBoing(); acertar(t.detFin(L, t.un[meta.k], listaY(pistas.map(c=>c.si)))); }
+        else { const j = falla(F)[0]; bt.classList.add("tachada"); fallar(bt, t.noCumple(L, j + 1, pistas[j].txt, pistas[j].por(F.A))); }
+      });
+      b.innerHTML = figuraSVG(Q, {u:24, pad:0.6, paralelos:!reto, clase:"fig-carta", aria:t.figAria(F.A.n, F.A.rectos)}) + `<span>${t.figura(L)}</span>`;
+      b.dataset.v = L; grilla.appendChild(b);
+      if(F === meta) b.dataset.meta = "1";
+    });
+    S.resolver = ()=>{ grilla.querySelector('[data-meta="1"]').click(); };
+    return;
+  }
+
+  /* --- 5. Ejes de simetría (4.G.3) --- */
+  if(S.juego === "simetria"){
+    const clave = elegir(Object.keys(SIM)), f = SIM[clave], nombre = t.fig[clave];
+    if(!reto){
+      const verdad = f.ejes.length > 0 && Math.random() < 0.5;
+      const L = verdad ? {a:elegir(f.ejes), o:0} : elegir(f.falsos);
+      const caja = document.createElement("div"); caja.className = "modelos";
+      caja.innerHTML = simSVG(clave, [L], null, t.simAria(nombre));
+      esc.appendChild(caja);
+      ponerInstruccion(t.simF, nombre + ". " + t.simF);
+      const nota = (!verdad && t.notaFig[clave] && (clave === "rectangulo" || f.ejes.length === 0)) ? " " + t.notaFig[clave] : "";
+      const fin = (verdad ? t.ejeSiFin : t.ejeNoFin) + nota;
+      const pista = verdad ? t.pistaNoSi : (L.o !== 0 ? t.pistaCentro : t.pistaSiNo + nota);
+      const cont = $("opciones");
+      [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+        cont.appendChild(botonTexto(txt, cls + " larga", null, (bt)=>{
+          if(v === verdad){ sonBoing(); caja.innerHTML = simSVG(clave, [L], L, t.simAria(nombre)); acertar(fin); } else fallar(bt, pista);
+        }));
+      });
+      S.resolver = resolverTexto(verdad ? t.si : t.no);
+      return;
+    }
+    const n = f.ejes.length;
+    const caja = document.createElement("div"); caja.className = "modelos";
+    caja.innerHTML = `<p class="rotulo">${escaparHTML(nombre)}</p>` + simSVG(clave, [], null, t.simAriaR(nombre));
+    esc.appendChild(caja);
+    ponerInstruccion(t.simR, nombre + ". " + t.simR);
+    const nota = t.notaFig[clave] ? " " + t.notaFig[clave] : "";
+    opcionesNum([n, ...f.err], n, ()=>{
+      caja.innerHTML = `<p class="rotulo">${escaparHTML(nombre)}</p>` + simSVG(clave, f.ejes.map(a=>({a, o:0, color:COL.ok})), null, t.simAriaR(nombre));
+      acertar(t.cuantosFin(nombre, n) + nota);
+    }, (v)=> v > n ? t.pistaMas + nota : v === 0 ? t.pistaCero : t.pistaMenos + nota);
+    return;
+  }
+
+  /* --- 6. Completa la figura simétrica (4.G.3) --- */
+  if(S.juego === "completar"){
+    const forma = reto ? elegir(["h", "d", "d"]) : "v";
+    let base, ops;
+    for(let intento = 0; intento < 50; intento++){
+      base = elegir(MEDIAS.filter(Q=>forma !== "d" || Math.min(...Q.map(p=>p[0])) >= -3));
+      if(Math.random() < 0.5){ const ym = Math.max(...base.map(p=>p[1])); base = base.map(([x, y])=>[x, ym - y]); }
+      const w = -Math.min(...base.map(p=>p[0])), ys = base.filter(p=>p[0] === 0).map(p=>p[1]), cy = (Math.min(...ys) + Math.max(...ys))/2;
+      const cand = [["bien", base.map(([x, y])=>[-x, y])], ["copia", base.map(([x, y])=>[x + w, y])],
+                    ["gira", base.map(([x, y])=>[-x, 2*cy - y])], ["lejos", base.map(([x, y])=>[-x + 1, y])]];
+      ops = cand.filter(([k, Q], i)=> !cand.slice(0, i).some(([k2, Q2])=>llave(Q2) === llave(Q)));
+      if(ops.length === 4 || (ops.length >= 3 && intento > 20)) break;
+    }
+    const M = forma === "h" ? ([x, y])=>[y, x] : forma === "d" ? ([x, y])=>[x + y, y - x] : (p)=>p;
+    const ys = base.map(p=>p[1]), eje = [[0, Math.min(...ys) - 1], [0, Math.max(...ys) + 1]].map(M);
+    const mb = base.map(M), mops = ops.map(([k, Q])=>[k, Q.map(M)]);
+    const todo = [...mb, ...eje, ...mops.flatMap(o=>o[1])];
+    const caja = [Math.min(...todo.map(p=>p[0])) - 0.6, Math.min(...todo.map(p=>p[1])) - 0.6, Math.max(...todo.map(p=>p[0])) + 0.6, Math.max(...todo.map(p=>p[1])) + 0.6];
+    const zona = document.createElement("div"); zona.className = "modelos";
+    zona.innerHTML = completarSVG([[mb, false]], eje, caja, t.compAria, "comp-svg grande");
+    esc.appendChild(zona);
+    ponerInstruccion(t.compF);
+    const grilla = document.createElement("div"); grilla.className = "opciones-fig"; $("opciones").appendChild(grilla);
+    mezclar(mops).forEach(([k, Q], i)=>{
+      const L = LETRAS4[i];
+      const b = botonTexto("", "opcion-texto opcion-fig", t.opcion(L), (bt)=>{
+        if(k === "bien"){ bt.classList.add("bien"); sonBoing(); zona.innerHTML = completarSVG([[mb, false], [Q, true]], eje, caja, t.compAria, "comp-svg grande"); acertar(t.compFin); }
+        else fallar(bt, t.pistaComp[k]);
+      });
+      b.innerHTML = completarSVG([[mb, false], [Q, false]], eje, caja, t.opcion(L), "comp-svg") + `<span>${t.opcion(L)}</span>`;
+      b.querySelector("svg").setAttribute("aria-hidden", "true");
+      b.dataset.v = L; if(k === "bien") b.dataset.meta = "1";
+      grilla.appendChild(b);
+    });
+    S.resolver = ()=>{ grilla.querySelector('[data-meta="1"]').click(); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const t = T[S.idioma], es = S.idioma === "es";
+  $("hoja-rectas").innerHTML = [["recta", ["A","B"], 0], ["segmento", ["C","D"], -15], ["semirrecta", ["E","F"], 15]]
+    .map(([k, l, a])=>`<div class="fig-h">${rectaTipoSVG(k, a, l, t.rectasAriaR(k, l[0], l[1]), "hoja-svg")}<div>${escaparHTML(t.hojaEs)}</div></div>`).join("");
+  $("hoja-lados").innerHTML = `<div class="fig-h">${figuraSVG([[0,0],[4,0],[6,4],[0,4]], {u:30, iguales:false, rectos:false, letras:["A","B","C","D"], clase:"hoja-svg", aria:es ? "Trapecio ABCD" : "Trapezoid ABCD"})}</div>` +
+    `<div class="lineas-h"><div>${escaparHTML(t.hojaPar)}</div><div>${escaparHTML(t.hojaPerp)}</div></div>`;
+  $("hoja-p").innerHTML = `<svg class="hoja-p" viewBox="0 0 120 60" role="img" aria-label="${es ? "Punto P" : "Point P"}">${puntoSVG(30, 38)}${letraSVG(30, 22, "P")}</svg>`;
+  $("hoja-clasificar").innerHTML = [[[0,2],[3,0],[6,2],[3,4]], [[0,0],[0,4],[5,4]], [[2,0],[6,0],[4,4],[0,4]]]
+    .map(P=>`<div class="fig-h">${figuraSVG(P, {u:24, clase:"hoja-svg"})}<div>${escaparHTML(t.hojaEs)}</div></div>`).join("");
+  $("hoja-simetria").innerHTML = ["rectangulo", "triEq", "H"]
+    .map(k=>`<div class="fig-h">${simSVG(k, [], null, t.fig[k], "hoja-svg")}<div>${escaparHTML(t.hojaCuantos)}</div></div>`).join("");
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>
