@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Adding and subtracting multi-digit whole numbers
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.NBT.4, 4.NBT.3, 4.OA.3
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Sumar y restar números grandes · Juegos de cuarto grado" data-en="Adding and subtracting large numbers · Fourth grade games">Adding and subtracting large numbers · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade games with Lumi: add and subtract multi-digit numbers in columns, estimate first, find the missing digit, check with the opposite operation and solve two-step problems.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.op-col{display:inline-grid;column-gap:0;row-gap:2px;justify-items:stretch;align-items:stretch;letter-spacing:0;max-width:100%}
+.op-col>span{padding:0 .07em;min-width:.62em;text-align:center;line-height:1.15;display:flex;align-items:flex-end;justify-content:center}
+.op-col>span.sg{padding-right:.3em}
+.op-col>span.g{min-width:0;width:.22em;padding:0}
+.op-col>span.r{border-top:4px solid var(--tinta);padding-top:4px;margin-top:4px;min-height:1.2em}
+.op-col>span.cab{font-size:clamp(12px,2.4vw,15px);color:var(--tinta-suave);font-weight:700;align-self:end}
+.op-col>span.m{font-size:.5em;color:var(--acento);line-height:1}
+.op-col s{text-decoration-color:var(--acento);text-decoration-thickness:3px;color:var(--tinta-suave)}
+.op-col .bien-d,.op-col span.r .bien-d{color:var(--acierto)}
+.op-col .falta{font-size:.9em}
+.caja-op{max-width:100%;display:flex;justify-content:center}
+.numero-grande.est{font-size:clamp(28px,7vw,50px)}
+.barras{width:100%;max-width:560px;display:flex;flex-direction:column;gap:6px}
+.barras>div{display:flex;gap:0}
+.barras span{flex-basis:0;border:3px solid var(--tinta);background:var(--acento-claro);padding:8px 6px;text-align:center;font-weight:700;font-size:clamp(15px,3.6vw,20px);white-space:nowrap}
+.barras span+span{border-left:0}
+.barras>div:first-child span{background:#fff}
+.barras span.q{color:var(--acento);font-size:clamp(20px,4.6vw,26px);padding:4px 6px}
+.hoja .caja-h .op-col{font-size:22pt;font-weight:700;justify-self:center;justify-content:center;width:auto}
+.hoja .caja-h .op-col>span.r{border-top:1.5pt solid #000;min-height:12mm}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Sumar y restar números grandes" data-en="Adding and subtracting large numbers">Adding and subtracting large numbers</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>➕</span><span>➖</span><span>🚆</span><span>📚</span></div>
+    <h2 data-es="¡Sumas y restas gigantes!" data-en="Giant sums and differences!">Giant sums and differences!</h2>
+    <p data-es="Con Lumi vas a sumar y restar números de miles y de decenas de miles en columna: llevar, pedir prestado (¡también a través de los ceros!), estimar para ver si una respuesta es razonable, buscar el dígito que falta, comprobar con la operación contraria y resolver problemas de dos pasos. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="With Lumi you will add and subtract numbers in the thousands and ten thousands in columns: carry, regroup (even across zeros!), estimate to see if an answer is reasonable, find the missing digit, check with the opposite operation and solve two-step problems. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">With Lumi you will add and subtract numbers in the thousands and ten thousands in columns: carry, regroup (even across zeros!), estimate to see if an answer is reasonable, find the missing digit, check with the opposite operation and solve two-step problems. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: sumar y restar" data-en="🖨 Print a page: adding and subtracting">🖨 Print a page: adding and subtracting</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.NBT.4 (sumar y restar con fluidez números enteros de varias cifras usando el algoritmo convencional), con apoyo de 4.NBT.3 (redondear números enteros a cualquier lugar para estimar) y 4.OA.3 (resolver problemas de varios pasos y valorar si la respuesta es razonable mediante el cálculo mental y la estimación). En el nivel Fácil hay números de cuatro cifras con los nombres de las columnas, el dígito resaltado al redondear y un modelo de barras en los problemas; en el Reto hay números de cinco y seis cifras, restas con ceros en el número de arriba, decisiones de «¿es razonable?» y «¿es correcta?», y problemas de dos pasos con un plan y los pasos a la vista. Las opciones incorrectas vienen de errores típicos (olvidar llevar, restar el pequeño del grande, no quitar lo prestado) y cada una tiene su pista. Cada juego tiene su enlace directo: #sumar, #restar, #estimar, #falta, #comprobar y #problemas."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.NBT.4 (fluently add and subtract multi-digit whole numbers using the standard algorithm), supported by 4.NBT.3 (use place value understanding to round multi-digit whole numbers to any place) and 4.OA.3 (solve multistep word problems and assess the reasonableness of answers using mental computation and estimation). At the Easy level there are four-digit numbers with the column names, the digit to look at highlighted when rounding, and a bar model in the word problems; at the Challenge level there are five- and six-digit numbers, subtractions with zeros in the top number, “is it reasonable?” and “is it correct?” decisions, and two-step problems with a plan and the steps on screen. Wrong options come from typical mistakes (forgetting to carry, subtracting the smaller digit from the larger, not taking away what was regrouped) and each one has its own hint. Each game has its own direct link: #sumar, #restar, #estimar, #falta, #comprobar and #problemas.">Aligned to the Illinois fourth grade mathematics standards 4.NBT.4 (fluently add and subtract multi-digit whole numbers using the standard algorithm), supported by 4.NBT.3 (use place value understanding to round multi-digit whole numbers to any place) and 4.OA.3 (solve multistep word problems and assess the reasonableness of answers using mental computation and estimation). At the Easy level there are four-digit numbers with the column names, the digit to look at highlighted when rounding, and a bar model in the word problems; at the Challenge level there are five- and six-digit numbers, subtractions with zeros in the top number, “is it reasonable?” and “is it correct?” decisions, and two-step problems with a plan and the steps on screen. Wrong options come from typical mistakes (forgetting to carry, subtracting the smaller digit from the larger, not taking away what was regrouped) and each one has its own hint. Each game has its own direct link: #sumar, #restar, #estimar, #falta, #comprobar and #problemas.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Sumar y restar números grandes" data-en="Adding and subtracting large numbers">Adding and subtracting large numbers</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Suma en columna. No olvides llevar." data-en="1. Add in columns. Don't forget to carry.">1. Add in columns. Don't forget to carry.</h3>
+  <div class="caja-h" id="hoja-sumas"></div>
+  <h3 data-es="2. Resta en columna. Comprueba con una suma." data-en="2. Subtract in columns. Check with an addition.">2. Subtract in columns. Check with an addition.</h3>
+  <div class="caja-h" id="hoja-restas"></div>
+  <h3 data-es="3. Redondea cada número al millar más cercano y estima." data-en="3. Round each number to the nearest thousand and estimate.">3. Round each number to the nearest thousand and estimate.</h3>
+  <p class="razon-h" id="hoja-estimar"></p>
+  <h3 data-es="4. Resuelve el problema. Escribe los dos pasos." data-en="4. Solve the problem. Write both steps.">4. Solve the problem. Write both steps.</h3>
+  <p class="razon-h" id="hoja-problema"></p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, es razonable", no:"✘ No es razonable", comprobar:"✔ Comprobar", ninguno:"Marca al menos una opción.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    y:" y ",
+    /* 1. Suma en columna */
+    sumar:"Suma en columna. Empieza por las unidades.",
+    sumarVoz:(a,b)=>`${fmt(a)} + ${fmt(b)}. Suma en columna. Empieza por las unidades.`,
+    llevo:(i,L)=>`de las ${L[i]} a las ${L[i+1]}`,
+    sumaFin:(a,b,s,txt)=>`Sumé columna por columna desde las unidades. Llevé 1 ${txt}. ${fmt(a)} + ${fmt(b)} = ${fmt(s)}.`,
+    pistaLlevar:"Parece que olvidaste llevar. Cuando una columna suma 10 o más, escribes las unidades y llevas 1 a la columna de la izquierda.",
+    pistaColumna:"El 1 que llevas va a la columna de al lado, la que está justo a la izquierda, no a una más lejos.",
+    pistaUna:"Llevaste en una columna, pero en otra se te olvidó. Revisa cada columna: ¿sumó 10 o más?",
+    pistaSuma:"Suma columna por columna desde las unidades, y no olvides sumar el 1 que llevas.",
+    /* 2. Resta en columna */
+    restar:"Resta en columna. Empieza por las unidades.",
+    restarVoz:(a,b)=>`${fmt(a)} − ${fmt(b)}. Resta en columna. Empieza por las unidades.`,
+    restaFin:(a,b,d,txt,ceros)=>`Resté columna por columna desde las unidades. Pedí prestado para restar ${txt}.` + (ceros ? " Al pedir prestado a través de un cero, ese cero se convirtió en 9." : "") + ` ${fmt(a)} − ${fmt(b)} = ${fmt(d)}.`,
+    las:(x)=>`las ${x}`,
+    pistaPDG:"En alguna columna restaste el número pequeño del grande, aunque el pequeño estaba arriba. Si el dígito de arriba es menor, pide prestado a la columna de la izquierda.",
+    pistaBajar:"Pediste prestado, pero olvidaste quitarle 1 a la columna de la izquierda.",
+    pistaCeros:"Al pedir prestado a través de un cero, ese cero se convierte en 9, no en 10, porque le da 1 a la columna de la derecha.",
+    pistaResta:"Resta columna por columna desde las unidades. Comprueba: tu respuesta + el número de abajo debe dar el de arriba.",
+    /* 3. Estima primero */
+    lugarRed:{1000:"al millar más cercano", 10000:"a la decena de millar más cercana"},
+    estimar:(u)=>`Redondea cada número ${u}. ¿Cuál es la mejor estimación?`,
+    redondeo:(n,r)=>`${fmt(n)} se redondea a ${fmt(r)}`,
+    estFin:(a,b,ra,rb,e,op)=>`${fmt(a)} se redondea a ${fmt(ra)} y ${fmt(b)} a ${fmt(rb)}. ${fmt(ra)} ${op} ${fmt(rb)} = ${fmt(e)}.`,
+    estMira:(x)=>`Para redondear al millar, mira el dígito resaltado de las ${x}.`,
+    pistaTrunc:"Mira el dígito que está a la derecha del lugar que redondeas: si es 5 o más, redondeas hacia arriba.",
+    pistaEstOp:"Fíjate en el signo: ¿hay que sumar o restar los números redondeados?",
+    pistaEst:"Redondea cada número y después calcula con cuidado los números redondeados.",
+    razonable:"¿Es razonable esta respuesta? Estima para decidir.",
+    calculo:(n,a,b,op,v)=>`${n} calculó ${fmt(a)} ${op} ${fmt(b)} y obtuvo ${fmt(v)}.`,
+    pasosRaz:["Redondea cada número al millar más cercano.","Calcula con los números redondeados.","¿La respuesta está cerca de tu estimación?"],
+    razSi:(ra,rb,op,e,v)=>`Estimo: ${fmt(ra)} ${op} ${fmt(rb)} = ${fmt(e)}. ${fmt(v)} está cerca de ${fmt(e)}, así que es razonable.`,
+    razNo:(ra,rb,op,e,v,r)=>`Estimo: ${fmt(ra)} ${op} ${fmt(rb)} = ${fmt(e)}. ${fmt(v)} está muy lejos de ${fmt(e)}, así que no es razonable. La respuesta exacta es ${fmt(r)}.`,
+    pistaRaz:"Redondea los dos números al millar más cercano y calcula. ¿La respuesta está cerca de esa estimación?",
+    /* 4. El dígito que falta */
+    falta:(L)=>`¿Qué dígito falta? Está en la columna de las ${L}.`,
+    faltaSumaR:(L,da,db,c,S)=>`En las ${L}: ${da} + ${db}${c ? " + 1 que llevaste" : ""} = ${S}, así que escribes ${S % 10}${S >= 10 ? " y llevas 1" : ""}.`,
+    faltaSumando:(L,k,c,ds,x,S)=>`En las ${L}: ? + ${k}${c ? " + 1 que llevaste" : ""} debe terminar en ${ds}. ${x} + ${k}${c ? " + 1" : ""} = ${S}, así que el dígito es ${x}.`,
+    faltaRestaR:(L,tp,bin,pide,bp,x)=>`En las ${L}: ${tp}${bin ? " − 1 que prestaste" : ""}${pide ? " + 10 que pediste prestado" : ""} − ${bp} = ${x}.`,
+    piensaSuma:"Piensa en la suma: resultado + número de abajo = número de arriba.",
+    faltaArriba:(L,dp,bp,c,S)=>`En las ${L}: ${dp} + ${bp}${c ? " + 1 que llevas" : ""} = ${S}, así que arriba va un ${S % 10}.`,
+    faltaAbajo:(L,dp,c,ap,x,S)=>`En las ${L}: ${dp} + ?${c ? " + 1 que llevas" : ""} debe terminar en ${ap}. ${dp} + ${x}${c ? " + 1" : ""} = ${S}, así que el dígito es ${x}.`,
+    pistaFaltaLleva:"¡Casi! Revisa la columna de la derecha: ¿llevaste 1 (o prestaste 1) a esta columna?",
+    pistaFalta:"Mira solo la columna del ?. Haz la cuenta de esa columna, sin olvidar lo que viene de la columna de la derecha.",
+    /* 5. Comprueba con la operación contraria */
+    compF:"¿Qué operación sirve para comprobar esta cuenta?",
+    compFinR:(a,b,c)=>`Si ${fmt(a)} − ${fmt(b)} = ${fmt(c)}, entonces ${fmt(c)} + ${fmt(b)} debe dar ${fmt(a)}. La suma deshace la resta.`,
+    compFinS:(a,b,c)=>`Si ${fmt(a)} + ${fmt(b)} = ${fmt(c)}, entonces ${fmt(c)} − ${fmt(b)} debe dar ${fmt(a)}. La resta deshace la suma.`,
+    pistaCompR:"Para comprobar una resta, suma el resultado y el número que restaste: debe darte el número del principio.",
+    pistaCompS:"Para comprobar una suma, réstale al total uno de los números: debe darte el otro número.",
+    compR:"¿Es correcta? Compruébala con la operación contraria.",
+    siOk:"✔ Sí, es correcta", noOk:"✘ No es correcta",
+    pasosCompR:(c,b,a)=>[`Suma ${fmt(c)} + ${fmt(b)} en la columna.`,`¿Te da ${fmt(a)}?`,"Si te da, la resta es correcta."],
+    pasosCompS:(c,b,a)=>[`Resta ${fmt(c)} − ${fmt(b)} en la columna.`,`¿Te da ${fmt(a)}?`,"Si te da, la suma es correcta."],
+    okR:(a,b,c)=>`${fmt(c)} + ${fmt(b)} = ${fmt(a)}. Da el primer número, así que la resta es correcta.`,
+    malR:(a,b,v,d)=>`${fmt(v)} + ${fmt(b)} = ${fmt(v + b)}, no ${fmt(a)}. La resta no es correcta: ${fmt(a)} − ${fmt(b)} = ${fmt(d)}.`,
+    okS:(a,b,c)=>`${fmt(c)} − ${fmt(b)} = ${fmt(a)}. Da el primer número, así que la suma es correcta.`,
+    malS:(a,b,v,s)=>`${fmt(v)} − ${fmt(b)} = ${fmt(v - b)}, no ${fmt(a)}. La suma no es correcta: ${fmt(a)} + ${fmt(b)} = ${fmt(s)}.`,
+    pistaCompSN:"Haz la operación contraria en la columna. ¿Te da el primer número?",
+    /* 6. Problemas */
+    problema:"Lee el problema. ¿Cuál es la respuesta?",
+    uno:[
+      {op:"+", e:"📚", t:(A,B)=>`La biblioteca de la escuela tiene ${fmt(A)} libros. Recibe ${fmt(B)} libros nuevos. ¿Cuántos libros tiene ahora?`},
+      {op:"+", e:"🏟️", t:(A,B)=>`El estadio del barrio vendió ${fmt(A)} boletos el sábado y ${fmt(B)} el domingo. ¿Cuántos boletos vendió en total?`},
+      {op:"+", e:"🚆", t:(A,B)=>`En la mañana viajan ${fmt(A)} personas en el tren y en la tarde viajan ${fmt(B)}. ¿Cuántas personas viajan en total?`},
+      {op:"−", e:"🎈", t:(A,B)=>`La feria del barrio tenía ${fmt(A)} globos. Ya regaló ${fmt(B)}. ¿Cuántos globos le quedan?`},
+      {op:"−", e:"📚", t:(A,B)=>`La biblioteca tiene ${fmt(A)} libros. Presta ${fmt(B)}. ¿Cuántos libros quedan en los estantes?`},
+      {op:"−", e:"🌷", t:(A,B)=>`El parque quiere plantar ${fmt(A)} flores. Ya plantó ${fmt(B)}. ¿Cuántas flores le faltan por plantar?`}],
+    pistaOp:"Lee otra vez: ¿se juntan las cantidades (sumas) o se quita una parte (restas)?",
+    pistaProb:"Revisa tu cuenta columna por columna. Estima para ver si tu respuesta tiene sentido.",
+    unoFin:(A,B,op,R)=>`${fmt(A)} ${op} ${fmt(B)} = ${fmt(R)}.`,
+    dos:[
+      {plan:"rs", ok:["rs","sr"], e:"📚", t:(A,B,C)=>`La biblioteca de la escuela tiene ${fmt(A)} libros. Dona ${fmt(B)} y después recibe ${fmt(C)} libros nuevos. ¿Cuántos libros tiene ahora?`},
+      {plan:"rs", ok:["rs","sr"], e:"🚆", t:(A,B,C)=>`Un tren lleva ${fmt(A)} pasajeros. En una estación bajan ${fmt(B)} y suben ${fmt(C)}. ¿Cuántos pasajeros hay ahora?`},
+      {plan:"sr", ok:["sr","rr"], e:"🏟️", t:(A,B,C)=>`El estadio del barrio tiene ${fmt(A)} boletos para un partido. Vende ${fmt(B)} el sábado y ${fmt(C)} el domingo. ¿Cuántos boletos quedan?`},
+      {plan:"ss", ok:["ss"], e:"🎡", t:(A,B,C)=>`A la feria del barrio llegan ${fmt(A)} personas el viernes, ${fmt(B)} el sábado y ${fmt(C)} el domingo. ¿Cuántas personas llegan en total?`},
+      {plan:"rr", ok:["rr","sr"], e:"🚂", t:(A,B,C)=>`Un tren de carga lleva ${fmt(A)} cajas. Deja ${fmt(B)} en una estación y ${fmt(C)} en otra. ¿Cuántas cajas lleva ahora?`}],
+    planes:{sr:"Primero sumo y después resto", rs:"Primero resto y después sumo", ss:"Sumo dos veces", rr:"Resto dos veces"},
+    planF:"Este problema tiene dos pasos. ¿Cuál es el plan?",
+    pistaPlan:"Lee otra vez: ¿qué cantidades se juntan (sumar) y cuáles se quitan (restar)?",
+    calcula:"¡Buen plan! Ahora sigue los pasos. ¿Cuál es la respuesta?",
+    paso1:(x,op,y)=>`${fmt(x)} ${op} ${fmt(y)} = ?`,
+    paso2s:(z)=>`Al resultado súmale ${fmt(z)}.`, paso2r:(z)=>`Al resultado réstale ${fmt(z)}.`, paso2t:(A)=>`Resta ese total de ${fmt(A)}.`,
+    dosFin:(p1,p2)=>`Paso 1: ${p1}. Paso 2: ${p2}.`,
+    pistaMedio:"Ese es solo el resultado del primer paso. ¡Falta el segundo paso!",
+    pistaDosOp:"Revisa cada paso: ¿sumas o restas?",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    hojaEst:()=>`${fmt(6721)} + ${fmt(2389)} es más o menos ________`,
+    hojaProb:()=>`La biblioteca de la escuela tiene ${fmt(12450)} libros. Dona ${fmt(1375)} libros y después recibe ${fmt(2680)} libros nuevos. ¿Cuántos libros tiene ahora?`,
+    estrategias:[
+      ["Alineé los números por su valor posicional","¡Muy bien! Unidades con unidades, decenas con decenas: así cada dígito vale lo que debe."],
+      ["Estimé primero","¡Buena idea! Una estimación te dice si tu respuesta tiene sentido."],
+      ["Comprobé con la operación contraria","¡Excelente! La suma deshace la resta y la resta deshace la suma."],
+      ["Reagrupé con cuidado, columna por columna","¡Genial! Llevar y pedir prestado con cuidado evita los errores más comunes."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, it is reasonable", no:"✘ No, it is not reasonable", comprobar:"✔ Check", ninguno:"Mark at least one option.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    y:" and ",
+    sumar:"Add in columns. Start with the ones.",
+    sumarVoz:(a,b)=>`${fmt(a)} + ${fmt(b)}. Add in columns. Start with the ones.`,
+    llevo:(i,L)=>`from the ${L[i]} to the ${L[i+1]}`,
+    sumaFin:(a,b,s,txt)=>`I added column by column, starting with the ones. I carried 1 ${txt}. ${fmt(a)} + ${fmt(b)} = ${fmt(s)}.`,
+    pistaLlevar:"It looks like you forgot to carry. When a column adds up to 10 or more, you write the ones and carry 1 to the column on the left.",
+    pistaColumna:"The 1 you carry goes to the next column, the one right on the left, not to a column farther away.",
+    pistaUna:"You carried in one column, but you forgot in another. Check each column: did it add up to 10 or more?",
+    pistaSuma:"Add column by column, starting with the ones, and don't forget to add the 1 you carry.",
+    restar:"Subtract in columns. Start with the ones.",
+    restarVoz:(a,b)=>`${fmt(a)} − ${fmt(b)}. Subtract in columns. Start with the ones.`,
+    restaFin:(a,b,d,txt,ceros)=>`I subtracted column by column, starting with the ones. I regrouped to subtract ${txt}.` + (ceros ? " When I regrouped across a zero, that zero became 9." : "") + ` ${fmt(a)} − ${fmt(b)} = ${fmt(d)}.`,
+    las:(x)=>`the ${x}`,
+    pistaPDG:"In some column you subtracted the smaller digit from the bigger one, even though the smaller one was on top. If the top digit is smaller, regroup from the column on the left.",
+    pistaBajar:"You regrouped, but you forgot to take 1 away from the column on the left.",
+    pistaCeros:"When you regroup across a zero, that zero becomes 9, not 10, because it gives 1 to the column on its right.",
+    pistaResta:"Subtract column by column, starting with the ones. Check: your answer + the bottom number should give the top number.",
+    lugarRed:{1000:"to the nearest thousand", 10000:"to the nearest ten thousand"},
+    estimar:(u)=>`Round each number ${u}. Which is the best estimate?`,
+    redondeo:(n,r)=>`${fmt(n)} rounds to ${fmt(r)}`,
+    estFin:(a,b,ra,rb,e,op)=>`${fmt(a)} rounds to ${fmt(ra)} and ${fmt(b)} rounds to ${fmt(rb)}. ${fmt(ra)} ${op} ${fmt(rb)} = ${fmt(e)}.`,
+    estMira:(x)=>`To round to the nearest thousand, look at the highlighted ${x} digit.`,
+    pistaTrunc:"Look at the digit to the right of the place you are rounding to: if it is 5 or more, round up.",
+    pistaEstOp:"Look at the sign: do you add or subtract the rounded numbers?",
+    pistaEst:"Round each number, then carefully work with the rounded numbers.",
+    razonable:"Is this answer reasonable? Estimate to decide.",
+    calculo:(n,a,b,op,v)=>`${n} worked out ${fmt(a)} ${op} ${fmt(b)} and got ${fmt(v)}.`,
+    pasosRaz:["Round each number to the nearest thousand.","Work it out with the rounded numbers.","Is the answer close to your estimate?"],
+    razSi:(ra,rb,op,e,v)=>`Estimate: ${fmt(ra)} ${op} ${fmt(rb)} = ${fmt(e)}. ${fmt(v)} is close to ${fmt(e)}, so it is reasonable.`,
+    razNo:(ra,rb,op,e,v,r)=>`Estimate: ${fmt(ra)} ${op} ${fmt(rb)} = ${fmt(e)}. ${fmt(v)} is very far from ${fmt(e)}, so it is not reasonable. The exact answer is ${fmt(r)}.`,
+    pistaRaz:"Round both numbers to the nearest thousand and work it out. Is the answer close to that estimate?",
+    falta:(L)=>`Which digit is missing? It is in the ${L} column.`,
+    faltaSumaR:(L,da,db,c,S)=>`In the ${L}: ${da} + ${db}${c ? " + the 1 you carried" : ""} = ${S}, so you write ${S % 10}${S >= 10 ? " and carry 1" : ""}.`,
+    faltaSumando:(L,k,c,ds,x,S)=>`In the ${L}: ? + ${k}${c ? " + the 1 you carried" : ""} must end in ${ds}. ${x} + ${k}${c ? " + 1" : ""} = ${S}, so the digit is ${x}.`,
+    faltaRestaR:(L,tp,bin,pide,bp,x)=>`In the ${L}: ${tp}${bin ? " − the 1 you gave away" : ""}${pide ? " + the 10 you regrouped" : ""} − ${bp} = ${x}.`,
+    piensaSuma:"Think of the addition: answer + bottom number = top number.",
+    faltaArriba:(L,dp,bp,c,S)=>`In the ${L}: ${dp} + ${bp}${c ? " + the 1 you carry" : ""} = ${S}, so the top digit is ${S % 10}.`,
+    faltaAbajo:(L,dp,c,ap,x,S)=>`In the ${L}: ${dp} + ?${c ? " + the 1 you carry" : ""} must end in ${ap}. ${dp} + ${x}${c ? " + 1" : ""} = ${S}, so the digit is ${x}.`,
+    pistaFaltaLleva:"Almost! Check the column on the right: did you carry 1 (or give away 1) to this column?",
+    pistaFalta:"Look only at the column with the ?. Work out that column, and don't forget what comes from the column on the right.",
+    compF:"Which operation can you use to check this one?",
+    compFinR:(a,b,c)=>`If ${fmt(a)} − ${fmt(b)} = ${fmt(c)}, then ${fmt(c)} + ${fmt(b)} must give ${fmt(a)}. Addition undoes subtraction.`,
+    compFinS:(a,b,c)=>`If ${fmt(a)} + ${fmt(b)} = ${fmt(c)}, then ${fmt(c)} − ${fmt(b)} must give ${fmt(a)}. Subtraction undoes addition.`,
+    pistaCompR:"To check a subtraction, add the answer and the number you subtracted: you should get the number you started with.",
+    pistaCompS:"To check an addition, subtract one of the numbers from the total: you should get the other number.",
+    compR:"Is it correct? Check it with the opposite operation.",
+    siOk:"✔ Yes, it is correct", noOk:"✘ No, it is not correct",
+    pasosCompR:(c,b,a)=>[`Add ${fmt(c)} + ${fmt(b)} in the columns.`,`Do you get ${fmt(a)}?`,"If you do, the subtraction is correct."],
+    pasosCompS:(c,b,a)=>[`Subtract ${fmt(c)} − ${fmt(b)} in the columns.`,`Do you get ${fmt(a)}?`,"If you do, the addition is correct."],
+    okR:(a,b,c)=>`${fmt(c)} + ${fmt(b)} = ${fmt(a)}. It gives the first number, so the subtraction is correct.`,
+    malR:(a,b,v,d)=>`${fmt(v)} + ${fmt(b)} = ${fmt(v + b)}, not ${fmt(a)}. The subtraction is not correct: ${fmt(a)} − ${fmt(b)} = ${fmt(d)}.`,
+    okS:(a,b,c)=>`${fmt(c)} − ${fmt(b)} = ${fmt(a)}. It gives the first number, so the addition is correct.`,
+    malS:(a,b,v,s)=>`${fmt(v)} − ${fmt(b)} = ${fmt(v - b)}, not ${fmt(a)}. The addition is not correct: ${fmt(a)} + ${fmt(b)} = ${fmt(s)}.`,
+    pistaCompSN:"Do the opposite operation in the columns. Do you get the first number?",
+    problema:"Read the problem. What is the answer?",
+    uno:[
+      {op:"+", e:"📚", t:(A,B)=>`The school library has ${fmt(A)} books. It gets ${fmt(B)} new books. How many books does it have now?`},
+      {op:"+", e:"🏟️", t:(A,B)=>`The neighborhood stadium sold ${fmt(A)} tickets on Saturday and ${fmt(B)} on Sunday. How many tickets did it sell in all?`},
+      {op:"+", e:"🚆", t:(A,B)=>`In the morning ${fmt(A)} people ride the train, and in the afternoon ${fmt(B)} people ride it. How many people ride in all?`},
+      {op:"−", e:"🎈", t:(A,B)=>`The neighborhood fair had ${fmt(A)} balloons. It has given away ${fmt(B)}. How many balloons are left?`},
+      {op:"−", e:"📚", t:(A,B)=>`The library has ${fmt(A)} books. It lends out ${fmt(B)}. How many books are left on the shelves?`},
+      {op:"−", e:"🌷", t:(A,B)=>`The park wants to plant ${fmt(A)} flowers. It has planted ${fmt(B)}. How many flowers are still left to plant?`}],
+    pistaOp:"Read it again: are the amounts put together (add) or is a part taken away (subtract)?",
+    pistaProb:"Check your work column by column. Estimate to see if your answer makes sense.",
+    unoFin:(A,B,op,R)=>`${fmt(A)} ${op} ${fmt(B)} = ${fmt(R)}.`,
+    dos:[
+      {plan:"rs", ok:["rs","sr"], e:"📚", t:(A,B,C)=>`The school library has ${fmt(A)} books. It donates ${fmt(B)} and then gets ${fmt(C)} new books. How many books does it have now?`},
+      {plan:"rs", ok:["rs","sr"], e:"🚆", t:(A,B,C)=>`A train is carrying ${fmt(A)} passengers. At a station ${fmt(B)} get off and ${fmt(C)} get on. How many passengers are on the train now?`},
+      {plan:"sr", ok:["sr","rr"], e:"🏟️", t:(A,B,C)=>`The neighborhood stadium has ${fmt(A)} tickets for a game. It sells ${fmt(B)} on Saturday and ${fmt(C)} on Sunday. How many tickets are left?`},
+      {plan:"ss", ok:["ss"], e:"🎡", t:(A,B,C)=>`${fmt(A)} people come to the neighborhood fair on Friday, ${fmt(B)} on Saturday and ${fmt(C)} on Sunday. How many people come in all?`},
+      {plan:"rr", ok:["rr","sr"], e:"🚂", t:(A,B,C)=>`A freight train carries ${fmt(A)} boxes. It drops off ${fmt(B)} at one station and ${fmt(C)} at another. How many boxes does it carry now?`}],
+    planes:{sr:"First I add, then I subtract", rs:"First I subtract, then I add", ss:"I add two times", rr:"I subtract two times"},
+    planF:"This problem has two steps. What is the plan?",
+    pistaPlan:"Read it again: which amounts are put together (add) and which are taken away (subtract)?",
+    calcula:"Good plan! Now follow the steps. What is the answer?",
+    paso1:(x,op,y)=>`${fmt(x)} ${op} ${fmt(y)} = ?`,
+    paso2s:(z)=>`Add ${fmt(z)} to the result.`, paso2r:(z)=>`Subtract ${fmt(z)} from the result.`, paso2t:(A)=>`Subtract that total from ${fmt(A)}.`,
+    dosFin:(p1,p2)=>`Step 1: ${p1}. Step 2: ${p2}.`,
+    pistaMedio:"That is only the answer to the first step. The second step is still missing!",
+    pistaDosOp:"Check each step: do you add or subtract?",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    hojaEst:()=>`${fmt(6721)} + ${fmt(2389)} is about ________`,
+    hojaProb:()=>`The school library has ${fmt(12450)} books. It donates ${fmt(1375)} books and then gets ${fmt(2680)} new books. How many books does it have now?`,
+    estrategias:[
+      ["I lined up the numbers by place value","Great! Ones with ones, tens with tens: that way each digit keeps its value."],
+      ["I estimated first","Good idea! An estimate tells you whether your answer makes sense."],
+      ["I checked with the opposite operation","Excellent! Addition undoes subtraction, and subtraction undoes addition."],
+      ["I regrouped carefully, column by column","Awesome! Careful carrying and regrouping avoids the most common mistakes."]]
+  }
+};
+const JUEGOS = [
+  {id:"sumar",      emoji:"➕", es:"Suma en columna", en:"Column addition", metaEs:"Llevar 1", metaEn:"Carry the 1"},
+  {id:"restar",     emoji:"➖", es:"Resta en columna", en:"Column subtraction", metaEs:"Pedir prestado", metaEn:"Regrouping"},
+  {id:"estimar",    emoji:"🎯", es:"Estima primero", en:"Estimate first", metaEs:"¿Es razonable?", metaEn:"Is it reasonable?"},
+  {id:"falta",      emoji:"🔍", es:"El dígito que falta", en:"The missing digit", metaEs:"Razona por columnas", metaEn:"Reason by columns"},
+  {id:"comprobar",  emoji:"🔄", es:"Comprueba con la operación contraria", en:"Check with the opposite operation", metaEs:"La suma deshace la resta", metaEn:"Addition undoes subtraction"},
+  {id:"problemas",  emoji:"🚆", es:"Problemas de dos pasos", en:"Two-step problems", metaEs:"Haz un plan", metaEn:"Make a plan"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-02-add-subtract.html#sumar */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Ayudas de este módulo: columnas y errores típicos ============ */
+const ETQ = {es:["U","D","C","UM","DM","CM"], en:["O","T","H","Th","TTh","HTh"]};
+const P10 = (k)=> 10 ** k;
+const dg = (n, i)=> Math.floor(n / P10(i)) % 10;
+const lon = (n)=> String(n).length;
+const cifras = (n)=> String(n).split("");
+function unirY(l){ return l.length < 2 ? (l[0] || "") : l.slice(0, -1).join(", ") + T[S.idioma].y + l[l.length - 1]; }
+/* Columnas que llevan 1 a la siguiente (índice desde las unidades) */
+function llevadas(a, b){ const r = []; let c = 0; for(let i=0;i<7;i++){ c = dg(a,i) + dg(b,i) + c >= 10 ? 1 : 0; if(c) r.push(i); } return r; }
+const llegaLlevada = (a, b, p)=>{ let c = 0; for(let i=0;i<p;i++) c = dg(a,i) + dg(b,i) + c >= 10 ? 1 : 0; return c; };
+/* Resta paso a paso: pres[i] = la columna i pidió prestado; nuevo[i] = cómo quedó el dígito de arriba */
+function trazaResta(a, b){
+  const pres = [], nuevo = []; let bin = 0, ceros = false;
+  for(let i=0;i<lon(a);i++){
+    let t = dg(a,i) - bin;
+    if(dg(a,i) === 0 && bin) ceros = true;
+    const p = t < dg(b,i) ? 1 : 0; t += 10*p;
+    pres.push(p); nuevo.push(t); bin = p;
+  }
+  return {d: a - b, pres, nuevo, ceros};
+}
+/* Errores típicos */
+function sinLlevar(a, b){ let r = 0, p = 1; while(a || b){ r += ((a%10 + b%10) % 10)*p; a = Math.floor(a/10); b = Math.floor(b/10); p *= 10; } return r; }
+function pequenoDelGrande(a, b){ let r = 0, p = 1; while(a || b){ r += Math.abs(a%10 - b%10)*p; a = Math.floor(a/10); b = Math.floor(b/10); p *= 10; } return r; }
+function sinBajar(a, b){ let r = 0; for(let i=0;i<lon(a);i++) r += ((dg(a,i) - dg(b,i) + 10) % 10) * P10(i); return r; }
+function cerosDiez(a, b){ // el cero se vuelve 10 en lugar de 9
+  let r = 0, bin = 0;
+  for(let i=0;i<lon(a);i++){
+    let t, p;
+    if(dg(a,i) === 0 && bin){ t = 10; p = 1; }
+    else { t = dg(a,i) - bin; p = t < dg(b,i) ? 1 : 0; t += 10*p; }
+    r += (t - dg(b,i)) * P10(i); bin = p;
+  }
+  return r;
+}
+/* Operación en columna con una cuadrícula: cada dígito en su columna, aunque un número tenga separador y el otro no.
+   filas: [arriba, abajo, resultado] como listas de dígitos ("?" = falta, "!7" = dígito resaltado). */
+function colOp(filas, signo, o){
+  o = o || {};
+  const es = S.idioma === "es";
+  const n = Math.max(o.ancho || 0, ...filas.map(f=>f.length));
+  const conSep = es ? n >= 5 : n >= 4;
+  const cols = [{k:"s"}];
+  for(let p = n-1; p >= 0; p--){ cols.push({k:"d", p}); if(conSep && p === 3) cols.push({k:"g", p}); }
+  const fila = (fn, cls)=> cols.map(c=>`<span class="${cls}${c.k === "g" ? " g" : c.k === "s" ? " sg" : ""}">${fn(c)}</span>`).join("");
+  let h = "";
+  if(o.cab) h += fila(c=> c.k === "d" ? ETQ[S.idioma][c.p] : "", "cab");
+  if(o.marcas) h += fila(c=> c.k === "d" && o.marcas[c.p] !== undefined ? o.marcas[c.p] : "", "m");
+  filas.forEach((f, r)=>{
+    const ult = r === filas.length - 1;
+    h += fila(c=>{
+      if(c.k === "s") return r === 1 ? signo : (ult && !f.length ? "&nbsp;" : "");
+      if(c.k === "g") return (!es && f.length > c.p) ? "," : "";
+      const x = f[f.length - 1 - c.p];
+      if(x === undefined) return "";
+      if(x === "?") return '<span class="falta">?</span>';
+      if(x[0] === "!") return `<b class="bien-d">${x.slice(1)}</b>`;
+      if(r === 0 && o.tachar && o.tachar.has(c.p)) return `<s>${x}</s>`;
+      return x;
+    }, ult ? "r" : "");
+  });
+  return `<div class="operacion-v op-col" role="img" aria-label="${escaparHTML(o.label || "")}" style="grid-template-columns:repeat(${cols.length},auto)">${h}</div>`;
+}
+/* Número con un dígito resaltado (pos desde las unidades) */
+function conMarca(n, pos){
+  const s = fmt(n); let k = -1, out = "";
+  for(let j = s.length - 1; j >= 0; j--){
+    const ch = s[j];
+    if(/\d/.test(ch)){ k++; out = (k === pos ? `<span class="marcado">${ch}</span>` : ch) + out; } else out = ch + out;
+  }
+  return out;
+}
+const redondear = (n, u)=> Math.round(n / u) * u;
+const opera = (x, op, y)=> op === "+" ? x + y : x - y;
+function cajaEl(html){ const d = document.createElement("div"); d.className = "caja-op"; d.innerHTML = html; $("escena").appendChild(d); return d; }
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+  const L = LUGARES[S.idioma];
+
+  /* --- 1. Suma en columna (4.NBT.4): llevar --- */
+  if(S.juego === "sumar"){
+    let a, b, ll;
+    for(;;){
+      if(!reto){ a = azar(1000, 8999); b = Math.random() < 0.35 ? azar(100, 999) : azar(1000, 9999 - a); }
+      else { const la = elegir([5,6]); a = azar(P10(la-1), la === 6 ? 799999 : 99999); const lb = elegir([la-1, la]); b = azar(P10(lb-1), Math.min(P10(lb)-1, 999999 - a)); if(b < P10(lb-1)) continue; }
+      if(!reto && (b < 100 || a + b > 9999)) continue;
+      ll = llevadas(a, b);
+      if(ll.length >= (reto ? 2 : 1)) break;
+    }
+    const s = a + b, etq = `${fmt(a)} + ${fmt(b)}`;
+    const caja = cajaEl(colOp([cifras(a), cifras(b), []], "+", {cab: !reto, ancho: lon(s), label: etq}));
+    ponerInstruccion(t.sumar, t.sumarVoz(a, b));
+    const dLlevar = sinLlevar(a, b), dCol = s + 9*P10(ll[0] + 1);
+    let dOtra, pOtra;
+    if(ll.length >= 2){ dOtra = s - P10(ll[ll.length-1] + 1); pOtra = t.pistaUna; }
+    else { const libres = [1,2,3].filter(k=>!ll.includes(k-1)); dOtra = s + P10(elegir(libres.length ? libres : [2])); pOtra = t.pistaSuma; }
+    const lista = unicos([s, dLlevar, dCol, dOtra].filter(v=>v > 0));
+    rellenar(lista, (i)=> s + i*P10(1 + i % 3));
+    const marcas = {}; ll.forEach(i=>{ marcas[i+1] = "1"; });
+    opcionesNum(lista, s, ()=>{
+      caja.innerHTML = colOp([cifras(a), cifras(b), cifras(s)], "+", {cab: !reto, marcas, label: etq + " = " + fmt(s)});
+      acertar(t.sumaFin(a, b, s, unirY(ll.map(i=>t.llevo(i, L)))));
+    }, (v)=> v === dLlevar ? t.pistaLlevar : v === dCol ? t.pistaColumna : v === dOtra ? pOtra : t.pistaSuma);
+    return;
+  }
+
+  /* --- 2. Resta en columna (4.NBT.4): pedir prestado, también a través de ceros --- */
+  if(S.juego === "restar"){
+    let a, b, tr;
+    for(;;){
+      const conCeros = reto && Math.random() < 0.45;
+      if(!reto){ a = azar(1200, 9999); b = Math.random() < 0.3 ? azar(100, 999) : azar(1000, a - 1); }
+      else if(conCeros){
+        const la = elegir([5,5,6]), dd = Array(la).fill(0); dd[0] = azar(2, 9);
+        for(let j=0;j<azar(1,2);j++) dd[azar(1, la-1)] = azar(1, 9);
+        a = +dd.join(""); b = azar(P10(la-2), a - P10(la-2));
+      } else { const la = elegir([5,6]); a = azar(P10(la-1) + P10(la-2), P10(la) - 1); b = azar(P10(la-2), a - P10(la-2)); }
+      if(b < 100 || b >= a) continue;
+      tr = trazaResta(a, b);
+      const n = tr.pres.filter(x=>x).length;
+      if(n < (reto ? 2 : 1)) continue;
+      if(conCeros && !tr.ceros) continue;
+      break;
+    }
+    const d = tr.d, etq = `${fmt(a)} − ${fmt(b)}`;
+    const caja = cajaEl(colOp([cifras(a), cifras(b), []], "−", {cab: !reto, ancho: lon(a), label: etq}));
+    ponerInstruccion(t.restar, t.restarVoz(a, b));
+    const pdg = pequenoDelGrande(a, b), sb = sinBajar(a, b), zc = tr.ceros ? cerosDiez(a, b) : -1;
+    const otra = d + P10(elegir([2,3].filter(k=>k < lon(a))));
+    const lista = unicos([d, pdg, sb, zc, otra].filter(v=>v > 0)).slice(0, 4);
+    rellenar(lista, (i)=> d + i*P10(i % 3 + 1));
+    const marcas = {}, tachar = new Set();
+    tr.nuevo.forEach((x, i)=>{ if(x !== dg(a, i)){ marcas[i] = String(x); tachar.add(i); } });
+    const columnas = tr.pres.map((p, i)=> p ? t.las(L[i]) : null).filter(x=>x);
+    opcionesNum(lista, d, ()=>{
+      caja.innerHTML = colOp([cifras(a), cifras(b), cifras(d)], "−", {cab: !reto, marcas, tachar, label: etq + " = " + fmt(d)});
+      acertar(t.restaFin(a, b, d, unirY(columnas), tr.ceros));
+    }, (v)=> v === pdg ? t.pistaPDG : v === sb ? t.pistaBajar : v === zc ? t.pistaCeros : t.pistaResta);
+    return;
+  }
+
+  /* --- 3. Estima primero (4.NBT.3, 4.NBT.4): redondear y decidir si es razonable --- */
+  if(S.juego === "estimar"){
+    if(reto && Math.random() < 0.5){
+      let a, b, op, r, e, ra, rb;
+      for(;;){
+        op = elegir(["+","−"]); a = azar(12000, 79999);
+        b = Math.random() < 0.5 ? azar(1200, 9899) : azar(10200, op === "+" ? 19899 : a - 4000);
+        if(op === "−" && b >= a - 2000) continue;
+        ra = redondear(a, 1000); rb = redondear(b, 1000); r = opera(a, op, b); e = opera(ra, op, rb);
+        if(e > 0) break;
+      }
+      const n = elegir(t.nombres), bueno = Math.random() < 0.45;
+      let v = r;
+      if(!bueno){
+        const cand = [r + 10000, r - 10000, opera(a, op, b*10), opera(a, op, Math.floor(b/10)), r + 9000].filter(x=>x > 0 && Math.abs(x - e) >= 4000);
+        v = elegir(cand.length ? cand : [r + 10000]);
+      }
+      const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">🧮</span> ${escaparHTML(t.calculo(n, a, b, op, v))}`;
+      esc.appendChild(p);
+      esc.appendChild(pasosEl(t.pasosRaz));
+      ponerInstruccion(t.razonable, t.calculo(n, a, b, op, v) + " " + t.razonable + " " + t.pasosRaz.join(" "));
+      const expl = bueno ? t.razSi(ra, rb, op, e, v) : t.razNo(ra, rb, op, e, v, r);
+      const cont = $("opciones");
+      [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([x, txt, cls])=>{
+        cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(x === bueno){ sonBoing(); acertar(expl); } else fallar(bt, t.pistaRaz); }));
+      });
+      S.resolver = resolverTexto(bueno ? t.si : t.no);
+      return;
+    }
+    const u = reto ? elegir([1000, 10000]) : 1000;
+    let a, b, op, ra, rb, e;
+    for(;;){
+      op = reto ? elegir(["+","−"]) : (Math.random() < 0.65 ? "+" : "−");
+      if(u === 1000 && !reto){ a = azar(1100, 8899); b = azar(1100, 8899); }
+      else if(u === 1000){ a = azar(10100, 89899); b = azar(1100, 39899); }
+      else { a = azar(11000, 89000); b = azar(11000, 89000); }
+      if(op === "−" && a < b) [a, b] = [b, a];
+      if(op === "+" && a + b > (u === 1000 && !reto ? 9999 : 999999)) continue;
+      if(dg(a, lon(u) - 2) === 5 || dg(b, lon(u) - 2) === 5) continue;          // sin dudas de «justo a la mitad»
+      ra = redondear(a, u); rb = redondear(b, u); e = opera(ra, op, rb);
+      const trunc0 = opera(Math.floor(a/u)*u, op, Math.floor(b/u)*u);
+      if(e > 0 && trunc0 !== e) break;
+    }
+    const trunc = opera(Math.floor(a/u)*u, op, Math.floor(b/u)*u);
+    const otroOp = opera(ra, op === "+" ? "−" : "+", rb);
+    const otra = e + u;
+    const lista = unicos([e, trunc, otroOp, otra].filter(v=>v > 0)).slice(0, 4);
+    rellenar(lista, (i)=> e + (i + 1)*u);
+    const pos = lon(u) - 2;
+    if(!reto){
+      esc.insertAdjacentHTML("beforeend", `<p class="numero-grande est" aria-hidden="true">${conMarca(a, pos)} ${op} ${conMarca(b, pos)}</p><p class="rotulo">${escaparHTML(t.estMira(L[pos]))}</p>`);
+    } else {
+      esc.insertAdjacentHTML("beforeend", `<p class="numero-grande est" aria-hidden="true">${fmt(a)} ${op} ${fmt(b)}</p>`);
+    }
+    const ins = t.estimar(t.lugarRed[u]);
+    ponerInstruccion(ins, `${fmt(a)} ${op} ${fmt(b)}. ` + ins);
+    opcionesNum(lista, e, ()=>acertar(t.estFin(a, b, ra, rb, e, op)),
+      (v)=> v === trunc ? t.pistaTrunc : v === otroOp ? t.pistaEstOp : t.pistaEst);
+    return;
+  }
+
+  /* --- 4. El dígito que falta (4.NBT.4): razonar por columnas --- */
+  if(S.juego === "falta"){
+    let a, b, fila, p, x, expl, trampa, pdgDig = -1;
+    if(!reto){
+      for(;;){ a = azar(1000, 8999); b = azar(1000, 9999 - a); if(llevadas(a, b).length >= 1 && b >= 1000) break; }
+      const s = a + b;
+      const conLlevada = [0,1,2,3].filter(i=>llegaLlevada(a, b, i));
+      p = (conLlevada.length && Math.random() < 0.6) ? elegir(conLlevada) : azar(0, 3);
+      const c = llegaLlevada(a, b, p);
+      fila = elegir([0, 1, 2, 2]);
+      if(fila === 2){ const S2 = dg(a,p) + dg(b,p) + c; x = S2 % 10; expl = t.faltaSumaR(L[p], dg(a,p), dg(b,p), c, S2); trampa = c ? (x + 9) % 10 : (x + 1) % 10; }
+      else {
+        const k = fila === 0 ? dg(b,p) : dg(a,p); x = fila === 0 ? dg(a,p) : dg(b,p);
+        expl = t.faltaSumando(L[p], k, c, dg(s,p), x, x + k + c); trampa = c ? (x + 1) % 10 : (x + 9) % 10;
+      }
+      const filas = [cifras(a), cifras(b), cifras(s)];
+      filas[fila][filas[fila].length - 1 - p] = "?";
+      const caja = cajaEl(colOp(filas, "+", {cab: true, label: `${fmt(a)} + ${fmt(b)} = ${fmt(s)}`}));
+      ponerInstruccion(t.falta(L[p]));
+      const lista = [x, trampa]; while(lista.length < 4){ const z = azar(0, 9); if(!lista.includes(z)) lista.push(z); }
+      ponerOpciones(lista, x, ()=>{
+        filas[fila][filas[fila].length - 1 - p] = "!" + x;
+        caja.innerHTML = colOp(filas, "+", {cab: true, label: `${fmt(a)} + ${fmt(b)} = ${fmt(s)}`});
+        sonBoing(); acertar(expl);
+      }, (v)=> v === trampa ? t.pistaFaltaLleva : t.pistaFalta);
+      S.resolver = resolverTexto(x);
+      return;
+    }
+    let tr;
+    for(;;){ a = azar(20000, 99999); b = azar(1000, a - 3000); tr = trazaResta(a, b); if(tr.pres.filter(z=>z).length >= 2 && lon(tr.d) >= 4) break; }
+    const d = tr.d, m = Math.min(lon(b), lon(d));
+    const conPres = [...Array(m).keys()].filter(i=>tr.pres[i] || (i > 0 && tr.pres[i-1]));
+    p = (conPres.length && Math.random() < 0.7) ? elegir(conPres) : azar(0, m - 1);
+    fila = elegir([0, 1, 2, 2]);
+    if(fila === 2){
+      const bin = p > 0 ? tr.pres[p-1] : 0, pide = tr.pres[p];
+      x = dg(d, p); expl = t.faltaRestaR(L[p], dg(a,p), bin, pide, dg(b,p), x);
+      trampa = bin ? (x + 1) % 10 : (x + 9) % 10;
+      const ab = Math.abs(dg(a,p) - dg(b,p)); if(ab !== x && ab !== trampa) pdgDig = ab;
+    } else {
+      const c = llegaLlevada(d, b, p);                  // se comprueba con la suma d + b = a
+      if(fila === 0){ x = dg(a,p); expl = t.piensaSuma + " " + t.faltaArriba(L[p], dg(d,p), dg(b,p), c, dg(d,p) + dg(b,p) + c); trampa = c ? (x + 9) % 10 : (x + 1) % 10; }
+      else { x = dg(b,p); expl = t.piensaSuma + " " + t.faltaAbajo(L[p], dg(d,p), c, dg(a,p), x, dg(d,p) + x + c); trampa = c ? (x + 1) % 10 : (x + 9) % 10; }
+    }
+    const filas = [cifras(a), cifras(b), cifras(d)];
+    filas[fila][filas[fila].length - 1 - p] = "?";
+    const etq = `${fmt(a)} − ${fmt(b)} = ${fmt(d)}`;
+    const caja = cajaEl(colOp(filas, "−", {label: etq}));
+    ponerInstruccion(t.falta(L[p]));
+    const lista = [x, trampa]; if(pdgDig >= 0) lista.push(pdgDig);
+    while(lista.length < 4){ const z = azar(0, 9); if(!lista.includes(z)) lista.push(z); }
+    ponerOpciones(lista, x, ()=>{
+      filas[fila][filas[fila].length - 1 - p] = "!" + x;
+      caja.innerHTML = colOp(filas, "−", {label: etq});
+      sonBoing(); acertar(expl);
+    }, (v)=> v === trampa ? t.pistaFaltaLleva : v === pdgDig ? t.pistaPDG : t.pistaFalta);
+    S.resolver = resolverTexto(x);
+    return;
+  }
+
+  /* --- 5. Comprueba con la operación contraria (4.NBT.4) --- */
+  if(S.juego === "comprobar"){
+    const resta = Math.random() < 0.55;
+    let a, b;
+    for(;;){
+      if(!reto){ a = azar(1000, 8999); b = azar(1000, 8999); }
+      else { a = azar(12000, 599999); b = azar(1200, Math.min(399999, a)); }
+      if(resta){ if(a < b) [a, b] = [b, a]; if(a - b < 100 || !trazaResta(a, b).pres.some(z=>z)) continue; }
+      else { if(!reto && a + b > 9999) continue; if(!llevadas(a, b).length) continue; }
+      break;
+    }
+    const c = resta ? a - b : a + b, sg = resta ? "−" : "+";
+    if(!reto){
+      cajaEl(colOp([cifras(a), cifras(b), cifras(c)], sg, {label: `${fmt(a)} ${sg} ${fmt(b)} = ${fmt(c)}`}));
+      ponerInstruccion(t.compF, `${fmt(a)} ${sg} ${fmt(b)} = ${fmt(c)}. ` + t.compF);
+      const ec = (x, o, y, z)=> `${fmt(x)} ${o} ${fmt(y)} = ${fmt(z)}`;
+      let bien, malas;
+      if(resta){ bien = ec(c, "+", b, a); malas = [ec(a, "+", b, a + b), ec(c, "+", a, c + a)]; if(c > b) malas.push(ec(c, "−", b, c - b)); }
+      else { bien = ec(c, "−", b, a); malas = [ec(c, "+", b, c + b), ec(a, "+", c, a + c)]; if(a > b) malas.push(ec(a, "−", b, a - b)); }
+      const lista = unicos([bien, ...malas]).slice(0, 4);
+      opcionesTexto(lista, bien, ()=>acertar(resta ? t.compFinR(a, b, c) : t.compFinS(a, b, c)), resta ? t.pistaCompR : t.pistaCompS);
+      return;
+    }
+    const bueno = Math.random() < 0.45;
+    let v = c;
+    if(!bueno){
+      const cand = resta ? [pequenoDelGrande(a, b), sinBajar(a, b), c + 1000, c - 100] : [sinLlevar(a, b), c + 100, c - 1000, c + 10];
+      v = elegir(cand.filter(z=>z > 0 && z !== c && (resta || z > b)));
+    }
+    cajaEl(colOp([cifras(a), cifras(b), cifras(v)], sg, {label: `${fmt(a)} ${sg} ${fmt(b)} = ${fmt(v)}`}));
+    esc.appendChild(pasosEl(resta ? t.pasosCompR(v, b, a) : t.pasosCompS(v, b, a)));
+    const pasos = (resta ? t.pasosCompR(v, b, a) : t.pasosCompS(v, b, a)).join(" ");
+    ponerInstruccion(t.compR, `${fmt(a)} ${sg} ${fmt(b)} = ${fmt(v)}. ` + t.compR + " " + pasos);
+    const expl = resta ? (bueno ? t.okR(a, b, v) : t.malR(a, b, v, c)) : (bueno ? t.okS(a, b, v) : t.malS(a, b, v, c));
+    const cont = $("opciones");
+    [[true, t.siOk, "opcion-vf v"], [false, t.noOk, "opcion-vf f"]].forEach(([x, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(x === bueno){ sonBoing(); acertar(expl); } else fallar(bt, t.pistaCompSN); }));
+    });
+    S.resolver = resolverTexto(bueno ? t.siOk : t.noOk);
+    return;
+  }
+
+  /* --- 6. Problemas de uno y dos pasos (4.NBT.4, 4.OA.3) --- */
+  if(S.juego === "problemas"){
+    if(!reto){
+      const k = azar(0, t.uno.length - 1), cx = t.uno[k];
+      let A, B;
+      for(;;){
+        if(cx.op === "+"){ A = azar(2000, 49999); B = azar(1000, 9999); if(llevadas(A, B).length) break; }
+        else { A = azar(10000, 59999); B = azar(1000, A - 2000); if(trazaResta(A, B).pres.some(z=>z)) break; }
+      }
+      const R = opera(A, cx.op, B), otroOp = opera(A, cx.op === "+" ? "−" : "+", B);
+      const desliz = cx.op === "+" ? sinLlevar(A, B) : pequenoDelGrande(A, B);
+      const lista = unicos([R, otroOp, desliz, R + 1000].filter(v=>v > 0)).slice(0, 4);
+      rellenar(lista, (i)=> R + i*100);
+      const texto = cx.t(A, B);
+      esc.insertAdjacentHTML("beforeend", `<div class="dibujito" aria-hidden="true">${cx.e}</div><p class="problema">${escaparHTML(texto)}</p>`);
+      const tot = cx.op === "+" ? A + B : A, p1 = cx.op === "+" ? A : B, p2 = cx.op === "+" ? B : A - B;
+      const et = (v, q)=>{ const g = Math.max(v, tot*0.22); return q ? `<span class="q" style="flex-grow:${g}">?</span>` : `<span style="flex-grow:${g}">${fmt(v)}</span>`; };
+      esc.insertAdjacentHTML("beforeend", `<div class="barras" aria-hidden="true"><div>${et(tot, cx.op === "+")}</div><div>${et(p1, false)}${et(p2, cx.op === "−")}</div></div>`);
+      ponerInstruccion(t.problema, texto + " " + t.problema);
+      opcionesNum(lista, R, ()=>acertar(t.unoFin(A, B, cx.op, R)), (v)=> v === otroOp ? t.pistaOp : t.pistaProb);
+      return;
+    }
+    const cx = elegir(t.dos);
+    let A, B, C;
+    for(;;){
+      if(cx.plan === "ss"){ A = azar(1200, 9999); B = azar(1200, 9999); C = azar(1200, 9999); }
+      else if(cx.plan === "sr"){ A = azar(20000, 60000); B = azar(3000, 15000); C = azar(3000, 15000); }
+      else { A = azar(12000, 48000); B = azar(1000, 9999); C = azar(1000, 9999); }
+      if(A - B - C > 1000) break;
+      if(cx.plan === "ss") break;
+    }
+    let p1, x1, R, pasos, soloMal;
+    if(cx.plan === "rs"){ x1 = A - B; R = x1 + C; pasos = [t.paso1(A, "−", B), t.paso2s(C)]; p1 = `${fmt(A)} − ${fmt(B)} = ${fmt(x1)}`; soloMal = x1 - C; }
+    else if(cx.plan === "rr"){ x1 = A - B; R = x1 - C; pasos = [t.paso1(A, "−", B), t.paso2r(C)]; p1 = `${fmt(A)} − ${fmt(B)} = ${fmt(x1)}`; soloMal = x1 + C; }
+    else if(cx.plan === "ss"){ x1 = A + B; R = x1 + C; pasos = [t.paso1(A, "+", B), t.paso2s(C)]; p1 = `${fmt(A)} + ${fmt(B)} = ${fmt(x1)}`; soloMal = x1 - C; }
+    else { x1 = B + C; R = A - x1; pasos = [t.paso1(B, "+", C), t.paso2t(A)]; p1 = `${fmt(B)} + ${fmt(C)} = ${fmt(x1)}`; soloMal = A - B + C; }
+    const p2 = cx.plan === "sr" ? `${fmt(A)} − ${fmt(x1)} = ${fmt(R)}` : `${fmt(x1)} ${cx.plan === "rr" ? "−" : "+"} ${fmt(C)} = ${fmt(R)}`;
+    const texto = cx.t(A, B, C);
+    esc.insertAdjacentHTML("beforeend", `<div class="dibujito" aria-hidden="true">${cx.e}</div><p class="problema">${escaparHTML(texto)}</p>`);
+    ponerInstruccion(t.planF, texto + " " + t.planF);
+    const otrosPlanes = mezclar(["sr","rs","ss","rr"].filter(k=>!cx.ok.includes(k))).slice(0, 2);
+    const planBien = t.planes[cx.plan];
+    opcionesTexto(mezclar([cx.plan, ...otrosPlanes]).map(k=>t.planes[k]), planBien, ()=>{
+      $("opciones").innerHTML = ""; $("aviso").className = "aviso"; $("aviso").textContent = ""; mascotaNormal();
+      esc.appendChild(pasosEl(pasos));
+      ponerInstruccion(t.calcula, t.calcula + " " + pasos.join(" "));
+      const lista = unicos([R, x1, soloMal, R + 1000].filter(v=>v > 0)).slice(0, 4);
+      rellenar(lista, (i)=> R + i*100);
+      opcionesNum(lista, R, ()=>acertar(t.dosFin(p1, p2)), (v)=> v === x1 ? t.pistaMedio : v === soloMal ? t.pistaDosOp : t.pistaProb);
+    }, t.pistaPlan);
+    const resolverPlan = S.resolver;
+    S.resolver = function resolverTodo(){ resolverPlan(); if(S.resolver !== resolverTodo) S.resolver(); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const t = T[S.idioma];
+  const op = (a, b, s)=> colOp([cifras(a), cifras(b), []], s, {label: `${fmt(a)} ${s} ${fmt(b)}`});
+  $("hoja-sumas").innerHTML = op(4586, 2739, "+") + op(36478, 25864, "+");
+  $("hoja-restas").innerHTML = op(7352, 2678, "−") + op(40005, 12348, "−");
+  $("hoja-estimar").textContent = t.hojaEst();
+  $("hoja-problema").textContent = t.hojaProb();
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>

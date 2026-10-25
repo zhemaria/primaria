@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Multi-digit multiplication
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.NBT.5
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Multiplicar números de varios dígitos · Juegos de cuarto grado" data-en="Multi-digit multiplication · Fourth grade games">Multi-digit multiplication · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade multiplication games with Lumi: area models, partial products, multiplying by multiples of 10, 100 and 1,000, estimating to check, multiplying in a column and one- and two-step word problems.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.area-svg{width:100%;max-width:440px;height:auto;display:block}
+.recta-est{width:100%;max-width:420px;height:auto;display:block}
+.ecuacion-m{font-weight:700;font-size:clamp(30px,7vw,46px);margin:0;text-align:center;line-height:1.3}
+.falta-c{display:inline-block;min-width:1.4em;padding:0 .2em;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);text-align:center}
+.falta-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.parciales{display:flex;flex-direction:column;align-items:center;gap:8px;max-width:100%}
+.parciales .rotulo{font-size:clamp(16px,3.6vw,20px)}
+.tabla-parc{border-collapse:collapse;font-weight:700;font-size:clamp(24px,5.6vw,36px)}
+.tabla-parc td{padding:4px 6px;text-align:right;white-space:nowrap}
+.tabla-parc td:nth-child(2){color:var(--tinta-suave)}
+.tabla-parc tr.total td{border-top:4px solid var(--tinta);color:var(--acierto)}
+.patron{font-weight:700;font-size:clamp(26px,6.4vw,40px);text-align:right;line-height:1.5}
+.patron div:last-child{font-size:1.12em}
+.hoja .area-h{border-collapse:collapse;font-size:14pt;margin:2mm 0 3mm}
+.hoja .area-h td{border:1.2pt solid #000;padding:5mm 4mm;min-width:45mm}
+.hoja .area-h th{padding:2mm 3mm;font-size:14pt}
+.hoja #hoja-area > div{font-size:14pt}
+.hoja .col-h .operacion-v{font-size:24pt;justify-self:start;padding-right:20mm;padding-bottom:16mm}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Multiplicar números de varios dígitos" data-en="Multi-digit multiplication">Multi-digit multiplication</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>✖️</span><span>🟪</span><span>🎭</span><span>🚋</span></div>
+    <h2 data-es="¡Multiplicar en grande!" data-en="Big multiplication!">Big multiplication!</h2>
+    <p data-es="Para multiplicar números grandes, los partimos por valor posicional: 34 × 6 es 30 × 6 más 4 × 6. Con Lumi vas a usar modelos de área y productos parciales, multiplicar por 10, 100 y 1000, estimar para saber si un resultado es razonable, multiplicar en columna y resolver problemas. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="To multiply big numbers, we break them apart by place value: 34 × 6 is 30 × 6 plus 4 × 6. With Lumi you will use area models and partial products, multiply by 10, 100 and 1,000, estimate to see whether a result is reasonable, multiply in a column and solve word problems. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">To multiply big numbers, we break them apart by place value: 34 × 6 is 30 × 6 plus 4 × 6. With Lumi you will use area models and partial products, multiply by 10, 100 and 1,000, estimate to see whether a result is reasonable, multiply in a column and solve word problems. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: multiplicar" data-en="🖨 Print a page: multiplication">🖨 Print a page: multiplication</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.NBT.5 (multiplicar un número entero de hasta cuatro dígitos por un número de un dígito, y dos números de dos dígitos, usando estrategias basadas en el valor posicional y en las propiedades de las operaciones, e ilustrar y explicar el cálculo con ecuaciones, arreglos rectangulares y modelos de área), con problemas de varios pasos y estimación como en 4.OA.3. En el nivel Fácil hay modelos de área de dos partes, patrones con el dato básico, una recta numérica para redondear y la tabla de valor posicional; en el Reto se multiplican dos números de dos dígitos y números de cuatro dígitos, con los pasos a la vista, y el juego «Estima el producto» pide decidir si el resultado de un compañero es razonable. Cada juego tiene su enlace directo: #area, #parciales, #decenas, #estimar, #grande y #problemas."
+       data-en="Aligned to the Illinois fourth grade mathematics standard 4.NBT.5 (multiply a whole number of up to four digits by a one-digit whole number, and multiply two two-digit numbers, using strategies based on place value and the properties of operations, and illustrate and explain the calculation by using equations, rectangular arrays and area models), with multistep problems and estimation as in 4.OA.3. At the Easy level there are two-part area models, patterns with the basic fact, a number line for rounding and the place value chart; at the Challenge level the child multiplies two two-digit numbers and four-digit numbers, with the steps on screen, and the game “Estimate the product” asks the child to decide whether a classmate&#x27;s result is reasonable. Each game has its own direct link: #area, #parciales, #decenas, #estimar, #grande and #problemas.">Aligned to the Illinois fourth grade mathematics standard 4.NBT.5 (multiply a whole number of up to four digits by a one-digit whole number, and multiply two two-digit numbers, using strategies based on place value and the properties of operations, and illustrate and explain the calculation by using equations, rectangular arrays and area models), with multistep problems and estimation as in 4.OA.3. At the Easy level there are two-part area models, patterns with the basic fact, a number line for rounding and the place value chart; at the Challenge level the child multiplies two two-digit numbers and four-digit numbers, with the steps on screen, and the game “Estimate the product” asks the child to decide whether a classmate&#x27;s result is reasonable. Each game has its own direct link: #area, #parciales, #decenas, #estimar, #grande and #problemas.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Multiplicar números de varios dígitos" data-en="Multi-digit multiplication">Multi-digit multiplication</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Completa el modelo de área de 23 × 14 y suma las partes." data-en="1. Complete the area model for 23 × 14 and add the parts.">1. Complete the area model for 23 × 14 and add the parts.</h3>
+  <div id="hoja-area"></div>
+  <h3 data-es="2. Usa el dato básico y cuenta los ceros." data-en="2. Use the basic fact and count the zeros.">2. Use the basic fact and count the zeros.</h3>
+  <div class="caja-h" id="hoja-decenas"></div>
+  <h3 data-es="3. Multiplica en columna. Estima primero para comprobar." data-en="3. Multiply in a column. Estimate first to check.">3. Multiply in a column. Estimate first to check.</h3>
+  <div class="caja-h col-h" id="hoja-columna"></div>
+  <h3 data-es="4. Resuelve el problema. Muestra los dos pasos." data-en="4. Solve the problem. Show both steps.">4. Solve the problem. Show both steps.</h3>
+  <p class="razon-h" id="hoja-problema"></p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, es razonable", no:"✘ No es razonable", comprobar:"✔ Comprobar", ninguno:"Marca al menos una opción.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    /* 1. Modelo de área */
+    area:(a,b)=>`El rectángulo muestra ${a} × ${b} partido por valor posicional. ¿Cuánto es el total?`,
+    areaVoz:(a,b,l)=>`El rectángulo muestra ${a} × ${b}. Las partes son: ${l}. ¿Cuánto es el total?`,
+    areaAria:(a,b,l)=>`Modelo de área de ${a} × ${b}. Partes: ${l}.`,
+    areaFin:(l,s,a,b,p)=>`${l}. Sumamos las partes: ${s} = ${fmt(p)}, así que ${a} × ${b} = ${fmt(p)}.`,
+    pistaUna:"Esa es solo una parte del rectángulo. Suma los productos de todas las partes.",
+    pistaDos:(n)=>`Sumaste solo dos partes. El modelo tiene ${n} partes: suma los ${n} productos.`,
+    pistaSinValor:(d,v,b)=>`Multiplicaste las decenas como si fueran unidades: el ${d} vale ${v}, así que hay que multiplicar ${v} × ${b}, no ${d} × ${b}.`,
+    pistaSinValor2:(d,v,e,w)=>`Multiplicaste los dígitos como si todos fueran unidades. Mira los números junto al rectángulo: el ${d} vale ${v} y el ${e} vale ${w}.`,
+    pistaSuma:"Casi. Revisa la suma de los productos parciales: ¿llevaste bien?",
+    /* 2. Productos parciales */
+    parc:(a,b)=>`Falta un producto parcial de ${a} × ${b}. ¿Cuál es?`,
+    parcVoz:(a,b,l)=>`Falta un producto parcial de ${a} × ${b}. Los productos son: ${l}. ¿Cuál falta?`,
+    descompone:(n,l)=>`${n} = ${l}`,
+    parcLugar:(d,n,v,lugar)=>`el ${d} de ${n} está en las ${lugar}, así que vale ${v}`,
+    parcFin:(x,y,p,razon,suma,a,b,tot)=>`${x} × ${y} = ${fmt(p)}: ${razon}. Todos juntos: ${suma} = ${fmt(tot)}, así que ${a} × ${b} = ${fmt(tot)}.`,
+    pistaParcCeros:(d,v)=>`Olvidaste el valor del lugar: el ${d} vale ${v}. Multiplica el dato básico y agrega los ceros.`,
+    pistaParcMas:"Tiene un cero de más. Cuenta los ceros de los dos números que multiplicas.",
+    pistaParcSuma:"Sumaste los dos números. En un producto parcial hay que multiplicar.",
+    pistaParcTabla:"Revisa el dato básico de la tabla de multiplicar.",
+    pistaParcUnCero:"Te faltó un cero: los dos números terminan en cero, así que el producto lleva los ceros de los dos.",
+    total:"Total",
+    /* 3. Por 10, 100 y 1000 */
+    dec:(a,b)=>`Usa el dato básico y el patrón de ceros. ¿Cuánto es ${a} × ${b}?`,
+    decR:(a,b)=>`¿Cuánto es ${a} × ${b}? Usa el dato básico y cuenta los ceros.`,
+    ceros:(n)=> n === 1 ? "1 cero" : `${n} ceros`,
+    decFin:(x,y,f,z,a,b,p,trampa)=>`Dato básico: ${x} × ${y} = ${f}. Los factores tienen ${z} en total, así que agregamos ${z} a ${f}: ${a} × ${b} = ${p}.` +
+      (trampa ? ` El cero de ${f} viene del dato básico; los otros ceros vienen de los factores.` : ""),
+    pistaPocos:(x,y,f,z)=>`Te faltó un cero. Primero el dato básico: ${x} × ${y} = ${f}. Después agrega los ceros de los factores: son ${z}. Si el dato básico ya termina en cero, ese cero no cuenta como uno de ellos.`,
+    pistaMuchos:(z)=>`Tiene un cero de más. Cuenta los ceros de los factores: son ${z}.`,
+    pistaDato:(x,y,f)=>`Revisa el dato básico: ${x} × ${y} = ${f}.`,
+    /* 4. Estima el producto */
+    est:(a,b)=>`Redondea al lugar mayor y escoge la mejor estimación de ${a} × ${b}.`,
+    estFin:(a,r,o,b,e)=>`${a} está más cerca de ${r} que de ${o}. ${r} × ${b} = ${e}, así que ${a} × ${b} es aproximadamente ${e}.`,
+    pistaVecino:(a,r,o)=>`Mira la recta: ¿${a} está más cerca de ${o} o de ${r}?`,
+    pistaEstCeros:(r,b)=>`Revisa los ceros: multiplica el dato básico y agrega los ceros de ${r}.`,
+    razonable:"¿Es razonable? Estima y decide.",
+    dijo:(n,a,b,p)=>`${n} multiplicó ${a} × ${b} y obtuvo ${p}.`,
+    pasosEst:["Redondea cada factor a su lugar mayor.","Multiplica los números redondeados.","Compara: ¿el resultado está cerca de tu estimación?"],
+    estSi:(a,b,r1,r2,e,p)=>`${a} × ${b} es aproximadamente ${r1} × ${r2} = ${e}. ${p} está cerca de ${e}, así que sí es razonable.`,
+    estMas:(a,b,r1,r2,e,p)=>`${a} × ${b} es aproximadamente ${r1} × ${r2} = ${e}. ${p} está muy lejos de ${e}: es como 10 veces más. Tiene un cero de más, así que no es razonable.`,
+    estMenos:(a,b,r1,r2,e,p)=>`${a} × ${b} es aproximadamente ${r1} × ${r2} = ${e}. ${p} está muy lejos de ${e}: es como 10 veces menos. Le falta un cero, así que no es razonable.`,
+    estSuma:(a,b,r1,r2,e,p)=>`${a} × ${b} es aproximadamente ${r1} × ${r2} = ${e}. ${p} está muy lejos de ${e}: parece que se sumó en vez de multiplicar, así que no es razonable.`,
+    pistaRaz:(a,b,r1,r2)=>`Estima primero: ` + [String(a) !== String(r1) ? `${a} está cerca de ${r1}` : '', String(b) !== String(r2) ? `${b} está cerca de ${r2}` : ''].filter(Boolean).join(' y ') + `. ¿El resultado está cerca de ${r1} × ${r2}?`,
+    /* 5. Multiplica en columna */
+    col:"Multiplica en columna. Empieza por las unidades y no olvides lo que llevas.",
+    colVoz:(a,b)=>`Multiplica ${a} × ${b} en columna. Empieza por las unidades y no olvides lo que llevas.`,
+    paso:(d,b,c,p,ult)=>`${d} × ${b} = ${d*b}` + (c ? `, más ${c} = ${p}` : "") + (ult || p < 10 ? `: escribes ${p}` : `: escribes ${p % 10} y llevas ${Math.floor(p/10)}`),
+    colFin:(pasos,a,b,p)=>`${pasos}. ${a} × ${b} = ${p}.`,
+    pistaSinLlevar:"Olvidaste sumar lo que llevabas. Cuando un producto pasa de 9, escribes las unidades y llevas las decenas al lugar siguiente.",
+    pistaSinValorC:(d,v,b)=>`Sumaste los productos de los dígitos sin su valor: el ${d} vale ${v}, así que es ${v} × ${b}. Escribe cada producto en su lugar.`,
+    pistaAntes:"Lo que llevas se suma después de multiplicar, no antes. Primero multiplica el dígito y después suma lo que llevabas.",
+    pistaCol:"Revisa cada multiplicación, lugar por lugar, empezando por las unidades.",
+    /* 6. Problemas de multiplicar */
+    prob:"Lee el problema y escoge la respuesta.",
+    pasosProb:["Multiplica para saber cuántos hay en los grupos iguales.","Después suma o resta lo que dice el problema.","Revisa si tu respuesta es razonable."],
+    ctx:[
+      {e:"🖍️", u:"crayones", op:"-",
+       uno:(a,b)=>`La escuela compró ${a} cajas de crayones. Cada caja tiene ${b} crayones. ¿Cuántos crayones compró en total?`,
+       dos:(a,b,c)=>`La escuela compró ${a} cajas de ${b} crayones cada una. Ya repartió ${c} crayones en los salones. ¿Cuántos crayones quedan?`},
+      {e:"🎭", u:"asientos", op:"-",
+       uno:(a,b)=>`El teatro del barrio tiene ${a} filas con ${b} asientos en cada fila. ¿Cuántos asientos hay?`,
+       dos:(a,b,c)=>`El teatro del barrio tiene ${a} filas de ${b} asientos. Ya se vendieron ${c} boletos para la función. ¿Cuántos asientos quedan libres?`},
+      {e:"🚋", u:"personas", op:"+", uu:"asientos",
+       uno:(a,b)=>`Un tren de la CTA tiene ${a} vagones y cada vagón tiene ${b} asientos. ¿Cuántos asientos tiene el tren?`,
+       dos:(a,b,c)=>`Un tren de la CTA tiene ${a} vagones con ${b} asientos cada uno. Todos los asientos están ocupados y además ${c} personas van de pie. ¿Cuántas personas van en el tren?`},
+      {e:"⚽", u:"minutos", op:"+",
+       uno:(a,b)=>`El equipo de fútbol practica ${b} minutos cada semana. ¿Cuántos minutos practica en ${a} semanas?`,
+       dos:(a,b,c,n)=>`${n} practica fútbol ${b} minutos cada semana durante ${a} semanas. El día del torneo juega ${c} minutos más. ¿Cuántos minutos juega en total?`},
+      {e:"📚", u:"libros", op:"-",
+       uno:(a,b)=>`La biblioteca recibió ${a} cajas con ${b} libros cada una. ¿Cuántos libros recibió?`,
+       dos:(a,b,c)=>`La biblioteca recibió ${a} cajas con ${b} libros cada una. Ya puso ${c} libros en los estantes. ¿Cuántos libros faltan por poner?`}],
+    probFin:(a,b,p,u)=>`${a} × ${b} = ${p}. Son ${p} ${u}.`,
+    probFin2:(a,b,p,sg,c,r,u)=>`Paso 1: ${a} × ${b} = ${p}. Paso 2: ${p} ${sg} ${c} = ${r}. Son ${r} ${u}.`,
+    pistaSumo:"Sumaste los dos números. Hay grupos iguales: hay que multiplicar.",
+    pistaParte:"Solo multiplicaste una parte del número. Usa productos parciales: multiplica las decenas y también las unidades.",
+    pistaPaso1:"Hiciste solo el primer paso. Lee otra vez: después de multiplicar, todavía hay que sumar o restar.",
+    pistaOp:(sg)=> sg === "-" ? "En el segundo paso hay que restar, no sumar: lee otra vez qué pasa con esa cantidad." : "En el segundo paso hay que sumar, no restar: lee otra vez qué pasa con esa cantidad.",
+    pistaProb:"Revisa tu multiplicación con productos parciales.",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["Hice un modelo de área","¡Excelente! El rectángulo muestra cada parte del producto por valor posicional."],
+      ["Usé productos parciales","¡Muy bien! Multiplicar lugar por lugar y sumar hace que las cuentas grandes sean más fáciles."],
+      ["Usé el dato básico y conté los ceros","¡Buena idea! Con 4 × 6 = 24 ya sabes 40 × 60 = 2400."],
+      ["Estimé para comprobar","¡Genial! Una estimación te dice si tu respuesta tiene sentido."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, it is reasonable", no:"✘ No, it is not reasonable", comprobar:"✔ Check", ninguno:"Mark at least one option.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    area:(a,b)=>`The rectangle shows ${a} × ${b} split by place value. What is the total?`,
+    areaVoz:(a,b,l)=>`The rectangle shows ${a} × ${b}. The parts are: ${l}. What is the total?`,
+    areaAria:(a,b,l)=>`Area model of ${a} × ${b}. Parts: ${l}.`,
+    areaFin:(l,s,a,b,p)=>`${l}. Add the parts: ${s} = ${fmt(p)}, so ${a} × ${b} = ${fmt(p)}.`,
+    pistaUna:"That is only one part of the rectangle. Add the products of all the parts.",
+    pistaDos:(n)=>`You added only two parts. The model has ${n} parts: add all ${n} products.`,
+    pistaSinValor:(d,v,b)=>`You multiplied the tens as if they were ones: the ${d} is worth ${v}, so you multiply ${v} × ${b}, not ${d} × ${b}.`,
+    pistaSinValor2:(d,v,e,w)=>`You multiplied the digits as if they were all ones. Look at the numbers next to the rectangle: the ${d} is worth ${v} and the ${e} is worth ${w}.`,
+    pistaSuma:"Almost. Check how you added the partial products: did you regroup correctly?",
+    parc:(a,b)=>`One partial product of ${a} × ${b} is missing. Which one is it?`,
+    parcVoz:(a,b,l)=>`One partial product of ${a} × ${b} is missing. The products are: ${l}. Which one is missing?`,
+    descompone:(n,l)=>`${n} = ${l}`,
+    parcLugar:(d,n,v,lugar)=>`the ${d} in ${n} is in the ${lugar} place, so it is worth ${v}`,
+    parcFin:(x,y,p,razon,suma,a,b,tot)=>`${x} × ${y} = ${fmt(p)}: ${razon}. All together: ${suma} = ${fmt(tot)}, so ${a} × ${b} = ${fmt(tot)}.`,
+    pistaParcCeros:(d,v)=>`You forgot the value of the place: the ${d} is worth ${v}. Multiply the basic fact and add the zeros.`,
+    pistaParcMas:"It has one zero too many. Count the zeros in the two numbers you are multiplying.",
+    pistaParcSuma:"You added the two numbers. In a partial product you multiply.",
+    pistaParcTabla:"Check the basic multiplication fact.",
+    pistaParcUnCero:"You are missing a zero: both numbers end in zero, so the product gets the zeros from both of them.",
+    total:"Total",
+    dec:(a,b)=>`Use the basic fact and the pattern of zeros. What is ${a} × ${b}?`,
+    decR:(a,b)=>`What is ${a} × ${b}? Use the basic fact and count the zeros.`,
+    ceros:(n)=> n === 1 ? "1 zero" : `${n} zeros`,
+    decFin:(x,y,f,z,a,b,p,trampa)=>`Basic fact: ${x} × ${y} = ${f}. The factors have ${z} in all, so we add ${z} to ${f}: ${a} × ${b} = ${p}.` +
+      (trampa ? ` The zero in ${f} comes from the basic fact; the other zeros come from the factors.` : ""),
+    pistaPocos:(x,y,f,z)=>`You are missing a zero. First the basic fact: ${x} × ${y} = ${f}. Then add the zeros from the factors: there are ${z}. If the basic fact already ends in zero, that zero is not one of them.`,
+    pistaMuchos:(z)=>`It has one zero too many. Count the zeros in the factors: there are ${z}.`,
+    pistaDato:(x,y,f)=>`Check the basic fact: ${x} × ${y} = ${f}.`,
+    est:(a,b)=>`Round to the greatest place and pick the best estimate of ${a} × ${b}.`,
+    estFin:(a,r,o,b,e)=>`${a} is closer to ${r} than to ${o}. ${r} × ${b} = ${e}, so ${a} × ${b} is about ${e}.`,
+    pistaVecino:(a,r,o)=>`Look at the number line: is ${a} closer to ${o} or to ${r}?`,
+    pistaEstCeros:(r,b)=>`Check the zeros: multiply the basic fact and add the zeros from ${r}.`,
+    razonable:"Is it reasonable? Estimate and decide.",
+    dijo:(n,a,b,p)=>`${n} multiplied ${a} × ${b} and got ${p}.`,
+    pasosEst:["Round each factor to its greatest place.","Multiply the rounded numbers.","Compare: is the result close to your estimate?"],
+    estSi:(a,b,r1,r2,e,p)=>`${a} × ${b} is about ${r1} × ${r2} = ${e}. ${p} is close to ${e}, so yes, it is reasonable.`,
+    estMas:(a,b,r1,r2,e,p)=>`${a} × ${b} is about ${r1} × ${r2} = ${e}. ${p} is very far from ${e}: it is about 10 times more. It has one zero too many, so it is not reasonable.`,
+    estMenos:(a,b,r1,r2,e,p)=>`${a} × ${b} is about ${r1} × ${r2} = ${e}. ${p} is very far from ${e}: it is about 10 times less. It is missing a zero, so it is not reasonable.`,
+    estSuma:(a,b,r1,r2,e,p)=>`${a} × ${b} is about ${r1} × ${r2} = ${e}. ${p} is very far from ${e}: it looks like the numbers were added instead of multiplied, so it is not reasonable.`,
+    pistaRaz:(a,b,r1,r2)=>`Estimate first: ` + [String(a) !== String(r1) ? `${a} is close to ${r1}` : '', String(b) !== String(r2) ? `${b} is close to ${r2}` : ''].filter(Boolean).join(' and ') + `. Is the result close to ${r1} × ${r2}?`,
+    col:"Multiply in a column. Start with the ones and don't forget what you regroup.",
+    colVoz:(a,b)=>`Multiply ${a} × ${b} in a column. Start with the ones and don't forget what you regroup.`,
+    paso:(d,b,c,p,ult)=>`${d} × ${b} = ${d*b}` + (c ? `, plus ${c} = ${p}` : "") + (ult || p < 10 ? `: write ${p}` : `: write ${p % 10} and regroup ${Math.floor(p/10)}`),
+    colFin:(pasos,a,b,p)=>`${pasos}. ${a} × ${b} = ${p}.`,
+    pistaSinLlevar:"You forgot to add the number you regrouped. When a product is more than 9, write the ones and regroup the tens to the next place.",
+    pistaSinValorC:(d,v,b)=>`You added the digit products without their value: the ${d} is worth ${v}, so it is ${v} × ${b}. Write each product in its place.`,
+    pistaAntes:"Add the regrouped number after you multiply, not before. First multiply the digit, then add what you regrouped.",
+    pistaCol:"Check each multiplication, place by place, starting with the ones.",
+    prob:"Read the problem and pick the answer.",
+    pasosProb:["Multiply to find how many are in the equal groups.","Then add or subtract what the problem says.","Check whether your answer is reasonable."],
+    ctx:[
+      {e:"🖍️", u:"crayons", op:"-",
+       uno:(a,b)=>`The school bought ${a} boxes of crayons. Each box has ${b} crayons. How many crayons did the school buy in all?`,
+       dos:(a,b,c)=>`The school bought ${a} boxes with ${b} crayons in each box. It already gave out ${c} crayons to the classrooms. How many crayons are left?`},
+      {e:"🎭", u:"seats", op:"-",
+       uno:(a,b)=>`The neighborhood theater has ${a} rows with ${b} seats in each row. How many seats are there?`,
+       dos:(a,b,c)=>`The neighborhood theater has ${a} rows of ${b} seats. ${c} tickets have already been sold for the show. How many seats are still free?`},
+      {e:"🚋", u:"people", op:"+", uu:"seats",
+       uno:(a,b)=>`A CTA train has ${a} cars and each car has ${b} seats. How many seats does the train have?`,
+       dos:(a,b,c)=>`A CTA train has ${a} cars with ${b} seats in each car. Every seat is taken and ${c} more people are standing. How many people are on the train?`},
+      {e:"⚽", u:"minutes", op:"+",
+       uno:(a,b)=>`The soccer team practices ${b} minutes every week. How many minutes does it practice in ${a} weeks?`,
+       dos:(a,b,c,n)=>`${n} practices soccer ${b} minutes every week for ${a} weeks. On tournament day, ${n} plays ${c} more minutes. How many minutes is that in all?`},
+      {e:"📚", u:"books", op:"-",
+       uno:(a,b)=>`The library got ${a} boxes with ${b} books in each box. How many books did it get?`,
+       dos:(a,b,c)=>`The library got ${a} boxes with ${b} books in each box. It has already put ${c} books on the shelves. How many books still need to go on the shelves?`}],
+    probFin:(a,b,p,u)=>`${a} × ${b} = ${p}. That is ${p} ${u}.`,
+    probFin2:(a,b,p,sg,c,r,u)=>`Step 1: ${a} × ${b} = ${p}. Step 2: ${p} ${sg} ${c} = ${r}. That is ${r} ${u}.`,
+    pistaSumo:"You added the two numbers. There are equal groups, so you multiply.",
+    pistaParte:"You multiplied only part of the number. Use partial products: multiply the tens and the ones too.",
+    pistaPaso1:"You did only the first step. Read it again: after you multiply, you still need to add or subtract.",
+    pistaOp:(sg)=> sg === "-" ? "In the second step you subtract, not add: read again what happens to that amount." : "In the second step you add, not subtract: read again what happens to that amount.",
+    pistaProb:"Check your multiplication with partial products.",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["I drew an area model","Excellent! The rectangle shows each part of the product by place value."],
+      ["I used partial products","Great! Multiplying place by place and adding makes big problems easier."],
+      ["I used a basic fact and counted zeros","Good idea! With 4 × 6 = 24 you already know 40 × 60 = 2,400."],
+      ["I estimated to check","Awesome! An estimate tells you whether your answer makes sense."]]
+  }
+};
+const JUEGOS = [
+  {id:"area",      emoji:"🟪", es:"Modelo de área", en:"Area model", metaEs:"34 × 6 = 180 + 24", metaEn:"34 × 6 = 180 + 24"},
+  {id:"parciales", emoji:"🧱", es:"Productos parciales", en:"Partial products", metaEs:"200 × 4 = 800", metaEn:"200 × 4 = 800"},
+  {id:"decenas",   emoji:"🔟", es:"Por 10, 100 y 1000", en:"Times 10, 100 and 1,000", metaEs:"40 × 60 = 2400", metaEn:"40 × 60 = 2,400"},
+  {id:"estimar",   emoji:"🎯", es:"Estima el producto", en:"Estimate the product", metaEs:"¿Es razonable?", metaEn:"Is it reasonable?"},
+  {id:"grande",    emoji:"✖️", es:"Multiplica en columna", en:"Multiply in a column", metaEs:"Sin olvidar lo que llevas", metaEn:"Don't forget to regroup"},
+  {id:"problemas", emoji:"🚋", es:"Problemas de multiplicar", en:"Multiplication word problems", metaEs:"Uno y dos pasos", metaEn:"One and two steps"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-03-multiplication.html#area */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Ayudas de este módulo ============ */
+const pot = (k)=> Math.pow(10, k);
+/* Ceros al final de un número (300 → 2) */
+const cerosDe = (n)=>{ let z = 0; while(n >= 10 && n % 10 === 0){ n /= 10; z++; } return z; };
+/* Número de dígitos del 1 al 9 (sin ceros) */
+function numSinCeros(k){ let n = 0; for(let i=0;i<k;i++) n = n*10 + azar(1, 9); return n; }
+/* Partes de un número por valor posicional, de la mayor a la menor: 345 → [300, 40, 5] */
+const partesDe = (n)=> digitos(n).map((d, i, l)=> d * pot(l.length - 1 - i)).filter(x=>x > 0);
+/* Opciones numéricas: la correcta y errores [valor, pista]; se completa con resultados cercanos */
+function conPistas(bien, errores, porDefecto, alAcertar){
+  const mapa = new Map();
+  errores.forEach(([v, p])=>{ if(Number.isInteger(v) && v > 0 && v !== bien && !mapa.has(v) && mapa.size < 3) mapa.set(v, p); });
+  for(const d of [10, -10, 100, 1, -1]){ if(mapa.size >= 2) break; const v = bien + d; if(v > 0 && !mapa.has(v)) mapa.set(v, porDefecto); }
+  opcionesNum([bien, ...mapa.keys()], bien, alAcertar, (v)=> mapa.get(v) || porDefecto);
+}
+/* Reparte un largo entre partes proporcionales, con un mínimo para que quepan los rótulos */
+function repartir(vals, total, minimo){
+  const suma = vals.reduce((x, y)=>x + y, 0), resto = total - vals.length * minimo;
+  return vals.map(v=> minimo + resto * v / suma);
+}
+/* Modelo de área: columnas = partes del primer factor, filas = partes del segundo */
+function areaSVG(cols, filas, revelar){
+  const L = 50, A = 36, IW = 318, IH = filas.length > 1 ? 210 : 124;
+  const ws = repartir(cols, IW, 112), hs = repartir(filas, IH, 84);
+  const colores = ["#EEE7F8", "#FFE9CC", "#DDF0E3", "#DDEAFB"];
+  const lista = [];
+  let s = "", y = A;
+  filas.forEach((fv, r)=>{
+    let x = L;
+    s += `<text x="${L - 10}" y="${y + hs[r]/2 + 8}" text-anchor="end" font-size="23" font-weight="700" fill="#5B3A99">${fv}</text>`;
+    cols.forEach((cv, c)=>{
+      const p = cv * fv; lista.push(`${cv} × ${fv} = ${fmt(p)}`);
+      s += `<rect x="${x}" y="${y}" width="${ws[c]}" height="${hs[r]}" fill="${colores[(r*2 + c) % 4]}" stroke="#1F1A2B" stroke-width="2.5"/>`;
+      s += `<text x="${x + ws[c]/2}" y="${y + hs[r]/2 - 6}" text-anchor="middle" font-size="18" fill="#4E4760">${cv} × ${fv}</text>`;
+      s += `<text x="${x + ws[c]/2}" y="${y + hs[r]/2 + 22}" text-anchor="middle" font-size="25" font-weight="700" fill="#1F1A2B">${fmt(p)}</text>`;
+      if(r === 0) s += `<text x="${x + ws[c]/2}" y="${A - 10}" text-anchor="middle" font-size="23" font-weight="700" fill="#5B3A99">${cv}</text>`;
+      x += ws[c];
+    });
+    y += hs[r];
+  });
+  const a = cols.reduce((x, v)=>x + v, 0), b = filas.reduce((x, v)=>x + v, 0);
+  const aria = escaparHTML(T[S.idioma].areaAria(a, b, lista.join(", ")));
+  return {svg:`<svg class="area-svg" viewBox="0 0 ${L + IW + 6} ${A + IH + 6}" role="img" aria-label="${aria}" font-family="Trebuchet MS, sans-serif">${s}</svg>`, lista};
+}
+/* Recta para redondear: de lo a hi con el punto en n */
+function rectaEst(n, lo, hi){
+  const W = 360, x0 = 30, x1 = W - 30, y = 70, X = (v)=> x0 + (x1 - x0) * (v - lo) / (hi - lo), mid = (lo + hi) / 2;
+  let s = `<svg class="recta-est" viewBox="0 0 ${W} 112" role="img" aria-label="${escaparHTML((S.idioma === "es" ? "Recta numérica de " : "Number line from ") + fmt(lo) + (S.idioma === "es" ? " a " : " to ") + fmt(hi))}" font-family="Trebuchet MS, sans-serif">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#1F1A2B" stroke-width="4"/>`;
+  [[lo, 14], [mid, 9], [hi, 14]].forEach(([v, h])=>{
+    s += `<line x1="${X(v)}" y1="${y - h}" x2="${X(v)}" y2="${y + h}" stroke="#1F1A2B" stroke-width="3"/>`;
+    s += `<text x="${X(v)}" y="${y + 38}" text-anchor="middle" font-size="${v === mid ? 17 : 22}" font-weight="700" fill="${v === mid ? "#4E4760" : "#1F1A2B"}">${fmt(v)}</text>`;
+  });
+  s += `<circle cx="${X(n)}" cy="${y}" r="10" fill="#5B3A99" stroke="#fff" stroke-width="3"/>`;
+  s += `<text x="${Math.min(Math.max(X(n), 40), W - 40)}" y="${y - 22}" text-anchor="middle" font-size="22" font-weight="700" fill="#5B3A99">${fmt(n)}</text>`;
+  return s + "</svg>";
+}
+/* Redondear al lugar mayor sin caer justo en la mitad */
+function redondeable(n){ const k = pot(String(n).length - 1); return n % k !== 0 && n % k !== k / 2; }
+const redMayor = (n)=>{ const k = pot(String(n).length - 1); return Math.round(n / k) * k; };
+const otroVecino = (n)=>{ const k = pot(String(n).length - 1), r = redMayor(n); return r > n ? r - k : r + k; };
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Modelo de área (4.NBT.5): partes por valor posicional --- */
+  if(S.juego === "area"){
+    const a = numSinCeros(2), b = reto ? numSinCeros(2) : azar(3, 9);
+    const cols = partesDe(a), filas = partesDe(b), p = a * b;
+    const m = areaSVG(cols, filas);
+    const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = m.svg; esc.appendChild(caja);
+    esc.insertAdjacentHTML("beforeend", `<p class="ecuacion-m">${a} × ${b} = <span class="falta-c">?</span></p>`);
+    ponerInstruccion(t.area(a, b), t.areaVoz(a, b, m.lista.join(", ")));
+    const prods = []; filas.forEach(f=>cols.forEach(c=>prods.push(c * f)));
+    const aT = Math.floor(a / 10), errores = [];
+    if(!reto){
+      errores.push([aT * b + (a % 10) * b, t.pistaSinValor(aT, aT * 10, b)]);
+      errores.push([prods[0], t.pistaUna]);
+    } else {
+      const bT = Math.floor(b / 10);
+      errores.push([prods[0] + prods[3], t.pistaDos(4)]);
+      errores.push([aT * bT + aT * (b % 10) + (a % 10) * bT + (a % 10) * (b % 10), t.pistaSinValor2(aT, aT * 10, bT, bT * 10)]);
+    }
+    errores.push([p + elegir([10, -10, 100]), t.pistaSuma]);
+    conPistas(p, errores, t.pistaSuma, ()=>{
+      esc.querySelector(".falta-c").textContent = fmt(p); esc.querySelector(".falta-c").classList.add("lleno");
+      acertar(t.areaFin(m.lista.join(", "), prods.map(fmt).join(" + "), a, b, p));
+    });
+    return;
+  }
+
+  /* --- 2. Productos parciales (4.NBT.5): el que falta --- */
+  if(S.juego === "parciales"){
+    let a, b, filas;
+    const dosPorDos = reto && Math.random() < 0.4;
+    if(dosPorDos){ a = numSinCeros(2); b = numSinCeros(2); filas = []; partesDe(a).forEach(x=>partesDe(b).forEach(y=>filas.push([x, y]))); }
+    else { a = numSinCeros(reto ? 4 : 3); b = azar(3, 9); filas = partesDe(a).map(x=>[x, b]); }
+    const k = Math.random() < 0.85 ? azar(0, filas.length - 2) : filas.length - 1;
+    const [x, y] = filas[k], p = x * y, tot = a * b;
+    const zx = cerosDe(x), zy = cerosDe(y), z = zx + zy, f = (x / pot(zx)) * (y / pot(zy));
+    const caja = document.createElement("div"); caja.className = "parciales";
+    const desc = dosPorDos ? `${t.descompone(a, partesDe(a).join(" + "))} · ${t.descompone(b, partesDe(b).join(" + "))}`
+                           : t.descompone(fmt(a), partesDe(a).map(fmt).join(" + "));
+    caja.innerHTML = `<p class="ecuacion-m">${fmt(a)} × ${b}</p><p class="rotulo">${desc}</p><table class="tabla-parc"><tbody>` +
+      filas.map(([u, v], i)=>`<tr><td>${fmt(u)} × ${fmt(v)}</td><td>=</td><td>${i === k ? '<span class="falta-c">?</span>' : fmt(u * v)}</td></tr>`).join("") + "</tbody></table>";
+    esc.appendChild(caja);
+    const voz = filas.map(([u, v], i)=>`${fmt(u)} × ${fmt(v)} = ${i === k ? "? " : fmt(u * v)}`).join(", ");
+    ponerInstruccion(t.parc(fmt(a), b), t.parcVoz(fmt(a), b, voz));
+    /* Razón: qué lugar ocupa cada dígito */
+    const razonDe = (u, n)=>{ const lugar = cerosDe(u) === 0 && u < 10 ? 0 : String(u).length - 1; return t.parcLugar(String(u)[0], fmt(n), fmt(u), LUGARES[S.idioma][lugar]); };
+    const razones = [];
+    if(x >= 10 || y < 10) razones.push(razonDe(x, a));
+    if(y >= 10) razones.push(razonDe(y, b));
+    const errores = [];
+    if(zx > 0 && zy > 0){ errores.push([p / 10, t.pistaParcUnCero]); errores.push([p * 10, t.pistaParcMas]); errores.push([x + y, t.pistaParcSuma]); }
+    else if(z > 0){ const u = zx ? x : y; errores.push([f, t.pistaParcCeros(String(u)[0], fmt(u))]); errores.push([p * 10, t.pistaParcMas]); errores.push([x + y, t.pistaParcSuma]); }
+    else { errores.push([x + y, t.pistaParcSuma]); errores.push([p * 10, t.pistaParcMas]); errores.push([p + Math.min(x, y), t.pistaParcTabla]); }
+    conPistas(p, errores, t.pistaParcTabla, ()=>{
+      const h = caja.querySelector(".falta-c"); h.textContent = fmt(p); h.classList.add("lleno");
+      caja.querySelector("tbody").insertAdjacentHTML("beforeend", `<tr class="total"><td>${t.total}</td><td>=</td><td>${fmt(tot)}</td></tr>`);
+      acertar(t.parcFin(fmt(x), fmt(y), p, razones.join(S.idioma === "es" ? " y " : " and "), filas.map(([u, v])=>fmt(u * v)).join(" + "), fmt(a), b, tot));
+    });
+    return;
+  }
+
+  /* --- 3. Por 10, 100 y 1000 (4.NBT.5): dato básico y patrón de ceros --- */
+  if(S.juego === "decenas"){
+    let x, y, i, j;
+    const trampa = Math.random() < 0.4;
+    if(trampa){ [x, y] = mezclar([5, elegir([2, 4, 6, 8])]); } else { do{ x = azar(2, 9); y = azar(2, 9); } while(x * y % 10 === 0); }
+    if(!reto){ i = 0; j = azar(1, 3); if(Math.random() < 0.5){ [x, y] = [y, x]; [i, j] = [j, i]; } }
+    else { do{ i = azar(1, 3); j = azar(1, 3); } while(i + j > 4); }
+    const a = x * pot(i), b = y * pot(j), f = x * y, z = i + j, p = a * b;
+    if(!reto){
+      const lineas = [];
+      for(let k=0;k<=z;k++){
+        const u = i ? x * pot(k) : x, v = i ? y : y * pot(k);
+        lineas.push(`<div>${fmt(u)} × ${fmt(v)} = ${k === z ? '<span class="falta-c">?</span>' : fmt(u * v)}</div>`);
+      }
+      esc.insertAdjacentHTML("beforeend", `<div class="patron">${lineas.join("")}</div>`);
+      ponerInstruccion(t.dec(fmt(a), fmt(b)));
+    } else {
+      esc.insertAdjacentHTML("beforeend", `<p class="ecuacion-m">${fmt(a)} × ${fmt(b)} = <span class="falta-c">?</span></p>`);
+      ponerInstruccion(t.decR(fmt(a), fmt(b)));
+    }
+    const errores = [[p / 10, t.pistaPocos(x, y, f, t.ceros(z))], [p * 10, t.pistaMuchos(t.ceros(z))], [(f + elegir([x, y])) * pot(z), t.pistaDato(x, y, f)]];
+    conPistas(p, errores, t.pistaDato(x, y, f), ()=>{
+      const h = esc.querySelector(".falta-c"); h.textContent = fmt(p); h.classList.add("lleno");
+      acertar(t.decFin(x, y, f, t.ceros(z), fmt(a), fmt(b), fmt(p), f % 10 === 0));
+    });
+    return;
+  }
+
+  /* --- 4. Estima el producto (4.NBT.5, 4.OA.3): redondear y decidir si es razonable --- */
+  if(S.juego === "estimar"){
+    if(!reto){
+      let a; do{ a = azar(11, 989); } while(!redondeable(a));
+      const b = azar(3, 9), r = redMayor(a), o = otroVecino(a), e = r * b;
+      esc.insertAdjacentHTML("beforeend", rectaEst(a, Math.min(r, o), Math.max(r, o)) + `<p class="ecuacion-m">${a} × ${b} ≈ <span class="falta-c">?</span></p>`);
+      ponerInstruccion(t.est(a, b));
+      const errores = [[o * b, t.pistaVecino(a, fmt(r), fmt(o))], [e * 10, t.pistaEstCeros(fmt(r), b)]];
+      if(e % 10 === 0) errores.push([e / 10, t.pistaEstCeros(fmt(r), b)]);
+      conPistas(e, errores, t.pistaVecino(a, fmt(r), fmt(o)), ()=>{
+        const h = esc.querySelector(".falta-c"); h.textContent = fmt(e); h.classList.add("lleno");
+        acertar(t.estFin(a, fmt(r), fmt(o), b, fmt(e)));
+      });
+      return;
+    }
+    const tipo = elegir(["3x1", "4x1", "2x2"]);
+    let a, b;
+    do{
+      if(tipo === "3x1"){ a = azar(101, 989); b = azar(3, 9); }
+      else if(tipo === "4x1"){ a = azar(1001, 9899); b = azar(3, 9); }
+      else { a = azar(11, 98); b = azar(11, 98); }
+    } while(!redondeable(a) || (b >= 10 && !redondeable(b)) || Math.abs(a * b - redMayor(a) * (b >= 10 ? redMayor(b) : b)) > 0.35 * a * b);
+    const r1 = redMayor(a), r2 = b >= 10 ? redMayor(b) : b, e = r1 * r2, p = a * b;
+    const forma = elegir(["bien", "bien", "mas", "menos", "suma"]);
+    const mostrado = forma === "bien" ? p : forma === "mas" ? p * 10 : forma === "menos" ? Math.round(p / 10) : a + b;
+    const [n] = nombresAzar(1);
+    esc.appendChild(pasosEl(t.pasosEst));
+    const dicho = document.createElement("p"); dicho.className = "problema";
+    dicho.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(t.dijo(n, fmt(a), b, fmt(mostrado)))}`;
+    esc.appendChild(dicho);
+    ponerInstruccion(t.razonable, dicho.textContent + " " + t.razonable + " " + t.pasosEst.join(" "));
+    const args = [fmt(a), b, fmt(r1), fmt(r2), fmt(e), fmt(mostrado)];
+    const expl = forma === "bien" ? t.estSi(...args) : forma === "mas" ? t.estMas(...args) : forma === "menos" ? t.estMenos(...args) : t.estSuma(...args);
+    const verdad = forma === "bien", cont = $("opciones");
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(v === verdad){ sonBoing(); acertar(expl); } else fallar(bt, t.pistaRaz(fmt(a), b, fmt(r1), fmt(r2))); }));
+    });
+    S.resolver = resolverTexto(verdad ? t.si : t.no);
+    return;
+  }
+
+  /* --- 5. Multiplica en columna (4.NBT.5): llevar al lugar siguiente --- */
+  if(S.juego === "grande"){
+    let a, b, d;
+    const lleva = (n, m)=>{ let c = 0, hubo = false; const l = digitos(n).reverse(); l.forEach((x, i)=>{ const q = x * m + c; if(i < l.length - 1 && q >= 10) hubo = true; c = Math.floor(q / 10); }); return hubo; };
+    do{ a = numSinCeros(reto ? 4 : 3); b = azar(3, 9); } while(!lleva(a, b));
+    d = digitos(a).reverse();
+    const p = a * b;
+    /* Errores típicos */
+    let sinLlevar = 0, antes = 0, c = 0, c2 = 0;
+    const pasos = [];
+    d.forEach((x, i)=>{
+      const ult = i === d.length - 1, q = x * b + c;
+      pasos.push(t.paso(x, b, c, q, ult));
+      c = Math.floor(q / 10);
+      sinLlevar += (ult ? x * b : (x * b) % 10) * pot(i);
+      const q2 = (x + c2) * b; antes += (ult ? q2 : q2 % 10) * pot(i); c2 = Math.floor(q2 / 10);
+    });
+    const sinValor = d.reduce((s, x)=> s + x * b, 0);
+    const lider = d[d.length - 1];
+    if(!reto) esc.insertAdjacentHTML("beforeend", tablaValor(a, -1));
+    const caja = document.createElement("div"); caja.innerHTML = opVertical(a, b, "×") + `<p class="sr-only">${fmt(a)} × ${b}</p>`;
+    esc.appendChild(caja);
+    ponerInstruccion(t.col, t.colVoz(fmt(a), b));
+    conPistas(p, [[sinLlevar, t.pistaSinLlevar], [antes, t.pistaAntes], [sinValor, t.pistaSinValorC(lider, fmt(lider * pot(d.length - 1)), b)]], t.pistaCol, ()=>{
+      caja.innerHTML = opVertical(a, b, "×", p);
+      acertar(t.colFin(pasos.join("; "), fmt(a), b, fmt(p)));
+    });
+    return;
+  }
+
+  /* --- 6. Problemas de multiplicar (4.NBT.5, 4.OA.3): uno y dos pasos --- */
+  if(S.juego === "problemas"){
+    const ci = azar(0, t.ctx.length - 1), cx = t.ctx[ci];
+    const [n] = nombresAzar(1);
+    let a, b;
+    if(!reto){ a = azar(3, 9); b = numSinCeros(2); }
+    else { a = azar(12, 29); b = azar(12, 48); if(b % 10 === 0) b++; }
+    if(a % 10 === 0) a++;
+    const p = a * b;
+    esc.insertAdjacentHTML("beforeend", `<div class="dibujito" aria-hidden="true">${cx.e}</div>`);
+    if(reto) esc.appendChild(pasosEl(t.pasosProb));
+    const pr = document.createElement("p"); pr.className = "problema"; esc.appendChild(pr);
+    const parte = Math.floor(b / 10) * 10 * a;
+    if(!reto){
+      pr.textContent = cx.uno(a, b);
+      ponerInstruccion(t.prob, pr.textContent + " " + t.prob);
+      conPistas(p, [[a + b, t.pistaSumo], [parte, t.pistaParte], [p + elegir([10, -10]), t.pistaProb]], t.pistaProb,
+        ()=>acertar(t.probFin(a, b, fmt(p), cx.uu || cx.u)));
+      return;
+    }
+    const c = cx.op === "+" ? azar(12, 95) : Math.round(p * (0.3 + Math.random() * 0.4));
+    const r = cx.op === "+" ? p + c : p - c, otro = cx.op === "+" ? p - c : p + c;
+    pr.textContent = cx.dos(a, b, fmt(c), n);
+    ponerInstruccion(t.prob, pr.textContent + " " + t.prob + " " + t.pasosProb.join(" "));
+    const sg = cx.op === "+" ? "+" : "−";
+    conPistas(r, [[p, t.pistaPaso1], [otro, t.pistaOp(cx.op)], [cx.op === "+" ? parte + c : parte - c, t.pistaParte]], t.pistaProb,
+      ()=>acertar(t.probFin2(a, b, fmt(p), sg, fmt(c), fmt(r), cx.u)));
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const L = '<i class="linea"></i>', t = T[S.idioma];
+  $("hoja-area").innerHTML = `<table class="area-h"><tr><th></th><th>20</th><th>3</th></tr>` +
+    `<tr><th>10</th><td>20 × 10 = ${L}</td><td>3 × 10 = ${L}</td></tr>` +
+    `<tr><th>4</th><td>20 × 4 = ${L}</td><td>3 × 4 = ${L}</td></tr></table>` +
+    `<div>23 × 14 = ${L} + ${L} + ${L} + ${L} = ${L}</div>`;
+  $("hoja-decenas").innerHTML = `<div>6 × ${fmt(400)} = ${L}</div><div>50 × 80 = ${L}</div>`;
+  $("hoja-columna").innerHTML = opVertical(472, 6, "×") + opVertical(2315, 4, "×");
+  $("hoja-problema").textContent = t.ctx[1].dos(18, 24, fmt(150));
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>
