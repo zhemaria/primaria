@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Factors, multiples and patterns
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.OA.4, 4.OA.5
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Factores, múltiplos y patrones · Juegos de cuarto grado" data-en="Factors, multiples and patterns · Fourth grade games">Factors, multiples and patterns · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade games with Lumi: factor pairs and arrays, find all the factors, multiples, prime and composite numbers, pattern rules and a number detective.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.arreglos{display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;align-items:flex-end;max-width:100%}
+.arr{display:flex;flex-direction:column;align-items:center;gap:4px;max-width:100%}
+.arr svg{max-width:100%;height:auto;display:block}
+.arr b{font-size:clamp(18px,4.4vw,24px)}
+.arr.nuevo b{color:var(--acierto)}
+.hueco-arr{min-width:76px;min-height:76px;border:4px dashed var(--acento);border-radius:14px;justify-content:center}
+.hueco-arr span{font-size:40px;font-weight:700;color:var(--acento)}
+.pregunta-g{font-weight:700;font-size:clamp(30px,7vw,48px);text-align:center;margin:0;color:var(--acento);line-height:1.2}
+.opciones-arr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;max-width:640px}
+@media (min-width:700px){ .opciones-arr{grid-template-columns:repeat(4,minmax(0,1fr));max-width:860px} }
+.opcion-arr{display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;padding:10px 6px;font-size:clamp(15px,3.6vw,19px);min-width:0}
+.opcion-arr svg{max-width:100%;height:auto}
+.opcion-arr.bien{border-color:var(--acierto);background:var(--acierto-fondo)}
+.saltos{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:100%}
+.saltos span{background:var(--acento-claro);border-radius:10px;padding:2px 9px;font-weight:700;font-size:clamp(17px,3.8vw,22px)}
+.saltos span.marcado{background:var(--acento);color:#fff}
+.regla{margin:0;font-weight:700;background:var(--acento-claro);border-radius:14px;padding:8px 14px;text-align:center;font-size:clamp(17px,3.6vw,22px)}
+.secuencia{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:2px 4px;font-weight:700;font-size:clamp(28px,6.6vw,46px)}
+.secuencia .coma{color:var(--tinta-suave);margin-right:.2em}
+.secuencia .q{min-width:1.6em;text-align:center;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);padding:0 .1em}
+.secuencia .q.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.torres{display:flex;gap:clamp(6px,2.4vw,18px);align-items:flex-end;justify-content:center;max-width:100%}
+.torre{display:flex;flex-direction:column;align-items:center;gap:4px}
+.torre .bloques{display:flex;flex-direction:column-reverse;align-items:center;font-size:clamp(14px,3.6vw,22px);line-height:1.05;min-height:2em;justify-content:flex-start}
+.torre .q{font-size:clamp(28px,6vw,40px);font-weight:700;color:var(--acento);border:4px dashed var(--acento);border-radius:10px;padding:0 .25em}
+.torre small{font-weight:700;color:var(--tinta-suave);font-size:clamp(12px,2.8vw,15px);white-space:nowrap}
+.opcion-texto.larga{font-size:clamp(17px,3.8vw,24px);padding:10px 16px}
+.cartas.num{grid-template-columns:repeat(2,minmax(0,1fr));max-width:560px}
+.cartas.num .carta{font-size:clamp(30px,7vw,42px);padding:6px}
+@media (min-width:700px){ .cartas.num{grid-template-columns:repeat(4,minmax(0,1fr));max-width:860px} }
+.fila-fichas .carta{min-width:clamp(78px,20vw,120px)}
+.hoja .caja-h.una{grid-template-columns:1fr}
+.hoja .primos-h{display:flex;gap:9mm;flex-wrap:wrap;font-size:18pt;margin-top:2mm}
+.hoja .linea.larga{width:70mm}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Factores, múltiplos y patrones" data-en="Factors, multiples and patterns">Factors, multiples and patterns</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>🔑</span><span>🟦</span><span>🔍</span><span>📈</span></div>
+    <h2 data-es="¡Factores y patrones!" data-en="Factors and patterns!">Factors and patterns!</h2>
+    <p data-es="Los números se pueden acomodar en rectángulos, contar de 8 en 8 o crecer siguiendo una regla. Con Lumi vas a buscar pares de factores, decidir si un número es múltiplo de otro, separar primos y compuestos, descubrir la regla de un patrón y resolver misterios de detective. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="Numbers can be arranged in rectangles, counted by 8s or grow by following a rule. With Lumi you will find factor pairs, decide whether a number is a multiple of another, sort primes and composites, discover the rule of a pattern and solve detective mysteries. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">Numbers can be arranged in rectangles, counted by 8s or grow by following a rule. With Lumi you will find factor pairs, decide whether a number is a multiple of another, sort primes and composites, discover the rule of a pattern and solve detective mysteries. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: factores y patrones" data-en="🖨 Print a page: factors and patterns">🖨 Print a page: factors and patterns</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.OA.4 (encontrar todos los pares de factores de un número entero del 1 al 100, reconocer que un número es múltiplo de cada uno de sus factores, decidir si un número del 1 al 100 es múltiplo de un número de una cifra y si es primo o compuesto) y 4.OA.5 (generar un patrón de números o de figuras que sigue una regla dada e identificar rasgos del patrón que la regla no dice explícitamente). En el nivel Fácil hay arreglos rectangulares de cuadrados, conteo salteado y torres de bloques, con números hasta 36 o hasta 60; en el Reto se trabaja con los números solos hasta 100, con los pasos a la vista, pistas de divisibilidad y casos engañosos como 51, 57, 87 y 91. Los juegos «¿Qué arreglo no funciona?», «La regla del patrón» y «Detective de números» piden justificar y decidir. Cada juego tiene su enlace directo: #pares, #todos, #multiplos, #primos, #patron y #detective."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.OA.4 (find all factor pairs for a whole number from 1 to 100, recognize that a whole number is a multiple of each of its factors, determine whether a number from 1 to 100 is a multiple of a given one-digit number and whether it is prime or composite) and 4.OA.5 (generate a number or shape pattern that follows a given rule and identify features of the pattern that were not explicit in the rule itself). At the Easy level there are rectangular arrays of squares, skip counting and block towers, with numbers up to 36 or 60; at the Challenge level the work is with the numbers alone up to 100, with the steps on screen, divisibility clues and tricky cases such as 51, 57, 87 and 91. The games “Which array does not work?”, “The pattern rule” and “Number detective” ask the child to justify and decide. Each game has its own direct link: #pares, #todos, #multiplos, #primos, #patron and #detective.">Aligned to the Illinois fourth grade mathematics standards 4.OA.4 (find all factor pairs for a whole number from 1 to 100, recognize that a whole number is a multiple of each of its factors, determine whether a number from 1 to 100 is a multiple of a given one-digit number and whether it is prime or composite) and 4.OA.5 (generate a number or shape pattern that follows a given rule and identify features of the pattern that were not explicit in the rule itself). At the Easy level there are rectangular arrays of squares, skip counting and block towers, with numbers up to 36 or 60; at the Challenge level the work is with the numbers alone up to 100, with the steps on screen, divisibility clues and tricky cases such as 51, 57, 87 and 91. The games “Which array does not work?”, “The pattern rule” and “Number detective” ask the child to justify and decide. Each game has its own direct link: #pares, #todos, #multiplos, #primos, #patron and #detective.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Factores, múltiplos y patrones" data-en="Factors, multiples and patterns">Factors, multiples and patterns</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Escribe todos los pares de factores." data-en="1. Write all the factor pairs.">1. Write all the factor pairs.</h3>
+  <div class="caja-h una" id="hoja-pares"></div>
+  <h3 data-es="2. Encierra en un círculo los números primos." data-en="2. Circle the prime numbers.">2. Circle the prime numbers.</h3>
+  <div class="primos-h" id="hoja-primos"></div>
+  <h3 data-es="3. Escribe los múltiplos de 7 hasta 70." data-en="3. Write the multiples of 7 up to 70.">3. Write the multiples of 7 up to 70.</h3>
+  <div class="caja-h una" id="hoja-multiplos"></div>
+  <h3 data-es="4. Completa cada patrón y escribe su regla." data-en="4. Complete each pattern and write its rule.">4. Complete each pattern and write its rule.</h3>
+  <div class="caja-h una" id="hoja-patron"></div>
+  <h3 data-es="5. ¿Por qué 9 es compuesto aunque sea impar? Explica." data-en="5. Why is 9 composite even though it is odd? Explain.">5. Why is 9 composite even though it is odd? Explain.</h3>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí", no:"✘ No", comprobar:"✔ Comprobar", ninguno:"Marca al menos un número.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    y:"y",
+    /* 1. Pares de factores */
+    arregloAria:(r,c)=>`Arreglo de ${r} ${r === 1 ? "fila" : "filas"} y ${c} ${c === 1 ? "columna" : "columnas"}`,
+    parcialAria:(n,k)=>`${n} cuadrados acomodados de ${k} en ${k}`,
+    paresF:(n)=>`Cada arreglo tiene ${n} cuadrados. ¿Qué par de factores de ${n} falta?`,
+    paresFin:(n,l,p)=>`Los pares de factores de ${n} son ${l}. El que faltaba es ${p}.`,
+    pistaYa:"Ese par ya está dibujado. Busca el que todavía no aparece.",
+    pistaProd:(a,b,p,n)=>`${a} × ${b} = ${p}, no ${n}. Los dos factores de un par, multiplicados, deben dar ${n}.`,
+    filasF:(nom,n)=>`${nom} quiere acomodar ${n} sillas en filas iguales. ¿Qué arreglo NO funciona?`,
+    enFila:(k)=>`${k} en cada fila`,
+    pistaFilaBien:(n,k,q)=>`Con ${k} en cada fila: ${n} ÷ ${k} = ${q} y todas las filas quedan llenas. Busca el arreglo con una fila incompleta.`,
+    filasFin:(n,k,q,r)=>`${n} ÷ ${k} = ${q} y sobran ${r}: la última fila queda incompleta. ${k} no es factor de ${n}.`,
+    cuantosF:(n)=>`¿Cuántos pares de factores tiene ${n}?`,
+    pasosPares:(n)=>[`Empieza con 1 × ${n}.`,"Prueba 2, 3, 4… en orden: ¿divide sin que sobre nada?","Para cuando los factores empiezan a repetirse."],
+    cuantosFin:(n,l,k)=>`Los pares de factores de ${n} son ${l}: ${k} pares.`,
+    pistaContaste:"Contaste los factores sueltos. Aquí se cuentan pares: cada par junta dos factores, como 2 × 6 = 12.",
+    pistaMenos:(n)=>`Te falta al menos un par. ¿Contaste 1 × ${n}? Prueba cada número desde 1, en orden.`,
+    pistaDoble:(a,b)=>`Contaste algún par dos veces: ${a} × ${b} y ${b} × ${a} son el mismo par.`,
+    pistaDobleL:(a,b)=>`Esa lista repite un par: ${b} × ${a} es el mismo par que ${a} × ${b}.`,
+    listaF:(n)=>`¿Cuál es la lista completa de los pares de factores de ${n}?`,
+    pistaListaFalta:"A esa lista le falta un par. Prueba cada número desde 1, en orden.",
+    /* 2. Marca todos los factores */
+    todosF:(n)=>`Marca todos los factores de ${n} que veas. Después toca Comprobar.`,
+    todosPista:(a,b,n)=>`Pista: ${a} × ${b} = ${n}`,
+    todosResto:(x,n,q,r)=>`${n} ÷ ${x} = ${q} y sobran ${r}: la división no es exacta, así que ${x} no es factor de ${n}.`,
+    todosMult:(x,n)=>`${x} es múltiplo de ${n}, no factor: ${n} × ${x / n} = ${x}. Ningún factor de ${n} es mayor que ${n}.`,
+    todosFalta:(n,d)=>`Todavía falta al menos un factor. Revisa en pares: si ${d} es factor de ${n}, su pareja ${n} ÷ ${d} = ${n / d} también lo es. Y no olvides 1 y ${n}.`,
+    todosFin:(n,l,p)=>`Los factores de ${n} son ${l}. En pares: ${p}.`,
+    /* 3. ¿Es múltiplo? */
+    multF:(n,k)=>`¿Es ${n} múltiplo de ${k}?`, facF:(k,n)=>`¿Es ${k} factor de ${n}?`,
+    siMul:"✔ Sí, es múltiplo", noMul:"✘ No es múltiplo", siFac:"✔ Sí, es factor", noFac:"✘ No es factor",
+    saltos:(k)=>`Cuenta de ${k} en ${k}:`,
+    mulSiFin:(n,k,q)=>`${k} × ${q} = ${n}, así que ${n} es múltiplo de ${k}.`,
+    mulNoFin:(n,k,q,r)=>`${n} ÷ ${k} = ${q} y sobran ${r}, así que ${n} no es múltiplo de ${k}.`,
+    facSiFin:(n,k,q)=>`${k} × ${q} = ${n}, así que ${k} es factor de ${n}. Es lo mismo que decir que ${n} es múltiplo de ${k}.`,
+    facNoFin:(n,k,q,r)=>`${n} ÷ ${k} = ${q} y sobran ${r}, así que ${k} no es factor de ${n} y ${n} no es múltiplo de ${k}.`,
+    pistaMul:(k,n)=>`Cuenta de ${k} en ${k}, o busca ${k} × ? = ${n}. ¿Llegas justo a ${n}, sin que sobre nada?`,
+    pistaFac:(k,n)=>`«${k} es factor de ${n}» quiere decir lo mismo que «${n} es múltiplo de ${k}».`,
+    regla2:(n,d)=>`Los múltiplos de 2 son pares: terminan en 0, 2, 4, 6 u 8. ${n} termina en ${d}.`,
+    regla5:(n,d)=>`Los múltiplos de 5 terminan en 0 o en 5. ${n} termina en ${d}.`,
+    regla10:(n,d)=>`Los múltiplos de 10 terminan en 0. ${n} termina en ${d}.`,
+    /* 4. ¿Primo o compuesto? */
+    primoF:(n)=>`¿${n} es un número primo o compuesto?`,
+    primo:"Primo", compuesto:"Compuesto", niNi:"Ni primo ni compuesto",
+    cuadros:(n)=>`${n} cuadrados`,
+    pasosPrimo:["Primo: tiene exactamente dos factores, el 1 y él mismo.","Compuesto: tiene más de dos factores."],
+    primoFin:(n)=>`Los únicos factores de ${n} son 1 y ${n}, así que ${n} es primo.`,
+    primoFinF:"Por eso los cuadrados solo se pueden acomodar en una fila.",
+    compFin:(n,l,a,b)=>`Los factores de ${n} son ${l}. Tiene más de dos factores (${n} = ${a} × ${b}), así que es compuesto.`,
+    unoFin:"1 tiene un solo factor: el 1. Por eso no es primo ni compuesto.",
+    pistaDibujo:"Mira el dibujo: los cuadrados forman un rectángulo de más de una fila. Eso quiere decir que hay más factores que 1 y el número.",
+    pistaImpar:(n)=>`Que ${n} sea impar no quiere decir que sea primo. Prueba si se divide entre 3, entre 7 o entre otros números.`,
+    pistaCinco:(n)=>`${n} termina en 5, así que se divide entre 5. ¿Cuántos factores tiene entonces?`,
+    pistaPar:(n)=>`${n} es par, así que se divide entre 2. ¿Cuántos factores tiene entonces?`,
+    pistaEsPrimo:(n)=>`Busca un factor de ${n} que no sea 1 ni ${n}. Prueba dividir entre 2, 3, 5 y 7: ¿siempre sobra algo?`,
+    pistaUnaFila:(n)=>`Mira el dibujo: los ${n} cuadrados solo se pueden acomodar en una fila. ¿Tiene ${n} otros factores además de 1 y ${n}?`,
+    pistaDos:"2 es par, pero sus únicos factores son 1 y 2. Cuenta cuántos factores tiene.",
+    pistaNi:"«Ni primo ni compuesto» es solo para el 1, que tiene un único factor.",
+    pistaUno:"Un primo tiene exactamente dos factores y un compuesto tiene más de dos. ¿Cuántos factores tiene el 1?",
+    /* 5. La regla del patrón */
+    reglaSuma:(a,k)=>`Regla: empieza en ${a} y suma ${k}.`,
+    reglaDoble:(a)=>`Regla: empieza en ${a} y multiplica por 2.`,
+    sigF:"¿Cuál es el término que sigue?",
+    torreF:(k)=>`Cada torre tiene ${k} ${k === 1 ? "bloque" : "bloques"} más que la anterior. ¿Cuántos bloques tendrá la torre 5?`,
+    torre:(i)=>`Torre ${i}`,
+    torresAria:(l)=>`Torres de bloques: ${l}`,
+    sigFin:(p,k,r)=>`${p} + ${k} = ${r}. Cada término es ${k} más que el anterior.`,
+    dobleFin:(p,r)=>`${p} × 2 = ${r}. Cada término es el doble del anterior.`,
+    torreFin:(p,k,r)=>`La torre 4 tiene ${p} bloques; la torre 5 tiene ${k} más: ${p} + ${k} = ${r}.`,
+    pistaSalto:"Sumaste dos veces. El término que sigue está a un solo salto del último.",
+    pistaCuanto:(k)=>`Revisa cuánto se suma cada vez: la regla dice ${k}.`,
+    pistaDifer:"Sumaste la diferencia de los dos últimos términos, pero la regla dice multiplicar por 2.",
+    pistaMas2:"La regla no dice sumar 2: dice multiplicar por 2, es decir, buscar el doble.",
+    diezF:(a,k)=>`Regla: empieza en ${a} y suma ${k}. ¿Cuál es el término 10?`,
+    pasosDiez:["El término 1 es el número de inicio.","Del término 1 al término 10 hay 9 saltos, no 10.","Multiplica los saltos por lo que se suma, y agrega el inicio."],
+    diezFin:(a,k,r)=>`Del término 1 al 10 hay 9 saltos: ${a} + 9 × ${k} = ${a} + ${9 * k} = ${r}.`,
+    pistaDiez:"Contaste 10 saltos, pero del término 1 al término 10 hay solo 9: el término 1 ya es el inicio.",
+    pistaSinInicio:(a)=>`Olvidaste el número de inicio: el patrón empieza en ${a}, no en 0.`,
+    obsF:"¿Qué observación sobre este patrón es verdadera?",
+    obsImpar:"Todos los términos son impares.", obsPar:"Todos los términos son pares.",
+    obsAlterna:"Los términos se alternan entre par e impar.",
+    obsMult:(k)=>`Todos los términos son múltiplos de ${k}.`, obsDoble:"Cada término es el doble del anterior.",
+    obsImparFin:(a,k)=>`Empieza en ${a}, que es impar, y suma ${k}, que es par. Impar + par = impar, así que todos los términos son impares. La regla no lo dice, pero siempre pasa.`,
+    obsParFin:(a,k)=>`Empieza en ${a}, que es par, y suma ${k}, que es par. Par + par = par, así que todos los términos son pares. La regla no lo dice, pero siempre pasa.`,
+    obsAltFin:(a,k)=>`Suma ${k}, que es impar. Al sumar un impar, un par se vuelve impar y un impar se vuelve par; por eso los términos se alternan.`,
+    pistaObsPar:(l)=>`Mira los términos: ${l}. ¿Cuáles son pares y cuáles son impares?`,
+    pistaObsMult:(a,k)=>`El primer término, ${a}, no es múltiplo de ${k}. Entonces no todos los términos son múltiplos de ${k}.`,
+    pistaObsDoble:(a,b)=>`El doble de ${a} es ${2 * a}, pero el término que sigue es ${b}. Esta regla suma; no multiplica.`,
+    /* 6. Detective de números */
+    detF:"¿Qué número cumple todas las pistas? Tócalo.",
+    pistaN:(j)=>`Pista ${j}:`,
+    cMul:(k)=>`Es múltiplo de ${k}.`, cMulSi:(m,k)=>`${m} = ${k} × ${m / k}`, cMulNo:(x,k,q,r)=> x < k ? `${x} es menor que ${k}, así que no puede ser múltiplo de ${k}.` : `${x} ÷ ${k} = ${q} y sobran ${r}.`,
+    cFac:(N)=>`Es factor de ${N}.`, cFacSi:(m,N)=>`${N} ÷ ${m} = ${N / m}`,
+    cFacNo:(x,N,q,r)=> x > N ? `${x} es mayor que ${N}, y un factor no puede ser mayor que el número.` : `${N} ÷ ${x} = ${q} y sobran ${r}.`,
+    cMayor:(B)=>`Es mayor que ${B}.`, cMayorNo:(x,B)=>`${x} no es mayor que ${B}.`,
+    cMenor:(B)=>`Es menor que ${B}.`, cMenorNo:(x,B)=>`${x} no es menor que ${B}.`,
+    cPar:"Es par.", cParSi:(m)=>`${m} es par`, cParNo:(x)=>`${x} es impar.`,
+    cImpar:"Es impar.", cImparSi:(m)=>`${m} es impar`, cImparNo:(x)=>`${x} es par.`,
+    cPrimo:"Es primo.", cPrimoSi:(m)=>`${m} solo tiene los factores 1 y ${m}`,
+    cPrimoNo:(x,a,b)=> x === 1 ? "1 tiene un solo factor; no es primo." : `${x} = ${a} × ${b}, así que no es primo.`,
+    cComp:"Es compuesto.", cCompSi:(m,l)=>`${m} tiene más de dos factores: ${l}`,
+    cCompNo:(x)=> x === 1 ? "1 tiene un solo factor; no es compuesto." : `los únicos factores de ${x} son 1 y ${x}: es primo.`,
+    noCumple:(j,txt,por)=>`Esa tarjeta no cumple la pista ${j} («${txt}»): ${por}`,
+    detFin:(m,l)=>`${m} cumple todas las pistas: ${l}.`,
+    /* Hoja */
+    hojaRegla:"Regla:",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["Pensé en pares de factores","¡Excelente! Si encuentras un factor, su pareja aparece sola: 24 ÷ 3 = 8."],
+      ["Usé las tablas de multiplicar","¡Muy bien! Las tablas te dicen enseguida qué números son factores y cuáles son múltiplos."],
+      ["Usé pistas de divisibilidad","¡Buena idea! Pares para el 2, terminados en 0 o 5 para el 5, en 0 para el 10."],
+      ["Describí la regla del patrón","¡Genial! Con la regla puedes saber cualquier término y descubrir cosas que la regla no dice."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes", no:"✘ No", comprobar:"✔ Check", ninguno:"Mark at least one number.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    y:"and",
+    arregloAria:(r,c)=>`Array with ${r} ${r === 1 ? "row" : "rows"} and ${c} ${c === 1 ? "column" : "columns"}`,
+    parcialAria:(n,k)=>`${n} squares arranged ${k} in each row`,
+    paresF:(n)=>`Each array has ${n} squares. Which factor pair of ${n} is missing?`,
+    paresFin:(n,l,p)=>`The factor pairs of ${n} are ${l}. The missing one is ${p}.`,
+    pistaYa:"That pair is already drawn. Look for the one that is not there yet.",
+    pistaProd:(a,b,p,n)=>`${a} × ${b} = ${p}, not ${n}. The two factors in a pair must multiply to ${n}.`,
+    filasF:(nom,n)=>`${nom} wants to set up ${n} chairs in equal rows. Which array does NOT work?`,
+    enFila:(k)=>`${k} in each row`,
+    pistaFilaBien:(n,k,q)=>`With ${k} in each row: ${n} ÷ ${k} = ${q} and every row is full. Look for the array with a row that is not full.`,
+    filasFin:(n,k,q,r)=>`${n} ÷ ${k} = ${q} with ${r} left over: the last row is not full. ${k} is not a factor of ${n}.`,
+    cuantosF:(n)=>`How many factor pairs does ${n} have?`,
+    pasosPares:(n)=>[`Start with 1 × ${n}.`,"Try 2, 3, 4… in order: does it divide with nothing left over?","Stop when the factors start to repeat."],
+    cuantosFin:(n,l,k)=>`The factor pairs of ${n} are ${l}: ${k} pairs.`,
+    pistaContaste:"You counted single factors. Here you count pairs: each pair joins two factors, like 2 × 6 = 12.",
+    pistaMenos:(n)=>`At least one pair is missing. Did you count 1 × ${n}? Try every number from 1, in order.`,
+    pistaDoble:(a,b)=>`You counted a pair twice: ${a} × ${b} and ${b} × ${a} are the same pair.`,
+    pistaDobleL:(a,b)=>`That list repeats a pair: ${b} × ${a} is the same pair as ${a} × ${b}.`,
+    listaF:(n)=>`Which is the complete list of factor pairs of ${n}?`,
+    pistaListaFalta:"That list is missing a pair. Try every number from 1, in order.",
+    todosF:(n)=>`Mark every factor of ${n} that you see. Then touch Check.`,
+    todosPista:(a,b,n)=>`Hint: ${a} × ${b} = ${n}`,
+    todosResto:(x,n,q,r)=>`${n} ÷ ${x} = ${q} with ${r} left over: the division is not exact, so ${x} is not a factor of ${n}.`,
+    todosMult:(x,n)=>`${x} is a multiple of ${n}, not a factor: ${n} × ${x / n} = ${x}. No factor of ${n} is greater than ${n}.`,
+    todosFalta:(n,d)=>`At least one factor is still missing. Check in pairs: if ${d} is a factor of ${n}, its partner ${n} ÷ ${d} = ${n / d} is one too. And don't forget 1 and ${n}.`,
+    todosFin:(n,l,p)=>`The factors of ${n} are ${l}. In pairs: ${p}.`,
+    multF:(n,k)=>`Is ${n} a multiple of ${k}?`, facF:(k,n)=>`Is ${k} a factor of ${n}?`,
+    siMul:"✔ Yes, it is a multiple", noMul:"✘ No, it is not a multiple", siFac:"✔ Yes, it is a factor", noFac:"✘ No, it is not a factor",
+    saltos:(k)=>`Count by ${k}s:`,
+    mulSiFin:(n,k,q)=>`${k} × ${q} = ${n}, so ${n} is a multiple of ${k}.`,
+    mulNoFin:(n,k,q,r)=>`${n} ÷ ${k} = ${q} with ${r} left over, so ${n} is not a multiple of ${k}.`,
+    facSiFin:(n,k,q)=>`${k} × ${q} = ${n}, so ${k} is a factor of ${n}. That is the same as saying ${n} is a multiple of ${k}.`,
+    facNoFin:(n,k,q,r)=>`${n} ÷ ${k} = ${q} with ${r} left over, so ${k} is not a factor of ${n} and ${n} is not a multiple of ${k}.`,
+    pistaMul:(k,n)=>`Count by ${k}s, or look for ${k} × ? = ${n}. Do you land exactly on ${n}, with nothing left over?`,
+    pistaFac:(k,n)=>`“${k} is a factor of ${n}” means the same as “${n} is a multiple of ${k}.”`,
+    regla2:(n,d)=>`Multiples of 2 are even: they end in 0, 2, 4, 6 or 8. ${n} ends in ${d}.`,
+    regla5:(n,d)=>`Multiples of 5 end in 0 or 5. ${n} ends in ${d}.`,
+    regla10:(n,d)=>`Multiples of 10 end in 0. ${n} ends in ${d}.`,
+    primoF:(n)=>`Is ${n} a prime number or a composite number?`,
+    primo:"Prime", compuesto:"Composite", niNi:"Neither prime nor composite",
+    cuadros:(n)=>`${n} squares`,
+    pasosPrimo:["Prime: it has exactly two factors, 1 and itself.","Composite: it has more than two factors."],
+    primoFin:(n)=>`The only factors of ${n} are 1 and ${n}, so ${n} is prime.`,
+    primoFinF:"That is why the squares only fit in one row.",
+    compFin:(n,l,a,b)=>`The factors of ${n} are ${l}. It has more than two factors (${n} = ${a} × ${b}), so it is composite.`,
+    unoFin:"1 has only one factor: 1. That is why it is neither prime nor composite.",
+    pistaDibujo:"Look at the picture: the squares make a rectangle with more than one row. That means there are more factors than 1 and the number.",
+    pistaImpar:(n)=>`Being odd does not make ${n} prime. Check whether it can be divided by 3, by 7 or by other numbers.`,
+    pistaCinco:(n)=>`${n} ends in 5, so it can be divided by 5. How many factors does it have, then?`,
+    pistaPar:(n)=>`${n} is even, so it can be divided by 2. How many factors does it have, then?`,
+    pistaEsPrimo:(n)=>`Look for a factor of ${n} that is not 1 or ${n}. Try dividing by 2, 3, 5 and 7: is there always something left over?`,
+    pistaUnaFila:(n)=>`Look at the picture: the ${n} squares only fit in one row. Does ${n} have any factors besides 1 and ${n}?`,
+    pistaDos:"2 is even, but its only factors are 1 and 2. Count how many factors it has.",
+    pistaNi:"“Neither prime nor composite” is only for 1, which has just one factor.",
+    pistaUno:"A prime has exactly two factors and a composite has more than two. How many factors does 1 have?",
+    reglaSuma:(a,k)=>`Rule: start at ${a} and add ${k}.`,
+    reglaDoble:(a)=>`Rule: start at ${a} and multiply by 2.`,
+    sigF:"What is the next term?",
+    torreF:(k)=>`Each tower has ${k} more ${k === 1 ? "block" : "blocks"} than the one before. How many blocks will tower 5 have?`,
+    torre:(i)=>`Tower ${i}`,
+    torresAria:(l)=>`Block towers: ${l}`,
+    sigFin:(p,k,r)=>`${p} + ${k} = ${r}. Each term is ${k} more than the one before.`,
+    dobleFin:(p,r)=>`${p} × 2 = ${r}. Each term is double the one before.`,
+    torreFin:(p,k,r)=>`Tower 4 has ${p} blocks; tower 5 has ${k} more: ${p} + ${k} = ${r}.`,
+    pistaSalto:"You added twice. The next term is just one jump after the last one.",
+    pistaCuanto:(k)=>`Check how much you add each time: the rule says ${k}.`,
+    pistaDifer:"You added the difference between the last two terms, but the rule says multiply by 2.",
+    pistaMas2:"The rule does not say add 2: it says multiply by 2, which means find the double.",
+    diezF:(a,k)=>`Rule: start at ${a} and add ${k}. What is the 10th term?`,
+    pasosDiez:["The 1st term is the starting number.","From the 1st term to the 10th term there are 9 jumps, not 10.","Multiply the jumps by the amount you add, then add the start."],
+    diezFin:(a,k,r)=>`From the 1st term to the 10th there are 9 jumps: ${a} + 9 × ${k} = ${a} + ${9 * k} = ${r}.`,
+    pistaDiez:"You counted 10 jumps, but from the 1st term to the 10th there are only 9: the 1st term is already the start.",
+    pistaSinInicio:(a)=>`You forgot the starting number: the pattern starts at ${a}, not at 0.`,
+    obsF:"Which observation about this pattern is true?",
+    obsImpar:"All the terms are odd.", obsPar:"All the terms are even.",
+    obsAlterna:"The terms alternate between even and odd.",
+    obsMult:(k)=>`All the terms are multiples of ${k}.`, obsDoble:"Each term is double the one before.",
+    obsImparFin:(a,k)=>`It starts at ${a}, which is odd, and adds ${k}, which is even. Odd + even = odd, so all the terms are odd. The rule does not say so, but it always happens.`,
+    obsParFin:(a,k)=>`It starts at ${a}, which is even, and adds ${k}, which is even. Even + even = even, so all the terms are even. The rule does not say so, but it always happens.`,
+    obsAltFin:(a,k)=>`It adds ${k}, which is odd. Adding an odd number turns an even number odd and an odd number even, so the terms alternate.`,
+    pistaObsPar:(l)=>`Look at the terms: ${l}. Which ones are even and which ones are odd?`,
+    pistaObsMult:(a,k)=>`The first term, ${a}, is not a multiple of ${k}. So not all the terms are multiples of ${k}.`,
+    pistaObsDoble:(a,b)=>`Double ${a} is ${2 * a}, but the next term is ${b}. This rule adds; it does not multiply.`,
+    detF:"Which number fits all the clues? Touch it.",
+    pistaN:(j)=>`Clue ${j}:`,
+    cMul:(k)=>`It is a multiple of ${k}.`, cMulSi:(m,k)=>`${m} = ${k} × ${m / k}`, cMulNo:(x,k,q,r)=> x < k ? `${x} is less than ${k}, so it cannot be a multiple of ${k}.` : `${x} ÷ ${k} = ${q} with ${r} left over.`,
+    cFac:(N)=>`It is a factor of ${N}.`, cFacSi:(m,N)=>`${N} ÷ ${m} = ${N / m}`,
+    cFacNo:(x,N,q,r)=> x > N ? `${x} is greater than ${N}, and a factor cannot be greater than the number.` : `${N} ÷ ${x} = ${q} with ${r} left over.`,
+    cMayor:(B)=>`It is greater than ${B}.`, cMayorNo:(x,B)=>`${x} is not greater than ${B}.`,
+    cMenor:(B)=>`It is less than ${B}.`, cMenorNo:(x,B)=>`${x} is not less than ${B}.`,
+    cPar:"It is even.", cParSi:(m)=>`${m} is even`, cParNo:(x)=>`${x} is odd.`,
+    cImpar:"It is odd.", cImparSi:(m)=>`${m} is odd`, cImparNo:(x)=>`${x} is even.`,
+    cPrimo:"It is prime.", cPrimoSi:(m)=>`${m} only has the factors 1 and ${m}`,
+    cPrimoNo:(x,a,b)=> x === 1 ? "1 has only one factor; it is not prime." : `${x} = ${a} × ${b}, so it is not prime.`,
+    cComp:"It is composite.", cCompSi:(m,l)=>`${m} has more than two factors: ${l}`,
+    cCompNo:(x)=> x === 1 ? "1 has only one factor; it is not composite." : `the only factors of ${x} are 1 and ${x}: it is prime.`,
+    noCumple:(j,txt,por)=>`That card breaks clue ${j} (“${txt}”): ${por}`,
+    detFin:(m,l)=>`${m} fits all the clues: ${l}.`,
+    hojaRegla:"Rule:",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["I thought in factor pairs","Excellent! When you find one factor, its partner shows up too: 24 ÷ 3 = 8."],
+      ["I used multiplication facts","Great! Your facts tell you right away which numbers are factors and which are multiples."],
+      ["I used divisibility clues","Good idea! Even for 2, ending in 0 or 5 for 5, ending in 0 for 10."],
+      ["I described the pattern rule","Awesome! With the rule you can find any term and discover things the rule does not say."]]
+  }
+};
+const JUEGOS = [
+  {id:"pares",     emoji:"🟦", es:"Pares de factores", en:"Factor pairs", metaEs:"3 × 8 = 24", metaEn:"3 × 8 = 24"},
+  {id:"todos",     emoji:"🔑", es:"Marca todos los factores", en:"Mark all the factors", metaEs:"Marca y comprueba", metaEn:"Mark and check"},
+  {id:"multiplos", emoji:"🦘", es:"¿Es múltiplo?", en:"Is it a multiple?", metaEs:"Cuenta de 8 en 8", metaEn:"Count by 8s"},
+  {id:"primos",    emoji:"💎", es:"¿Primo o compuesto?", en:"Prime or composite?", metaEs:"¿Cuántos factores?", metaEn:"How many factors?"},
+  {id:"patron",    emoji:"📈", es:"La regla del patrón", en:"The pattern rule", metaEs:"Empieza en 3 y suma 4", metaEn:"Start at 3, add 4"},
+  {id:"detective", emoji:"🔍", es:"Detective de números", en:"Number detective", metaEs:"Cumple todas las pistas", metaEn:"Fits all the clues"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-06-factors-patterns.html#primos */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Factores, múltiplos y primos ============ */
+const factoresDe = (n)=>{ const l = []; for(let d=1; d<=n; d++) if(n % d === 0) l.push(d); return l; };
+const paresDe = (n)=>{ const l = []; for(let d=1; d*d<=n; d++) if(n % d === 0) l.push([d, n/d]); return l; };
+const esPrimo = (n)=> n > 1 && factoresDe(n).length === 2;
+const menorFactor = (n)=>{ for(let d=2; d<=n; d++) if(n % d === 0) return d; return n; };
+const txtPar = ([a, b])=> `${a} × ${b}`;
+/* Lista «a, b y c» en el idioma actual */
+const listaY = (l)=> l.length < 2 ? l.join("") : l.slice(0, -1).join(", ") + " " + T[S.idioma].y + " " + l[l.length - 1];
+
+/* n cuadrados acomodados de k en k (la última fila puede quedar incompleta) */
+function cuadrosSVG(n, k, maxPx, celdaPx){
+  const filas = Math.ceil(n / k), c = 24;
+  const ancho = Math.min(k * (celdaPx || 22), maxPx || 330);
+  let s = `<svg viewBox="0 0 ${k*c + 4} ${filas*c + 4}" style="width:${ancho}px" role="img" aria-label="${
+    n % k === 0 ? T[S.idioma].arregloAria(filas, k) : T[S.idioma].parcialAria(n, k)}">`;
+  for(let i=0; i<n; i++){
+    const x = 2 + (i % k) * c, y = 2 + Math.floor(i / k) * c;
+    s += `<rect x="${x + 1.5}" y="${y + 1.5}" width="${c - 3}" height="${c - 3}" rx="4" fill="#7FA8F0" stroke="#1F3D7A" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+function arregloCaja(a, b, nuevo){
+  return `<div class="arr${nuevo ? " nuevo" : ""}">${cuadrosSVG(a*b, b)}<b>${a} × ${b}</b></div>`;
+}
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Pares de factores (4.OA.4) --- */
+  if(S.juego === "pares"){
+    if(!reto && Math.random() < 0.5){
+      /* Falta un par: los demás arreglos están dibujados */
+      const n = elegir([12,16,18,20,24,28,30,32,36]);
+      const pares = paresDe(n), falta = elegir(pares);
+      const dibujados = pares.filter(p=>p !== falta);
+      const caja = document.createElement("div"); caja.className = "arreglos";
+      caja.innerHTML = dibujados.map(([a, b])=>arregloCaja(a, b)).join("") + `<div class="arr hueco-arr"><span>?</span></div>`;
+      esc.appendChild(caja);
+      ponerInstruccion(t.paresF(n));
+      const pista = new Map();
+      const bien = txtPar(falta);
+      const ya = elegir(dibujados); pista.set(txtPar(ya), t.pistaYa);
+      const [fa, fb] = falta;
+      const malos = mezclar([[fa, fb + 1], [fa + 1, fb], [Math.max(2, fa - 1), fb], [fa, fb - 1]]
+        .filter(([a, b])=> a >= 1 && b >= 1 && a*b !== n));
+      for(const [a, b] of malos){
+        const k = txtPar([Math.min(a, b), Math.max(a, b)]);
+        if(pista.size >= 3) break;
+        if(!pista.has(k) && k !== bien) pista.set(k, t.pistaProd(Math.min(a, b), Math.max(a, b), a*b, n));
+      }
+      opcionesTexto([bien, ...pista.keys()], bien, ()=>{
+        caja.querySelector(".hueco-arr").outerHTML = arregloCaja(fa, fb, true);
+        sonBoing(); acertar(t.paresFin(n, listaY(pares.map(txtPar)), bien));
+      }, (x)=>pista.get(x));
+      return;
+    }
+    if(!reto){
+      /* ¿Qué arreglo NO funciona? */
+      let n, buenos, malo;
+      for(;;){
+        n = elegir([12,16,18,20,24,28,30]);
+        buenos = mezclar(factoresDe(n).filter(k=>k >= 2 && k < n && n / k <= 8 && n / k >= 2)).slice(0, 3);
+        const malosK = [3,4,5,6,7,8,9].filter(k=>n % k !== 0 && Math.ceil(n / k) <= 8 && Math.ceil(n / k) >= 2);
+        if(buenos.length === 3 && malosK.length){ malo = elegir(malosK); break; }
+      }
+      const [nom] = nombresAzar(1);
+      ponerInstruccion(t.filasF(nom, n));
+      esc.insertAdjacentHTML("beforeend", `<p class="pregunta-g">${n} 🪑</p>`);
+      const cont = $("opciones"), grilla = document.createElement("div"); grilla.className = "opciones-arr"; cont.appendChild(grilla);
+      mezclar([...buenos, malo]).forEach(k=>{
+        const b = botonTexto("", "opcion-texto opcion-arr", t.enFila(k), (bt)=>{
+          if(k === malo){ bt.classList.add("bien"); sonBoing(); acertar(t.filasFin(n, k, Math.floor(n / k), n % k)); }
+          else fallar(bt, t.pistaFilaBien(n, k, n / k));
+        });
+        b.innerHTML = cuadrosSVG(n, k, 150, 18) + `<span>${t.enFila(k)}</span>`;
+        b.dataset.v = k; grilla.appendChild(b);
+      });
+      S.resolver = ()=>{ [...grilla.querySelectorAll("button")].find(x=>+x.dataset.v === malo).click(); };
+      return;
+    }
+    if(Math.random() < 0.5){
+      /* ¿Cuántos pares de factores tiene n? */
+      const n = elegir([24,36,40,48,60,64,72,80,84,90,96,100]);
+      const pares = paresDe(n), k = pares.length, nf = factoresDe(n).length;
+      esc.appendChild(pasosEl(t.pasosPares(n)));
+      esc.insertAdjacentHTML("beforeend", `<p class="pregunta-g">${n}</p>`);
+      ponerInstruccion(t.cuantosF(n), t.cuantosF(n) + " " + t.pasosPares(n).join(" "));
+      const lista = unicos([k, nf, k - 1, k + 1]);
+      opcionesNum(lista, k, ()=>acertar(t.cuantosFin(n, listaY(pares.map(txtPar)), k)),
+        (v)=> v === nf ? t.pistaContaste : v < k ? t.pistaMenos(n) : t.pistaDoble(pares[1][0], pares[1][1]));
+      return;
+    }
+    /* La lista completa de pares */
+    const n = elegir([24,28,30,32,36,40,42,44,45,48,50,54,56,63,64,66,70,75,78,80,88,98,99,100].filter(x=>paresDe(x).length <= 5));
+    const pares = paresDe(n);
+    const bien = pares.map(txtPar).join(", ");
+    const pista = new Map();
+    const quita = azar(1, pares.length - 1);
+    pista.set(pares.filter((p, i)=>i !== quita).map(txtPar).join(", "), t.pistaListaFalta);
+    const cambia = azar(1, pares.length - 1), [ca, cb] = pares[cambia];
+    const otra = pares.map((p, i)=> i === cambia ? `${ca} × ${cb + 1}` : txtPar(p)).join(", ");
+    pista.set(otra, t.pistaProd(ca, cb + 1, ca*(cb + 1), n));
+    const rep = pares.filter(([a, b])=>a !== b && a > 1);
+    const [ra, rb] = elegir(rep);
+    const sobra = [...pares.map(txtPar), `${rb} × ${ra}`].join(", ");
+    pista.set(sobra, t.pistaDobleL(ra, rb));
+    esc.insertAdjacentHTML("beforeend", `<p class="pregunta-g">${n}</p>`);
+    ponerInstruccion(t.listaF(n));
+    opcionesTexto([bien, ...pista.keys()], bien, ()=>acertar(t.cuantosFin(n, listaY(pares.map(txtPar)), pares.length)), (x)=>pista.get(x));
+    $("opciones").querySelectorAll("button").forEach(b=>b.classList.add("larga"));
+    return;
+  }
+
+  /* --- 2. Marca todos los factores (4.OA.4): marcar varios y comprobar --- */
+  if(S.juego === "todos"){
+    const n = reto ? elegir([40,42,45,48,54,56,60,63,64,70,72,75,80,84,90,96,100]) : elegir([12,15,16,18,20,24,28,30,32,36]);
+    const fs = factoresDe(n);
+    const nBuenas = reto ? azar(4, 5) : azar(3, 4), total = reto ? 8 : 6;
+    const buenasN = mezclar(fs).slice(0, nBuenas).sort((x, y)=>x - y);
+    /* Distractores: vecinos de un factor que no lo dividen, y a veces un múltiplo de n */
+    const cand = [];
+    fs.forEach(f=>{ [f - 1, f + 1].forEach(x=>{ if(x > 1 && x < n && n % x !== 0) cand.push(x); }); });
+    let malasN = mezclar(unicos(cand)).slice(0, total - nBuenas - (reto ? 1 : 0));
+    if(reto) malasN.push(n * 2);
+    while(malasN.length < total - nBuenas){ const x = azar(2, n - 1); if(n % x !== 0 && !malasN.includes(x)) malasN.push(x); }
+    const buenas = buenasN.map(String);
+    const medio = paresDe(n).filter(([a])=>a > 1).pop() || [1, n];
+    if(!reto){
+      const caja = document.createElement("div"); caja.className = "arreglos";
+      caja.innerHTML = arregloCaja(medio[0], medio[1]);
+      esc.appendChild(caja);
+    }
+    esc.insertAdjacentHTML("beforeend", `<p class="pregunta-g">${n}</p>`);
+    ponerInstruccion(t.todosF(n));
+    const d = buenasN.find(x=>x > 1 && x < n) || medio[0];
+    marcarVarios(mezclar([...buenas, ...malasN.map(String)]), buenas,
+      {comprobar:t.comprobar, ninguno:t.ninguno,
+       malo:(x)=>{ const v = +x; return v > n && v % n === 0 ? t.todosMult(v, n) : t.todosResto(v, n, Math.floor(n / v), n % v); },
+       faltan:t.todosFalta(n, d)},
+      ()=>acertar(t.todosFin(n, listaY(fs.map(String)), paresDe(n).map(txtPar).join(", "))));
+    return;
+  }
+
+  /* --- 3. ¿Es múltiplo? (4.OA.4): múltiplo y factor son dos caras de lo mismo --- */
+  if(S.juego === "multiplos"){
+    const k = reto ? azar(2, 12) : azar(2, 10);
+    const qMax = Math.floor((reto ? 100 : k <= 5 ? 50 : 90) / k);
+    const q = azar(Math.max(2, Math.ceil(10 / k)), Math.min(qMax, reto ? 12 : 10));
+    const esMul = Math.random() < 0.5;
+    let n = k * q;
+    if(!esMul){ n = k * q + (Math.random() < 0.5 ? 1 : azar(1, k - 1)); if(n > 100) n = k * (q - 1) + azar(1, k - 1); }
+    const r = n % k, cociente = Math.floor(n / k);
+    const comoFactor = reto && Math.random() < 0.5;
+    const pregunta = comoFactor ? t.facF(k, n) : t.multF(n, k);
+    esc.insertAdjacentHTML("beforeend", `<p class="pregunta-g">${escaparHTML(pregunta)}</p>`);
+    if(!reto){
+      const tope = Math.max(n, k * 2);
+      const saltos = []; for(let x=k; x<=tope + (n % k ? k - n % k : 0); x+=k) saltos.push(x);
+      esc.insertAdjacentHTML("beforeend", `<p class="rotulo">${escaparHTML(t.saltos(k))}</p><div class="saltos">${saltos.map(x=>`<span>${x}</span>`).join("")}</div>`);
+    }
+    ponerInstruccion(pregunta);
+    const ult = n % 10;
+    const regla = k === 2 ? t.regla2(n, ult) : k === 5 ? t.regla5(n, ult) : k === 10 ? t.regla10(n, ult) : null;
+    const expl = r === 0 ? (comoFactor ? t.facSiFin(n, k, q) : t.mulSiFin(n, k, q))
+                         : (comoFactor ? t.facNoFin(n, k, cociente, r) : t.mulNoFin(n, k, cociente, r));
+    const pista = (comoFactor ? t.pistaFac(k, n) + " " : "") + (regla || t.pistaMul(k, n));
+    const si = comoFactor ? t.siFac : t.siMul, no = comoFactor ? t.noFac : t.noMul;
+    const cont = $("opciones");
+    [[true, si, "opcion-vf v"], [false, no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(v === (r === 0)){ sonBoing(); acertar(expl + (regla ? " " + regla : "")); } else fallar(bt, pista); }));
+    });
+    S.resolver = resolverTexto(r === 0 ? si : no);
+    return;
+  }
+
+  /* --- 4. ¿Primo o compuesto? (4.OA.4) --- */
+  if(S.juego === "primos"){
+    let n;
+    if(!reto) n = Math.random() < 0.5 ? elegir([2,3,5,7,11,13,17,19,23,29]) : elegir([4,6,8,9,10,12,14,15,16,18,20,21,22,24,25,26,27,28,30]);
+    else {
+      const x = Math.random();
+      n = x < 0.1 ? 1 : x < 0.5 ? elegir([2,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97])
+        : x < 0.8 ? elegir([51,57,91,87,49,77,39,21,27,33,63,69,81,93,99,95,85,65])
+        : elegir([34,38,44,46,58,62,74,86,92,98,55,45]);
+    }
+    const fs = factoresDe(n), primo = esPrimo(n), a = menorFactor(n), b = n / a;
+    if(!reto){
+      const [fa, fb] = primo ? [1, n] : paresDe(n).filter(([p])=>p > 1).pop();
+      const caja = document.createElement("div"); caja.className = "arreglos";
+      caja.innerHTML = `<div class="arr">${cuadrosSVG(n, fb, 330, 26)}<b>${escaparHTML(t.cuadros(n))}</b></div>`;
+      esc.appendChild(caja);
+    } else esc.appendChild(pasosEl(t.pasosPrimo));
+    esc.insertAdjacentHTML("beforeend", `<p class="pregunta-g">${n}</p>`);
+    ponerInstruccion(t.primoF(n), t.primoF(n) + (reto ? " " + t.pasosPrimo.join(" ") : ""));
+    const bien = n === 1 ? t.niNi : primo ? t.primo : t.compuesto;
+    const expl = n === 1 ? t.unoFin : primo ? t.primoFin(n) + (reto ? "" : " " + t.primoFinF) : t.compFin(n, listaY(fs.map(String)), a, b);
+    const pista = (x)=>{
+      if(n === 1) return t.pistaUno;
+      if(x === t.niNi) return t.pistaNi;
+      if(primo) return n === 2 ? t.pistaDos : reto ? t.pistaEsPrimo(n) : t.pistaUnaFila(n);
+      if(!reto) return t.pistaDibujo;
+      return n % 2 === 0 ? t.pistaPar(n) : n % 5 === 0 ? t.pistaCinco(n) : t.pistaImpar(n);
+    };
+    const cont = $("opciones");
+    (reto ? [t.primo, t.compuesto, t.niNi] : [t.primo, t.compuesto]).forEach(x=>{
+      cont.appendChild(botonTexto(x, "opcion-texto", null, (bt)=>{ if(x === bien){ sonBoing(); acertar(expl); } else fallar(bt, pista(x)); }));
+    });
+    S.resolver = resolverTexto(bien);
+    return;
+  }
+
+  /* --- 5. La regla del patrón (4.OA.5) --- */
+  if(S.juego === "patron"){
+    const secuencia = (l, ult)=> `<div class="secuencia">${l.map(x=>`<span class="t">${x}</span>`).join('<span class="coma">,</span>')}${
+      ult ? '<span class="coma">,</span><span class="t q">?</span>' : '<span class="coma">, …</span>'}</div>`;
+    const regla = (txt)=> `<p class="regla">${escaparHTML(txt)}</p>`;
+    if(!reto){
+      const tipo = elegir(["suma","suma","torres","doble"]);
+      if(tipo === "suma"){
+        const a = azar(1, 12), k = azar(3, 9);
+        const l = [0,1,2,3,4].map(i=>a + i*k), p = l[4], bien = p + k;
+        esc.insertAdjacentHTML("beforeend", regla(t.reglaSuma(a, k)) + secuencia(l, true));
+        ponerInstruccion(t.sigF, t.reglaSuma(a, k) + " " + l.join(", ") + ". " + t.sigF);
+        opcionesNum([bien, p + 2*k, p + k + 1, p + k - 1], bien, ()=>{ esc.querySelector(".q").textContent = bien; esc.querySelector(".q").classList.add("lleno"); acertar(t.sigFin(p, k, bien)); },
+          (v)=> v === p + 2*k ? t.pistaSalto : t.pistaCuanto(k));
+        return;
+      }
+      if(tipo === "doble"){
+        const a = azar(1, 5), l = [a, 2*a, 4*a, 8*a], bien = 16*a;
+        esc.insertAdjacentHTML("beforeend", regla(t.reglaDoble(a)) + secuencia(l, true));
+        ponerInstruccion(t.sigF, t.reglaDoble(a) + " " + l.join(", ") + ". " + t.sigF);
+        opcionesNum([bien, 12*a, 8*a + 2], bien, ()=>{ esc.querySelector(".q").textContent = bien; esc.querySelector(".q").classList.add("lleno"); acertar(t.dobleFin(8*a, bien)); },
+          (v)=> v === 12*a ? t.pistaDifer : t.pistaMas2);
+        return;
+      }
+      /* Torres que crecen */
+      const s = azar(1, 3), k = azar(1, 3), alturas = [0,1,2,3].map(i=>s + i*k), bien = s + 4*k;
+      const torres = document.createElement("div"); torres.className = "torres"; torres.setAttribute("role", "img");
+      torres.setAttribute("aria-label", t.torresAria(alturas.map((h, i)=>`${t.torre(i + 1)}: ${h}`).join(", ")));
+      torres.innerHTML = alturas.map((h, i)=>`<div class="torre" aria-hidden="true"><div class="bloques">${"<span>🟦</span>".repeat(h)}</div><small>${t.torre(i + 1)}</small></div>`).join("")
+        + `<div class="torre" aria-hidden="true"><div class="bloques"><span class="q">?</span></div><small>${t.torre(5)}</small></div>`;
+      esc.appendChild(torres);
+      ponerInstruccion(t.torreF(k), t.torresAria(alturas.join(", ")) + ". " + t.torreF(k));
+      opcionesNum([bien, bien + k, bien + 1, bien - 1].filter(x=>x > alturas[3]), bien, ()=>{
+        torres.lastElementChild.querySelector(".bloques").innerHTML = "<span>🟦</span>".repeat(bien);
+        acertar(t.torreFin(alturas[3], k, bien));
+      }, (v)=> v === bien + k ? t.pistaSalto : t.pistaCuanto(k));
+      return;
+    }
+    if(Math.random() < 0.5){
+      /* El término 10 */
+      let a, k; do{ a = azar(1, 12); k = azar(3, 9); } while(a === k);
+      const l = [0,1,2,3].map(i=>a + i*k), bien = a + 9*k;
+      esc.appendChild(pasosEl(t.pasosDiez));
+      esc.insertAdjacentHTML("beforeend", secuencia(l, false));
+      ponerInstruccion(t.diezF(a, k), t.diezF(a, k) + " " + t.pasosDiez.join(" "));
+      opcionesNum([bien, a + 10*k, 9*k, 10*k], bien, ()=>acertar(t.diezFin(a, k, bien)),
+        (v)=> v === a + 10*k ? t.pistaDiez : v === 9*k ? t.pistaSinInicio(a) : t.pistaDiez + " " + t.pistaSinInicio(a));
+      return;
+    }
+    /* Una observación que la regla no dice */
+    let a, k;
+    do{ a = azar(1, 15); k = azar(2, 9); } while(a === k || a % k === 0);
+    const l = [0,1,2,3,4,5].map(i=>a + i*k);
+    const verdad = k % 2 === 1 ? t.obsAlterna : a % 2 === 1 ? t.obsImpar : t.obsPar;
+    const expl = k % 2 === 1 ? t.obsAltFin(a, k) : a % 2 === 1 ? t.obsImparFin(a, k) : t.obsParFin(a, k);
+    const cuarta = Math.random() < 0.5 ? t.obsMult(k) : t.obsDoble;
+    esc.insertAdjacentHTML("beforeend", regla(t.reglaSuma(a, k)) + secuencia(l, false));
+    ponerInstruccion(t.obsF, t.reglaSuma(a, k) + " " + l.join(", ") + ". " + t.obsF);
+    opcionesTexto([t.obsImpar, t.obsPar, t.obsAlterna, cuarta], verdad, ()=>acertar(expl),
+      (x)=> x === cuarta ? (x === t.obsDoble ? t.pistaObsDoble(a, a + k) : t.pistaObsMult(a, k)) : t.pistaObsPar(l.join(", ")));
+    $("opciones").querySelectorAll("button").forEach(b=>b.classList.add("larga"));
+    return;
+  }
+
+  /* --- 6. Detective de números (4.OA.4): decidir con varias pistas --- */
+  if(S.juego === "detective"){
+    const nPistas = reto ? 4 : 3, tope = reto ? 100 : 60;
+    const U = [...Array(tope).keys()].map(i=>i + 1);
+    let m, pistas, malos;
+    for(let intento=0; intento<600; intento++){
+      m = azar(reto ? 6 : 4, reto ? 96 : 48);
+      const grupos = [];
+      /* múltiplo de k */
+      const ks = [2,3,4,5,6,7,8,9,10,12].filter(k=>m % k === 0 && k < m);
+      if(ks.length){ const k = elegir(ks);
+        grupos.push({g:"mul", k, txt:t.cMul(k), ok:(x)=>x % k === 0, por:(x)=>t.cMulNo(x, k, Math.floor(x / k), x % k), si:t.cMulSi(m, k)}); }
+      /* factor de N */
+      const Ns = [24,30,36,40,42,48,54,56,60,72,80,84,90,96,100].filter(N=>N % m === 0 && N !== m && N <= (reto ? 100 : 60));
+      if(Ns.length){ const N = elegir(Ns);
+        grupos.push({g:"fac", txt:t.cFac(N), ok:(x)=>N % x === 0, por:(x)=>t.cFacNo(x, N, Math.floor(N / x), N % x), si:t.cFacSi(m, N)}); }
+      /* mayor o menor que */
+      if(Math.random() < 0.5){ const B = Math.floor((m - 1) / 5) * 5 - (Math.random() < 0.5 ? 0 : 5); if(B > 0)
+        grupos.push({g:"cmp", txt:t.cMayor(B), ok:(x)=>x > B, por:(x)=>t.cMayorNo(x, B), si:`${m} > ${B}`}); }
+      else { const B = Math.ceil((m + 1) / 5) * 5 + (Math.random() < 0.5 ? 0 : 5);
+        grupos.push({g:"cmp", txt:t.cMenor(B), ok:(x)=>x < B, por:(x)=>t.cMenorNo(x, B), si:`${m} < ${B}`}); }
+      /* par o impar */
+      if(!(ks.length && grupos[0].k % 2 === 0)){
+        if(m % 2 === 0) grupos.push({g:"par", txt:t.cPar, ok:(x)=>x % 2 === 0, por:(x)=>t.cParNo(x), si:t.cParSi(m)});
+        else grupos.push({g:"par", txt:t.cImpar, ok:(x)=>x % 2 === 1, por:(x)=>t.cImparNo(x), si:t.cImparSi(m)});
+      }
+      /* primo o compuesto */
+      if(esPrimo(m)) grupos.push({g:"pri", txt:t.cPrimo, ok:(x)=>esPrimo(x), por:(x)=>{ const a = menorFactor(x); return t.cPrimoNo(x, a, x / a); }, si:t.cPrimoSi(m)});
+      else if(reto){ const fm = factoresDe(m), lf = fm.length <= 4 ? listaY(fm.map(String)) : fm.slice(0, 3).join(", ") + "…";
+        grupos.push({g:"pri", txt:t.cComp, ok:(x)=>x > 1 && !esPrimo(x), por:(x)=>t.cCompNo(x), si:t.cCompSi(m, lf)}); }
+      if(!grupos.some(c=>c.g === "mul" || c.g === "fac") || grupos.length < nPistas) continue;
+      const fm = grupos.filter(c=>c.g === "mul" || c.g === "fac");
+      const uno = elegir(fm);
+      pistas = mezclar([uno, ...mezclar(grupos.filter(c=>c !== uno)).slice(0, nPistas - 1)]);
+      const cumple = U.filter(x=>pistas.every(c=>c.ok(x)));
+      if(cumple.length !== 1 || cumple[0] !== m) continue;
+      /* Tres tarjetas falsas, cada una rompe (si se puede) una sola pista */
+      const falla = (x)=> pistas.map((c, j)=> c.ok(x) ? -1 : j).filter(j=>j >= 0);
+      malos = [];
+      for(const i of mezclar([...pistas.keys()]).slice(0, 3)){
+        const solo = mezclar(U.filter(x=>x !== m && !malos.includes(x) && falla(x).length === 1 && falla(x)[0] === i));
+        const cerca = solo.filter(x=>Math.abs(x - m) <= 30);
+        if(solo.length) malos.push((cerca.length ? cerca : solo)[0]);
+      }
+      while(malos.length < 3){ const x = elegir(U.filter(y=>y !== m && !malos.includes(y) && falla(y).length <= 2)); malos.push(x); }
+      break;
+    }
+    const falla = (x)=> pistas.map((c, j)=> c.ok(x) ? -1 : j).filter(j=>j >= 0);
+    esc.appendChild(pasosEl(pistas.map(c=>c.txt)));
+    ponerInstruccion(t.detF, t.detF + " " + pistas.map((c, j)=>t.pistaN(j + 1) + " " + c.txt).join(" "));
+    const caja = document.createElement("div"); caja.className = "cartas num";
+    const cont = $("opciones"); cont.appendChild(caja);
+    mezclar([m, ...malos]).forEach(v=>{
+      const b = botonTexto(String(v), "carta", null, (bt)=>{
+        if(v === m){ bt.classList.add("bien"); sonBoing(); acertar(t.detFin(m, pistas.map(c=>c.si).join("; "))); }
+        else { const j = falla(v)[0]; bt.classList.add("tachada"); fallar(bt, t.noCumple(j + 1, pistas[j].txt, pistas[j].por(v))); }
+      });
+      b.dataset.v = v; caja.appendChild(b);
+    });
+    S.resolver = ()=>{ [...caja.querySelectorAll("button")].find(x=>+x.dataset.v === m).click(); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const t = T[S.idioma];
+  const L = '<i class="linea"></i>', LL = '<i class="linea larga"></i>';
+  $("hoja-pares").innerHTML = [24, 36].map(n=>`<div><b>${n}:</b> ${L} × ${L}, ${L} × ${L}, ${L} × ${L}, ${L} × ${L}${n === 36 ? `, ${L} × ${L}` : ""}</div>`).join("");
+  $("hoja-primos").innerHTML = [2, 9, 13, 21, 29, 33, 37, 51, 1, 47].map(n=>`<span class="num-h">${n}</span>`).join("");
+  $("hoja-multiplos").innerHTML = `<div>7, ${Array(9).fill(L).join(", ")}</div>`;
+  $("hoja-patron").innerHTML = [[5, 4], [3, 6]].map(([a, k])=>`<div>${a}, ${a + k}, ${a + 2*k}, ${L}, ${L}, ${L}</div><div>${escaparHTML(t.hojaRegla)} ${LL}</div>`).join("")
+    + `<div>2, 4, 8, ${L}, ${L}</div><div>${escaparHTML(t.hojaRegla)} ${LL}</div>`;
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>

@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Adding, subtracting and multiplying fractions
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.NF.3, 4.NF.4
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Sumar, restar y multiplicar fracciones · Juegos de cuarto grado" data-en="Adding, subtracting and multiplying fractions · Fourth grade games">Adding, subtracting and multiplying fractions · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade fraction games with Lumi: decompose fractions, add and subtract with like denominators, work with mixed numbers, multiply a fraction by a whole number and solve word problems.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.mixto{display:inline-flex;align-items:center;gap:.12em;vertical-align:middle;font-weight:700}
+.mixto .ent{font-size:1.15em;line-height:1}
+.opcion-frac .mixto .ent{font-size:1.25em}
+.expr{flex-wrap:wrap;row-gap:6px}
+.expr .signo-c{min-width:1.6em;padding:0 .12em;display:inline-flex;justify-content:center;align-items:center}
+.escena .problema{max-width:40ch}
+.opcion-texto{font-size:clamp(20px,4.4vw,30px)}
+.fila-fichas .carta{font-size:clamp(18px,4.2vw,26px)}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Sumar, restar y multiplicar fracciones" data-en="Adding, subtracting and multiplying fractions">Adding, subtracting and multiplying fractions</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>🍕</span><span>➕</span><span>✖️</span><span>🏃</span></div>
+    <h2 data-es="¡Fracciones en acción!" data-en="Fractions in action!">Fractions in action!</h2>
+    <p data-es="3/8 es 1/8 + 1/8 + 1/8. Con Lumi vas a descomponer fracciones, sumarlas y restarlas cuando las piezas son del mismo tamaño, pasar de números mixtos a fracciones, multiplicar una fracción por un número entero y resolver problemas de la vida diaria. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="3/8 is 1/8 + 1/8 + 1/8. With Lumi you will decompose fractions, add and subtract them when the pieces are the same size, change mixed numbers to fractions, multiply a fraction by a whole number and solve everyday word problems. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">3/8 is 1/8 + 1/8 + 1/8. With Lumi you will decompose fractions, add and subtract them when the pieces are the same size, change mixed numbers to fractions, multiply a fraction by a whole number and solve everyday word problems. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: operaciones con fracciones" data-en="🖨 Print a page: fraction operations">🖨 Print a page: fraction operations</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.NF.3 (entender a/b con a &gt; 1 como una suma de fracciones 1/b; sumar y restar fracciones como juntar y separar partes del mismo entero; descomponer una fracción en una suma de fracciones con el mismo denominador de varias maneras; sumar y restar números mixtos con el mismo denominador; resolver problemas de suma y resta de fracciones del mismo entero y con el mismo denominador) y 4.NF.4 (entender a/b como múltiplo de 1/b; entender un múltiplo de a/b como múltiplo de 1/b y usarlo para multiplicar una fracción por un número entero; resolver problemas de multiplicar una fracción por un número entero). En el nivel Fácil hay barras y una recta numérica; en el Reto se trabaja con los números, con resultados mayores que 1, números mixtos con reagrupación, problemas de dos pasos y los pasos a la vista. Denominadores 2, 3, 4, 5, 6, 8, 10, 12 y 100. El juego «Descomponer fracciones» en el Reto pide marcar todas las sumas correctas, y «Problemas con fracciones» pide decidir entre qué dos números enteros está la respuesta. Cada juego tiene su enlace directo: #descomponer, #sumar, #restar, #mixtos, #veces y #problemas."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.NF.3 (understand a fraction a/b with a &gt; 1 as a sum of fractions 1/b; understand adding and subtracting fractions as joining and separating parts of the same whole; decompose a fraction into a sum of fractions with the same denominator in more than one way; add and subtract mixed numbers with like denominators; solve word problems involving addition and subtraction of fractions referring to the same whole and having like denominators) and 4.NF.4 (understand a fraction a/b as a multiple of 1/b; understand a multiple of a/b as a multiple of 1/b and use this to multiply a fraction by a whole number; solve word problems involving multiplication of a fraction by a whole number). At the Easy level there are bars and a number line; at the Challenge level the work is with the numbers, with results greater than 1, mixed numbers with regrouping, two-step problems and the steps on screen. Denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100. At the Challenge level, the game “Decomposing fractions” asks the child to mark every correct sum, and “Fraction word problems” asks between which two whole numbers the answer lies. Each game has its own direct link: #descomponer, #sumar, #restar, #mixtos, #veces and #problemas.">Aligned to the Illinois fourth grade mathematics standards 4.NF.3 (understand a fraction a/b with a &gt; 1 as a sum of fractions 1/b; understand adding and subtracting fractions as joining and separating parts of the same whole; decompose a fraction into a sum of fractions with the same denominator in more than one way; add and subtract mixed numbers with like denominators; solve word problems involving addition and subtraction of fractions referring to the same whole and having like denominators) and 4.NF.4 (understand a fraction a/b as a multiple of 1/b; understand a multiple of a/b as a multiple of 1/b and use this to multiply a fraction by a whole number; solve word problems involving multiplication of a fraction by a whole number). At the Easy level there are bars and a number line; at the Challenge level the work is with the numbers, with results greater than 1, mixed numbers with regrouping, two-step problems and the steps on screen. Denominators 2, 3, 4, 5, 6, 8, 10, 12 and 100. At the Challenge level, the game “Decomposing fractions” asks the child to mark every correct sum, and “Fraction word problems” asks between which two whole numbers the answer lies. Each game has its own direct link: #descomponer, #sumar, #restar, #mixtos, #veces and #problemas.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Sumar, restar y multiplicar fracciones" data-en="Adding, subtracting and multiplying fractions">Adding, subtracting and multiplying fractions</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Suma." data-en="1. Add.">1. Add.</h3>
+  <div class="caja-h" id="hoja-suma"></div>
+  <h3 data-es="2. Resta." data-en="2. Subtract.">2. Subtract.</h3>
+  <div class="caja-h" id="hoja-resta"></div>
+  <h3 data-es="3. Escribe el número mixto como fracción y la fracción como número mixto." data-en="3. Write the mixed number as a fraction and the fraction as a mixed number.">3. Write the mixed number as a fraction and the fraction as a mixed number.</h3>
+  <div class="caja-h" id="hoja-mixto"></div>
+  <h3 data-es="4. Multiplica." data-en="4. Multiply.">4. Multiply.</h3>
+  <div class="caja-h" id="hoja-veces"></div>
+  <h3 data-es="5. Resuelve el problema. Haz un dibujo o usa la recta numérica." data-en="5. Solve the problem. Draw a picture or use a number line.">5. Solve the problem. Draw a picture or use a number line.</h3>
+  <p class="razon-h" id="hoja-prob"></p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, tiene razón", no:"✘ No tiene razón", comprobar:"✔ Comprobar", ninguno:"Marca al menos una suma.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    entero:(w)=> w === 1 ? "1 entero" : `${w} enteros`,
+    /* 1. Descomponer fracciones */
+    descF:(a,d)=>`¿Cuál es una forma de descomponer ${a}/${d}? Mira la barra.`,
+    descR:(a,d)=>`Marca todas las sumas que son iguales a ${a}/${d}. Después toca Comprobar.`,
+    descFin:(a,d,partes)=>`${a}/${d} = ${partes.map(p=>p + "/" + d).join(" + ")}, porque ${partes.join(" + ")} = ${a} y todas las piezas son ${DEN.es[d][1]}.`,
+    descMayorFin:(a,d,r)=>`${a}/${d} = ${d}/${d} + ${r}/${d}, y ${d}/${d} es 1 entero. Por eso ${a}/${d} = 1 + ${r}/${d}.`,
+    descRFin:(a,d,l)=>`Todas estas son iguales a ${a}/${d}: ${l}. Los números de arriba suman ${a} y las piezas siguen siendo ${DEN.es[d][1]}.`,
+    descRFinMayor:(a,d,l)=>`Todas estas son iguales a ${a}/${d}: ${l}. Recuerda que 1 entero = ${d}/${d}.`,
+    pistaDescDen:(x,d)=>`${x} no sirve: esas piezas no son ${DEN.es[d][1]}. Al sumar fracciones, el número de abajo no se suma: todas las partes deben ser ${DEN.es[d][1]}.`,
+    pistaDescSuma:(x,s,a)=>`${x} no sirve: los números de arriba suman ${s}, y necesitas ${a}.`,
+    pistaDescUnoMas:(x,d,a)=>`${x} no sirve: 1 entero ya es ${d}/${d}, así que eso es más que ${a}/${d}.`,
+    pistaDescUnidad:(x,d)=>`${x} no sirve: 1 entero no es 1/${d}, sino ${d}/${d}.`,
+    descFalta:"Todavía falta al menos una suma correcta. Revisa cuáles suman bien los números de arriba.",
+    /* 2. Suma con el mismo denominador */
+    sumaF:"¿Cuánto es en total? Mira las barras.",
+    sumaR:(m)=> m ? "¿Cuánto es en total? Escribe la respuesta como número mixto." : "¿Cuánto es en total? Escribe la respuesta como fracción.",
+    sumaFin:(a,b,d,s)=>`${a}/${d} + ${b}/${d} = ${s}/${d}. Las piezas son ${DEN.es[d][1]}, así que solo se suman los números de arriba: ${a} + ${b} = ${s}.`,
+    masDeUno:(s,d,r)=>` Como ${s}/${d} = ${d}/${d} + ${r}/${d}, también es ${mx(1, r, d)}.`,
+    unEntero:(d)=>` ${d}/${d} es 1 entero.`,
+    pistaDen:(d)=>`¡Cuidado! Sumaste también los números de abajo. Las piezas siguen siendo ${DEN.es[d][1]}: solo se suman los números de arriba.`,
+    pistaCuenta:"Casi. Vuelve a contar las piezas, o suma otra vez los números de arriba.",
+    pistaCuentaR:"Casi. Vuelve a contar las piezas que quedan, o resta otra vez los números de arriba.",
+    pistaSinEntero:(d)=>`Te faltó el entero: ${d}/${d} forman 1 entero, y lo que sobra es la fracción.`,
+    ctxSuma:[
+      {max1:false, t:(n1,n2,f1,f2)=>`${n1} comió ${f1} de una pizza y ${n2} comió ${f2} de otra pizza del mismo tamaño. ¿Cuánta pizza comieron entre los dos?`},
+      {max1:false, t:(n1,n2,f1,f2)=>`${n1} usó ${f1} de metro de cinta para un cartel y ${f2} de metro para otro. ¿Cuánta cinta usó en total?`},
+      {max1:false, t:(n1,n2,f1,f2)=>`${n1} caminó ${f1} de milla por el sendero del parque y después ${f2} de milla más. ¿Cuántas millas caminó en total?`},
+      {max1:true,  t:(n1,n2,f1,f2)=>`${n1} pintó ${f1} de la cerca de la escuela y ${n2} pintó ${f2} de la misma cerca. ¿Qué parte de la cerca pintaron entre los dos?`}],
+    /* 3. Resta con el mismo denominador */
+    restaF:"Resta las fracciones. Mira la barra.",
+    restaR:"Resta las fracciones. Escribe la respuesta como fracción.",
+    restaFin:(a,b,d,r)=>`${a}/${d} − ${b}/${d} = ${r}/${d}. Las piezas son ${DEN.es[d][1]}, así que solo se restan los números de arriba: ${a} − ${b} = ${r}.`,
+    unoFin:(b,d,r)=>`1 entero = ${d}/${d}. Entonces 1 − ${b}/${d} = ${d}/${d} − ${b}/${d} = ${r}/${d}.`,
+    pistaSumo:"Esa respuesta es una suma. Aquí hay que quitar: resta los números de arriba.",
+    pistaQuitado:"Esa es la parte que se quitó. La pregunta es cuánto queda.",
+    pistaMenor:(n)=>`Esa es la parte de ${n}. La pregunta es cuánto más: la diferencia entre los dos.`,
+    pistaUno:(d)=>`1 entero son ${d}/${d}. Escribe el 1 como ${d}/${d} y después resta.`,
+    ctxResta:[
+      {mas:false, max1:true,  t:(n1,n2,f1,f2)=>`En la mesa quedaban ${f1} de una pizza. ${n1} se comió ${f2}. ¿Cuánta pizza queda ahora?`},
+      {mas:false, max1:false, t:(n1,n2,f1,f2)=>`${n1} tenía ${f1} de metro de cinta y usó ${f2} de metro para un moño. ¿Cuánta cinta le queda?`},
+      {mas:true,  max1:false, t:(n1,n2,f1,f2)=>`${n1} corrió ${f1} de milla y ${n2} corrió ${f2} de milla. ¿Cuánto más corrió ${n1} que ${n2}?`},
+      {mas:true,  max1:true,  t:(n1,n2,f1,f2)=>`${n1} leyó ${f1} de un libro y ${n2} leyó ${f2} del mismo libro. ¿Cuánto más leyó ${n1}?`}],
+    ctxUno:[
+      (n,f)=>`Había una pizza entera. ${n} y sus amigos se comieron ${f} de la pizza. ¿Cuánta pizza queda?`,
+      (n,f)=>`${n} tenía 1 litro de jugo y se tomó ${f} de litro. ¿Cuánto jugo le queda?`],
+    /* 4. Números mixtos */
+    mixF:(m)=>`El punto marca ${m}. ¿Qué fracción es igual a ${m}?`,
+    fracF:(f)=>`El punto marca ${f}. ¿Qué número mixto es igual a ${f}?`,
+    mixR:(m)=>`¿Qué fracción es igual a ${m}?`,
+    fracR:(f)=>`¿Qué número mixto es igual a ${f}?`,
+    pasosM2F:["Multiplica el número entero por el número de abajo.","Suma el número de arriba.","El número de abajo no cambia."],
+    pasosF2M:(d)=>[`Cada entero son ${d}/${d}: busca cuántos enteros caben.`,"Lo que sobra es la fracción.","Escribe el entero y la fracción juntos."],
+    m2fFin:(w,a,d,n)=>`${mx(w, a, d)} = ${n}/${d}. Cada entero tiene ${d} ${DEN.es[d][1]}: ${w} × ${d} = ${w*d}, y ${w*d} + ${a} = ${n}.`,
+    f2mFin:(n,d,w,a)=>`${n}/${d} = ${w*d}/${d} + ${a}/${d}, y ${w*d}/${d} = ${w}. Por eso ${n}/${d} = ${mx(w, a, d)}.`,
+    pistaMixSumo:(d)=>`Cuidado: cada entero no es una sola pieza, son ${d} ${DEN.es[d][1]}. Multiplica el entero por ${d} y después suma el número de arriba.`,
+    pistaMixOlvido:(a,d)=>`Esos son solo los enteros: falta sumar ${a}/${d}.`,
+    pistaMixMal:(d)=>`Multiplica el entero por el número de abajo (${d}), no por el de arriba.`,
+    pistaMixCuenta:(d)=>`Revisa la cuenta: cada entero son ${d}/${d}. Cuenta en la recta si te ayuda.`,
+    pistaCambiado:"Cambiaste de lugar el entero y el número de arriba. Los enteros son las veces que cabe el número de abajo; lo que sobra va arriba.",
+    mixSumaR:"Suma los números mixtos.",
+    mixRestaR:"Resta los números mixtos.",
+    pasosMixS:["Suma las fracciones.","Suma los enteros.","Si las fracciones forman un entero o más, pasa ese entero a los enteros."],
+    pasosMixR:["Mira si alcanzan las piezas para restar las fracciones.","Si no alcanzan, cambia 1 entero por piezas del mismo tamaño.","Resta las fracciones y después los enteros."],
+    mixSFin:(w1,a1,w2,a2,d)=>{ const s = a1 + a2, W = w1 + w2;
+      return s > d ? `Primero las fracciones: ${a1}/${d} + ${a2}/${d} = ${s}/${d}, que es ${mx(1, s-d, d)}. Después los enteros: ${w1} + ${w2} + 1 = ${W+1}. Resultado: ${mx(W+1, s-d, d)}.`
+                   : `Primero las fracciones: ${a1}/${d} + ${a2}/${d} = ${s}/${d}. Después los enteros: ${w1} + ${w2} = ${W}. Resultado: ${mx(W, s, d)}.`; },
+    mixRFin:(w1,a1,w2,a2,d)=> a1 > a2
+      ? `Primero las fracciones: ${a1}/${d} − ${a2}/${d} = ${a1-a2}/${d}. Después los enteros: ${w1} − ${w2} = ${w1-w2}. Resultado: ${mx(w1-w2, a1-a2, d)}.`
+      : `No alcanzan las piezas: ${a1}/${d} es menos que ${a2}/${d}. Cambia 1 entero por ${d}/${d}: ${mx(w1, a1, d)} = ${mx(w1-1, a1+d, d)}. Ahora: ${a1+d}/${d} − ${a2}/${d} = ${a1+d-a2}/${d} y ${w1-1} − ${w2} = ${w1-1-w2}. Resultado: ${mx(w1-1-w2, a1+d-a2, d)}.`,
+    pistaLleva:(d)=>`Las fracciones suman más de ${d}/${d}: ese entero de más hay que sumarlo a los enteros.`,
+    pistaEnteroExtra:(d)=>`Solo se forma un entero nuevo cuando las fracciones suman ${d}/${d} o más.`,
+    pistaChicoGrande:"Cuidado: restaste al revés, el número pequeño menos el grande. Si no alcanzan las piezas, cambia 1 entero por piezas.",
+    pistaNoBajo:"Cambiaste 1 entero por piezas, pero no se lo quitaste a los enteros.",
+    pistaSumoFr:"Ahí se sumaron las fracciones. En una resta, las fracciones también se restan.",
+    pistaSumoEnt:"Ahí se sumaron los enteros. En una resta, los enteros también se restan.",
+    /* 5. Fracción por un número entero */
+    vecesF:(n,a,b)=>`Hay ${n} barras con ${a}/${b} cada una. ¿Cuánto es ${n} × ${a}/${b}?`,
+    vecesR:(n,a,b)=>`¿Cuánto es ${n} × ${a}/${b}?`,
+    mismoR:(n,a,b)=>`¿Qué es lo mismo que ${n} × ${a}/${b}?`,
+    vecesFin:(n,a,b)=>`${n} × ${a}/${b} son ${n} grupos de ${a}/${b}` + (n <= 6 ? `: ${Array(n).fill(a + "/" + b).join(" + ")} = ${n*a}/${b}` : ` = ${n*a}/${b}`) + `. Es lo mismo que ${n*a} × 1/${b}: el número de abajo no cambia.`,
+    pistaVecesDen:(b)=>`¡Cuidado! Multiplicaste también el número de abajo. Son varios grupos de piezas del mismo tamaño: siguen siendo ${DEN.es[b][1]}.`,
+    pistaVecesSuma:"Ahí se sumó el número entero con el de arriba. Multiplicar es repetir: cuenta las piezas de todos los grupos.",
+    pistaVecesOlvido:(n,a,b)=>`Cada grupo tiene ${a}/${b}, no 1/${b}. Son ${n} grupos de ${a} piezas.`,
+    pistaVecesCuenta:(n)=>`Cuenta otra vez: tienen que ser ${n} grupos iguales.`,
+    pistaVecesCasi:"Casi. Multiplica el número entero por el número de arriba.",
+    /* 6. Problemas con fracciones */
+    probF:"Lee el problema y elige la respuesta.",
+    entreR:"¿Entre qué dos números enteros está la respuesta?",
+    entre:(x,y)=>`Entre ${x} y ${y}`,
+    pasosEntre:(b)=>["Multiplica el número de veces por el número de arriba.",`Cuenta los enteros: cada ${b}/${b} es 1 entero.`,"Si sobran piezas, la respuesta está entre ese entero y el siguiente."],
+    dosPasosR:"Resuelve el problema en dos pasos. Escribe la respuesta como fracción.",
+    pasosA:(k)=>[`Multiplica para saber cuánto corre en los ${k} días.`,"Suma lo que corre el sábado."],
+    pasosB:(k)=>[`Multiplica para saber cuánta cinta se usa en los ${k} trozos.`,"Resta eso del largo de la cinta."],
+    probVFin:(k,a,b)=>`${k} × ${a}/${b} = ${k*a}/${b}, porque son ${k} grupos de ${a}/${b}.`,
+    tambien:(f,m)=>` ${f} = ${m}.`,
+    entreFin:(k,a,b,w,r)=>`${k} × ${a}/${b} = ${k*a}/${b} = ${mx(w, r, b)}. Está entre ${w} y ${w+1}.`,
+    dosAFin:(k,a,c,b)=>`Paso 1: ${k} × ${a}/${b} = ${k*a}/${b}. Paso 2: ${k*a}/${b} + ${c}/${b} = ${k*a+c}/${b}.`,
+    dosBFin:(L,k,a,b)=>`Paso 1: ${k} × ${a}/${b} = ${k*a}/${b}. Paso 2: ${L}/${b} − ${k*a}/${b} = ${L-k*a}/${b}.`,
+    pistaUnPaso:"Ese es solo el primer paso. Falta el segundo: lee otra vez el final del problema.",
+    pistaSinMult:"Te faltó multiplicar: son varios grupos iguales.",
+    pistaUnTrozo:"Ahí se restó un solo trozo. Primero multiplica para saber cuánta cinta usan todos los trozos.",
+    pistaEntre:(b)=>`Revisa cuántos enteros caben: cada ${b}/${b} es 1 entero.`,
+    pistaEntreDen:"Eso saldría si se multiplica también el número de abajo. Las piezas no cambian de tamaño.",
+    ctxVeces:[
+      {e:"🏃", t:(n,f,k)=>`${n} corre ${f} de milla cada día durante ${k} días. ¿Cuántas millas corre en total?`},
+      {e:"🥞", t:(n,f,k)=>`Una receta de panqueques lleva ${f} de taza de leche. ${n} prepara la receta ${k} veces para la feria del barrio. ¿Cuántas tazas de leche necesita?`},
+      {e:"🎀", t:(n,f,k)=>`Cada estudiante del grupo de ${n} necesita ${f} de metro de cinta para un proyecto. Son ${k} estudiantes. ¿Cuántos metros de cinta necesitan?`},
+      {e:"💧", t:(n,f,k)=>`${n} toma ${f} de litro de agua en cada recreo. ¿Cuánta agua toma en ${k} recreos?`}],
+    ctxSumaP:[
+      {e:"🚶", max1:false, t:(n1,n2,f1,f2)=>`${n1} caminó ${f1} de milla hasta la biblioteca y después ${f2} de milla hasta el parque. ¿Cuántas millas caminó en total?`},
+      {e:"🎨", max1:true,  t:(n1,n2,f1,f2)=>`${n1} pintó ${f1} de un mural y ${n2} pintó ${f2} del mismo mural. ¿Qué parte del mural pintaron entre los dos?`}],
+    ctxRestaP:[
+      {e:"🍋", mas:false, t:(n1,n2,f1,f2)=>`Una jarra tenía ${f1} de litro de limonada. ${n1} sirvió ${f2} de litro. ¿Cuánta limonada queda en la jarra?`},
+      {e:"🚲", mas:true, t:(n1,n2,f1,f2)=>`${n1} recorrió en bicicleta ${f1} de milla junto al lago Michigan y ${n2} recorrió ${f2} de milla. ¿Cuánto más recorrió ${n1}?`}],
+    ctxA:(n,f,k,g)=>`${n} corre ${f} de milla cada día durante ${k} días, y el sábado corre ${g} de milla más. ¿Cuántas millas corre en total?`,
+    ctxB:(n,L,k,f)=>`Una cinta mide ${L} de metro. ${n} corta ${k} trozos de ${f} de metro cada uno para unos carteles. ¿Cuánta cinta queda?`,
+    hojaProb:"Elías corre 3/4 de milla cada día durante 5 días. ¿Cuántas millas corre en total? ¿Entre qué dos números enteros está la respuesta?",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["Dibujé barras","¡Muy bien! Con un dibujo se ve cuántas piezas hay y de qué tamaño son."],
+      ["Pensé en fracciones unitarias (1/8 + 1/8…)","¡Excelente! Contar de 1/8 en 1/8 explica por qué el número de abajo no cambia."],
+      ["Usé la recta numérica","¡Buena idea! En la recta se ve cuántos enteros hay y cuánto falta para el siguiente."],
+      ["Cambié el número mixto a fracción","¡Genial! Así puedes sumar, restar o comparar con piezas del mismo tamaño."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong", comprobar:"✔ Check", ninguno:"Mark at least one sum.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    entero:(w)=> w === 1 ? "1 whole" : `${w} wholes`,
+    descF:(a,d)=>`Which one is a way to decompose ${a}/${d}? Look at the bar.`,
+    descR:(a,d)=>`Mark every sum that equals ${a}/${d}. Then touch Check.`,
+    descFin:(a,d,partes)=>`${a}/${d} = ${partes.map(p=>p + "/" + d).join(" + ")}, because ${partes.join(" + ")} = ${a} and all the pieces are ${DEN.en[d][1]}.`,
+    descMayorFin:(a,d,r)=>`${a}/${d} = ${d}/${d} + ${r}/${d}, and ${d}/${d} is 1 whole. So ${a}/${d} = 1 + ${r}/${d}.`,
+    descRFin:(a,d,l)=>`All of these equal ${a}/${d}: ${l}. The top numbers add up to ${a} and the pieces are still ${DEN.en[d][1]}.`,
+    descRFinMayor:(a,d,l)=>`All of these equal ${a}/${d}: ${l}. Remember that 1 whole = ${d}/${d}.`,
+    pistaDescDen:(x,d)=>`${x} does not work: those pieces are not ${DEN.en[d][1]}. When you add fractions, you do not add the bottom numbers: every part must be ${DEN.en[d][1]}.`,
+    pistaDescSuma:(x,s,a)=>`${x} does not work: the top numbers add up to ${s}, and you need ${a}.`,
+    pistaDescUnoMas:(x,d,a)=>`${x} does not work: 1 whole is already ${d}/${d}, so that is more than ${a}/${d}.`,
+    pistaDescUnidad:(x,d)=>`${x} does not work: 1 whole is not 1/${d}, it is ${d}/${d}.`,
+    descFalta:"At least one correct sum is still missing. Check which ones add the top numbers correctly.",
+    sumaF:"How much is it in all? Look at the bars.",
+    sumaR:(m)=> m ? "How much is it in all? Write the answer as a mixed number." : "How much is it in all? Write the answer as a fraction.",
+    sumaFin:(a,b,d,s)=>`${a}/${d} + ${b}/${d} = ${s}/${d}. The pieces are ${DEN.en[d][1]}, so you only add the top numbers: ${a} + ${b} = ${s}.`,
+    masDeUno:(s,d,r)=>` Since ${s}/${d} = ${d}/${d} + ${r}/${d}, it is also ${mx(1, r, d)}.`,
+    unEntero:(d)=>` ${d}/${d} is 1 whole.`,
+    pistaDen:(d)=>`Careful! You also added the bottom numbers. The pieces are still ${DEN.en[d][1]}: you only add the top numbers.`,
+    pistaCuenta:"Almost. Count the pieces again, or add the top numbers again.",
+    pistaCuentaR:"Almost. Count the pieces that are left again, or subtract the top numbers again.",
+    pistaSinEntero:(d)=>`You left out the whole: ${d}/${d} make 1 whole, and what is left over is the fraction.`,
+    ctxSuma:[
+      {max1:false, t:(n1,n2,f1,f2)=>`${n1} ate ${f1} of a pizza and ${n2} ate ${f2} of another pizza of the same size. How much pizza did they eat in all?`},
+      {max1:false, t:(n1,n2,f1,f2)=>`${n1} used ${f1} of a meter of ribbon for one poster and ${f2} of a meter for another. How much ribbon did ${n1} use in all?`},
+      {max1:false, t:(n1,n2,f1,f2)=>`${n1} walked ${f1} of a mile on the park trail and then ${f2} of a mile more. How many miles did ${n1} walk in all?`},
+      {max1:true,  t:(n1,n2,f1,f2)=>`${n1} painted ${f1} of the school fence and ${n2} painted ${f2} of the same fence. What part of the fence did they paint together?`}],
+    restaF:"Subtract the fractions. Look at the bar.",
+    restaR:"Subtract the fractions. Write the answer as a fraction.",
+    restaFin:(a,b,d,r)=>`${a}/${d} − ${b}/${d} = ${r}/${d}. The pieces are ${DEN.en[d][1]}, so you only subtract the top numbers: ${a} − ${b} = ${r}.`,
+    unoFin:(b,d,r)=>`1 whole = ${d}/${d}. So 1 − ${b}/${d} = ${d}/${d} − ${b}/${d} = ${r}/${d}.`,
+    pistaSumo:"That answer is a sum. Here you take away: subtract the top numbers.",
+    pistaQuitado:"That is the part that was taken away. The question asks how much is left.",
+    pistaMenor:(n)=>`That is ${n}'s part. The question asks how much more: the difference between the two.`,
+    pistaUno:(d)=>`1 whole is ${d}/${d}. Write the 1 as ${d}/${d} and then subtract.`,
+    ctxResta:[
+      {mas:false, max1:true,  t:(n1,n2,f1,f2)=>`There was ${f1} of a pizza left on the table. ${n1} ate ${f2}. How much pizza is left now?`},
+      {mas:false, max1:false, t:(n1,n2,f1,f2)=>`${n1} had ${f1} of a meter of ribbon and used ${f2} of a meter for a bow. How much ribbon is left?`},
+      {mas:true,  max1:false, t:(n1,n2,f1,f2)=>`${n1} ran ${f1} of a mile and ${n2} ran ${f2} of a mile. How much farther did ${n1} run than ${n2}?`},
+      {mas:true,  max1:true,  t:(n1,n2,f1,f2)=>`${n1} read ${f1} of a book and ${n2} read ${f2} of the same book. How much more did ${n1} read?`}],
+    ctxUno:[
+      (n,f)=>`There was a whole pizza. ${n} and some friends ate ${f} of the pizza. How much pizza is left?`,
+      (n,f)=>`${n} had 1 liter of juice and drank ${f} of a liter. How much juice is left?`],
+    mixF:(m)=>`The point shows ${m}. Which fraction equals ${m}?`,
+    fracF:(f)=>`The point shows ${f}. Which mixed number equals ${f}?`,
+    mixR:(m)=>`Which fraction equals ${m}?`,
+    fracR:(f)=>`Which mixed number equals ${f}?`,
+    pasosM2F:["Multiply the whole number by the bottom number.","Add the top number.","The bottom number stays the same."],
+    pasosF2M:(d)=>[`Each whole is ${d}/${d}: find how many wholes fit.`,"What is left over is the fraction.","Write the whole number and the fraction together."],
+    m2fFin:(w,a,d,n)=>`${mx(w, a, d)} = ${n}/${d}. Each whole has ${d} ${DEN.en[d][1]}: ${w} × ${d} = ${w*d}, and ${w*d} + ${a} = ${n}.`,
+    f2mFin:(n,d,w,a)=>`${n}/${d} = ${w*d}/${d} + ${a}/${d}, and ${w*d}/${d} = ${w}. So ${n}/${d} = ${mx(w, a, d)}.`,
+    pistaMixSumo:(d)=>`Careful: each whole is not just one piece, it is ${d} ${DEN.en[d][1]}. Multiply the whole number by ${d} and then add the top number.`,
+    pistaMixOlvido:(a,d)=>`Those are only the wholes: you still need to add ${a}/${d}.`,
+    pistaMixMal:(d)=>`Multiply the whole number by the bottom number (${d}), not by the top number.`,
+    pistaMixCuenta:(d)=>`Check your counting: each whole is ${d}/${d}. Count on the number line if it helps.`,
+    pistaCambiado:"You switched the whole number and the top number. The wholes are how many times the bottom number fits; what is left over goes on top.",
+    mixSumaR:"Add the mixed numbers.",
+    mixRestaR:"Subtract the mixed numbers.",
+    pasosMixS:["Add the fractions.","Add the whole numbers.","If the fractions make a whole or more, move that whole to the whole numbers."],
+    pasosMixR:["Check whether there are enough pieces to subtract the fractions.","If there are not enough, trade 1 whole for pieces of the same size.","Subtract the fractions and then the whole numbers."],
+    mixSFin:(w1,a1,w2,a2,d)=>{ const s = a1 + a2, W = w1 + w2;
+      return s > d ? `First the fractions: ${a1}/${d} + ${a2}/${d} = ${s}/${d}, which is ${mx(1, s-d, d)}. Then the whole numbers: ${w1} + ${w2} + 1 = ${W+1}. Answer: ${mx(W+1, s-d, d)}.`
+                   : `First the fractions: ${a1}/${d} + ${a2}/${d} = ${s}/${d}. Then the whole numbers: ${w1} + ${w2} = ${W}. Answer: ${mx(W, s, d)}.`; },
+    mixRFin:(w1,a1,w2,a2,d)=> a1 > a2
+      ? `First the fractions: ${a1}/${d} − ${a2}/${d} = ${a1-a2}/${d}. Then the whole numbers: ${w1} − ${w2} = ${w1-w2}. Answer: ${mx(w1-w2, a1-a2, d)}.`
+      : `There are not enough pieces: ${a1}/${d} is less than ${a2}/${d}. Trade 1 whole for ${d}/${d}: ${mx(w1, a1, d)} = ${mx(w1-1, a1+d, d)}. Now: ${a1+d}/${d} − ${a2}/${d} = ${a1+d-a2}/${d} and ${w1-1} − ${w2} = ${w1-1-w2}. Answer: ${mx(w1-1-w2, a1+d-a2, d)}.`,
+    pistaLleva:(d)=>`The fractions add up to more than ${d}/${d}: that extra whole must be added to the whole numbers.`,
+    pistaEnteroExtra:(d)=>`You only get a new whole when the fractions add up to ${d}/${d} or more.`,
+    pistaChicoGrande:"Careful: you subtracted backwards, the small number minus the big one. If there are not enough pieces, trade 1 whole for pieces.",
+    pistaNoBajo:"You traded 1 whole for pieces, but you did not take it away from the whole numbers.",
+    pistaSumoFr:"There the fractions were added. In a subtraction, the fractions are subtracted too.",
+    pistaSumoEnt:"There the whole numbers were added. In a subtraction, the whole numbers are subtracted too.",
+    vecesF:(n,a,b)=>`There are ${n} bars with ${a}/${b} each. How much is ${n} × ${a}/${b}?`,
+    vecesR:(n,a,b)=>`How much is ${n} × ${a}/${b}?`,
+    mismoR:(n,a,b)=>`What is the same as ${n} × ${a}/${b}?`,
+    vecesFin:(n,a,b)=>`${n} × ${a}/${b} is ${n} groups of ${a}/${b}` + (n <= 6 ? `: ${Array(n).fill(a + "/" + b).join(" + ")} = ${n*a}/${b}` : ` = ${n*a}/${b}`) + `. It is the same as ${n*a} × 1/${b}: the bottom number stays the same.`,
+    pistaVecesDen:(b)=>`Careful! You also multiplied the bottom number. These are groups of pieces of the same size: they are still ${DEN.en[b][1]}.`,
+    pistaVecesSuma:"There the whole number was added to the top number. Multiplying means repeating: count the pieces in all the groups.",
+    pistaVecesOlvido:(n,a,b)=>`Each group has ${a}/${b}, not 1/${b}. There are ${n} groups of ${a} pieces.`,
+    pistaVecesCuenta:(n)=>`Count again: there must be ${n} equal groups.`,
+    pistaVecesCasi:"Almost. Multiply the whole number by the top number.",
+    probF:"Read the problem and choose the answer.",
+    entreR:"Between which two whole numbers is the answer?",
+    entre:(x,y)=>`Between ${x} and ${y}`,
+    pasosEntre:(b)=>["Multiply the number of times by the top number.",`Count the wholes: each ${b}/${b} is 1 whole.`,"If there are pieces left over, the answer is between that whole number and the next one."],
+    dosPasosR:"Solve the problem in two steps. Write the answer as a fraction.",
+    pasosA:(k)=>[`Multiply to find how far they run in the ${k} days.`,"Add what they run on Saturday."],
+    pasosB:(k)=>[`Multiply to find how much ribbon the ${k} pieces use.`,"Subtract that from the length of the ribbon."],
+    probVFin:(k,a,b)=>`${k} × ${a}/${b} = ${k*a}/${b}, because it is ${k} groups of ${a}/${b}.`,
+    tambien:(f,m)=>` ${f} = ${m}.`,
+    entreFin:(k,a,b,w,r)=>`${k} × ${a}/${b} = ${k*a}/${b} = ${mx(w, r, b)}. It is between ${w} and ${w+1}.`,
+    dosAFin:(k,a,c,b)=>`Step 1: ${k} × ${a}/${b} = ${k*a}/${b}. Step 2: ${k*a}/${b} + ${c}/${b} = ${k*a+c}/${b}.`,
+    dosBFin:(L,k,a,b)=>`Step 1: ${k} × ${a}/${b} = ${k*a}/${b}. Step 2: ${L}/${b} − ${k*a}/${b} = ${L-k*a}/${b}.`,
+    pistaUnPaso:"That is only the first step. The second one is missing: read the end of the problem again.",
+    pistaSinMult:"You forgot to multiply: there are several equal groups.",
+    pistaUnTrozo:"There only one piece was subtracted. First multiply to find how much ribbon all the pieces use.",
+    pistaEntre:(b)=>`Check how many wholes fit: each ${b}/${b} is 1 whole.`,
+    pistaEntreDen:"You would get that by also multiplying the bottom number. The pieces do not change size.",
+    ctxVeces:[
+      {e:"🏃", t:(n,f,k)=>`${n} runs ${f} of a mile each day for ${k} days. How many miles does ${n} run in all?`},
+      {e:"🥞", t:(n,f,k)=>`A pancake recipe uses ${f} of a cup of milk. ${n} makes the recipe ${k} times for the neighborhood fair. How many cups of milk does ${n} need?`},
+      {e:"🎀", t:(n,f,k)=>`Each student in ${n}'s group needs ${f} of a meter of ribbon for a project. There are ${k} students. How many meters of ribbon do they need?`},
+      {e:"💧", t:(n,f,k)=>`${n} drinks ${f} of a liter of water at each recess. How much water does ${n} drink in ${k} recesses?`}],
+    ctxSumaP:[
+      {e:"🚶", max1:false, t:(n1,n2,f1,f2)=>`${n1} walked ${f1} of a mile to the library and then ${f2} of a mile to the park. How many miles did ${n1} walk in all?`},
+      {e:"🎨", max1:true,  t:(n1,n2,f1,f2)=>`${n1} painted ${f1} of a mural and ${n2} painted ${f2} of the same mural. What part of the mural did they paint together?`}],
+    ctxRestaP:[
+      {e:"🍋", mas:false, t:(n1,n2,f1,f2)=>`A pitcher had ${f1} of a liter of lemonade. ${n1} poured ${f2} of a liter. How much lemonade is left in the pitcher?`},
+      {e:"🚲", mas:true, t:(n1,n2,f1,f2)=>`${n1} biked ${f1} of a mile along Lake Michigan and ${n2} biked ${f2} of a mile. How much farther did ${n1} bike?`}],
+    ctxA:(n,f,k,g)=>`${n} runs ${f} of a mile each day for ${k} days, and on Saturday runs ${g} of a mile more. How many miles does ${n} run in all?`,
+    ctxB:(n,L,k,f)=>`A ribbon is ${L} of a meter long. ${n} cuts ${k} pieces of ${f} of a meter each for some posters. How much ribbon is left?`,
+    hojaProb:"Elías runs 3/4 of a mile each day for 5 days. How many miles does he run in all? Between which two whole numbers is the answer?",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    estrategias:[
+      ["I drew bars","Great! A drawing shows how many pieces there are and what size they are."],
+      ["I thought in unit fractions (1/8 + 1/8…)","Excellent! Counting by 1/8 explains why the bottom number stays the same."],
+      ["I used a number line","Good idea! On the number line you can see how many wholes there are and how far it is to the next one."],
+      ["I changed the mixed number to a fraction","Awesome! That way you can add, subtract or compare with pieces of the same size."]]
+  }
+};
+const JUEGOS = [
+  {id:"descomponer", emoji:"🧩", es:"Descomponer fracciones", en:"Decomposing fractions", metaEs:"3/8 = 1/8 + 2/8", metaEn:"3/8 = 1/8 + 2/8"},
+  {id:"sumar",       emoji:"🍕", es:"Suma con el mismo denominador", en:"Adding with like denominators", metaEs:"2/8 + 3/8", metaEn:"2/8 + 3/8"},
+  {id:"restar",      emoji:"✂️", es:"Resta con el mismo denominador", en:"Subtracting with like denominators", metaEs:"Quitar y comparar", metaEn:"Take away and compare"},
+  {id:"mixtos",      emoji:"🔢", es:"Números mixtos", en:"Mixed numbers", metaEs:"2 3/4 = 11/4", metaEn:"2 3/4 = 11/4"},
+  {id:"veces",       emoji:"✖️", es:"Fracción por un número entero", en:"Fraction times a whole number", metaEs:"3 × 2/5", metaEn:"3 × 2/5"},
+  {id:"problemas",   emoji:"🏃", es:"Problemas con fracciones", en:"Fraction word problems", metaEs:"Lee y resuelve", metaEn:"Read and solve"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-08-fraction-operations.html#sumar */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Números mixtos ============
+   clave(w, a, d): valor de una opción como texto («2 3/4», «11/4» o «3»).
+   mx(w, a, d): lo mismo para mostrar en frases; lleva espacio de no separación para que la voz diga «dos y tres cuartos». */
+const NBSP = " ";
+function clave(w, a, d){
+  if(w < 0 || a < 0 || (w === 0 && a === 0)) return null;
+  if(a === 0) return String(w);
+  if(w === 0) return `${a}/${d}`;
+  return a < d ? `${w} ${a}/${d}` : null;
+}
+const mx = (w, a, d)=> (clave(w, a, d) || "").replace(" ", NBSP);
+const fr = (a, d)=> a > 0 && d > 0 ? `${a}/${d}` : null;
+const mixHTML = (w, a, d)=> a === 0 ? `<span class="mixto"><span class="ent">${w}</span></span>`
+  : w === 0 ? fracHTML(a, d) : `<span class="mixto"><span class="ent">${w}</span>${fracHTML(a, d)}</span>`;
+/* HTML y palabras de una clave */
+function valorHTML(v){
+  const [x, y] = String(v).split(" ");
+  if(y){ const [a, d] = y.split("/"); return mixHTML(x, a, d); }
+  if(x.includes("/")){ const [a, d] = x.split("/"); return fracHTML(a, d); }
+  return `<span class="mixto"><span class="ent">${x}</span></span>`;
+}
+function valorVoz(v){
+  const [x, y] = String(v).split(" "), es = S.idioma === "es";
+  const fp = (s)=>{ const [a, d] = s.split("/").map(Number); return fracPalabras(a, d); };
+  if(y) return `${x} ${es ? "y" : "and"} ${fp(y)}`;
+  return x.includes("/") ? fp(x) : x;
+}
+/* La voz lee «2 3/4» como «dos y tres cuartos» y «+» como «más» */
+const _hablarM = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  _hablarM(String(texto).replace(/(\d+) (\d+\/\d+)/g, es ? "$1 y $2" : "$1 and $2").replace(/ \+ /g, es ? " más " : " plus "), despues);
+};
+/* Opciones con fracciones o números mixtos; cada botón guarda su clave en data-v */
+function opcionesMix(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    b.innerHTML = valorHTML(v); b.setAttribute("aria-label", valorVoz(v));
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+/* Elige distractores: el primero (el error típico principal) siempre entra; los demás al azar.
+   lista: [[valor, pista], ...]; se descartan los nulos, los repetidos y el correcto. */
+function distractores(bien, lista, n){
+  const vistos = new Set([bien]), ok = [];
+  lista.forEach(([v, p])=>{ if(v && !vistos.has(v)){ vistos.add(v); ok.push([v, p]); } });
+  const [prim, ...resto] = ok;
+  const sel = prim ? [prim, ...mezclar(resto)].slice(0, n - 1) : [];
+  const mapa = new Map(sel);
+  return {valores:[bien, ...sel.map(x=>x[0])], pista:(v)=>mapa.get(v)};
+}
+/* Expresión en grande: partes en HTML separadas por signos */
+function exprEl(partes){
+  const d = document.createElement("div"); d.className = "par-frac expr";
+  d.innerHTML = partes.join("");
+  return d;
+}
+const sg = (s)=> `<span>${s}</span>`;
+function llenarHueco(cont, html){ const s = cont.querySelector(".signo-c"); s.innerHTML = html; s.classList.add("lleno"); }
+function problemaEl(texto, emoji){
+  const p = document.createElement("p"); p.className = "problema";
+  p.innerHTML = (emoji ? `<span aria-hidden="true">${emoji}</span> ` : "") + escaparHTML(texto);
+  return p;
+}
+/* Barra de a/d con las últimas b piezas tachadas (las que se quitan) */
+function barraQuitar(a, b, d, ancho){
+  const W = ancho || 360, H = 54, w = W/d;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${H+4}" role="img" aria-label="${a}/${d} − ${b}/${d}">`;
+  for(let i=0;i<d;i++){
+    const x = 2 + i*w, quitada = i >= a - b && i < a;
+    s += `<rect x="${x}" y="2" width="${w}" height="${H}" fill="${i < a - b ? "#FFB74D" : quitada ? "#FFE3C4" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    if(quitada){ const m = Math.min(8, w/5); s += `<path d="M${x+m},${2+m} L${x+w-m},${H+2-m} M${x+w-m},${2+m} L${x+m},${H+2-m}" stroke="#B3261E" stroke-width="3.5" stroke-linecap="round"/>`; }
+  }
+  return s + "</svg>";
+}
+function filaBarra(etq, svg){ return `<div class="fila-modelo"><span class="etq-modelo">${etq}</span>${svg}</div>`; }
+const DEN8 = [2,3,4,5,6,8,10,12];
+/* Error típico al descomponer: repartir también el denominador (3/8 = 1/4 + 2/4, porque 4 + 4 = 8) */
+function sumaDen(a, d){
+  const x = Math.floor(d/2), lo = Math.max(1, a - (d - x - 1)), hi = Math.min(a - 1, x - 1);
+  const q = lo <= hi ? azar(lo, hi) : Math.max(1, Math.min(a - 1, x));
+  return `${q}/${x} + ${a - q}/${d - x}`;
+}
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Descomponer fracciones (4.NF.3a, 3b) --- */
+  if(S.juego === "descomponer"){
+    if(!reto){
+      const d = elegir([4,5,6,8,10,12]), a = azar(2, Math.min(d - 1, 7));
+      const p = azar(1, a - 1), partes = (a <= 4 && Math.random() < 0.4) ? Array(a).fill(1) : [p, a - p];
+      const bien = partes.map(x=>`${x}/${d}`).join(" + ");
+      const den = sumaDen(a, d);
+      const q2 = azar(1, a - 1), suma = Math.random() < 0.5 || q2 === 1 ? `${q2}/${d} + ${a - q2 + 1}/${d}` : `${q2 - 1}/${d} + ${a - q2}/${d}`;
+      const sumaVal = suma.split(" + ").reduce((s, f)=>s + +f.split("/")[0], 0);
+      const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = barraSVG(a, d, 360); esc.appendChild(caja);
+      esc.appendChild(exprEl([fracHTML(a, d), sg("="), hueco]));
+      ponerInstruccion(t.descF(a, d));
+      const pistas = {[den]: t.pistaDescDen(den, d), [suma]: t.pistaDescSuma(suma, sumaVal, a)};
+      opcionesTexto(unicos([bien, den, suma]), bien, ()=>{ llenarHueco(esc, escaparHTML(bien)); acertar(t.descFin(a, d, partes)); }, (v)=>pistas[v]);
+      return;
+    }
+    const mayor = Math.random() < 0.35;
+    const d = mayor ? elegir([2,3,4,5,6,8]) : elegir([5,6,8,10,12]);
+    const r = mayor ? azar(1, d - 1) : 0, a = mayor ? d + r : azar(3, Math.min(d - 1, 9));
+    const buenas = [], malas = [], pistas = {};
+    const malo = (v, p)=>{ if(!buenas.includes(v) && !malas.includes(v)){ malas.push(v); pistas[v] = p; } };
+    const bueno = (v)=>{ if(!buenas.includes(v)) buenas.push(v); };
+    if(mayor){
+      bueno(`1 + ${r}/${d}`); bueno(`${d}/${d} + ${r}/${d}`);
+      const p = azar(1, a - 1); bueno(`${p}/${d} + ${a - p}/${d}`);
+      malo(`1 + ${a}/${d}`, t.pistaDescUnoMas(`1 + ${a}/${d}`, d, a));
+      malo(`1/${d} + ${r}/${d}`, t.pistaDescUnidad(`1/${d} + ${r}/${d}`, d));
+      const q = azar(1, a - 1); malo(`${q}/${d} + ${a - q + 1}/${d}`, t.pistaDescSuma(`${q}/${d} + ${a - q + 1}/${d}`, a + 1, a));
+    } else {
+      if(a <= 4) bueno(Array(a).fill(`1/${d}`).join(" + "));
+      for(let i=0; buenas.length < 3 && i < 20; i++){
+        if(Math.random() < 0.5){ const p = azar(1, a - 1); bueno(`${p}/${d} + ${a - p}/${d}`); }
+        else if(a >= 3){ const p = azar(1, a - 2), q = azar(1, a - p - 1); bueno(`${p}/${d} + ${q}/${d} + ${a - p - q}/${d}`); }
+      }
+      const den = sumaDen(a, d);
+      malo(den, t.pistaDescDen(den, d));
+      const q2 = azar(1, a - 1), s1 = `${q2}/${d} + ${a - q2 + 1}/${d}`; malo(s1, t.pistaDescSuma(s1, a + 1, a));
+      const q3 = azar(1, a - 2 > 0 ? a - 2 : 1), s2 = `${q3}/${d} + ${Math.max(1, a - q3 - 1)}/${d}`;
+      const v2 = q3 + Math.max(1, a - q3 - 1); if(v2 !== a) malo(s2, t.pistaDescSuma(s2, v2, a));
+    }
+    const elegidas = buenas.slice(0, 3), malasE = malas.slice(0, 3);
+    esc.appendChild(exprEl([fracHTML(a, d)]));
+    ponerInstruccion(t.descR(a, d));
+    marcarVarios(mezclar([...elegidas, ...malasE]), elegidas,
+      {comprobar:t.comprobar, ninguno:t.ninguno, malo:(x)=>pistas[x], faltan:t.descFalta},
+      ()=>acertar((mayor ? t.descRFinMayor : t.descRFin)(a, d, `${a}/${d} = ` + elegidas.join(" = "))));
+    return;
+  }
+
+  /* --- 2. Suma con el mismo denominador (4.NF.3a, 3d) --- */
+  if(S.juego === "sumar"){
+    const [n1, n2] = nombresAzar(2);
+    let d, a, b, cien = false;
+    if(!reto){ d = elegir([3,4,5,6,8,10,12]); do{ a = azar(1, d - 1); b = azar(1, d - 1); } while(a + b > d); }
+    else if(Math.random() < 0.2){ cien = true; d = 100; do{ a = 5*azar(2, 15); b = 5*azar(2, 15); } while(a + b >= 100); }
+    else { d = elegir([3,4,5,6,8,10,12]); do{ a = azar(1, d - 1); b = azar(1, d - 1); } while(a + b <= d); }
+    const s = a + b;
+    const c = elegir(t.ctxSuma.filter(x=>!x.max1 || s <= d));
+    const texto = c.t(n1, n2, `${a}/${d}`, `${b}/${d}`);
+    esc.appendChild(problemaEl(texto));
+    if(!reto){
+      const caja = document.createElement("div"); caja.className = "modelos";
+      caja.innerHTML = filaBarra(fracHTML(a, d), barraSVG(a, d, 300)) + filaBarra(fracHTML(b, d), barraSVG(b, d, 300));
+      esc.appendChild(caja);
+    }
+    const ex = exprEl([fracHTML(a, d), sg("+"), fracHTML(b, d), sg("="), hueco]); esc.appendChild(ex);
+    const mixto = reto && !cien && Math.random() < 0.5;
+    const instr = reto ? t.sumaR(mixto) : t.sumaF;
+    ponerInstruccion(instr, texto + " " + instr);
+    const extra = s > d ? t.masDeUno(s, d, s - d) : s === d ? t.unEntero(d) : "";
+    const fin = t.sumaFin(a, b, d, s) + extra;
+    const paso = cien ? 10 : 1;
+    let op;
+    if(mixto){
+      op = distractores(clave(1, s - d, d), [[fr(s, 2*d), t.pistaDen(d)], [fr(s - d, d), t.pistaSinEntero(d)], [clave(1, s - d + 1, d), t.pistaCuenta], [clave(1, s - d - 1, d), t.pistaCuenta]], 4);
+    } else {
+      op = distractores(fr(s, d), [[fr(s, 2*d), t.pistaDen(d)], [fr(s + paso, d), t.pistaCuenta], [fr(s - paso, d), t.pistaCuenta]], reto ? 4 : 3);
+    }
+    const bien = op.valores[0];
+    opcionesMix(op.valores, bien, ()=>{ llenarHueco(ex, valorHTML(bien)); if(!reto) esc.querySelector(".modelos").insertAdjacentHTML("beforeend", filaBarra(fracHTML(s, d), barraSVG(s, d, 300))); acertar(fin); }, op.pista);
+    return;
+  }
+
+  /* --- 3. Resta con el mismo denominador (4.NF.3a, 3d) --- */
+  if(S.juego === "restar"){
+    const [n1, n2] = nombresAzar(2);
+    if(reto && Math.random() < 0.35){
+      const d = elegir(DEN8), b = azar(1, d - 1), r = d - b, f = `${b}/${d}`;
+      const texto = elegir(t.ctxUno)(n1, f);
+      esc.appendChild(problemaEl(texto));
+      const ex = exprEl([`<span class="mixto"><span class="ent">1</span></span>`, sg("−"), fracHTML(b, d), sg("="), hueco]); esc.appendChild(ex);
+      ponerInstruccion(t.restaR, texto + " " + t.restaR);
+      const op = distractores(fr(r, d), [[fr(b - 1, d), t.pistaUno(d)], [fr(b, d), t.pistaQuitado], [fr(d + b, d), t.pistaSumo], [fr(r + 1, d), t.pistaCuentaR]], 4);
+      opcionesMix(op.valores, op.valores[0], ()=>{ llenarHueco(ex, fracHTML(r, d)); acertar(t.unoFin(b, d, r)); }, op.pista);
+      return;
+    }
+    let d, a, b, paso = 1;
+    if(!reto){ d = elegir([3,4,5,6,8,10,12]); a = azar(2, d - 1); b = azar(1, a - 1); }
+    else if(Math.random() < 0.25){ d = 100; paso = 10; a = 5*azar(8, 19); b = 5*azar(2, a/5 - 2); }
+    else { d = elegir(DEN8); a = azar(d + 1, 2*d - 1); b = azar(1, a - 1); }
+    const r = a - b;
+    const c = elegir(t.ctxResta.filter(x=>!x.max1 || a <= d));
+    const texto = c.t(n1, n2, `${a}/${d}`, `${b}/${d}`);
+    esc.appendChild(problemaEl(texto));
+    if(!reto){
+      const caja = document.createElement("div"); caja.className = "modelos";
+      caja.innerHTML = c.mas ? filaBarra(escaparHTML(n1), barraSVG(a, d, 300)) + filaBarra(escaparHTML(n2), barraSVG(b, d, 300)) : barraQuitar(a, b, d, 360);
+      esc.appendChild(caja);
+    }
+    const ex = exprEl([fracHTML(a, d), sg("−"), fracHTML(b, d), sg("="), hueco]); esc.appendChild(ex);
+    const instr = reto ? t.restaR : t.restaF;
+    ponerInstruccion(instr, texto + " " + instr);
+    const op = distractores(fr(r, d), [[fr(b, d), c.mas ? t.pistaMenor(n2) : t.pistaQuitado], [fr(a + b, d), t.pistaSumo], [fr(r + paso, d), t.pistaCuentaR], [fr(r - paso, d), t.pistaCuentaR]], reto ? 4 : 3);
+    opcionesMix(op.valores, op.valores[0], ()=>{ llenarHueco(ex, fracHTML(r, d)); acertar(t.restaFin(a, b, d, r)); }, op.pista);
+    return;
+  }
+
+  /* --- 4. Números mixtos (4.NF.3c) --- */
+  if(S.juego === "mixtos"){
+    if(!reto || Math.random() < 0.5){
+      const d = reto ? elegir(DEN8) : elegir([2,3,4,5,6,8]);
+      const w = reto ? azar(1, 5) : azar(1, d <= 4 ? 3 : 2), a = azar(1, d - 1), n = w*d + a;
+      const aFrac = Math.random() < 0.5;
+      if(!reto){ const caja = document.createElement("div"); caja.className = "modelos"; caja.innerHTML = rectaFrac(n, d, w + 1, false, false); esc.appendChild(caja); }
+      else esc.appendChild(pasosEl(aFrac ? t.pasosM2F : t.pasosF2M(d)));
+      const ex = exprEl(aFrac ? [mixHTML(w, a, d), sg("="), hueco] : [fracHTML(n, d), sg("="), hueco]); esc.appendChild(ex);
+      const m = mx(w, a, d), f = `${n}/${d}`;
+      const instr = aFrac ? (reto ? t.mixR(m) : t.mixF(m)) : (reto ? t.fracR(f) : t.fracF(f));
+      ponerInstruccion(instr, instr + (reto ? " " + (aFrac ? t.pasosM2F : t.pasosF2M(d)).join(" ") : ""));
+      const op = aFrac
+        ? distractores(fr(n, d), [[fr(w + a, d), t.pistaMixSumo(d)], [fr(w*d, d), t.pistaMixOlvido(a, d)], [fr(w*a + d, d), t.pistaMixMal(d)], [fr(n + 1, d), t.pistaMixCuenta(d)], [fr(n - 1, d), t.pistaMixCuenta(d)]], reto ? 4 : 3)
+        : distractores(clave(w, a, d), [[w < d ? clave(a, w, d) : null, t.pistaCambiado], [clave(w + 1, a, d), t.pistaMixCuenta(d)], [clave(w - 1, a, d), t.pistaMixCuenta(d)], [clave(w, d - a, d), t.pistaMixCuenta(d)], [fr(a, d), t.pistaSinEntero(d)]], reto ? 4 : 3);
+      const bien = op.valores[0];
+      opcionesMix(op.valores, bien, ()=>{
+        llenarHueco(ex, valorHTML(bien));
+        if(!reto) esc.querySelector(".modelos").innerHTML = rectaFrac(n, d, w + 1, false, true);
+        acertar(aFrac ? t.m2fFin(w, a, d, n) : t.f2mFin(n, d, w, a));
+      }, op.pista);
+      return;
+    }
+    const d = elegir([3,4,5,6,8,10,12]), sumar = Math.random() < 0.5;
+    if(sumar){
+      const w1 = azar(1, 4), w2 = azar(1, 3), lleva = Math.random() < 0.55;
+      let a1, a2; do{ a1 = azar(1, d - 1); a2 = azar(1, d - 1); } while(a1 + a2 === d || (a1 + a2 > d) !== lleva);
+      const s = a1 + a2, W = w1 + w2;
+      const bien = lleva ? clave(W + 1, s - d, d) : clave(W, s, d);
+      const lista = lleva
+        ? [[clave(W, s - d, d), t.pistaLleva(d)], [clave(W, s, 2*d), t.pistaDen(d)], [clave(W + 1, s - d + 1, d), t.pistaCuenta], [clave(W + 2, s - d, d), t.pistaEnteroExtra(d)]]
+        : [[clave(W, s, 2*d), t.pistaDen(d)], [clave(W + 1, s, d), t.pistaEnteroExtra(d)], [clave(W, s + 1, d), t.pistaCuenta], [clave(W, s - 1, d), t.pistaCuenta]];
+      const op = distractores(bien, lista, 4);
+      esc.appendChild(pasosEl(t.pasosMixS));
+      const ex = exprEl([mixHTML(w1, a1, d), sg("+"), mixHTML(w2, a2, d), sg("="), hueco]); esc.appendChild(ex);
+      ponerInstruccion(t.mixSumaR, `${mx(w1, a1, d)} + ${mx(w2, a2, d)}. ` + t.mixSumaR + " " + t.pasosMixS.join(" "));
+      opcionesMix(op.valores, bien, ()=>{ llenarHueco(ex, valorHTML(bien)); acertar(t.mixSFin(w1, a1, w2, a2, d)); }, op.pista);
+      return;
+    }
+    const pide = Math.random() < 0.6;
+    let a1, a2; do{ a1 = azar(1, d - 1); a2 = azar(1, d - 1); } while(a1 === a2 || (a1 < a2) !== pide);
+    const w2 = azar(1, 3), w1 = w2 + azar(pide ? 2 : 1, 3);
+    const bien = pide ? clave(w1 - 1 - w2, a1 + d - a2, d) : clave(w1 - w2, a1 - a2, d);
+    const lista = pide
+      ? [[clave(w1 - w2, a2 - a1, d), t.pistaChicoGrande], [clave(w1 - w2, a1 + d - a2, d), t.pistaNoBajo], [clave(w1 - 1 - w2, a1 + d - a2 + 1, d), t.pistaCuentaR], [clave(w1 - 1 - w2, a2 - a1, d), t.pistaChicoGrande]]
+      : [[a1 + a2 < d ? clave(w1 - w2, a1 + a2, d) : null, t.pistaSumoFr], [clave(w1 + w2, a1 - a2, d), t.pistaSumoEnt], [clave(w1 - w2, a1 - a2 + 1, d), t.pistaCuentaR], [clave(w1 - w2 - 1, a1 - a2, d), t.pistaCuentaR]];
+    const op = distractores(bien, lista, 4);
+    esc.appendChild(pasosEl(t.pasosMixR));
+    const ex = exprEl([mixHTML(w1, a1, d), sg("−"), mixHTML(w2, a2, d), sg("="), hueco]); esc.appendChild(ex);
+    ponerInstruccion(t.mixRestaR, `${mx(w1, a1, d)} − ${mx(w2, a2, d)}. ` + t.mixRestaR + " " + t.pasosMixR.join(" "));
+    opcionesMix(op.valores, bien, ()=>{ llenarHueco(ex, valorHTML(bien)); acertar(t.mixRFin(w1, a1, w2, a2, d)); }, op.pista);
+    return;
+  }
+
+  /* --- 5. Fracción por un número entero (4.NF.4a, 4b) --- */
+  if(S.juego === "veces"){
+    const mismo = reto && Math.random() < 0.5;
+    const b = mismo ? elegir([3,4,5,6,8,10,12]) : reto ? elegir(DEN8) : elegir([2,3,4,5,6,8]);
+    const A = mismo ? azar(2, b - 1) : azar(1, b - 1), n = reto ? azar(3, 9) : azar(2, 4);
+    if(mismo){
+      const bien = elegir([`${n*A} × 1/${b}`, `${n*A}/${b}`]);
+      const lista = [[`${n*A}/${n*b}`, t.pistaVecesDen(b)], [`${n} × 1/${b}`, t.pistaVecesOlvido(n, A, b)], [n + A !== n*A ? `${n + A}/${b}` : null, t.pistaVecesSuma], [`${n*A} × 1/${n*b}`, t.pistaVecesDen(b)]];
+      const op = distractores(bien, lista, 4);
+      esc.appendChild(exprEl([`<span class="mixto"><span class="ent">${n}</span></span>`, sg("×"), fracHTML(A, b)]));
+      ponerInstruccion(t.mismoR(n, A, b));
+      opcionesTexto(op.valores, bien, ()=>acertar(t.vecesFin(n, A, b)), op.pista);
+      return;
+    }
+    const p = n*A;
+    if(!reto){
+      const caja = document.createElement("div"); caja.className = "modelos";
+      caja.innerHTML = Array.from({length:n}, ()=>filaBarra(fracHTML(A, b), barraSVG(A, b, 300))).join("");
+      esc.appendChild(caja);
+    }
+    const ex = exprEl([`<span class="mixto"><span class="ent">${n}</span></span>`, sg("×"), fracHTML(A, b), sg("="), hueco]); esc.appendChild(ex);
+    const instr = reto ? t.vecesR(n, A, b) : t.vecesF(n, A, b);
+    ponerInstruccion(instr);
+    const op = distractores(fr(p, b), [[fr(p, n*b), t.pistaVecesDen(b)], [n + A !== p ? fr(n + A, b) : null, t.pistaVecesSuma], [A > 1 ? fr(n, b) : null, t.pistaVecesOlvido(n, A, b)], [fr(p + A, b), t.pistaVecesCuenta(n)], [fr(p - A, b), t.pistaVecesCuenta(n)]], reto ? 4 : 3);
+    opcionesMix(op.valores, op.valores[0], ()=>{ llenarHueco(ex, fracHTML(p, b)); if(!reto) esc.querySelector(".modelos").insertAdjacentHTML("beforeend", `<p class="rotulo">= ${escaparHTML(Array(n).fill(A + "/" + b).join(" + "))} = ${p}/${b}</p>`); acertar(t.vecesFin(n, A, b)); }, op.pista);
+    return;
+  }
+
+  /* --- 6. Problemas con fracciones (4.NF.3d, 4.NF.4c) --- */
+  if(S.juego === "problemas"){
+    const [n1, n2] = nombresAzar(2);
+    if(!reto){
+      const tipo = elegir(["veces","veces","suma","resta"]);
+      const caja = document.createElement("div"); caja.className = "modelos";
+      if(tipo === "veces"){
+        const b = elegir([2,3,4,5,8,10]), a = azar(1, b - 1), k = azar(2, 4), c = elegir(t.ctxVeces);
+        const texto = c.t(n1, `${a}/${b}`, k), p = k*a;
+        esc.appendChild(problemaEl(texto, c.e));
+        caja.innerHTML = Array.from({length:k}, ()=>filaBarra(fracHTML(a, b), barraSVG(a, b, 300))).join(""); esc.appendChild(caja);
+        ponerInstruccion(t.probF, texto + " " + t.probF);
+        const op = distractores(fr(p, b), [[fr(p, k*b), t.pistaVecesDen(b)], [fr(a, b), t.pistaSinMult], [k + a !== p ? fr(k + a, b) : null, t.pistaVecesSuma], [fr(p + a, b), t.pistaVecesCuenta(k)]], 3);
+        const w = Math.floor(p / b), r = p % b;
+        opcionesMix(op.valores, op.valores[0], ()=>acertar(t.probVFin(k, a, b) + (p > b && r ? t.tambien(`${p}/${b}`, mx(w, r, b)) : p % b === 0 ? t.tambien(`${p}/${b}`, String(p / b)) : "")), op.pista);
+        return;
+      }
+      const d = elegir([3,4,5,6,8,10,12]);
+      if(tipo === "suma"){
+        let a, b; do{ a = azar(1, d - 1); b = azar(1, d - 1); } while(a + b > d);
+        const s = a + b, c = elegir(t.ctxSumaP), texto = c.t(n1, n2, `${a}/${d}`, `${b}/${d}`);
+        esc.appendChild(problemaEl(texto, c.e));
+        caja.innerHTML = filaBarra(fracHTML(a, d), barraSVG(a, d, 300)) + filaBarra(fracHTML(b, d), barraSVG(b, d, 300)); esc.appendChild(caja);
+        ponerInstruccion(t.probF, texto + " " + t.probF);
+        const op = distractores(fr(s, d), [[fr(s, 2*d), t.pistaDen(d)], [fr(s + 1, d), t.pistaCuenta], [fr(s - 1, d), t.pistaCuenta]], 3);
+        opcionesMix(op.valores, op.valores[0], ()=>acertar(t.sumaFin(a, b, d, s) + (s === d ? t.unEntero(d) : "")), op.pista);
+        return;
+      }
+      const a = azar(2, d - 1), b = azar(1, a - 1), r = a - b, c = elegir(t.ctxRestaP), texto = c.t(n1, n2, `${a}/${d}`, `${b}/${d}`);
+      esc.appendChild(problemaEl(texto, c.e));
+      caja.innerHTML = c.mas ? filaBarra(escaparHTML(n1), barraSVG(a, d, 300)) + filaBarra(escaparHTML(n2), barraSVG(b, d, 300)) : barraQuitar(a, b, d, 360);
+      esc.appendChild(caja);
+      ponerInstruccion(t.probF, texto + " " + t.probF);
+      const op = distractores(fr(r, d), [[fr(b, d), c.mas ? t.pistaMenor(n2) : t.pistaQuitado], [fr(a + b, d), t.pistaSumo], [fr(r + 1, d), t.pistaCuentaR], [fr(r - 1, d), t.pistaCuentaR]], 3);
+      opcionesMix(op.valores, op.valores[0], ()=>acertar(t.restaFin(a, b, d, r)), op.pista);
+      return;
+    }
+    const tipo = elegir(["entre","entre","dosA","dosB"]);
+    if(tipo === "entre"){
+      let a, b, k; do{ b = elegir([2,3,4,5,6,8,10]); a = azar(1, b - 1); k = azar(3, 9); } while(k*a <= b || (k*a) % b === 0 || k*a > 6*b);
+      const p = k*a, w = Math.floor(p / b), r = p % b, c = elegir(t.ctxVeces), texto = c.t(n1, `${a}/${b}`, k);
+      esc.appendChild(problemaEl(texto, c.e));
+      esc.appendChild(pasosEl(t.pasosEntre(b)));
+      ponerInstruccion(t.entreR, texto + " " + t.entreR + " " + t.pasosEntre(b).join(" "));
+      const op = distractores(t.entre(w, w + 1), [[t.entre(0, 1), t.pistaEntreDen], [t.entre(w + 1, w + 2), t.pistaEntre(b)], [w >= 2 ? t.entre(w - 1, w) : null, t.pistaEntre(b)]], 3);
+      opcionesTexto(op.valores, op.valores[0], ()=>acertar(t.entreFin(k, a, b, w, r)), op.pista);
+      return;
+    }
+    if(tipo === "dosA"){
+      const b = elegir([2,3,4,5,6,8,10]), a = azar(1, b - 1), k = azar(2, 5), c = azar(1, b - 1);
+      const p = k*a, total = p + c, texto = t.ctxA(n1, `${a}/${b}`, k, `${c}/${b}`);
+      esc.appendChild(problemaEl(texto, "🏃"));
+      esc.appendChild(pasosEl(t.pasosA(k)));
+      ponerInstruccion(t.dosPasosR, texto + " " + t.dosPasosR + " " + t.pasosA(k).join(" "));
+      const op = distractores(fr(total, b), [[fr(p, b), t.pistaUnPaso], [fr(a + c, b), t.pistaSinMult], [fr(p + a + c, b), t.pistaVecesCuenta(k)]], 4);
+      opcionesMix(op.valores, op.valores[0], ()=>acertar(t.dosAFin(k, a, c, b)), op.pista);
+      return;
+    }
+    const b = elegir([4,5,6,8,10,12]); let a, k; do{ a = azar(1, Math.min(3, b - 1)); k = azar(2, 4); } while(k*a >= 2*b);
+    const p = k*a, L = p + azar(1, b), texto = t.ctxB(n1, `${L}/${b}`, k, `${a}/${b}`);
+    esc.appendChild(problemaEl(texto, "🎀"));
+    esc.appendChild(pasosEl(t.pasosB(k)));
+    ponerInstruccion(t.dosPasosR, texto + " " + t.dosPasosR + " " + t.pasosB(k).join(" "));
+    const op = distractores(fr(L - p, b), [[fr(p, b), t.pistaUnPaso], [fr(L - a, b), t.pistaUnTrozo], [fr(L + p, b), t.pistaSumo], [fr(L - p + 1, b), t.pistaCuentaR]], 4);
+    opcionesMix(op.valores, op.valores[0], ()=>acertar(t.dosBFin(L, k, a, b)), op.pista);
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const L = '<i class="linea"></i>', t = T[S.idioma];
+  const fila = (s)=>`<div style="font-size:20pt">${s}</div>`;
+  $("hoja-suma").innerHTML = ["2/8 + 3/8 = " + L, "4/6 + 5/6 = " + L].map(fila).join("");
+  $("hoja-resta").innerHTML = ["7/10 − 4/10 = " + L, "1 − 3/5 = " + L].map(fila).join("");
+  $("hoja-mixto").innerHTML = [`2${NBSP}3/4 = ${L}/4`, `13/5 = ${L} ${L}/5`].map(fila).join("");
+  $("hoja-veces").innerHTML = [`3 × 2/5 = ${L}`, `4 × 3/8 = ${L} × 1/8`].map(fila).join("");
+  $("hoja-prob").textContent = t.hojaProb;
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>

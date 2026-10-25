@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<!--
+  Fourth Grade Math — Multiplicative comparison and multi-step word problems
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 4: 4.OA.1, 4.OA.2, 4.OA.3
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="Problemas de varios pasos · Juegos de cuarto grado" data-en="Multi-step word problems · Fourth grade games">Multi-step word problems · Fourth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Bilingual fourth grade word problem games with Lumi: read multiplication as a comparison, solve times-as-many problems with bar models, write equations with a letter, solve multi-step problems, interpret remainders and decide if an answer is reasonable.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F7F5FB; --tinta:#1F1A2B; --tinta-suave:#4E4760; --linea:#DDD6EA; --blanco:#FFFFFF;
+  --acento:#5B3A99; --acento-claro:#EEE7F8;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(31,26,43,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada p{color:var(--tinta-suave);max-width:52ch;margin:0 auto 18px}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--tinta)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{display:flex;align-items:center;gap:14px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+/* La mascota: Lumi, que reacciona a cada respuesta */
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:220px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Fichas y opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.ficha-num{min-width:clamp(82px,17vw,118px);height:clamp(82px,17vw,118px);padding:0 12px;border-radius:22px;border:6px solid;
+  display:grid;place-items:center;font-size:clamp(32px,7vw,52px);font-weight:700;line-height:1;box-shadow:var(--sombra)}
+.ficha-num:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Grupos iguales ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:clamp(8px,2vw,14px);justify-content:center;max-width:100%}
+.grupo{width:clamp(84px,21vw,118px);aspect-ratio:1;border-radius:50%;border:4px solid var(--linea);background:var(--acento-claro);
+  display:flex;flex-wrap:wrap;align-content:center;justify-content:center;gap:1px;padding:10px;line-height:1.05;box-shadow:var(--sombra)}
+.grupo span{display:inline-block}
+.grupo.vacio{background:#fff;border-style:dashed}
+.grupo.lleno{width:clamp(108px,27vw,140px);padding:8px}
+.arreglo{display:grid;gap:clamp(2px,.8vw,6px);justify-content:center;background:#fff;border:4px solid var(--linea);border-radius:16px;padding:10px}
+.arreglo span{display:grid;place-items:center;line-height:1}
+.rotulo{font-weight:700;color:var(--tinta-suave);text-align:center;margin:0}
+.expresion{font-weight:700;font-size:clamp(30px,7vw,48px);color:var(--acento);letter-spacing:.02em}
+.recta{width:100%;max-width:760px;height:auto;display:block}
+/* ---------- Construir una multiplicación ---------- */
+.mandos{display:flex;gap:clamp(10px,3vw,24px);flex-wrap:wrap;justify-content:center}
+.mando{display:flex;flex-direction:column;align-items:center;gap:6px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:10px 14px;box-shadow:var(--sombra)}
+.mando .nombre-m{font-weight:700;color:var(--tinta-suave);font-size:.9em}
+.mando .fila-m{display:flex;align-items:center;gap:10px}
+.mando button{width:52px;height:52px;border-radius:50%;border:4px solid var(--acento);background:#fff;color:var(--acento);font-size:28px;font-weight:700;line-height:1}
+.mando button:active{transform:translateY(2px)}
+.mando .valor{min-width:2ch;text-align:center;font-size:clamp(30px,6vw,40px);font-weight:700}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:46ch;text-align:center;margin:0}
+.dibujito{font-size:clamp(44px,10vw,64px);line-height:1}
+/* ---------- Detective de números ---------- */
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:700;font-size:clamp(18px,2.6vw,23px);max-width:520px;width:100%}
+.pistas-l li{margin:4px 0}
+.cartas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;width:100%;max-width:520px}
+.carta{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:18px;font-weight:700;font-size:clamp(26px,6vw,38px);min-height:72px;box-shadow:var(--sombra);position:relative}
+.carta:active{transform:translateY(3px);box-shadow:none}
+.carta.tachada{opacity:.45;border-color:var(--linea);text-decoration:line-through}
+.carta.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+
+.ecuacion{font-weight:700;font-size:clamp(32px,7.5vw,52px);letter-spacing:.03em;text-align:center}
+.ecuacion .hueco{display:inline-block;min-width:1.4em;border:4px dashed var(--acento);border-radius:12px;color:var(--acento);text-align:center;line-height:1.15}
+.ecuacion .hueco.lleno{border-style:solid;background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.carta.marcada{background:var(--acento);color:#fff}
+.carta.marcada.bien{background:var(--acierto-fondo);color:var(--acierto)}
+.fila-fichas .carta{min-width:clamp(96px,22vw,130px);padding:4px 10px;font-size:clamp(22px,5vw,32px)}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.05;vertical-align:middle;font-weight:700}
+.frac > span:first-child{border-bottom:3px solid currentColor;padding:0 .18em}
+.opcion-frac{border:5px solid var(--acento);background:#fff;color:var(--tinta);border-radius:20px;padding:8px 18px;font-size:clamp(26px,6vw,38px);
+  box-shadow:var(--sombra);min-width:clamp(84px,20vw,110px);min-height:86px}
+.opcion-frac:active{transform:translateY(3px);box-shadow:none}
+.opcion-frac.bien{border-color:var(--acierto);background:var(--acierto-fondo);color:var(--acierto)}
+.modelo{width:clamp(230px,70vw,420px);height:auto;display:block}
+.modelo.pastel{width:clamp(160px,42vw,220px)}
+.modelos{display:flex;flex-direction:column;gap:10px;align-items:center;width:100%}
+.par-frac{display:flex;align-items:center;gap:clamp(10px,3vw,24px);justify-content:center;font-size:clamp(36px,8vw,56px)}
+.par-frac .signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2}
+.par-frac .signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.contexto{margin:0;font-weight:600;color:var(--tinta-suave);text-align:center}
+.fila-orden{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;min-height:90px;align-items:center;border-bottom:4px solid var(--linea);width:100%;padding-bottom:8px}
+.fila-orden .frac{font-size:clamp(28px,6vw,40px);color:var(--acierto)}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:#45297A}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h svg{width:60mm;height:auto}
+  .hoja .linea{display:inline-block;width:14mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+.mascota .lumi-m{height:1.3em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.25em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.fila-modelo{display:flex;align-items:center;gap:10px;width:100%;justify-content:center;flex-wrap:wrap}
+.etq-modelo{font-size:clamp(22px,5vw,30px)}
+.fila-modelo .modelo{width:clamp(200px,60vw,320px)}
+.escena .pistas-l{font-size:clamp(16px,2.2vw,20px);font-weight:600}
+.problema{line-height:1.5}
+.operacion-v{font-weight:700;font-size:clamp(30px,7vw,48px);font-family:"Trebuchet MS",sans-serif;text-align:right;line-height:1.15;letter-spacing:.1em}
+.operacion-v .raya{border-top:4px solid var(--tinta);margin-top:4px;padding-top:2px}
+.operacion-v .falta{display:inline-block;min-width:.8em;border:3px dashed var(--acento);border-radius:8px;color:var(--acento);letter-spacing:0;text-align:center}
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(11px,1.8vw,15px);color:var(--tinta-suave);padding:4px 6px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.2}
+.tabla-valor td{font-size:clamp(28px,6.5vw,46px);text-align:center;padding:4px clamp(6px,1.6vw,14px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.opcion-texto{max-width:100%}
+.hoja .razon-h{font-size:13pt;margin:2mm 0}
+.hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+.hoja .caja-h div{font-size:16pt}
+.ecuacion{max-width:100%;overflow-wrap:anywhere}
+#opciones .opcion-texto{font-size:clamp(19px,4.4vw,28px);padding:10px 16px}
+.barras-svg{width:100%;max-width:380px;height:auto;display:block}
+.fila-g{display:flex;align-items:center;gap:8px;justify-content:flex-start;width:100%;max-width:560px}
+.fila-g .grupos-v{flex:1 1 0;min-width:0}
+.nombre-g{font-weight:700;color:var(--tinta-suave);flex:0 0 4.6em;text-align:right;overflow-wrap:anywhere}
+.nombre-g:empty{display:none}
+.grupos-v{display:flex;flex-wrap:wrap;gap:6px}
+.grupo-v{display:grid;gap:1px;justify-items:center;background:var(--acento-claro);border:3px solid var(--linea);border-radius:10px;padding:3px 5px;color:var(--acento);font-size:clamp(13px,3.2vw,17px);line-height:1.1}
+.saltos{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:520px}
+.saltos span{font-weight:700;font-size:clamp(18px,4.4vw,24px);padding:4px 10px;border-radius:999px;border:3px dashed var(--linea);color:var(--tinta-suave)}
+.saltos span.hasta{border-style:solid;border-color:var(--acento);background:var(--acento-claro);color:var(--tinta)}
+.saltos span.n{border:3px solid var(--tinta);background:#fff;color:var(--tinta)}
+.saltos span.n::before{content:"⬇ "}
+.redondeo{font-size:clamp(18px,4.2vw,24px);white-space:pre-wrap}
+.est-e{margin:0;text-align:center;font-size:clamp(26px,6.4vw,42px)}
+.problema b{color:var(--acento)}
+.pregunta{color:var(--acento)}
+
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1 data-es="Problemas de varios pasos" data-en="Multi-step word problems">Multi-step word problems</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./" data-es="🏠 Todos los juegos" data-en="🏠 All games">🏠 All games</a>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+    </span>
+    <span class="chip" id="chip-rango">
+      <button id="btn-facil" aria-pressed="true" data-es="⭐ Fácil" data-en="⭐ Easy">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false" data-es="⭐⭐ Reto" data-en="⭐⭐ Challenge">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi-lupa.png" alt="" class="lumi-d" width="239" height="300"></span><span>🧩</span><span>🚌</span><span>🐠</span><span>⚽</span></div>
+    <h2 data-es="¡Detectives de problemas!" data-en="Problem detectives!">Problem detectives!</h2>
+    <p data-es="Un buen detective lee con cuidado, busca las pistas y comprueba su respuesta. Con Lumi vas a comparar cantidades con «veces más», dibujar modelos de barras, escribir ecuaciones con una letra, resolver problemas de varios pasos en el acuario, el torneo de fútbol, la feria del libro y el autobús de la CTA, decidir qué hacer con el residuo y estimar si una respuesta es razonable. Con Israel, Daniel, Elías, Sophia, Athena, Salma y Selena."
+       data-en="A good detective reads carefully, looks for clues and checks the answer. With Lumi you will compare amounts with “times as many”, draw bar models, write equations with a letter, solve multi-step problems at the aquarium, the soccer tournament, the book fair and on the CTA bus, decide what to do with the remainder and estimate whether an answer is reasonable. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.">A good detective reads carefully, looks for clues and checks the answer. With Lumi you will compare amounts with “times as many”, draw bar models, write equations with a letter, solve multi-step problems at the aquarium, the soccer tournament, the book fair and on the CTA bus, decide what to do with the remainder and estimate whether an answer is reasonable. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <button class="bocina grande" id="btn-oir">🔊</button>
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px" data-es="Escoge un juego" data-en="Pick a game">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver" data-es="◀ Volver" data-en="◀ Back">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador"></div>
+    </div>
+    <div class="instruccion">
+      <button class="bocina" id="btn-bocina">🔊</button>
+      <p id="txt-instruccion"></p>
+      <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300"></span>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente" data-es="Siguiente ▶" data-en="Next ▶">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2 data-es="¡Terminaste el juego!" data-en="You finished the game!">You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <button class="boton" id="btn-al-menu" data-es="Otro juego" data-en="Another game">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px"
+       data-es="🖨 Imprimir hoja: problemas de varios pasos" data-en="🖨 Print a page: multi-step word problems">🖨 Print a page: multi-step word problems</button></p>
+    <p data-es="Alineado con los estándares de matemáticas de Illinois para cuarto grado: 4.OA.1 (interpretar una ecuación de multiplicación como una comparación, por ejemplo 35 = 5 × 7 como «35 es 5 veces 7 y 7 veces 5», y representar comparaciones verbales con ecuaciones), 4.OA.2 (multiplicar o dividir para resolver problemas de comparación multiplicativa con dibujos y ecuaciones con una letra para el número desconocido, distinguiéndola de la comparación aditiva) y 4.OA.3 (resolver problemas de varios pasos con números enteros y las cuatro operaciones, incluidos problemas en los que hay que interpretar el residuo, representarlos con ecuaciones con una letra para la cantidad desconocida y valorar si la respuesta es razonable mediante el cálculo mental y la estimación con redondeo). En el nivel Fácil hay grupos de puntos, modelos de barras, los números del problema resaltados, la cuenta de múltiplos para dividir y el redondeo a la vista; en el Reto hay ecuaciones con una letra, ecuaciones de dos pasos con paréntesis, problemas de tres pasos y problemas con residuo de dos pasos con los pasos a la vista, y hay que elegir la mejor estimación antes de decidir. Las opciones incorrectas vienen de errores típicos (sumar en lugar de multiplicar al leer «veces más», detenerse en el primer paso, usar la operación equivocada, olvidar una cantidad, poner un cero de más) y cada una tiene su pista. El juego «¿Es razonable?» pide analizar la respuesta de un compañero. Cada juego tiene su enlace directo: #veces, #comparar, #ecuacion, #pasos, #residuo y #razonable."
+       data-en="Aligned to the Illinois fourth grade mathematics standards 4.OA.1 (interpret a multiplication equation as a comparison, e.g., interpret 35 = 5 × 7 as a statement that 35 is 5 times as many as 7 and 7 times as many as 5, and represent verbal statements of multiplicative comparisons as equations), 4.OA.2 (multiply or divide to solve word problems involving multiplicative comparison, using drawings and equations with a symbol for the unknown number, distinguishing multiplicative comparison from additive comparison) and 4.OA.3 (solve multistep word problems posed with whole numbers using the four operations, including problems in which remainders must be interpreted, represent these problems using equations with a letter standing for the unknown quantity, and assess the reasonableness of answers using mental computation and estimation strategies including rounding). At the Easy level there are dot groups, bar models, the numbers in the problem highlighted, skip counting for division and the rounding on screen; at the Challenge level there are equations with a letter, two-step equations with parentheses, three-step problems and two-step remainder problems with the steps on screen, and the child chooses the best estimate before deciding. Wrong options come from typical mistakes (adding instead of multiplying when reading “times as many”, stopping after the first step, using the wrong operation, leaving out a quantity, writing an extra zero) and each one has its own hint. The game “Is it reasonable?” asks the child to analyze a classmate&#x27;s answer. Each game has its own direct link: #veces, #comparar, #ecuacion, #pasos, #residuo and #razonable.">Aligned to the Illinois fourth grade mathematics standards 4.OA.1 (interpret a multiplication equation as a comparison, e.g., interpret 35 = 5 × 7 as a statement that 35 is 5 times as many as 7 and 7 times as many as 5, and represent verbal statements of multiplicative comparisons as equations), 4.OA.2 (multiply or divide to solve word problems involving multiplicative comparison, using drawings and equations with a symbol for the unknown number, distinguishing multiplicative comparison from additive comparison) and 4.OA.3 (solve multistep word problems posed with whole numbers using the four operations, including problems in which remainders must be interpreted, represent these problems using equations with a letter standing for the unknown quantity, and assess the reasonableness of answers using mental computation and estimation strategies including rounding). At the Easy level there are dot groups, bar models, the numbers in the problem highlighted, skip counting for division and the rounding on screen; at the Challenge level there are equations with a letter, two-step equations with parentheses, three-step problems and two-step remainder problems with the steps on screen, and the child chooses the best estimate before deciding. Wrong options come from typical mistakes (adding instead of multiplying when reading “times as many”, stopping after the first step, using the wrong operation, leaving out a quantity, writing an extra zero) and each one has its own hint. The game “Is it reasonable?” asks the child to analyze a classmate&#x27;s answer. Each game has its own direct link: #veces, #comparar, #ecuacion, #pasos, #residuo and #razonable.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2 data-es="Problemas de varios pasos" data-en="Multi-step word problems">Multi-step word problems</h2>
+  <p class="indicacion" data-es="Nombre: ____________________________     Fecha: ____________"
+     data-en="Name: ____________________________     Date: ____________">Name: ____________________________     Date: ____________</p>
+  <h3 data-es="1. Haz un modelo de barras y resuelve." data-en="1. Draw a bar model and solve.">1. Draw a bar model and solve.</h3>
+  <div id="hoja-comp"></div>
+  <h3 data-es="2. Escribe una ecuación con una letra y resuélvela." data-en="2. Write an equation with a letter and solve it.">2. Write an equation with a letter and solve it.</h3>
+  <p class="razon-h" id="hoja-ec"></p>
+  <div class="renglon"></div>
+  <h3 data-es="3. Resuelve el problema. Escribe cada paso." data-en="3. Solve the problem. Write each step.">3. Solve the problem. Write each step.</h3>
+  <p class="razon-h" id="hoja-dos"></p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <h3 data-es="4. Divide y decide qué hacer con el residuo." data-en="4. Divide and decide what to do with the remainder.">4. Divide and decide what to do with the remainder.</h3>
+  <p class="razon-h" id="hoja-res"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Colores de los números (los mismos de prekínder y kindergarten del 0 al 10) ============ */
+const PALETA = {
+  0:{f:"#EDEFF2",b:"#4A5D70",t:"#26333F"}, 1:{f:"#FFE3E3",b:"#C62828",t:"#7F1D1D"},
+  2:{f:"#FFEBD6",b:"#A34700",t:"#7A3500"}, 3:{f:"#FFF6CC",b:"#B38600",t:"#6B4E00"},
+  4:{f:"#DFF3E0",b:"#2E7D32",t:"#1B5E20"}, 5:{f:"#DDEAFB",b:"#1565C0",t:"#0D47A1"},
+  6:{f:"#EDE0F5",b:"#6A1B9A",t:"#4A148C"}, 7:{f:"#FCE0EE",b:"#AD1457",t:"#880E4F"},
+  8:{f:"#EFE4DA",b:"#6D4C41",t:"#4E342E"}, 9:{f:"#D9F1F2",b:"#00695C",t:"#004D40"},
+  10:{f:"#E2E3F7",b:"#3949AB",t:"#283593"}
+};
+const NEUTRO = {f:"#FFFFFF",b:"#A33A12",t:"#7A2A0C"};
+const colorDe = (n)=>PALETA[n] || NEUTRO;
+const ES_BASE = ["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez",
+  "once","doce","trece","catorce","quince","dieciséis","diecisiete","dieciocho","diecinueve","veinte"];
+const EN_BASE = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+  "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"];
+const palabra = (n)=> (S.idioma === "es" ? ES_BASE : EN_BASE)[n] || String(n);
+
+const T = {
+  es:{
+    bien:["¡Muy bien!","¡Excelente!","¡Lo lograste!","¡Perfecto!","¡Lumi brilla de alegría!","¡Bravo!"],
+    otra:["Casi, casi. ¡Otra vez!","¡Uy! Prueba otra vez.","Mmm… inténtalo de nuevo. Tú puedes."],
+    escuchar:"🔁 Escuchar otra vez", si:"✔ Sí, es razonable", no:"✘ No es razonable", comprobar:"✔ Comprobar", ninguno:"Marca al menos una opción.",
+    final:(n)=>`¡Terminaste! Ganaste ${ES_BASE[n]} estrellas.`, menu:"Escoge un juego.",
+    reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
+    vozR:"residuo",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    /* Cosas para comparar (juegos 1 y 2) */
+    cosas:[{x:"calcomanías", cu:"Cuántas", e:"⭐"}, {x:"canicas", cu:"Cuántas", e:"🔮"}, {x:"libros", cu:"Cuántos", e:"📚"}, {x:"tarjetas de béisbol", cu:"Cuántas", e:"⚾"}, {x:"lápices de colores", cu:"Cuántos", e:"🖍️"}],
+    pares:[{s:["el tren rojo","el tren azul"], x:"vagones", cu:"Cuántos", e:"🚂"}, {s:["la pecera pequeña","la pecera grande"], x:"peces", cu:"Cuántos", e:"🐠"},
+           {s:["la torre de Daniel","la torre de Salma"], x:"bloques", cu:"Cuántos", e:"🧱"}],
+    chica:"Cantidad pequeña", grande:"Cantidad grande",
+    describeBarras:(c,g,k,div)=>`Modelo de barras: una barra para ${c} y ${div ? k + " barras iguales" : "una barra más larga"} para ${g}.`,
+    /* 1. Veces más */
+    vecesF:"¿Qué oración dice lo mismo que la ecuación?",
+    esVeces:(A,k,b)=>`${A} es ${k} veces ${b}.`,
+    esMas:(A,k,b)=>`${A} es ${k} más que ${b}.`,
+    frase:(n1,n2,k,b,c)=>`${n1} tiene ${k} veces más ${c.x} que ${n2}, que tiene ${b}.`,
+    fraseF:"¿Qué ecuación va con la oración?",
+    vecesFin:(A,k,b)=>`${A} = ${k} × ${b}: ${A} es ${k} veces ${b} y también es ${b} veces ${k}.`,
+    fraseFin:(n1,n2,k,b,A,c)=>`${n1} tiene ${k} veces las ${c.x} de ${n2}: ${k} × ${b} = ${A}. Por eso ${A} = ${k} × ${b}.`,
+    pVecesSumaF:(A,k,b)=>`«${A} = ${k} × ${b}» es una multiplicación. «${k} más que ${b}» sería ${k} + ${b} = ${k+b}, no ${A}.`,
+    pVecesRevesF:(A)=>`Al revés: ${A} es el número más grande, así que ${A} es el que es «veces» el otro.`,
+    pVecesSuma:(k)=>`«${k} veces más» no es «${k} más». «Veces» quiere decir multiplicar, no sumar.`,
+    pVecesReves:(g)=>`Al revés: ${g} es quien tiene más. La cantidad grande es igual a las veces por la cantidad pequeña.`,
+    letraF:"Elige la ecuación. La letra n es el número que no conocemos.",
+    lMayor:(n1,n2,k,b,c)=>`${n1} tiene ${k} veces más ${c.x} que ${n2}. ${n2} tiene ${b}.`,
+    lMayorP:(n1,c)=>`¿Qué ecuación sirve para hallar ${c.cu.toLowerCase()} ${c.x} tiene ${n1}?`,
+    lVeces:(n1,n2,A,b,c)=>`${n1} tiene ${A} ${c.x} y ${n2} tiene ${b}.`,
+    lVecesP:(n1,n2,c)=>`¿Qué ecuación sirve para hallar cuántas veces más ${c.x} tiene ${n1} que ${n2}?`,
+    lMenor:(n1,n2,A,k,c)=>`${n1} tiene ${A} ${c.x}. Eso es ${k} veces más que ${n2}.`,
+    lMenorP:(n2,c)=>`¿Qué ecuación sirve para hallar ${c.cu.toLowerCase()} ${c.x} tiene ${n2}?`,
+    lMayorFin:(n1,k,b,A)=>`${n1} tiene ${k} veces ${b}: n = ${k} × ${b}. Así que n = ${A}.`,
+    lVecesFin:(A,b,k)=>`${A} es n veces ${b}: ${A} = n × ${b}. Como ${k} × ${b} = ${A}, n = ${k}.`,
+    lMenorFin:(n2,A,k,b)=>`${A} es ${k} veces lo que tiene ${n2}: ${A} = ${k} × n. Como ${k} × ${b} = ${A}, n = ${b}.`,
+    pVecesCuantasMas:"Esa ecuación diría cuántas más hay, no cuántas veces más. «Veces» es multiplicar.",
+    pNGrande:(A)=>`Así n sería mucho más grande que ${A}. Pero ${A} ya es la cantidad grande.`,
+    /* 2. Comparación multiplicativa */
+    cMayor:(ch,gr,b,k,c)=>`${cap(ch)} tiene ${b} ${c.x}. ${cap(gr)} tiene ${k} veces más ${c.x} que ${ch}.`,
+    cMayorP:(gr,c)=>`¿${c.cu} ${c.x} tiene ${gr}?`,
+    cVeces:(ch,gr,b,N,c)=>`${cap(ch)} tiene ${b} ${c.x} y ${gr} tiene ${N}.`,
+    cVecesP:(ch,gr,c)=>`¿Cuántas veces más ${c.x} tiene ${gr} que ${ch}?`,
+    cMenor:(ch,gr,N,k,c)=>`${cap(gr)} tiene ${N} ${c.x}. Eso es ${k} veces más que ${ch}.`,
+    cMenorP:(ch,c)=>`¿${c.cu} ${c.x} tiene ${ch}?`,
+    cMayorFin:(gr,b,k,A,c)=>`${k} veces ${b} es ${k} × ${b} = ${A}. ${cap(gr)} tiene ${A} ${c.x}. (No es ${b} + ${k} = ${b+k}: eso sería «${k} más».)`,
+    cVecesFin:(ch,gr,b,N,k,c)=>`${N} ÷ ${b} = ${k}, porque ${k} × ${b} = ${N}. ${cap(gr)} tiene ${k} veces más ${c.x} que ${ch}.`,
+    cMenorFin:(ch,N,k,b,c)=>`${N} ÷ ${k} = ${b}, porque ${k} × ${b} = ${N}. ${cap(ch)} tiene ${b} ${c.x}.`,
+    pcSuma:(k)=>`«${k} veces más» no es «${k} más». No se suma ${k}: se multiplica. La cantidad grande es ${k} veces la pequeña.`,
+    pcCuenta:(k)=>`Cuenta otra vez: son ${k} veces, ni una más ni una menos.`,
+    pcMultiplica:(k,b)=>`Multiplica con cuidado: ${k} × ${b}.`,
+    pcCuantasMas:(N,b)=>`Ese número dice cuántas más hay, no cuántas veces más. Pregúntate: ¿${b} por qué número da ${N}?`,
+    pcComprueba:(N,b)=>`Comprueba multiplicando: ese número por ${b} no da ${N}.`,
+    pcCompruebaK:(N,k)=>`Comprueba multiplicando: ${k} por ese número no da ${N}.`,
+    compF:"Lee el problema. ¿Hay que multiplicar o dividir?",
+    pcResta:(k)=>`«${k} veces más» no es «${k} más»: no se resta ${k}. La cantidad grande se parte en ${k} partes iguales: divide.`,
+    pcMult:(ch,N)=>`${cap(ch)} tiene menos, así que su número debe ser más pequeño que ${N}. Divide en lugar de multiplicar.`,
+    /* 3. La letra misteriosa */
+    ecF:"¿Qué ecuación representa el problema? La letra n es el número que no conocemos.",
+    ecValor:"¡Esa es! Ahora resuelve: ¿cuánto vale n?",
+    ec1:{
+      "+":[(v)=>`En la excursión al acuario, ${v.n1} cuenta ${v.a} peces en una pecera y ${v.b} en otra. ¿Cuántos peces cuenta en total?`,
+           (v)=>`La feria del libro vende ${v.a} libros el lunes y ${v.b} el martes. ¿Cuántos libros vende en los dos días?`],
+      "−":[(v)=>`Un autobús de la CTA lleva ${v.a} pasajeros. En una parada bajan ${v.b}. ¿Cuántos pasajeros quedan en el autobús?`,
+           (v)=>`El equipo de fútbol quiere vender ${v.a} boletos para el torneo. Ya vendió ${v.b}. ¿Cuántos boletos le faltan por vender?`],
+      "×":[(v)=>`En el auditorio de la escuela hay ${v.a} filas con ${v.b} sillas cada una. ¿Cuántas sillas hay?`,
+           (v)=>`En la feria del libro, ${v.n1} compra ${v.a} paquetes de ${v.b} calcomanías. ¿Cuántas calcomanías compra?`],
+      "÷":[(v)=>`Al torneo de fútbol llegan ${v.a} jugadores y forman equipos de ${v.b}. ¿Cuántos equipos forman?`,
+           (v)=>`${v.n1} reparte ${v.a} galletas en ${v.b} bolsas iguales. ¿Cuántas galletas pone en cada bolsa?`]},
+    pEc1:{"+":"En el problema se juntan dos cantidades: eso es sumar.",
+          "−":"En el problema se quita una parte o se busca cuánto falta: eso es restar.",
+          "×":"En el problema hay grupos iguales que se repiten: eso es multiplicar.",
+          "÷":"En el problema se reparte en grupos iguales: eso es dividir."},
+    ec1Fin:(eq,R)=>`${eq.replace("n", R)}, así que n = ${R}.`,
+    pEcOtra:(eq)=>`Ese número sale de otra operación. Calcula con la ecuación que elegiste: ${eq}.`,
+    pEcCuenta:"Revisa tu cuenta con cuidado.",
+    ec2:{
+      jugos:{t:(v)=>`Para la excursión al acuario hay ${v.a} paquetes de ${v.b} jugos y ${v.c} jugos sueltos. ¿Cuántos jugos hay en total?`,
+             op:"Los jugos sueltos se juntan con los de los paquetes: se suman."},
+      calco:{t:(v)=>`${v.n1} tiene ${v.a} calcomanías. Le regala ${v.b} a su hermano y reparte las demás en partes iguales entre ${v.c} amigos. ¿Cuántas calcomanías recibe cada amigo?`,
+             op:"Las calcomanías que regala se quitan: se restan, no se suman."},
+      torneo:{t:(v)=>`Al torneo de fútbol llegan ${v.a} niñas y ${v.b} niños. Se forman equipos de ${v.c} jugadores. ¿Cuántos equipos se forman?`,
+             op:"Se forman equipos iguales: se divide, no se multiplica."},
+      sillas:{t:(v)=>`En el auditorio de la escuela hay ${v.a} filas de ${v.b} sillas. En total, ${v.c} sillas están ocupadas. ¿Cuántas sillas están libres?`,
+             op:"Las sillas ocupadas se quitan del total: se restan, no se suman."},
+      libros:{t:(v)=>`En la feria del libro, ${v.n1} tiene ${v.a} dólares. Compra ${v.b} libros de ${v.c} dólares cada uno. ¿Cuánto dinero le queda?`,
+             op:"Compra varios libros del mismo precio: su costo se multiplica, no se suma."}},
+    pEcParen:"Fíjate en los paréntesis: dicen qué se calcula primero. ¿Qué pasa primero en el problema?",
+    pEcOlvida:"Esa ecuación no usa todos los datos del problema.",
+    pEcMedio:"Ese es solo el resultado de lo que está entre paréntesis. ¡Falta el segundo paso!",
+    pEcOtra2:(eq)=>`Ese número sale de otra ecuación. En ${eq}, calcula primero lo que está entre paréntesis.`,
+    ec2Fin:(p1,p2,R)=>`Primero, lo que está entre paréntesis: ${p1}. Después: ${p2}. Así que n = ${R}.`,
+    /* 4. Problemas de varios pasos */
+    pzF:"Resuelve el problema. Piensa: ¿qué pasa primero?",
+    pzR:"Resuelve el problema. Sigue los pasos.",
+    paso:(i,x)=>`Paso ${i}: ${x}.`,
+    pz:{
+      bus:{e:"🚌", t:(v)=>`Para la excursión al acuario, ${v.a} autobuses llevan ${v.b} estudiantes cada uno. También van ${v.c} maestros. ¿Cuántas personas van en total?`,
+           fin:(R)=>`Van ${fmt(R)} personas.`, op:"Los maestros también van: hay que sumarlos, no restarlos.",
+           olv:(v)=>`¿Usaste los ${v.a} autobuses? Hay ${v.b} estudiantes en cada uno.`},
+      feria:{e:"📚", t:(v)=>`En la feria del libro, ${v.nm} tiene ${v.a} dólares. Compra ${v.b} libros de ${v.c} dólares cada uno. ¿Cuánto dinero le queda?`,
+           fin:(R)=>`Le quedan ${fmt(R)} dólares.`, op:"Lo que gasta se resta de lo que tiene, no se suma.",
+           olv:(v)=>`Compra ${v.b} libros, no uno solo: primero multiplica.`},
+      grupos:{e:"🐠", t:(v)=>`Un autobús lleva ${v.a} estudiantes al acuario y otro lleva ${v.b}. Al llegar, todos se reparten en ${v.c} grupos iguales. ¿Cuántos estudiantes hay en cada grupo?`,
+           fin:(R)=>`Hay ${fmt(R)} estudiantes en cada grupo.`, op:"Se reparten en grupos iguales: hay que dividir, no restar.",
+           olv:()=>"¿Usaste los dos autobuses? Primero junta a los estudiantes de los dos."},
+      cta:{e:"🚌", t:(v)=>`Un autobús de la CTA sale con ${v.a} pasajeros. En la primera parada bajan ${v.b} y suben ${v.c}. ¿Cuántos pasajeros lleva ahora?`,
+           fin:(R)=>`Lleva ${fmt(R)} pasajeros.`, op:"Los que suben se suman; los que bajan se restan.",
+           olv:(v)=>`¿Usaste los ${v.b} pasajeros que bajan?`},
+      acuario:{e:"🐠", t:(v)=>`${v.a} niños y ${v.c} adultos van al acuario. El boleto de niño cuesta ${v.b} dólares y el de adulto, ${v.d} dólares. ¿Cuánto pagan en total?`,
+           p:["¿Cuánto cuestan los boletos de los niños?","¿Cuánto cuestan los boletos de los adultos?","¿Cuánto pagan en total?"],
+           fin:(R)=>`Pagan ${fmt(R)} dólares.`, op:"Al final se juntan los dos gastos: hay que sumar, no restar.",
+           olv:(v)=>`Hay ${v.c} adultos: el boleto de adulto se multiplica por ${v.c}.`},
+      libros:{e:"📚", t:(v)=>`En la feria del libro, ${v.nm} tiene ${v.a} dólares. Compra ${v.b} libros de ${v.c} dólares cada uno y un cartel de ${v.d} dólares. ¿Cuánto dinero le queda?`,
+           p:["¿Cuánto cuestan los libros?","¿Cuánto le queda después de pagar los libros?","¿Cuánto le queda después de pagar el cartel?"],
+           fin:(R)=>`Le quedan ${fmt(R)} dólares.`, op:"El cartel también cuesta: se resta, no se suma.",
+           olv:(v)=>`Son ${v.b} libros de ${v.c} dólares: primero multiplica.`},
+      torneo:{e:"⚽", t:(v)=>`En el torneo de fútbol hay ${v.a} equipos de ${v.b} jugadores y ${v.c} entrenadores. Cada persona recibe ${v.d} botellas de agua. ¿Cuántas botellas se necesitan?`,
+           p:["¿Cuántos jugadores hay?","¿Cuántas personas hay en total?","¿Cuántas botellas se necesitan?"],
+           fin:(R)=>`Se necesitan ${fmt(R)} botellas.`, op:(v)=>`Cada persona recibe ${v.d} botellas: se multiplica, no se suma.`,
+           olv:(v)=>`¿Contaste a los ${v.c} entrenadores? También reciben agua.`},
+      salones:{e:"🚌", t:(v)=>`${cap(ES_BASE[v.s])} salones de ${v.a} estudiantes y ${v.b} maestros van al acuario en ${v.c} autobuses. En cada autobús va el mismo número de personas. ¿Cuántas personas van en cada autobús?`,
+           p:["¿Cuántos estudiantes hay?","¿Cuántas personas hay en total?","¿Cuántas personas van en cada autobús?"],
+           fin:(R)=>`En cada autobús van ${fmt(R)} personas.`, op:"Las personas se reparten en los autobuses: hay que dividir, no restar.",
+           olv:(v)=>`Hay ${ES_BASE[v.s]} salones, no uno: primero multiplica.`}},
+    pzMedio:"Ese es el resultado de un paso de en medio. ¡Todavía falta un paso!",
+    pzOtra:"Revisa cada paso y tus cuentas con cuidado.",
+    /* 5. ¿Qué hago con el residuo? */
+    resF:"Divide y piensa qué hacer con lo que sobra.",
+    resR:"Este problema tiene dos pasos. Sigue los pasos y piensa qué hacer con el residuo.",
+    multiplos:(d)=>`Cuenta de ${d} en ${d}:`,
+    res1:{
+      arriba:(n,d)=>({t:`${n} estudiantes van al acuario en camionetas de ${d} asientos.`, p:"¿Cuántas camionetas necesitan para que vayan todos?", u:"camionetas", x:"estudiantes"}),
+      cociente:(n,d)=>({t:`Al torneo de fútbol llegan ${n} jugadores. Cada equipo tiene ${d} jugadores.`, p:"¿Cuántos equipos completos se pueden formar?", u:"equipos", x:"jugadores", otro:"formar otro equipo"}),
+      residuo:(n,d)=>({t:`En la feria del libro hay ${n} marcadores. Se ponen en paquetes de ${d}.`, p:"¿Cuántos marcadores quedan fuera de los paquetes?", u:"paquetes", x:"marcadores"})},
+    res2:{
+      arriba:[(v)=>({t:`${v.a} estudiantes y ${v.b} maestros van al acuario en autobuses de ${v.d} asientos.`, p:"¿Cuántos autobuses necesitan para que vayan todos?", u:"autobuses", x:"personas",
+                  pasos:["Junta a los estudiantes y a los maestros.",`Divide entre ${v.d} y decide qué hacer con el residuo.`], olv:`¿Contaste a los ${v.b} maestros? También necesitan asiento.`}),
+              (v)=>({t:`En la parada esperan ${v.a} personas y después llegan ${v.b} más. Cada autobús de la CTA que llega tiene lugar para ${v.d} personas.`, p:"¿Cuántos autobuses hacen falta para que suban todos?", u:"autobuses", x:"personas",
+                  pasos:["Junta a todas las personas que esperan.",`Divide entre ${v.d} y decide qué hacer con el residuo.`], olv:`¿Contaste a las ${v.b} personas que llegaron después?`})],
+      cociente:[(v)=>({t:`Para la feria del libro hay ${v.a} paquetes de ${v.b} tarjetas. Se arman sobres de ${v.d} tarjetas.`, p:"¿Cuántos sobres completos se pueden armar?", u:"sobres", x:"tarjetas", otro:"armar otro sobre",
+                  pasos:["Busca cuántas tarjetas hay en total.",`Divide entre ${v.d} y decide qué hacer con el residuo.`], olv:`Hay ${v.a} paquetes, no uno solo: primero multiplica.`})],
+      residuo:[(v)=>({t:`${v.nm} tiene ${v.a} calcomanías. Regala ${v.b} y pega las demás en un álbum, ${v.d} en cada página. Solo llena páginas completas.`, p:"¿Cuántas calcomanías le sobran sin pegar?", u:"páginas", x:"calcomanías",
+                  pasos:["Busca cuántas calcomanías quedan después de regalar.",`Divide entre ${v.d} y decide qué hacer con el residuo.`], olv:`Primero quita las ${v.b} calcomanías que regala.`})]},
+    resArribaFin:(q,r,c)=>`Con ${q} ${c.u} quedarían ${r} ${c.x} sin lugar, así que hacen falta ${q+1} ${c.u}.`,
+    resCocFin:(q,r,c)=>`Se completan ${q} ${c.u}. Los ${r} ${c.x} que sobran no alcanzan para ${c.otro}.`,
+    resResFin:(q,r,c)=>`Se llenan ${q} ${c.u} y sobran ${r} ${c.x}: el residuo es la respuesta.`,
+    pResArribaQ:(q,r,c)=>`Con ${q} ${c.u} quedarían ${r} ${c.x} sin lugar. ¡Nadie se queda fuera!`,
+    pResArribaR:(c)=>`Ese es el residuo: los ${c.x} que sobran. La pregunta pide el número de ${c.u} que hacen falta.`,
+    pResCocMas:(r,c)=>`Con los ${r} ${c.x} que sobran no alcanza para ${c.otro}.`,
+    pResCocR:(c)=>`Ese es el residuo: los ${c.x} que sobran. La pregunta pide el número de ${c.u} completos.`,
+    pResResQ:(c)=>`Ese número es el de ${c.u} que se llenan. La pregunta pide el número de ${c.x} que sobran.`,
+    pResResMas:"Mira el residuo: es lo que sobra después de llenar los grupos completos.",
+    pResPaso1:(d)=>`Ese es solo el resultado del paso 1. Ahora divide entre ${d}.`,
+    /* 6. ¿Es razonable? */
+    razF:"¿Es razonable la respuesta? Estima para decidir.",
+    razEstF:"Primero estima. ¿Cuál es la mejor estimación?",
+    pasosRaz:["Redondea los números.","Estima con los números redondeados.","Compara la estimación con la respuesta."],
+    razDecide:"¡Buena estimación! Ahora decide: ¿es razonable la respuesta?",
+    razon:{
+      mult:(v)=>`Cada autobús lleva ${v.b} estudiantes al acuario. Van ${v.a} autobuses. ${v.nm} dice que van ${fmt(v.v)} estudiantes.`,
+      suma:(v)=>`La feria del libro vende ${v.a} libros el lunes y ${v.b} el martes. ${v.nm} dice que vende ${fmt(v.v)} libros en total.`,
+      resta:(v)=>`La biblioteca de la escuela tiene ${v.a} libros de cuentos. Presta ${v.b}. ${v.nm} dice que quedan ${fmt(v.v)} libros de cuentos en la biblioteca.`,
+      mult3:(v)=>`Un acuario recibe ${v.b} visitantes cada día. ${v.nm} dice que en ${v.a} días recibe ${fmt(v.v)} visitantes.`,
+      mult22:(v)=>`En el estadio del barrio hay ${v.a} filas de ${v.b} asientos. ${v.nm} dice que hay ${fmt(v.v)} asientos.`,
+      div:(v)=>`En la feria del libro se reparten ${fmt(v.a)} marcadores en ${v.b} cajas iguales. ${v.nm} dice que en cada caja van ${fmt(v.v)} marcadores.`,
+      dos:(v)=>`La feria del libro tiene ${v.a} cajas con ${v.b} libros cada una. Ya vendió ${v.c} libros. ${v.nm} dice que quedan ${fmt(v.v)} libros.`},
+    redondea:"Redondea:",
+    pRed:(l)=>`Redondea: ${l}.`, pEst:(e)=>`Estima: ${e}.`, pCompara:(v,e)=>`Compara: ¿${fmt(v)} está cerca de ${fmt(e)}?`,
+    razSi:(est,e,v,R)=>`Estima: ${est}. ${fmt(v)} está cerca de ${fmt(e)}, así que es razonable. La cuenta exacta da ${fmt(R)}.`,
+    razNo:(est,e,v,R,porque)=>`Estima: ${est}. ${fmt(v)} está muy lejos de ${fmt(e)}, así que no es razonable. ${porque} La respuesta es ${fmt(R)}.`,
+    hizo:{"+":"sumó","−":"restó","×":"multiplicó","÷":"dividió"}, hacer:{"+":"sumar","−":"restar","×":"multiplicar","÷":"dividir"},
+    porqueOp:(h,d)=>`Parece que ${h} en lugar de ${d}.`,
+    porqueCero:"Parece que puso un cero de más.",
+    porqueSinCero:"Parece que le faltó un cero.",
+    porqueAlinea:"Parece que no alineó los números por su valor posicional.",
+    porqueParcial:"Parece que olvidó el cero en el segundo producto parcial.",
+    pRazon:(nm)=>`Estima primero: redondea los números y calcula. ¿La respuesta de ${nm} está cerca de tu estimación?`,
+    pEstRed:"Revisa el redondeo: busca la decena o la centena más cercana a cada número.",
+    pEstComp:"Busca un número fácil de dividir que esté lo más cerca posible del número que se reparte.",
+    pEstOp:"La estimación debe usar la misma operación que el problema.",
+    pEstCeros:"Cuenta los ceros con cuidado: esa estimación tiene un cero de más.",
+    pEstTodo:"Esa estimación olvida restar los libros que ya se vendieron.",
+    /* Hoja */
+    hojaC1:"Athena tiene 6 canicas. Selena tiene 4 veces más canicas que Athena. ¿Cuántas canicas tiene Selena?",
+    hojaC2:"El tren azul tiene 24 vagones y el tren rojo tiene 3. ¿Cuántas veces más vagones tiene el tren azul que el tren rojo?",
+    hojaEc:"Hay 4 cajas con 9 libros cada una y 7 libros sueltos. Escribe una ecuación con la letra n para el total de libros. Después halla n.",
+    hojaDos:"Para la excursión al acuario, 3 autobuses llevan 42 estudiantes cada uno. También van 12 maestros. ¿Cuántas personas van en total?",
+    hojaRes:"130 estudiantes y 6 maestros van al torneo en autobuses de 40 asientos. ¿Cuántos autobuses necesitan? ¿Qué hiciste con el residuo?",
+    estrategias:[
+      ["Hice un modelo de barras","¡Muy bien! Las barras muestran cuántas veces cabe una cantidad en la otra."],
+      ["Escribí una ecuación con una letra","¡Excelente! La letra guarda el lugar del número que buscas."],
+      ["Estimé para comprobar","¡Buena idea! Una estimación te dice si tu respuesta tiene sentido."],
+      ["Decidí qué significa el residuo","¡Genial! Lo que sobra puede pedir un grupo más, quedarse fuera o ser la respuesta."]]
+  },
+  en:{
+    bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Hooray!"],
+    otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+    escuchar:"🔁 Listen again", si:"✔ Yes, it is reasonable", no:"✘ No, it is not reasonable", comprobar:"✔ Check", ninguno:"Mark at least one option.",
+    final:(n)=>`You finished! You earned ${EN_BASE[n]} stars.`, menu:"Pick a game.",
+    reflexion:"Which strategy did you use most? What would you change next time?",
+    vozR:"remainder",
+    nombres:["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"],
+    cosas:[{x:"stickers", cu:"How many", e:"⭐"}, {x:"marbles", cu:"How many", e:"🔮"}, {x:"books", cu:"How many", e:"📚"}, {x:"baseball cards", cu:"How many", e:"⚾"}, {x:"colored pencils", cu:"How many", e:"🖍️"}],
+    pares:[{s:["the red train","the blue train"], x:"cars", cu:"How many", e:"🚂"}, {s:["the small fish tank","the big fish tank"], x:"fish", cu:"How many", e:"🐠"},
+           {s:["Daniel's tower","Salma's tower"], x:"blocks", cu:"How many", e:"🧱"}],
+    chica:"Smaller amount", grande:"Larger amount",
+    describeBarras:(c,g,k,div)=>`Bar model: one bar for ${c} and ${div ? k + " equal bars" : "one longer bar"} for ${g}.`,
+    vecesF:"Which sentence says the same thing as the equation?",
+    esVeces:(A,k,b)=>`${A} is ${k} times as many as ${b}.`,
+    esMas:(A,k,b)=>`${A} is ${k} more than ${b}.`,
+    frase:(n1,n2,k,b,c)=>`${n1} has ${k} times as many ${c.x} as ${n2}, who has ${b}.`,
+    fraseF:"Which equation goes with the sentence?",
+    vecesFin:(A,k,b)=>`${A} = ${k} × ${b}: ${A} is ${k} times as many as ${b}, and it is also ${b} times as many as ${k}.`,
+    fraseFin:(n1,n2,k,b,A,c)=>`${n1} has ${k} times as many ${c.x} as ${n2}: ${k} × ${b} = ${A}. So ${A} = ${k} × ${b}.`,
+    pVecesSumaF:(A,k,b)=>`“${A} = ${k} × ${b}” is a multiplication. “${k} more than ${b}” would be ${k} + ${b} = ${k+b}, not ${A}.`,
+    pVecesRevesF:(A)=>`It is backwards: ${A} is the bigger number, so ${A} is the one that is “times as many” as the other.`,
+    pVecesSuma:(k)=>`“${k} times as many” is not “${k} more”. “Times” means multiply, not add.`,
+    pVecesReves:(g)=>`It is backwards: ${g} has more. The larger amount equals the times multiplied by the smaller amount.`,
+    letraF:"Choose the equation. The letter n is the number we do not know.",
+    lMayor:(n1,n2,k,b,c)=>`${n1} has ${k} times as many ${c.x} as ${n2}. ${n2} has ${b}.`,
+    lMayorP:(n1,c)=>`Which equation can you use to find how many ${c.x} ${n1} has?`,
+    lVeces:(n1,n2,A,b,c)=>`${n1} has ${A} ${c.x} and ${n2} has ${b}.`,
+    lVecesP:(n1,n2,c)=>`Which equation can you use to find how many times as many ${c.x} ${n1} has as ${n2}?`,
+    lMenor:(n1,n2,A,k,c)=>`${n1} has ${A} ${c.x}. That is ${k} times as many as ${n2} has.`,
+    lMenorP:(n2,c)=>`Which equation can you use to find how many ${c.x} ${n2} has?`,
+    lMayorFin:(n1,k,b,A)=>`${n1} has ${k} times ${b}: n = ${k} × ${b}. So n = ${A}.`,
+    lVecesFin:(A,b,k)=>`${A} is n times ${b}: ${A} = n × ${b}. Since ${k} × ${b} = ${A}, n = ${k}.`,
+    lMenorFin:(n2,A,k,b)=>`${A} is ${k} times what ${n2} has: ${A} = ${k} × n. Since ${k} × ${b} = ${A}, n = ${b}.`,
+    pVecesCuantasMas:"That equation would tell how many more, not how many times as many. “Times” means multiply.",
+    pNGrande:(A)=>`Then n would be much bigger than ${A}. But ${A} is already the larger amount.`,
+    cMayor:(ch,gr,b,k,c)=>`${cap(ch)} has ${b} ${c.x}. ${cap(gr)} has ${k} times as many ${c.x} as ${ch}.`,
+    cMayorP:(gr,c)=>`How many ${c.x} does ${gr} have?`,
+    cVeces:(ch,gr,b,N,c)=>`${cap(ch)} has ${b} ${c.x} and ${gr} has ${N}.`,
+    cVecesP:(ch,gr,c)=>`How many times as many ${c.x} does ${gr} have as ${ch}?`,
+    cMenor:(ch,gr,N,k,c)=>`${cap(gr)} has ${N} ${c.x}. That is ${k} times as many as ${ch} has.`,
+    cMenorP:(ch,c)=>`How many ${c.x} does ${ch} have?`,
+    cMayorFin:(gr,b,k,A,c)=>`${k} times ${b} is ${k} × ${b} = ${A}. ${cap(gr)} has ${A} ${c.x}. (It is not ${b} + ${k} = ${b+k}: that would be “${k} more”.)`,
+    cVecesFin:(ch,gr,b,N,k,c)=>`${N} ÷ ${b} = ${k}, because ${k} × ${b} = ${N}. ${cap(gr)} has ${k} times as many ${c.x} as ${ch}.`,
+    cMenorFin:(ch,N,k,b,c)=>`${N} ÷ ${k} = ${b}, because ${k} × ${b} = ${N}. ${cap(ch)} has ${b} ${c.x}.`,
+    pcSuma:(k)=>`“${k} times as many” is not “${k} more”. You do not add ${k}: you multiply. The larger amount is ${k} times the smaller one.`,
+    pcCuenta:(k)=>`Count again: it is ${k} times, not one more and not one less.`,
+    pcMultiplica:(k,b)=>`Multiply carefully: ${k} × ${b}.`,
+    pcCuantasMas:(N,b)=>`That number tells how many more, not how many times as many. Ask yourself: ${b} times what number is ${N}?`,
+    pcComprueba:(N,b)=>`Check by multiplying: that number times ${b} is not ${N}.`,
+    pcCompruebaK:(N,k)=>`Check by multiplying: ${k} times that number is not ${N}.`,
+    compF:"Read the problem. Do you multiply or divide?",
+    pcResta:(k)=>`“${k} times as many” is not “${k} more”: you do not subtract ${k}. The larger amount splits into ${k} equal parts: divide.`,
+    pcMult:(ch,N)=>`${cap(ch)} has fewer, so the number must be smaller than ${N}. Divide instead of multiplying.`,
+    ecF:"Which equation shows the problem? The letter n is the number we do not know.",
+    ecValor:"That's it! Now solve it: what is n?",
+    ec1:{
+      "+":[(v)=>`On the field trip to the aquarium, ${v.n1} counts ${v.a} fish in one tank and ${v.b} in another. How many fish does ${v.n1} count in all?`,
+           (v)=>`The book fair sells ${v.a} books on Monday and ${v.b} on Tuesday. How many books does it sell on the two days?`],
+      "−":[(v)=>`A CTA bus has ${v.a} passengers. At a stop, ${v.b} get off. How many passengers are still on the bus?`,
+           (v)=>`The soccer team wants to sell ${v.a} tickets for the tournament. It has sold ${v.b}. How many tickets does it still need to sell?`],
+      "×":[(v)=>`The school auditorium has ${v.a} rows with ${v.b} chairs in each row. How many chairs are there?`,
+           (v)=>`At the book fair, ${v.n1} buys ${v.a} packs of ${v.b} stickers. How many stickers does ${v.n1} buy?`],
+      "÷":[(v)=>`${v.a} players come to the soccer tournament and make teams of ${v.b}. How many teams do they make?`,
+           (v)=>`${v.n1} puts ${v.a} cookies into ${v.b} equal bags. How many cookies go in each bag?`]},
+    pEc1:{"+":"In the problem two amounts are put together: that is adding.",
+          "−":"In the problem a part is taken away, or you find how many are missing: that is subtracting.",
+          "×":"In the problem there are equal groups that repeat: that is multiplying.",
+          "÷":"In the problem something is shared into equal groups: that is dividing."},
+    ec1Fin:(eq,R)=>`${eq.replace("n", R)}, so n = ${R}.`,
+    pEcOtra:(eq)=>`That number comes from a different operation. Use the equation you chose: ${eq}.`,
+    pEcCuenta:"Check your calculation carefully.",
+    ec2:{
+      jugos:{t:(v)=>`For the aquarium field trip there are ${v.a} packs of ${v.b} juice boxes and ${v.c} loose juice boxes. How many juice boxes are there in all?`,
+             op:"The loose juice boxes are put together with the ones in the packs: you add them."},
+      calco:{t:(v)=>`${v.n1} has ${v.a} stickers, gives ${v.b} to a brother, and shares the rest equally among ${v.c} friends. How many stickers does each friend get?`,
+             op:"The stickers given away are taken away: you subtract, not add."},
+      torneo:{t:(v)=>`${v.a} girls and ${v.b} boys come to the soccer tournament. They make teams of ${v.c} players. How many teams do they make?`,
+             op:"They make equal teams: you divide, not multiply."},
+      sillas:{t:(v)=>`The school auditorium has ${v.a} rows of ${v.b} chairs. In all, ${v.c} chairs are taken. How many chairs are free?`,
+             op:"The chairs that are taken come off the total: you subtract, not add."},
+      libros:{t:(v)=>`At the book fair, ${v.n1} has ${v.a} dollars and buys ${v.b} books that cost ${v.c} dollars each. How much money is left?`,
+             op:"The books all cost the same: you multiply the cost, not add it."}},
+    pEcParen:"Look at the parentheses: they tell what to do first. What happens first in the problem?",
+    pEcOlvida:"That equation does not use all the information in the problem.",
+    pEcMedio:"That is only the answer to the part in parentheses. The second step is still missing!",
+    pEcOtra2:(eq)=>`That number comes from a different equation. In ${eq}, first work out the part in parentheses.`,
+    ec2Fin:(p1,p2,R)=>`First, the part in parentheses: ${p1}. Then: ${p2}. So n = ${R}.`,
+    pzF:"Solve the problem. Think: what happens first?",
+    pzR:"Solve the problem. Follow the steps.",
+    paso:(i,x)=>`Step ${i}: ${x}.`,
+    pz:{
+      bus:{e:"🚌", t:(v)=>`For the aquarium field trip, ${v.a} buses carry ${v.b} students each. ${v.c} teachers go too. How many people go in all?`,
+           fin:(R)=>`${fmt(R)} people go.`, op:"The teachers go too: you add them, not subtract them.",
+           olv:(v)=>`Did you use the ${v.a} buses? There are ${v.b} students on each one.`},
+      feria:{e:"📚", t:(v)=>`At the book fair, ${v.nm} has ${v.a} dollars and buys ${v.b} books that cost ${v.c} dollars each. How much money is left?`,
+           fin:(R)=>`${fmt(R)} dollars are left.`, op:"The money spent is subtracted from the money there was, not added.",
+           olv:(v)=>`That is ${v.b} books, not just one: multiply first.`},
+      grupos:{e:"🐠", t:(v)=>`One bus brings ${v.a} students to the aquarium and another brings ${v.b}. When they arrive, everyone splits into ${v.c} equal groups. How many students are in each group?`,
+           fin:(R)=>`There are ${fmt(R)} students in each group.`, op:"They split into equal groups: you divide, not subtract.",
+           olv:()=>"Did you use both buses? First put the students from both buses together."},
+      cta:{e:"🚌", t:(v)=>`A CTA bus leaves with ${v.a} passengers. At the first stop, ${v.b} get off and ${v.c} get on. How many passengers are on the bus now?`,
+           fin:(R)=>`There are ${fmt(R)} passengers now.`, op:"People who get on are added; people who get off are subtracted.",
+           olv:(v)=>`Did you use the ${v.b} passengers who got off?`},
+      acuario:{e:"🐠", t:(v)=>`${v.a} children and ${v.c} adults go to the aquarium. A child ticket costs ${v.b} dollars and an adult ticket costs ${v.d} dollars. How much do they pay in all?`,
+           p:["How much do the children's tickets cost?","How much do the adults' tickets cost?","How much do they pay in all?"],
+           fin:(R)=>`They pay ${fmt(R)} dollars.`, op:"At the end the two costs are put together: you add, not subtract.",
+           olv:(v)=>`There are ${v.c} adults: multiply the adult ticket by ${v.c}.`},
+      libros:{e:"📚", t:(v)=>`At the book fair, ${v.nm} has ${v.a} dollars and buys ${v.b} books that cost ${v.c} dollars each and a poster that costs ${v.d} dollars. How much money is left?`,
+           p:["How much do the books cost?","How much is left after paying for the books?","How much is left after paying for the poster?"],
+           fin:(R)=>`${fmt(R)} dollars are left.`, op:"The poster costs money too: you subtract it, not add it.",
+           olv:(v)=>`That is ${v.b} books at ${v.c} dollars each: multiply first.`},
+      torneo:{e:"⚽", t:(v)=>`At the soccer tournament there are ${v.a} teams of ${v.b} players and ${v.c} coaches. Each person gets ${v.d} bottles of water. How many bottles are needed?`,
+           p:["How many players are there?","How many people are there in all?","How many bottles are needed?"],
+           fin:(R)=>`${fmt(R)} bottles are needed.`, op:(v)=>`Each person gets ${v.d} bottles: you multiply, not add.`,
+           olv:(v)=>`Did you count the ${v.c} coaches? They get water too.`},
+      salones:{e:"🚌", t:(v)=>`${cap(EN_BASE[v.s])} classes of ${v.a} students and ${v.b} teachers go to the aquarium on ${v.c} buses. The same number of people ride on each bus. How many people ride on each bus?`,
+           p:["How many students are there?","How many people are there in all?","How many people ride on each bus?"],
+           fin:(R)=>`${fmt(R)} people ride on each bus.`, op:"The people are shared among the buses: you divide, not subtract.",
+           olv:(v)=>`There are ${EN_BASE[v.s]} classes, not one: multiply first.`}},
+    pzMedio:"That is the answer to a middle step. There is still one more step!",
+    pzOtra:"Check each step and your calculations carefully.",
+    resF:"Divide and think about what to do with what is left over.",
+    resR:"This problem has two steps. Follow the steps and think about what to do with the remainder.",
+    multiplos:(d)=>`Count by ${d}s:`,
+    res1:{
+      arriba:(n,d)=>({t:`${n} students are going to the aquarium in vans with ${d} seats each.`, p:"How many vans do they need so everyone can go?", u:"vans", x:"students"}),
+      cociente:(n,d)=>({t:`${n} players come to the soccer tournament. Each team has ${d} players.`, p:"How many complete teams can they make?", u:"teams", x:"players", otro:"make another team"}),
+      residuo:(n,d)=>({t:`The book fair has ${n} bookmarks. They are put in packs of ${d}.`, p:"How many bookmarks are left out of the packs?", u:"packs", x:"bookmarks"})},
+    res2:{
+      arriba:[(v)=>({t:`${v.a} students and ${v.b} teachers are going to the aquarium on buses with ${v.d} seats each.`, p:"How many buses do they need so everyone can go?", u:"buses", x:"people",
+                  pasos:["Put the students and the teachers together.",`Divide by ${v.d} and decide what to do with the remainder.`], olv:`Did you count the ${v.b} teachers? They need seats too.`}),
+              (v)=>({t:`${v.a} people are waiting at the bus stop, and then ${v.b} more arrive. Each CTA bus that comes has room for ${v.d} people.`, p:"How many buses are needed so everyone gets on?", u:"buses", x:"people",
+                  pasos:["Put together everyone who is waiting.",`Divide by ${v.d} and decide what to do with the remainder.`], olv:`Did you count the ${v.b} people who came later?`})],
+      cociente:[(v)=>({t:`For the book fair there are ${v.a} packs of ${v.b} cards. The cards are put in envelopes of ${v.d}.`, p:"How many full envelopes can they make?", u:"envelopes", x:"cards", otro:"fill another envelope",
+                  pasos:["Find how many cards there are in all.",`Divide by ${v.d} and decide what to do with the remainder.`], olv:`There are ${v.a} packs, not just one: multiply first.`})],
+      residuo:[(v)=>({t:`${v.nm} has ${v.a} stickers, gives away ${v.b}, and puts the rest in an album, ${v.d} on each page. Only full pages are made.`, p:"How many stickers are left over?", u:"pages", x:"stickers",
+                  pasos:["Find how many stickers are left after giving some away.",`Divide by ${v.d} and decide what to do with the remainder.`], olv:`First take away the ${v.b} stickers that were given away.`})]},
+    resArribaFin:(q,r,c)=>`With ${q} ${c.u}, ${r} ${c.x} would have no seat, so ${q+1} ${c.u} are needed.`,
+    resCocFin:(q,r,c)=>`${q} ${c.u} can be filled. The ${r} ${c.x} left over are not enough to ${c.otro}.`,
+    resResFin:(q,r,c)=>`${q} ${c.u} are filled and ${r} ${c.x} are left over: the remainder is the answer.`,
+    pResArribaQ:(q,r,c)=>`With ${q} ${c.u}, ${r} ${c.x} would have no seat. Nobody gets left behind!`,
+    pResArribaR:(c)=>`That is the remainder: the ${c.x} left over. The question asks how many ${c.u} are needed.`,
+    pResCocMas:(r,c)=>`The ${r} ${c.x} left over are not enough to ${c.otro}.`,
+    pResCocR:(c)=>`That is the remainder: the ${c.x} left over. The question asks how many complete ${c.u} there are.`,
+    pResResQ:(c)=>`That number tells how many ${c.u} are filled. The question asks how many ${c.x} are left over.`,
+    pResResMas:"Look at the remainder: it is what is left after filling the complete groups.",
+    pResPaso1:(d)=>`That is only the answer to step 1. Now divide by ${d}.`,
+    razF:"Is the answer reasonable? Estimate to decide.",
+    razEstF:"First estimate. Which is the best estimate?",
+    pasosRaz:["Round the numbers.","Estimate with the rounded numbers.","Compare the estimate with the answer."],
+    razDecide:"Good estimate! Now decide: is the answer reasonable?",
+    razon:{
+      mult:(v)=>`Each bus takes ${v.b} students to the aquarium. ${v.a} buses go. ${v.nm} says that ${fmt(v.v)} students go.`,
+      suma:(v)=>`The book fair sells ${v.a} books on Monday and ${v.b} on Tuesday. ${v.nm} says it sells ${fmt(v.v)} books in all.`,
+      resta:(v)=>`The school library has ${v.a} storybooks. It lends out ${v.b}. ${v.nm} says that ${fmt(v.v)} storybooks are left in the library.`,
+      mult3:(v)=>`An aquarium gets ${v.b} visitors each day. ${v.nm} says that in ${v.a} days it gets ${fmt(v.v)} visitors.`,
+      mult22:(v)=>`The neighborhood stadium has ${v.a} rows of ${v.b} seats. ${v.nm} says there are ${fmt(v.v)} seats.`,
+      div:(v)=>`At the book fair, ${fmt(v.a)} bookmarks are shared equally among ${v.b} boxes. ${v.nm} says that each box gets ${fmt(v.v)} bookmarks.`,
+      dos:(v)=>`The book fair has ${v.a} boxes with ${v.b} books in each box. It has sold ${v.c} books. ${v.nm} says that ${fmt(v.v)} books are left.`},
+    redondea:"Round:",
+    pRed:(l)=>`Round: ${l}.`, pEst:(e)=>`Estimate: ${e}.`, pCompara:(v,e)=>`Compare: is ${fmt(v)} close to ${fmt(e)}?`,
+    razSi:(est,e,v,R)=>`Estimate: ${est}. ${fmt(v)} is close to ${fmt(e)}, so it is reasonable. The exact answer is ${fmt(R)}.`,
+    razNo:(est,e,v,R,porque)=>`Estimate: ${est}. ${fmt(v)} is very far from ${fmt(e)}, so it is not reasonable. ${porque} The answer is ${fmt(R)}.`,
+    hizo:{"+":"added","−":"subtracted","×":"multiplied","÷":"divided"}, hacer:{"+":"adding","−":"subtracting","×":"multiplying","÷":"dividing"},
+    porqueOp:(h,d)=>`It looks like they ${h} instead of ${d}.`,
+    porqueCero:"It looks like they wrote an extra zero.",
+    porqueSinCero:"It looks like they left out a zero.",
+    porqueAlinea:"It looks like they did not line up the numbers by place value.",
+    porqueParcial:"It looks like they forgot the zero in the second partial product.",
+    pRazon:(nm)=>`Estimate first: round the numbers and calculate. Is ${nm}'s answer close to your estimate?`,
+    pEstRed:"Check the rounding: find the nearest ten or hundred for each number.",
+    pEstComp:"Look for an easy number to divide that is as close as possible to the number being shared.",
+    pEstOp:"The estimate must use the same operation as the problem.",
+    pEstCeros:"Count the zeros carefully: that estimate has an extra zero.",
+    pEstTodo:"That estimate forgets to subtract the books that were already sold.",
+    hojaC1:"Athena has 6 marbles. Selena has 4 times as many marbles as Athena. How many marbles does Selena have?",
+    hojaC2:"The blue train has 24 cars and the red train has 3. How many times as many cars does the blue train have as the red train?",
+    hojaEc:"There are 4 boxes with 9 books in each box and 7 loose books. Write an equation with the letter n for the total number of books. Then find n.",
+    hojaDos:"For the aquarium field trip, 3 buses carry 42 students each. 12 teachers go too. How many people go in all?",
+    hojaRes:"130 students and 6 teachers are going to the tournament on buses with 40 seats each. How many buses do they need? What did you do with the remainder?",
+    estrategias:[
+      ["I drew a bar model","Great! The bars show how many times one amount fits into the other."],
+      ["I wrote an equation with a letter","Excellent! The letter holds the place of the number you are looking for."],
+      ["I estimated to check","Good idea! An estimate tells you whether your answer makes sense."],
+      ["I decided what the remainder means","Awesome! What is left over may need one more group, be left out, or be the answer."]]
+  }
+};
+const JUEGOS = [
+  {id:"veces",     emoji:"✖️", es:"Veces más", en:"Times as many", metaEs:"35 = 5 × 7", metaEn:"35 = 5 × 7"},
+  {id:"comparar",  emoji:"🚂", es:"Comparación multiplicativa", en:"Multiplicative comparison", metaEs:"Modelo de barras", metaEn:"Bar model"},
+  {id:"ecuacion",  emoji:"🔤", es:"La letra misteriosa", en:"The mystery letter", metaEs:"3 × 8 + 5 = n", metaEn:"3 × 8 + 5 = n"},
+  {id:"pasos",     emoji:"🧩", es:"Problemas de varios pasos", en:"Multi-step problems", metaEs:"Paso a paso", metaEn:"Step by step"},
+  {id:"residuo",   emoji:"🚌", es:"¿Qué hago con el residuo?", en:"What do I do with the remainder?", metaEs:"Uno más, fuera o respuesta", metaEn:"One more, left out or the answer"},
+  {id:"razonable", emoji:"🤔", es:"¿Es razonable?", en:"Is it reasonable?", metaEs:"Estima y decide", metaEn:"Estimate and decide"}
+];
+
+const RONDAS = 5;
+
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const nombreColor = (c)=> S.idioma === "es" ? c.es : c.en;
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma === "es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+const sonTic   = ()=>tono([1500],0.03,"square");
+const sonCampana = ()=>tono([1047,784,1047,784],0.22,"triangle");
+
+/* ============ Mascota y confeti ============ */
+const LUMI = '<img src="lumi-lupa.png" alt="" class="lumi-m" width="239" height="300">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","🎈","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  $("enlace-casa").href = "./" + (S.idioma==="es" ? "?lang=es" : "");
+  $("btn-oir").setAttribute("aria-label", S.idioma==="es" ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("btn-bocina").setAttribute("aria-label", S.idioma==="es" ? "Escuchar la instrucción" : "Hear the instruction");
+  $("marcador").setAttribute("aria-label", S.idioma==="es" ? "Estrellas ganadas" : "Stars earned");
+  $("chip-rango").setAttribute("aria-label", S.idioma==="es" ? "Dificultad" : "Difficulty");
+  pintarMenu();
+  pintarHoja();
+  if(S.juego) nuevaRonda();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j[S.idioma]}</span><span class="meta">${S.idioma==="es"?j.metaEs:j.metaEn}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g4-05-word-problems.html#comparar */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T[S.idioma].bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T[S.idioma].otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T[S.idioma].final(S.estrellas) + (T[S.idioma].reflexion ? " " + T[S.idioma].reflexion : ""));
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function crearFicha(n){
+  const b = document.createElement("button");
+  const c = colorDe(n);
+  b.type = "button"; b.className = "ficha-num";
+  b.style.background = c.f; b.style.borderColor = c.b; b.style.color = c.t;
+  b.textContent = String(n);
+  b.setAttribute("aria-label", palabra(n));
+  return b;
+}
+function ponerOpciones(lista, correcto, alAcertar, pistaError){
+  const cont = $("opciones");
+  mezclar(lista).forEach(n=>{
+    const f = crearFicha(n);
+    f.addEventListener("click", ()=>{
+      if(S.bloqueado) return;
+      sonToque();
+      if(n===correcto) alAcertar(); else fallar(f, pistaError ? pistaError(n) : null);
+    });
+    cont.appendChild(f);
+  });
+}
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+function botonRepetir(texto, accion){
+  const b = $("btn-repetir"); b.textContent = texto; b.classList.remove("oculto"); b.onclick = accion;
+}
+function ponerInstruccion(pantalla, voz){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  botonRepetir(T[S.idioma].escuchar, ()=>{ if(!S.bloqueado) hablar(voz || pantalla); });
+}
+/* ============ La voz lee los signos ============ */
+const _hablar = hablar;
+hablar = function(texto, despues){
+  const es = S.idioma === "es";
+  const t = String(texto).replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ \? /g, es ? " qué número " : " what number ");
+  _hablar(t, despues);
+};
+
+/* ============ Dibujos ============ */
+/* Tamaño del emoji según cuántos caben en el grupo */
+const tamGrupo = (n)=> n <= 4 ? "clamp(21px,5.2vw,30px)" : n <= 6 ? "clamp(18px,4.4vw,25px)" : "clamp(16px,3.9vw,21px)";
+function gruposEl(k, n, c){
+  const d = document.createElement("div"); d.className = "grupos"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].describeGrupos(k, n, c));
+  for(let i=0;i<k;i++){
+    const g = document.createElement("div"); g.className = "grupo" + (n > 6 ? " lleno" : ""); g.setAttribute("aria-hidden","true");
+    g.style.fontSize = tamGrupo(n);
+    g.innerHTML = Array.from({length:n}, ()=>`<span>${c.e}</span>`).join("");
+    d.appendChild(g);
+  }
+  return d;
+}
+function arregloEl(r, cols, c){
+  const d = document.createElement("div"); d.className = "arreglo"; d.setAttribute("role","img");
+  d.setAttribute("aria-label", T[S.idioma].filas(r, cols));
+  const lado = Math.max(r, cols);
+  d.style.gridTemplateColumns = `repeat(${cols}, auto)`;
+  d.style.fontSize = lado <= 5 ? "clamp(24px,6vw,38px)" : lado <= 7 ? "clamp(19px,4.6vw,30px)" : "clamp(15px,3.6vw,24px)";
+  d.innerHTML = Array.from({length:r*cols}, ()=>`<span aria-hidden="true">${c.e}</span>`).join("");
+  return d;
+}
+/* Recta numérica con los saltos de la rana; la última etiqueta es «?» */
+function rectaSaltos(n, k, revelar){
+  const total = n*k, W = 760, x0 = 34, x1 = W-34, y = 120;
+  const X = (v)=> x0 + (x1-x0)*v/total;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 185" role="img" aria-label="${S.idioma==="es" ? "Recta numérica con " + k + " saltos de " + n : "Number line with " + k + " jumps of " + n}">`;
+  s += `<line x1="${x0-10}" y1="${y}" x2="${x1+12}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  const paso = total <= 30 ? 1 : n;
+  for(let v=0; v<=total; v+=paso){
+    const grande = v % n === 0;
+    s += `<line x1="${X(v)}" y1="${y-(grande?12:7)}" x2="${X(v)}" y2="${y+(grande?12:7)}" stroke="var(--tinta)" stroke-width="${grande?3:2}"/>`;
+  }
+  for(let i=0;i<k;i++){
+    const a = X(i*n), b = X((i+1)*n), m = (a+b)/2, h = Math.min(80, 30 + (b-a)*0.35);
+    s += `<path d="M${a},${y-4} Q${m},${y-4-h*2} ${b},${y-4}" fill="none" stroke="var(--acento)" stroke-width="5" stroke-dasharray="${i===k-1?"7 6":"0"}"/>`;
+  }
+  const cada = (x1-x0)/k < 70 ? 2 : 1;
+  for(let i=0;i<=k;i++){
+    const v = i*n, ult = i === k;
+    if(!ult && i % cada !== 0) continue;
+    s += `<text x="${X(v)}" y="${y+52}" text-anchor="middle" font-size="38" font-weight="700" fill="${ult ? "var(--acento)" : "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${ult && !revelar ? "?" : v}</text>`;
+  }
+  s += `<text x="${X(total)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "🐸" : ""}</text>`;
+  s += `<text x="${X(0)}" y="${y-18}" text-anchor="middle" font-size="46">${revelar ? "" : "🐸"}</text>`;
+  return s + "</svg>";
+}
+
+/* Opciones de total cerca del correcto */
+function cercanosA(t, n){
+  const c = [t+n, t-n, t+1, t-1, t+2].filter(x=>x>0 && x!==t);
+  return [t, ...mezclar([...new Set(c)]).slice(0,2)];
+}
+const factores = (reto)=> reto ? [azar(3,6), azar(3,9)] : [azar(2,5), azar(2,5)];
+/* Para las pruebas automáticas: toca la opción correcta */
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+
+
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function ecuacionEl(partes){
+  const d = document.createElement("div"); d.className = "ecuacion"; d.setAttribute("aria-live","polite");
+  d.innerHTML = partes.map(x=> x === "?" ? '<span class="hueco">?</span>' : escaparHTML(String(x))).join(" ");
+  return d;
+}
+/* Botones que se marcan y desmarcan (varias respuestas) con «Comprobar» */
+function marcarVarios(opciones, buenas, textos, alAcertar){
+  const marcados = new Set();
+  const fila = document.createElement("div"); fila.className = "fila-fichas"; fila.style.marginTop = "0";
+  opciones.forEach(o=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "carta"; b.textContent = o; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      if(S.bloqueado) return; sonTic();
+      if(marcados.has(o)){ marcados.delete(o); b.classList.remove("marcada"); b.setAttribute("aria-pressed","false"); }
+      else { marcados.add(o); b.classList.add("marcada"); b.setAttribute("aria-pressed","true"); }
+    });
+    fila.appendChild(b);
+  });
+  const cont = $("opciones"); cont.appendChild(fila);
+  const comprobar = botonTexto(textos.comprobar, "boton fuerte", null, (b)=>{
+    if(!marcados.size){ fallar(b, textos.ninguno); return; }
+    const malo = opciones.find(o=> marcados.has(o) && !buenas.includes(o));
+    if(malo !== undefined){ fallar(b, textos.malo(malo)); return; }
+    if(marcados.size < buenas.length){ fallar(b, textos.faltan); return; }
+    fila.querySelectorAll("button").forEach(x=>{ if(marcados.has(x.textContent)) x.classList.add("bien"); });
+    alAcertar();
+  });
+  cont.appendChild(comprobar);
+  S.resolver = ()=>{ fila.querySelectorAll("button").forEach(x=>{ if(buenas.includes(x.textContent) !== marcados.has(x.textContent)) x.click(); }); comprobar.click(); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(x=>{
+    cont.appendChild(botonTexto(x, "opcion-texto", null, (b)=>{ if(x === bien){ sonBoing(); alAcertar(); } else fallar(b, typeof pista === "function" ? pista(x) : pista); }));
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Sí / No */
+function siNo(t, verdad, explicacion){
+  const cont = $("opciones");
+  [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (b)=>{ if(v === verdad){ sonBoing(); acertar(explicacion); } else fallar(b, explicacion); }));
+  });
+  S.resolver = resolverTexto(verdad ? t.si : t.no);
+}
+
+/* ============ La voz lee las fracciones con palabras ============ */
+const DEN = {es:{2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],
+                 8:["octavo","octavos"],10:["décimo","décimos"],12:["doceavo","doceavos"],100:["centésimo","centésimos"],1:["entero","enteros"]},
+             en:{2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],
+                 8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],100:["hundredth","hundredths"],1:["whole","wholes"]}};
+function fracPalabras(a, b){
+  const L = S.idioma, d = DEN[L][b]; if(!d) return a + (L === "es" ? " sobre " : " over ") + b;
+  const num = L === "es" ? (a === 1 ? "un" : ES_BASE[a] || String(a)) : (EN_BASE[a] || String(a));
+  return num + " " + d[a === 1 ? 0 : 1];
+}
+const _hablarF = hablar;
+hablar = function(texto, despues){ _hablarF(String(texto).replace(/(\d+)\/(\d+)/g, (m, a, b)=>fracPalabras(+a, +b)).replace(/ > /g, S.idioma === "es" ? " es mayor que " : " is greater than ").replace(/ < /g, S.idioma === "es" ? " es menor que " : " is less than "), despues); };
+
+const fracHTML = (a, b)=> `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const DENS = [2,3,4,6,8];
+/* Barra partida en b partes, con a pintadas (pueden ser varias barras si a > b) */
+function barraSVG(a, b, ancho){
+  const enteros = Math.max(1, Math.ceil(a/b)), W = ancho || 400, H = 54, g = 14;
+  let s = `<svg class="modelo" viewBox="0 0 ${W+4} ${enteros*(H+g)}" role="img" aria-label="${a}/${b}">`;
+  for(let e=0;e<enteros;e++){
+    for(let i=0;i<b;i++){
+      const k = e*b + i, x = 2 + i*W/b, y = 2 + e*(H+g);
+      s += `<rect x="${x}" y="${y}" width="${W/b}" height="${H}" fill="${k < a ? "#FFB74D" : "#fff"}" stroke="#2B1A12" stroke-width="2.5"/>`;
+    }
+  }
+  return s + "</svg>";
+}
+function pastelSVG(a, b){
+  let s = `<svg class="modelo pastel" viewBox="-52 -52 104 104" role="img" aria-label="${a}/${b}">`;
+  for(let i=0;i<b;i++){
+    const a0 = -Math.PI/2 + i*2*Math.PI/b, a1 = a0 + 2*Math.PI/b;
+    const p = (ang)=> `${(48*Math.cos(ang)).toFixed(2)},${(48*Math.sin(ang)).toFixed(2)}`;
+    s += `<path d="M0,0 L${p(a0)} A48,48 0 ${b === 1 ? 1 : 0} 1 ${p(a1)} Z" fill="${i < a ? "#FFB74D" : "#FFF8EC"}" stroke="#2B1A12" stroke-width="2"/>`;
+  }
+  return s + "</svg>";
+}
+/* Recta numérica de 0 a max partida en b partes por entero; punto en a/b; saltos opcionales */
+function rectaFrac(a, b, max, saltos, revelar){
+  const W = 680, x0 = 40, x1 = W - 40, y = 96, n = b*max;
+  const X = (k)=> x0 + (x1-x0)*k/n;
+  let s = `<svg class="recta" viewBox="0 0 ${W} 160" role="img" aria-label="${S.idioma === "es" ? "Recta numérica de 0 a " + max : "Number line from 0 to " + max}">`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="var(--tinta)" stroke-width="4"/>`;
+  for(let k=0;k<=n;k++){ const ent = k % b === 0; s += `<line x1="${X(k)}" y1="${y-(ent?16:10)}" x2="${X(k)}" y2="${y+(ent?16:10)}" stroke="var(--tinta)" stroke-width="${ent?3.5:2.5}"/>`;
+    if(ent) s += `<text x="${X(k)}" y="${y+50}" text-anchor="middle" font-size="32" font-weight="700" fill="var(--tinta)">${k/b}</text>`; }
+  if(saltos) for(let k=0;k<a;k++){ const p = X(k), q = X(k+1), m = (p+q)/2; s += `<path d="M${p},${y-6} Q${m},${y-46} ${q},${y-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`; }
+  s += `<circle cx="${X(a)}" cy="${y}" r="11" fill="var(--acento)" stroke="#fff" stroke-width="3"/>`;
+  if(revelar) s += `<text x="${X(a)}" y="${y-30}" text-anchor="middle" font-size="26" font-weight="700" fill="var(--acierto)">${a}/${b}</text>`;
+  return s + "</svg>";
+}
+/* Opciones en forma de fracción apilada; cada botón guarda su valor en data-v */
+function opcionesFrac(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(lista).forEach(v=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-frac"; b.dataset.v = v;
+    const [p, q] = String(v).split("/");
+    b.innerHTML = q ? fracHTML(p, q) : `<span style="font-weight:700;font-size:1.25em">${p}</span>`;
+    b.setAttribute("aria-label", q ? fracPalabras(+p, +q) : p);
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(v === bien){ b.classList.add("bien"); sonBoing(); alAcertar(); } else fallar(b, pista(v)); });
+    cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>x.dataset.v === bien).click(); };
+}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+
+const mcd = (x, y)=>{ while(y){ [x, y] = [y, x % y]; } return x; };
+const mcm = (x, y)=> x / mcd(x, y) * y;
+const DENS4 = [2,3,4,5,6,8,10,12];
+/* Completa la lista hasta 3 opciones distintas */
+function rellenar(lista, extra){ let i = 1; while(lista.length < 3){ const v = extra(i++); if(!lista.includes(v)) lista.push(v); } return lista; }
+/* Fracción a/b ya simplificada, con b de la lista */
+function fracSimple(dens){ for(;;){ const b = elegir(dens), a = azar(1, b-1); if(mcd(a, b) === 1) return [a, b]; } }
+/* Pasos que quedan a la vista: consignas de varios pasos */
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+function parFrac(izq, der){
+  const d = document.createElement("div"); d.className = "par-frac"; d.innerHTML = `${izq}<span>=</span>${der}`; return d;
+}
+const hueco = '<span class="signo-c">?</span>';
+const huecoFrac = (arriba, abajo)=> `<span class="frac"><span>${arriba}</span><span>${abajo}</span></span>`;
+function nombresAzar(n){ return mezclar(T[S.idioma].nombres).slice(0, n); }
+const signoDe = (x, y)=> x > y + 1e-9 ? ">" : x < y - 1e-9 ? "<" : "=";
+
+/* Botones <, = y > que llenan el hueco del medio */
+function botonesSigno(par, signo, explicacion, pista){
+  const cont = $("opciones"), es = S.idioma === "es";
+  const nombre = {"<": es ? "menor que" : "less than", "=": es ? "igual a" : "equal to", ">": es ? "mayor que" : "greater than"};
+  ["<", "=", ">"].forEach(sg=>{
+    cont.appendChild(botonTexto(sg, "opcion-texto", nombre[sg], (bt)=>{
+      if(sg === signo){ const s = par.querySelector(".signo-c"); s.textContent = signo; s.classList.add("lleno"); sonBoing(); acertar(explicacion); }
+      else fallar(bt, pista);
+    }));
+  });
+  S.resolver = resolverTexto(signo);
+}
+
+
+/* ============ Números grandes ============
+   En inglés se separan los miles con coma (345,678).
+   En español se usa un espacio fino a partir de cinco cifras (345 678; 4500 va junto), como recomienda la RAE:
+   así no se confunde con la coma decimal. */
+const ESP_FINO = " ";
+function fmt(n){
+  const neg = n < 0, s = String(Math.abs(Math.round(n)));
+  if(S.idioma === "es" && s.length < 5) return (neg ? "−" : "") + s;
+  const sep = S.idioma === "es" ? ESP_FINO : ",";
+  return (neg ? "−" : "") + s.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+}
+/* La voz lee los números sin separadores: «345678» se dice completo en los dos idiomas */
+const _hablarN = hablar;
+hablar = function(texto, despues){
+  _hablarN(String(texto).replace(/(\d)[, ](?=\d{3})/g, "$1").replace(/−/g, S.idioma === "es" ? " menos " : " minus "), despues);
+};
+/* Número en palabras, hasta 999 999 */
+function enPalabras(n){
+  return S.idioma === "es" ? palabrasES(n) : palabrasEN(n);
+}
+function palabrasES(n){
+  if(n === 0) return "cero";
+  const U = ["","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez","once","doce","trece","catorce","quince",
+             "dieciséis","diecisiete","dieciocho","diecinueve","veinte","veintiuno","veintidós","veintitrés","veinticuatro","veinticinco",
+             "veintiséis","veintisiete","veintiocho","veintinueve"];
+  const D = ["","","","treinta","cuarenta","cincuenta","sesenta","setenta","ochenta","noventa"];
+  const C = ["","ciento","doscientos","trescientos","cuatrocientos","quinientos","seiscientos","setecientos","ochocientos","novecientos"];
+  function hasta999(x, apocope){
+    if(x === 100) return "cien";
+    const c = Math.floor(x/100), r = x % 100;
+    let t = c ? C[c] : "";
+    let dec = "";
+    if(r < 30) dec = U[r];
+    else { dec = D[Math.floor(r/10)] + (r % 10 ? " y " + U[r % 10] : ""); }
+    if(apocope){ dec = dec.replace(/veintiuno$/, "veintiún").replace(/ uno$/, " un").replace(/^uno$/, "un"); }
+    return (t + (t && dec ? " " : "") + dec).trim();
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  let s = "";
+  if(miles) s = (miles === 1 ? "" : hasta999(miles, true) + " ") + "mil";
+  if(resto) s += (s ? " " : "") + hasta999(resto, false);
+  return s.trim();
+}
+function palabrasEN(n){
+  if(n === 0) return "zero";
+  const U = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen",
+             "fifteen","sixteen","seventeen","eighteen","nineteen"];
+  const D = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+  function hasta999(x){
+    const c = Math.floor(x/100), r = x % 100, partes = [];
+    if(c) partes.push(U[c] + " hundred");
+    if(r){ partes.push(r < 20 ? U[r] : D[Math.floor(r/10)] + (r % 10 ? "-" + U[r % 10] : "")); }
+    return partes.join(" ");
+  }
+  const miles = Math.floor(n/1000), resto = n % 1000;
+  const partes = [];
+  if(miles) partes.push(hasta999(miles) + " thousand");
+  if(resto) partes.push(hasta999(resto));
+  return partes.join(" ");
+}
+/* Valor posicional */
+const LUGARES = {es:["unidades","decenas","centenas","unidades de millar","decenas de millar","centenas de millar"],
+                 en:["ones","tens","hundreds","thousands","ten thousands","hundred thousands"]};
+const LUGAR1 = {es:["unidad","decena","centena","unidad de millar","decena de millar","centena de millar"],
+                en:["one","ten","hundred","thousand","ten thousand","hundred thousand"]};
+const digitos = (n)=> String(n).split("").map(Number);
+/* Opciones numéricas como texto formateado; la correcta se compara por valor */
+function opcionesNum(lista, bien, alAcertar, pista){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(v=>{
+    const b = botonTexto(fmt(v), "opcion-texto", null, (bt)=>{ if(v === bien){ sonBoing(); alAcertar(); } else fallar(bt, typeof pista === "function" ? pista(v) : pista); });
+    b.dataset.v = v; cont.appendChild(b);
+  });
+  S.resolver = ()=>{ [...cont.querySelectorAll("button")].find(x=>+x.dataset.v === bien).click(); };
+}
+/* Operación en columna; los números se alinean por la derecha */
+function opVertical(a, b, signo, resultado){
+  return `<div class="operacion-v" aria-hidden="true"><div>${fmt(a)}</div><div>${signo} ${fmt(b)}</div><div class="raya">${resultado === undefined ? "&nbsp;" : fmt(resultado)}</div></div>`;
+}
+/* Tabla de valor posicional; resaltar = índice desde la derecha */
+function tablaValor(n, resaltar){
+  const d = digitos(n), k = d.length, L = LUGARES[S.idioma];
+  let h = `<table class="tabla-valor"><caption class="sr-only">${S.idioma === "es" ? "Tabla de valor posicional" : "Place value chart"}</caption><thead><tr>`;
+  for(let i=k-1;i>=0;i--) h += `<th scope="col">${L[i]}</th>`;
+  h += "</tr></thead><tbody><tr>";
+  d.forEach((x, j)=>{ const pos = k-1-j; h += `<td class="${pos === resaltar ? "marcado" : ""}">${x}</td>`; });
+  return h + "</tr></tbody></table>";
+}
+
+/* ============ Ayudas de este módulo ============ */
+/* La voz lee «3 R 22» como «3 residuo 22» / «3 remainder 22» */
+const _hablarR = hablar;
+hablar = function(texto, despues){
+  _hablarR(String(texto).replace(/(\d) R (\d)/g, (m, a, b)=> a + " " + T[S.idioma].vozR + " " + b), despues);
+};
+const cap = (s)=> s.charAt(0).toUpperCase() + s.slice(1);
+const R10 = (n)=> Math.round(n / 10) * 10, R100 = (n)=> Math.round(n / 100) * 100;
+const F = (n)=> fmt(n);
+/* Números del problema en negrita (para el nivel Fácil) */
+const conNumeros = (txt)=> escaparHTML(txt).replace(/\d{1,3}(?:[,    ]\d{3})*/g, "<b>$&</b>");
+function parrafo(txt, cls, html){ const p = document.createElement("p"); p.className = cls || "problema"; if(html) p.innerHTML = html; else p.textContent = txt; $("escena").appendChild(p); return p; }
+function dibujito(e){ $("escena").insertAdjacentHTML("beforeend", `<div class="dibujito" aria-hidden="true">${e}</div>`); }
+/* Grupos iguales pequeños: k grupos de b objetos */
+function gruposMini(k, b, e){
+  return `<span class="grupos-v">${Array.from({length:k}, ()=>`<span class="grupo-v" style="grid-template-columns:repeat(${Math.min(b, 3)},1.2em)">${Array.from({length:b}, ()=>`<span>${e}</span>`).join("")}</span>`).join("")}</span>`;
+}
+function filasGrupos(n1, n2, k, b, e){
+  const d = document.createElement("div"); d.className = "modelos"; d.setAttribute("aria-hidden", "true");
+  d.innerHTML = `<div class="fila-g"><span class="nombre-g">${escaparHTML(n2)}</span>${gruposMini(1, b, e)}</div>` +
+                `<div class="fila-g"><span class="nombre-g">${escaparHTML(n1)}</span>${gruposMini(k, b, e)}</div>`;
+  return d;
+}
+/* Modelo de barras: una barra para la cantidad pequeña y k barras para la grande.
+   modo "mayor": se busca el total; "veces": se busca k; "menor": se busca la cantidad pequeña. */
+function barrasSVG(ch, gr, b, k, modo, revelar){
+  const t = T[S.idioma], W = 360, x0 = 4, u = Math.min(72, (W - 8) / k), H = 44, N = b*k;
+  const fs = u >= 44 ? 22 : 17;
+  const txt = (x, y, s, o)=> `<text x="${x}" y="${y}" text-anchor="${(o && o.a) || "middle"}" font-size="${(o && o.f) || fs}" font-weight="700" fill="${(o && o.c) || "var(--tinta)"}" font-family="Trebuchet MS, sans-serif">${s}</text>`;
+  const caja = (x, y, w, lab, chica)=> `<rect x="${x}" y="${y}" width="${w}" height="${H}" fill="${chica ? "#fff" : "var(--acento-claro)"}" stroke="var(--tinta)" stroke-width="3"/>` + (lab === "" ? "" : txt(x + w/2, y + H/2 + fs*0.36, lab, {c: lab === "?" ? "var(--acento)" : "var(--tinta)"}));
+  const qCh = modo === "menor" && !revelar ? "?" : b;
+  let s = `<svg class="barras-svg" viewBox="0 0 ${W} 196" role="img" aria-label="${escaparHTML(t.describeBarras(ch, gr, k, modo !== "veces" || revelar))}">`;
+  s += txt(x0, 18, escaparHTML(cap(ch)), {a: "start", f: 16, c: "var(--tinta-suave)"});
+  s += caja(x0, 26, u, qCh, true);
+  s += txt(x0, 96, escaparHTML(cap(gr)), {a: "start", f: 16, c: "var(--tinta-suave)"});
+  if(modo === "veces" && !revelar) s += caja(x0, 104, u*k, "", false);
+  else for(let i=0;i<k;i++) s += caja(x0 + i*u, 104, u, qCh, false);
+  const xa = x0, xb = x0 + u*k, yb = 158;
+  s += `<path d="M${xa+2},${yb-6} L${xa+2},${yb} L${xb-2},${yb} L${xb-2},${yb-6}" fill="none" stroke="var(--acento)" stroke-width="3"/>`;
+  const tot = modo === "mayor" && !revelar ? "?" : fmt(N);
+  s += txt((xa + xb)/2, yb + 28, tot, {f: 24, c: tot === "?" ? "var(--acento)" : "var(--tinta)"});
+  return s + "</svg>";
+}
+function cajaBarras(html){ const d = document.createElement("div"); d.className = "modelos"; d.innerHTML = html; $("escena").appendChild(d); return d; }
+/* Pasa a una segunda pantalla dentro de la misma ronda (como en mods/02) */
+function segundaPantalla(){ $("opciones").innerHTML = ""; $("aviso").className = "aviso"; $("aviso").textContent = ""; mascotaNormal(); }
+function encadenar(){ const r1 = S.resolver; S.resolver = function todo(){ r1(); if(S.resolver !== todo) S.resolver(); }; }
+/* Lista de opciones sin repetir, con la correcta siempre adentro */
+function conBien(bien, otras, max){ return unicos([bien, ...otras.filter(v=>v !== bien && (typeof v !== "number" || (v > 0 && Number.isInteger(v))))]).slice(0, max || 4); }
+
+function nuevaRonda(){
+  limpiar();
+  const t = T[S.idioma];
+  const esc = $("escena");
+  const reto = S.reto;
+
+  /* --- 1. Veces más (4.OA.1): una multiplicación como comparación --- */
+  if(S.juego === "veces"){
+    let k, b;
+    do{ k = reto ? azar(3, 9) : azar(2, 5); b = reto ? azar(4, 12) : azar(2, 6); } while(k === b);
+    const A = k*b, [n1, n2] = nombresAzar(2), c = elegir(t.cosas);
+    const tipo = reto ? elegir(["ec", "frase", "letra", "letra", "letra"]) : elegir(["ec", "frase"]);
+    if(tipo === "ec"){
+      const [p, q] = Math.random() < 0.5 ? [k, b] : [b, k];
+      esc.insertAdjacentHTML("beforeend", `<p class="ecuacion">${A} = ${p} × ${q}</p>`);
+      if(!reto) esc.appendChild(filasGrupos(String(A), String(q), p, q, "●"));
+      ponerInstruccion(t.vecesF, `${A} = ${p} × ${q}. ` + t.vecesF);
+      const bien = t.esVeces(A, p, q), suma = t.esMas(A, p, q), reves = t.esVeces(q, p, A);
+      opcionesTexto([bien, suma, reves], bien, ()=>acertar(t.vecesFin(A, p, q)),
+        (x)=> x === suma ? t.pVecesSumaF(A, p, q) : t.pVecesRevesF(A));
+      return;
+    }
+    if(tipo === "frase"){
+      const f = t.frase(n1, n2, k, b, c);
+      parrafo(f);
+      if(!reto) esc.appendChild(filasGrupos(n1, n2, k, b, "●"));
+      ponerInstruccion(t.fraseF, f + " " + t.fraseF);
+      const bien = `${A} = ${k} × ${b}`, suma = `${k + b} = ${k} + ${b}`, reves = `${b} = ${k} × ${A}`;
+      opcionesTexto([bien, suma, reves], bien, ()=>acertar(t.fraseFin(n1, n2, k, b, A, c)),
+        (x)=> x === suma ? t.pVecesSuma(k) : t.pVecesReves(n1));
+      return;
+    }
+    const sub = elegir(["mayor", "veces", "menor"]);
+    let f, preg, bien, suma, reves, expl, pSuma;
+    if(sub === "mayor"){
+      f = t.lMayor(n1, n2, k, b, c); preg = t.lMayorP(n1, c);
+      bien = `n = ${k} × ${b}`; suma = `n = ${k} + ${b}`; reves = `${b} = ${k} × n`; expl = t.lMayorFin(n1, k, b, A); pSuma = t.pVecesSuma(k);
+    } else if(sub === "veces"){
+      f = t.lVeces(n1, n2, A, b, c); preg = t.lVecesP(n1, n2, c);
+      bien = `${A} = n × ${b}`; suma = `${A} = n + ${b}`; reves = `n = ${A} × ${b}`; expl = t.lVecesFin(A, b, k); pSuma = t.pVecesCuantasMas;
+    } else {
+      f = t.lMenor(n1, n2, A, k, c); preg = t.lMenorP(n2, c);
+      bien = `${A} = ${k} × n`; suma = `${A} = ${k} + n`; reves = `n = ${k} × ${A}`; expl = t.lMenorFin(n2, A, k, b); pSuma = t.pVecesSuma(k);
+    }
+    parrafo(f); parrafo(preg, "contexto");
+    ponerInstruccion(t.letraF, f + " " + preg + " " + t.letraF);
+    opcionesTexto([bien, suma, reves], bien, ()=>acertar(expl),
+      (x)=> x === suma ? pSuma : (sub === "mayor" ? t.pVecesReves(n1) : t.pNGrande(A)));
+    return;
+  }
+
+  /* --- 2. Comparación multiplicativa (4.OA.2): multiplicar o dividir para comparar --- */
+  if(S.juego === "comparar"){
+    const tipo = elegir(["mayor", "veces", "menor"]);
+    let k, b;
+    do{ k = reto ? azar(3, 9) : azar(2, 5); b = reto ? azar(6, 25) : azar(2, 9); } while(k === b);
+    const N = k*b;
+    let ch, gr, c, e;
+    if(!reto || Math.random() < 0.5){ c = elegir(t.pares); [ch, gr] = c.s; e = c.e; }
+    else { c = elegir(t.cosas); [gr, ch] = nombresAzar(2); e = c.e; }
+    let f, preg, bien, lista, pista, expl;
+    if(tipo === "mayor"){
+      f = t.cMayor(ch, gr, b, k, c); preg = t.cMayorP(gr, c); bien = N; expl = t.cMayorFin(gr, b, k, N, c);
+      const otro = elegir([(k + 1)*b, (k - 1)*b]);
+      lista = conBien(N, [b + k, otro, N + k], 3);
+      pista = (v)=> v === b + k ? t.pcSuma(k) : v === otro ? t.pcCuenta(k) : t.pcMultiplica(k, b);
+    } else if(tipo === "veces"){
+      f = t.cVeces(ch, gr, b, N, c); preg = t.cVecesP(ch, gr, c); bien = k; expl = t.cVecesFin(ch, gr, b, N, k, c);
+      lista = conBien(k, [N - b, k + 1, k - 1], 3);
+      pista = (v)=> v === N - b ? t.pcCuantasMas(N, b) : t.pcComprueba(N, b);
+    } else {
+      f = t.cMenor(ch, gr, N, k, c); preg = t.cMenorP(ch, c); bien = b; expl = t.cMenorFin(ch, N, k, b, c);
+      lista = conBien(b, [N - k, N*k, b + 1], 3);
+      pista = (v)=> v === N - k ? t.pcResta(k) : v === N*k ? t.pcMult(ch, N) : t.pcCompruebaK(N, k);
+    }
+    rellenar(lista, (i)=> bien + i + 1);
+    dibujito(e);
+    parrafo(f);
+    let caja = null;
+    if(!reto) caja = cajaBarras(barrasSVG(ch, gr, b, k, tipo, false));
+    parrafo(preg, "problema pregunta");
+    ponerInstruccion(t.compF, f + " " + preg + " " + t.compF);
+    opcionesNum(lista, bien, ()=>{ if(caja) caja.innerHTML = barrasSVG(ch, gr, b, k, tipo, true); acertar(expl); }, pista);
+    return;
+  }
+
+  /* --- 3. La letra misteriosa (4.OA.3): la ecuación con una letra y su valor --- */
+  if(S.juego === "ecuacion"){
+    const nm = elegir(t.nombres);
+    let texto, bien, malas, R, finTxt, valores;
+    if(!reto){
+      const op = elegir(["+", "−", "×", "÷"]);
+      let a, b;
+      if(op === "+"){ a = azar(12, 60); b = azar(10, 40); }
+      else if(op === "−"){ a = azar(40, 95); b = azar(10, a - 12); }
+      else if(op === "×"){ a = azar(3, 9); b = azar(3, 9); }
+      else { b = azar(3, 9); a = b * azar(3, 9); }
+      const calc = {"+": a + b, "−": a - b, "×": a*b, "÷": a / b};
+      R = calc[op];
+      texto = elegir(t.ec1[op])({a, b, n1: nm});
+      const eq = (o)=> `${a} ${o} ${b} = n`;
+      bien = eq(op);
+      const otrosOp = mezclar(["+", "−", "×", "÷"].filter(o=>o !== op && !(o === "−" && a <= b))).slice(0, 2);
+      malas = otrosOp.map(o=>[eq(o), t.pEc1[op]]);
+      valores = otrosOp.map(o=>[calc[o], t.pEcOtra(bien)]);
+      finTxt = t.ec1Fin(bien, R);
+    } else {
+      const k = elegir(Object.keys(t.ec2)), ctx = t.ec2[k];
+      let a, b, c, p1, p2, mid;
+      if(k === "jugos"){
+        a = azar(3, 8); b = azar(6, 12); c = azar(2, 9); mid = a*b; R = mid + c;
+        bien = `(${a} × ${b}) + ${c} = n`;
+        malas = [[`${a} × (${b} + ${c}) = n`, t.pEcParen], [`${a} + ${b} + ${c} = n`, ctx.op], [`${a} × ${b} = n`, t.pEcOlvida]];
+        valores = [[a*(b + c), t.pEcOtra2(bien)], [a + b + c, t.pEcOtra2(bien)]];
+        p1 = `${a} × ${b} = ${mid}`; p2 = `${mid} + ${c} = ${R}`;
+      } else if(k === "calco"){
+        c = azar(3, 8); const q = azar(4, 12); b = azar(3, 15); a = c*q + b; mid = a - b; R = q;
+        bien = `(${a} − ${b}) ÷ ${c} = n`;
+        malas = [[`${a} − ${b} ÷ ${c} = n`, t.pEcParen], [`(${a} + ${b}) ÷ ${c} = n`, ctx.op], [`${a} ÷ ${c} = n`, t.pEcOlvida]];
+        valores = [[(a + b) / c, t.pEcOtra2(bien)], [mid - c, t.pEcOtra2(bien)]];
+        p1 = `${a} − ${b} = ${mid}`; p2 = `${mid} ÷ ${c} = ${R}`;
+      } else if(k === "torneo"){
+        c = azar(4, 9); const q = azar(4, 12); mid = c*q; a = azar(Math.ceil(mid*0.3), Math.floor(mid*0.7)); b = mid - a; R = q;
+        bien = `(${a} + ${b}) ÷ ${c} = n`;
+        malas = [[`${a} + ${b} ÷ ${c} = n`, t.pEcParen], [`(${a} + ${b}) × ${c} = n`, ctx.op], [`${a} ÷ ${c} = n`, t.pEcOlvida]];
+        valores = [[mid + c, t.pEcOtra2(bien)], [q + 1, t.pEcCuenta]];
+        p1 = `${a} + ${b} = ${mid}`; p2 = `${mid} ÷ ${c} = ${R}`;
+      } else if(k === "sillas"){
+        a = azar(6, 12); b = azar(8, 15); mid = a*b; c = azar(Math.ceil(mid*0.3), Math.floor(mid*0.7)); R = mid - c;
+        bien = `(${a} × ${b}) − ${c} = n`;
+        malas = [[`${a} × (${b} − ${c}) = n`, t.pEcParen], [`(${a} × ${b}) + ${c} = n`, ctx.op], [`${a} × ${b} = n`, t.pEcOlvida]];
+        valores = [[mid + c, t.pEcOtra2(bien)], [R + 10, t.pEcCuenta]];
+        p1 = `${a} × ${b} = ${mid}`; p2 = `${mid} − ${c} = ${R}`;
+      } else {
+        b = azar(2, 5); c = azar(3, 12); mid = b*c; a = azar(mid + 6, Math.max(mid + 20, 99)); R = a - mid;
+        bien = `${a} − (${b} × ${c}) = n`;
+        malas = [[`(${a} − ${b}) × ${c} = n`, t.pEcParen], [`${a} − (${b} + ${c}) = n`, ctx.op], [`${a} − ${c} = n`, t.pEcOlvida]];
+        valores = [[a - b - c, t.pEcOtra2(bien)], [a + mid, t.pEcOtra2(bien)]];
+        p1 = `${b} × ${c} = ${mid}`; p2 = `${a} − ${mid} = ${R}`;
+      }
+      valores.unshift([mid, t.pEcMedio]);
+      texto = ctx.t({a, b, c, n1: nm});
+      finTxt = t.ec2Fin(p1, p2, R);
+    }
+    parrafo(texto, "problema", reto ? null : conNumeros(texto));
+    ponerInstruccion(t.ecF, texto + " " + t.ecF);
+    const pistasEc = new Map(malas);
+    opcionesTexto(mezclar([bien, ...mezclar(malas.map(m=>m[0])).slice(0, reto ? 3 : 2)]), bien, ()=>{
+      segundaPantalla();
+      esc.insertAdjacentHTML("beforeend", `<p class="ecuacion">${escaparHTML(bien)}</p>`);
+      ponerInstruccion(t.ecValor, bien + ". " + t.ecValor);
+      const pv = new Map(valores.filter(([v])=> Number.isInteger(v) && v > 0 && v !== R));
+      const lista = [R, ...[...pv.keys()].slice(0, 2)];
+      rellenar(lista, (i)=> R + (i % 2 ? i : -i));
+      opcionesNum(lista.filter(v=>v > 0), R, ()=>{
+        esc.querySelector(".ecuacion").textContent = bien.replace("n", R);
+        acertar(finTxt);
+      }, (v)=> pv.get(v) || t.pEcCuenta);
+    }, (x)=> pistasEc.get(x));
+    encadenar();
+    return;
+  }
+
+  /* --- 4. Problemas de varios pasos (4.OA.3): las cuatro operaciones --- */
+  if(S.juego === "pasos"){
+    const nm = elegir(t.nombres);
+    let k, v, R, mid, op, olv, pasos;
+    if(!reto){
+      k = elegir(["bus", "feria", "grupos", "cta"]);
+      for(;;){
+        if(k === "bus"){ v = {a: azar(2, 4), b: azar(21, 45), c: azar(3, 9)}; mid = v.a*v.b; R = mid + v.c; op = mid - v.c; olv = v.b + v.c;
+          pasos = [`${v.a} × ${v.b} = ${mid}`, `${mid} + ${v.c} = ${R}`]; }
+        else if(k === "feria"){ v = {b: azar(2, 5), c: azar(4, 12)}; mid = v.b*v.c; v.a = azar(mid + 5, mid + 40); R = v.a - mid; op = v.a + mid; olv = v.a - v.c;
+          pasos = [`${v.b} × ${v.c} = ${mid}`, `${v.a} − ${mid} = ${R}`]; }
+        else if(k === "grupos"){ v = {c: azar(3, 6)}; R = azar(6, 12); mid = R*v.c; v.a = azar(Math.ceil(mid*0.35), Math.floor(mid*0.65)); v.b = mid - v.a; op = mid - v.c;
+          olv = v.a % v.c === 0 ? v.a / v.c : R + 2; pasos = [`${v.a} + ${v.b} = ${mid}`, `${mid} ÷ ${v.c} = ${R}`]; }
+        else { v = {a: azar(25, 60), b: azar(4, 15), c: azar(3, 15)}; mid = v.a - v.b; R = mid + v.c; op = mid - v.c; olv = v.a + v.c;
+          pasos = [`${v.a} − ${v.b} = ${mid}`, `${mid} + ${v.c} = ${R}`]; }
+        if(new Set([R, mid, op, olv]).size === 4 && op > 0 && olv > 0) break;
+      }
+    } else {
+      k = elegir(["acuario", "libros", "torneo", "salones"]);
+      for(;;){
+        if(k === "acuario"){ v = {a: azar(12, 40), b: azar(6, 12), c: azar(3, 8), d: azar(13, 20)}; const x = v.a*v.b, y = v.c*v.d; mid = x; R = x + y; op = x - y; olv = x + v.d;
+          pasos = [`${v.a} × ${v.b} = ${F(x)}`, `${v.c} × ${v.d} = ${F(y)}`, `${F(x)} + ${F(y)} = ${F(R)}`]; }
+        else if(k === "libros"){ v = {b: azar(3, 6), c: azar(8, 20), d: azar(5, 15)}; const x = v.b*v.c; v.a = azar(x + v.d + 10, x + v.d + 120); mid = v.a - x; R = mid - v.d; op = mid + v.d; olv = v.a - v.c - v.d;
+          pasos = [`${v.b} × ${v.c} = ${x}`, `${v.a} − ${x} = ${mid}`, `${mid} − ${v.d} = ${R}`]; }
+        else if(k === "torneo"){ v = {a: azar(4, 8), b: azar(8, 12), c: azar(4, 10), d: azar(2, 3)}; const x = v.a*v.b; mid = x + v.c; R = mid*v.d; op = mid + v.d; olv = x*v.d;
+          pasos = [`${v.a} × ${v.b} = ${x}`, `${x} + ${v.c} = ${mid}`, `${mid} × ${v.d} = ${R}`]; }
+        else { v = {s: azar(3, 5), a: azar(20, 30), c: azar(2, 4)}; v.b = azar(v.s, v.s + 4); const x = v.s*v.a; mid = x + v.b; R = mid / v.c; op = mid - v.c;
+          olv = (v.a + v.b) % v.c === 0 ? (v.a + v.b) / v.c : R + 3; pasos = [`${v.s} × ${v.a} = ${x}`, `${x} + ${v.b} = ${mid}`, `${mid} ÷ ${v.c} = ${R}`]; }
+        if(Number.isInteger(R) && R > 0 && op > 0 && olv > 0 && new Set([R, mid, op, olv]).size === 4) break;
+      }
+    }
+    v.nm = nm;
+    const cx = t.pz[k], texto = cx.t(v);
+    const pOp = typeof cx.op === "function" ? cx.op(v) : cx.op;
+    dibujito(cx.e);
+    parrafo(texto, "problema", reto ? null : conNumeros(texto));
+    if(reto) esc.appendChild(pasosEl(cx.p));
+    const ins = reto ? t.pzR : t.pzF;
+    ponerInstruccion(ins, texto + " " + ins + (reto ? " " + cx.p.join(" ") : ""));
+    const lista = conBien(R, [mid, op, olv]);
+    rellenar(lista, (i)=> R + i*10);
+    const expl = pasos.map((p, i)=>t.paso(i + 1, p)).join(" ") + " " + cx.fin(R);
+    opcionesNum(lista, R, ()=>acertar(expl), (x)=> x === mid ? t.pzMedio : x === op ? pOp : x === olv ? cx.olv(v) : t.pzOtra);
+    return;
+  }
+
+  /* --- 5. ¿Qué hago con el residuo? (4.OA.3): dividir, a veces después de otro paso --- */
+  if(S.juego === "residuo"){
+    const tipo = elegir(["arriba", "arriba", "cociente", "residuo"]);
+    let c, d, n, q, r, mid = null, olv = null, pre = "";
+    if(!reto){
+      do{ d = azar(3, 8); q = azar(3, 9); r = azar(1, d - 1); } while(r === q || r === q + 1);
+      n = d*q + r; c = t.res1[tipo](n, d);
+    } else {
+      const gen = elegir(t.res2[tipo]);
+      for(;;){
+        let v;
+        if(tipo === "arriba"){
+          const bus = gen === t.res2.arriba[0];
+          v = bus ? {a: azar(100, 190), b: azar(3, 9), d: elegir([20, 25, 30, 35, 40, 45, 50])} : {a: azar(30, 90), b: azar(10, 40), d: azar(15, 30)};
+          n = v.a + v.b; olv = Math.ceil(v.a / v.d); pre = `${v.a} + ${v.b} = ${n}`;
+        } else if(tipo === "cociente"){
+          v = {a: azar(6, 15), b: azar(6, 12), d: azar(5, 9)}; n = v.a*v.b; olv = Math.floor(v.b / v.d) || null; pre = `${v.a} × ${v.b} = ${n}`;
+        } else {
+          v = {a: azar(80, 200), b: azar(5, 30), d: azar(6, 12)}; n = v.a - v.b; olv = v.a % v.d; pre = `${v.a} − ${v.b} = ${n}`;
+        }
+        d = v.d; q = Math.floor(n / d); r = n % d;
+        if(r === 0 || r === q || r === q + 1 || n === q || n === q + 1) continue;
+        v.nm = elegir(t.nombres); c = gen(v); mid = n;
+        break;
+      }
+    }
+    if(!reto) dibujito(tipo === "arriba" ? "🚐" : tipo === "cociente" ? "⚽" : "🔖");
+    parrafo(c.t, "contexto");
+    if(!reto){
+      let h = `<p class="rotulo">${escaparHTML(t.multiplos(d))}</p><div class="saltos">`;
+      for(let i=1;i<=q + 1;i++) h += `<span class="${i <= q ? "hasta" : ""}">${i*d}</span>${i === q ? `<span class="n">${n}</span>` : ""}`;
+      h += "</div>";
+      esc.insertAdjacentHTML("beforeend", `<div class="modelos" aria-hidden="true">${h}</div>`);
+    } else esc.appendChild(pasosEl(c.pasos));
+    parrafo(c.p, "problema");
+    const ins = reto ? t.resR : t.resF;
+    ponerInstruccion(ins, `${c.t} ${c.p} ${ins}` + (reto ? " " + c.pasos.join(" ") : ""));
+    let bien, expl, pista;
+    const cuenta = (pre ? pre + ". " : "") + `${n} ÷ ${d} = ${q} R ${r}. `;
+    if(tipo === "arriba"){ bien = q + 1; expl = cuenta + t.resArribaFin(q, r, c); pista = (v)=> v === q ? t.pResArribaQ(q, r, c) : v === r ? t.pResArribaR(c) : v === mid ? t.pResPaso1(d) : c.olv; }
+    else if(tipo === "cociente"){ bien = q; expl = cuenta + t.resCocFin(q, r, c); pista = (v)=> v === q + 1 ? t.pResCocMas(r, c) : v === r ? t.pResCocR(c) : v === mid ? t.pResPaso1(d) : c.olv; }
+    else { bien = r; expl = cuenta + t.resResFin(q, r, c); pista = (v)=> v === q ? t.pResResQ(c) : v === mid ? t.pResPaso1(d) : v === q + 1 ? t.pResResMas : c.olv; }
+    const lista = unicos([bien, q, q + 1, r]);
+    if(reto){ const extra = [mid, olv].filter(x=>x > 0 && !lista.includes(x)); if(extra.length) lista.push(elegir(extra)); }
+    opcionesNum(lista, bien, ()=>acertar(expl), pista);
+    return;
+  }
+
+  /* --- 6. ¿Es razonable? (4.OA.3): estimar y calcular mentalmente para decidir --- */
+  if(S.juego === "razonable"){
+    const nm = elegir(t.nombres);
+    let tipo, v, R, e, est, op, malos, alts;
+    for(let i=0;;i++){
+      tipo = reto ? elegir(["mult3", "mult22", "div", "dos"]) : elegir(["mult", "suma", "resta"]);
+      const u = ()=> elegir([1, 2, 8, 9]);
+      if(tipo === "mult"){ v = {a: azar(2, 6), b: azar(2, 4)*10 + u()}; op = "×"; R = v.a*v.b; e = v.a*R10(v.b); est = `${v.a} × ${R10(v.b)} = ${F(e)}`;
+        malos = [[R*10, t.porqueCero], [v.a + v.b, t.porqueOp(t.hizo["+"], t.hacer["×"])]]; }
+      else if(tipo === "suma"){ v = {a: azar(1, 6)*100 + azar(0, 3)*10 + azar(0, 9), b: azar(1, 3)*100 + elegir([0, 1, 2, 3, 6, 7, 8, 9])*10 + azar(0, 9)}; op = "+"; R = v.a + v.b; e = R100(v.a) + R100(v.b);
+        est = `${R100(v.a)} + ${R100(v.b)} = ${F(e)}`; malos = [[v.a + Math.floor(v.b / 10), t.porqueAlinea], [v.a - v.b, t.porqueOp(t.hizo["−"], t.hacer["+"])], [R*10, t.porqueCero]]; }
+      else if(tipo === "resta"){ v = {a: azar(6, 9)*100 + elegir([0, 1, 2, 3, 6, 7, 8, 9])*10 + azar(0, 9), b: azar(1, 3)*100 + elegir([0, 1, 2, 3, 6, 7, 8, 9])*10 + azar(0, 9)}; op = "−"; R = v.a - v.b; e = R100(v.a) - R100(v.b);
+        est = `${R100(v.a)} − ${R100(v.b)} = ${F(e)}`; malos = [[v.a + v.b, t.porqueOp(t.hizo["+"], t.hacer["−"])], [Math.round(R / 10), t.porqueSinCero]]; }
+      else if(tipo === "mult3"){ v = {a: azar(3, 9), b: azar(1, 9)*100 + elegir([1, 2, 3, 7, 8, 9])*10 + azar(0, 9)}; if(v.b < 120) continue; op = "×"; R = v.a*v.b; e = v.a*R100(v.b);
+        est = `${v.a} × ${F(R100(v.b))} = ${F(e)}`; malos = [[R*10, t.porqueCero], [Math.round(R / 10), t.porqueSinCero], [v.a + v.b, t.porqueOp(t.hizo["+"], t.hacer["×"])]];
+        alts = [[v.a*(R100(v.b) + 100), t.pEstRed], [v.a + R100(v.b), t.pEstOp], [e*10, t.pEstCeros]]; }
+      else if(tipo === "mult22"){ v = {a: azar(2, 4)*10 + u(), b: azar(2, 4)*10 + u()}; op = "×"; R = v.a*v.b; e = R10(v.a)*R10(v.b);
+        est = `${R10(v.a)} × ${R10(v.b)} = ${F(e)}`; malos = [[v.a*(v.b % 10) + v.a*Math.floor(v.b / 10), t.porqueParcial], [R*10, t.porqueCero], [v.a + v.b, t.porqueOp(t.hizo["+"], t.hacer["×"])]];
+        alts = [[(R10(v.a) + 10)*(R10(v.b) + 10), t.pEstRed], [R10(v.a) + R10(v.b), t.pEstOp], [e*10, t.pEstCeros]]; }
+      else if(tipo === "div"){ const h = azar(2, 9); v = {b: azar(3, 9)}; v.q = h*100 + azar(-20, 20); v.a = v.b*v.q; op = "÷"; R = v.q; e = h*100;
+        est = `${F(v.b*h*100)} ÷ ${v.b} = ${F(e)}`; malos = [[R*10, t.porqueCero], [Math.round(R / 10), t.porqueSinCero], [v.a - v.b, t.porqueOp(t.hizo["−"], t.hacer["÷"])]];
+        alts = [[(h + 1)*100, t.pEstComp], [v.b*h*100*v.b, t.pEstOp], [e*10, t.pEstCeros]]; }
+      else { v = {a: azar(4, 9), b: azar(2, 4)*10 + u()}; const x = v.a*v.b; v.c = R10(azar(Math.ceil(x*0.3), Math.floor(x*0.55))) + elegir([-1, 1, 2, -2]); op = "−"; R = x - v.c; e = v.a*R10(v.b) - R10(v.c);
+        est = `${v.a} × ${R10(v.b)} − ${R10(v.c)} = ${F(e)}`; malos = [[x + v.c, t.porqueOp(t.hizo["+"], t.hacer["−"])], [R*10, t.porqueCero]];
+        alts = [[v.a*R10(v.b), t.pEstTodo], [v.a*R10(v.b) + R10(v.c), t.pEstOp], [e*10, t.pEstCeros]]; }
+      if(e <= 0 || Math.abs(R - e) > 0.25*e) continue;
+      malos = malos.filter(([x])=> x > 0 && Math.abs(x - e) >= 0.5*e);
+      if(malos.length && (!alts || i > 50 || unicos([e, ...alts.map(a=>a[0])]).length === 4)) break;
+    }
+    const bueno = Math.random() < 0.45;
+    const [vv, porque] = bueno ? [R, ""] : elegir(malos);
+    v.v = vv; v.nm = nm;
+    const texto = t.razon[tipo](v);
+    parrafo("", "problema", `<span aria-hidden="true">💬</span> ${escaparHTML(texto)}`);
+    const expl = bueno ? t.razSi(est, e, vv, R) : t.razNo(est, e, vv, R, porque);
+    const siNoBotones = ()=>{
+      const cont = $("opciones");
+      [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([x, txt, cls])=>{
+        cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(x === bueno){ sonBoing(); acertar(expl); } else fallar(bt, t.pRazon(nm)); }));
+      });
+      S.resolver = resolverTexto(bueno ? t.si : t.no);
+    };
+    if(!reto){
+      const red = tipo === "mult" ? `${v.b} → ${R10(v.b)}` : `${v.a} → ${R100(v.a)}   ${v.b} → ${R100(v.b)}`;
+      esc.insertAdjacentHTML("beforeend", `<p class="rotulo redondeo">${escaparHTML(t.redondea)} ${escaparHTML(red)}</p>`);
+      ponerInstruccion(t.razF, texto + " " + t.razF);
+      siNoBotones();
+      return;
+    }
+    const pasos = t.pasosRaz;
+    esc.appendChild(pasosEl(pasos));
+    ponerInstruccion(t.razEstF, texto + " " + t.razEstF + " " + pasos.join(" "));
+    const pe = new Map(alts.filter(([x])=> x !== e));
+    const lista = [e, ...[...pe.keys()]].slice(0, 4);
+    opcionesNum(lista, e, ()=>{
+      segundaPantalla();
+      esc.insertAdjacentHTML("beforeend", `<p class="expresion est-e">${escaparHTML(est)}</p>`);
+      ponerInstruccion(t.razDecide, est + ". " + t.razDecide);
+      siNoBotones();
+    }, (x)=> pe.get(x) || t.pEstRed);
+    encadenar();
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const t = T[S.idioma];
+  $("hoja-comp").innerHTML = `<p class="razon-h">a) ${escaparHTML(t.hojaC1)}</p><div class="renglon"></div><p class="razon-h">b) ${escaparHTML(t.hojaC2)}</p><div class="renglon"></div>`;
+  $("hoja-ec").textContent = t.hojaEc;
+  $("hoja-dos").textContent = t.hojaDos;
+  $("hoja-res").textContent = t.hojaRes;
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  const t = T[S.idioma]; if(!t.estrategias) return;
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${t.reflexion}</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  t.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T[S.idioma].menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego=null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es */
+try{ if(new URLSearchParams(location.search).get("lang")==="es") S.idioma = "es"; }catch(e){}
+aplicarIdioma();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); presentado=false; presentar(); });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="4"></script>
+</body>
+</html>
