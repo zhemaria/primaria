@@ -856,10 +856,11 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["ceroDec","mover","exp","decimo","dividir","dividirMal","cienDec","ceroDec","exp"] : ["ceroDec","mover","exp","dividir","decimo"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs, verdad, expl, razones;
     if(tipo === "ceroDec"){
       const x = numAzar(1, elegir([1,2])), r = x * 10;
       dicho = `${n1}: “To multiply ${fmt(x)} by 10, I just write a 0 at the end. So ${fmt(x)} × 10 = ${fmt(x)}0.”`;
+      dichoEs = `${n1}: «Para multiplicar ${fmt(x)} por 10, solo escribo un 0 al final. Entonces ${fmt(x)} × 10 = ${fmt(x)}0».`;
       verdad = false; expl = `${fmt(x)}0 is the same number as ${fmt(x)}. Multiplying by 10 moves each digit one place to the left: ${fmt(x)} × 10 = ${fmt(r)}.`;
       razones = [[`A 0 at the end of a decimal doesn't change its value; each digit must move one place left.`, true],
                  [`It is right: to multiply any number by 10, you always write one 0 at the end of the number.`, false],
@@ -867,6 +868,7 @@ function nuevaRonda(){
     } else if(tipo === "mover"){
       const x = numAzar(1, 2), r = x * 100;
       dicho = `${n1}: “${fmt(x)} × 100 = ${fmt(r)}, because each digit moves two places to the left.”`;
+      dichoEs = `${n1}: «${fmt(x)} × 100 = ${fmt(r)}, porque cada dígito se mueve dos lugares a la izquierda».`;
       verdad = true; expl = `100 = 10 × 10, so each digit moves two places to the left: ${fmt(x)} × 100 = ${fmt(r)}.`;
       razones = [[`100 is 10 × 10, so each digit moves two places to the left.`, true],
                  [`It is right because you always write two zeros at the end of any number you multiply by 100.`, false],
@@ -874,6 +876,7 @@ function nuevaRonda(){
     } else if(tipo === "exp"){
       const k = azar(3, 6);
       dicho = `${n1}: “${pot(k)} = ${10 * k}, because it means 10 × ${k}.”`;
+      dichoEs = `${n1}: «${pot(k)} = ${10 * k}, porque significa 10 × ${k}».`;
       verdad = false; expl = `${pot(k)} means 10 used as a factor ${k} times: ${Array(k).fill("10").join(" × ")} = ${fmtEntero(P10(k))}.`;
       razones = [[`The exponent tells how many 10s are multiplied: ${pot(k)} = ${fmtEntero(P10(k))}.`, true],
                  [`It is right: an exponent always means you multiply the base by that same number.`, false],
@@ -883,6 +886,7 @@ function nuevaRonda(){
       const otro = ()=>{ let x; do{ x = azar(1, 9); } while(x === d); return x; };
       let m = 0; [1, 0, -1, -2].forEach(q=>{ m += valorDe(q === e || q === e + 1 ? d : otro(), q); });
       dicho = `${n1}: “In ${fmt(m)}, the ${d} in the ${LUGAR[e]} place is 1/10 of the ${d} in the ${LUGAR[e + 1]} place.”`;
+      dichoEs = `${n1}: «En ${fmt(m)}, el ${d} de ${e >= 0 ? "las" : "los"} ${LUGAR_ES[e]} vale 1/10 del ${d} de ${e + 1 >= 0 ? "las" : "los"} ${LUGAR_ES[e + 1]}».`;
       verdad = true; expl = `The ${d} in the ${LUGAR[e + 1]} place is worth ${fmt(valorDe(d, e + 1))} and the ${d} in the ${LUGAR[e]} place is worth ${fmt(valorDe(d, e))}. ${fmt(valorDe(d, e))} is 1/10 of ${fmt(valorDe(d, e + 1))}.`;
       razones = [[`Each place is 1/10 of the place to its left, and the two ${d}s are next to each other.`, true],
                  [`It is wrong: the two ${d}s are worth the same amount because they are the same digit.`, false],
@@ -890,6 +894,7 @@ function nuevaRonda(){
     } else if(tipo === "dividir"){
       const r = numAzar(1, 2), x = r * 10;
       dicho = `${n1}: “${fmt(x)} ÷ 10 = ${fmt(r)}, because each digit moves one place to the right.”`;
+      dichoEs = `${n1}: «${fmt(x)} ÷ 10 = ${fmt(r)}, porque cada dígito se mueve un lugar a la derecha».`;
       verdad = true; expl = `Dividing by 10 makes each digit worth 1/10 as much, so it moves one place to the right: ${fmt(x)} ÷ 10 = ${fmt(r)}.`;
       razones = [[`Dividing by 10 makes each digit worth 1/10 as much, so it moves one place right.`, true],
                  [`It is right because to divide by 10 you just erase the last digit of the number.`, false],
@@ -897,6 +902,7 @@ function nuevaRonda(){
     } else if(tipo === "dividirMal"){
       const a = azar(11, 99) * 1000, bien = a / 100, mal = a / 10;
       dicho = `${n1}: “${fmt(a)} ÷ 100 = ${fmt(mal)}.”`;
+      dichoEs = `${n1}: «${fmt(a)} ÷ 100 = ${fmt(mal)}».`;
       verdad = false; expl = `Dividing by 100 moves each digit two places to the right: ${fmt(a)} ÷ 100 = ${fmt(bien)}. ${fmt(mal)} is ${fmt(a)} ÷ 10.`;
       razones = [[`Dividing by 100 moves each digit two places to the right, not one.`, true],
                  [`It is right: dividing by 100 moves the digits one place, the same as dividing by 10.`, false],
@@ -904,6 +910,7 @@ function nuevaRonda(){
     } else {
       const d = azar(1, 9), a = valorDe(d, -2), b = valorDe(d, -3);
       dicho = `${n1}: “${fmt(a)} is 10 times ${fmt(b)}.”`;
+      dichoEs = `${n1}: «${fmt(a)} es 10 veces ${fmt(b)}».`;
       verdad = true; expl = `${fmt(a)} is ${d} hundredths and ${fmt(b)} is ${d} thousandths. A hundredth is worth 10 thousandths, so ${fmt(a)} is 10 times ${fmt(b)}.`;
       razones = [[`A hundredth is worth 10 thousandths, so ${d} hundredths is 10 times ${d} thousandths.`, true],
                  [`It is wrong: ${fmt(b)} is bigger than ${fmt(a)} because it has more digits after the point.`, false],
@@ -911,7 +918,7 @@ function nuevaRonda(){
     }
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

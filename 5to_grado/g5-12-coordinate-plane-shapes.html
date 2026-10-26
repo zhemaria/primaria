@@ -505,7 +505,7 @@ const ES = {
   moverF:(a,b,dx,dy)=>`Empieza en el punto P ${par(a,b)}. Muévete ${dx} hacia la derecha y ${dy} hacia arriba. Marca el punto nuevo.`,
   rectF:"A, B y C son tres esquinas de un rectángulo. Marca la cuarta esquina, D.",
   mapCualF:(x,y)=>`¿Qué lugar está en ${par(x,y)}?`,
-  mapCoordF:(p)=>`¿Cuáles son las coordenadas de ${p}?`,
+  mapCoordF:(p)=>`¿Cuáles son las coordenadas ${("de " + p).replace(/^de el /, "del ")}?`,
   distF:(a,b)=>`Caminando por la calle, ¿cuántas cuadras hay desde ${a} hasta ${b}?`,
   vueltaF:(n,a,b)=>`${n} camina desde ${a} hasta ${b} por las calles: primero hacia la derecha o la izquierda y luego hacia arriba o abajo. ¿Cuántas cuadras camina en total?`,
   caminarF:(n,a,dx,dy)=>`${n} sale ${("de " + a).replace(/^de el /, "del ")} y camina ${dx} cuadras hacia el este (derecha) y ${dy} cuadras hacia el norte (arriba). ¿Dónde está ahora?`,
@@ -1002,7 +1002,7 @@ function nuevaRonda(){
         if(p === dx && q === dy) return t.pistaMoverOrigen(a, b);
         if(p === a + dy && q === b + dx) return t.pistaMoverSwap(dx, dy);
         if(p === y && q === x) return t.pistaUbiSwap(p, q);
-        return t.pistaUbiOtro(p, q);
+        return `You plotted ${par(p, q)}. Start at P ${par(a, b)}, then count ${dx} right and ${dy} up.`;
       };
     } else {
       let x1, x2, y1, y2;
@@ -1132,12 +1132,13 @@ function nuevaRonda(){
   if(S.juego === "atributos"){
     if(reto && Math.random() < 0.5){
       const a = elegir(["ang","lados","par2","par1","opu"]);
-      const correctas = CLAVES.filter(k=>SIEMPRE[k].includes(a)).map(k=>FIGS[k].N + "s");
+      const plN = (k)=> FIGS[k].pl[0].toUpperCase() + FIGS[k].pl.slice(1);
+      const correctas = CLAVES.filter(k=>SIEMPRE[k].includes(a)).map(plN);
       esc.insertAdjacentHTML("beforeend", `<p class="enunciado">Always ${ATR[a].en}?</p>`);
       ponerInstruccion(t.todosF(ATR[a].en), null, ES.todosF(ATR[a].es) + " " + ES.nombres);
-      opcionesMarcar(CLAVES.map(k=>FIGS[k].N + "s"), correctas, ()=>acertar(t.todosFin(ATR[a].en, listaY(correctas.map(s=>s.toLowerCase())))), (sobra, falta)=>{
-        if(sobra){ const k = CLAVES.find(k=>FIGS[k].N + "s" === sobra); return `Not always: ${contra(k, a)}`; }
-        const k = CLAVES.find(k=>FIGS[k].N + "s" === falta), d = duenoAtr(k, a);
+      opcionesMarcar(CLAVES.map(plN), correctas, ()=>acertar(t.todosFin(ATR[a].en, listaY(correctas.map(s=>s.toLowerCase())))), (sobra, falta)=>{
+        if(sobra){ const k = CLAVES.find(k=>plN(k) === sobra); return `Not always: ${contra(k, a)}`; }
+        const k = CLAVES.find(k=>plN(k) === falta), d = duenoAtr(k, a);
         return d === k ? `Something is missing: ${DEF_TXT[k]}` : `Something is missing: every ${FIGS[k].en} is ${ART(FIGS[d].en)}, and every ${FIGS[d].en} has ${ATR[a].en}.`;
       });
       return;

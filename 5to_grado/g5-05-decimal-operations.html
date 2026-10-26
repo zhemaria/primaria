@@ -363,6 +363,7 @@ const T = {
   porDecFin:(A,B,P,tipo,a,b,rf,r)=>`${A} × ${B} = ${fmtEntero(P)}. ${tipo}, so ${a} × ${b} = ${rf}${rf !== r ? " = " + r : ""}.`,
   tipoCC:"Tenths × tenths = hundredths",
   pistaRejillaDec:(a,b)=>`Tenths × tenths = hundredths. On the grid every small square is 1 hundredth: count the squares where the ${a} columns and the ${b} rows overlap.`,
+  pistaMilesimos:"Too small! Tenths × tenths = hundredths, not thousandths: the answer has 2 decimal places. Count the dark squares: each one is 1 hundredth.",
   pistaMenorQueUno:"Way too big! Both factors are less than 1, so the product is less than 1 (and less than each factor).",
   pistaSumasteDec:(a,b)=>`You added ${a} + ${b}. Multiplying ${a} × ${b} means ${a} of ${b}: the overlap on the grid.`,
   pistaPartes:(a,b)=>`You multiplied the wholes and the tenths separately. Don't forget the other partial products: every part of ${a} times every part of ${b}.`,
@@ -969,7 +970,7 @@ function nuevaRonda(){
       ponerInstruccion(t.cuanto(expr), null, ES.cuanto(expr) + ` Las columnas rayadas muestran ${A}, las filas amarillas muestran ${B} y los cuadritos oscuros, donde se cruzan, muestran ${A} × ${B}.`);
       preguntar(fmt(r), [
         [fmt(a * b * 100), t.pistaRejillaDec(a, b)],
-        [fmt(a * b * 1000), t.pistaMenorQueUno],
+        Math.random() < 0.75 ? [fmt(a * b), t.pistaMilesimos] : [fmt(a * b * 1000), t.pistaMenorQueUno],
         [fmt((a + b) * 100), t.pistaSumasteDec(A, B)]
       ], 4, ()=>{ llenar(par, fmt(r)); acertar(t.porDecFin(a, b, a * b, t.tipoCC, A, B, "0." + String(a * b).padStart(2, "0"), fmt(r))); });
       return;
@@ -1075,10 +1076,11 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["mayor","prod","sumaBien","sumaMal","divMayor","dinero","ceroFinal","porEntero"] : ["mayor","prod","sumaBien","sumaMal","divMayor","porEntero"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs = null, verdad, expl, razones;
     if(tipo === "mayor"){
       const N = azar(4, 12), r = N * 500;
       dicho = `${n1}: “Multiplying always makes a number bigger.”`;
+        dichoEs = `${n1}: «Multiplicar siempre hace más grande un número».`;
       verdad = false; expl = `Not always! ${N} × 0.5 = ${fmt(r)}, and ${fmt(r)} is less than ${N}. Multiplying by a number less than 1 gives a smaller answer.`;
       razones = [[`Multiplying by a number less than 1, like ${N} × 0.5 = ${fmt(r)}, gives less than ${N}.`, true],
                  [`It is right: a product is always bigger, so ${N} × 0.5 must be ${N * 2} or more.`, false],
@@ -1119,6 +1121,7 @@ function nuevaRonda(){
       const n = azar(2, 4), q = azar(1, 3) * 1000 + azar(1, 9) * 100, X = q * n, ent = Math.floor(q / 1000), dd = (q % 1000) / 100;
       const mal = fmtD(ent * 1000 + dd * 10);
       dicho = `${n1}: “If ${n} friends share ${fmtD(X)} equally, each one gets ${mal}.”`;
+        dichoEs = `${n1}: «Si ${n} amigos se reparten ${fmtD(X)} en partes iguales, a cada uno le toca ${mal}».`;
       verdad = false; expl = `${fmtD(X)} ÷ ${n} = ${fmtD(q)}: ${ent} ${ent === 1 ? "dollar" : "dollars"} and ${dd} dimes each. ${mal} is only ${ent} ${ent === 1 ? "dollar" : "dollars"} and ${dd} pennies. Check: ${n} × ${fmtD(q)} = ${fmtD(X)}.`;
       razones = [[`Each gets ${ent} ${ent === 1 ? "dollar" : "dollars"} and ${dd} dimes, which is ${fmtD(q)}; ${mal} means pennies.`, true],
                  [`It is right: each gets ${ent} ${ent === 1 ? "dollar" : "dollars"}, and the ${dd} left goes right after the point.`, false],
@@ -1128,6 +1131,7 @@ function nuevaRonda(){
       do{ A = azar(1, 4) * 1000 + azar(1, 9) * 100; B = azar(2, 9) * 100; } while(((A / 100) * (B / 100)) % 10 !== 0);
       const r = A * B / 1000;
       dicho = `${n1}: “${fmt(A)} × ${fmt(B)} = ${fmt2(r)}, and that is the same as ${fmt(r)}.”`;
+        dichoEs = `${n1}: «${fmt(A)} × ${fmt(B)} = ${fmt2(r)}, y eso es lo mismo que ${fmt(r)}».`;
       verdad = true; expl = `${A / 100} × ${B / 100} = ${(A / 100) * (B / 100)}, and tenths × tenths = hundredths, so the product is ${fmt2(r)}. A 0 at the end of a decimal doesn't change its value: ${fmt2(r)} = ${fmt(r)}.`;
       razones = [[`${fmt2(r)} is ${(A / 100) * (B / 100)} hundredths, the same as ${(A / 100) * (B / 100) / 10} tenths: ${fmt(r)}.`, true],
                  [`It is wrong: ${fmt2(r)} is ten times as big as ${fmt(r)}, because it has one more digit after the point.`, false],
@@ -1142,7 +1146,7 @@ function nuevaRonda(){
     }
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs || dicho));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

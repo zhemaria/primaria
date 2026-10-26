@@ -369,7 +369,7 @@ const T = {
   pistaFracEnt:"Fractions like 1/10 and 1/100 are parts of one whole, so those digits go after the decimal point.",
   /* 3. Comparar */
   cmpF:"Which sign goes in the box: <, = or >?",
-  cmpV:(a, b)=>`Compare ${a} and ${b}. Is the first number less than, equal to, or greater than the second?`,
+  cmpV:(a, b)=>`Compare ${a} with ${b}. Is the first number less than, equal to, or greater than the second?`,
   cmpIgualFin:(a, b)=>`${a} = ${b}. A zero at the end of a decimal doesn't change its value.`,
   cmpFin:(a, sg, b, l, da, db, mismo)=>`${mismo ? "The digits to the left are the same. " : ""}In the ${l} place, ${da} ${da > db ? ">" : "<"} ${db}, so ${a} ${sg} ${b}.`,
   pistaIgual:(a, b)=>`A zero at the end of a decimal doesn't change its value. ${a} and ${b} are the same amount.`,
@@ -385,7 +385,7 @@ const T = {
   pistaOrdMenos:" Having fewer digits doesn't make a decimal less.",
   /* 5. Redondear */
   redF:(m, r)=>`Round ${m} to the nearest ${r}.`,
-  redFin:(m, a, b, l, d, r, mitad)=>`${m} is between ${a} and ${b}. The digit after the ${l} place is ${d}: ${d >= 5 ? (mitad ? "exactly halfway rounds up" : "5 or more, so round up") : "less than 5, so round down"}. ${m} ≈ ${r}.`,
+  redFin:(m, a, b, l, d, r, mitad)=>`${m} is more than ${a} but less than ${b}. The digit after the ${l} place is ${d}: ${d >= 5 ? (mitad ? "exactly halfway rounds up" : "5 or more, so round up") : "less than 5, so round down"}. ${m} ≈ ${r}.`,
   pasos:(l)=>[`Find the digit in the ${l} place.`, "Look at the digit just to its right.", `5 or more: add 1 to the ${l} digit. Less than 5: keep it.`, `Drop every digit after the ${l} place.`],
   pistaTrunc:(l, d)=>`The digit after the ${l} place is ${d}, which is 5 or more, so round up. Just dropping the digits is not rounding.`,
   pistaSubir:(l, d)=>`The digit after the ${l} place is ${d}, less than 5, so the ${l} digit stays the same.`,
@@ -409,7 +409,7 @@ const ES = {
   pal:(nom, nomEs)=>`Lee el número escrito con palabras en inglés: «${nom}» (en español: ${nomEs}). ¿Qué número es en forma estándar?`,
   exp:(s)=>`¿Cuál es la forma desarrollada de ${s}?`,
   std:(x)=>`¿Qué número es ${x} en forma estándar?`,
-  cmp:(a, b)=>`Compara ${a} y ${b}. ¿Qué signo va en el cuadro: < (menor que), = (igual a) o > (mayor que)?`,
+  cmp:(a, b)=>`Compara ${a} con ${b}. ¿Qué signo va en el cuadro: < (menor que), = (igual a) o > (mayor que)?`,
   ord:(l)=>`Toca los números en orden, de menor a mayor: ${l}. Empieza por el menor.`,
   red:(m, e)=>`Redondea ${m} ${RED_ES[e]}.`,
   razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
@@ -572,7 +572,7 @@ function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.
 if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
 function hablar(texto, despues, idioma){
   const es = idioma === "es";
-  let t = decEnVoz(String(texto), es)
+  let t = decEnVoz(String(texto).replace(/[<=>] \(([^)]*)\)/g, "$1"), es)
     .replace(/(\d),(?=\d{3})/g, "$1")
     .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
     .replace(/ = /g, es ? " es igual a " : " equals ")
@@ -1047,18 +1047,20 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["largo","igual","trunc","redBien","palabra","expMal","cruz","expBien","largo","trunc"] : ["largo","igual","trunc","redBien","palabra","cruz"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs = null, verdad, expl, razones;
     if(tipo === "largo"){
       const d = azar(2, 9), a = d * 100, b = azar(1, d - 1) * 100 + azar(1, 9) * 10;
       const sb = fmt(b), sa = fmt(a), nb = Math.round(b / 10);
       dicho = `${n1}: “${sb} > ${sa}, because ${nb} is greater than ${d}.”`;
+      dichoEs = `${n1}: «${sb} > ${sa}, porque ${nb} es mayor que ${d}».`;
       verdad = false; expl = `${sa} = ${fmtD(a, 2)}, and ${d * 10} hundredths is more than ${nb} hundredths. So ${sb} < ${sa}.`;
       razones = [[`${sa} is ${d} tenths = ${d * 10} hundredths, which is more than ${nb} hundredths.`, true],
                  [`It is right: a decimal with more digits after the point is always the greater one.`, false],
                  [`It is wrong because ${sb} and ${sa} are equal: both have the digit ${d}.`, false]];
     } else if(tipo === "igual"){
       const a = azar(1, 9) * 1000 + azar(1, 9) * 100;
-      dicho = `${n1}: “${fmt(a)} and ${fmtD(a, 2)} are equal.”`;
+      dicho = `${n1}: “${fmt(a)} = ${fmtD(a, 2)}. They are equal.”`;
+      dichoEs = `${n1}: «${fmt(a)} = ${fmtD(a, 2)}. Son iguales».`;
       verdad = true; expl = `${fmt(a)} is ${dig(a, -1)} tenths, and ${fmtD(a, 2)} is ${dig(a, -1) * 10} hundredths, which is the same amount. A 0 at the end doesn't change the value.`;
       razones = [[`${dig(a, -1)} tenths = ${dig(a, -1) * 10} hundredths; an end 0 adds nothing.`, true],
                  [`It is wrong: ${fmtD(a, 2)} is greater, because it has more digits after the point.`, false],
@@ -1066,6 +1068,7 @@ function nuevaRonda(){
     } else if(tipo === "trunc"){
       const w = azar(1, 9), t1 = azar(0, 8), h = azar(5, 9), m = w * 1000 + t1 * 100 + h * 10;
       dicho = `${n1}: “${fmt(m)} rounded to the nearest tenth is ${fmtD(m - h * 10, 1)}.”`;
+      dichoEs = `${n1}: «${fmt(m)} redondeado al décimo más cercano es ${fmtD(m - h * 10, 1)}».`;
       verdad = false; expl = `The hundredths digit is ${h}, which is 5 or more, so round up: ${fmt(m)} ≈ ${fmtD(m - h * 10 + 100, 1)}.`;
       razones = [[`The digit after the tenths place is ${h}, so the tenths digit goes up by 1.`, true],
                  [`It is right: to round to the tenths, you just drop the hundredths digit.`, false],
@@ -1074,6 +1077,7 @@ function nuevaRonda(){
       const m = azar(1, 9) * 1000 + azar(0, 9) * 100 + azar(1, 9) * 10 + azar(1, 4);
       const r = m - m % 10;
       dicho = `${n1}: “${fmt(m)} rounded to the nearest hundredth is ${fmtD(r, 2)}.”`;
+      dichoEs = `${n1}: «${fmt(m)} redondeado al centésimo más cercano es ${fmtD(r, 2)}».`;
       verdad = true; expl = `The thousandths digit is ${m % 10}, less than 5, so the hundredths digit stays: ${fmt(m)} ≈ ${fmtD(r, 2)}.`;
       razones = [[`The thousandths digit is ${m % 10}, less than 5, so the hundredths stay.`, true],
                  [`It is right because you always round down when you round a number to the hundredths.`, false],
@@ -1082,6 +1086,7 @@ function nuevaRonda(){
       const w = azar(2, 19), d = azar(1, 9);
       const nomW = nombreEn(w, d, 2), nomM = nomW[0].toUpperCase() + nomW.slice(1);
       dicho = `${n1}: “${nomM} is written ${w}.${d}.”`;
+      dichoEs = `${n1}: «${nomM} (${nombreEs(w, d, 2)}) se escribe ${w}.${d}».`;
       verdad = false; expl = `“Hundredths” means the last digit is in the hundredths place, so ${nombreEn(w, d, 2)} = ${w}.0${d}. ${w}.${d} is ${nombreEn(w, d, 1)}.`;
       razones = [[`Hundredths need two places, so a 0 holds the tenths: ${w}.0${d}.`, true],
                  [`It is right: “and” is the point, and you write ${d} right after it.`, false],
@@ -1111,7 +1116,7 @@ function nuevaRonda(){
     }
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs || dicho));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

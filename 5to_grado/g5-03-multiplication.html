@@ -360,7 +360,7 @@ const T = {
   reflexion:"Which strategy did you use most? What would you change next time?",
   /* 1. Estimar primero */
   estF:(a,b)=>`Estimate ${a} × ${b}. Round each factor to its greatest place. Which is the best estimate?`,
-  estFin:(a,b,ra,rb,e,x)=>`${a} rounds to ${ra} and ${b} rounds to ${rb}, so ${a} × ${b} ≈ ${ra} × ${rb} = ${e}. The exact product, ${x}, is close to it!`,
+  estFin:(a,b,ra,rb,e,x)=>`${a} rounds to ${ra} and ${b} rounds to ${rb}, so ${a} × ${b} ≈ ${ra} × ${rb} = ${e}. (The exact product is ${x}.)`,
   pistaEstCeros:(ra,rb,da,db,z)=>`Count the zeros. ${ra} × ${rb}: first ${da} × ${db} = ${da*db}, then write the ${ceros(z)} from the factors.`,
   pistaEstRed:(x,bien,mal)=>`Check the rounding: ${x} is closer to ${bien} than to ${mal}. Look at the digit after the first one.`,
   pistaEstSuma:(ra,rb)=>`That is ${ra} + ${rb}. To estimate a product, multiply the rounded factors.`,
@@ -440,7 +440,7 @@ const T = {
 };
 const ES = {
   menu:"Escoge un juego.",
-  estF:(a,b)=>`Estima ${a} × ${b}. Redondea cada factor a su lugar mayor. ¿Cuál es la mejor estimación?`,
+  estF:(a,b)=>`Estima ${a} × ${b}. Redondea cada factor a su lugar de mayor valor. ¿Cuál es la mejor estimación?`,
   areaParte:(a,b,x,y)=>`${a} × ${b}: ¿qué número va en la parte vacía del modelo de área? (Es ${x} × ${y}.)`,
   areaTotal:(a,b)=>`${a} × ${b}: suma todos los productos parciales. ¿Cuál es el total?`,
   algFila:(a,b,i)=>`${a} × ${b}: ¿cuál es la fila que falta? (Es la fila ${i}.)`,
@@ -609,7 +609,7 @@ function hablar(texto, despues, idioma){
     .replace(/(\d),(?=\d{3})/g, "$1")
     .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
     .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " es aproximadamente " : " is about ")
-    .replace(/ − /g, es ? " menos " : " minus ").replace(/\$(\d+)/g, es ? "$1 dólares" : "$1 dollars")
+    .replace(/ − /g, es ? " menos " : " minus ").replace(/ \+ /g, es ? " más " : " plus ").replace(/\$(\d+)/g, es ? "$1 dólares" : "$1 dollars")
     .replace(/1\/10\b/g, es ? "un décimo" : "one tenth").replace(/1\/100\b/g, es ? "un centésimo" : "one hundredth").replace(/1\/1000\b/g, es ? "un milésimo" : "one thousandth");
   if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
   try{
@@ -1146,7 +1146,7 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["mas","cruz","estima","cero","parcial","cifras","ceros50","estMal","orden"] : ["mas","cruz","estima","cero","parcial","orden"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs = null, verdad, expl, razones;
     const a2 = numCifras(2, true), b2 = numCifras(2, true);
     const tb = Math.floor(b2 / 10) * 10, ub = b2 % 10, ta = Math.floor(a2 / 10) * 10, ua = a2 % 10;
     if(tipo === "mas"){
@@ -1164,13 +1164,15 @@ function nuevaRonda(){
     } else if(tipo === "estima"){
       const a = numEstimable(3), b = numCifras(2, true), ra = redondear(a);
       dicho = `${n1}: “I can check ${a} × ${b} by estimating ${ra} × ${b}.”`;
+      dichoEs = `${n1}: «Puedo comprobar ${a} × ${b} estimando ${ra} × ${b}».`;
       verdad = true; expl = `${a} is close to ${ra}, and ${ra} × ${b} = ${f(ra * b)} is easy to find. The exact product, ${f(a * b)}, should be close to it.`;
       razones = [[`${a} is close to ${ra}, so ${ra} × ${b} = ${f(ra * b)} is near the exact product.`, true],
                  [`It is wrong: to estimate, you must always round both factors, never just one of them.`, false],
                  [`It is right because ${ra} × ${b} gives exactly the same answer as ${a} × ${b}.`, false]];
     } else if(tipo === "cero"){
       dicho = `${n1}: “In the standard algorithm, the placeholder zero isn't needed. For ${a2} × ${b2}, row 2 is just ${a2} × ${tb / 10} = ${f(a2 * tb / 10)}.”`;
-      verdad = false; expl = `The ${tb / 10} in ${b2} means ${tb / 10} tens, so row 2 is ${a2} × ${tb} = ${f(a2 * tb)}. The placeholder zero shows that this row is tens.`;
+      dichoEs = `${n1}: «En el algoritmo estándar no hace falta el cero de relleno. En ${a2} × ${b2}, la fila 2 es solo ${a2} × ${tb / 10} = ${f(a2 * tb / 10)}».`;
+      verdad = false; expl = `The ${tb / 10} in ${b2} means ${tb / 10} ${tb === 10 ? "ten" : "tens"}, so row 2 is ${a2} × ${tb} = ${f(a2 * tb)}. The placeholder zero shows that this row is tens.`;
       razones = [[`The ${tb / 10} in ${b2} stands for ${tb}, so row 2 is ${a2} × ${tb} = ${f(a2 * tb)}.`, true],
                  [`It is right: the zero is only there to make the rows look neat and even.`, false],
                  [`It is wrong: row 2 needs two placeholder zeros, because ${b2} has two digits.`, false]];
@@ -1182,12 +1184,14 @@ function nuevaRonda(){
                  [`It is wrong because the ${ua} in ${a2} was never multiplied by anything at all.`, false]];
     } else if(tipo === "orden"){
       dicho = `${n1}: “${a2} × ${b2} has the same product as ${b2} × ${a2}.”`;
+      dichoEs = `${n1}: «${a2} × ${b2} da el mismo producto que ${b2} × ${a2}».`;
       verdad = true; expl = `Turning the area model on its side doesn't change its area: ${a2} × ${b2} = ${b2} × ${a2} = ${f(a2 * b2)}.`;
       razones = [[`The order of the factors doesn't change the product.`, true],
                  [`It is wrong: the bigger factor always has to go first, or the product changes.`, false],
                  [`It is right only for small numbers; with big numbers the order changes the answer.`, false]];
     } else if(tipo === "cifras"){
       dicho = `${n1}: “A 3-digit number times a 2-digit number always has 5 digits.”`;
+      dichoEs = `${n1}: «Un número de 3 cifras por un número de 2 cifras siempre da un producto de 5 cifras».`;
       verdad = false; expl = `Not always: 100 × 10 = 1,000 has only 4 digits, while 999 × 99 = 98,901 has 5. The product can have 4 or 5 digits.`;
       razones = [[`100 × 10 = 1,000 has only 4 digits, so it is not always 5.`, true],
                  [`It is right, because 3 digits plus 2 digits always makes exactly 5 digits.`, false],
@@ -1196,6 +1200,7 @@ function nuevaRonda(){
       const [dx, dy] = elegir([[5,4],[5,6],[5,8],[2,5],[4,5],[6,5]]), zx = azar(1, 2), zy = azar(1, 2);
       const x = dx * P10(zx), y = dy * P10(zy), r = x * y;
       dicho = `${n1}: “${f(x)} × ${f(y)} has ${ceros(zx + zy)}, because ${f(x)} and ${f(y)} have ${ceros(zx + zy)} together.”`;
+      dichoEs = `${n1}: «${f(x)} × ${f(y)} tiene ${cerosEs(zx + zy)}, porque ${f(x)} y ${f(y)} tienen ${cerosEs(zx + zy)} entre los dos».`;
       verdad = false; expl = `${dx} × ${dy} = ${dx * dy} already ends in 0. So ${f(x)} × ${f(y)} = ${f(r)}, with ${ceros(zx + zy + 1)}.`;
       razones = [[`${dx} × ${dy} = ${dx * dy} has its own zero, so there is one more zero.`, true],
                  [`It is right: you always count only the zeros you can see in the factors.`, false],
@@ -1206,6 +1211,7 @@ function nuevaRonda(){
       do{ a = numEstimable(3); b = numEstimable(2); } while(a * b / sinCeroLugar(a, b) < 3);
       const mal = sinCeroLugar(a, b), ra = redondear(a), rb = redondear(b);
       dicho = `${n1}: “I got ${a} × ${b} = ${f(mal)}. That makes sense, because ${a} × ${b} is about ${f(ra * rb)}.”`;
+      dichoEs = `${n1}: «Me dio ${a} × ${b} = ${f(mal)}. Tiene sentido, porque ${a} × ${b} es aproximadamente ${f(ra * rb)}».`;
       verdad = false; expl = `${f(ra * rb)} is much bigger than ${f(mal)}, so ${f(mal)} is not reasonable. The exact product is ${f(a * b)}; ${f(mal)} comes from forgetting the placeholder zero.`;
       razones = [[`${f(mal)} is far from the estimate ${f(ra * rb)}, so it can't be right.`, true],
                  [`It makes sense: any answer with the same first digit as the estimate is right.`, false],
@@ -1213,7 +1219,7 @@ function nuevaRonda(){
     }
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs || dicho));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

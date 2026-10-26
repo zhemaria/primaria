@@ -563,6 +563,7 @@ function hablar(texto, despues, idioma){
   const es = idioma === "es";
   let t = String(texto)
     .replace(/10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (s, x)=>{ const k = Number(x.split("").map(c=>Object.keys(SUP).find(d=>SUP[d] === c)).join("")); return es ? `10 a la ${ORD_ES[k] || k} potencia` : `10 to the ${ORD_EN[k] || k} power`; });
+  if(!es) t = t.replace(/\b(\d+)\/(\d+) (pound|yard|mile|cup)s?(?![\w-])/g, (m, a, b, u)=> Number(a) >= Number(b) ? m : (a === "1" && b === "2") ? `half a ${u}` : `${a}/${b} of a ${u}`);
   t = fracPalabras(t, es);   /* 1/3 → «one third» / «un tercio» */
   t = decEnVoz(t, es)
     .replace(/(\d),(?=\d{3})/g, "$1")
@@ -751,15 +752,15 @@ function completar(lista, n, extra){ let i = 1; while(lista.length < n && i < 50
 
 /* ============ Contextos para cuentos y problemas ============ */
 const CTX = [
-  {item:"juice",     u:"cup",   us:"cups",   pieza:"glasses", es:{item:"jugo", u:"taza", us:"tazas", pieza:"vasos"}},
-  {item:"ribbon",    u:"yard",  us:"yards",  pieza:"pieces",  es:{item:"cinta", u:"yarda", us:"yardas", pieza:"pedazos"}},
-  {item:"clay",      u:"pound", us:"pounds", pieza:"balls",   es:{item:"plastilina", u:"libra", us:"libras", pieza:"bolitas", f:true}},
-  {item:"trail mix", u:"cup",   us:"cups",   pieza:"bags",    es:{item:"mezcla de frutos secos", u:"taza", us:"tazas", pieza:"bolsitas", f:true}}
+  {item:"juice",     u:"cup",   us:"cups",   pieza:"glasses", es:{item:"jugo", u:"taza", us:"tazas", pieza:"vasos", v:"servir"}},
+  {item:"ribbon",    u:"yard",  us:"yards",  pieza:"pieces",  es:{item:"cinta", u:"yarda", us:"yardas", pieza:"pedazos", v:"cortar"}},
+  {item:"clay",      u:"pound", us:"pounds", pieza:"balls",   es:{item:"plastilina", u:"libra", us:"libras", pieza:"bolitas", f:true, v:"hacer"}},
+  {item:"trail mix", u:"cup",   us:"cups",   pieza:"bags",    es:{item:"mezcla de frutos secos", u:"taza", us:"tazas", pieza:"bolsitas", f:true, v:"llenar"}}
 ];
 /* Cuentos: cada uno devuelve [inglés, español] */
 const CUENTO = {
   cabe:(c,N,w,b)=>[`${N} has ${w} ${c.us} of ${c.item}. How many ${c.pieza} of 1/${b} ${c.u} each can ${N} make?`,
-                   `${N} tiene ${w} ${c.es.us} de ${c.es.item}. ¿${c.es.f ? "Cuántas" : "Cuántos"} ${c.es.pieza} de ${fes(b, c.es.u, true)} ${c.es.f ? "cada una" : "cada uno"} puede preparar?`],
+                   `${N} tiene ${w} ${c.es.us} de ${c.es.item}. ¿${c.es.f ? "Cuántas" : "Cuántos"} ${c.es.pieza} de ${fes(b, c.es.u, true)} ${c.es.f ? "cada una" : "cada uno"} puede ${c.es.v}?`],
   repEnt:(c,N,w,b)=>[`${N} shares ${w} ${c.us} of ${c.item} equally among ${b} friends. How much does each friend get?`,
                      `${N} reparte ${w} ${c.es.us} de ${c.es.item} en partes iguales entre ${b} amigos. ¿Cuánto le toca a cada amigo?`],
   parte:(c,N,w,b)=>[`${N} has ${w} ${c.us} of ${c.item} and uses 1/${b} of it for a class project. How much ${c.item} does ${N} use?`,
@@ -989,7 +990,7 @@ function nuevaRonda(){
     esc.appendChild(parrafo("problema", h[0]));
     const ops = [{s:`${x} ÷ 1/${y} = ${x * y}`, k:"cabe"}, {s:`1/${y} ÷ ${x} = ${fr(1, x * y)}`, k:"rep"},
                  {s:`${x} × 1/${y} = ${fr(x, y)}`, k:"mult"}, {s:`${x} ÷ ${y} = ${fr(x, y)}`, k:"ent"}];
-    if(!enteroEntre) ops[3] = {s:`1/${y} ÷ ${x} = 1/${x + y}`, k:"suma"};
+    if(!enteroEntre){ ops[3] = {s:`1/${y} ÷ ${x} = 1/${x + y}`, k:"suma"}; ops.push({s:`1/${y} ÷ ${x} = ${fx(x, x * y)}`, k:"todas"}); }
     const bien = enteroEntre ? ops[0].s : ops[1].s;
     ponerInstruccion(t.cuentoR, h[0] + " " + t.cuentoR, ES.cuentoR(h[1]));
     opcionesF(ops.map(o=>o.s), bien, ()=>acertar(enteroEntre ? t.cuentoFinE(x, y) : t.cuentoFinF(y, x)), (s)=>{
@@ -997,6 +998,7 @@ function nuevaRonda(){
       if(o.k === "mult") return TC.revMult;
       if(o.k === "ent") return TC.revEnt;
       if(o.k === "suma") return t.pistaFeSuma(y, x);
+      if(o.k === "todas") return t.pistaFeTodas(y, x);
       return enteroEntre ? TC.revCabe : TC.revRep;
     }, true);
     return;
@@ -1010,7 +1012,8 @@ function nuevaRonda(){
     const pista = (k, w, b, n)=>({
       mult:`Sharing makes each part smaller than 1/${b}, not bigger. Think of 1/${b} cut into ${n} pieces.`,
       suma:`Don't add the numbers. 1/${b} cut into ${n} pieces makes ${b} × ${n} pieces in the whole.`,
-      cuenta:`${b * n} is how many small pieces make the whole. Each person gets just one of those pieces.`,
+      cuenta:`${b * n} is how many small pieces make the whole. Each share is just one of those pieces.`,
+      todas:`${n}/${b * n} is all ${n} pieces together, and that is the whole 1/${b} again. One share is just one piece.`,
       frac:`${w}/${b} would be sharing ${w} into ${b} parts. Here you count how many 1/${b} pieces fit in ${w}.`,
       chica:`That is the size of a tiny piece, not a count. Many pieces fit, so the answer is bigger than ${w}.`,
       sumaE:`Don't add. Each whole holds ${b} pieces of 1/${b}, so ${w} wholes hold ${w} × ${b}.`
@@ -1074,7 +1077,7 @@ function nuevaRonda(){
           es = `${n} amigos se reparten en partes iguales ${fes(b, "libra", true)} de chocolate${reto ? " en el autobús de regreso a casa" : ""}. ¿Cuánto chocolate le toca a cada amigo?`;
         }
         bien = `${fr(1, b * n)} ${unidad}`;
-        ops = [{s:bien, k:"bien"}, {s:`${fx(n, b)} ${unidad}${n > b ? "s" : ""}`, k:"mult"}, {s:`${fr(1, b + n)} ${unidad}`, k:"suma"}, {s:`${b * n} ${unidad}s`, k:"cuenta"}];
+        ops = [{s:bien, k:"bien"}, {s:`${fx(n, b)} ${unidad}${n > b ? "s" : ""}`, k:"mult"}, {s:`${fr(1, b + n)} ${unidad}`, k:"suma"}, {s:`${b * n} ${unidad}s`, k:"cuenta"}, {s:`${fx(n, b * n)} ${unidad}`, k:"todas"}];
         fin = `1/${b} ÷ ${n} = 1/${b * n} ${unidad}. Each piece is 1 of ${b} × ${n} = ${b * n} equal pieces of the whole. Check: 1/${b * n} × ${n} = 1/${b}.`;
         if(!reto) modelo = tiraFE(b, n);
       }

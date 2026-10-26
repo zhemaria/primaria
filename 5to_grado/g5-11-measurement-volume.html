@@ -362,13 +362,13 @@ const T = {
   convPiensaGrande:(g,p)=>`${nomU(p)[0].toUpperCase() + nomU(p).slice(1)} are smaller than ${nomU(g)}. Should the number of ${nomU(g)} be bigger or smaller?`,
   convFinChico:(a,g,f,r,p)=>`${a} ${g} = ${a} × ${f} = ${r} ${p}. ${cap1(unA(g))} is bigger than ${unA(p)}, so there are more ${nomU(p)}.`,
   convFinGrande:(b,p,f,r,g)=>`${b} ${p} = ${b} ÷ ${f} = ${r} ${g}. ${cap1(unA(g))} is bigger than ${unA(p)}, so there are fewer ${nomU(g)}.`,
-  pistaDividio:(g,p,f)=>`${nomU(g)[0].toUpperCase() + nomU(g).slice(1)} are bigger than ${nomU(p)}, so the number of ${nomU(p)} must be bigger. Multiply by ${f}; don't divide.`,
-  pistaMultiplico:(g,p,f)=>`${nomU(p)[0].toUpperCase() + nomU(p).slice(1)} are smaller, so you need fewer ${nomU(g)}. Divide by ${f}; don't multiply.`,
-  pistaFactor:(g,p,f)=>`Check the factor: 1 ${nomU(g, true)} = ${f} ${nomU(p)}. Use ${f}.`,
+  pistaDividio:(g,p,f)=>`${nomU(g)[0].toUpperCase() + nomU(g).slice(1)} are bigger than ${nomU(p)}, so the number of ${nomU(p)} must be bigger. Multiply by ${fmtEntero(f)}; don't divide.`,
+  pistaMultiplico:(g,p,f)=>`${nomU(p)[0].toUpperCase() + nomU(p).slice(1)} are smaller, so you need fewer ${nomU(g)}. Divide by ${fmtEntero(f)}; don't multiply.`,
+  pistaFactor:(g,p,f)=>`Check the factor: 1 ${nomU(g, true)} = ${fmtEntero(f)} ${nomU(p)}. Use ${fmtEntero(f)}.`,
   pistaDiez:(g,p,f)=>`Customary units are not based on 10: 1 ${nomU(g, true)} = ${f} ${nomU(p)}.`,
   pistaSumo:(g,p,f)=>`Converting is not adding. Each ${nomU(g, true)} is ${f} ${nomU(p)}, so multiply.`,
   pistaResto:(g,p)=>`Divide to find the whole ${nomU(g)}; what is left over stays in ${nomU(p)}.`,
-  pistaPuntoResto:(q,r,g,p,f)=>`${q}.${r} ${g} would mean ${q} and ${r} tenths of a ${nomU(g, true)}. The ${r} left over are ${nomU(p)}, and 1 ${nomU(g, true)} is ${f} ${nomU(p)}, not 10.`,
+  pistaPuntoResto:(q,r,g,p,f)=>`${q}.${r} ${g} would mean ${q} and ${r} ${r < 10 ? "tenth" : "hundredth"}${r === 1 ? "" : "s"} of a ${nomU(g, true)}. The ${r} left over are ${nomU(p)}, and 1 ${nomU(g, true)} is ${f} ${nomU(p)}, not 10.`,
   pistaRestoDiez:(g,p,f)=>`That splits the number as if 1 ${nomU(g, true)} were 10 ${nomU(p)}. It is ${f} ${nomU(p)}.`,
   /* 2. Diagrama de puntos */
   pistaVecino:(v)=>`That is the number of X marks above ${v}. Find the right number on the line first.`,
@@ -499,17 +499,51 @@ function fmtFr(n, d){
 const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],16:["sixteenth","sixteenths"],100:["hundredth","hundredths"],1000:["thousandth","thousandths"]};
 const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"],16:["dieciseisavo","dieciseisavos"],100:["centésimo","centésimos"],1000:["milésimo","milésimos"]};
 function fracEnVoz(txt, es){
-  const pal = (n, d)=>{ const t = (es ? DEN_ES : DEN_EN)[d]; if(!t) return `${n} ${es ? "sobre" : "over"} ${d}`; return `${n} ${Number(n) === 1 ? t[0] : t[1]}`; };
+  const pal = (n, d)=>{ const t = (es ? DEN_ES : DEN_EN)[d]; if(!t) return `${n} ${es ? "sobre" : "over"} ${d}`; return `${Number(n) === 1 && es ? "un" : n} ${Number(n) === 1 ? t[0] : t[1]}`; };
+  const mitad = (n, d)=> Number(n) === 1 && Number(d) === 2;
   return String(txt)
-    .replace(/(\d+) (\d+)\/(\d+)/g, (s, w, n, d)=> es ? `${w} ${Number(w) === 1 ? "entero" : "enteros"} y ${pal(n, Number(d))}` : `${w} and ${pal(n, Number(d))}`)
+    .replace(/(\d+) (\d+)\/(\d+)/g, (s, w, n, d)=> es ? `${w} y ${mitad(n, d) ? "medio" : pal(n, Number(d))}` : `${w} and ${mitad(n, d) ? "a half" : pal(n, Number(d))}`)
     .replace(/(\d+)\/(\d+)/g, (s, n, d)=> pal(n, Number(d)));
 }
 /* Unidades abreviadas dichas con palabras: «5 cm³» → «5 cubic centimeters» */
 const RE_UNIDAD = /((?:\d+ )?\d+\/\d+|\d[\d,]*(?:\.\d+)?) (cm³|in³|ft³|m³|cm²|in²|ft²|m²|mm|cm|km|kg|mL|gal|qt|pt|oz|lb|ft|yd|in|m|g|L|c)(?![A-Za-zÀ-ÿ³²])/g;
 function unidadEnVoz(txt, es){
-  return String(txt).replace(RE_UNIDAD, (s, num, u)=>{
-    const fr = /^(\d+)\/(\d+)$/.exec(num), uno = num === "1" || (fr && Number(fr[1]) < Number(fr[2]));
-    return `${num} ${(es && fr && uno) ? "de " : ""}${UN[u][uno ? (es ? 2 : 0) : (es ? 3 : 1)]}`;
+  return String(txt).replace(RE_UNIDAD, (s, num, u)=> `${num} ${UN[u][num === "1" ? (es ? 2 : 0) : (es ? 3 : 1)]}`);
+}
+/* Medidas dichas como en clase:
+   «3/4 inch» → «3 fourths of an inch»; «1/2 liter» → «half a liter»; «0.05 meters» → «5 hundredths of a meter»;
+   «1 1/2 pulgadas» → «1 pulgada y media»; «3/4 de pulgada» → «3 cuartos de pulgada»; «2.5 metros» → «2 metros y 5 décimos» */
+const PAL_UN = (()=>{
+  const m = {};
+  Object.values(UN).forEach(([s, p, se, pe, g])=>{
+    m[s] = m[p] = {sing:s, plur:p, es:false};
+    m[se] = m[pe] = {sing:se, plur:pe, es:true, fem:g === "f"};
+  });
+  return m;
+})();
+const RE_MEDIDA = new RegExp(`(\\d+ \\d+\\/\\d+|\\d+\\/\\d+|\\d[\\d,]*\\.\\d+) (de )?(${Object.keys(PAL_UN).sort((a, b)=>b.length - a.length).join("|")})(?![A-Za-zÀ-ÿ])`, "g");
+const unArt = (w)=> (/^[aeiou]/.test(w) ? "an " : "a ") + w;
+function medidaEnVoz(txt, es){
+  return String(txt).replace(RE_MEDIDA, (s, num, de, uw)=>{
+    const U = PAL_UN[uw];
+    if(U.es !== es) return s;
+    const mx = /^(\d+) (\d+)\/(\d+)$/.exec(num), fr = /^(\d+)\/(\d+)$/.exec(num), dc = /^([\d,]+)\.(\d+)$/.exec(num);
+    const mitadEs = U.fem ? "media" : "medio";
+    if(mx){
+      const w = Number(mx[1]), n = Number(mx[2]), d = Number(mx[3]);
+      if(es) return `${w} ${w === 1 ? U.sing : U.plur} y ${n === 1 && d === 2 ? mitadEs : fracEnVoz(n + "/" + d, true)}`;
+      return `${w} and ${n === 1 && d === 2 ? "a half" : fracEnVoz(n + "/" + d, false)} ${U.plur}`;
+    }
+    if(fr){
+      const n = Number(fr[1]), d = Number(fr[2]);
+      if(n >= d) return s;
+      if(es) return n === 1 && d === 2 ? `${mitadEs} ${U.sing}` : `${fracEnVoz(num, true)} de ${U.sing}`;
+      return n === 1 && d === 2 ? `half ${unArt(U.sing)}` : `${fracEnVoz(num, false)} of ${unArt(U.sing)}`;
+    }
+    const ent = Number(dc[1].replace(/,/g, "")), parte = decEnVoz("0." + dc[2], es);
+    if(ent === 0) return es ? `${parte} de ${U.sing}` : `${parte} of ${unArt(U.sing)}`;
+    if(es) return `${dc[1]} ${ent === 1 ? U.sing : U.plur} y ${parte}`;
+    return `${decEnVoz(num, false)} ${U.plur}`;
   });
 }
 
@@ -676,9 +710,7 @@ function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.
 if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
 function hablar(texto, despues, idioma){
   const es = idioma === "es";
-  let t = String(texto)
-    .replace(/10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (s, x)=>{ const k = Number(x.split("").map(c=>Object.keys(SUP).find(d=>SUP[d] === c)).join("")); return es ? `10 a la ${ORD_ES[k] || k} potencia` : `10 to the ${ORD_EN[k] || k} power`; });
-  t = fracEnVoz(decEnVoz(unidadEnVoz(t, es), es), es)
+  let t = fracEnVoz(decEnVoz(medidaEnVoz(unidadEnVoz(texto, es), es), es), es)
     .replace(/(\d),(?=\d{3})/g, "$1")
     .replace(/−/g, es ? " menos " : " minus ").replace(/ R (?=\d)/g, es ? " residuo " : " remainder ").replace(/ → /g, ", ")
     .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
@@ -1195,10 +1227,11 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["divide","cmM","caras","orden","grande","beakers","cuadradas","lb10","decChico"] : ["divide","cmM","caras","orden","lb10","cuadradas"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones, dibujo = "";
+    let dicho, dichoEs, verdad, expl, razones, dibujo = "";
     if(tipo === "divide"){
       const a = azar(2, 9);
       dicho = `${n1}: “To change ${a} ft to inches, I divide by 12, because inches are small.”`;
+      dichoEs = `${n1}: «Para cambiar ${a} pies a pulgadas, divido entre 12, porque las pulgadas son pequeñas».`;
       verdad = false; expl = `Inches are small, so you need MORE of them: multiply. ${a} ft = ${a} × 12 = ${a * 12} in.`;
       razones = [[`Smaller units mean more of them, so multiply by 12.`, true],
                  [`It is right: when you change to a smaller unit, the number always gets smaller.`, false],
@@ -1206,6 +1239,7 @@ function nuevaRonda(){
     } else if(tipo === "cmM"){
       const b = azar(2, 9);
       dicho = `${n1}: “${b} cm = 0.0${b} m.”`;
+      dichoEs = `${n1}: «${b} cm = 0.0${b} m».`;
       verdad = true; expl = `1 m = 100 cm, so ${b} cm = ${b} ÷ 100 = 0.0${b} m, which is ${b} hundredths of a meter.`;
       razones = [[`1 cm is 1/100 of a meter, so ${b} cm is ${b}/100 m.`, true],
                  [`It is wrong: ${b} cm is 0.${b} m, because a meter is 10 centimeters long.`, false],
@@ -1214,6 +1248,7 @@ function nuevaRonda(){
       const l = azar(3, 4), w = 2, h = azar(2, 3), V = l * w * h, c = l * w + l * h + w * h;
       dibujo = dibujoCubos(l, w, h, false, 300);
       dicho = `${n1}: “This box has ${c} unit cubes. I counted all the squares I can see.”`;
+      dichoEs = `${n1}: «Esta caja tiene ${c} cubos unitarios. Conté todos los cuadrados que se ven».`;
       verdad = false; expl = `Some squares belong to the same cube, and some cubes are hidden. One layer has ${l} × ${w} = ${l * w} cubes and there are ${h} layers: ${l * w} × ${h} = ${V} cubes.`;
       razones = [[`Counting faces is not counting cubes; it has ${V}.`, true],
                  [`It is right: every square you can see on the outside is one different unit cube.`, false],
@@ -1221,6 +1256,7 @@ function nuevaRonda(){
     } else if(tipo === "orden"){
       const a = azar(2, 5), b = azar(3, 6), c = azar(6, 9);
       dicho = `${n1}: “A box ${a} in × ${b} in × ${c} in and a box ${c} in × ${b} in × ${a} in have the same volume.”`;
+      dichoEs = `${n1}: «Una caja de ${a} × ${b} × ${c} pulgadas y una caja de ${c} × ${b} × ${a} pulgadas tienen el mismo volumen».`;
       verdad = true; expl = `${a} × ${b} × ${c} = ${a * b * c} and ${c} × ${b} × ${a} = ${a * b * c}. You can multiply in any order, so both are ${a * b * c} in³.`;
       razones = [[`Multiplying in any order gives the same product.`, true],
                  [`It is wrong: the box that starts with the bigger number always holds more.`, false],
@@ -1230,6 +1266,7 @@ function nuevaRonda(){
       const V = l1 * w * h1 + l2 * w * h2, M = (l1 + l2) * w * h1;
       dibujo = dibujoCompuesta({l1, l2, w, h1, h2}, "cm", false, 320);
       dicho = `${n1}: “The volume of this figure is ${l1 + l2} × ${w} × ${h1} = ${M} cm³.”`;
+      dichoEs = `${n1}: «El volumen de esta figura es ${l1 + l2} × ${w} × ${h1} = ${M} centímetros cúbicos».`;
       verdad = false; expl = `That treats the figure as one big box, but the top corner is empty. A: ${l1} × ${w} × ${h1} = ${l1 * w * h1}; B: ${l2} × ${w} × ${h2} = ${l2 * w * h2}; total ${V} cm³.`;
       razones = [[`The figure is not one full box; add A and B.`, true],
                  [`It is right: you always multiply the longest length, the width and the tallest height.`, false],
@@ -1240,6 +1277,7 @@ function nuevaRonda(){
       const ok = Math.random() < 0.6, dice = ok ? cada : fmtFr(tot8, 8);
       const lista = set.map(([n, d])=>fmtFr(n, d)).join(" L, ") + " L";
       dicho = `${n1}: “Four beakers hold ${lista}. If we share all the water equally, each beaker gets ${dice} L.”`;
+      dichoEs = `${n1}: «Cuatro vasos tienen ${lista}. Si repartimos toda el agua en partes iguales, a cada vaso le tocan ${dice} L».`;
       verdad = ok;
       expl = `The total is ${fmtFr(tot8, 8)} L. Shared by 4: ${fmtFr(tot8, 8)} ÷ 4 = ${cada} L in each beaker.`;
       razones = ok ? [[`The total is ${fmtFr(tot8, 8)} L, and ${fmtFr(tot8, 8)} ÷ 4 = ${cada}.`, true],
@@ -1251,6 +1289,7 @@ function nuevaRonda(){
     } else if(tipo === "cuadradas"){
       const l = azar(3, 6), w = azar(2, 5), h = azar(2, 6);
       dicho = `${n1}: “My box is ${l} in by ${w} in by ${h} in, so its volume is ${l * w * h} square inches.”`;
+      dichoEs = `${n1}: «Mi caja mide ${l} por ${w} por ${h} pulgadas, así que su volumen es ${l * w * h} pulgadas cuadradas».`;
       verdad = false; expl = `${l} × ${w} × ${h} = ${l * w * h} is right, but volume is measured in cubic units: ${l * w * h} in³ (cubic inches).`;
       razones = [[`Volume uses cubic units, not square units.`, true],
                  [`It is right: square inches and cubic inches are just two names for the same unit.`, false],
@@ -1258,6 +1297,7 @@ function nuevaRonda(){
     } else if(tipo === "lb10"){
       const a = azar(2, 6);
       dicho = `${n1}: “${a} lb = ${a * 10} oz.”`;
+      dichoEs = `${n1}: «${a} lb = ${a * 10} oz».`;
       verdad = false; expl = `1 lb = 16 oz, not 10 oz. ${a} lb = ${a} × 16 = ${a * 16} oz.`;
       razones = [[`1 pound is 16 ounces, so it is ${a * 16} oz.`, true],
                  [`It is right: every unit conversion uses 10, 100 or 1,000, like the metric system does.`, false],
@@ -1265,6 +1305,7 @@ function nuevaRonda(){
     } else {
       const a = azar(1, 4) * 1000 + elegir([250, 500, 750]);
       dicho = `${n1}: “${fmt(a)} L = ${fmtEntero(a)} mL.”`;
+      dichoEs = `${n1}: «${fmt(a)} L = ${fmtEntero(a)} mL».`;
       verdad = true; expl = `1 L = 1,000 mL, so ${fmt(a)} × 1,000 = ${fmtEntero(a)} mL. Each digit moves 3 places to the left.`;
       razones = [[`1 L = 1,000 mL, and ${fmt(a)} × 1,000 = ${fmtEntero(a)}.`, true],
                  [`It is wrong: ${fmt(a)} L = ${fmt(a)}000 mL, because you write three zeros at the end.`, false],
@@ -1273,7 +1314,7 @@ function nuevaRonda(){
     if(dibujo) esc.insertAdjacentHTML("beforeend", dibujo);
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

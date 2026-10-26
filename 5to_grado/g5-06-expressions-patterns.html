@@ -362,7 +362,7 @@ const T = {
   /* 6. ¿Quién tiene razón? */
   razon:"Is that right? Read what they say and decide.",
   porque:"Why? Pick the best reason.",
-  pistaRazon:"Read it again slowly. Work inside the parentheses first, and remember: × and ÷ before + and −.",
+  pistaRazon:"Read it again slowly. Work inside the parentheses first, and remember: × and ÷ before + and −. For patterns, compare the matching terms.",
   pistaPorque:"That reason doesn't explain it. Think about what the parentheses tell you to do first.",
   estrategias:[
     ["I worked inside ( ) and [ ] first","Great! The innermost parentheses always go first, then the brackets."],
@@ -377,7 +377,7 @@ const ES = {
   evalSin:"No hay paréntesis: primero se multiplica y se divide, luego se suma y se resta.",
   evalV:(cuento, e)=>`${cuento} ¿Cuál es el valor de ${e}?`,
   escF:(f)=>`¿Qué expresión corresponde a las palabras? «${f}»`,
-  escR:(c)=>`${c} ¿Qué expresión corresponde a la historia? No calcules.`,
+  escR:(c)=>/¿/.test(c) ? `${c} No calcules.` : `${c} ¿Qué expresión corresponde a la historia? No calcules.`,
   sinPar:"«No parentheses needed» = no hacen falta paréntesis.",
   razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
   porque:"¿Por qué? Elige la mejor razón."
@@ -498,7 +498,7 @@ function barras(filas, a, b, etiqueta){
   let s = `<svg class="modelo" viewBox="0 0 ${W} ${filas.length * sep + 8}" role="img" aria-label="${escaparHTML(etiqueta)}">`;
   filas.forEach((f, i)=>{
     const y = 8 + i * sep;
-    s += `<text x="${x0 - 10}" y="${y + alto / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="#14313A">${escaparHTML(f.rot)}</text>`;
+    s += `<text x="${x0 - 10}" y="${y + alto / 2 + 6}" text-anchor="end" font-size="${f.rot.length > 12 ? 17 : 22}" font-weight="700" fill="#14313A">${escaparHTML(f.rot)}</text>`;
     for(let c=0;c<f.copias;c++){
       const x = x0 + c * ancho;
       s += `<rect x="${x}" y="${y}" width="${wa}" height="${alto}" rx="4" fill="#45A6AD" stroke="#194F5A" stroke-width="2"/>`;
@@ -549,10 +549,12 @@ function hablar(texto, despues, idioma){
     .replace(/(\d),(?=\d{3})/g, "$1")
     .replace(/\{/g, es ? ", abre llave, " : ", open brace, ").replace(/\}/g, es ? ", cierra llave, " : ", close brace, ")
     .replace(/\[/g, es ? ", abre corchete, " : ", open bracket, ").replace(/\]/g, es ? ", cierra corchete, " : ", close bracket, ")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
     .replace(/\((?=[\d\[{(])/g, es ? ", abre paréntesis, " : ", open parenthesis, ").replace(/(?<=[\d\]})])\)/g, es ? ", cierra paréntesis, " : ", close parenthesis, ")
     .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
     .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
     .replace(/ = /g, es ? " es igual a " : " equals ")
+    .replace(/−/g, es ? " menos " : " minus ").replace(/\+/g, es ? " más " : " plus ")
     .replace(/_{3,}/g, es ? " en blanco " : " blank ");
   if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
   try{
@@ -744,7 +746,7 @@ const SIT_PAR = [
   ()=>{ const a=azar(2,5), b=azar(8,12), c=azar(2,b-3), [n]=nombresAzar(1);
     return {e:`${a} × (${b} − ${c})`, en:`${n} buys ${a} boxes of muffins. Each box has ${b} muffins, and ${c} of them are blueberry. The rest are chocolate.`, es:`${n} compra ${a} cajas de panecillos. Cada caja tiene ${b} panecillos y ${c} son de arándano. Los demás son de chocolate.`}; },
   ()=>{ const c=azar(2,6), q=azar(3,9), b=azar(1,5), a=c*q+b, [n]=nombresAzar(1);
-    return {e:`(${a} − ${b}) ÷ ${c}`, en:`${n} bakes ${a} cookies, eats ${b}, and shares the rest equally with ${c} friends.`, es:`${n} hornea ${a} galletas, se come ${b} y reparte las demás en partes iguales entre ${c} amigos.`}; },
+    return {e:`(${a} − ${b}) ÷ ${c}`, en:`${n} bakes ${a} cookies, eats ${b}, and shares the rest equally among ${c} friends.`, es:`${n} hornea ${a} galletas, se come ${b} y reparte las demás en partes iguales entre ${c} amigos.`}; },
   ()=>{ const c=elegir([4,5,6]), q=azar(3,8), tot=c*q, a=azar(3,tot-3), b=tot-a, [n,m]=nombresAzar(2);
     return {e:`(${a} + ${b}) ÷ ${c}`, en:`${n} picks ${a} tomatoes in the garden and ${m} picks ${b}. They put them in bags of ${c}.`, es:`${n} recoge ${a} tomates en el huerto y ${m} recoge ${b}. Los ponen en bolsas de ${c}.`}; },
   ()=>{ const a=azar(25,50), b=azar(6,15), c=azar(2,8), [n]=nombresAzar(1);
@@ -865,12 +867,12 @@ function nuevaRonda(){
                  [`${a} + ${b} × ${c}`, `This multiplies ${b} by ${c}. The words say multiply ${a} by ${b}.`],
                  [`(${a} + ${c}) × ${b}`, `This adds ${a} and ${c} first. The words say multiply first, then add ${c}.`]]}; }
       else if(k === 4){ const m=elegir([2,3]), w=m === 2 ? "Double" : "Triple", ww=m === 2 ? "Duplica" : "Triplica", b=azar(2,9), a=b+azar(2,15);
-        it = {en:`${w} the difference of ${a} and ${b}.`, es:`${ww} la diferencia de ${a} y ${b}.`, ok:`${m} × (${a} − ${b})`,
+        it = {en:`${w} the difference of ${a} and ${b}.`, es:`${ww} la diferencia entre ${a} y ${b}.`, ok:`${m} × (${a} − ${b})`,
           fin:`The difference is ${a} − ${b}, and “${w.toLowerCase()}” means ${m} ×, so ${m} × (${a} − ${b}).`,
           malos:[[`${m} × ${a} − ${b}`, `This multiplies only ${a} by ${m}. The whole difference must be multiplied, so it needs parentheses.`],
                  [`${m} + (${a} − ${b})`, `“${w}” means ${m} times, not + ${m}.`],
                  [`${a} − ${b} × ${m}`, `Without parentheses, × comes first, so only ${b} would be multiplied by ${m}.`]]}; }
-      else { const b=azar(2,6), a=b*azar(3,9), c=azar(1,3);
+      else { const b=azar(2,6), a=b*azar(3,9), c=azar(1,Math.min(3,b-1));
         it = {en:`Divide ${a} by ${b}, then subtract ${c}.`, es:`Divide ${a} entre ${b}, luego resta ${c}.`, ok:`${a} ÷ ${b} − ${c}`,
           fin:`÷ already comes before −, so no parentheses are needed: ${a} ÷ ${b} − ${c}.`,
           malos:[[`${a} ÷ (${b} − ${c})`, `The parentheses make you subtract ${b} − ${c} first. The words say divide first.`],
@@ -914,8 +916,8 @@ function nuevaRonda(){
           malos:[[`[${a} × ${b} + ${c}] ÷ ${d}`, `${c} plants go in every row, so add ${c} to ${b} before you multiply by ${a}.`],
                  [`${a} × ${b} + ${c} ÷ ${d}`, `Without brackets, ÷ comes first, so only ${c} plants would be shared.`],
                  [`[(${a} + ${c}) × ${b}] ÷ ${d}`, `The ${c} plants are added to each row's ${b} plants, not to the number of rows.`]]}; }
-      else { const a=azar(2,4), b=azar(1,2), c=azar(1,3);
-        it = {en:`${n} doubles a recipe that uses ${a} cups of flour and ${b} cups of sugar. Then ${n} adds ${c} cups of chocolate chips.`, es:`${n} duplica una receta que lleva ${a} tazas de harina y ${b} tazas de azúcar. Luego le agrega ${c} tazas de chispas de chocolate.`, ok:`2 × (${a} + ${b}) + ${c}`,
+      else { const a=azar(3,5), b=elegir([1,2].filter(x=>x!==a)), c=elegir([1,3].filter(x=>x!==a && x!==b)), cu=(x)=>x === 1 ? "cup" : "cups", ta=(x)=>x === 1 ? "taza" : "tazas";
+        it = {en:`${n} doubles a recipe that uses ${a} cups of flour and ${b} ${cu(b)} of sugar. Then ${n} adds ${c} ${cu(c)} of chocolate chips.`, es:`${n} duplica una receta que lleva ${a} tazas de harina y ${b} ${ta(b)} de azúcar. Luego le agrega ${c} ${ta(c)} de chispas de chocolate.`, ok:`2 × (${a} + ${b}) + ${c}`,
           fin:`The recipe is ${a} + ${b} cups, doubled is 2 × (${a} + ${b}), and the chips are added once: 2 × (${a} + ${b}) + ${c}.`,
           malos:[[`2 × (${a} + ${b} + ${c})`, `Only the recipe is doubled. The chips are added once at the end.`],
                  [`2 × ${a} + ${b} + ${c}`, `Doubling the recipe doubles the sugar too, so ${a} + ${b} needs parentheses.`],
@@ -946,7 +948,7 @@ function nuevaRonda(){
       esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(cEn)}</p><p class="expr" style="font-size:clamp(22px,4.6vw,34px)">${escaparHTML(e)} is ___ ${escaparHTML(sum)}</p>`);
       if(!reto) esc.insertAdjacentHTML("beforeend", barras([{rot:sum, copias:1}, {rot:`${k} × ( )`, copias:k}], a, b, `Bar model: the first row is one copy of ${sum}; the second row is ${k} copies of the same sum.`));
       ponerInstruccion(t.intVeces, cEn + " " + t.intVeces + " " + frase,
-        `${cEs} Compara sin calcular: ${e} es ___ ${sum}. Opciones: «${k} times as large as» = ${k} veces más grande que; «${k} more than» = ${k} más que; «1/${k} as large as» = 1/${k} del tamaño de; «exactly the same size as» = exactamente del mismo tamaño que.`);
+        `${cEs} Compara sin calcular: ${e} es ___ ${sum}. Opciones: «${k} times as large as» = ${k} veces el tamaño de; «${k} more than» = ${k} más que; «1/${k} as large as» = 1/${k} del tamaño de; «exactly the same size as» = exactamente del mismo tamaño que.`);
       const OK = div ? `1/${k} as large as` : `${k} times as large as`;
       const lista = [`${k} times as large as`, `${k} more than`, `1/${k} as large as`, `exactly the same size as`];
       opcionesTexto(lista, OK, ()=>acertar(div
@@ -1166,10 +1168,11 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["izq","parOk","veces","vecesMal","quitar","quitarMal","patMal","patOk","corchetes","par"] : ["izq","parOk","veces","vecesMal","quitarMal","patOk"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs, verdad, expl, razones;
     if(tipo === "izq"){
       const a = azar(2, 9), b = azar(2, 9), c = azar(2, 6), mal = (a + b) * c, bien = a + b * c;
       dicho = `${n1}: “${a} + ${b} × ${c} = ${mal}, because I always go from left to right.”`;
+      dichoEs = `${n1}: «${a} + ${b} × ${c} = ${mal}, porque yo siempre voy de izquierda a derecha».`;
       verdad = false; expl = `Without parentheses, multiply first: ${a} + ${b} × ${c} = ${a} + ${b * c} = ${bien}. To get ${mal} you would need (${a} + ${b}) × ${c}.`;
       razones = [[`× comes before + when there are no parentheses, so ${b} × ${c} goes first.`, true],
                  [`It is right: you always work from left to right, the same way you read a sentence.`, false],
@@ -1177,6 +1180,7 @@ function nuevaRonda(){
     } else if(tipo === "parOk"){
       const a = azar(4, 9), b = azar(3, 9), c = azar(2, 5);
       dicho = `${n1}: “In ${c} × (${a} + ${b}), I add ${a} and ${b} first, so it equals ${c * (a + b)}.”`;
+      dichoEs = `${n1}: «En ${c} × (${a} + ${b}), primero sumo ${a} y ${b}, así que es igual a ${c * (a + b)}».`;
       verdad = true; expl = `The parentheses go first: ${c} × (${a} + ${b}) = ${c} × ${a + b} = ${c * (a + b)}.`;
       razones = [[`The parentheses say to add ${a} + ${b} first, then multiply by ${c}.`, true],
                  [`It is wrong: you always multiply before you add, even when there are parentheses.`, false],
@@ -1184,6 +1188,7 @@ function nuevaRonda(){
     } else if(tipo === "veces"){
       const k = azar(3, 8), a = azar(1000, 9999), b = azar(100, 999);
       dicho = `${n1}: “${k} × (${F(a)} + ${F(b)}) is ${k} times as large as ${F(a)} + ${F(b)}. I don't need to calculate.”`;
+      dichoEs = `${n1}: «${k} × (${F(a)} + ${F(b)}) es ${k} veces el tamaño de ${F(a)} + ${F(b)}. No necesito calcular».`;
       verdad = true; expl = `${k} × (${F(a)} + ${F(b)}) is ${k} copies of the same sum, so it is ${k} times as large. No calculating needed.`;
       razones = [[`It is ${k} copies of the same sum ${F(a)} + ${F(b)}.`, true],
                  [`It is wrong: you can never compare two expressions until you calculate both of them.`, false],
@@ -1191,6 +1196,7 @@ function nuevaRonda(){
     } else if(tipo === "vecesMal"){
       const k = azar(4, 9), a = azar(100, 999), b = azar(10, 99);
       dicho = `${n1}: “${k} × (${a} + ${b}) is ${k} more than ${a} + ${b}.”`;
+      dichoEs = `${n1}: «${k} × (${a} + ${b}) es ${k} más que ${a} + ${b}».`;
       verdad = false; expl = `× ${k} means ${k} copies of the sum, so ${k} × (${a} + ${b}) is ${k} times as large as ${a} + ${b}, not just ${k} more.`;
       razones = [[`× ${k} makes ${k} copies of the sum, so it is ${k} times as large.`, true],
                  [`It is right: multiplying by ${k} and adding ${k} always give the same answer for any sum.`, false],
@@ -1198,6 +1204,7 @@ function nuevaRonda(){
     } else if(tipo === "quitar"){
       const a = azar(3, 9), b = azar(3, 9), c = azar(2, 9);
       dicho = `${n1}: “(${a} × ${b}) + ${c} and ${a} × ${b} + ${c} have the same value.”`;
+      dichoEs = `${n1}: «(${a} × ${b}) + ${c} y ${a} × ${b} + ${c} tienen el mismo valor».`;
       verdad = true; expl = `Both are ${a * b} + ${c} = ${a * b + c}. The parentheses are around the part that goes first anyway, so they don't change anything.`;
       razones = [[`× goes first anyway, so those parentheses don't change the order.`, true],
                  [`It is wrong: parentheses always change the value of an expression, wherever they are.`, false],
@@ -1205,6 +1212,7 @@ function nuevaRonda(){
     } else if(tipo === "quitarMal"){
       const a = azar(3, 9), b = azar(3, 9), c = azar(2, 9);
       dicho = `${n1}: “${a} × (${b} + ${c}) and ${a} × ${b} + ${c} have the same value.”`;
+      dichoEs = `${n1}: «${a} × (${b} + ${c}) y ${a} × ${b} + ${c} tienen el mismo valor».`;
       verdad = false; expl = `${a} × (${b} + ${c}) = ${a} × ${b + c} = ${a * (b + c)}, but ${a} × ${b} + ${c} = ${a * b} + ${c} = ${a * b + c}.`;
       razones = [[`The parentheses make you add first, so ${c} gets multiplied by ${a} too.`, true],
                  [`It is right: the numbers and the signs are the same, so the value has to be the same.`, false],
@@ -1213,12 +1221,14 @@ function nuevaRonda(){
       const a = azar(2, 5), m = azar(2, 4), b = a * m;
       if(tipo === "patMal"){
         dicho = `${n1}: “Pattern A adds ${a} and Pattern B adds ${b}, both starting at 0. So each term in B is ${b - a} more than the term in A.”`;
+      dichoEs = `${n1}: «El patrón A suma ${a} y el patrón B suma ${b}; los dos empiezan en 0. Entonces cada término de B es ${b - a} más que el término de A».`;
         verdad = false; expl = `A: 0, ${a}, ${2 * a}, ${3 * a}… B: 0, ${b}, ${2 * b}, ${3 * b}… The difference keeps growing (${b - a}, ${2 * (b - a)}, ${3 * (b - a)}…). Each term in B is ${m} times the term in A.`;
         razones = [[`The difference grows each step; B is always ${m} times A.`, true],
                    [`It is right: the difference between the rules, ${b} − ${a}, is always the difference between the terms.`, false],
                    [`It is wrong because each term in B is ${b} times the matching term in A.`, false]];
       } else {
         dicho = `${n1}: “Pattern A adds ${a} and Pattern B adds ${b}, both starting at 0. So each term in B is ${m} times the term in A.”`;
+      dichoEs = `${n1}: «El patrón A suma ${a} y el patrón B suma ${b}; los dos empiezan en 0. Entonces cada término de B es ${m} veces el término de A».`;
         verdad = true; expl = `A: 0, ${a}, ${2 * a}, ${3 * a}… B: 0, ${b}, ${2 * b}, ${3 * b}… Each term in B is ${m} times the term in A, because ${b} is ${m} times ${a}.`;
         razones = [[`${b} is ${m} times ${a}, so every term of B is ${m} times the term of A.`, true],
                    [`It is wrong: each term in B is ${b - a} more than the matching term in A, at every step.`, false],
@@ -1227,6 +1237,7 @@ function nuevaRonda(){
     } else if(tipo === "corchetes"){
       const b = azar(2, 5), c = azar(1, 4), a = b + c + azar(3, 9), k = azar(2, 5);
       dicho = `${n1}: “To find ${k} × [${a} − (${b} + ${c})], I do ${a} − ${b} first.”`;
+      dichoEs = `${n1}: «Para hallar ${k} × [${a} − (${b} + ${c})], primero hago ${a} − ${b}».`;
       verdad = false; expl = `Start with the innermost parentheses: ${b} + ${c} = ${b + c}. Then the brackets: ${a} − ${b + c} = ${a - b - c}. Then ${k} × ${a - b - c} = ${k * (a - b - c)}.`;
       razones = [[`The innermost parentheses (${b} + ${c}) go first, then the brackets.`, true],
                  [`It is right: inside the brackets you always work from left to right, ignoring the parentheses.`, false],
@@ -1234,6 +1245,7 @@ function nuevaRonda(){
     } else {
       const x = azar(1, 4), y = x + azar(2, 5);
       dicho = `${n1}: “The ordered pairs (${x}, ${y}) and (${y}, ${x}) are the same point on the graph.”`;
+      dichoEs = `${n1}: «Los pares ordenados (${x}, ${y}) y (${y}, ${x}) son el mismo punto en la gráfica».`;
       verdad = false; expl = `(${x}, ${y}) means ${x} across and ${y} up; (${y}, ${x}) means ${y} across and ${x} up. They are different points.`;
       razones = [[`The first number goes across and the second goes up, so the order matters.`, true],
                  [`It is right: an ordered pair uses the same two numbers, so the order doesn't change the point.`, false],
@@ -1241,7 +1253,7 @@ function nuevaRonda(){
     }
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

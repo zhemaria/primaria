@@ -347,7 +347,7 @@ const T = {
   entFin:(f, q, b, k, a, r)=>`${f} of ${q}: ${q} ÷ ${b} = ${k} in each group, and ${a} ${a === 1 ? "group is" : "groups are"} ${a} × ${k} = ${r}. So ${f} × ${q} = ${r}.`,
   entFinR:(f, q, a, b, r)=>`${f} × ${q} = (${a} × ${q}) ÷ ${b} = ${a * q} ÷ ${b} = ${r}.`,
   pistaUnGrupo:(b, q, a)=>`That is 1/${b} of ${q}, just one group. You need ${a} groups.`,
-  pistaResto:(a, b)=>`That is the part that is left, not ${a}/${b} of the number. Count the shaded groups.`,
+  pistaResto:(a, b)=>`That is ${b - a}/${b} of the number, the part that is left. You need ${a}/${b} of it.`,
   pistaNoDiv:(a, b)=>`You multiplied by ${a}, but you forgot to divide by ${b}. The answer must be less than the whole number.`,
   pistaDenom:(b, q)=>`You multiplied ${b} × ${q} in the bottom. Think of the whole number as ${q}/1: only the tops are multiplied by ${q}.`,
   pistaContarG:"Count again: find how many are in one group, then take that many groups.",
@@ -417,7 +417,8 @@ const ES = {
   entV:(f, q, b, a)=>`¿Cuánto es ${f} de ${q}? Los ${q} puntos están en ${b} grupos iguales y ${a === 1 ? "1 grupo está sombreado" : a + " grupos están sombreados"}.`,
   entF:(f, q)=>`¿Cuánto es ${f} de ${q}?`,
   areaV:(x, y, b, d)=>`¿Cuánto es ${x} × ${y}? Las columnas muestran ${x} y las filas muestran ${y}. El cuadrado tiene ${b} × ${d} partes pequeñas. ¿Cuántas están sombreadas de las dos maneras?`,
-  rectF:(l, w, u)=>`Un rectángulo mide ${l} ${u} de largo y ${w} ${u} de ancho. ¿Cuál es su área en ${u === "ft" ? "pies cuadrados" : u === "yd" ? "yardas cuadradas" : "metros cuadrados"}?`,
+  rectF:(l, w, u)=>{ const n = {ft:["pie","pies"], yd:["yarda","yardas"], m:["metro","metros"]}[u], uni = (x)=> / /.test(x) ? `${x} ${n[1]}` : `${x} de ${n[0]}`;
+    return `Un rectángulo mide ${uni(l)} de largo y ${uni(w)} de ancho. ¿Cuál es su área en ${u === "ft" ? "pies cuadrados" : u === "yd" ? "yardas cuadradas" : "metros cuadrados"}?`; },
   multV:(e)=>`Multiplica ${e}. Escribe la respuesta en su forma más simple.`,
   multRV:(e)=>`Multiplica ${e}. Escribe la respuesta en su forma más simple, como número mixto si es mayor que 1.`,
   escF:(e, n)=>`Sin multiplicar: ¿${e} es más que ${n}, menos que ${n} o igual a ${n}? Opciones: «More than» = más que; «Less than» = menos que; «Equal to» = igual a.`,
@@ -505,7 +506,7 @@ const DEN_ES = {2:"medio",3:"tercio",4:"cuarto",5:"quinto",6:"sexto",7:"séptimo
   50:"cincuentavo",60:"sesentavo",64:"sesentaicuatroavo",100:"centésimo"};
 function fracPalabras(a, b, es){
   a = Number(a); b = Number(b);
-  if(es){ const w = DEN_ES[b]; return w ? `${a} ${w}${a === 1 ? "" : "s"}` : `${a} sobre ${b}`; }
+  if(es){ const w = DEN_ES[b]; return w ? (a === 1 ? `un ${w}` : `${a} ${w}s`) : `${a} sobre ${b}`; }
   const w = b === 1 ? null : denEN(b, a !== 1);
   return w ? `${a} ${w}` : `${a} over ${b}`;
 }
@@ -568,8 +569,8 @@ function rectSVG(l, w, u){
 function rectaSVG(n, d, rot){
   const W = 640, x0 = 40, x1 = 600, y = 70, X = (k)=> x0 + (x1 - x0) * k / (2 * d);
   let s = `<svg class="modelo ancho" viewBox="0 0 ${W} 170" role="img" aria-label="Number line from 0 to 2 with a point at ${rot}">`;
-  s += `<rect x="${x0}" y="${y + 50}" width="${X(d) - x0}" height="30" fill="#FFF1DF" stroke="#8A4B00" stroke-width="2"/><text x="${(x0 + X(d)) / 2}" y="${y + 71}" text-anchor="middle" font-size="18" font-weight="700" fill="#8A4B00">less than 1</text>`;
-  s += `<rect x="${X(d)}" y="${y + 50}" width="${x1 - X(d)}" height="30" fill="#DFF3E0" stroke="#1B5E20" stroke-width="2"/><text x="${(X(d) + x1) / 2}" y="${y + 71}" text-anchor="middle" font-size="18" font-weight="700" fill="#1B5E20">more than 1</text>`;
+  s += `<rect x="${x0}" y="${y + 50}" width="${X(d) - x0}" height="30" fill="#FFF1DF" stroke="#8A4B00" stroke-width="2"/><text x="${(x0 + X(d)) / 2}" y="${y + 73}" text-anchor="middle" font-size="24" font-weight="700" fill="#8A4B00">less than 1</text>`;
+  s += `<rect x="${X(d)}" y="${y + 50}" width="${x1 - X(d)}" height="30" fill="#DFF3E0" stroke="#1B5E20" stroke-width="2"/><text x="${(X(d) + x1) / 2}" y="${y + 73}" text-anchor="middle" font-size="24" font-weight="700" fill="#1B5E20">more than 1</text>`;
   s += `<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#14313A" stroke-width="4"/>`;
   for(let k=0; k<=2*d; k++){
     const ent = k % d === 0;
@@ -621,6 +622,20 @@ function armar(bien, malos, extra){
   while(lista.length < 3 && i < 30 && vb){
     const v = sum(vb, [i % 2 ? 1 : 2, vb[1] === 1 ? 2 : vb[1]]); const s = mx(v); i++;
     if(!lista.includes(s)){ lista.push(s); pistas[s] = extra || "Check your multiplication: multiply the tops, multiply the bottoms, then simplify."; }
+  }
+  /* Que la correcta no sea siempre la más larga: cambia el último distractor por un error de conteo con la misma forma */
+  const corto = (s)=> String(s).replace(/ /g, "").length;
+  const mm = String(bien).match(/^(?:(\d+) )?(\d+)\/(\d+)$/);
+  if(mm && lista.length >= 3 && lista.slice(1).every(x=> corto(x) < corto(bien))){
+    const w = mm[1] ? +mm[1] : 0, a = +mm[2], d = +mm[3];
+    for(const k of [-2, 2, -1, 1]){
+      const a2 = a + k; if(a2 <= 0 || (w && a2 >= d) || mcd(a2, d) !== 1) continue;
+      const s = (w ? `${w} ` : "") + `${a2}/${d}`, v = valorTxt(s);
+      if(lista.includes(s) || lista.some(x=>{ const y = valorTxt(x); return y && cmp(y, v) === 0; })) continue;
+      const fuera = lista.pop(); delete pistas[fuera];
+      lista.push(s); pistas[s] = extra || "Check your multiplication: multiply the tops, multiply the bottoms, then simplify.";
+      break;
+    }
   }
   return {lista, pista:(x)=> pistas[x] || elegir(T.otra)};
 }
@@ -914,7 +929,8 @@ function nuevaRonda(){
     const lt = txt(L), wt = txt(W);
     esc.insertAdjacentHTML("beforeend", rectSVG(lt, wt, u));
     esc.appendChild(pasosF(["Area = length × width.", tipo === "ff" ? "Multiply the tops and multiply the bottoms." : `Change the mixed ${tipo === "mm" ? "numbers" : "number"} to ${tipo === "mm" ? "fractions" : "a fraction"}: ${lt}${tipo === "mm" ? ", " + wt : ""}.`, "Multiply, then simplify."]));
-    instruccion(t.rectF(lt, wt, u), null, ES.rectF(lt, wt, u));
+    const uVoz = (x)=> ({ft:["foot","feet"], yd:["yard","yards"], m:["meter","meters"]})[u][/ /.test(x) ? 1 : 0];
+    instruccion(t.rectF(lt, wt, u), `A rectangle is ${lt} ${uVoz(lt)} long and ${wt} ${uVoz(wt)} wide. What is its area in square ${uVoz("2 0")}?`, ES.rectF(lt, wt, u));
     const malos = [[mx(sum(pL, pW)), t.pistaLados]];
     if(tipo === "mm") malos.push([mx(sum([L.w * W.w, 1], mul(L.f, W.f))), t.pistaParcial(L.w, W.w)]);
     if(tipo === "mf") malos.push([mx(sum([L.w, 1], mul(L.f, W.f))), t.pistaGuardaEnt(L.w)]);
@@ -959,7 +975,7 @@ function nuevaRonda(){
     const lado = (p)=> p[1] === 1 ? `${p[0]}/1` : fr(p[0], p[1]);
     if(!reto) esc.appendChild(pasosF(tipo === "wf" ? t.pasosW : t.pasosF));
     else esc.appendChild(pasosF([`${t.pasosR[0]} ${lado(A)} × ${lado(B)}`, t.pasosR[1], t.pasosR[2]]));
-    if(!reto) instruccion(t.multF, t.multV(e), ES.multV(e)); else instruccion(t.multR, t.multRV(e), ES.multRV(e));
+    if(!reto && cmp(prod, [1, 1]) <= 0) instruccion(t.multF, t.multV(e), ES.multV(e)); else instruccion(t.multR, t.multRV(e), ES.multRV(e));
     const {lista, pista} = armar(bien, malos);
     const camino = reto ? `${lado(A)} × ${lado(B)} = ${raw}` : raw;
     opcionesF(lista, bien, ()=>{ llenar(par, bien); acertar(`${e} = ${camino}${raw !== bien ? " = " + bien : ""}.`); }, pista);
@@ -1174,7 +1190,7 @@ function problemaFacil(n1, n2){
       es:`Cada tanda de panqueques necesita ${a}/${b} de taza de leche. ${n1} hace ${n} tandas para el desayuno de la clase. ¿Cuántas tazas de leche necesita?`,
       modelo: tirasSVG(n, b, a, "batch"),
       bien, malos:[[fr(n * a, n * b), T.pistaNN(n), true], [mx(sum([a, b], [n, 1])), P_SUMA], [String(n * a), T.pistaSinDen(b)]],
-      fin:`${n} × ${a}/${b} = ${n * a}/${b}${bien !== fr(n * a, b) ? " = " + bien : ""} cups of milk.`};
+      fin:`${n} × ${a}/${b} = ${n * a}/${b}${bien !== fr(n * a, b) ? " = " + bien : ""} ${cmp(r, [1, 1]) > 0 ? "cups" : "cup"} of milk.`};
   }
   if(tipo === "huerto"){
     const [a, b] = elegir([[3,4],[2,3],[1,2],[4,5],[5,6]]), [c, d] = elegir([[1,2],[2,3],[3,4],[1,3]].filter(([c, d])=> d !== b));
@@ -1209,7 +1225,7 @@ function problemaReto(n1, n2){
     return {texto:`A bread recipe uses ${w} ${a}/${b} cups of flour. ${n1} wants to make 1 ${x}/${y} times the recipe for the science fair bake sale. How many cups of flour does ${n1} need?`,
       es:`Una receta de pan usa ${w} ${a}/${b} tazas de harina. ${n1} quiere hacer 1 ${x}/${y} veces la receta para la venta de la feria de ciencias. ¿Cuántas tazas de harina necesita?`,
       pasos:[`Change to fractions: ${w} ${a}/${b} = ${fr(A[0], A[1])} and 1 ${x}/${y} = ${fr(B[0], B[1])}.`, "Multiply the tops and the bottoms.", "Simplify and write a mixed number."],
-      bien, malos:[[mx(sum([w, 1], mul([a, b], [x, y]))), T.pistaParcial(w, 1)], [mx(sum(A, B)), P_SUMA], [mx(red(A[0] + B[0], A[1] + B[1])), P_CRUZ], [raw !== bien ? raw : null, `${raw} has the right value, but write it as a mixed number in simplest form: ${bien}.`, true]],
+      bien, malos:[[mx(sum([w, 1], mul([a, b], [x, y]))), T.pistaParcial(w, 1)], [mx(sum(A, B)), P_SUMA], [mx(red(A[0] + B[0], A[1] + B[1])), P_CRUZ]],
       fin:`${w} ${a}/${b} × 1 ${x}/${y} = ${fr(A[0], A[1])} × ${fr(B[0], B[1])} = ${raw} = ${bien} cups. More than ${w} ${a}/${b}, because 1 ${x}/${y} is more than 1.`};
   }
   if(tipo === "huerto"){

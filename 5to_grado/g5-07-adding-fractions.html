@@ -437,7 +437,7 @@ const ES = {
   notaSimple:"Escríbelo en su forma más simple.",
   mas1V:(e)=>`Sin sumar exactamente, ¿${e} es mayor que 1 o menor que 1? «More than 1» = mayor que 1; «Less than 1» = menor que 1; «Exactly 1» = exactamente 1.`,
   razV:(e)=>`¿Qué respuesta es razonable para ${e}? Usa 0, 1/2 y 1 para comprobar.`,
-  cercaV:(e)=>`Estima. ¿A qué número está más cerca ${e}?`,
+  cercaV:(e)=>`Estima. ¿A qué número se acerca más ${e}?`,
   prob:(txt)=>`Resuelve el problema y escribe la respuesta en su forma más simple. ${txt}`,
   razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
   porque:"¿Por qué? Elige la mejor razón."
@@ -594,6 +594,24 @@ function distractores(bien, lista, n){
   });
   const [prim, ...resto] = ok;
   const sel = (prim ? [prim, ...mezclar(resto)] : []).concat(resp).slice(0, n - 1);
+  /* Que la correcta no sea siempre la opción más larga: si ninguna elegida la iguala, cambia la última por una tan larga */
+  if(sel.length > 1 && !sel.some(([v])=> v.length >= bien.length)){
+    const largo = ok.concat(resp).find(x=> !sel.includes(x) && x[0].length >= bien.length);
+    if(largo) sel[sel.length - 1] = largo;
+    else{
+      /* Si no hay ninguno, un error de conteo con la misma forma (13/20 → 11/20), ya simplificado */
+      const m = String(bien).match(/^(?:(\d+)\u00A0)?(\d+)\/(\d+)$/);
+      if(m){
+        const w = m[1] ? +m[1] : 0, a = +m[2], d = +m[3];
+        for(const k of [-2, 2, -1, 1]){
+          const a2 = a + k; if(a2 <= 0 || a2 >= (w ? d : 1e9) || mcd(a2, d) !== 1) continue;
+          const v = (w ? `${w}${NB}` : "") + `${a2}/${d}`, vv = valorClave(v);
+          if(v.length < bien.length || vistos.has(v) || vals.some(x=>mismoValor(x, vv))) continue;
+          sel[sel.length - 1] = [v, RESPALDO]; break;
+        }
+      }
+    }
+  }
   const mapa = new Map(sel);
   return {valores:[bien, ...sel.map(x=>x[0])], pista:(v)=>{ const h = mapa.get(v); return h === RESPALDO ? (S.pistaRespaldo || T.revisa) : (h || T.revisa); }};
 }
@@ -692,7 +710,7 @@ function ordEn(d){ if(ORD_EN[d]) return ORD_EN[d]; if(d < 100) return DECENAS_EN
 function fracPal(a, b, es){
   const w = es ? ORD_ES[b] : ordEn(b);
   if(!w) return `${a} ${es ? "sobre" : "over"} ${b}`;
-  if(a === 1) return `${a} ${w}`;
+  if(a === 1) return `${es ? "un" : a} ${w}`;
   return `${a} ${es ? w + "s" : (w === "half" ? "halves" : w + "s")}`;
 }
 const denPal = (L, es)=> fracPal(2, L, es).replace(/^2 /, "");
@@ -1163,11 +1181,12 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["mediante","bien","reagrupar","sumden","mcdMal","resMed","mas1Falso","simp","reagrupar","mediante"] : ["mediante","bien","sumden","mas1","simp","mediante"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs, verdad, expl, razones;
     if(tipo === "mediante"){
       const [x, y] = parAzar(DENS_F, 24);
       const med = claveCruda(0, x.a + y.a, x.b + y.b, "mix"), big = mayorQue(x, y) ? x : y, c = camino(x, y, "+", "mix");
       dicho = `${n1}: “${x.k} + ${y.k} = ${med}. I added the tops and I added the bottoms.”`;
+      dichoEs = `${n1}: «${x.k} + ${y.k} = ${med}. Sumé los numeradores y sumé los denominadores».`;
       verdad = false; expl = `${med} is less than ${big.k}, but adding to ${big.k} must give more than ${big.k}. Use a common denominator: ${c.txt}.`;
       razones = [[`${med} is less than ${big.k}, so it can't be the sum of ${big.k} and another fraction.`, true],
                  [`It is right: to add fractions you add the numerators and also add the denominators.`, false],
@@ -1176,6 +1195,7 @@ function nuevaRonda(){
       const [x, y] = parAzar(reto ? DENS_R : DENS_F, reto ? 36 : 24);
       const c = camino(x, y, "+", "mix");
       dicho = `${n1}: “${x.k} + ${y.k} = ${c.final}.”`;
+      dichoEs = `${n1}: «${x.k} + ${y.k} = ${c.final}».`;
       verdad = true; expl = `${c.txt}.${c.nota}`;
       razones = [[`With ${c.L} as the common denominator, ${x.k} + ${y.k} = ${c.A}/${c.L} + ${c.C}/${c.L} = ${c.final}.`, true],
                  [`It is right because ${x.a} + ${y.a} = ${x.a + y.a} and the denominators don't matter when you add.`, false],
@@ -1185,6 +1205,7 @@ function nuevaRonda(){
       const [x, y] = parAzar(DENS_F, 24, (p, q)=> mcd(p.b, q.b) === 1);
       const s = x.b + y.b, L = mcm(x.b, y.b);
       dicho = `${n1}: “To add ${x.k} + ${y.k}, I can use ${s} as the common denominator, because ${x.b} + ${y.b} = ${s}.”`;
+      dichoEs = `${n1}: «Para sumar ${x.k} + ${y.k}, puedo usar ${s} como denominador común, porque ${x.b} + ${y.b} = ${s}».`;
       verdad = false; expl = `${s} is not a multiple of ${x.b} or of ${y.b}. Use ${L}: ${camino(x, y, "+", "mix").txt}.`;
       razones = [[`A common denominator must be a multiple of both ${x.b} and ${y.b}, and ${s} is not.`, true],
                  [`It is right: adding the two denominators always gives a common denominator.`, false],
@@ -1194,6 +1215,7 @@ function nuevaRonda(){
       const [x, y] = parAzar(DENS_F, 24, (p, q)=> arriba ? (2 * p.a > p.b && 2 * q.a > q.b) : (2 * p.a < p.b && 2 * q.a < q.b));
       const c = camino(x, y, "+", "mix");
       dicho = arriba ? `${n1}: “${x.k} + ${y.k} is more than 1, because both fractions are more than 1/2.”` : `${n1}: “${x.k} + ${y.k} is more than 1.”`;
+      dichoEs = arriba ? `${n1}: «${x.k} + ${y.k} es mayor que 1, porque las dos fracciones son mayores que 1/2».` : `${n1}: «${x.k} + ${y.k} es mayor que 1».`;
       verdad = arriba;
       expl = arriba ? `Each fraction is more than 1/2, and 1/2 + 1/2 = 1, so the sum is more than 1: ${c.txt}.` : `Both ${x.k} and ${y.k} are less than 1/2, so the sum is less than 1/2 + 1/2 = 1: ${c.txt}.`;
       razones = arriba
@@ -1209,6 +1231,7 @@ function nuevaRonda(){
       if(!c){ x = op(0, 1, 4); y = op(0, 1, 12); c = camino(x, y, "+", "mix"); }
       const crudo = `${c.A + c.C}/${c.L}`;
       dicho = `${n1}: “${x.k} + ${y.k} = ${c.A}/${c.L} + ${c.C}/${c.L} = ${crudo}, and that is the same as ${c.final}.”`;
+      dichoEs = `${n1}: «${x.k} + ${y.k} = ${c.A}/${c.L} + ${c.C}/${c.L} = ${crudo}, y eso es lo mismo que ${c.final}».`;
       verdad = true; expl = `${c.txt}. ${crudo} and ${c.final} are equivalent: divide the numerator and the denominator by ${mcd(c.A + c.C, c.L)}.`;
       razones = [[`${crudo} simplifies to ${c.final}: divide the top and the bottom by ${mcd(c.A + c.C, c.L)}.`, true],
                  [`It is wrong: ${crudo} and ${c.final} are not equal because they have different denominators.`, false],
@@ -1219,6 +1242,7 @@ function nuevaRonda(){
       const L = mcm(x.b, y.b), A = x.a * L / x.b, C = y.a * L / y.b, c = camino(x, y, "−", "mix");
       const mal = claveCruda(x.w - y.w, C - A, L, "mix");
       dicho = `${n1}: “${x.k} − ${y.k} = ${mal}. I couldn't take ${C}/${L} from ${A}/${L}, so I did ${C}/${L} − ${A}/${L}.”`;
+      dichoEs = `${n1}: «${x.k} − ${y.k} = ${mal}. No podía quitar ${C}/${L} de ${A}/${L}, así que hice ${C}/${L} − ${A}/${L}».`;
       verdad = false; expl = `You can't switch the order when you subtract. Regroup 1 whole: ${c.txt}.`;
       razones = [[`You can't swap the order in subtraction; regroup 1 whole as ${L}/${L} instead.`, true],
                  [`It is right: when the top fraction is smaller, you just subtract the other way.`, false],
@@ -1227,6 +1251,7 @@ function nuevaRonda(){
       const [x, y] = parAzar(DENS_R, 36, (p, q)=> mcd(p.b, q.b) > 1 && p.b % q.b !== 0 && q.b % p.b !== 0);
       const L = mcm(x.b, y.b), P = x.b * y.b, dice = elegir([L, P]);
       dicho = `${n1}: “The least common denominator of ${x.k} and ${y.k} is ${dice}.”`;
+      dichoEs = `${n1}: «El mínimo común denominador de ${x.k} y ${y.k} es ${dice}».`;
       verdad = dice === L;
       expl = verdad ? `${L} is the smallest number that both ${x.b} and ${y.b} go into.` : `${P} is a common denominator, but not the least: ${L} is smaller, and both ${x.b} and ${y.b} go into it.`;
       razones = verdad
@@ -1243,6 +1268,7 @@ function nuevaRonda(){
       if(!med){ x = op(0, 3, 4); y = op(0, 1, 2); med = "1"; }
       const c = camino(x, y, "−", "mix");
       dicho = `${n1}: “${x.k} − ${y.k} = ${med}. I subtracted the tops and I subtracted the bottoms.”`;
+      dichoEs = `${n1}: «${x.k} − ${y.k} = ${med}. Resté los numeradores y resté los denominadores».`;
       verdad = false; expl = `Taking something away from ${x.k} must leave less than ${x.k}, but ${med} is not less than ${x.k}. Use a common denominator: ${c.txt}.`;
       razones = [[`A difference can't be bigger than ${x.k}, the number you started with.`, true],
                  [`It is right: subtract the numerators and then subtract the denominators.`, false],
@@ -1250,7 +1276,7 @@ function nuevaRonda(){
     }
     const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${fracsHTML(dicho)}`;
     esc.appendChild(p);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";

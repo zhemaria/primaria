@@ -350,7 +350,7 @@ const T = {
   pistaOrdenDiv:(a,b)=>`The numerator ${a} is the number being divided, so it comes first: ${a} ÷ ${b}.`,
   pistaPor:"The fraction bar means divide, not multiply.",
   pistaMenos:"The fraction bar means divide, not subtract.",
-  pistaTotal:(a,b)=>`That fraction compares ${a} with ${a + b}. In ${a} ÷ ${b}, the ${a} is split into ${b} equal parts.`,
+  pistaTotal:(a,b,top)=>`That fraction compares ${top} with ${a + b}. In ${a} ÷ ${b}, the ${a} is split into ${b} equal parts.`,
   pistaFaltaA:(b)=>`Look at the fraction: the numerator is the number being divided, and ${b} is the divisor.`,
   pistaFaltaB:(a)=>`Look at the fraction: ${a} is the numerator, and the denominator is the divisor.`,
   pistaFaltaProd:"Don't multiply. A fraction and its division use the same two numbers.",
@@ -360,17 +360,17 @@ const T = {
   mixA:(f)=>`Write ${f} as a mixed number.`,
   mixB:(m)=>`Write ${m} as an improper fraction.`,
   mixFinA:(a,b,q,r,m)=>`${a}/${b} = ${a} ÷ ${b} = ${q} R${r} = ${m}. There ${q === 1 ? "is 1 whole" : "are " + q + " wholes"} and ${r} ${r === 1 ? "piece" : "pieces"} of 1/${b} left over.`,
-  mixFinB:(m,q,b,r,a)=>`${m} = ${q} × ${b} + ${r} = ${a} pieces of 1/${b}, so ${m} = ${a}/${b}.`,
+  mixFinB:(m,q,b,r,a)=>`${m} has ${q} × ${b} + ${r} = ${a} pieces of 1/${b}, so ${m} = ${a}/${b}.`,
   pistaCambio:(q,r)=>`You swapped them. The quotient ${q} is the whole number, and the remainder ${r} is the numerator.`,
   pistaUnoMas:(b,q1,a)=>`Check the whole number: ${b} × ${q1} = ${b * q1}, which is more than ${a}.`,
   pistaDenNum:(b)=>`The pieces are still 1/${b}, so the denominator stays ${b}.`,
   pistaSumaMix:(q,b)=>`You added the whole number. Each whole is ${b}/${b}, so ${q} wholes are ${q * b}/${b}.`,
   pistaSinResto:(r,b)=>`You forgot the extra ${r}/${b}. Add it to the wholes.`,
-  pistaMenosUno:(b,q,a)=>`${b} × ${q} = ${b * q}, and ${a} − ${b * q} is ${b} or more, so another whole fits: the whole number is bigger than ${q - 1}.`,
+  pistaMenosUno:(b,q,a)=>`${b} × ${q} = ${b * q}, and ${a} − ${b * q} is ${b} or more, so another whole fits: the whole number is bigger than ${q}.`,
   pistaMultMal:(q,b)=>`Multiply the whole number ${q} by the denominator ${b}, not by the numerator.`,
   /* 4. Entre */
   entreF:(a,b)=>`${a} ÷ ${b} is between which two whole numbers?`,
-  entreArroz:(n,a)=>`${n} people share a ${a}-pound sack of rice equally. Each gets ${a} ÷ ${n} pounds. Between which two whole numbers is that?`,
+  entreArroz:(n,a)=>`${n} people share ${unA(a)} ${a}-pound sack of rice equally. Each gets ${a} ÷ ${n} pounds. Between which two whole numbers is that?`,
   entreFrac:(f)=>`${f} is between which two whole numbers?`,
   entreFin:(a,b,q,m)=>`${b} × ${q} = ${b * q} and ${b} × ${q + 1} = ${b * (q + 1)}. ${a} is between them, so ${a} ÷ ${b} = ${m} is between ${q} and ${q + 1}.`,
   pistaBajo:(b,q,a)=>`${b} × ${q} = ${b * q} is still less than ${a}, so the answer is more than ${q}.`,
@@ -464,6 +464,8 @@ const FRAC = (n, d)=> `<span class="frac"><span class="num">${n}</span><span cla
 function fracHTML(s){
   return String(s).replace(/(\d+)\/(\d+)/g, (x, n, d)=> FRAC(n, d));
 }
+/* «a» o «an» delante de un número: an 8-pound, an 11-pound, an 18-pound, an 80-pound */
+const unA = (n)=> /^(8|11$|18$)/.test(String(n)) ? "an" : "a";
 const listaNombres = (l)=> l.length < 2 ? l.join("") : l.slice(0, -1).join(", ") + " and " + l[l.length - 1];
 const listaNombresEs = (l)=> l.length < 2 ? l.join("") : l.slice(0, -1).join(", ") + " y " + l[l.length - 1];
 
@@ -474,7 +476,7 @@ function fracEnVoz(txt, es){
   const palabra = (n, d)=>{
     const t = (es ? DEN_ES : DEN_EN)[d];
     if(!t) return es ? `${n} sobre ${d}` : `${n} over ${d}`;
-    return `${n} ${Number(n) === 1 ? t[0] : t[1]}`;
+    return Number(n) === 1 ? `${es ? "un" : "1"} ${t[0]}` : `${n} ${t[1]}`;
   };
   return String(txt)
     .replace(/(\d+) (\d+)\/(\d+)/g, (x, q, n, d)=> `${q} ${es ? (Number(q) === 1 ? "entero" : "enteros") + " y" : "and"} ${palabra(n, d)}`)
@@ -815,7 +817,7 @@ function nuevaRonda(){
       ponerInstruccion(t.escFrac(a, b), null, ES.escFrac(a, b));
       const lista = [fr(a, b), fr(b, a), fr(a, a + b)];
       if(reto) lista.push(fr(b, a + b));
-      opcionesTexto(lista, fr(a, b), ()=>{ llenarSigno(fr(a, b)); acertar(t.escFinFrac(a, b)); }, (x)=> x === fr(b, a) ? t.pistaOrden(a, b) : t.pistaTotal(a, b));
+      opcionesTexto(lista, fr(a, b), ()=>{ llenarSigno(fr(a, b)); acertar(t.escFinFrac(a, b)); }, (x)=> x === fr(b, a) ? t.pistaOrden(a, b) : t.pistaTotal(a, b, Number(x.split("/")[0])));
       return;
     }
     if(modo === "div"){
@@ -949,7 +951,7 @@ function nuevaRonda(){
     } else if(ctx === "arroz"){
       u = "pounds";
       txt = dosPasos ? `The school pantry has ${k} bags of rice, each ${s} pounds. ${b} families share all the rice equally by weight. How many pounds does each family get?`
-                     : `${b} families share a ${a}-pound sack of rice equally by weight. How many pounds of rice does each family get?`;
+                     : `${b} families share ${unA(a)} ${a}-pound sack of rice equally by weight. How many pounds of rice does each family get?`;
       txtEs = dosPasos ? `La despensa de la escuela tiene ${k} bolsas de arroz de ${s} libras cada una. ${b} familias se reparten todo el arroz por igual. ¿Cuántas libras recibe cada familia?`
                        : `${b} familias se reparten por igual un saco de arroz de ${a} libras. ¿Cuántas libras de arroz recibe cada familia?`;
     } else if(ctx === "jugo"){
@@ -1000,10 +1002,11 @@ function nuevaRonda(){
     const [n1] = nombresAzar(1);
     const tipos = reto ? ["volteo","igual","resto","mixBien","entreMal","menosUno","noSePuede","entreBien","volteo","resto"] : ["volteo","igual","menosUno","noSePuede","mixBien"];
     const tipo = elegir(tipos);
-    let dicho, verdad, expl, razones;
+    let dicho, dichoEs, verdad, expl, razones;
     if(tipo === "volteo"){
       const [n, p] = parCoprimo(2, 7, 3, 9, (x, y)=>x < y), c = COSAS[elegir(Object.keys(COSAS))];
       dicho = `${n1}: “When ${p} friends share ${n} ${c.p} equally, each friend gets ${fr(p, n)} of a ${c.s}.”`;
+      dichoEs = `${n1}: «Cuando ${p} amigos se reparten ${n} ${c.esp} en partes iguales, cada uno recibe ${fr(p, n)} de ${c.un} ${c.es}».`;
       verdad = false; expl = `The ${c.p} are divided by the friends: ${n} ÷ ${p} = ${fr(n, p)}. Each friend gets ${fr(n, p)} of a ${c.s}, which is less than 1.`;
       razones = [[`Divide the ${c.p} by the friends: ${n} ÷ ${p} = ${fr(n, p)}.`, true],
                  [`It is right: the bigger number always goes on top of the fraction.`, false],
@@ -1011,6 +1014,7 @@ function nuevaRonda(){
     } else if(tipo === "igual"){
       const [a, b] = parCoprimo(2, 15, 2, 9);
       dicho = `${n1}: “${fr(a, b)} means the same as ${a} ÷ ${b}.”`;
+      dichoEs = `${n1}: «${fr(a, b)} significa lo mismo que ${a} ÷ ${b}».`;
       verdad = true; expl = `A fraction is a division: the numerator is divided by the denominator, so ${fr(a, b)} = ${a} ÷ ${b}.`;
       razones = [[`The fraction bar means “divided by”: numerator ÷ denominator.`, true],
                  [`It is wrong: ${fr(a, b)} means ${b} ÷ ${a}, because you divide by the top number.`, false],
@@ -1018,6 +1022,7 @@ function nuevaRonda(){
     } else if(tipo === "resto"){
       const [a, b] = parCoprimo(11, 40, 3, 8, (x, y)=>x > y), q = Math.floor(a / b), r = a % b;
       dicho = `${n1}: “${a} ÷ ${b} = ${q} R${r}, so ${fr(a, b)} = ${mx(q, r, a)}.”`;
+      dichoEs = `${n1}: «${a} ÷ ${b} = ${q} residuo ${r}, así que ${fr(a, b)} = ${mx(q, r, a)}».`;
       verdad = false; expl = `The ${r} left over is shared by ${b}, so it is ${fr(r, b)}: ${fr(a, b)} = ${mx(q, r, b)}.`;
       razones = [[`The remainder ${r} is shared by ${b}, so it becomes ${fr(r, b)}, not ${fr(r, a)}.`, true],
                  [`It is right: the remainder always goes over the number you started with.`, false],
@@ -1025,14 +1030,16 @@ function nuevaRonda(){
     } else if(tipo === "mixBien"){
       const [a, b] = parCoprimo(7, 40, 2, 8, (x, y)=>x > y), q = Math.floor(a / b), r = a % b;
       dicho = `${n1}: “${fr(a, b)} = ${mx(q, r, b)}, because ${b} × ${q} = ${b * q} and there ${r === 1 ? "is" : "are"} ${r} left over.”`;
-      verdad = true; expl = `${a} ÷ ${b} = ${q} R${r}. That is ${q} wholes and ${r} more ${r === 1 ? "piece" : "pieces"} of ${fr(1, b)}: ${mx(q, r, b)}.`;
-      razones = [[`${a} ÷ ${b} is ${q} R${r}: ${q} wholes and ${fr(r, b)} more.`, true],
+      dichoEs = `${n1}: «${fr(a, b)} = ${mx(q, r, b)}, porque ${b} × ${q} = ${b * q} y ${r === 1 ? "sobra" : "sobran"} ${r}».`;
+      verdad = true; expl = `${a} ÷ ${b} = ${q} R${r}. That is ${q} ${q === 1 ? "whole" : "wholes"} and ${r} more ${r === 1 ? "piece" : "pieces"} of ${fr(1, b)}: ${mx(q, r, b)}.`;
+      razones = [[`${a} ÷ ${b} is ${q} R${r}: ${q} ${q === 1 ? "whole" : "wholes"} and ${fr(r, b)} more.`, true],
                  [`It is wrong: an improper fraction can't be written as a mixed number.`, false],
                  [`It is right because ${q} + ${r} + ${b} gives back the numerator ${a}.`, false]];
     } else if(tipo === "entreMal" || tipo === "entreBien"){
       const [a, b] = parCoprimo(20, 90, 4, 12, (x, y)=>x > 2 * y), q = Math.floor(a / b);
       const dice = tipo === "entreBien" ? q : q + 1;
-      dicho = `${n1}: “If ${b} people share a ${a}-pound sack of rice equally, each one gets between ${dice} and ${dice + 1} pounds.”`;
+      dicho = `${n1}: “If ${b} people share ${unA(a)} ${a}-pound sack of rice equally, each one gets between ${dice} and ${dice + 1} pounds.”`;
+      dichoEs = `${n1}: «Si ${b} personas se reparten por igual un saco de arroz de ${a} libras, cada una recibe entre ${dice} y ${dice + 1} libras».`;
       verdad = tipo === "entreBien";
       expl = `${b} × ${q} = ${b * q} and ${b} × ${q + 1} = ${b * (q + 1)}. ${a} is between them, so ${a} ÷ ${b} = ${mixtoDe(a, b)} pounds, between ${q} and ${q + 1}.`;
       razones = verdad
@@ -1045,6 +1052,7 @@ function nuevaRonda(){
     } else if(tipo === "menosUno"){
       const [n, p] = parCoprimo(2, 9, 3, 12, (x, y)=>x < y), c = COSAS[elegir(Object.keys(COSAS))];
       dicho = `${n1}: “When ${p} friends share ${n} ${c.p} equally, each friend gets less than 1 ${c.s}.”`;
+      dichoEs = `${n1}: «Cuando ${p} amigos se reparten ${n} ${c.esp} en partes iguales, cada uno recibe menos de ${c.un} ${c.es}».`;
       verdad = true; expl = `Each friend gets ${n} ÷ ${p} = ${fr(n, p)} of a ${c.s}. The numerator is less than the denominator, so ${fr(n, p)} is less than 1.`;
       razones = [[`${n} ÷ ${p} = ${fr(n, p)}, and ${n} is less than ${p}, so it's less than 1.`, true],
                  [`It is wrong: everyone always gets at least 1 whole when you share.`, false],
@@ -1052,13 +1060,14 @@ function nuevaRonda(){
     } else {
       const [a, b] = parCoprimo(1, 7, 3, 12, (x, y)=>x < y);
       dicho = `${n1}: “You can't do ${a} ÷ ${b}, because ${b} is bigger than ${a}.”`;
+      dichoEs = `${n1}: «No se puede hacer ${a} ÷ ${b}, porque ${b} es mayor que ${a}».`;
       verdad = false; expl = `You can divide a smaller number by a bigger one. The answer is a fraction less than 1: ${a} ÷ ${b} = ${fr(a, b)}.`;
       razones = [[`${a} ÷ ${b} = ${fr(a, b)}: the answer is a fraction less than 1.`, true],
                  [`It is right: in a division, the first number must always be the bigger one.`, false],
                  [`It is wrong: ${a} ÷ ${b} is the same as ${b} ÷ ${a}, so it is ${mixtoDe(b, a)}.`, false]];
     }
     ponerProblema(dicho).insertAdjacentHTML("afterbegin", `<span aria-hidden="true">💬</span> `);
-    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
     const cont = $("opciones");
     const elegirRazon = ()=>{
       cont.innerHTML = "";
