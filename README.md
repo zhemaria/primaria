@@ -1,6 +1,6 @@
 # Primaria · Interactivos y juegos
 
-Actividades interactivas gratuitas para prekínder, kindergarten, primero y segundo grado, en español y en inglés. Forman parte del portal **[Lumi](https://www.lumi-educa.com/)**, donde están ordenadas por grado y por materia. Los cuentos ilustrados están en el repositorio [cuentos-educativos](https://github.com/zhemaria/cuentos-educativos).
+Actividades interactivas gratuitas para prekínder, kindergarten, primero y segundo grado, en español y en inglés. Forman parte del portal **[Lumi](https://www.lumi-educa.com/index-es.html)**, donde están ordenadas por grado y por materia. Los cuentos ilustrados están en el repositorio [cuentos-educativos](https://github.com/zhemaria/cuentos-educativos).
 
 Cada actividad se abre en el navegador, sin instalar nada ni registrarse.
 
@@ -125,7 +125,7 @@ Publicado bajo [Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Inte
 
 # English summary
 
-Free interactive activities and games for Pre-K, Kindergarten, Grade 1 and Grade 2, in Spanish and English. All of them are listed, by grade and by subject, on the **[Lumi portal](https://www.lumi-educa.com/index-en.html)**. Pages that have both languages in one file open in English by default; add `?lang=es` to the address to open them in Spanish.
+Free interactive activities and games for Pre-K, Kindergarten, Grade 1 and Grade 2, in Spanish and English. All of them are listed, by grade and by subject, on the **[Lumi portal](https://www.lumi-educa.com/)**. Pages that have both languages in one file open in English by default; add `?lang=es` to the address to open them in Spanish.
 
 ## Grade 2 math interactives
 

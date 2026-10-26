@@ -21,9 +21,9 @@
   ];
   var T = {
     es: { nav: "Navegación de Lumi", inicio: "Inicio", grados: "Grados:", grado: "Ir a ", actual: " (estás aquí)",
-          pag: "index.html", pagGrados: "grados.html" },
+          pag: "index-es.html", pagGrados: "grados.html" },
     en: { nav: "Lumi navigation", inicio: "Home", grados: "Grades:", grado: "Go to ", actual: " (you are here)",
-          pag: "index-en.html", pagGrados: "grados-en.html" }
+          pag: "index.html", pagGrados: "grados-en.html" }
   };
   var yo = document.currentScript;
   var miGrado = yo ? (yo.getAttribute("data-grado") || "") : "";
