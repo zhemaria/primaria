@@ -118,7 +118,8 @@
     border-bottom:3px solid var(--linea);padding-bottom:.7rem;margin-bottom:1rem;
   }
   .contador{font-family:'Fredoka',sans-serif;font-size:1.05rem}
-  .estrellas{font-size:1.3rem;letter-spacing:.1rem}
+  .estrellas{font-size:1.3rem;letter-spacing:.1rem;overflow-wrap:anywhere;word-break:break-all}
+  @media (max-width:480px){.estrellas{font-size:1.05rem;letter-spacing:0}}
   .norma{font-size:.85rem;color:var(--tinta-suave)}
 
   h2.tituloCaso{font-family:'Fredoka',sans-serif;font-size:1.5rem;margin:0 0 .75rem}
@@ -301,23 +302,23 @@
   </header>
 
   <details class="claves">
-    <summary>Detective card: the words that give the clue away</summary>
+    <summary>Detective card: three questions to crack any case</summary>
+    <p style="font-size:1.02rem;margin:.6rem 0 .2rem"><b>Words give clues, but they don't choose the operation.</b> A word like <i>left</i> or <i>altogether</i> can show up in a problem that needs the other operation. So read the whole story and ask:</p>
     <table class="clavesTabla">
-      <caption>What to do when each word shows up in the question.</caption>
+      <caption>Ask these three questions before you count.</caption>
       <thead>
         <tr>
-          <th scope="col">The question says…</th>
-          <th scope="col">It means…</th>
-          <th scope="col">The move</th>
+          <th scope="col">Ask yourself…</th>
+          <th scope="col">Look for…</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>altogether, in all, both</td><td>Push the two groups into one pile.</td><td><span class="pastilla pJuntar">Put together +</span></td></tr>
-        <tr><td>how many more…than, how many fewer…than, compare</td><td>Line the groups up side by side and find the difference.</td><td><span class="pastilla pComparar">Compare −</span></td></tr>
-        <tr><td>left, gave away, ate, lost, still there</td><td>You had one pile and part of it went away.</td><td><span class="pastilla pQuitar">Take away −</span></td></tr>
+        <tr><td>1. What is happening?</td><td>Are groups being <span class="pastilla pJuntar">put together</span>, is a part being <span class="pastilla pQuitar">taken away</span>, or are two groups being <span class="pastilla pComparar">compared</span>?</td></tr>
+        <tr><td>2. What is missing?</td><td>The start, the change, the result, one part, the total, or the difference?</td></tr>
+        <tr><td>3. What picture or equation shows it?</td><td>Draw the story or write an equation with a box for the missing number, like 6 + ☐ = 15.</td></tr>
       </tbody>
     </table>
-    <p style="font-size:.98rem;margin:.4rem 0 .2rem"><b>Detective tip:</b> the words <i>more</i> and <i>fewer</i> do not mean add or subtract by themselves. Watch for <b>than</b>. When two groups are lined up against each other, you are hunting for the difference.</p>
+    <p style="font-size:.98rem;margin:.4rem 0 .2rem"><b>Detective tip:</b> "Israel gave away 6 stickers and had 9 left. How many did he have at first?" The story says <i>gave away</i> and <i>left</i>, but the start is missing, so you add: 9 + 6 = 15.</p>
   </details>
 
   <main class="caso" id="caso" aria-live="polite">
@@ -461,7 +462,7 @@
         '<p class="leyenda">🍎 = 1 apple &nbsp;·&nbsp; 🍌 = 1 banana &nbsp;·&nbsp; 🍇 = 1 bunch of grapes</p>',
       alt:'Picture graph with 6 apples, 9 bananas and 4 bunches of grapes.',
       q:'How many <mark class="clave">more</mark> bananas <mark class="clave">than</mark> apples are there?',
-      paso:pasoMovimiento('comparar','"More… than" puts two groups face to face. You are not building one pile — you are looking for the extra.'),
+      paso:pasoMovimiento('comparar','Two groups are face to face: bananas and apples. You are not building one pile — you are looking for the extra.'),
       respuestas:[{t:'3',ok:true},{t:'15'},{t:'9'},{t:'6'}],
       pista:'Put one banana on top of each apple. How many bananas are left with no partner?',
       explica:'9 − 6 = 3. Six bananas pair up with the six apples, and 3 are left over. Those 3 are the difference.'
@@ -475,7 +476,7 @@
         '<div class="fila"><span class="etiquetaFila">Grapes</span>'+repetir('🍇',4)+'</div>',
       alt:'The same picture graph: 6 apples, 9 bananas, 4 bunches of grapes.',
       q:'How many apples and grapes are there <mark class="clave">altogether</mark>?',
-      paso:pasoMovimiento('juntar','"Altogether" and "in all" ask for one pile. Nobody is being compared here.'),
+      paso:pasoMovimiento('juntar','Apples and grapes go into one basket: two parts make one total. Nobody is being compared here.'),
       respuestas:[{t:'10',ok:true},{t:'2'},{t:'19'},{t:'4'}],
       pista:'Drop the apples and the grapes into the same bag, then count everything.',
       explica:'6 + 4 = 10. Same graph as Case 1, different question, different move.'
@@ -488,7 +489,7 @@
         '<p class="leyenda">Each mark is 1. A bundle with a slash through it is 5.</p>',
       alt:'Tally chart: 8 pencils, 5 crayons and 3 rulers.',
       q:'How many <mark class="clave">fewer</mark> rulers <mark class="clave">than</mark> pencils are there?',
-      paso:pasoMovimiento('comparar','"Fewer… than" compares two groups too. The answer is the gap between them.'),
+      paso:pasoMovimiento('comparar','Rulers and pencils are lined up against each other. The answer is the gap between them.'),
       respuestas:[{t:'5',ok:true},{t:'11'},{t:'8'},{t:'3'}],
       pista:'Count each row first: rulers 3, pencils 8.',
       explica:'8 − 3 = 5. "Fewer" warns you that one group is smaller, but the question is still the difference.'
@@ -501,14 +502,58 @@
         '<p class="leyenda">Israel had 15 stickers. He gave 6 to a friend.</p>',
       alt:'Fifteen stickers in a row.',
       q:'Israel had 15 stickers. He gave 6 away. How many are <mark class="clave">left</mark>?',
-      paso:pasoMovimiento('quitar','"Left" counts what stays after something goes away. There is only one group here, not two.'),
+      paso:pasoMovimiento('quitar','There is one pile and part of it went away. You are looking for what stays.'),
       respuestas:[{t:'9',ok:true},{t:'21'},{t:'6'},{t:'11'}],
       pista:'Cover 6 stars with your finger and count the ones you can still see.',
       explica:'15 − 6 = 9. You subtract here too, but for a different reason: nothing is being compared, a part simply left the pile.'
     },
     {
+      norma:'CC.2.OA.1',
+      titulo:'Case 5: The mystery start',
+      escena:
+        '<p class="cuento"><span class="grande" aria-hidden="true">⭐⭐⭐⭐⭐⭐⭐⭐⭐ ❓</span></p>'+
+        '<p class="leyenda">Israel gave 6 stickers to a friend. Now he has 9 stickers.</p>',
+      alt:'Nine stickers and a question mark for the ones he gave away.',
+      q:'Israel had some stickers. He gave away 6 and had 9 left. How many stickers did he have at first?',
+      paso:{
+        pregunta:'What is missing?',
+        opciones:[
+          {clave:'inicio',tono:'mirar',glifo:'🔙',titulo:'The start',sub:'How many he had before'},
+          {clave:'cambio',tono:'quitar',glifo:'🎁',titulo:'The change',sub:'How many he gave away'},
+          {clave:'final',tono:'comparar',glifo:'🏁',titulo:'The end',sub:'How many are left'}
+        ],
+        correcto:'inicio',
+        porque:'The story tells you what he gave away (6) and what is left (9). The start is missing, so you put those two parts back together.'
+      },
+      respuestas:[{t:'15',ok:true},{t:'3'},{t:'9'},{t:'6'}],
+      pista:'The story says "gave away" and "left", but those numbers are already known. Which number does the question ask for?',
+      explica:'9 + 6 = 15. The words sound like take away, but to find the start you add the part that left back to the part that stayed: ☐ − 6 = 9, so ☐ = 15.'
+    },
+    {
+      norma:'CC.2.OA.1',
+      titulo:'Case 6: The crayon box',
+      escena:
+        '<p class="cuento"><span class="grande" aria-hidden="true">🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️🖍️</span></p>'+
+        '<p class="leyenda">12 crayons in the box. 5 are red. The others are blue.</p>',
+      alt:'Twelve crayons in a box.',
+      q:'There are 12 crayons altogether. Five are red and the rest are blue. How many are blue?',
+      paso:{
+        pregunta:'What is missing?',
+        opciones:[
+          {clave:'total',tono:'mirar',glifo:'📦',titulo:'The total',sub:'All the crayons in the box'},
+          {clave:'parte',tono:'quitar',glifo:'🔵',titulo:'One part',sub:'Just the blue crayons'},
+          {clave:'diferencia',tono:'comparar',glifo:'↔️',titulo:'The difference',sub:'How many more of one color'}
+        ],
+        correcto:'parte',
+        porque:'The total (12) is already known, and so is one part (5 red). The other part is missing, so you take the known part away from the total.'
+      },
+      respuestas:[{t:'7',ok:true},{t:'17'},{t:'12'},{t:'5'}],
+      pista:'The story says "altogether", but the total is already given: 12. Which group is still missing?',
+      explica:'12 − 5 = 7. The word "altogether" tells you the total, not what to do. 5 + ☐ = 12, so ☐ = 7.'
+    },
+    {
       norma:'CC.2.OA.4',
-      titulo:'Case 5: The star squad',
+      titulo:'Case 7: The star squad',
       escena:matriz(3,5,'⭐')+'<p class="leyenda">3 rows, 5 stars in each row.</p>',
       alt:'Array of 3 rows with 5 stars each.',
       q:'Which addition shows the <mark class="clave">rows</mark> of this array?',
@@ -528,7 +573,7 @@
     },
     {
       norma:'CC.2.OA.3',
-      titulo:'Case 6: The sock basket',
+      titulo:'Case 8: The sock basket',
       escena:'<p class="cuento"><span class="grande" aria-hidden="true">🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦🧦</span></p>'+
              '<p class="leyenda">13 socks came out of the dryer.</p>',
       alt:'Thirteen socks in a row.',
@@ -549,7 +594,7 @@
     },
     {
       norma:'CC.2.NBT.4',
-      titulo:'Case 7: Number showdown',
+      titulo:'Case 9: Number showdown',
       escena:'<p class="cuento" style="text-align:center;font-size:2.6rem;font-family:Fredoka,sans-serif">348 &nbsp;<span style="color:#4A5F73">?</span>&nbsp; 384</p>',
       alt:'The numbers 348 and 384 with a missing symbol between them.',
       q:'<mark class="clave">Compare</mark> the two numbers. Which symbol goes in the middle?',
@@ -569,19 +614,19 @@
     },
     {
       norma:'CC.2.NBT.5 · CC.2.OA.1',
-      titulo:'Case 8: Game points',
+      titulo:'Case 10: Game points',
       escena:'<p class="cuento" style="text-align:center;font-size:2.2rem;font-family:Fredoka,sans-serif">38 🎯 &nbsp;+&nbsp; 27 🎯</p>'+
              '<p class="leyenda">Israel had 38 points and won 27 more points in round two.</p>',
       alt:'Thirty-eight points plus twenty-seven points.',
       q:'How many points does Israel have <mark class="clave">in all</mark>?',
-      paso:pasoMovimiento('juntar','"In all" puts both rounds on one scoreboard. He won points, he did not lose any.'),
+      paso:pasoMovimiento('juntar','Both rounds go on one scoreboard. He won points, he did not lose any.'),
       respuestas:[{t:'65',ok:true},{t:'11'},{t:'55'},{t:'515'}],
       pista:'Add the tens first (30 + 20 = 50), then the ones (8 + 7 = 15). Now put them together: 50 + 15.',
       explica:'38 + 27 = 65. Watch out for the trap answer 515: tens and ones are not written side by side, they get regrouped.'
     },
     {
       norma:'CC.2.NBT.8',
-      titulo:'Case 9: The hundred machine',
+      titulo:'Case 11: The hundred machine',
       escena:'<p class="cuento" style="text-align:center;font-size:2.2rem;font-family:Fredoka,sans-serif">470 &nbsp;➜&nbsp; 🏭 <span style="font-size:1.5rem">(+100)</span> &nbsp;➜&nbsp; ?</p>',
       alt:'The number 470 goes into a machine that adds 100.',
       q:'The machine adds 100. What number comes out?',
@@ -601,7 +646,7 @@
     },
     {
       norma:'CC.2.G.1',
-      titulo:'Case 10: The shape lineup',
+      titulo:'Case 12: The shape lineup',
       escena:galeriaFormas()+'<p class="leyenda">Four shapes: A, B, C and D.</p>',
       alt:'Four shapes: A triangle, B quadrilateral, C pentagon, D hexagon.',
       q:'Which shape has <mark class="clave">5 sides</mark> and 5 angles?',
@@ -621,7 +666,7 @@
     },
     {
       norma:'CC.2.G.2 · CC.2.OA.4',
-      titulo:'Case 11: The tile floor',
+      titulo:'Case 13: The tile floor',
       escena:rejilla(3,4)+'<p class="leyenda">A rectangle cut into equal rows and columns.</p>',
       alt:'Rectangle partitioned into 3 rows and 4 columns of equal squares.',
       q:'How many equal squares are there <mark class="clave">in all</mark>?',
@@ -632,7 +677,7 @@
     },
     {
       norma:'CC.2.G.3',
-      titulo:'Case 12: Sharing the cake',
+      titulo:'Case 14: Sharing the cake',
       escena:galeriaCirculos()+'<p class="leyenda">Four cakes cut into equal shares.</p>',
       alt:'Four circles: A in 2 shares, B in 4 shares, C in 3 shares and D in 6 shares.',
       q:'Which cake is partitioned into <mark class="clave">thirds</mark>?',
@@ -652,7 +697,7 @@
     },
     {
       norma:'CC.2.MD.10 · CC.2.OA.1',
-      titulo:'Case 13: The math club, part 1',
+      titulo:'Case 15: The math club, part 1',
       escena:barras([{nombre:'Boys',valor:7},{nombre:'Girls',valor:5}])+
              '<p class="leyenda">Number of students</p>',
       alt:'Bar graph: 7 boys and 5 girls in the math club.',
@@ -664,7 +709,7 @@
     },
     {
       norma:'CC.2.MD.10 · CC.2.OA.2',
-      titulo:'Case 14: The math club, part 2',
+      titulo:'Case 16: The math club, part 2',
       escena:barras([{nombre:'Boys',valor:7},{nombre:'Girls',valor:5}])+
              '<p class="leyenda">Same graph, new question.</p>',
       alt:'The same bar graph: 7 boys and 5 girls.',
@@ -774,7 +819,7 @@
       intentos++;
       boton.className = 'opcion fallada'; boton.disabled = true;
       aviso('casi','Not this one.', c.pista, false);
-      anuncio.textContent = 'That is not the move. Read the yellow word again.';
+      anuncio.textContent = 'That is not the move. Think about what is happening in the story.';
     }
   }
 
@@ -845,7 +890,7 @@
         '<p class="estrellas" aria-hidden="true">'+Array(estrellas+1).join('★')+Array(CASOS.length-estrellas+1).join('☆')+'</p>'+
       '</div>'+
       '<div class="aviso bien">'+
-        '<p><b>What you cracked today:</b> "altogether" and "in all" say put together; "more than" and "fewer than" say compare; "left" says take away. The same graph can ask for a sum or a difference — the question is the boss, not the picture.</p>'+
+        '<p><b>What you cracked today:</b> words give clues, but the story decides. Ask: what is happening, what is missing, and what picture or equation shows it? The same graph can ask for a sum or a difference — the question is the boss, not the picture, and not a single word.</p>'+
       '</div>'+
       repaso+
       '<button class="seguir" type="button" id="btnOtra">Play again</button>';
