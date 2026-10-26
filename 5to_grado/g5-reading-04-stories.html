@@ -1143,7 +1143,9 @@ function probar(c, ev, respuesta, fin, pista, desde){
   let pool = ors.map((s,i)=>i).filter(i=> i !== iEv && ors[i].length > 25 && !/^(CAST OF|SETTING)/.test(ors[i]) &&
     !claves.some(k=> ors[i].toLowerCase().includes(k)) && ors[i] !== ors[iEv]);
   if(desde){ const f = pool.filter(desde); if(f.length >= 3) pool = f; }
-  const otras = mezclar(pool).slice(0, 3).map(i=>[ors[i], pista || T.pistaPrueba]);
+  /* Al menos un distractor tan largo como la prueba, para que la respuesta no sea siempre la más larga */
+  const mez = mezclar(pool), larga = mez.find(i=> ors[i].length >= ors[iEv].length);
+  const otras = (larga !== undefined ? [larga, ...mez.filter(i=>i !== larga)] : mez).slice(0, 3).map(i=>[ors[i], pista || T.pistaPrueba]);
   const [u, ues] = UNIDAD[c.forma];
   limpiarAviso();
   ponerInstruccion(T.probar(u), null, ES.probar(ues));
@@ -1344,7 +1346,9 @@ function nuevaRonda(){
         if(!reto){ marcar(p[4]); acertar(T.finPar); return; }
         hecho(p[2]);
         const todas = [...par.a, ...par.b], iEv = buscar(todas, p[4]), claves = clavesDe(p[2]);
-        const otras = mezclar(todas.filter((s,i)=> i !== iEv && s.length > 25 && !claves.some(w=>s.toLowerCase().includes(w)))).slice(0, 3);
+        const cand = mezclar(todas.filter((s,i)=> i !== iEv && s.length > 25 && !claves.some(w=>s.toLowerCase().includes(w))));
+        const larga = cand.find(s=> s.length >= todas[iEv].length);
+        const otras = (larga ? [larga, ...cand.filter(s=>s !== larga)] : cand).slice(0, 3);
         limpiarAviso();
         ponerInstruccion(T.probar("sentence"), null, ES.probar("oración"));
         opciones([[todas[iEv], null], ...otras.map(s=>[s, T.pistaPruebaPar])], todas[iEv], ()=>{ marcar(p[4]); acertar(T.finProbado); });
