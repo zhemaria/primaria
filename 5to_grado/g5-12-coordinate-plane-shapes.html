@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<!--
+  Fifth Grade Math — The coordinate plane and shapes
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 5: 5.G.1, 5.G.2, 5.G.3, 5.G.4
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The coordinate plane and shapes · Fifth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Fifth grade geometry games with Lumi: read and plot points on the coordinate plane, a neighborhood map, attributes of shapes, the family tree of quadrilaterals and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+
+/* ---------- Plano de coordenadas ---------- */
+.plano{display:block;width:100%;max-width:440px;height:auto;margin:0 auto}
+.plano .rej{stroke:#B3D2D5;stroke-width:1}
+.plano .eje{stroke:var(--tinta);stroke-width:2.6}
+.plano .flecha{fill:var(--tinta)}
+.plano text{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;fill:var(--tinta)}
+.plano .num{font-size:13px;fill:var(--tinta-suave);font-weight:700}
+.plano .nom-eje{font-size:16px;font-weight:700;font-style:italic}
+.plano .et{font-size:18px;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:4px}
+.plano .pto{fill:var(--acento);stroke:#fff;stroke-width:2}
+.plano .guia{stroke:#9A5A00;stroke-width:2.6;stroke-dasharray:6 5;fill:none}
+.plano .camino{stroke:var(--acierto);stroke-width:4;fill:none;stroke-linecap:round}
+.plano .lugar-c{fill:#fff;stroke:var(--acento);stroke-width:2}
+.plano .lugar-n{font-size:12px;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:4px}
+.plano-caja{position:relative;width:100%;max-width:440px;margin:0 auto}
+.punto-b{position:absolute;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;
+  border:3px solid transparent;background:transparent;padding:0;min-height:0}
+.punto-b::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--tinta-suave);opacity:.5}
+.punto-b:hover{border-color:var(--acento);background:rgba(69,166,173,.2)}
+.punto-b:focus-visible{outline:4px solid var(--foco);outline-offset:1px}
+.punto-b.probado{border:3px dashed var(--reintento);background:var(--reintento-fondo)}
+.punto-b.elegido{border:3px solid var(--acierto);background:var(--acierto-fondo)}
+.plano-caja.grande .punto-b{width:38px;height:38px}
+
+/* ---------- Figuras y diagrama ---------- */
+.fig-fila{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:center}
+.fig{display:flex;flex-direction:column;align-items:center;font-weight:700;font-size:.85em;margin:0}
+.fig svg{width:96px;height:auto}
+.fig.grande svg{width:min(230px,70vw)}
+.figura .lado{fill:#E8F5F6;stroke:var(--acento);stroke-width:3;stroke-linejoin:round}
+.figura .marca{stroke:var(--tinta);stroke-width:2.2;fill:none;stroke-linecap:round}
+.diagrama{display:block;width:100%;max-width:420px;height:auto;margin:0 auto}
+.diagrama text{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;font-weight:700;font-size:16px;fill:var(--tinta)}
+.diagrama .caja-d{fill:#fff;stroke:var(--acento);stroke-width:3}
+.diagrama .caja-d.falta{fill:#FFF4D6;stroke:#9A5A00;stroke-dasharray:7 5}
+.diagrama .union{stroke:var(--tinta-suave);stroke-width:2.5}
+.opcion-texto.toggle::before{content:"☐ "}
+.opcion-texto.toggle[aria-pressed="true"]{background:var(--acento-claro)}
+.opcion-texto.toggle[aria-pressed="true"]::before{content:"☑ "}
+.fila-check{width:100%;display:flex;justify-content:center}
+.enunciado{font-weight:700;font-size:clamp(21px,3.4vw,30px);text-align:center;margin:0;max-width:30ch}
+@media print{
+  .hoja .dos-h{display:grid;grid-template-columns:62mm 1fr;gap:6mm;align-items:start;break-inside:avoid}
+  .hoja .dos-h svg{width:62mm;height:auto}
+  .hoja .lista-h{font-size:13pt;line-height:2.1}
+  .hoja .plano .et{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1>The coordinate plane and shapes</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./">🏠 All games</a>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi5-calculadora.jpg" alt="" class="lumi-d" width="450" height="595"></span><span>📍</span><span>🗺️</span><span>🔷</span><span>💬</span></div>
+    <h2>Find your way on the grid!</h2>
+    <p id="txt-portada">Two number lines that cross at 0 make a map for numbers: the coordinate plane. A point like (3, 5) means 3 across and 5 up, and the order matters! With Lumi you will read and plot points, find places on a neighborhood map, discover which shapes belong to which families (every square is a rectangle!) and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Dos rectas numéricas que se cruzan en 0 forman un mapa para los números: el plano de coordenadas. Un punto como (3, 5) quiere decir 3 hacia la derecha y 5 hacia arriba, ¡y el orden importa! Con Lumi vas a leer y marcar puntos, encontrar lugares en el mapa de un barrio, descubrir a qué familias pertenece cada figura (¡todo cuadrado es un rectángulo!) y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: coordinates and shapes</button></p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.G.1 (use a pair of perpendicular number lines, called axes, to define a coordinate system, with the intersection of the lines (the origin) arranged to coincide with the 0 on each line and a given point in the plane located by using an ordered pair of numbers, called its coordinates; understand that the first number indicates how far to travel from the origin in the direction of one axis, and the second number indicates how far to travel in the direction of the second axis, with the convention that the names of the two axes and the coordinates correspond: x-axis and x-coordinate, y-axis and y-coordinate), 5.G.2 (represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation), 5.G.3 (understand that attributes belonging to a category of two-dimensional figures also belong to all subcategories of that category; for example, all rectangles have four right angles and squares are rectangles, so all squares have four right angles) and 5.G.4 (classify two-dimensional figures in a hierarchy based on properties). At the Easy level the grid shows guide lines and steps, the maps ask one-step questions and every shape is drawn with tick marks, right-angle marks and parallel arrows; at the Challenge level points sit on the axes or must be found from another point, map questions take two steps, the child picks all the names or shapes that apply, and in “Who is right?” the child must also choose the reason. These games use the inclusive definition of a trapezoid: a quadrilateral with at least one pair of parallel sides, so every parallelogram is also a trapezoid. On the “Plot the point” grid every intersection is a button, so it can be played with the keyboard. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #leer, #ubicar, #mapa, #atributos, #jerarquia and #razon.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.G.1 (usar un par de rectas numéricas perpendiculares, llamadas ejes, para definir un sistema de coordenadas cuyo origen coincide con el 0 de cada recta; entender que el primer número indica cuánto avanzar desde el origen en la dirección del eje x y el segundo, cuánto avanzar en la dirección del eje y), 5.G.2 (representar problemas de la vida real y matemáticos marcando puntos en el primer cuadrante e interpretar las coordenadas según la situación), 5.G.3 (entender que los atributos de una categoría de figuras planas también pertenecen a todas sus subcategorías: todo rectángulo tiene cuatro ángulos rectos y los cuadrados son rectángulos, así que todo cuadrado tiene cuatro ángulos rectos) y 5.G.4 (clasificar figuras planas en una jerarquía según sus propiedades). Se usa la definición inclusiva de trapecio: un cuadrilátero con al menos un par de lados paralelos. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>The coordinate plane and shapes</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Write the coordinates of each point.</h3>
+  <div class="dos-h"><div id="hoja-leer-g"></div><div class="lista-h" id="hoja-leer"></div></div>
+  <h3>2. Plot and label each point on the grid.</h3>
+  <div class="dos-h"><div id="hoja-ubicar-g"></div><div class="lista-h" id="hoja-ubicar"></div></div>
+  <h3>3. Use the map.</h3>
+  <div class="dos-h"><div id="hoja-mapa-g"></div><div class="lista-h" id="hoja-mapa"></div></div>
+  <h3>4. True or false? Write T or F. Then answer the last question.</h3>
+  <div class="caja-h una" id="hoja-atrib"></div>
+  <h3>5. Who is right? Explain why.</h3>
+  <p class="razon-h" id="hoja-razon"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0. Trapezoid = a quadrilateral with at least one pair of parallel sides.</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+const SUP = {"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+const ORD_EN = ["zeroth","first","second","third","fourth","fifth","sixth"];
+const ORD_ES = ["cero","primera","segunda","tercera","cuarta","quinta","sexta"];
+const par = (x, y)=> `(${x}, ${y})`;
+const unid = (n)=> n === 1 ? "unit" : "units";
+const bloq = (n)=> n === 1 ? "block" : "blocks";
+
+/* Familias de cuadriláteros (definición inclusiva del trapecio: al menos un par de lados paralelos) */
+const FIGS = {
+  quad: {en:"quadrilateral", pl:"quadrilaterals", Es:"cuadrilátero", esPl:"cuadriláteros", N:"Quadrilateral"},
+  trap: {en:"trapezoid", pl:"trapezoids", Es:"trapecio", esPl:"trapecios", N:"Trapezoid"},
+  para: {en:"parallelogram", pl:"parallelograms", Es:"paralelogramo", esPl:"paralelogramos", N:"Parallelogram"},
+  rect: {en:"rectangle", pl:"rectangles", Es:"rectángulo", esPl:"rectángulos", N:"Rectangle"},
+  rombo:{en:"rhombus", pl:"rhombuses", Es:"rombo", esPl:"rombos", N:"Rhombus"},
+  cuad: {en:"square", pl:"squares", Es:"cuadrado", esPl:"cuadrados", N:"Square"}
+};
+const CLAVES = ["quad","trap","para","rect","rombo","cuad"];
+const PADRES = {quad:[], trap:["quad"], para:["trap"], rect:["para"], rombo:["para"], cuad:["rect","rombo"]};
+function ancestros(k){ const r = []; const pila = [...PADRES[k]]; while(pila.length){ const a = pila.shift(); if(!r.includes(a)){ r.push(a); pila.push(...PADRES[a]); } } return r; }
+const esUn = (x, y)=> x === y || ancestros(x).includes(y);    /* ¿todo x es un y? */
+const ATR = {
+  ang:  {en:"four right angles", es:"cuatro ángulos rectos"},
+  lados:{en:"four equal sides", es:"cuatro lados iguales"},
+  par2: {en:"two pairs of parallel sides", es:"dos pares de lados paralelos"},
+  par1: {en:"at least one pair of parallel sides", es:"al menos un par de lados paralelos"},
+  opu:  {en:"opposite sides of equal length", es:"lados opuestos de igual longitud"}
+};
+const SIEMPRE = {quad:[], trap:["par1"], para:["par1","par2","opu"], rect:["par1","par2","opu","ang"], rombo:["par1","par2","opu","lados"], cuad:["par1","par2","opu","ang","lados"]};
+const DEFINE = {quad:[], trap:["par1"], para:["par2"], rect:["ang"], rombo:["lados"], cuad:["ang","lados"]};
+const DEF_TXT = {
+  quad:"A quadrilateral is any closed shape with four straight sides.",
+  trap:"A trapezoid is a quadrilateral with at least one pair of parallel sides.",
+  para:"A parallelogram is a quadrilateral with two pairs of parallel sides.",
+  rect:"A rectangle is a parallelogram with four right angles.",
+  rombo:"A rhombus is a parallelogram with four equal sides.",
+  cuad:"A square has four right angles and four equal sides."
+};
+/* Contraejemplo: por qué un x no siempre tiene el atributo a */
+function contra(x, a){
+  const f = FIGS[x].en;
+  if(a === "ang") return `A ${f} can lean over, like a pushed box, so its angles don't have to be right angles.`;
+  if(a === "lados") return `A ${f} can be long and thin, so its four sides don't have to be equal.`;
+  if(a === "par2") return x === "trap" ? "A trapezoid may have only one pair of parallel sides." : "A quadrilateral may have no parallel sides at all.";
+  if(a === "par1") return "A quadrilateral may have no parallel sides at all.";
+  return `A ${f} may have opposite sides with different lengths.`;
+}
+const listaY = (l)=> l.length <= 1 ? (l[0] || "") : l.slice(0, -1).join(", ") + " and " + l[l.length - 1];
+const listaYes = (l)=> l.length <= 1 ? (l[0] || "") : l.slice(0, -1).join(", ") + " y " + l[l.length - 1];
+const defAtr = (y)=> DEFINE[y].length ? listaY(DEFINE[y].map(a=>ATR[a].en)) : "four sides";
+
+/* Triángulos (isósceles: al menos dos lados iguales) */
+const TRI_N = ["equilateral","isosceles","scalene","right","acute","obtuse"];
+
+/* Lugares del mapa del barrio: 1 unidad = 1 cuadra */
+const LUGARES = [
+  {n:"School", e:"🏫", es:"la escuela"}, {n:"Library", e:"📚", es:"la biblioteca"},
+  {n:"Park", e:"🌳", es:"el parque"}, {n:"Store", e:"🛒", es:"la tienda"},
+  {n:"Bus stop", e:"🚏", es:"la parada del autobús"}, {n:"Bakery", e:"🥐", es:"la panadería"},
+  {n:"Pool", e:"🏊", es:"la piscina"}
+];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  verdadero:"✔ True", falso:"✘ False", revisar:"Check ✔",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  /* 1. Leer coordenadas */
+  leerF:(l)=>`What are the coordinates of point ${l}?`,
+  leerV:(l)=>`What are the coordinates of point ${l}? Go across first, then up.`,
+  leerFin:(l,x,y)=>`Point ${l} is ${x} ${unid(x)} across and ${y} ${unid(y)} up, so it is at ${par(x,y)}.` + (x === 0 ? " It is on the y-axis." : y === 0 ? " It is on the x-axis." : ""),
+  pistaSwap:(x,y)=>`That would be ${x} across and ${y} up. The first number tells how far across (x-axis); the second tells how far up (y-axis).`,
+  pistaCero:"Start counting at the origin with 0: the first line after the origin is 1, not 2.",
+  pistaUnoX:"Check the first number again: count how far across the point is from the origin.",
+  pistaUnoY:"Check the second number again: count how far up the point is from the origin.",
+  cualF:(x,y)=>`Which point is at ${par(x,y)}?`,
+  cualFin:(l,x,y)=>`Point ${l} is at ${par(x,y)}: ${x} across, then ${y} up.`,
+  pistaLetraSwap:(l,a,b)=>`Point ${l} is at ${par(a,b)}: the same numbers in the other order. Go across first, then up.`,
+  pistaLetraOtro:(l,a,b)=>`Point ${l} is at ${par(a,b)}. Count from 0 at the origin: across first, then up.`,
+  /* 2. Ubicar puntos */
+  ubiF:(x,y)=>`Plot the point ${par(x,y)}.`,
+  ubiV:(x,y)=>`Plot the point ${par(x,y)}. Tap the spot where the grid lines meet.`,
+  ubiFin:(x,y)=>`${par(x,y)} is ${x} ${unid(x)} across and ${y} ${unid(y)} up from the origin.`,
+  pistaUbiSwap:(a,b)=>`You plotted ${par(a,b)}: you switched the numbers. The first number always goes across, along the x-axis.`,
+  pistaUbiX:(a,b)=>`You plotted ${par(a,b)}. You went up the right amount, but check how far across you went.`,
+  pistaUbiY:(a,b)=>`You plotted ${par(a,b)}. You went across the right amount, but check how far up you went.`,
+  pistaUbiOtro:(a,b)=>`You plotted ${par(a,b)}. Start at the origin (0, 0): go across first, then up.`,
+  moverF:(a,b,dx,dy)=>`Start at point P ${par(a,b)}. Move ${dx} right and ${dy} up. Plot the new point.`,
+  moverFin:(a,b,dx,dy)=>`(${a} + ${dx}, ${b} + ${dy}) = ${par(a+dx,b+dy)}. Moving right adds to x; moving up adds to y.`,
+  pistaMoverOrigen:(a,b)=>`You started at the origin. Start at point P ${par(a,b)} instead.`,
+  pistaMoverSwap:(dx,dy)=>`You moved ${dy} right and ${dx} up. Read the moves again: right changes x, up changes y.`,
+  rectF:"A, B and C are three corners of a rectangle. Plot the fourth corner, D.",
+  rectFin:(x,y,xa,yc)=>`D is at ${par(x,y)}: straight up or down from the corner with x = ${xa}, and straight across from the corner with y = ${yc}. All four angles are right angles.`,
+  pistaRect:"A rectangle's sides go straight across and straight up. D must line up with one corner going up and down, and with another going across.",
+  /* 3. Mapa del barrio */
+  mapCualF:(x,y)=>`Which place is at ${par(x,y)}?`,
+  mapCualFin:(p,x,y)=>`The ${p} is at ${par(x,y)}: ${x} ${bloq(x)} across and ${y} ${bloq(y)} up.`,
+  pistaMapSwap:(p,a,b)=>`The ${p} is at ${par(a,b)}. You switched the numbers: go across first, then up.`,
+  pistaMapOtro:(p,a,b)=>`The ${p} is at ${par(a,b)}. Go across first, then up.`,
+  mapCoordF:(p)=>`What are the coordinates of the ${p}?`,
+  mapCoordFin:(p,x,y)=>`The ${p} is ${x} ${bloq(x)} across and ${y} ${bloq(y)} up: ${par(x,y)}.`,
+  distF:(a,b)=>`Walking along the street, how many blocks is it from the ${a} to the ${b}?`,
+  distFin:(a,b,eje,v1,v2)=>`The ${a} and the ${b} have the same ${eje === "x" ? "y" : "x"}-coordinate, so subtract the ${eje}-coordinates: ${Math.max(v1,v2)} − ${Math.min(v1,v2)} = ${Math.abs(v1-v2)} ${bloq(Math.abs(v1-v2))}.`,
+  pistaDistMas1:"You counted the dots, including the start. Count the jumps (blocks) between the two places instead.",
+  pistaDistCoord:"That's a coordinate, not a distance. Subtract the two coordinates that change.",
+  pistaDistSuma:"You added the coordinates. To find how far apart they are, subtract.",
+  vueltaF:(n,a,b)=>`${n} walks from the ${a} to the ${b} along the streets: first across, then up or down. How many blocks does ${n} walk in all?`,
+  vueltaFin:(dx,dy)=>`Across: ${dx} ${bloq(dx)}. Up or down: ${dy} ${bloq(dy)}. In all: ${dx} + ${dy} = ${dx+dy} blocks.`,
+  pistaSoloX:"That's only the part across. Add the blocks up or down too.",
+  pistaSoloY:"That's only the part up or down. Add the blocks across too.",
+  pistaVueltaMas1:"Count blocks (jumps), not dots. Don't count the starting spot.",
+  caminarF:(n,a,dx,dy)=>`${n} starts at the ${a} and walks ${dx} ${bloq(dx)} east (right) and ${dy} ${bloq(dy)} north (up). Where is ${n} now?`,
+  caminarFin:(a,ax,ay,dx,dy,b)=>`The ${a} is at ${par(ax,ay)}. (${ax} + ${dx}, ${ay} + ${dy}) = ${par(ax+dx,ay+dy)}: that's the ${b}.`,
+  pistaCamSwap:(dx,dy)=>`That place is ${dy} east and ${dx} north. East (right) changes x; north (up) changes y.`,
+  pistaCamOrigen:(a)=>`That place is that far from the origin. Start at the ${a} instead.`,
+  pistaCamOtro:(p,a,b)=>`The ${p} is at ${par(a,b)}. Add the moves to the starting place's coordinates.`,
+  difF:(a,b)=>`How many blocks farther east (to the right) is the ${a} than the ${b}?`,
+  difFin:(xa,xb)=>`East and west use the x-coordinates: ${xa} − ${xb} = ${xa-xb} ${bloq(xa-xb)}.`,
+  pistaDifCoord:"That's just one x-coordinate. Subtract the two x-coordinates.",
+  pistaDifY:"That uses the y-coordinates (north and south). East and west use the x-coordinates.",
+  pistaDifSuma:"You added. To compare, subtract the x-coordinates.",
+  /* 4. Atributos */
+  atrF:"True or false?",
+  todosF:(a)=>`Which shapes ALWAYS have ${a}? Pick all that apply, then press Check.`,
+  todosFin:(a,l)=>`Shapes with ${a}: ${l}. A shape keeps every attribute of the families above it.`,
+  /* 5. Jerarquía */
+  mejorF:"What is the most exact name for this shape?",
+  mejorV:"What is the most exact name for this shape? Tick marks show equal sides, little squares show right angles and arrows show parallel sides.",
+  tambienF:(x)=>`Every ${x} is also a…`,
+  nombresF:"Pick ALL the names that fit this shape, then press Check.",
+  triF:"Pick ALL the names that fit this triangle, then press Check.",
+  /* 6. ¿Quién tiene razón? */
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Think about across-then-up, or about what each shape family needs.",
+  pistaPorque:"That reason doesn't explain it. Think about what the coordinates or the shape families really mean.",
+  estrategias:[
+    ["I went across first, then up","Great! Across (x) first, then up (y): the order matters."],
+    ["I started counting at 0 at the origin","Excellent! The origin is (0, 0), so the first line after it is 1."],
+    ["I subtracted coordinates to find distances","Smart! On the same line, subtract to find how many units apart."],
+    ["I used the family tree of shapes","Awesome! A shape keeps every attribute of the families above it."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  leerF:(l)=>`¿Cuáles son las coordenadas del punto ${l}? Primero se avanza hacia la derecha y luego hacia arriba.`,
+  cualF:(x,y)=>`¿Qué punto está en ${par(x,y)}?`,
+  ubiF:(x,y)=>`Marca el punto ${par(x,y)}. Toca el lugar donde se cruzan las líneas de la cuadrícula.`,
+  moverF:(a,b,dx,dy)=>`Empieza en el punto P ${par(a,b)}. Muévete ${dx} hacia la derecha y ${dy} hacia arriba. Marca el punto nuevo.`,
+  rectF:"A, B y C son tres esquinas de un rectángulo. Marca la cuarta esquina, D.",
+  mapCualF:(x,y)=>`¿Qué lugar está en ${par(x,y)}?`,
+  mapCoordF:(p)=>`¿Cuáles son las coordenadas de ${p}?`,
+  distF:(a,b)=>`Caminando por la calle, ¿cuántas cuadras hay desde ${a} hasta ${b}?`,
+  vueltaF:(n,a,b)=>`${n} camina desde ${a} hasta ${b} por las calles: primero hacia la derecha o la izquierda y luego hacia arriba o abajo. ¿Cuántas cuadras camina en total?`,
+  caminarF:(n,a,dx,dy)=>`${n} sale ${("de " + a).replace(/^de el /, "del ")} y camina ${dx} cuadras hacia el este (derecha) y ${dy} cuadras hacia el norte (arriba). ¿Dónde está ahora?`,
+  difF:(a,b)=>`¿Cuántas cuadras más hacia el este (a la derecha) está ${a} que ${b}?`,
+  lugares:"Lugares: School = escuela, Library = biblioteca, Park = parque, Store = tienda, Bus stop = parada del autobús, Bakery = panadería, Pool = piscina.",
+  atrF:(s)=>`¿Verdadero o falso? ${s} (True = verdadero, False = falso.)`,
+  todosF:(a)=>`¿Qué figuras tienen SIEMPRE ${a}? Elige todas las que correspondan y luego oprime «Check».`,
+  nombres:"Nombres: quadrilateral = cuadrilátero, trapezoid = trapecio, parallelogram = paralelogramo, rectangle = rectángulo, rhombus = rombo, square = cuadrado.",
+  mejorF:"¿Cuál es el nombre más exacto de esta figura? Las rayitas indican lados iguales, los cuadritos indican ángulos rectos y las flechas indican lados paralelos.",
+  tambienF:(x)=>`Todo ${x} también es un…`,
+  nombresF:"Elige TODOS los nombres que le corresponden a esta figura y luego oprime «Check».",
+  triF:"Elige TODOS los nombres que le corresponden a este triángulo y luego oprime «Check». Equilateral = equilátero, isosceles = isósceles, scalene = escaleno, right = rectángulo, acute = acutángulo, obtuse = obtusángulo.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"leer",      emoji:"🔎", en:"Read the point",        es:"Lee el punto",              meta:"Across 3, up 5: (3, 5)"},
+  {id:"ubicar",    emoji:"📍", en:"Plot the point",        es:"Marca el punto",            meta:"Put a dot at (6, 2)"},
+  {id:"mapa",      emoji:"🗺️", en:"Neighborhood map",      es:"El mapa del barrio",        meta:"What is at (6, 2)? How far?"},
+  {id:"atributos", emoji:"🔷", en:"Shape attributes",      es:"Atributos de las figuras",  meta:"All squares are rectangles"},
+  {id:"jerarquia", emoji:"🌳", en:"Shape family tree",     es:"El árbol de las figuras",   meta:"Square → rectangle → parallelogram"},
+  {id:"razon",     emoji:"💬", en:"Who is right?",         es:"¿Quién tiene razón?",       meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+/* Decimales dichos como en clase (se conserva del modelo para la voz) */
+function decEnVoz(txt, es){
+  return String(txt).replace(/\d[\d,]*\.\d+/g, (s)=>{
+    const [ent, fr] = s.replace(/,/g, "").split(".");
+    const n = Number(fr), k = fr.length;
+    const unidad = es ? ["décimo","centésimo","milésimo"][k - 1] + (n === 1 ? "" : "s")
+                      : ["tenth","hundredth","thousandth"][k - 1] + (n === 1 ? "" : "s");
+    const parteDec = n + " " + unidad;
+    if(Number(ent) === 0) return parteDec;
+    return es ? `${ent} ${Number(ent) === 1 ? "entero" : "enteros"} y ${parteDec}` : `${ent} and ${parteDec}`;
+  });
+}
+
+/* ============ Plano de coordenadas (SVG) ============
+   Cuadrícula de 0 a 10 en cada eje; px/py convierten coordenadas en posiciones del dibujo. */
+const G = {n:10, c:36, ml:40, mt:22, mr:26, mb:40};
+const GW = G.ml + G.n * G.c + G.mr, GH = G.mt + G.n * G.c + G.mb;
+const px = (x)=> G.ml + x * G.c, py = (y)=> G.mt + (G.n - y) * G.c;
+function svgPlano(o){
+  o = o || {};
+  let h = `<svg class="plano" viewBox="0 0 ${GW} ${GH}" role="img" aria-label="${escaparHTML(o.aria || "A coordinate grid from 0 to 10")}">`;
+  for(let i=0;i<=G.n;i++){
+    h += `<line class="rej" x1="${px(i)}" y1="${py(0)}" x2="${px(i)}" y2="${py(G.n)}"/><line class="rej" x1="${px(0)}" y1="${py(i)}" x2="${px(G.n)}" y2="${py(i)}"/>`;
+  }
+  h += `<line class="eje" x1="${px(0)}" y1="${py(0)}" x2="${px(G.n) + 12}" y2="${py(0)}"/><polygon class="flecha" points="${px(G.n)+20},${py(0)} ${px(G.n)+10},${py(0)-6} ${px(G.n)+10},${py(0)+6}"/>`;
+  h += `<line class="eje" x1="${px(0)}" y1="${py(0)}" x2="${px(0)}" y2="${py(G.n) - 10}"/><polygon class="flecha" points="${px(0)},${py(G.n)-18} ${px(0)-6},${py(G.n)-8} ${px(0)+6},${py(G.n)-8}"/>`;
+  for(let i=1;i<=G.n;i++){
+    h += `<text class="num" x="${px(i)}" y="${py(0) + 19}" text-anchor="middle">${i}</text><text class="num" x="${px(0) - 9}" y="${py(i) + 5}" text-anchor="end">${i}</text>`;
+  }
+  h += `<text class="num" x="${px(0) - 9}" y="${py(0) + 19}" text-anchor="end">0</text>`;
+  h += `<text class="nom-eje" x="${px(G.n) + 14}" y="${py(0) + 34}" text-anchor="middle">x</text><text class="nom-eje" x="${px(0) + 14}" y="${py(G.n) - 6}">y</text>`;
+  (o.caminos || []).forEach(c=>{ h += `<polyline class="camino" points="${c.map(([x,y])=>px(x)+","+py(y)).join(" ")}"/>`; });
+  (o.guias || []).forEach(([x,y])=>{ h += `<polyline class="guia" points="${px(0)},${py(y)} ${px(x)},${py(y)} ${px(x)},${py(0)}"/>`; });
+  (o.lados || []).forEach(c=>{ h += `<polyline class="guia" points="${c.map(([x,y])=>px(x)+","+py(y)).join(" ")}"/>`; });
+  (o.lugares || []).forEach(l=>{
+    h += `<circle class="lugar-c" cx="${px(l.x)}" cy="${py(l.y)}" r="5"/><text x="${px(l.x)}" y="${py(l.y) - 9}" text-anchor="middle" font-size="22">${l.e}</text><text class="lugar-n" x="${px(l.x)}" y="${py(l.y) + 20}" text-anchor="middle">${escaparHTML(l.n)}</text>`;
+  });
+  (o.puntos || []).forEach(p=>{
+    h += `<circle class="pto" cx="${px(p.x)}" cy="${py(p.y)}" r="7"/>` + (p.et ? `<text class="et" x="${px(p.x) + 10}" y="${py(p.y) - 9}">${p.et}</text>` : "");
+  });
+  return h + `<g class="capa"></g></svg>`;
+}
+const ptoSVG = (x, y, et)=> `<circle class="pto" cx="${px(x)}" cy="${py(y)}" r="8"/>` + (et ? `<text class="et" x="${px(x) + 10}" y="${py(y) - 9}">${et}</text>` : "");
+const ariaPuntos = (pts)=> "A coordinate grid from 0 to 10 with " + pts.map(p=>"point " + p.et).join(", ") + " marked";
+
+/* ============ Figuras con marcas ============
+   rayitas = lados iguales, flechas = lados paralelos, cuadrito = ángulo recto */
+const FIG = {
+  cuad: {v:[[20,20],[80,20],[80,80],[20,80]], t:[1,1,1,1], f:[0,0,0,0], r:[0,1,2,3]},
+  rect: {v:[[6,30],[94,30],[94,72],[6,72]], t:[1,2,1,2], f:[0,0,0,0], r:[0,1,2,3]},
+  rombo:{v:[[10,75],[64,75],[94,30],[40,30]], t:[1,1,1,1], f:[1,2,1,2], r:[]},
+  para: {v:[[8,75],[70,75],[92,25],[30,25]], t:[1,2,1,2], f:[1,2,1,2], r:[]},
+  trap: {v:[[6,78],[94,78],[68,24],[30,24]], t:[0,0,0,0], f:[1,0,1,0], r:[]},
+  quad: {v:[[10,70],[78,86],[92,24],[34,12]], t:[0,0,0,0], f:[0,0,0,0], r:[]},
+  equi: {v:[[10,85],[90,85],[50,15.7]], t:[1,1,1], r:[]},
+  isoRect:{v:[[15,85],[85,85],[15,15]], t:[1,0,1], r:[0]},
+  isoAgudo:{v:[[25,90],[75,90],[50,8]], t:[0,1,1], r:[]},
+  isoObt:{v:[[5,72],[95,72],[50,40]], t:[0,1,1], r:[]},
+  escRect:{v:[[15,85],[90,85],[15,30]], t:[1,3,2], r:[0]},
+  escObt:{v:[[5,80],[60,80],[95,30]], t:[1,2,3], r:[]},
+  escAgudo:{v:[[10,85],[90,85],[35,15]], t:[1,2,3], r:[]}
+};
+const TRI = {
+  equi:["equilateral","isosceles","acute"], isoRect:["isosceles","right"], isoAgudo:["isosceles","acute"],
+  isoObt:["isosceles","obtuse"], escRect:["scalene","right"], escObt:["scalene","obtuse"], escAgudo:["scalene","acute"]
+};
+const ARIA_FIG = {
+  cuad:"A quadrilateral with all four sides marked equal and four right angles marked.",
+  rect:"A quadrilateral with four right angles marked; opposite sides are marked equal, but the long and short sides are different.",
+  rombo:"A slanted quadrilateral with all four sides marked equal and both pairs of opposite sides marked parallel; no right angles.",
+  para:"A slanted quadrilateral with both pairs of opposite sides marked parallel and opposite sides marked equal; no right angles.",
+  trap:"A quadrilateral with only the top and bottom sides marked parallel.",
+  quad:"A quadrilateral with four different sides, no parallel sides and no right angles.",
+  equi:"A triangle with all three sides marked equal.",
+  isoRect:"A triangle with a right angle marked and the two sides next to it marked equal.",
+  isoAgudo:"A tall triangle with two sides marked equal and all angles smaller than a right angle.",
+  isoObt:"A wide, flat triangle with two sides marked equal and one angle wider than a right angle.",
+  escRect:"A triangle with a right angle marked and three sides of different lengths.",
+  escObt:"A triangle with three sides of different lengths and one angle wider than a right angle.",
+  escAgudo:"A triangle with three sides of different lengths and all angles smaller than a right angle."
+};
+function svgFigura(k){
+  const F = FIG[k], v = F.v, n = v.length;
+  let h = `<svg class="figura" viewBox="-8 -8 116 116" role="img" aria-label="${ARIA_FIG[k]}"><polygon class="lado" points="${v.map(p=>p.join(",")).join(" ")}"/>`;
+  for(let i=0;i<n;i++){
+    const a = v[i], b = v[(i + 1) % n];
+    let ux = b[0] - a[0], uy = b[1] - a[1]; const L = Math.hypot(ux, uy); ux /= L; uy /= L;
+    if(ux < -1e-9 || (Math.abs(ux) < 1e-9 && uy < 0)){ ux = -ux; uy = -uy; }
+    const nx = -uy, ny = ux, mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+    const kt = F.t[i] || 0, kf = (F.f && F.f[i]) || 0;
+    for(let j=0;j<kt;j++){
+      const o = (j - (kt - 1) / 2) * 4 + (kf ? -9 : 0), cx = mx + ux * o, cy = my + uy * o;
+      h += `<line class="marca" x1="${(cx - nx*5).toFixed(1)}" y1="${(cy - ny*5).toFixed(1)}" x2="${(cx + nx*5).toFixed(1)}" y2="${(cy + ny*5).toFixed(1)}"/>`;
+    }
+    for(let j=0;j<kf;j++){
+      const o = (j - (kf - 1) / 2) * 6 + (kt ? 7 : 0), cx = mx + ux * o, cy = my + uy * o;
+      h += `<polyline class="marca" points="${(cx - ux*3 - nx*4).toFixed(1)},${(cy - uy*3 - ny*4).toFixed(1)} ${(cx + ux*3).toFixed(1)},${(cy + uy*3).toFixed(1)} ${(cx - ux*3 + nx*4).toFixed(1)},${(cy - uy*3 + ny*4).toFixed(1)}"/>`;
+    }
+  }
+  F.r.forEach(i=>{
+    const V = v[i], P = v[(i + n - 1) % n], Q = v[(i + 1) % n];
+    const la = Math.hypot(P[0]-V[0], P[1]-V[1]), lb = Math.hypot(Q[0]-V[0], Q[1]-V[1]);
+    const ax = (P[0]-V[0]) / la * 9, ay = (P[1]-V[1]) / la * 9, bx = (Q[0]-V[0]) / lb * 9, by = (Q[1]-V[1]) / lb * 9;
+    h += `<polyline class="marca" points="${V[0]+ax},${V[1]+ay} ${V[0]+ax+bx},${V[1]+ay+by} ${V[0]+bx},${V[1]+by}"/>`;
+  });
+  return h + "</svg>";
+}
+/* Árbol de familias de cuadriláteros */
+const ARBOL = {quad:[210,30], trap:[210,95], para:[210,160], rect:[110,225], rombo:[310,225], cuad:[210,290]};
+function svgArbol(dest){
+  const lin = [["quad","trap"],["trap","para"],["para","rect"],["para","rombo"],["rect","cuad"],["rombo","cuad"]];
+  let h = `<svg class="diagrama" viewBox="0 0 420 320" role="img" aria-label="Family tree of quadrilaterals: Quadrilateral, then Trapezoid, then Parallelogram, which splits into Rectangle and Rhombus; both lead to Square.${dest ? " The " + FIGS[dest].N + " box is highlighted." : ""}">`;
+  lin.forEach(([a,b])=>{ h += `<line class="union" x1="${ARBOL[a][0]}" y1="${ARBOL[a][1] + 18}" x2="${ARBOL[b][0]}" y2="${ARBOL[b][1] - 18}"/>`; });
+  CLAVES.forEach(k=>{
+    const [x,y] = ARBOL[k], d = k === dest;
+    h += `<rect class="caja-d" x="${x - 75}" y="${y - 18}" width="150" height="36" rx="10" ${d ? 'style="stroke-width:6;fill:#E8F5F6"' : ""}/><text x="${x}" y="${y + 6}" text-anchor="middle">${d ? "▶ " : ""}${FIGS[k].N}</text>`;
+  });
+  return h + "</svg>";
+}
+function figuraEl(k, grande){
+  const f = document.createElement("figure"); f.className = "fig" + (grande ? " grande" : "");
+  f.innerHTML = svgFigura(k);
+  return f;
+}
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = String(texto)
+    .replace(/10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (s, x)=>{ const k = Number(x.split("").map(c=>Object.keys(SUP).find(d=>SUP[d] === c)).join("")); return es ? `10 a la ${ORD_ES[k] || k} potencia` : `10 to the ${ORD_EN[k] || k} power`; });
+  t = decEnVoz(t, es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/ − /g, es ? " menos " : " minus ").replace(/ \+ /g, es ? " más " : " plus ")
+    .replace(/1\/10\b/g, es ? "un décimo" : "one tenth").replace(/1\/100\b/g, es ? "un centésimo" : "one hundredth").replace(/1\/1000\b/g, es ? "un milésimo" : "one thousandth");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g5-01-place-value-powers-of-ten.html#potencias */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista, larga){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{ if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, typeof pista === "function" ? pista(x) : pista); });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+/* Completa con valores distintos hasta tener n opciones */
+function completar(lista, n, extra){ let i = 1; while(lista.length < n && i < 50){ const v = extra(i++); if(v !== null && !lista.includes(v)) lista.push(v); } return lista; }
+
+
+/* ============ Ayudantes del módulo ============ */
+/* Cuadrícula con un botón en cada cruce (accesible con el teclado) */
+function rejillaBotones(svgOpts, alElegir){
+  const caja = document.createElement("div"); caja.className = "plano-caja";
+  caja.innerHTML = svgPlano(svgOpts);
+  for(let y=G.n;y>=0;y--) for(let x=0;x<=G.n;x++){
+    const b = document.createElement("button"); b.type = "button"; b.className = "punto-b";
+    b.style.left = (px(x) / GW * 100).toFixed(3) + "%"; b.style.top = (py(y) / GH * 100).toFixed(3) + "%";
+    b.setAttribute("aria-label", par(x, y)); b.dataset.x = x; b.dataset.y = y;
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); alElegir(x, y, b); });
+    caja.appendChild(b);
+  }
+  return caja;
+}
+function marcarEnCaja(caja, x, y, et, guia){
+  const capa = caja.querySelector(".capa");
+  capa.insertAdjacentHTML("beforeend", (guia ? `<polyline class="guia" points="${px(0)},${py(0)} ${px(x)},${py(0)} ${px(x)},${py(y)}"/>` : "") + ptoSVG(x, y, et));
+}
+/* Opciones de pares ordenados con su pista: correcto, invertido y errores de conteo */
+function opcionesPar(x, y, max){
+  const ops = [[x, y, null]];
+  if(x !== y) ops.push([y, x, "swap"]);
+  const extra = mezclar([[x + 1, y, "x"], [x - 1, y, "x"], [x, y + 1, "y"], [x, y - 1, "y"], [x + 1, y + 1, "cero"]]);
+  extra.forEach(o=>{ if(ops.length < 4 && o[0] >= 0 && o[1] >= 0 && o[0] <= max && o[1] <= max && !ops.some(p=>p[0] === o[0] && p[1] === o[1])) ops.push(o); });
+  return ops;
+}
+function pistaPar(ops, s, x, y){
+  const o = ops.find(o=>par(o[0], o[1]) === s);
+  if(!o) return T.otra[0];
+  if(o[2] === "swap") return T.pistaSwap(o[0], o[1]);
+  if(o[2] === "cero") return T.pistaCero;
+  return o[2] === "x" ? T.pistaUnoX : T.pistaUnoY;
+}
+/* Mapa: lugares separados para que los nombres no se encimen */
+const separado = (l, x, y)=> x >= 1 && x <= 9 && y >= 1 && y <= 9 && l.every(p=> Math.abs(p.x - x) >= 2 || Math.abs(p.y - y) >= 2);
+function llenarMapa(fijos, total){
+  const l = fijos.slice(); let i = 0;
+  const libres = LUGARES.filter(L=>!l.some(p=>p.n === L.n));
+  const quedan = mezclar(libres);
+  while(l.length < total && i < 400){ i++; const x = azar(1, 9), y = azar(1, 9); if(separado(l, x, y)) l.push(Object.assign({}, quedan[l.length - fijos.length], {x, y})); }
+  return l;
+}
+const lugarEn = (l, x, y)=> l.find(p=>p.x === x && p.y === y);
+/* Botones que se marcan y desmarcan + «Check» */
+function opcionesMarcar(lista, correctas, alAcertar, pista){
+  const cont = $("opciones");
+  const marcadas = new Set();
+  mezclar(lista).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto larga toggle", null, (bt)=>{
+      if(marcadas.has(x)){ marcadas.delete(x); bt.setAttribute("aria-pressed","false"); } else { marcadas.add(x); bt.setAttribute("aria-pressed","true"); }
+      $("aviso").className = "aviso"; $("aviso").textContent = "";
+    });
+    b.setAttribute("aria-pressed","false"); cont.appendChild(b);
+  });
+  const fila = document.createElement("div"); fila.className = "fila-check";
+  const chk = botonTexto(T.revisar, "boton fuerte", null, (bt)=>{
+    const sobra = [...marcadas].find(x=>!correctas.includes(x)), falta = correctas.find(x=>!marcadas.has(x));
+    if(!sobra && !falta){ sonBoing(); alAcertar(bt); }
+    else fallar(bt, marcadas.size === 0 ? "Pick at least one answer first, then press Check." : pista(sobra, falta));
+  });
+  fila.appendChild(chk); cont.appendChild(fila);
+  S.resolver = ()=>{
+    [...cont.querySelectorAll(".toggle")].forEach(b=>{ const x = b.textContent.trim(); if(correctas.includes(x) !== marcadas.has(x)) b.click(); });
+    chk.click();
+  };
+}
+const TRI_DEF = {
+  equilateral:"all three sides are equal", isosceles:"at least two sides are equal", scalene:"no two sides are equal",
+  right:"it has one right angle", acute:"all three angles are smaller than a right angle", obtuse:"it has one angle wider than a right angle"
+};
+const TRI_NO = {
+  equilateral:"not all three sides are equal", isosceles:"no two sides are equal", scalene:"it has equal sides",
+  right:"it has no right angle", acute:"not all its angles are smaller than a right angle", obtuse:"it has no angle wider than a right angle"
+};
+/* Atributo que le falta a la familia x para ser y */
+const faltaPara = (x, y)=> DEFINE[y].find(a=>!SIEMPRE[x].includes(a));
+const duenoAtr = (x, a)=> [x, ...ancestros(x)].find(y=>DEFINE[y].includes(a) || (a === "opu" && y === "para"));
+const noMasLarga = (lista, bien)=> lista.some(x=>x !== bien && x.length >= bien.length);
+const ART = (w)=> /^[aeiou]/i.test(w) ? "an " + w : "a " + w;
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, esc = $("escena"), reto = S.reto;
+
+  /* --- 1. Lee el punto (5.G.1) --- */
+  if(S.juego === "leer"){
+    if(reto && Math.random() < 0.45){
+      /* ¿Qué punto está en (x, y)? Hay un punto en (y, x) como trampa */
+      let x, y; do{ x = azar(0, 10); y = azar(0, 10); } while(Math.abs(x - y) < 2);
+      const cands = [[x, y], [y, x]];
+      mezclar([[x + 1, y], [x, y - 1], [x - 1, y + 1], [x + 2, y], [x, y + 2], [y, x + 1]]).forEach(([a, b])=>{
+        if(cands.length < 4 && a >= 0 && b >= 0 && a <= 10 && b <= 10 && !cands.some(([c, d])=>Math.abs(c - a) + Math.abs(d - b) < 2)) cands.push([a, b]);
+      });
+      const letras = mezclar(["A","B","C","D"]).slice(0, cands.length);
+      const pts = cands.map(([a, b], i)=>({x:a, y:b, et:letras[i]}));
+      esc.insertAdjacentHTML("beforeend", svgPlano({puntos:pts, aria:ariaPuntos(pts)}));
+      ponerInstruccion(t.cualF(x, y), null, ES.cualF(x, y));
+      opcionesTexto(letras, letras[0], ()=>acertar(t.cualFin(letras[0], x, y)), (s)=>{
+        const p = pts.find(p=>p.et === s);
+        return p.x === y && p.y === x ? t.pistaLetraSwap(s, p.x, p.y) : t.pistaLetraOtro(s, p.x, p.y);
+      });
+      return;
+    }
+    let x, y;
+    if(reto){ do{ x = azar(0, 10); y = azar(0, 10); } while(x === y || (Math.random() < 0.5 && x !== 0 && y !== 0)); }
+    else { do{ x = azar(1, 9); y = azar(1, 9); } while(x === y); }
+    const l = elegir(["A","B","P","Q","R","M"]);
+    const caja = document.createElement("div"); caja.className = "plano-caja";
+    caja.innerHTML = svgPlano({puntos:[{x, y, et:l}], aria:`A coordinate grid from 0 to 10 with point ${l} marked`});
+    esc.appendChild(caja);
+    if(!reto) esc.appendChild(pasosEl(["Start at the origin (0, 0).", "Count across along the x-axis: that is the first number.", "Count up: that is the second number."]));
+    ponerInstruccion(t.leerF(l), t.leerV(l), ES.leerF(l));
+    const ops = opcionesPar(x, y, 10);
+    opcionesTexto(ops.map(o=>par(o[0], o[1])), par(x, y), ()=>{ marcarEnCaja(caja, x, y, "", true); acertar(t.leerFin(l, x, y)); }, (s)=>pistaPar(ops, s, x, y));
+    return;
+  }
+
+  /* --- 2. Marca el punto (5.G.1, 5.G.2) --- */
+  if(S.juego === "ubicar"){
+    const tipo = reto ? elegir(["solo","mover","mover","rect","rect"]) : "solo";
+    let x, y, fin, pista, opts = {}, instr, esAy, voz;
+    if(tipo === "solo"){
+      if(reto){ do{ x = azar(0, 10); y = azar(0, 10); } while(x === y || (x !== 0 && y !== 0 && Math.random() < 0.5)); }
+      else { do{ x = azar(1, 9); y = azar(1, 9); } while(x === y); }
+      instr = t.ubiF(x, y); voz = t.ubiV(x, y); esAy = ES.ubiF(x, y); fin = t.ubiFin(x, y);
+      pista = (a, b)=>{
+        if(a === y && b === x) return t.pistaUbiSwap(a, b);
+        if(b === y) return t.pistaUbiX(a, b);
+        if(a === x) return t.pistaUbiY(a, b);
+        return t.pistaUbiOtro(a, b);
+      };
+    } else if(tipo === "mover"){
+      let a, b, dx, dy;
+      do{ a = azar(1, 6); b = azar(1, 6); dx = azar(1, 4); dy = azar(1, 4); } while(dx === dy || a + dx > 10 || b + dy > 10 || a === b);
+      x = a + dx; y = b + dy;
+      opts.puntos = [{x:a, y:b, et:"P"}]; opts.aria = `A coordinate grid from 0 to 10 with point P at ${par(a, b)}`;
+      instr = t.moverF(a, b, dx, dy); esAy = ES.moverF(a, b, dx, dy); fin = t.moverFin(a, b, dx, dy);
+      pista = (p, q)=>{
+        if(p === dx && q === dy) return t.pistaMoverOrigen(a, b);
+        if(p === a + dy && q === b + dx) return t.pistaMoverSwap(dx, dy);
+        if(p === y && q === x) return t.pistaUbiSwap(p, q);
+        return t.pistaUbiOtro(p, q);
+      };
+    } else {
+      let x1, x2, y1, y2;
+      do{ x1 = azar(1, 9); x2 = azar(1, 9); y1 = azar(1, 9); y2 = azar(1, 9); } while(Math.abs(x1 - x2) < 3 || Math.abs(y1 - y2) < 3 || x1 === y2 || x2 === y1);
+      /* A, B, C consecutivas; D = (x1, y2) */
+      x = x1; y = y2;
+      opts.puntos = [{x:x1, y:y1, et:"A"}, {x:x2, y:y1, et:"B"}, {x:x2, y:y2, et:"C"}];
+      opts.lados = [[[x1, y1], [x2, y1], [x2, y2]]];
+      opts.aria = `A coordinate grid with A at ${par(x1, y1)}, B at ${par(x2, y1)} and C at ${par(x2, y2)}, joined by dashed sides`;
+      instr = t.rectF; esAy = ES.rectF; fin = t.rectFin(x, y, x1, y2);
+      pista = (p, q)=> (p === y && q === x) ? t.pistaUbiSwap(p, q) : t.pistaRect;
+    }
+    const caja = rejillaBotones(opts, (p, q, b)=>{
+      if(p === x && q === y){
+        b.classList.add("elegido"); marcarEnCaja(caja, x, y, tipo === "rect" ? "D" : "", tipo === "solo");
+        if(tipo === "rect") caja.querySelector(".capa").insertAdjacentHTML("afterbegin", `<polyline class="guia" points="${px(opts.puntos[2].x)},${py(y)} ${px(x)},${py(y)} ${px(x)},${py(opts.puntos[0].y)}"/>`);
+        sonBoing(); acertar(fin);
+      } else { b.classList.add("probado"); fallar(b, pista(p, q)); }
+    });
+    esc.appendChild(caja);
+    if(!reto) esc.appendChild(pasosEl([`Start at the origin (0, 0).`, `Go ${x} across along the x-axis.`, `Go ${y} up and tap that spot.`]));
+    ponerInstruccion(instr, voz || instr, esAy);
+    S.resolver = ()=>{ const b = caja.querySelector(`.punto-b[data-x="${x}"][data-y="${y}"]`); if(b) b.click(); };
+    return;
+  }
+
+  /* --- 3. El mapa del barrio (5.G.2) --- */
+  if(S.juego === "mapa"){
+    const tipo = reto ? elegir(["vuelta","caminar","dif","dist"]) : elegir(["cual","coord","dist","cual"]);
+    let lugaresBase;
+    let l, q, voz, esAy, lista, bien, fin, pista, camino = null;
+    const nota = "1 unit = 1 block.";
+    for(let intento=0; intento<300; intento++){
+      lugaresBase = mezclar(LUGARES);
+      if(tipo === "cual" || tipo === "coord"){
+        let x, y; do{ x = azar(1, 9); y = azar(1, 9); } while(Math.abs(x - y) < 2);
+        const A = Object.assign({}, lugaresBase[0], {x, y}), B = Object.assign({}, lugaresBase[1], {x:y, y:x});
+        l = llenarMapa([A, B], 5); if(l.length < 4) continue;
+        if(tipo === "cual"){
+          q = t.mapCualF(x, y); esAy = ES.mapCualF(x, y) + " " + ES.lugares;
+          const otros = mezclar(l.slice(2)).slice(0, 2);
+          lista = [A.n, B.n, ...otros.map(p=>p.n)]; bien = A.n;
+          if(!noMasLarga(lista, bien)) continue; fin = t.mapCualFin(A.n, x, y);
+          pista = (s)=>{ const p = l.find(p=>p.n === s); return s === B.n ? t.pistaMapSwap(p.n, p.x, p.y) : t.pistaMapOtro(p.n, p.x, p.y); };
+        } else {
+          q = t.mapCoordF(A.n); esAy = ES.mapCoordF(A.es);
+          const ops = opcionesPar(x, y, 10); lista = ops.map(o=>par(o[0], o[1])); bien = par(x, y); fin = t.mapCoordFin(A.n, x, y);
+          pista = (s)=>pistaPar(ops, s, x, y);
+        }
+        break;
+      }
+      if(tipo === "dist"){
+        const eje = elegir(["x","y"]), fijo = azar(1, 9), v1 = azar(1, 9), v2 = azar(1, 9);
+        if(Math.abs(v1 - v2) < 2 || Math.abs(v1 - v2) > 7) continue;
+        const A = Object.assign({}, lugaresBase[0], eje === "x" ? {x:v1, y:fijo} : {x:fijo, y:v1});
+        const B = Object.assign({}, lugaresBase[1], eje === "x" ? {x:v2, y:fijo} : {x:fijo, y:v2});
+        l = llenarMapa([A, B], reto ? 6 : 5);
+        /* que ningún otro lugar quede en medio del camino */
+        if(l.slice(2).some(p=> eje === "x" ? (p.y === fijo && p.x > Math.min(v1, v2) && p.x < Math.max(v1, v2)) : (p.x === fijo && p.y > Math.min(v1, v2) && p.y < Math.max(v1, v2)))) continue;
+        const d = Math.abs(v1 - v2);
+        q = t.distF(A.n, B.n); esAy = ES.distF(A.es, B.es);
+        const vals = [[d, null], [d + 1, "mas1"], [v1 + v2, "suma"], [Math.max(v1, v2), "coord"]];
+        const vis = []; vals.forEach(v=>{ if(!vis.some(w=>w[0] === v[0])) vis.push(v); });
+        lista = vis.map(v=>String(v[0])); bien = String(d); fin = t.distFin(A.n, B.n, eje, v1, v2);
+        pista = (s)=>{ const v = vis.find(v=>String(v[0]) === s); return v[1] === "mas1" ? t.pistaDistMas1 : v[1] === "suma" ? t.pistaDistSuma : t.pistaDistCoord; };
+        camino = [[A.x, A.y], [B.x, B.y]];
+        break;
+      }
+      if(tipo === "vuelta"){
+        const ax = azar(1, 9), ay = azar(1, 9), bx = azar(1, 9), by = azar(1, 9);
+        const dx = Math.abs(ax - bx), dy = Math.abs(ay - by);
+        if(dx < 2 || dy < 2 || dx === dy) continue;
+        const A = Object.assign({}, lugaresBase[0], {x:ax, y:ay}), B = Object.assign({}, lugaresBase[1], {x:bx, y:by});
+        l = llenarMapa([A, B], 5);
+        const [n1] = nombresAzar(1);
+        q = t.vueltaF(n1, A.n, B.n); esAy = ES.vueltaF(n1, A.es, B.es);
+        const vals = [[dx + dy, null], [dx, "x"], [dy, "y"], [dx + dy + 1, "mas1"]];
+        lista = vals.map(v=>String(v[0])); bien = String(dx + dy); fin = t.vueltaFin(dx, dy);
+        pista = (s)=>{ const v = vals.find(v=>String(v[0]) === s); return v[1] === "x" ? t.pistaSoloX : v[1] === "y" ? t.pistaSoloY : t.pistaVueltaMas1; };
+        camino = [[ax, ay], [bx, ay], [bx, by]];
+        break;
+      }
+      if(tipo === "caminar"){
+        const ax = azar(1, 6), ay = azar(1, 6), dx = azar(2, 4), dy = azar(2, 4);
+        if(dx === dy || ax + dx > 9 || ay + dy > 9 || ax + dy > 9 || ay + dx > 9) continue;
+        const A = Object.assign({}, lugaresBase[0], {x:ax, y:ay});
+        const fijos = [A];
+        const B = Object.assign({}, lugaresBase[1], {x:ax + dx, y:ay + dy}); if(!separado(fijos, B.x, B.y)) continue; fijos.push(B);
+        const C = Object.assign({}, lugaresBase[2], {x:ax + dy, y:ay + dx}); if(!separado(fijos, C.x, C.y)) continue; fijos.push(C);
+        const D = Object.assign({}, lugaresBase[3], {x:dx, y:dy}); const conD = separado(fijos, D.x, D.y); if(conD) fijos.push(D);
+        l = llenarMapa(fijos, 5);
+        const [n1] = nombresAzar(1);
+        q = t.caminarF(n1, A.n, dx, dy); esAy = ES.caminarF(n1, A.es, dx, dy) + " " + ES.lugares;
+        lista = unicos([B.n, C.n, ...(conD ? [D.n] : []), ...mezclar(l.filter(p=>p !== A && p !== B && p !== C)).map(p=>p.n)]).slice(0, 4);
+        if(!noMasLarga(lista, B.n)) continue;
+        bien = B.n; fin = t.caminarFin(A.n, ax, ay, dx, dy, B.n);
+        pista = (s)=>{ const p = l.find(p=>p.n === s); if(p === C) return t.pistaCamSwap(dx, dy); if(conD && p === D) return t.pistaCamOrigen(A.n); return t.pistaCamOtro(p.n, p.x, p.y); };
+        camino = [[ax, ay], [ax + dx, ay], [ax + dx, ay + dy]];
+        break;
+      }
+      /* dif: cuántas cuadras más al este */
+      const xa = azar(4, 9), xb = azar(1, 6), ya = azar(1, 9), yb = azar(1, 9);
+      if(xa - xb < 2 || Math.abs(ya - yb) < 1 || Math.abs(ya - yb) === xa - xb) continue;
+      const A = Object.assign({}, lugaresBase[0], {x:xa, y:ya}), B = Object.assign({}, lugaresBase[1], {x:xb, y:yb});
+      if(!separado([A], B.x, B.y)) continue;
+      l = llenarMapa([A, B], 5);
+      q = t.difF(A.n, B.n); esAy = ES.difF(A.es, B.es);
+      const vals = [[xa - xb, null], [xa, "coord"], [Math.abs(ya - yb), "y"], [xa + xb, "suma"]];
+      const vis = []; vals.forEach(v=>{ if(!vis.some(w=>w[0] === v[0])) vis.push(v); });
+      lista = vis.map(v=>String(v[0])); bien = String(xa - xb); fin = t.difFin(xa, xb);
+      pista = (s)=>{ const v = vis.find(v=>String(v[0]) === s); return v[1] === "coord" ? t.pistaDifCoord : v[1] === "y" ? t.pistaDifY : t.pistaDifSuma; };
+      break;
+    }
+    const caja = document.createElement("div"); caja.className = "plano-caja";
+    caja.innerHTML = svgPlano({lugares:l, aria:"A neighborhood map on a coordinate grid: " + l.map(p=>`${p.n} at ${par(p.x, p.y)}`).join(", ")});
+    esc.appendChild(caja);
+    esc.insertAdjacentHTML("beforeend", `<p class="flecha-mov">${nota}</p>`);
+    ponerInstruccion(q, null, esAy);
+    opcionesTexto(lista, bien, ()=>{
+      if(camino) caja.querySelector(".capa").insertAdjacentHTML("beforeend", `<polyline class="camino" points="${camino.map(([x, y])=>px(x) + "," + py(y)).join(" ")}"/>`);
+      acertar(fin);
+    }, pista);
+    return;
+  }
+
+  /* --- 4. Atributos de las figuras (5.G.3) --- */
+  if(S.juego === "atributos"){
+    if(reto && Math.random() < 0.5){
+      const a = elegir(["ang","lados","par2","par1","opu"]);
+      const correctas = CLAVES.filter(k=>SIEMPRE[k].includes(a)).map(k=>FIGS[k].N + "s");
+      esc.insertAdjacentHTML("beforeend", `<p class="enunciado">Always ${ATR[a].en}?</p>`);
+      ponerInstruccion(t.todosF(ATR[a].en), null, ES.todosF(ATR[a].es) + " " + ES.nombres);
+      opcionesMarcar(CLAVES.map(k=>FIGS[k].N + "s"), correctas, ()=>acertar(t.todosFin(ATR[a].en, listaY(correctas.map(s=>s.toLowerCase())))), (sobra, falta)=>{
+        if(sobra){ const k = CLAVES.find(k=>FIGS[k].N + "s" === sobra); return `Not always: ${contra(k, a)}`; }
+        const k = CLAVES.find(k=>FIGS[k].N + "s" === falta), d = duenoAtr(k, a);
+        return d === k ? `Something is missing: ${DEF_TXT[k]}` : `Something is missing: every ${FIGS[k].en} is ${ART(FIGS[d].en)}, and every ${FIGS[d].en} has ${ATR[a].en}.`;
+      });
+      return;
+    }
+    const facilSon = [["cuad","rect"],["rect","cuad"],["cuad","rombo"],["rombo","cuad"],["rect","para"],["para","rect"],["rombo","rect"],["rombo","para"]];
+    const facilTiene = [["rombo","ang"],["rect","ang"],["cuad","ang"],["cuad","lados"],["rect","lados"],["para","par2"],["trap","par1"],["trap","par2"],["rombo","lados"],["para","ang"]];
+    const retoSon = [["para","trap"],["cuad","trap"],["trap","para"],["rombo","para"],["cuad","para"],["quad","trap"],["rect","rombo"],["rect","trap"]];
+    const retoTiene = [["cuad","opu"],["rombo","opu"],["trap","opu"],["rombo","par1"],["quad","par1"],["rect","par2"],["rombo","ang"],["cuad","par2"]];
+    const esSon = Math.random() < 0.5;
+    let enun, enunEs, verdad, fin, pistaV, pistaF, figura;
+    if(esSon){
+      const [x, y] = elegir(reto ? retoSon : facilSon); figura = x;
+      verdad = esUn(x, y);
+      enun = `All ${FIGS[x].pl} are ${FIGS[y].pl}.`; enunEs = `Todos los ${FIGS[x].esPl} son ${FIGS[y].esPl}.`;
+      fin = verdad ? `${DEF_TXT[y]} Every ${FIGS[x].en} has ${defAtr(y)}, so every ${FIGS[x].en} is ${ART(FIGS[y].en)}.`
+                   : `Not every ${FIGS[x].en} is ${ART(FIGS[y].en)}. ${contra(x, faltaPara(x, y))}`;
+      pistaV = `Think of a ${FIGS[x].en} that is not ${ART(FIGS[y].en)}. Does every ${FIGS[x].en} have ${defAtr(y)}?`;
+      pistaF = `Check the definition: ${DEF_TXT[y]} Does every ${FIGS[x].en} have that?`;
+    } else {
+      const [x, a] = elegir(reto ? retoTiene : facilTiene); figura = x;
+      verdad = SIEMPRE[x].includes(a);
+      const art = x === "quad" ? "Every quadrilateral" : `Every ${FIGS[x].en}`;
+      enun = `${art} has ${ATR[a].en}.`; enunEs = `Todo ${FIGS[x].Es} tiene ${ATR[a].es}.`;
+      const d = verdad ? duenoAtr(x, a) : null;
+      fin = verdad ? (d === x ? DEF_TXT[x] : `Every ${FIGS[x].en} is ${ART(FIGS[d].en)}, and every ${FIGS[d].en} has ${ATR[a].en}.`)
+                   : `Not always. ${contra(x, a)}`;
+      pistaV = `Can you draw a ${FIGS[x].en} without ${ATR[a].en}? Think about it.`;
+      pistaF = d ? `A ${FIGS[x].en} belongs to the ${FIGS[d].en} family. What does every ${FIGS[d].en} have?` : "";
+    }
+    esc.insertAdjacentHTML("beforeend", `<p class="enunciado">${escaparHTML(enun)}</p>`);
+    if(!reto){ const f = figuraEl(figura, true); f.insertAdjacentHTML("beforeend", `<figcaption>One example of ${ART(FIGS[figura].en)}</figcaption>`); esc.appendChild(f); }
+    ponerInstruccion(t.atrF, enun + " " + t.atrF, ES.atrF(enunEs));
+    const cont = $("opciones");
+    [[true, t.verdadero, "opcion-vf v"], [false, t.falso, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, v ? pistaV : pistaF); return; }
+        sonBoing(); acertar(fin);
+      }));
+    });
+    S.resolver = resolverTexto(verdad ? t.verdadero : t.falso);
+    return;
+  }
+
+  /* --- 5. El árbol de las figuras (5.G.4) --- */
+  if(S.juego === "jerarquia"){
+    const tipo = reto ? elegir(["nombres","tri","arbol"]) : elegir(["mejor","mejor","tambien"]);
+    if(tipo === "mejor"){
+      const k = elegir(["cuad","rect","rombo","para","trap"]);
+      esc.appendChild(figuraEl(k, true));
+      esc.appendChild(pasosEl(["Tick marks: equal sides.", "Little square: a right angle.", "Arrows: parallel sides."]));
+      ponerInstruccion(t.mejorF, t.mejorV, ES.mejorF + " " + ES.nombres);
+      const otros = mezclar(CLAVES.filter(y=>y !== k && y !== "quad"));
+      const anc = otros.filter(y=>esUn(k, y)), no = otros.filter(y=>!esUn(k, y));
+      const elegidos = ["quad", ...anc.slice(0, 1), ...no].slice(0, 3);
+      const lista = [k, ...elegidos].map(y=>FIGS[y].N);
+      opcionesTexto(lista, FIGS[k].N, ()=>acertar(`It is ${ART(FIGS[k].en)}. ${DEF_TXT[k]}` + (ancestros(k).length ? ` It is also ${listaY(ancestros(k).map(y=>ART(FIGS[y].en)))}, but "${FIGS[k].en}" says the most.` : "")), (s)=>{
+        const y = CLAVES.find(y=>FIGS[y].N === s);
+        if(esUn(k, y)) return `That name fits too, but it is not the most exact. Look at all the marks.`;
+        return `This shape doesn't have ${ATR[faltaPara(k, y)].en}, so it is not ${ART(FIGS[y].en)}.`;
+      });
+      return;
+    }
+    if(tipo === "tambien"){
+      const x = elegir(["rect","rombo","para","trap","rect","rombo"]);
+      const y = elegir(ancestros(x).filter(a=>a !== "quad" || x === "trap"));
+      const no = CLAVES.filter(z=>!esUn(x, z) && z !== x).sort((a, b)=>FIGS[b].N.length - FIGS[a].N.length);
+      const extras = [no[0], ...mezclar(no.slice(1))].slice(0, x === "rect" || x === "rombo" ? 2 : 3);
+      const TRI_ENG = {rect:["Right triangle", "A right triangle has a right angle, but only three sides. A rectangle has four sides."], rombo:["Equilateral triangle", "An equilateral triangle has equal sides, but only three of them. A rhombus has four sides."]};
+      esc.appendChild(figuraEl(x, true));
+      ponerInstruccion(t.tambienF(FIGS[x].en), null, ES.tambienF(FIGS[x].Es) + " " + ES.nombres);
+      const lista = [FIGS[y].N, ...extras.map(z=>FIGS[z].N), ...(TRI_ENG[x] ? [TRI_ENG[x][0]] : [])];
+      opcionesTexto(lista, FIGS[y].N, ()=>acertar(`${DEF_TXT[y]} Every ${FIGS[x].en} has ${defAtr(y)}, so every ${FIGS[x].en} is ${ART(FIGS[y].en)}.`), (s)=>{
+        if(TRI_ENG[x] && s === TRI_ENG[x][0]) return TRI_ENG[x][1];
+        const z = CLAVES.find(z=>FIGS[z].N === s);
+        if(esUn(z, x)) return `It's the other way around: every ${FIGS[z].en} is ${ART(FIGS[x].en)}, but not every ${FIGS[x].en} is ${ART(FIGS[z].en)}. ${contra(x, faltaPara(x, z))}`;
+        return `Not every ${FIGS[x].en} is ${ART(FIGS[z].en)}. ${contra(x, faltaPara(x, z))}`;
+      });
+      return;
+    }
+    if(tipo === "nombres"){
+      const k = elegir(["cuad","rect","rombo","para","trap","quad"]);
+      esc.appendChild(figuraEl(k, true));
+      ponerInstruccion(t.nombresF, null, ES.nombresF + " " + ES.nombres);
+      const correctas = [k, ...ancestros(k)].map(y=>FIGS[y].N);
+      opcionesMarcar(CLAVES.map(y=>FIGS[y].N), correctas, ()=>acertar(`This shape is ${listaY([k, ...ancestros(k)].map(y=>ART(FIGS[y].en)))}. Each name fits because it has all the attributes of every family above it.`), (sobra, falta)=>{
+        if(sobra){ const y = CLAVES.find(y=>FIGS[y].N === sobra); return `${sobra} doesn't fit: this shape doesn't have ${ATR[faltaPara(k, y)].en}.`; }
+        const y = CLAVES.find(y=>FIGS[y].N === falta);
+        return `A name is missing. ${DEF_TXT[y]} Does this shape fit that?`;
+      });
+      return;
+    }
+    if(tipo === "tri"){
+      const k = elegir(Object.keys(TRI));
+      esc.appendChild(figuraEl(k, true));
+      esc.insertAdjacentHTML("beforeend", `<p class="flecha-mov">Equal tick marks = equal sides. Little square = right angle.</p>`);
+      ponerInstruccion(t.triF, null, ES.triF);
+      const correctas = TRI[k].map(n=>n[0].toUpperCase() + n.slice(1));
+      opcionesMarcar(TRI_N.map(n=>n[0].toUpperCase() + n.slice(1)), correctas, ()=>acertar(`This triangle is ${listaY(TRI[k])}: ` + TRI[k].map(n=>TRI_DEF[n]).join("; ") + "."), (sobra, falta)=>{
+        if(sobra) return `${sobra} doesn't fit: ${TRI_NO[sobra.toLowerCase()]}.`;
+        const n = falta.toLowerCase();
+        return n === "isosceles" && k === "equi" ? "A name is missing. Isosceles means at least two equal sides, so an equilateral triangle is isosceles too." : `A name is missing. Look at the ${["right","acute","obtuse"].includes(n) ? "angles" : "sides"} again.`;
+      });
+      return;
+    }
+    /* arbol: completa el árbol de familias */
+    const hueco = elegir(["trap","para","rect","rombo","cuad","quad"]);
+    const DESC = {quad:"must hold every shape with four straight sides", trap:"must be a kind of quadrilateral with at least one pair of parallel sides", para:"must be a kind of trapezoid with two pairs of parallel sides", rect:"must be a parallelogram with four right angles", rombo:"must be a parallelogram with four equal sides", cuad:"must be both a rectangle and a rhombus"};
+    const DESC_ES = {quad:"debe incluir toda figura de cuatro lados rectos", trap:"debe ser un tipo de cuadrilátero con al menos un par de lados paralelos", para:"debe ser un tipo de trapecio con dos pares de lados paralelos", rect:"debe ser un paralelogramo con cuatro ángulos rectos", rombo:"debe ser un paralelogramo con cuatro lados iguales", cuad:"debe ser a la vez rectángulo y rombo"};
+    let svg = svgArbol(null);
+    const [hx, hy] = ARBOL[hueco];
+    svg = svg.replace(new RegExp(`<rect class="caja-d" x="${hx - 75}" y="${hy - 18}"([^>]*)/><text x="${hx}" y="${hy + 6}" text-anchor="middle">${FIGS[hueco].N}</text>`), `<rect class="caja-d falta" x="${hx - 75}" y="${hy - 18}"$1/><text x="${hx}" y="${hy + 6}" text-anchor="middle">?</text>`)
+             .replace(/aria-label="[^"]*"/, `aria-label="Family tree of quadrilaterals with one empty box. ${CLAVES.filter(k=>k !== hueco).map(k=>FIGS[k].N).join(", ")} are shown. The empty box ${DESC[hueco]}."`);
+    esc.insertAdjacentHTML("beforeend", svg);
+    esc.insertAdjacentHTML("beforeend", `<p class="flecha-mov">Each family is inside the one above it. The empty box ${DESC[hueco]}.</p>`);
+    ponerInstruccion("Which name goes in the empty box?", null, `¿Qué nombre va en la casilla vacía? La casilla vacía ${DESC_ES[hueco]}. ${ES.nombres}`);
+    const largo = hueco === "quad" ? "para" : "quad";
+    const otros = [largo, ...mezclar(CLAVES.filter(k=>k !== hueco && k !== largo))].slice(0, 3);
+    opcionesTexto([hueco, ...otros].map(k=>FIGS[k].N), FIGS[hueco].N, ()=>acertar(`${FIGS[hueco].N} goes there. ${DEF_TXT[hueco]}`), (s)=>`${s} is already in the tree. The empty box ${DESC[hueco]}.`);
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (5.G.1–5.G.4): decidir y, en el Reto, explicar por qué --- */
+  if(S.juego === "razon"){
+    const [n1] = nombresAzar(1);
+    const tipos = reto ? ["sqrect","swap","origen","punto","cuadRombo","paraTrap","dist","rectIgual","rectCuad","eje"] : ["sqrect","swap","origen","punto","cuadRombo"];
+    const tipo = elegir(tipos);
+    let dicho, verdad, expl, razones, apoyo = "";
+    if(tipo === "sqrect"){
+      dicho = `${n1}: “A square is not a rectangle because its sides are equal.”`;
+      verdad = false; expl = "A rectangle only needs four right angles. A square has four right angles, so every square is a rectangle (a special one with equal sides).";
+      razones = [["A rectangle only needs four right angles, and every square has them.", true],
+                 ["It is right: a rectangle must have two long sides and two short sides.", false],
+                 ["It is wrong because a square has more right angles than a rectangle.", false]];
+      apoyo = "cuad";
+    } else if(tipo === "swap"){
+      let a, b; do{ a = azar(1, 9); b = azar(1, 9); } while(Math.abs(a - b) < 2);
+      dicho = `${n1}: “${par(a, b)} and ${par(b, a)} are the same point.”`;
+      verdad = false; expl = `${par(a, b)} is ${a} across and ${b} up; ${par(b, a)} is ${b} across and ${a} up. They are different points.`;
+      razones = [["Across comes first and up second, so switching them moves the point.", true],
+                 ["It is right: they use the same two numbers, so they land in the same spot.", false],
+                 ["It is wrong because the bigger number must always be written first.", false]];
+      if(!reto) apoyo = svgPlano({puntos:[{x:a, y:b, et:par(a, b)}, {x:b, y:a, et:par(b, a)}], aria:`A coordinate grid with the points ${par(a, b)} and ${par(b, a)} marked`});
+    } else if(tipo === "origen"){
+      dicho = `${n1}: “The origin is the point (1, 1), because that's where we start counting.”`;
+      verdad = false; expl = "The origin is where the two axes cross, at 0 on each number line: (0, 0).";
+      razones = [["The axes cross at 0 on each number line, so the origin is (0, 0).", true],
+                 ["It is right: counting always starts at 1, so the first corner is (1, 1).", false],
+                 ["It is wrong: the origin is (0, 1), because only the x-axis starts at 0.", false]];
+    } else if(tipo === "punto"){
+      let a, b; do{ a = azar(1, 9); b = azar(1, 9); } while(a === b);
+      dicho = `${n1}: “To plot ${par(a, b)}, I start at the origin, go ${a} across and then ${b} up.”`;
+      verdad = true; expl = `The first number tells how far across (x-axis) and the second how far up (y-axis): ${par(a, b)} is ${a} across, ${b} up.`;
+      razones = [["The first number tells how far along the x-axis; the second, how far up.", true],
+                 ["It is right because the two numbers in a pair can be read in any order you like.", false],
+                 ["It is wrong: you always go up first and then across.", false]];
+    } else if(tipo === "cuadRombo"){
+      dicho = `${n1}: “Every square is a rhombus.”`;
+      verdad = true; expl = "A rhombus is a parallelogram with four equal sides. Every square has two pairs of parallel sides and four equal sides, so every square is a rhombus.";
+      razones = [["A rhombus needs four equal sides, and every square has four equal sides.", true],
+                 ["It is right because squares and rhombuses always look exactly alike when you turn them.", false],
+                 ["It is wrong because a rhombus can never have right angles.", false]];
+      apoyo = "cuad";
+    } else if(tipo === "paraTrap"){
+      dicho = `${n1}: “Every parallelogram is also a trapezoid.”`;
+      verdad = true; expl = "A trapezoid has at least one pair of parallel sides. A parallelogram has two pairs, so it is also a trapezoid.";
+      razones = [["A trapezoid needs at least one pair of parallel sides, and a parallelogram has two.", true],
+                 ["It is right because every quadrilateral is a trapezoid.", false],
+                 ["It is wrong: a shape with two pairs of parallel sides can't also count as having one pair.", false]];
+    } else if(tipo === "dist"){
+      const x0 = azar(1, 9), y1 = azar(1, 4), y2 = y1 + azar(3, 5);
+      const ok = Math.random() < 0.5, dice = ok ? y2 - y1 : y2 - y1 + 1;
+      dicho = `${n1}: “From ${par(x0, y1)} to ${par(x0, y2)} is ${dice} units.”`;
+      verdad = ok; expl = `Both points have x = ${x0}, so subtract the y-coordinates: ${y2} − ${y1} = ${y2 - y1} units.`;
+      razones = ok
+        ? [[`Same x, so subtract the y-coordinates: ${y2} − ${y1} = ${y2 - y1}.`, true],
+           [`It is right because you count all the dots from one point to the other, including both.`, false],
+           [`It is wrong: you add the y-coordinates, so it is ${y1 + y2} units.`, false]]
+        : [[`Subtract the y-coordinates: ${y2} − ${y1} = ${y2 - y1}. Counting dots adds one.`, true],
+           [`It is right because you count all the dots from one point to the other, including both.`, false],
+           [`It is wrong: you add the y-coordinates, so it is ${y1 + y2} units.`, false]];
+    } else if(tipo === "rectIgual"){
+      dicho = `${n1}: “A rectangle with four equal sides is a square.”`;
+      verdad = true; expl = "It has four right angles (it is a rectangle) and four equal sides: that is exactly a square.";
+      razones = [["It has four right angles and four equal sides: that is a square.", true],
+                 ["It is wrong: a rectangle can never have four equal sides, only two long and two short.", false],
+                 ["It is right because every rectangle is a square anyway.", false]];
+    } else if(tipo === "rectCuad"){
+      dicho = `${n1}: “All rectangles are squares, because they have four right angles.”`;
+      verdad = false; expl = "A square needs four right angles AND four equal sides. Most rectangles have two long sides and two short sides, so they are not squares.";
+      razones = [["A square also needs four equal sides, and many rectangles don't have them.", true],
+                 ["It is right: having four right angles is all that a shape needs to be a square.", false],
+                 ["It is wrong because rectangles have no right angles at all.", false]];
+    } else {
+      const b = azar(2, 9);
+      dicho = `${n1}: “The point (0, ${b}) is on the x-axis.”`;
+      verdad = false; expl = `x = 0 means no steps across, so (0, ${b}) is on the y-axis, ${b} units up from the origin.`;
+      razones = [[`x = 0 means no steps across, so the point is on the y-axis.`, true],
+                 ["It is right: a 0 in a pair always puts the point on the x-axis.", false],
+                 ["It is wrong because points with a 0 can't be plotted at all.", false]];
+    }
+    const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
+    esc.appendChild(p);
+    if(!reto && apoyo){ if(FIG[apoyo]) esc.appendChild(figuraEl(apoyo)); else { const c = document.createElement("div"); c.className = "plano-caja"; c.innerHTML = apoyo; esc.appendChild(c); } }
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(traducirDicho(tipo, dicho, n1)));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opcionesTexto(razones.map(r=>r[0]), buena, ()=>acertar(expl), t.pistaPorque, true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+/* Traducción al español de lo que dice el personaje */
+function traducirDicho(tipo, dicho, n){
+  const m = dicho.match(/\(\d+, \d+\)/g) || [], nums = (dicho.match(/is (\d+) units/) || [])[1];
+  const ES_D = {
+    sqrect:`«Un cuadrado no es un rectángulo porque sus lados son iguales».`,
+    swap:`«${m[0]} y ${m[1]} son el mismo punto».`,
+    origen:`«El origen es el punto (1, 1), porque ahí empezamos a contar».`,
+    punto:`«Para marcar ${m[0]}, empiezo en el origen, avanzo ${(m[0] || "").slice(1).split(",")[0]} hacia la derecha y luego ${(m[0] || "").split(", ")[1]?.replace(")", "")} hacia arriba».`,
+    cuadRombo:`«Todo cuadrado es un rombo».`,
+    paraTrap:`«Todo paralelogramo también es un trapecio».`,
+    dist:`«De ${m[0]} a ${m[1]} hay ${nums} unidades».`,
+    rectIgual:`«Un rectángulo con cuatro lados iguales es un cuadrado».`,
+    rectCuad:`«Todos los rectángulos son cuadrados, porque tienen cuatro ángulos rectos».`,
+    eje:`«El punto ${m[0]} está en el eje x».`
+  };
+  return `${n} dice: ${ES_D[tipo]}`.replace(/\bde el\b/g, "del");
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const pl = [{x:3, y:7, et:"A"}, {x:7, y:3, et:"B"}, {x:0, y:5, et:"C"}, {x:9, y:8, et:"D"}];
+  $("hoja-leer-g").innerHTML = svgPlano({puntos:pl, aria:ariaPuntos(pl)});
+  $("hoja-leer").innerHTML = pl.map(p=>`<div>${p.et} ( _____ , _____ )</div>`).join("");
+  $("hoja-ubicar-g").innerHTML = svgPlano({aria:"An empty coordinate grid from 0 to 10"});
+  $("hoja-ubicar").innerHTML = ["E (2, 6)", "F (6, 2)", "G (5, 0)", "H (8, 9)"].map(s=>`<div>${s}</div>`).join("");
+  const mapa = [{n:"School", e:"🏫", x:2, y:3}, {n:"Library", e:"📚", x:7, y:3}, {n:"Park", e:"🌳", x:7, y:8}, {n:"Store", e:"🛒", x:3, y:7}];
+  $("hoja-mapa-g").innerHTML = svgPlano({lugares:mapa, aria:"A neighborhood map: " + mapa.map(p=>`${p.n} at ${par(p.x, p.y)}`).join(", ")});
+  $("hoja-mapa").innerHTML = ["a) Which place is at (3, 7)? ____________", "b) What are the coordinates of the Library? ( ____ , ____ )", "c) How many blocks from the Library to the Park? ______", "d) Salma walks from the School to the Library and then to the Park. How many blocks in all? ______"].map(s=>`<div>${s}</div>`).join("");
+  $("hoja-atrib").innerHTML = ["____ All squares are rectangles.", "____ Every rhombus has four right angles.", "____ A trapezoid has at least one pair of parallel sides.", "____ Every parallelogram is a rectangle.", "Write all the names for a square: ________________________________________"].map(s=>`<div>${s}</div>`).join("");
+  $("hoja-razon").textContent = "Daniel: “(2, 5) and (5, 2) are the same point, because they use the same numbers.” Athena: “A square is not a rectangle because its sides are equal.” Is each one right? Explain why.";
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+pintarHoja();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="5"></script>
+</body>
+</html>

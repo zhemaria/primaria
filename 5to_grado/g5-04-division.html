@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<!--
+  Fifth Grade Math — Division with two-digit divisors
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 5: 5.NBT.6
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Division with two-digit divisors · Fifth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Fifth grade division games with Lumi: estimate with compatible numbers, partial quotients, area models, checking with multiplication, interpreting remainders and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+
+/* ---------- División ---------- */
+.cuenta{font-weight:700;font-size:clamp(30px,7vw,52px);text-align:center;margin:0;letter-spacing:.01em}
+.cuenta .signo-c{display:inline-block;margin-left:.2em}
+.paso-txt{font-weight:600;font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;color:var(--tinta-suave);max-width:46ch}
+.multiplos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:620px}
+.multiplos span{background:var(--acento-claro);border:2px solid var(--linea);border-radius:12px;padding:4px 10px;font-weight:700;font-size:clamp(16px,2.4vw,21px);white-space:nowrap}
+.tabla-div{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%;font-size:clamp(15px,2.6vw,22px)}
+.tabla-div caption{font-weight:700;color:var(--acento);padding-bottom:6px;font-size:1.05em}
+.tabla-div th{font-size:.72em;color:var(--tinta-suave);padding:4px 8px;border-bottom:3px solid var(--linea);text-align:center}
+.tabla-div td{padding:6px clamp(6px,1.8vw,14px);text-align:center;border-bottom:2px dashed var(--linea)}
+.tabla-div td:first-child{color:var(--acento)}
+.tabla-div tfoot td{border-bottom:none;color:var(--tinta)}
+.tabla-div tfoot .rot-r{color:var(--tinta-suave);font-size:.85em;text-align:left}
+.tabla-div tr.total td{border-top:3px solid var(--linea);color:var(--tinta)}
+.hueco{display:inline-block;min-width:1.6em;border:3px dashed var(--acento);border-radius:10px;color:var(--acento);padding:0 .2em;line-height:1.2}
+.hueco.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.area-svg{width:100%;max-width:600px;height:auto;display:block}
+.area-svg text{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;font-weight:700;fill:#14313A}
+.area-svg .sv-area{font-size:25px}
+.area-svg .sv-lado{font-size:24px;fill:#194F5A}
+.area-svg .sv-nota{font-size:20px;fill:#3F5F66}
+.etiquetas{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.etiquetas span{border:3px solid var(--linea);border-radius:999px;padding:3px 12px;font-weight:700;font-size:clamp(14px,2.2vw,18px);background:#fff}
+.etiquetas b{color:var(--acento)}
+.aviso.paso{background:var(--acento-claro);border-color:var(--acento);color:var(--acento)}
+@media print{
+  .hoja .espacio{height:30mm}
+}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1>Division with two-digit divisors</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./">🏠 All games</a>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi5-calculadora.jpg" alt="" class="lumi-d" width="450" height="595"></span><span>➗</span><span>🎯</span><span>🚌</span><span>💬</span></div>
+    <h2>Big numbers, fair shares!</h2>
+    <p id="txt-portada">In fifth grade you divide big numbers by two-digit numbers like 12, 25 or 48. With Lumi you will estimate with compatible numbers, divide with partial quotients and area models, check your answers with multiplication, decide what to do with the remainder and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">En quinto grado divides números grandes entre números de dos cifras como 12, 25 o 48. Con Lumi vas a estimar con números compatibles, dividir con cocientes parciales y modelos de área, comprobar tus respuestas con la multiplicación, decidir qué hacer con el residuo y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: division with two-digit divisors</button></p>
+    <p>Aligned to the Illinois fifth grade mathematics standard 5.NBT.6 (find whole-number quotients of whole numbers with up to four-digit dividends and two-digit divisors, using strategies based on place value, the properties of operations, and/or the relationship between multiplication and division; illustrate and explain the calculation by using equations, rectangular arrays, and/or area models). At the Easy level the dividends have three digits, the divisors are friendly numbers such as 12, 15, 20 and 25, and a model stays on screen: a list of multiples, a partial quotients table (“How many 25s fit?”), an area model or the finished division. At the Challenge level the dividends have four digits, the divisors are numbers such as 23, 37 and 48, the supports are removed, there is one more step, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #estimar, #parciales, #area, #comprobar, #residuo and #razon.</p>
+    <p class="ayuda-es" lang="es">Alineado con el estándar de matemáticas de Illinois para quinto grado 5.NBT.6 (hallar cocientes enteros de números enteros con dividendos de hasta cuatro cifras y divisores de dos cifras, con estrategias basadas en el valor posicional, las propiedades de las operaciones y/o la relación entre la multiplicación y la división; ilustrar y explicar el cálculo con ecuaciones, arreglos rectangulares y/o modelos de área). En el nivel Fácil los dividendos tienen tres cifras, los divisores son números amigables (12, 15, 20, 25) y hay un modelo en pantalla; en el Reto los dividendos tienen cuatro cifras, los divisores son como 23, 37 o 48 y hay un paso más. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Division with two-digit divisors</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Estimate with compatible numbers.</h3>
+  <div class="caja-h una" id="hoja-estimar"></div>
+  <h3>2. Divide. Use partial quotients and show your steps.</h3>
+  <div class="caja-h" id="hoja-parciales"></div>
+  <h3>3. Is it right? Check with multiplication: quotient × divisor + remainder.</h3>
+  <div class="caja-h una" id="hoja-comprobar"></div>
+  <h3>4. Solve. Think about what the remainder means.</h3>
+  <p class="razon-h" id="hoja-residuo"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>5. Who is right? Explain why.</h3>
+  <p class="razon-h" id="hoja-razon"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+const SUP = {"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+const ORD_EN = ["zeroth","first","second","third","fourth","fifth","sixth"];
+const ORD_ES = ["cero","primera","segunda","tercera","cuarta","quinta","sexta"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  paso:["Good thinking! Now the next step.","Right! Keep going.","Yes! One more step."],
+  /* 1. Estimar con números compatibles */
+  estF:(N,d)=>`Estimate ${N} ÷ ${d}. About how much is it?`,
+  estV:(N,d)=>`Estimate ${N} ÷ ${d}. Find the multiple of ${d} closest to ${N}. About how much is the quotient?`,
+  estMult:(d)=>`Multiples of ${d}, counting by tens:`,
+  estCompat:(N,d)=>`Which compatible numbers make a good estimate for ${N} ÷ ${d}?`,
+  estPaso2:(a,b)=>`Now divide the compatible numbers: ${a} ÷ ${b} = ?`,
+  estFin:(N,d,A,D,q)=>`${N} ÷ ${d} ≈ ${A} ÷ ${D} = ${q}, because ${D} × ${q} = ${A}.`,
+  estLejos:(D,k,p,N,A)=>`${D} × ${k} = ${p}. That is farther from ${N} than ${A}. Use the closest one.`,
+  estMenos:(D,k,p,N)=>`${D} × ${k} = ${p}, much less than ${N}. A zero got lost: count the zeros again.`,
+  estMas:(D,k,p,N)=>`${D} × ${k} = ${p}, much more than ${N}. There is one zero too many.`,
+  estRedondeo:(H,D,N)=>`${H} ÷ ${D} is not a basic fact. Change ${N} to a nearby number that ${D} divides easily.`,
+  estSinRedondear:(d)=>`${d} is hard to divide by in your head. Round it to the nearest ten first.`,
+  estDivisor:(d,D2)=>`Round the divisor to the nearest ten: ${d} is not closest to ${D2}.`,
+  estVecino:(D,k,p,A)=>`${D} × ${k} = ${p}, not ${A}.`,
+  estLejosC:(A,N)=>`${A} is too far from ${N}. Use the multiple closest to ${N}.`,
+  /* 2. Cocientes parciales */
+  parTitF:(d,N)=>`How many ${d}s fit in ${N}?`,
+  parCols:(d)=>[`How many ${d}s?`,"Take away","Left"],
+  parSig:(d,L,u)=>`What is the next partial quotient? How many ${d}s can you take from ${L}? Use ${u}.`,
+  parUnidad:{100:"hundreds (100, 200, 300…)",10:"tens (10, 20, 30…)",1:"ones (1 to 9)"},
+  parTotal:(N,d)=>`Add the partial quotients. What is ${N} ÷ ${d}?`,
+  parProd:(d,p)=>`Find the missing piece: ${d} × ${p} = ?`,
+  parResta:(a,b)=>`Find the missing piece: ${a} − ${b} = ?`,
+  parFinSig:(d,k,p,L,r,ult)=>`${d} × ${k} = ${p}, and ${L} − ${p} = ${r}.` + (ult ? ` ${r} is less than ${d}, so no more ${d}s fit.` : ` ${r} is still ${d} or more, so keep going.`),
+  parFinTotal:(partes,q,r,N,d,res)=>`${partes} = ${q}, and ${r === "0" ? "nothing is" : r + " is"} left. So ${N} ÷ ${d} = ${res}.`,
+  parMas:(d,k,p,L)=>`${d} × ${k} = ${p}, which is more than ${L}. That's too many.`,
+  parMenos:(L2,d)=>`Then ${L2} would be left, and more ${d}s still fit at this place. Take the most you can.`,
+  parMuyMas:(d,k,p,L)=>`${d} × ${k} = ${p}, way more than ${L}.`,
+  parMuyMenos:(d,k,p,L2)=>`${d} × ${k} = ${p}. Then ${L2} would be left: many more ${d}s still fit.`,
+  parOlvida:(p)=>`You forgot to add the partial quotient ${p}. Add all of them.`,
+  parJunto:(s,q)=>`Add the partial quotients (${s} = ${q}); don't write them side by side.`,
+  parDoble:(p)=>`You added the partial quotient ${p} twice. Add each one only once.`,
+  parCambia:"The quotient is the sum of the partial quotients; the remainder is what is left at the end.",
+  parCeros:(d,p,x)=>`Watch the zeros: ${x} is not ${d} × ${p}. Multiply without the zeros, then write the zeros back.`,
+  parGrupo10:(d,p,x)=>`${x} is not ${d} × ${p}. Multiply ${d / 10} × ${p}, then write one more zero.`,
+  parGrupo:(d,p,x)=>`${x} is not ${d} × ${p}. Break ${d} into ${Math.floor(d / 10) * 10} + ${d % 10}, multiply each part by ${p} and add.`,
+  parResto:(a,b)=>`Subtract carefully and regroup when you need to. Check: ${b} + your answer should be ${a}.`,
+  parFinProd:(d,p,x)=>`${d} × ${p} = ${x}.`,
+  parFinResta:(a,b,x)=>`${a} − ${b} = ${x}.`,
+  /* 3. Modelo de área */
+  areaF:(a,d)=>`One part has an area of ${a} and a side of ${d}. What is its missing length?`,
+  areaFC:(N,d)=>`The total area is ${N} and one side is ${d}. What is the missing length?`,
+  areaQ:(N,d)=>`So what is ${N} ÷ ${d}?`,
+  areaFin:(d,x,a)=>`${d} × ${x} = ${a}, so the missing length is ${x}.`,
+  areaFinC:(N,s,a,d,x)=>`${N} − ${s} = ${a} is left, and ${a} ÷ ${d} = ${x}. The missing length is ${x}.`,
+  areaFinQ:(partes,q,N,d)=>`${partes} = ${q}, so ${N} ÷ ${d} = ${q}. Check: ${d} × ${q} = ${N}.`,
+  areaCeros:(d,x,p,a)=>`${d} × ${x} = ${p}, not ${a}. Watch the zeros.`,
+  areaCerca:(d,x,p,a)=>`${d} × ${x} = ${p}, not ${a}. Try a number close to it.`,
+  areaTodo:(q)=>`${q} is the whole side. The missing part is only what is left after the parts you know.`,
+  areaResto:(a,d)=>`${a} is the area that is left, not a length. Divide it by the side ${d}.`,
+  areaOlvida:(p)=>`Add every part of the side, including ${p}.`,
+  areaJunto:(s,q)=>`Add the lengths (${s} = ${q}); don't write them side by side.`,
+  areaSuma:(d,x,p,N)=>`${d} × ${x} = ${p}, not ${N}. Add the lengths again.`,
+  /* 4. Comprobar con la multiplicación */
+  compEcF:(N,d,res)=>`Which equation checks ${N} ÷ ${d} = ${res}?`,
+  compEcV:(N,d,res)=>`Which equation checks ${N} ÷ ${d} = ${res}? Remember: quotient times divisor plus remainder equals dividend.`,
+  compSiF:(n)=>`Check with multiplication. Is ${n}'s answer right?`,
+  compSiV:(n,dicho)=>`${n} says ${dicho}. Check with multiplication. Is the answer right?`,
+  compApoyo:(cq,d,p)=>`Check: ${cq} × ${d} = ${p}. Now add the remainder.`,
+  compArreglo:(N,d)=>`Then what is the right answer for ${N} ÷ ${d}?`,
+  compYaVisto:"That is the answer you just checked, and it didn't work.",
+  compPistaArreglo:(N,d)=>`Check it: quotient × ${d} + remainder must be ${N}, and the remainder must be less than ${d}.`,
+  compPorR:"Multiply the quotient by the divisor, not by the remainder.",
+  compMenos:"The remainder was left over, so add it back; don't subtract it.",
+  compAlReves:"Start with the quotient: quotient × divisor + remainder = dividend.",
+  compFinEc:(q,d,qd,r,N)=>`${q} × ${d} = ${qd}, and ${qd} + ${r} = ${N}. Multiplication undoes division.`,
+  compBien:(cq,d,p,cr,N)=>`${cq} × ${d} = ${p}, and ${p} + ${cr} = ${N}. The remainder ${cr} is less than ${d}, so the answer is right.`,
+  compUno:(cq,d,p,cr,s,N,res)=>`${cq} × ${d} = ${p}, and ${p} + ${cr} = ${s}, not ${N}. The right answer is ${res}.`,
+  compGrande:(N,cr,d,res)=>`The check gives ${N}, but the remainder ${cr} is not less than ${d}: one more ${d} fits. The right answer is ${res}.`,
+  compCero:(cq,d,p,N,c,res,P)=>`${cq} × ${d} = ${p}, far from ${N}. ${d} × ${P} = ${c} is less than ${N}, so the quotient must be at least ${P}. A 0 got lost: ${res}.`,
+  compPistaBien:(cq,d,p,cr,N)=>`Check again: ${cq} × ${d} = ${p}, then add the remainder ${cr}. Compare with ${N}.`,
+  compPistaUno:(cq,d,cr,N)=>`Multiply ${cq} × ${d} and add ${cr}. Do you really get ${N}?`,
+  compPistaGrande:(cr,d)=>`The numbers check, but look at the remainder: ${cr} is not less than ${d}. Can another ${d} fit?`,
+  compPistaCero:(d,P,c,cq)=>`Estimate first: ${d} × ${P} = ${c}. Is ${cq} big enough?`,
+  /* 5. ¿Qué hago con el residuo? */
+  resF:"Read the problem. What does the remainder mean?",
+  resDiv:(N,d)=>`First divide: what is ${N} ÷ ${d}?`,
+  resPaso2:"Now answer the question. What does the remainder mean?",
+  resGrupos:(q,d)=>`${q} groups of ${d}`, resSobran:(r)=>`${r} left over`,
+  resDivMas:(d,k,p,N)=>`${d} × ${k} = ${p}, which is more than ${N}.`,
+  resDivGrande:(r,d)=>`The remainder ${r} is not less than ${d}: one more ${d} fits.`,
+  resDivCheck:(q,d,r,s,N)=>`Check: ${q} × ${d} + ${r} = ${s}, not ${N}.`,
+  resRemFalta:(x,c,u1)=>`${x} is how many more ${c} you would need to fill another ${u1}. The question asks how many are left over.`,
+  resUpQ:(q,u,r,c,u1)=>`With ${q} ${u}, ${r} ${c} would be left out. They need one more ${u1}.`,
+  resUpR:(r,c,u)=>`${r} is the remainder: the ${c} left over, not the number of ${u}.`,
+  resUpRR:(r,c)=>`You can't answer with “R ${r}” here. Think: what happens to the ${r} ${c} left over?`,
+  resDropMas:(r,c,u1,d)=>`Only ${r} ${c} are left for the last ${u1}, and it needs ${d}. It can't be finished.`,
+  resDropR:(r,c,u)=>`${r} is the number of ${c} left over. The question asks how many ${u}.`,
+  resDropRR:(r,c,u1)=>`The ${r} ${c} left over can't make another ${u1}, so answer with a whole number.`,
+  resRemQ:(q,u,c)=>`${q} is the number of full ${u}. The question asks how many ${c} are left over.`,
+  resRemQ1:(c)=>`That number is not about the leftovers. The question asks how many ${c} are left over.`,
+  resRemRR:(res,c)=>`${res} is the whole division. The question asks only for the ${c} left over.`,
+  resFinUp:(N,d,res,q,u,r,c,q1)=>`${N} ÷ ${d} = ${res}. ${q} ${u} are full and ${r} ${c} are left, so one more is needed: ${q1} ${u}.`,
+  resFinDrop:(N,d,res,q,u,r)=>`${N} ÷ ${d} = ${res}. Only ${q} ${u} can be finished; the ${r} left over are not enough for another one.`,
+  resFinRem:(N,d,res,r,c)=>`${N} ÷ ${d} = ${res}, so ${r} ${c} are left over.`,
+  /* 6. ¿Quién tiene razón? */
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Estimate, or check with multiplication: quotient × divisor + remainder.",
+  pistaPorque:"That reason doesn't explain it. Think about what multiplication tells you.",
+  estrategias:[
+    ["I estimated first with compatible numbers","Great! An estimate tells you if your answer makes sense."],
+    ["I used partial quotients","Excellent! Taking out big chunks like 10s and 100s makes division easier."],
+    ["I checked with multiplication","Smart! Quotient × divisor + remainder gives back the dividend."],
+    ["I asked what the remainder means","Awesome! Sometimes you round up, sometimes you drop it, and sometimes it is the answer."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  estF:(N,d)=>`Estima ${N} ÷ ${d}. Busca el múltiplo de ${d} más cercano a ${N}. ¿Aproximadamente cuánto es el cociente?`,
+  estCompat:(N,d)=>`¿Qué números compatibles dan una buena estimación de ${N} ÷ ${d}?`,
+  estPaso2:(a,b)=>`Ahora divide los números compatibles: ${a} ÷ ${b} = ?`,
+  parSig:(N,d,L,u)=>`Estás dividiendo ${N} ÷ ${d} con cocientes parciales. ¿Cuál es el siguiente cociente parcial? ¿Cuántos ${d} puedes quitar de ${L}? Usa ${u}.`,
+  parUnidad:{100:"centenas (100, 200, 300…)",10:"decenas (10, 20, 30…)",1:"unidades (de 1 a 9)"},
+  parTotal:(N,d)=>`Suma los cocientes parciales. ¿Cuánto es ${N} ÷ ${d}?`,
+  parProd:(N,d,p)=>`Estás dividiendo ${N} ÷ ${d} con cocientes parciales. Halla la pieza que falta: ${d} × ${p} = ?`,
+  parResta:(N,d,a,b)=>`Estás dividiendo ${N} ÷ ${d} con cocientes parciales. Halla la pieza que falta: ${a} − ${b} = ?`,
+  areaF:(a,d)=>`Una parte del rectángulo tiene un área de ${a} y un lado de ${d}. ¿Cuánto mide el lado que falta?`,
+  areaFC:(N,d)=>`El área total es ${N} y un lado mide ${d}. Ya conoces algunas partes. ¿Cuánto mide la parte del lado que falta?`,
+  areaQ:(N,d)=>`Entonces, ¿cuánto es ${N} ÷ ${d}?`,
+  compEc:(N,d,res)=>`¿Qué ecuación comprueba que ${N} ÷ ${d} = ${res}? Recuerda: cociente por divisor más residuo es igual al dividendo. (R quiere decir residuo).`,
+  compArreglo:(N,d)=>`Entonces, ¿cuál es la respuesta correcta de ${N} ÷ ${d}? (R quiere decir residuo).`,
+  compSi:(n,dicho)=>`${n} dice que ${dicho}. Compruébalo con la multiplicación. ¿Es correcta la respuesta? (R quiere decir residuo).`,
+  resDiv:(N,d,es)=>`${es} Primero divide: ¿cuánto es ${N} ÷ ${d}? (R quiere decir residuo).`,
+  resPaso2:(es)=>`Ahora responde la pregunta. ¿Qué significa el residuo? ${es}`,
+  res:(es)=>`Lee el problema. ¿Qué significa el residuo? ${es}`,
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho} (R quiere decir residuo; ≈ quiere decir «aproximadamente»).`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"estimar",   emoji:"🎯", en:"Estimate first",          es:"Estima primero",            meta:"1,792 ÷ 28 ≈ 1,800 ÷ 30 = 60"},
+  {id:"parciales", emoji:"🧱", en:"Partial quotients",       es:"Cocientes parciales",       meta:"How many 25s fit?"},
+  {id:"area",      emoji:"🟩", en:"Area model",              es:"Modelo de área",            meta:"25 × (10 + 7) = 425"},
+  {id:"comprobar", emoji:"✅", en:"Check with multiplication", es:"Comprueba con la multiplicación", meta:"17 × 25 + 12 = 437"},
+  {id:"residuo",   emoji:"🚌", en:"What about the remainder?", es:"¿Y el residuo?",           meta:"Round up, drop it, or use it"},
+  {id:"razon",     emoji:"💬", en:"Who is right?",           es:"¿Quién tiene razón?",       meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+
+/* ============ Números ============ */
+const P10 = (e)=> Math.pow(10, e);
+const fmtEntero = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+/* Decimal dicho como en clase: 3.45 → «3 and 45 hundredths» / «3 enteros y 45 centésimos» */
+function decEnVoz(txt, es){
+  return String(txt).replace(/\d[\d,]*\.\d+/g, (s)=>{
+    const [ent, fr] = s.replace(/,/g, "").split(".");
+    const n = Number(fr), k = fr.length;
+    const unidad = es ? ["décimo","centésimo","milésimo"][k - 1] + (n === 1 ? "" : "s")
+                      : ["tenth","hundredth","thousandth"][k - 1] + (n === 1 ? "" : "s");
+    const parteDec = n + " " + unidad;
+    if(Number(ent) === 0) return parteDec;
+    return es ? `${ent} ${Number(ent) === 1 ? "entero" : "enteros"} y ${parteDec}` : `${ent} and ${parteDec}`;
+  });
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = String(texto)
+    .replace(/10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (s, x)=>{ const k = Number(x.split("").map(c=>Object.keys(SUP).find(d=>SUP[d] === c)).join("")); return es ? `10 a la ${ORD_ES[k] || k} potencia` : `10 to the ${ORD_EN[k] || k} power`; });
+  t = decEnVoz(t, es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = (?!\?)/g, es ? " es igual a " : " equals ")
+    .replace(/1\/10\b/g, es ? "un décimo" : "one tenth").replace(/1\/100\b/g, es ? "un centésimo" : "one hundredth").replace(/1\/1000\b/g, es ? "un milésimo" : "one thousandth")
+    .replace(/(\d) R (\d)/g, es ? "$1 residuo $2" : "$1 remainder $2")
+    .replace(/≈/g, es ? " es aproximadamente " : " is about ")
+    .replace(/ − /g, es ? " menos " : " minus ").replace(/ \+ /g, es ? " más " : " plus ")
+    .replace(/= \?/g, es ? "es igual a qué número" : "equals what number");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g5-01-place-value-powers-of-ten.html#potencias */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista, larga){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{ if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, typeof pista === "function" ? pista(x) : pista); });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+/* Completa con valores distintos hasta tener n opciones */
+function completar(lista, n, extra){ let i = 1; while(lista.length < n && i < 50){ const v = extra(i++); if(v !== null && !lista.includes(v)) lista.push(v); } return lista; }
+
+
+/* ============ División ============ */
+const F = fmtEntero;
+const DIV_F = [12, 15, 20, 25];                                   // divisores del nivel Fácil
+const DIV_R = [23, 26, 29, 34, 37, 38, 42, 46, 48, 53, 57, 63];    // divisores del Reto
+const conR = (q, r)=> r ? `${F(q)} R ${r}` : F(q);
+/* Partes de valor posicional del cociente: 234 → [200, 30, 4] */
+function partes(q){ const s = String(q), out = []; for(let i=0;i<s.length;i++){ const v = Number(s[i]) * P10(s.length - 1 - i); if(v) out.push(v); } return out; }
+/* Una división al azar: dividendo de 3 cifras (Fácil) o de 4 (Reto) */
+function division(reto, ok){
+  for(let i=0;i<400;i++){
+    const d = elegir(reto ? DIV_R : DIV_F);
+    const lo = reto ? 1000 : 100, hi = reto ? 9999 : 999;
+    const q = azar(Math.ceil(lo / d), Math.floor(hi / d));
+    const r = azar(0, d - 1), N = d * q + r;
+    if(N < lo || N > hi) continue;
+    const o = {d, q, r, N};
+    if(!ok || ok(o)) return o;
+  }
+  return reto ? {d:23, q:209, r:5, N:4812} : {d:25, q:17, r:12, N:437};
+}
+/* Filas de los cocientes parciales */
+function filasParciales(N, d, q){
+  let L = N; return partes(q).map(p=>{ const prod = d * p, f = {L, p, prod, left: L - prod}; L -= prod; return f; });
+}
+/* Resta sin reagrupar (el error típico): resta cada lugar y toma la diferencia */
+function restaSinReagrupar(a, b){
+  const sa = String(a), sb = String(b).padStart(sa.length, "0"); let s = "";
+  for(let i=0;i<sa.length;i++) s += Math.abs(Number(sa[i]) - Number(sb[i]));
+  return Number(s);
+}
+/* Tabla «How many 25s fit?» — oculta = {fila, campos:[...]} */
+function tablaParciales(N, d, filas, oculta, total){
+  const h = (txt, i, campo)=> oculta && oculta.fila === i && oculta.campos.includes(campo) ? '<span class="hueco">?</span>' : txt;
+  const cols = T.parCols(d);
+  let s = `<table class="tabla-div"><caption>${T.parTitF(d, F(N))}</caption><thead><tr>${cols.map(c=>`<th scope="col">${c}</th>`).join("")}</tr></thead><tbody>`;
+  s += `<tr><td>Start</td><td></td><td>${F(N)}</td></tr>`;
+  filas.forEach((f, i)=>{
+    s += `<tr><td>${h(F(f.p), i, "p")}</td><td>− ${h(F(f.prod), i, "prod")}</td><td>${h(F(f.left), i, "left")}</td></tr>`;
+  });
+  s += "</tbody>";
+  if(total) s += `<tfoot><tr class="total"><td colspan="2">Total: ${total}</td><td>${filas.length ? "R " + F(filas[filas.length - 1].left) : ""}</td></tr></tfoot>`;
+  return s + "</table>";
+}
+/* Pasos del Reto escritos como ecuaciones: filas 0..hasta-1 completas; la fila «hasta» con el hueco */
+function lineasParciales(d, filas, hasta, hueco){
+  const out = [];
+  for(let i=0;i<hasta;i++){ const f = filas[i]; out.push(`${d} × ${F(f.p)} = ${F(f.prod)}  →  ${F(f.L)} − ${F(f.prod)} = ${F(f.left)}`); }
+  const f = filas[hasta];
+  if(f && hueco === "prod")  out.push(`${d} × ${F(f.p)} = ?  →  ${F(f.L)} − ? = ${F(f.left)}`);
+  if(f && hueco === "resta") out.push(`${d} × ${F(f.p)} = ${F(f.prod)}  →  ${F(f.L)} − ${F(f.prod)} = ?`);
+  if(f && hueco === "sig")   out.push(`${F(f.L)} left  →  ${d} × ? = ?`);
+  return out;
+}
+/* Modelo de área en SVG; partesA = [{w, verW, verA}] */
+function svgArea(d, partesA, totalTxt){
+  const n = partesA.length, ancho = 520, min = 92, suma = partesA.reduce((a, p)=>a + p.w, 0);
+  const fondos = ["#E8F5F6", "#FFF4D6", "#E3F1E4"];
+  let x = 64, s = "";
+  const desc = partesA.map(p=>`${p.verW ? F(p.w) : "unknown"} wide with area ${p.verA ? F(d * p.w) : "unknown"}`).join("; ");
+  partesA.forEach((p, i)=>{
+    const w = min + (ancho - min * n) * p.w / suma;
+    const desconocida = !p.verW;
+    s += `<rect x="${x}" y="52" width="${w}" height="150" fill="${desconocida ? "#FFFFFF" : fondos[i % 3]}" stroke="#194F5A" stroke-width="3" ${desconocida ? 'stroke-dasharray="10 7"' : ""}/>`;
+    s += `<text class="sv-lado" x="${x + w / 2}" y="38" text-anchor="middle">${p.verW ? F(p.w) : "?"}</text>`;
+    s += `<text class="sv-area" x="${x + w / 2}" y="135" text-anchor="middle">${p.verA ? F(d * p.w) : "?"}</text>`;
+    x += w;
+  });
+  s += `<text class="sv-lado" x="32" y="135" text-anchor="middle">${d}</text>`;
+  if(totalTxt) s += `<text class="sv-nota" x="${64 + ancho / 2}" y="230" text-anchor="middle">${totalTxt}</text>`;
+  return `<svg class="area-svg" viewBox="0 0 600 240" role="img" aria-label="Area model: a rectangle ${d} units tall split into ${n} parts: ${desc}.">${s}</svg>`;
+}
+/* Paso intermedio de las preguntas de dos pasos (no da estrella) */
+function pasoIntermedio(texto){ $("aviso").className = "aviso paso"; $("aviso").textContent = elegir(T.paso) + (texto ? " " + texto : ""); mascotaFeliz(); }
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, esc = $("escena"), reto = S.reto;
+
+  /* --- 1. Estimar con números compatibles (5.NBT.6) --- */
+  if(S.juego === "estimar"){
+    if(!reto){
+      /* Fácil: múltiplos del divisor contando de diez en diez */
+      let d, q0, N;
+      for(let i=0;i<200;i++){
+        d = elegir(DIV_F);
+        const tope = Math.floor(990 / (d * 10)) * 10;
+        q0 = elegir([10, 20, 30, 40, 50, 60, 70, 80].filter(k=>k <= tope));
+        N = d * q0 + azar(-d * 3, d * 3);
+        if(N >= 110 && N <= 999 && N !== d * q0) break;
+      }
+      const A = d * q0;
+      esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${F(N)} ÷ ${d} ≈ <span class="signo-c">?</span></p>`);
+      const lista = []; for(let k=10; d * k <= Math.max(1000, A + d * 10); k += 10) lista.push(k);
+      esc.insertAdjacentHTML("beforeend", `<p class="paso-txt">${t.estMult(d)}</p><div class="multiplos" role="list">${lista.map(k=>`<span role="listitem">${d} × ${k} = ${F(d * k)}</span>`).join("")}</div>`);
+      ponerInstruccion(t.estF(F(N), d), t.estV(F(N), d), ES.estF(F(N), d));
+      const malos = [];
+      if(q0 - 10 >= 10) malos.push([q0 - 10, "lejos"]);
+      malos.push([q0 + 10, "lejos"], [q0 * 10, "mas"], [q0 / 10, "menos"]);
+      const ops = [String(q0), ...unicos(malos.map(([v])=>String(v)))].slice(0, 4);
+      opcionesTexto(ops, String(q0), ()=>{
+        const s = esc.querySelector(".signo-c"); s.textContent = q0; s.classList.add("lleno");
+        acertar(t.estFin(F(N), d, F(A), d, q0));
+      }, (x)=>{
+        const m = malos.find(([v])=>String(v) === x), k = m[0], p = F(d * k);
+        if(m[1] === "lejos") return t.estLejos(d, k, p, F(N), F(A));
+        if(m[1] === "mas") return t.estMas(d, k, p, F(N));
+        return t.estMenos(d, k, p, F(N));
+      });
+      return;
+    }
+    /* Reto: redondear el divisor, buscar el dividendo compatible y dividir (dos pasos) */
+    let d, D, qe, N, A;
+    for(let i=0;i<300;i++){
+      d = elegir(DIV_R); D = Math.round(d / 10) * 10;
+      qe = elegir([20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300]);
+      A = D * qe;
+      if(A < 1100 || A > 9600) continue;
+      N = A + azar(-D * 3, D * 3);
+      if(N >= 1000 && N <= 9999 && N !== A && N % 100 !== 0) break;
+    }
+    const D2 = d < D ? D - 10 : D + 10;
+    const H = Math.round(N / 100) * 100;
+    esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${F(N)} ÷ ${d} ≈ <span class="signo-c">?</span></p>`);
+    ponerInstruccion(t.estCompat(F(N), d), null, ES.estCompat(F(N), d));
+    const bien1 = `${F(A)} ÷ ${D}`;
+    const malos1 = [[`${F(H === A ? A : H)} ÷ ${d}`, "sinRed"], [`${F(A)} ÷ ${D2}`, "divisor"]];
+    if(H !== A && H % D !== 0) malos1.push([`${F(H)} ÷ ${D}`, "redondeo"]);
+    else malos1.push([`${F(D * (qe >= 100 ? qe + 100 : qe + 10))} ÷ ${D}`, "lejosC"]);
+    opcionesTexto([bien1, ...malos1.map(m=>m[0])], bien1, ()=>{
+      pasoIntermedio();
+      $("opciones").innerHTML = "";
+      esc.querySelector(".cuenta").innerHTML = `${F(N)} ÷ ${d} ≈ ${F(A)} ÷ ${D} = <span class="signo-c">?</span>`;
+      ponerInstruccion(t.estPaso2(F(A), D), null, ES.estPaso2(F(A), D));
+      const malos2 = [[qe * 10, "mas"], [qe / 10, "menos"], [qe + (qe >= 100 ? 100 : 10), "vecino"]];
+      opcionesTexto([String(qe), ...malos2.map(m=>String(m[0]))], String(qe), ()=>{
+        const s = esc.querySelector(".signo-c"); s.textContent = qe; s.classList.add("lleno");
+        acertar(t.estFin(F(N), d, F(A), D, qe));
+      }, (x)=>{
+        const m = malos2.find(([v])=>String(v) === x), k = m[0], p = F(D * k);
+        if(m[1] === "mas") return t.estMas(D, k, p, F(A));
+        if(m[1] === "menos") return t.estMenos(D, k, p, F(A));
+        return t.estVecino(D, k, p, F(A));
+      });
+    }, (x)=>{
+      const m = malos1.find(([v])=>v === x);
+      if(m[1] === "sinRed") return t.estSinRedondear(d);
+      if(m[1] === "divisor") return t.estDivisor(d, D2);
+      if(m[1] === "redondeo") return t.estRedondeo(F(H), D, F(N));
+      return t.estLejosC(x.split(" ÷ ")[0], F(N));
+    }, true);
+    return;
+  }
+
+  /* --- 2. Cocientes parciales (5.NBT.6) --- */
+  if(S.juego === "parciales"){
+    const o = division(reto, (x)=> reto ? x.q >= 100 && partes(x.q).length === 3 : x.q >= 11 && partes(x.q).length === 2);
+    const {d, q, r, N} = o, filas = filasParciales(N, d, q), pq = partes(q);
+    const tipos = reto ? ["sig2","sig2","prod","resta","total"] : ["sig","sig","prod","resta","total"];
+    const tipo = elegir(tipos);
+    const i = tipo === "total" ? filas.length : azar(0, filas.length - 1);
+    const f = filas[i];
+    const cuenta = `<p class="cuenta">${F(N)} ÷ ${d}</p>`;
+    /* Dibuja el estado: hasta la fila i, con un hueco */
+    const pintar = (hasta, hueco, total)=>{
+      esc.innerHTML = cuenta;
+      if(!reto){
+        const visibles = filas.slice(0, Math.min(filas.length, hueco ? hasta + 1 : hasta));
+        const campos = hueco === "sig" ? ["p", "prod", "left"] : hueco === "prod" ? ["prod"] : hueco === "resta" ? ["left"] : [];
+        esc.insertAdjacentHTML("beforeend", tablaParciales(N, d, visibles, hueco ? {fila:hasta, campos} : null, total));
+      } else {
+        const l = lineasParciales(d, filas, hasta, hueco);
+        if(total) l.push(`Total: ${total}`);
+        if(l.length) esc.appendChild(pasosEl(l));
+      }
+    };
+    const unidad = (p)=> p >= 100 ? 100 : p >= 10 ? 10 : 1;
+    const fin = (extra)=>{ pintar(filas.length, null, `${pq.map(F).join(" + ")} = ${F(q)}`); acertar(extra); };
+    /* Elegir el siguiente cociente parcial */
+    const preguntaSig = (despues)=>{
+      const u = unidad(f.p), ult = i === filas.length - 1;
+      pintar(i, "sig");
+      ponerInstruccion(t.parSig(d, F(f.L), t.parUnidad[u]), null, ES.parSig(F(N), d, F(f.L), ES.parUnidad[u]));
+      const malos = [[f.p + u, "mas"]];
+      if(f.p - u > 0) malos.push([f.p - u, "menos"]);
+      malos.push([f.p * 10, "muyMas"]);
+      if(f.p - u <= 0 && u > 1) malos.push([f.p / 10, "muyMenos"]);
+      opcionesTexto([F(f.p), ...malos.map(m=>F(m[0]))], F(f.p), ()=>despues(ult), (x)=>{
+        const m = malos.find(([v])=>F(v) === x), k = m[0];
+        if(m[1] === "mas") return t.parMas(d, F(k), F(d * k), F(f.L));
+        if(m[1] === "muyMas") return t.parMuyMas(d, F(k), F(d * k), F(f.L));
+        if(m[1] === "menos") return t.parMenos(F(f.L - d * k), d);
+        return t.parMuyMenos(d, F(k), F(d * k), F(f.L - d * k));
+      });
+    };
+    /* Restar lo que se quitó */
+    const opcionesResta = (alAcertar)=>{
+      const x = f.left, sr = restaSinReagrupar(f.L, f.prod);
+      const ops = [x];
+      if(sr !== x && sr >= 0) ops.push(sr);
+      ops.push(x + 10); if(x - 10 >= 0) ops.push(x - 10); else ops.push(x + 100);
+      opcionesTexto(unicos(ops).slice(0, 4).map(F), F(x), alAcertar, ()=>t.parResto(F(f.L), F(f.prod)));
+    };
+    if(tipo === "sig"){
+      preguntaSig((ult)=>{ pintar(i + 1, null, ult ? `${pq.map(F).join(" + ")} = ${F(q)}` : null); acertar(t.parFinSig(d, F(f.p), F(f.prod), F(f.L), F(f.left), ult)); });
+      return;
+    }
+    if(tipo === "sig2"){
+      preguntaSig(()=>{
+        pasoIntermedio(`${d} × ${F(f.p)} = ${F(f.prod)}.`);
+        $("opciones").innerHTML = "";
+        pintar(i, "resta");
+        ponerInstruccion(t.parResta(F(f.L), F(f.prod)), null, ES.parResta(F(N), d, F(f.L), F(f.prod)));
+        opcionesResta(()=>{ const ult = i === filas.length - 1; pintar(i + 1, null, ult ? `${pq.map(F).join(" + ")} = ${F(q)}` : null); acertar(t.parFinSig(d, F(f.p), F(f.prod), F(f.L), F(f.left), ult)); });
+      });
+      return;
+    }
+    if(tipo === "prod"){
+      pintar(i, "prod");
+      ponerInstruccion(t.parProd(d, F(f.p)), null, ES.parProd(F(N), d, F(f.p)));
+      const x = f.prod, malos = [[x * 10, "ceros"], [(d + 1) * f.p, "grupo"], [(d - 1) * f.p, "grupo"]];
+      if(x % 10 === 0 && f.p >= 10) malos.unshift([x / 10, "ceros"]);
+      const lista = [F(x), ...unicos(malos.map(m=>F(m[0])))].slice(0, 4);
+      opcionesTexto(lista, F(x), ()=>{ pintar(i + 1, null, null); acertar(t.parFinProd(d, F(f.p), F(x))); }, (s)=>{
+        const m = malos.find(([v])=>F(v) === s);
+        if(m[1] === "ceros") return t.parCeros(d, F(f.p), s);
+        return d % 10 === 0 ? t.parGrupo10(d, F(f.p), s) : t.parGrupo(d, F(f.p), s);
+      });
+      return;
+    }
+    if(tipo === "resta"){
+      pintar(i, "resta");
+      ponerInstruccion(t.parResta(F(f.L), F(f.prod)), null, ES.parResta(F(N), d, F(f.L), F(f.prod)));
+      opcionesResta(()=>{ pintar(i + 1, null, null); acertar(t.parFinResta(F(f.L), F(f.prod), F(f.left))); });
+      return;
+    }
+    /* total */
+    pintar(filas.length, null, `${pq.map(F).join(" + ")} = ?`);
+    ponerInstruccion(t.parTotal(F(N), d), null, ES.parTotal(F(N), d));
+    const bien = conR(q, r);
+    const olv = elegir(pq), junto = pq.join("");
+    const malos = [[conR(q - olv, r), "olvida"], [junto + (r ? " R " + r : ""), "junto"]];
+    if(r && r !== q) malos.push([`${F(r)} R ${F(q)}`, "cambia"]);
+    else malos.push([conR(q + pq[pq.length - 1], r), "olvida2"]);
+    opcionesTexto([bien, ...malos.map(m=>m[0])], bien, ()=>fin(t.parFinTotal(pq.map(F).join(" + "), F(q), String(r), F(N), d, bien)), (x)=>{
+      const m = malos.find(([v])=>v === x);
+      if(m[1] === "olvida") return t.parOlvida(F(olv));
+      if(m[1] === "junto") return t.parJunto(pq.map(F).join(" + "), F(q));
+      if(m[1] === "olvida2") return t.parDoble(F(pq[pq.length - 1]));
+      return t.parCambia;
+    });
+    return;
+  }
+
+  /* --- 3. Modelo de área (5.NBT.6) --- */
+  if(S.juego === "area"){
+    if(!reto){
+      const o = division(false, (x)=> x.q >= 11 && x.q % 10 !== 0 && x.q < 40);
+      const d = o.d, q = o.q, N = d * q, pq = partes(q);
+      const k = azar(0, pq.length - 1), x = pq[k], a = d * x;
+      const pts = pq.map((w, j)=>({w, verW: j !== k, verA: true}));
+      esc.insertAdjacentHTML("beforeend", svgArea(d, pts, `Total area: ${F(N)} = ${F(d)} × ?`));
+      ponerInstruccion(t.areaF(F(a), d), null, ES.areaF(F(a), d));
+      const malos = [[x * 10, "ceros"], [x + (x >= 10 ? 10 : 1), "cerca"]];
+      if(x >= 10) malos.push([x / 10, "ceros"]); else if(x > 1) malos.push([x - 1, "cerca"]); else malos.push([x + 2, "cerca"]);
+      opcionesTexto([F(x), ...unicos(malos.map(m=>F(m[0])))], F(x), ()=>{
+        esc.innerHTML = svgArea(d, pq.map(w=>({w, verW:true, verA:true})), `${d} × (${pq.join(" + ")}) = ${F(N)}`);
+        acertar(t.areaFin(d, F(x), F(a)) + ` So ${F(N)} ÷ ${d} = ${pq.join(" + ")} = ${q}.`);
+      }, (s)=>{
+        const m = malos.find(([v])=>F(v) === s), p = F(d * m[0]);
+        return m[1] === "ceros" ? t.areaCeros(d, s, p, F(a)) : t.areaCerca(d, s, p, F(a));
+      });
+      return;
+    }
+    /* Reto: área total; una parte desconocida (ancho y área); dos pasos */
+    const o = division(true, (x)=> x.q >= 100 && partes(x.q).length === 3);
+    const d = o.d, q = o.q, N = d * q, pq = partes(q);
+    const k = azar(0, pq.length - 1), x = pq[k], a = d * x;
+    const conocidas = pq.filter((w, j)=>j !== k), sumaC = conocidas.reduce((s, w)=>s + d * w, 0);
+    esc.insertAdjacentHTML("beforeend", svgArea(d, pq.map((w, j)=>({w, verW: j !== k, verA: j !== k})), `Total area: ${F(N)}`));
+    ponerInstruccion(t.areaFC(F(N), d), null, ES.areaFC(F(N), d));
+    const malos = [[q, "todo"], [a, "resto"], [x >= 10 ? x / 10 : x * 10, "ceros"]];
+    opcionesTexto([F(x), ...unicos(malos.map(m=>F(m[0])))], F(x), ()=>{
+      pasoIntermedio(t.areaFinC(F(N), conocidas.map(w=>F(d * w)).join(" − "), F(a), d, F(x)));
+      $("opciones").innerHTML = "";
+      esc.innerHTML = svgArea(d, pq.map(w=>({w, verW:true, verA:true})), `Total area: ${F(N)}`);
+      ponerInstruccion(t.areaQ(F(N), d), null, ES.areaQ(F(N), d));
+      const olv = elegir(pq);
+      const m2 = [[q - olv, "olvida"], [q + (q % 100 >= 10 ? -10 : 10), "suma"], [q + 100, "suma"]];
+      opcionesTexto([F(q), ...unicos(m2.map(m=>F(m[0])))], F(q), ()=>{
+        esc.innerHTML = svgArea(d, pq.map(w=>({w, verW:true, verA:true})), `${d} × (${pq.join(" + ")}) = ${F(N)}`);
+        acertar(t.areaFinQ(pq.map(F).join(" + "), F(q), F(N), d));
+      }, (s)=>{
+        const m = m2.find(([v])=>F(v) === s);
+        return m[1] === "olvida" ? t.areaOlvida(F(olv)) : t.areaSuma(d, s, F(d * m[0]), F(N));
+      });
+    }, (s)=>{
+      const m = malos.find(([v])=>F(v) === s);
+      if(m[1] === "todo") return t.areaTodo(F(q));
+      if(m[1] === "resto") return t.areaResto(F(a), d);
+      return t.areaCeros(d, s, F(d * m[0]), F(a));
+    });
+    return;
+  }
+
+  /* --- 4. Comprobar con la multiplicación (5.NBT.6) --- */
+  if(S.juego === "comprobar"){
+    const tipo = elegir(["ec", "si", "si"]);
+    if(tipo === "ec"){
+      const {d, q, r, N} = division(reto, (x)=> x.r > 0 && x.r !== x.q && x.q > 9);
+      const res = conR(q, r);
+      esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${F(N)} ÷ ${d} = ${res}</p>`);
+      if(!reto) esc.insertAdjacentHTML("beforeend", `<div class="etiquetas"><span>dividend <b>${F(N)}</b></span><span>divisor <b>${d}</b></span><span>quotient <b>${F(q)}</b></span><span>remainder <b>${r}</b></span></div>`);
+      ponerInstruccion(t.compEcF(F(N), d, res), t.compEcV(F(N), d, res), ES.compEc(F(N), d, res));
+      const bien = `${F(q)} × ${d} + ${r} = ${F(N)}`;
+      const malos = [[`${F(q)} × ${r} + ${d} = ${F(N)}`, "porR"], [`${F(q)} × ${d} − ${r} = ${F(N)}`, "menos"], [`${F(N)} × ${d} + ${r} = ${F(q)}`, "alReves"]];
+      opcionesTexto([bien, ...malos.map(m=>m[0])], bien, ()=>acertar(t.compFinEc(F(q), d, F(q * d), r, F(N))), (x)=>{
+        const m = malos.find(([v])=>v === x);
+        return m[1] === "porR" ? t.compPorR : m[1] === "menos" ? t.compMenos : t.compAlReves;
+      }, true);
+      return;
+    }
+    /* ¿Es correcta la respuesta? */
+    const clase = elegir(reto ? ["ok","uno","grande","cero","cero"] : ["ok","ok","uno","grande"]);
+    const o = division(reto, (x)=>{
+      if(x.r === 0 || x.q < 12) return false;
+      if(clase === "cero") return x.q >= 101 && Math.floor(x.q / 10) % 10 === 0 && x.q % 10 !== 0;
+      if(clase === "grande") return x.r + x.d <= 99;
+      return true;
+    });
+    const {d, q, r, N} = o, res = conR(q, r);
+    let cq = q, cr = r;
+    if(clase === "uno"){ if(Math.random() < 0.5 || r < 2){ cq = q + 1; } else { cr = r - azar(1, Math.min(3, r)); } }
+    if(clase === "grande"){ cq = q - 1; cr = r + d; }
+    if(clase === "cero"){ cq = Math.floor(q / 100) * 10 + q % 10; }
+    const verdad = clase === "ok";
+    const [n1] = nombresAzar(1), dicho = `${F(N)} ÷ ${d} = ${conR(cq, cr)}`;
+    const p = cq * d, s = p + cr;
+    esc.insertAdjacentHTML("beforeend", `<p class="problema"><span aria-hidden="true">💬</span> ${n1}: “${dicho}”</p>`);
+    if(!reto) esc.insertAdjacentHTML("beforeend", `<p class="paso-txt">${t.compApoyo(F(cq), d, F(p))}</p>`);
+    ponerInstruccion(t.compSiF(n1), t.compSiV(n1, dicho), ES.compSi(n1, dicho));
+    const P = 100, c = d * P;
+    const expl = clase === "ok" ? t.compBien(F(cq), d, F(p), cr, F(N))
+      : clase === "uno" ? t.compUno(F(cq), d, F(p), cr, F(s), F(N), res)
+      : clase === "grande" ? t.compGrande(F(N), cr, d, res)
+      : t.compCero(F(cq), d, F(p), F(N), F(c), res, P);
+    const pista = clase === "ok" ? t.compPistaBien(F(cq), d, F(p), cr, F(N))
+      : clase === "uno" ? t.compPistaUno(F(cq), d, cr, F(N))
+      : clase === "grande" ? t.compPistaGrande(cr, d)
+      : t.compPistaCero(d, P, F(c), F(cq));
+    const cont = $("opciones");
+    const arreglar = ()=>{
+      pasoIntermedio(expl.split(". ")[0] + ".");
+      cont.innerHTML = "";
+      ponerInstruccion(t.compArreglo(F(N), d), null, ES.compArreglo(F(N), d));
+      const malos = unicos([conR(cq, cr), conR(q + 1, r), conR(q - 1, r), conR(q, Math.max(0, r - 1))]).filter(x=>x !== res).slice(0, 3);
+      opcionesTexto([res, ...malos], res, ()=>acertar(expl), (x)=> x === conR(cq, cr) ? t.compYaVisto : t.compPistaArreglo(F(N), d));
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, pista); return; }
+        sonBoing();
+        if(reto && !verdad) arreglar(); else acertar(expl);
+      }));
+    });
+    S.resolver = resolverTexto(verdad ? t.si : t.no);
+    return;
+  }
+
+  /* --- 5. ¿Qué hago con el residuo? (5.NBT.6) --- */
+  if(S.juego === "residuo"){
+    const clase = elegir(["up","drop","rem"]);
+    const [n1] = nombresAzar(1);
+    const H = {
+      up:[
+        {u:"buses", u1:"bus", c:"students", en:(N,d)=>`${N} students from ${n1}'s school are going to the Field Museum. Each bus holds ${d} students. How many buses do they need?`, es:(N,d)=>`${N} estudiantes de la escuela de ${n1} van al Field Museum. En cada autobús caben ${d} estudiantes. ¿Cuántos autobuses necesitan?`},
+        {u:"boxes", u1:"box", c:"cookies", en:(N,d)=>`${n1} baked ${N} cookies for the bake sale. Each box holds ${d} cookies. How many boxes does ${n1} need to pack all the cookies?`, es:(N,d)=>`${n1} horneó ${N} galletas para la venta de pasteles. En cada caja caben ${d} galletas. ¿Cuántas cajas necesita para empacar todas las galletas?`},
+        {u:"tables", u1:"table", c:"people", en:(N,d)=>`${N} people come to the science fair dinner. Each long table seats ${d} people. How many tables does ${n1} need to set up so everyone can sit?`, es:(N,d)=>`${N} personas vienen a la cena de la feria de ciencias. En cada mesa larga se sientan ${d} personas. ¿Cuántas mesas debe preparar ${n1} para que todos se sienten?`}],
+      drop:[
+        {u:"bracelets", u1:"bracelet", c:"beads", en:(N,d)=>`${n1} has ${N} beads. Each bracelet needs ${d} beads. How many bracelets can ${n1} finish?`, es:(N,d)=>`${n1} tiene ${N} cuentas. Cada pulsera necesita ${d} cuentas. ¿Cuántas pulseras puede terminar?`},
+        {u:"packs", u1:"pack", c:"stickers", en:(N,d)=>`${n1} has ${N} stickers and makes packs of ${d} for the school store. How many full packs can ${n1} make?`, es:(N,d)=>`${n1} tiene ${N} calcomanías y hace paquetes de ${d} para la tienda de la escuela. ¿Cuántos paquetes completos puede hacer?`},
+        {u:"shelves", u1:"shelf", c:"books", en:(N,d)=>`The library got ${N} new books. Each shelf holds ${d} books. How many shelves can ${n1} fill completely?`, es:(N,d)=>`La biblioteca recibió ${N} libros nuevos. En cada estante caben ${d} libros. ¿Cuántos estantes puede llenar ${n1} por completo?`}],
+      rem:[
+        {u:"rows", u1:"row", c:"seeds", en:(N,d)=>`${n1}'s garden club plants ${N} seeds in rows of ${d}. How many seeds are left over after the full rows?`, es:(N,d)=>`El club de jardinería de ${n1} siembra ${N} semillas en filas de ${d}. ¿Cuántas semillas sobran después de las filas completas?`},
+        {u:"crates", u1:"crate", c:"apples", en:(N,d)=>`The cafeteria gets ${N} apples. ${n1} helps fill crates with ${d} apples each. How many apples are left over?`, es:(N,d)=>`La cafetería recibe ${N} manzanas. ${n1} ayuda a llenar cajas con ${d} manzanas cada una. ¿Cuántas manzanas sobran?`},
+        {u:"teams", u1:"team", c:"players", en:(N,d)=>`${N} players sign up for the soccer league. ${n1} makes teams of ${d} players. How many players are left without a full team?`, es:(N,d)=>`${N} jugadores se inscriben en la liga de fútbol. ${n1} forma equipos de ${d} jugadores. ¿Cuántos jugadores quedan sin un equipo completo?`}]
+    };
+    const h = elegir(H[clase]);
+    const divs = reto ? [23, 26, 34, 37, 42, 46, 48, 53] : DIV_F;
+    const o = division(reto, (x)=> divs.includes(x.d) && x.r >= 2 && x.q >= 4 && ![x.q, x.q + 1, x.d - x.r].includes(x.r) && x.d - x.r !== x.q && x.d - x.r !== x.q + 1);
+    const {d, q, r, N} = o, res = conR(q, r);
+    const story = h.en(F(N), d), storyEs = h.es(F(N), d);
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(story)}</p>`);
+    /* Respuesta final según el tipo de residuo */
+    const preguntaFinal = ()=>{
+      let bien, malos;
+      if(clase === "up"){
+        bien = `${F(q + 1)} ${h.u}`;
+        malos = [[`${F(q)} ${h.u}`, t.resUpQ(F(q), h.u, r, h.c, h.u1)], [`${r} ${h.u}`, t.resUpR(r, h.c, h.u)], [res, t.resUpRR(r, h.c)]];
+      } else if(clase === "drop"){
+        bien = `${F(q)} ${h.u}`;
+        malos = [[`${F(q + 1)} ${h.u}`, t.resDropMas(r, h.c, h.u1, d)], [`${r} ${h.u}`, t.resDropR(r, h.c, h.u)], [res, t.resDropRR(r, h.c, h.u1)]];
+      } else {
+        bien = `${r} ${h.c}`;
+        malos = [[`${F(q)} ${h.c}`, t.resRemQ(F(q), h.u, h.c)], [`${d - r} ${h.c}`, t.resRemFalta(d - r, h.c, h.u1)], [res, t.resRemRR(res, h.c)]];
+      }
+      const exp = clase === "up" ? t.resFinUp(F(N), d, res, F(q), h.u, r, h.c, F(q + 1))
+        : clase === "drop" ? t.resFinDrop(F(N), d, res, F(q), h.u, r) : t.resFinRem(F(N), d, res, r, h.c);
+      opcionesTexto([bien, ...malos.map(m=>m[0])], bien, ()=>acertar(exp), (x)=> malos.find(m=>m[0] === x)[1]);
+    };
+    if(!reto){
+      esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${F(N)} ÷ ${d} = ${res}</p><div class="etiquetas"><span><b>${t.resGrupos(F(q), d)}</b></span><span><b>${t.resSobran(r)}</b></span></div>`);
+      ponerInstruccion(t.resF, story + " " + t.resF, ES.res(storyEs));
+      preguntaFinal();
+      return;
+    }
+    /* Reto: primero dividir, luego interpretar */
+    ponerInstruccion(t.resDiv(F(N), d), story + " " + t.resDiv(F(N), d), ES.resDiv(F(N), d, storyEs));
+    const r2 = r + (r + 3 < d ? 3 : -2);
+    const malos = [[conR(q + 1, r), t.resDivMas(d, F(q + 1), F(d * (q + 1)), F(N))], [conR(q, r2), t.resDivCheck(F(q), d, r2, F(q * d + r2), F(N))]];
+    if(q >= 2 && r + d <= 99) malos.push([conR(q - 1, r + d), t.resDivGrande(r + d, d)]);
+    opcionesTexto([res, ...malos.map(m=>m[0])], res, ()=>{
+      pasoIntermedio(`${F(N)} ÷ ${d} = ${res}.`);
+      $("opciones").innerHTML = "";
+      esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${F(N)} ÷ ${d} = ${res}</p>`);
+      ponerInstruccion(t.resPaso2, story + " " + t.resPaso2, ES.resPaso2(storyEs));
+      preguntaFinal();
+    }, (x)=> malos.find(m=>m[0] === x)[1]);
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (5.NBT.6): decidir y, en el Reto, explicar por qué --- */
+  if(S.juego === "razon"){
+    const [n1] = nombresAzar(1);
+    const tipos = reto ? ["estBien","estMal","compBien","grande","bus","mayor","cero","cero","grande"] : ["estBien","estMal","compBien","grande","bus","mayor"];
+    const tipo = elegir(tipos);
+    let dicho, verdad, expl, razones;
+    if(tipo === "estBien" || tipo === "estMal"){
+      let d, D, qe, N, A;
+      for(let i=0;i<300;i++){
+        d = elegir(reto ? DIV_R : [18, 19, 21, 22, 28, 29, 31, 32]); D = Math.round(d / 10) * 10;
+        qe = elegir(reto ? [30, 40, 50, 60, 70, 80, 90, 100, 200] : [10, 20, 30]);
+        A = D * qe; N = A + azar(-D * 2, D * 2);
+        if(N !== A && N >= (reto ? 1000 : 100) && N <= (reto ? 9999 : 999) && A <= (reto ? 9999 : 999)) break;
+      }
+      if(tipo === "estBien"){
+        dicho = `${n1}: “${F(N)} ÷ ${d} ≈ ${F(A)} ÷ ${D} = ${qe}.”`;
+        verdad = true; expl = `${d} is close to ${D} and ${F(N)} is close to ${F(A)}. Since ${D} × ${qe} = ${F(A)}, the quotient is about ${qe}.`;
+        razones = [[`${D} × ${qe} = ${F(A)}, and those numbers are close to ${F(N)} and ${d}.`, true],
+                   [`It is right because an estimate is always exactly the same as the real answer.`, false],
+                   [`It is wrong: you have to round ${F(N)} to the nearest thousand first.`, false]];
+      } else {
+        const malQ = qe * 10;
+        dicho = `${n1}: “${F(N)} ÷ ${d} is about ${F(malQ)}.”`;
+        verdad = false; expl = `${F(N)} ÷ ${d} ≈ ${F(A)} ÷ ${D} = ${qe}. Check: ${D} × ${F(malQ)} = ${F(D * malQ)}, much more than ${F(N)}.`;
+        razones = [[`${D} × ${F(malQ)} = ${F(D * malQ)}, far more than ${F(N)}; it is about ${qe}.`, true],
+                   [`It is right, because ${F(A)} ÷ ${D} = ${F(malQ)}, so the quotient is about ${F(malQ)}.`, false],
+                   [`It is wrong: when you divide, the quotient must be bigger than ${F(N)}.`, false]];
+      }
+    } else if(tipo === "compBien"){
+      const {d, q, r, N} = division(reto, (x)=> x.r > 0 && x.q > 9);
+      dicho = `${n1}: “${F(N)} ÷ ${d} = ${conR(q, r)}. I checked: ${F(q)} × ${d} + ${r} = ${F(N)}.”`;
+      verdad = true; expl = `${F(q)} × ${d} = ${F(q * d)}, and ${F(q * d)} + ${r} = ${F(N)}. The remainder ${r} is less than ${d}, so it is right.`;
+      razones = [[`The check gives ${F(N)} and the remainder ${r} is less than ${d}.`, true],
+                 [`It is wrong: a remainder should never be added in a check.`, false],
+                 [`It is right because the remainder is smaller than the quotient.`, false]];
+    } else if(tipo === "grande"){
+      const {d, q, r, N} = division(reto, (x)=> x.r + x.d <= 99 && x.q > 9);
+      dicho = `${n1}: “${F(N)} ÷ ${d} = ${conR(q - 1, r + d)}.”`;
+      verdad = false; expl = `${F(q - 1)} × ${d} + ${r + d} = ${F(N)}, but the remainder ${r + d} is not less than ${d}. One more ${d} fits: ${F(N)} ÷ ${d} = ${conR(q, r)}.`;
+      razones = [[`The remainder ${r + d} is not less than ${d}: one more ${d} fits.`, true],
+                 [`It is right, because ${F(q - 1)} × ${d} + ${r + d} = ${F(N)}.`, false],
+                 [`It is wrong: there should be no remainder at all, it must be 0.`, false]];
+    } else if(tipo === "bus"){
+      const dd = reto ? elegir([37, 42, 46, 48]) : elegir([20, 25]);
+      const {d, q, r, N} = division(reto, (x)=> x.d === dd && x.r >= 3 && x.q >= 4);
+      dicho = `${n1}: “${F(N)} students are going on a trip and each bus holds ${d}. ${F(N)} ÷ ${d} = ${conR(q, r)}, so we need ${F(q)} buses.”`;
+      verdad = false; expl = `With ${F(q)} buses, ${r} students would stay at school! They need one more bus: ${F(q + 1)} buses.`;
+      razones = [[`The ${r} students left over need a bus too, so it is ${F(q + 1)} buses.`, true],
+                 [`It is right: a remainder is always dropped when you answer a word problem.`, false],
+                 [`It is wrong: they need ${r} buses, because the remainder is ${r}.`, false]];
+    } else if(tipo === "mayor"){
+      const P = reto ? 100 : 10;
+      const {d, q, N} = division(reto, (x)=> reto ? x.q >= 120 : x.q >= 12);
+      const c = d * P, mas = Math.random() < 0.5;
+      if(mas){
+        dicho = `${n1}: “${F(N)} ÷ ${d} is more than ${P}, because ${d} × ${P} = ${F(c)} and ${F(c)} is less than ${F(N)}.”`;
+        verdad = true; expl = `${d} × ${P} = ${F(c)} fits inside ${F(N)}, so at least ${P} groups of ${d} fit. In fact, ${F(N)} ÷ ${d} is ${F(q)} with some left over.`;
+        razones = [[`${P} groups of ${d} make ${F(c)}, and that still fits in ${F(N)}.`, true],
+                   [`It is right because ${F(N)} has more digits than ${d}, so it is always more than ${P}.`, false],
+                   [`It is wrong: dividing always gives an answer less than ${P}.`, false]];
+      } else {
+        dicho = `${n1}: “${F(N)} ÷ ${d} is less than ${P}, because ${d} is a big number.”`;
+        verdad = false; expl = `${d} × ${P} = ${F(c)}, which is less than ${F(N)}, so more than ${P} groups of ${d} fit. ${F(N)} ÷ ${d} is ${F(q)} with some left over.`;
+        razones = [[`${d} × ${P} = ${F(c)} fits in ${F(N)}, so the quotient is more than ${P}.`, true],
+                   [`It is right: when the divisor has two digits, the answer has one digit.`, false],
+                   [`It is wrong because the quotient is always bigger than the dividend.`, false]];
+      }
+    } else {
+      const {d, q, r, N} = division(true, (x)=> x.q >= 101 && Math.floor(x.q / 10) % 10 === 0 && x.q % 10 !== 0 && x.r > 0);
+      const cq = Math.floor(q / 100) * 10 + q % 10;
+      dicho = `${n1}: “${F(N)} ÷ ${d} = ${conR(cq, r)}.”`;
+      verdad = false; expl = `${d} × 100 = ${F(d * 100)} is less than ${F(N)}, so the quotient must be more than 100. The tens place needs a 0: ${F(N)} ÷ ${d} = ${conR(q, r)}.`;
+      razones = [[`${d} × 100 = ${F(d * 100)} fits, so the quotient is more than 100.`, true],
+                 [`It is right: zeros in the middle of a quotient don't change anything.`, false],
+                 [`It is wrong because the remainder ${r} should be bigger than ${d}.`, false]];
+    }
+    const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
+    esc.appendChild(p);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opcionesTexto(razones.map(r=>r[0]), buena, ()=>acertar(expl), t.pistaPorque, true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const ln = '<i class="linea"></i>';
+  $("hoja-estimar").innerHTML = ["1,792 ÷ 28", "4,135 ÷ 58", "623 ÷ 31", "2,380 ÷ 39"]
+    .map(s=>`<div>${s} ≈ ${ln} ÷ ${ln} = ${ln}</div>`).join("");
+  $("hoja-estimar").className = "caja-h";
+  $("hoja-parciales").innerHTML = ["437 ÷ 25", "864 ÷ 16", "2,592 ÷ 24", "4,812 ÷ 23"]
+    .map(s=>`<div>${s} = ${ln}<div class="espacio"></div></div>`).join("");
+  $("hoja-comprobar").innerHTML = ["Selena: “437 ÷ 25 = 17 R 12.”", "Daniel: “3,529 ÷ 34 = 103 R 27.”", "Salma: “1,950 ÷ 48 = 39 R 30.”"]
+    .map(s=>`<div>${s}  Check: ${ln} × ${ln} + ${ln} = ${ln}  Right? ${ln}</div>`).join("");
+  $("hoja-residuo").textContent = "437 students from Sophia's school are going to the Field Museum. Each bus holds 48 students. How many buses do they need? Explain what you did with the remainder.";
+  $("hoja-razon").textContent = "Israel: “2,563 ÷ 32 = 79 R 35, because 79 × 32 + 35 = 2,563.” Athena: “No, it is 80 R 3.” Who is right? Why?";
+}
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+pintarHoja();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="5"></script>
+</body>
+</html>

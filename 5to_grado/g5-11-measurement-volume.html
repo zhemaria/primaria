@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<!--
+  Fifth Grade Math — Measurement and volume
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 5: 5.MD.1, 5.MD.2, 5.MD.3, 5.MD.4, 5.MD.5
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Measurement and volume · Fifth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Fifth grade measurement and volume games with Lumi: converting units, line plots with fractions, counting unit cubes, V = l × w × h and V = B × h, two-box figures and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Medidas y volumen ---------- */
+.tabla-conv{background:var(--acento-claro);border-radius:16px;padding:8px 14px;max-width:560px;width:100%;text-align:center}
+.tabla-conv strong{display:block;font-size:.8em;color:var(--tinta-suave)}
+.tabla-conv ul{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:center;font-weight:700;font-size:clamp(17px,2.6vw,22px)}
+.piensa{font-weight:600;color:var(--tinta-suave);text-align:center;margin:0;font-size:clamp(16px,2.2vw,20px)}
+.figura{display:block;max-width:100%;height:auto;font-family:inherit}
+.svg-plot{width:100%;max-width:620px;height:auto;font-family:inherit}
+.formula-l{font-weight:700;color:var(--acento);font-size:clamp(19px,3vw,26px);margin:0;text-align:center}
+.unidad{font-size:.7em}
+@media print{
+  .hoja .fila-h{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm;align-items:end;font-size:12pt}
+  .hoja .fila-h p{margin:1mm 0}
+  .hoja svg{max-height:58mm;width:auto;max-width:100%}
+  .hoja #hoja-comp svg{max-height:70mm}
+  .hoja #hoja-plot svg{max-height:50mm}
+  .hoja h3{break-after:avoid}
+}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1>Measurement and volume</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./">🏠 All games</a>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi5-calculadora.jpg" alt="" class="lumi-d" width="450" height="595"></span><span>📏</span><span>🧊</span><span>📦</span><span>💬</span></div>
+    <h2>How much space is inside?</h2>
+    <p id="txt-portada">Big units, small units and boxes full of cubes! With Lumi you will change meters to centimeters and pounds to ounces, read line plots with fractions of an inch, count the cubes in a box, find volume with V = l × w × h, add the volumes of two boxes and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">¡Unidades grandes, unidades pequeñas y cajas llenas de cubos! Con Lumi vas a convertir metros a centímetros y libras a onzas, leer diagramas de puntos con fracciones de pulgada, contar los cubos de una caja, hallar el volumen con V = l × a × h, sumar los volúmenes de dos cajas y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: measurement and volume</button></p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.MD.1 (convert among different-sized standard measurement units within a given measurement system, e.g., convert 5 cm to 0.05 m, and use these conversions in solving multi-step, real world problems), 5.MD.2 (make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8); use operations on fractions for this grade to solve problems involving information presented in line plots), 5.MD.3 (recognize volume as an attribute of solid figures and understand concepts of volume measurement: a cube with side length 1 unit is a “unit cube”, and a solid figure which can be packed without gaps or overlaps using n unit cubes has a volume of n cubic units), 5.MD.4 (measure volumes by counting unit cubes, using cubic cm, cubic in, cubic ft, and improvised units) and 5.MD.5 (relate volume to the operations of multiplication and addition: find the volume of a right rectangular prism with whole-number side lengths by packing it with unit cubes, apply the formulas V = l × w × h and V = b × h, and find volumes of solid figures composed of two non-overlapping right rectangular prisms by adding the volumes of the non-overlapping parts). At the Easy level a conversion table, labeled line plots, a box split into layers and drawings with every dimension show the structure; at the Challenge level there are multi-step problems, eighths, missing dimensions, square-versus-cubic units and figures where one length must be found first, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #convertir, #diagrama, #cubos, #formula, #compuesta and #razon.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.MD.1 (convertir entre unidades de distinto tamaño dentro de un mismo sistema de medidas, por ejemplo 5 cm a 0.05 m, y usar esas conversiones en problemas de varios pasos de la vida real), 5.MD.2 (hacer un diagrama de puntos con medidas en fracciones de unidad (1/2, 1/4, 1/8) y usar operaciones con fracciones para resolver problemas con esa información), 5.MD.3 y 5.MD.4 (reconocer el volumen como atributo de los cuerpos sólidos y medirlo contando cubos unitarios en centímetros, pulgadas y pies cúbicos) y 5.MD.5 (relacionar el volumen con la multiplicación y la suma: V = l × a × h y V = B × h, y hallar el volumen de figuras formadas por dos prismas rectangulares que no se superponen sumando sus volúmenes). Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Measurement and volume</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Convert.</h3>
+  <div class="caja-h" id="hoja-conv"></div>
+  <h3>2. Use the line plot. It shows the lengths of 10 leaves (inches).</h3>
+  <div id="hoja-plot"></div>
+  <div class="caja-h una" id="hoja-plot-q"></div>
+  <h3>3. Volume by counting and by formula.</h3>
+  <div class="fila-h" id="hoja-vol"></div>
+  <h3>4. Find the volume of the figure made of two boxes.</h3>
+  <div class="fila-h" id="hoja-comp"></div>
+  <h3>5. Is it right? Explain why.</h3>
+  <p class="razon-h" id="hoja-razon"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+/* Unidades: [singular, plural, singular en español, plural en español, género en español] */
+const UN = {
+  "in":["inch","inches","pulgada","pulgadas","f"], "ft":["foot","feet","pie","pies","m"], "yd":["yard","yards","yarda","yardas","f"],
+  "oz":["ounce","ounces","onza","onzas","f"], "lb":["pound","pounds","libra","libras","f"],
+  "c":["cup","cups","taza","tazas","f"], "pt":["pint","pints","pinta","pintas","f"], "qt":["quart","quarts","cuarto de galón","cuartos de galón","m"], "gal":["gallon","gallons","galón","galones","m"],
+  "mm":["millimeter","millimeters","milímetro","milímetros","m"], "cm":["centimeter","centimeters","centímetro","centímetros","m"],
+  "m":["meter","meters","metro","metros","m"], "km":["kilometer","kilometers","kilómetro","kilómetros","m"],
+  "g":["gram","grams","gramo","gramos","m"], "kg":["kilogram","kilograms","kilogramo","kilogramos","m"],
+  "mL":["milliliter","milliliters","mililitro","mililitros","m"], "L":["liter","liters","litro","litros","m"],
+  "cm³":["cubic centimeter","cubic centimeters","centímetro cúbico","centímetros cúbicos","m"],
+  "in³":["cubic inch","cubic inches","pulgada cúbica","pulgadas cúbicas","f"],
+  "ft³":["cubic foot","cubic feet","pie cúbico","pies cúbicos","m"],
+  "m³":["cubic meter","cubic meters","metro cúbico","metros cúbicos","m"],
+  "cm²":["square centimeter","square centimeters","centímetro cuadrado","centímetros cuadrados","m"],
+  "in²":["square inch","square inches","pulgada cuadrada","pulgadas cuadradas","f"],
+  "ft²":["square foot","square feet","pie cuadrado","pies cuadrados","m"],
+  "m²":["square meter","square meters","metro cuadrado","metros cuadrados","m"]
+};
+const nomU = (u, uno)=> UN[u][uno ? 0 : 1];
+const unA = (u)=> (/^[aeiou]/.test(UN[u][0]) ? "an " : "a ") + UN[u][0];
+const cap1 = (s)=> s[0].toUpperCase() + s.slice(1);
+const nomUEs = (u, uno)=> UN[u][uno ? 2 : 3];
+const cuantosEs = (u)=> UN[u][4] === "f" ? "¿Cuántas" : "¿Cuántos";
+
+/* Conversiones: g = unidad grande, p = unidad pequeña, f = cuántas pequeñas caben en una grande */
+const CONV = [
+  {g:"ft", p:"in", f:12, sis:"c", cat:"len"}, {g:"yd", p:"ft", f:3, sis:"c", cat:"len"}, {g:"yd", p:"in", f:36, sis:"c", cat:"len", reto:true},
+  {g:"lb", p:"oz", f:16, sis:"c", cat:"peso"},
+  {g:"gal", p:"qt", f:4, sis:"c", cat:"cap"}, {g:"qt", p:"pt", f:2, sis:"c", cat:"cap"}, {g:"pt", p:"c", f:2, sis:"c", cat:"cap"}, {g:"gal", p:"pt", f:8, sis:"c", cat:"cap", reto:true},
+  {g:"km", p:"m", f:1000, sis:"m", cat:"len"}, {g:"m", p:"cm", f:100, sis:"m", cat:"len"}, {g:"cm", p:"mm", f:10, sis:"m", cat:"len"}, {g:"m", p:"mm", f:1000, sis:"m", cat:"len", reto:true},
+  {g:"kg", p:"g", f:1000, sis:"m", cat:"peso"}, {g:"L", p:"mL", f:1000, sis:"m", cat:"cap"}
+];
+const TABLA_CONV = {
+  c:{len:["1 ft = 12 in","1 yd = 3 ft","1 yd = 36 in"], peso:["1 lb = 16 oz"], cap:["1 gal = 4 qt","1 qt = 2 pt","1 pt = 2 c"]},
+  m:{len:["1 km = 1,000 m","1 m = 100 cm","1 cm = 10 mm"], peso:["1 kg = 1,000 g"], cap:["1 L = 1,000 mL"]}
+};
+const NOM_CAT = {len:"Length", peso:"Weight", cap:"Capacity"};
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  /* 1. Convertir */
+  convAChico:(a,g,p)=>`How many ${nomU(p)} are in ${a} ${nomU(g, a === "1")}?`,
+  convAGrande:(b,p,g)=>`How many ${nomU(g)} are in ${b} ${nomU(p, b === "1")}?`,
+  convPiensaChico:(g,p)=>`${nomU(g)[0].toUpperCase() + nomU(g).slice(1)} are bigger than ${nomU(p)}. Should the number of ${nomU(p)} be bigger or smaller?`,
+  convPiensaGrande:(g,p)=>`${nomU(p)[0].toUpperCase() + nomU(p).slice(1)} are smaller than ${nomU(g)}. Should the number of ${nomU(g)} be bigger or smaller?`,
+  convFinChico:(a,g,f,r,p)=>`${a} ${g} = ${a} × ${f} = ${r} ${p}. ${cap1(unA(g))} is bigger than ${unA(p)}, so there are more ${nomU(p)}.`,
+  convFinGrande:(b,p,f,r,g)=>`${b} ${p} = ${b} ÷ ${f} = ${r} ${g}. ${cap1(unA(g))} is bigger than ${unA(p)}, so there are fewer ${nomU(g)}.`,
+  pistaDividio:(g,p,f)=>`${nomU(g)[0].toUpperCase() + nomU(g).slice(1)} are bigger than ${nomU(p)}, so the number of ${nomU(p)} must be bigger. Multiply by ${f}; don't divide.`,
+  pistaMultiplico:(g,p,f)=>`${nomU(p)[0].toUpperCase() + nomU(p).slice(1)} are smaller, so you need fewer ${nomU(g)}. Divide by ${f}; don't multiply.`,
+  pistaFactor:(g,p,f)=>`Check the factor: 1 ${nomU(g, true)} = ${f} ${nomU(p)}. Use ${f}.`,
+  pistaDiez:(g,p,f)=>`Customary units are not based on 10: 1 ${nomU(g, true)} = ${f} ${nomU(p)}.`,
+  pistaSumo:(g,p,f)=>`Converting is not adding. Each ${nomU(g, true)} is ${f} ${nomU(p)}, so multiply.`,
+  pistaResto:(g,p)=>`Divide to find the whole ${nomU(g)}; what is left over stays in ${nomU(p)}.`,
+  pistaPuntoResto:(q,r,g,p,f)=>`${q}.${r} ${g} would mean ${q} and ${r} tenths of a ${nomU(g, true)}. The ${r} left over are ${nomU(p)}, and 1 ${nomU(g, true)} is ${f} ${nomU(p)}, not 10.`,
+  pistaRestoDiez:(g,p,f)=>`That splits the number as if 1 ${nomU(g, true)} were 10 ${nomU(p)}. It is ${f} ${nomU(p)}.`,
+  /* 2. Diagrama de puntos */
+  pistaVecino:(v)=>`That is the number of X marks above ${v}. Find the right number on the line first.`,
+  pistaTodos:"That is the number of all the X marks. Count only the marks above that number.",
+  pistaContarX:"Count the X marks above that number again, one by one.",
+  pistaSumaDif:"You added the two measurements. The difference means subtract: greatest − least.",
+  pistaSaltos:(u)=>`That is the number of jumps on the line. Each jump is ${u}, so multiply.`,
+  pistaMarcas:"That compares how many marks there are, not the measurements. Use the numbers on the line.",
+  pistaUno:(v)=>`That is only one of them. Multiply ${v} by the number of X marks.`,
+  pistaEnteros:(c,v)=>`${c} × ${v} is not ${c} wholes plus ${v}. Think: ${v} + ${v} + … (${c} times).`,
+  pistaDen:"Multiply only the numerator by the whole number. The size of the parts (the denominator) stays the same.",
+  pistaCuantasMarcas:"That is the number of X marks, not the total amount. Add all the measurements.",
+  pistaUnaVez:"You added each number on the line only once. Each X mark counts, so multiply each value by its number of marks.",
+  pistaFalta:(v)=>`You left out the marks at ${v}. Add every column.`,
+  pistaTotalRep:(n)=>`That is the total. Now share it equally: divide by ${n}.`,
+  pistaColumnas:(n,k)=>`There are ${n} X marks, not ${k} columns. Divide the total by ${n}.`,
+  pistaModa:"That is the amount that appears most often, not the equal share. Find the total, then divide.",
+  /* 3. Contar cubos */
+  pistaCaras:"You counted the squares you can see on the outside. Some cubes are hidden inside and behind! Count one layer, then the layers.",
+  pistaCapa:(h)=>`That is only one layer. The box has ${h} layers.`,
+  pistaVisibles:"You counted only the cubes you can see. There are hidden cubes in the middle and the back.",
+  pistaSumaAristas:"Adding the length, width and height doesn't count cubes. Multiply instead.",
+  /* 4. Fórmula */
+  pistaSumaDim:"Adding the dimensions doesn't give the volume. Multiply: l × w × h.",
+  pistaBase:"That is only the area of the base (one layer). Multiply by the height too.",
+  pistaDosDim:"You multiplied only two of the dimensions. Volume uses all three: l × w × h.",
+  pistaCuadradas:"Volume fills space, so it is measured in cubic units (³), not square units (²).",
+  pistaBmasH:"Don't add B and h. The base area tells how many cubes are in one layer; multiply by the number of layers, h.",
+  pistaRestaFalta:"Subtracting the dimensions doesn't work. Volume is a product, so divide: h = V ÷ (l × w).",
+  pistaDivUno:(x)=>`You divided by ${x} only. Divide by the area of the base, l × w.`,
+  pistaEsBase:"That is the area of the base. Now divide the volume by it to find the height.",
+  pistaLargoCubico:"The missing piece is a length, so it is measured in plain units, not cubic units.",
+  pistaRestaB:"Don't subtract. V = B × h, so h = V ÷ B.",
+  pistaMultFalta:"Multiplying makes it too big. V = B × h, so divide: h = V ÷ B.",
+  /* 5. Figura de dos cajas */
+  pistaDoble:"Careful: you used the whole length for one box, so part of the other box was counted twice. Each box has its own length.",
+  pistaCajaGrande:"That treats the figure as one big box. There is an empty corner! Split it into two boxes and add.",
+  pistaSoloUna:"That is only one of the boxes. Add the volume of the other box too.",
+  pistaMultVol:"Joining two boxes means adding their volumes, not multiplying them.",
+  pistaLargo:(L,l1)=>`First find the missing length: ${L} − ${l1}.`,
+  /* 6. ¿Quién tiene razón? */
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Think about the size of the units, and count every cube once.",
+  pistaPorque:"That reason doesn't explain it. Think about what volume and conversions really mean.",
+  estrategias:[
+    ["I asked: bigger unit or smaller unit?","Great! Big unit to small unit: multiply. Small unit to big unit: divide."],
+    ["I used the numbers on the line plot","Excellent! Each X is one measurement; multiply a value by its number of marks."],
+    ["I counted one layer, then the layers","Awesome! Cubes in one layer × number of layers = the volume."],
+    ["I split the figure into two boxes","Smart! Find each box's volume and add, without counting any part twice."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  convAChico:(a,g,p)=>`${cuantosEs(p)} ${nomUEs(p)} hay en ${a} ${nomUEs(g, a === "1")}?`,
+  convAGrande:(b,p,g)=>`${cuantosEs(g)} ${nomUEs(g)} hay en ${b} ${nomUEs(p, b === "1")}?`,
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"convertir", emoji:"📏", en:"Convert units",        es:"Convierte unidades",       meta:"5 cm = 0.05 m · 3 ft = 36 in"},
+  {id:"diagrama",  emoji:"📊", en:"Line plots",           es:"Diagramas de puntos",      meta:"Fractions of an inch or a liter"},
+  {id:"cubos",     emoji:"🧊", en:"Count the cubes",      es:"Cuenta los cubos",         meta:"Layers of unit cubes"},
+  {id:"formula",   emoji:"📦", en:"Volume formulas",      es:"Fórmulas del volumen",     meta:"V = l × w × h · V = B × h"},
+  {id:"compuesta", emoji:"🧱", en:"Two boxes together",   es:"Dos cajas juntas",         meta:"Add the volumes"},
+  {id:"razon",     emoji:"💬", en:"Who is right?",        es:"¿Quién tiene razón?",      meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+
+/* ============ Números con decimales ============
+   Todo número se guarda como un entero de milésimas (3.45 → 3450) para evitar errores de redondeo.
+   Se usa el punto decimal y la coma de los miles, como en la escuela de los Estados Unidos. */
+const P10 = (e)=> Math.pow(10, e);
+const fmtEntero = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function fmt(m){
+  const ent = Math.floor(m / 1000), fr = m % 1000;
+  const dec = String(fr).padStart(3, "0").replace(/0+$/, "");
+  return fmtEntero(ent) + (dec ? "." + dec : "");
+}
+const dig = (m, e)=> Math.floor(m / P10(e + 3)) % 10;          // dígito en el lugar 10^e
+const decs = (m)=> m % 1000 === 0 ? 0 : m % 100 === 0 ? 1 : m % 10 === 0 ? 2 : 3;
+const cifrasEnteras = (m)=> Math.max(1, String(Math.floor(m / 1000)).length);
+const valorDe = (d, e)=> d * P10(e + 3);                        // en milésimas
+/* Número al azar con ent cifras enteras y dc decimales (la última decimal no es 0) */
+function numAzar(ent, dc){
+  let s = "";
+  for(let i=0;i<ent;i++) s += i === 0 ? azar(1, 9) : azar(0, 9);
+  let f = "";
+  for(let i=0;i<dc;i++) f += i === dc - 1 ? azar(1, 9) : azar(0, 9);
+  return (ent ? Number(s) : 0) * 1000 + (dc ? Number(f) * P10(3 - dc) : 0);
+}
+/* Decimal dicho como en clase: 3.45 → «3 and 45 hundredths» / «3 enteros y 45 centésimos» */
+function decEnVoz(txt, es){
+  return String(txt).replace(/\d[\d,]*\.\d+/g, (s)=>{
+    const [ent, fr] = s.replace(/,/g, "").split(".");
+    const n = Number(fr), k = fr.length;
+    const unidad = es ? ["décimo","centésimo","milésimo"][k - 1] + (n === 1 ? "" : "s")
+                      : ["tenth","hundredth","thousandth"][k - 1] + (n === 1 ? "" : "s");
+    const parteDec = n + " " + unidad;
+    if(Number(ent) === 0) return parteDec;
+    return es ? `${ent} ${Number(ent) === 1 ? "entero" : "enteros"} y ${parteDec}` : `${ent} and ${parteDec}`;
+  });
+}
+
+/* ============ Fracciones ============
+   Cada fracción se guarda como un par de enteros y se reduce con el máximo común divisor. */
+const mcd = (a, b)=>{ a = Math.abs(a); b = Math.abs(b); while(b){ [a, b] = [b, a % b]; } return a || 1; };
+/* 11/8 → «1 3/8» ; 6/8 → «3/4» ; 16/8 → «2» */
+function fmtFr(n, d){
+  if(n === 0) return "0";
+  const g = mcd(n, d); n /= g; d /= g;
+  const w = Math.floor(n / d), r = n % d;
+  if(r === 0) return fmtEntero(w);
+  return (w ? fmtEntero(w) + " " : "") + r + "/" + d;
+}
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],8:["eighth","eighths"],10:["tenth","tenths"],12:["twelfth","twelfths"],16:["sixteenth","sixteenths"],100:["hundredth","hundredths"],1000:["thousandth","thousandths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"],16:["dieciseisavo","dieciseisavos"],100:["centésimo","centésimos"],1000:["milésimo","milésimos"]};
+function fracEnVoz(txt, es){
+  const pal = (n, d)=>{ const t = (es ? DEN_ES : DEN_EN)[d]; if(!t) return `${n} ${es ? "sobre" : "over"} ${d}`; return `${n} ${Number(n) === 1 ? t[0] : t[1]}`; };
+  return String(txt)
+    .replace(/(\d+) (\d+)\/(\d+)/g, (s, w, n, d)=> es ? `${w} ${Number(w) === 1 ? "entero" : "enteros"} y ${pal(n, Number(d))}` : `${w} and ${pal(n, Number(d))}`)
+    .replace(/(\d+)\/(\d+)/g, (s, n, d)=> pal(n, Number(d)));
+}
+/* Unidades abreviadas dichas con palabras: «5 cm³» → «5 cubic centimeters» */
+const RE_UNIDAD = /((?:\d+ )?\d+\/\d+|\d[\d,]*(?:\.\d+)?) (cm³|in³|ft³|m³|cm²|in²|ft²|m²|mm|cm|km|kg|mL|gal|qt|pt|oz|lb|ft|yd|in|m|g|L|c)(?![A-Za-zÀ-ÿ³²])/g;
+function unidadEnVoz(txt, es){
+  return String(txt).replace(RE_UNIDAD, (s, num, u)=>{
+    const fr = /^(\d+)\/(\d+)$/.exec(num), uno = num === "1" || (fr && Number(fr[1]) < Number(fr[2]));
+    return `${num} ${(es && fr && uno) ? "de " : ""}${UN[u][uno ? (es ? 2 : 0) : (es ? 3 : 1)]}`;
+  });
+}
+
+/* ============ Dibujos isométricos ============
+   Un punto (x, y, z) del espacio se dibuja en el plano: x baja hacia la derecha, y baja hacia la izquierda, z sube. */
+const C30 = 0.8660254;
+const COLOR = {arriba:"#D6F0F2", der:"#7FC3C9", frente:"#AEDCE0", arribaB:"#FCE7B6", derB:"#E5B653", frenteB:"#F3D184", linea:"#14313A"};
+function isoP(x, y, z, s){ return [(x - y) * C30 * s, (x + y) * 0.5 * s - z * s]; }
+const ptsTxt = (lista)=> lista.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ");
+/* Caja de l × w × h con esquina trasera en (x0, y0, z0). Devuelve el SVG de sus tres caras visibles. */
+function cajaIso(o, s, B){
+  const {x0 = 0, y0 = 0, z0 = 0, l, w, h, rejilla} = o;
+  const P = (x, y, z)=> isoP(x, y, z, s);
+  const c = B ? [COLOR.arribaB, COLOR.derB, COLOR.frenteB] : [COLOR.arriba, COLOR.der, COLOR.frente];
+  const x1 = x0 + l, y1 = y0 + w, z1 = z0 + h;
+  let g = "";
+  g += `<polygon points="${ptsTxt([P(x0,y0,z1),P(x1,y0,z1),P(x1,y1,z1),P(x0,y1,z1)])}" fill="${c[0]}"/>`;
+  g += `<polygon points="${ptsTxt([P(x1,y0,z0),P(x1,y1,z0),P(x1,y1,z1),P(x1,y0,z1)])}" fill="${c[1]}"/>`;
+  g += `<polygon points="${ptsTxt([P(x0,y1,z0),P(x1,y1,z0),P(x1,y1,z1),P(x0,y1,z1)])}" fill="${c[2]}"/>`;
+  if(rejilla){
+    let d = "";
+    const seg = (a, b)=>{ d += `M${a[0].toFixed(1)},${a[1].toFixed(1)}L${b[0].toFixed(1)},${b[1].toFixed(1)}`; };
+    for(let i=1;i<l;i++){ seg(P(x0+i,y0,z1), P(x0+i,y1,z1)); seg(P(x0+i,y1,z0), P(x0+i,y1,z1)); }
+    for(let j=1;j<w;j++){ seg(P(x0,y0+j,z1), P(x1,y0+j,z1)); seg(P(x1,y0+j,z0), P(x1,y0+j,z1)); }
+    for(let k=1;k<h;k++){ seg(P(x1,y0,z0+k), P(x1,y1,z0+k)); seg(P(x0,y1,z0+k), P(x1,y1,z0+k)); }
+    g += `<path d="${d}" stroke="${COLOR.linea}" stroke-width="1.6" fill="none"/>`;
+  }
+  /* contorno */
+  g += `<polygon points="${ptsTxt([P(x0,y0,z1),P(x1,y0,z1),P(x1,y0,z0),P(x1,y1,z0),P(x0,y1,z0),P(x0,y1,z1)])}" fill="none" stroke="${COLOR.linea}" stroke-width="3" stroke-linejoin="round"/>`;
+  g += `<path d="M${ptsTxt([P(x0,y1,z1),P(x1,y1,z1),P(x1,y0,z1)]).replace(/ /g,"L")}M${ptsTxt([P(x1,y1,z1),P(x1,y1,z0)]).replace(/ /g,"L")}" fill="none" stroke="${COLOR.linea}" stroke-width="2.4" stroke-linejoin="round"/>`;
+  return g;
+}
+/* Rótulo con halo blanco para que se lea sobre cualquier cara */
+function rotulo(x, y, txt, ancla, tam){
+  return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${ancla || "middle"}" font-size="${tam || 19}" font-weight="700" fill="${COLOR.linea}" stroke="#fff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${escaparHTML(txt)}</text>`;
+}
+/* Envuelve las piezas en un <svg> accesible ajustando la caja de vista a los puntos usados */
+function svgIso(cuerpo, puntos, etiqueta, ancho, margen){
+  const m = margen || [40, 40, 40, 40]; // arriba, derecha, abajo, izquierda
+  const xs = puntos.map(p=>p[0]), ys = puntos.map(p=>p[1]);
+  const x0 = Math.min(...xs) - m[3], y0 = Math.min(...ys) - m[0];
+  const W = Math.max(...xs) + m[1] - x0, H = Math.max(...ys) + m[2] - y0;
+  return `<svg class="figura" role="img" aria-label="${escaparHTML(etiqueta)}" viewBox="${x0.toFixed(0)} ${y0.toFixed(0)} ${W.toFixed(0)} ${H.toFixed(0)}" width="${Math.round(Math.min(ancho || 420, W))}" style="max-width:100%;height:auto">${cuerpo}</svg>`;
+}
+const esquinas = (x0, y0, z0, l, w, h, s)=>{ const r = []; [x0, x0 + l].forEach(x=>[y0, y0 + w].forEach(y=>[z0, z0 + h].forEach(z=>r.push(isoP(x, y, z, s))))); return r; };
+const tamCubo = (l, w, h, max)=> Math.min(max || 46, 300 / ((l + w) * C30), 260 / ((l + w) * 0.5 + h));
+
+/* Caja con rótulos de largo, ancho y alto */
+function dibujoCaja(l, w, h, u, rejilla, ancho, sinAlto){
+  const s = tamCubo(l, w, h, 48), P = (x, y, z)=> isoP(x, y, z, s);
+  let g = cajaIso({l, w, h, rejilla}, s);
+  const mL = P(l / 2, w, 0), mW = P(l, w / 2, 0), mH = P(l, 0, h / 2);
+  g += rotulo(mL[0] - 16, mL[1] + 30, `${l} ${u}`, "end");
+  g += rotulo(mW[0] + 16, mW[1] + 30, `${w} ${u}`, "start");
+  g += rotulo(mH[0] + 12, mH[1] + 6, sinAlto ? `? ${u}` : `${h} ${u}`, "start");
+  const et = `A box ${l} ${nomU(u, l === 1)} long, ${w} ${nomU(u, w === 1)} wide and ${sinAlto ? "of unknown height" : h + " " + nomU(u, h === 1) + " tall"}${rejilla ? ", drawn with a grid of unit cubes" : ""}.`;
+  return svgIso(g, esquinas(0, 0, 0, l, w, h, s), et, ancho, [24, 110, 50, 110]);
+}
+/* Caja de cubos unitarios; por capas separadas (Fácil) o entera */
+function dibujoCubos(l, w, h, capas, ancho){
+  const sep = 0.45, s = tamCubo(l, w, h + (capas ? (h - 1) * sep : 0), 46);
+  let g = "", pts = [];
+  for(let k=0;k<(capas ? h : 1);k++){
+    const z0 = capas ? k * (1 + sep) : 0, alto = capas ? 1 : h;
+    g += cajaIso({z0, l, w, h:alto, rejilla:true}, s);
+    pts = pts.concat(esquinas(0, 0, z0, l, w, alto, s));
+    if(capas){ const p = isoP(0, w, z0 + 0.5, s); g += rotulo(p[0] - 12, p[1] + 6, `Layer ${k + 1}`, "end", 17); }
+  }
+  const et = capas ? `A box of unit cubes split into ${h} layers. Each layer is ${l} cubes long and ${w} cubes wide.`
+                   : `A box of unit cubes, ${l} cubes long, ${w} cubes wide and ${h} cubes tall. Some cubes are hidden inside.`;
+  return svgIso(g, pts, et, ancho, [18, 30, 24, capas ? 100 : 30]);
+}
+/* Figura en L: caja A (alta, a la izquierda) y caja B (baja, a la derecha), del mismo ancho */
+function dibujoCompuesta(f, u, reto, ancho){
+  const {l1, l2, w, h1, h2} = f, L = l1 + l2;
+  const s = tamCubo(L, w, h1, 40), P = (x, y, z)=> isoP(x, y, z, s);
+  let g = cajaIso({l:l1, w, h:h1}, s) + cajaIso({x0:l1, l:l2, w, h:h2}, s, true);
+  const cA = P(l1 / 2, w, h1 / 2), cB = P(l1 + l2 / 2, w, h2 / 2);
+  g += rotulo(cA[0], cA[1] + 8, "A", "middle", 22) + rotulo(cB[0], cB[1] + 8, "B", "middle", 22);
+  if(reto){
+    const mL = P(L / 2, w, 0); g += rotulo(mL[0] - 16, mL[1] + 32, `${L} ${u}`, "end");
+    const m1 = P(l1 / 2, 0, h1); g += rotulo(m1[0] + 12, m1[1] - 12, `${l1} ${u}`, "start");
+  } else {
+    const m1 = P(l1 / 2, w, 0), m2 = P(l1 + l2 / 2, w, 0);
+    g += rotulo(m1[0] - 14, m1[1] + 30, `${l1} ${u}`, "end") + rotulo(m2[0] - 14, m2[1] + 30, `${l2} ${u}`, "end");
+  }
+  const mW = P(L, w / 2, 0); g += rotulo(mW[0] + 16, mW[1] + 30, `${w} ${u}`, "start");
+  const mH1 = P(0, w, h1 / 2); g += rotulo(mH1[0] - 12, mH1[1] + 6, `${h1} ${u}`, "end");
+  const mH2 = P(L, 0, h2 / 2); g += rotulo(mH2[0] + 12, mH2[1] + 6, `${h2} ${u}`, "start");
+  const n = (v)=> `${v} ${nomU(u, v === 1)}`;
+  const et = reto
+    ? `An L-shaped figure made of two boxes, A and B, both ${n(w)} wide. The whole figure is ${n(L)} long. Box A is ${n(l1)} long and ${n(h1)} tall. Box B is ${n(h2)} tall; its length is not given.`
+    : `An L-shaped figure made of two boxes, both ${n(w)} wide. Box A is ${n(l1)} long and ${n(h1)} tall. Box B is ${n(l2)} long and ${n(h2)} tall.`;
+  return svgIso(g, esquinas(0, 0, 0, L, w, h1, s), et, ancho, [40, 110, 50, 100]);
+}
+
+/* ============ Diagrama de puntos ============
+   Los datos se guardan como enteros: cuántos octavos (o cuartos, o medios) mide cada objeto. */
+function rotuloFr(x, y, n, d){
+  const g = mcd(n, d); n /= g; d /= g;
+  const w = Math.floor(n / d), r = n % d;
+  let t = "";
+  if(r === 0) return `<text x="${x}" y="${y + 6}" text-anchor="middle" font-size="24" font-weight="700" fill="${COLOR.linea}">${w}</text>`;
+  const dx = w ? 9 : 0;
+  if(w) t += `<text x="${x - 8}" y="${y + 6}" text-anchor="end" font-size="24" font-weight="700" fill="${COLOR.linea}">${w}</text>`;
+  t += `<text x="${x + dx}" y="${y - 3}" text-anchor="middle" font-size="17" font-weight="700" fill="${COLOR.linea}">${r}</text>`;
+  t += `<line x1="${x + dx - 9}" x2="${x + dx + 9}" y1="${y + 2}" y2="${y + 2}" stroke="${COLOR.linea}" stroke-width="2"/>`;
+  t += `<text x="${x + dx}" y="${y + 19}" text-anchor="middle" font-size="17" font-weight="700" fill="${COLOR.linea}">${d}</text>`;
+  return t;
+}
+/* datos: {ini, pasos, den, cuentas[], unidad, titulo} — valor de la marca i = (ini + i) / den */
+function dibujoPlot(dp, ancho){
+  const n = dp.cuentas.length, paso = n > 6 ? 74 : 110, x0 = 50, maxC = Math.max(...dp.cuentas);
+  const W = x0 * 2 + paso * (n - 1), alto = 36 * maxC, yL = 40 + alto + 20;
+  let g = `<text x="${W / 2}" y="24" text-anchor="middle" font-size="20" font-weight="700" fill="${COLOR.linea}">${escaparHTML(dp.titulo)}</text>`;
+  g += `<line x1="20" x2="${W - 20}" y1="${yL}" y2="${yL}" stroke="${COLOR.linea}" stroke-width="3"/>`;
+  const partes = [];
+  dp.cuentas.forEach((c, i)=>{
+    const x = x0 + i * paso;
+    g += `<line x1="${x}" x2="${x}" y1="${yL - 9}" y2="${yL + 9}" stroke="${COLOR.linea}" stroke-width="3"/>`;
+    g += rotuloFr(x, yL + 34, dp.ini + i, dp.den);
+    for(let k=0;k<c;k++) g += `<text x="${x}" y="${yL - 16 - k * 34}" text-anchor="middle" font-size="30" font-weight="700" fill="${COLOR.linea}">×</text>`;
+    partes.push(`${fmtFr(dp.ini + i, dp.den)}: ${c} ${c === 1 ? "mark" : "marks"}`);
+  });
+  g += `<text x="${W / 2}" y="${yL + 76}" text-anchor="middle" font-size="18" font-weight="600" fill="#3F5F66">${escaparHTML(dp.leyenda)}</text>`;
+  const et = `Line plot: ${dp.titulo}. ${partes.join("; ")}.`;
+  return `<svg class="svg-plot" role="img" aria-label="${escaparHTML(et)}" viewBox="0 0 ${W} ${yL + 90}" width="${Math.min(ancho || 640, W)}" style="max-width:100%;height:auto">${g}</svg>`;
+}
+/* Medida dicha en inglés y en español: 3/4 inch, 1 1/2 inches · 3/4 de pulgada, 1 1/2 pulgadas */
+function medidaEn(n, d, u){ return `${fmtFr(n, d)} ${nomU(u, n <= d)}`; }
+function medidaEs(n, d, u){ return n < d ? `${fmtFr(n, d)} de ${nomUEs(u, true)}` : `${fmtFr(n, d)} ${nomUEs(u, n === d)}`; }
+const CONTEXTOS_PLOT = [
+  {cosa:"leaves", cosa1:"leaf", u:"in", titulo:"Leaf lengths (inches)", leyenda:"Each × is one leaf",
+   quien:"collected leaves in the school garden", quienEs:"recogió hojas en el huerto de la escuela",
+   cuantos:(m)=>`How many leaves are ${m} long?`, cuantosEs:(m)=>`¿Cuántas hojas miden ${m} de largo?`, losEs:"las hojas", todosEs:"todas las hojas"},
+  {cosa:"pencils", cosa1:"pencil", u:"in", titulo:"Pencil lengths (inches)", leyenda:"Each × is one pencil",
+   quien:"measured the pencils in the class bin", quienEs:"midió los lápices de la caja de la clase",
+   cuantos:(m)=>`How many pencils are ${m} long?`, cuantosEs:(m)=>`¿Cuántos lápices miden ${m} de largo?`, losEs:"los lápices", todosEs:"todos los lápices"},
+  {cosa:"beakers", cosa1:"beaker", u:"L", titulo:"Water in each beaker (liters)", leyenda:"Each × is one beaker",
+   quien:"filled beakers for the science fair", quienEs:"llenó vasos de laboratorio para la feria de ciencias",
+   cuantos:(m)=>`How many beakers hold ${m} of water?`, cuantosEs:(m)=>`¿Cuántos vasos tienen ${m} de agua?`, losEs:"los vasos", todosEs:"todos los vasos"},
+  {cosa:"ribbons", cosa1:"ribbon", u:"in", titulo:"Ribbon pieces (inches)", leyenda:"Each × is one ribbon",
+   quien:"cut ribbon pieces for the art project", quienEs:"cortó pedazos de cinta para el proyecto de arte",
+   cuantos:(m)=>`How many ribbons are ${m} long?`, cuantosEs:(m)=>`¿Cuántos pedazos de cinta miden ${m} de largo?`, losEs:"los pedazos de cinta", todosEs:"todos los pedazos de cinta"}
+];
+function datosPlot(reto, beaker){
+  const ctxP = beaker ? CONTEXTOS_PLOT[2] : elegir(CONTEXTOS_PLOT);
+  const den = reto ? 8 : elegir([4, 4, 2]);
+  const pasos = den === 2 ? 4 : den;               // número de saltos en la recta
+  const ini = (den === 2 ? azar(0, 1) * 2 : azar(0, 1) * den) + (ctxP.u === "L" ? 0 : den);
+  let cuentas;
+  for(let i=0;i<60;i++){
+    cuentas = Array.from({length:pasos + 1}, ()=> Math.random() < 0.3 ? 0 : azar(1, reto ? 4 : 3));
+    const usadas = cuentas.filter(c=>c > 0).length, total = cuentas.reduce((a, b)=>a + b, 0);
+    if(usadas >= 3 && total >= (reto ? 7 : 5) && total <= 13 && new Set(cuentas).size >= 3) break;
+  }
+  if(ini === 0 && cuentas[0] > 0){ cuentas[1] += cuentas[0]; cuentas[0] = 0; }   // nada mide 0
+  return {...ctxP, ini, den, cuentas, n:cuentas.reduce((a, b)=>a + b, 0)};
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = String(texto)
+    .replace(/10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (s, x)=>{ const k = Number(x.split("").map(c=>Object.keys(SUP).find(d=>SUP[d] === c)).join("")); return es ? `10 a la ${ORD_ES[k] || k} potencia` : `10 to the ${ORD_EN[k] || k} power`; });
+  t = fracEnVoz(decEnVoz(unidadEnVoz(t, es), es), es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/−/g, es ? " menos " : " minus ").replace(/ R (?=\d)/g, es ? " residuo " : " remainder ").replace(/ → /g, ", ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ = /g, es ? " es igual a " : " equals ")
+    .replace(/1\/10\b/g, es ? "un décimo" : "one tenth").replace(/1\/100\b/g, es ? "un centésimo" : "one hundredth").replace(/1\/1000\b/g, es ? "un milésimo" : "one thousandth");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g5-01-place-value-powers-of-ten.html#potencias */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista, larga){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{ if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, typeof pista === "function" ? pista(x) : pista); });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+/* Completa con valores distintos hasta tener n opciones */
+function completar(lista, n, extra){ let i = 1; while(lista.length < n && i < 50){ const v = extra(i++); if(v !== null && !lista.includes(v)) lista.push(v); } return lista; }
+
+/* ============ Rondas ============ */
+function piensaEl(txt){ const p = document.createElement("p"); p.className = "piensa"; p.textContent = txt; return p; }
+function tablaConvEl(sis, cat){
+  const d = document.createElement("div"); d.className = "tabla-conv";
+  d.innerHTML = `<strong>${NOM_CAT[cat]} · ${sis === "c" ? "customary units" : "metric units"}</strong><ul>${TABLA_CONV[sis][cat].map(x=>`<li>${x}</li>`).join("")}</ul>`;
+  return d;
+}
+/* Completa una lista de distractores [[texto, pista]] sin repetir ni coincidir con la respuesta */
+function armar(bien, malos, n){
+  const lista = [bien], pistas = {};
+  malos.forEach(([s, p])=>{ if(s && lista.length < n && !lista.includes(s)){ lista.push(s); pistas[s] = p; } });
+  return {lista, pistas};
+}
+
+function nuevaRonda(){
+  limpiar();
+  const t = T, esc = $("escena"), reto = S.reto;
+
+  /* --- 1. Convertir unidades (5.MD.1) --- */
+  if(S.juego === "convertir"){
+    const tipo = reto ? elegir(["dec","dec","decChico","resto","pasos","entero"]) : elegir(["chico","chico","grande"]);
+    if(tipo === "chico" || tipo === "grande" || tipo === "entero"){
+      const cv = elegir(CONV.filter(c=> reto || !c.reto));
+      const f = cv.f, g = cv.g, p = cv.p;
+      const aChico = tipo === "chico" || (tipo === "entero" && Math.random() < 0.5);
+      const a = reto ? azar(4, 15) : azar(2, 9);              // unidades grandes
+      const b = a * f;                                        // unidades pequeñas
+      const malos = [];
+      let bien, enunciado, ayuda, fin;
+      if(aChico){
+        bien = `${fmtEntero(b)} ${p}`;
+        if((a * 1000) % f === 0) malos.push([`${fmt(a * 1000 / f)} ${p}`, t.pistaDividio(g, p, f)]);
+        if(cv.sis === "m"){ malos.push([`${fmtEntero(b * 10)} ${p}`, t.pistaFactor(g, p, f)]); malos.push([`${fmtEntero(b / 10)} ${p}`, t.pistaFactor(g, p, f)]); }
+        else malos.push([`${fmtEntero(a * 10)} ${p}`, t.pistaDiez(g, p, f)]);
+        malos.push([`${fmtEntero(a + f)} ${p}`, t.pistaSumo(g, p, f)]);
+        enunciado = t.convAChico(String(a), g, p); ayuda = ES.convAChico(String(a), g, p);
+        fin = t.convFinChico(a, g, fmtEntero(f), fmtEntero(b), p);
+        esc.insertAdjacentHTML("beforeend", `<div class="par-num"><span>${a} ${g}</span><span>=</span><span class="signo-c">?</span><span>${p}</span></div>`);
+        if(!reto){ esc.appendChild(tablaConvEl(cv.sis, cv.cat)); esc.appendChild(piensaEl(t.convPiensaChico(g, p))); }
+      } else {
+        bien = `${a} ${g}`;
+        malos.push([`${fmtEntero(b * f)} ${g}`, t.pistaMultiplico(g, p, f)]);
+        if(cv.sis === "m"){ malos.push([`${fmtEntero(a * 10)} ${g}`, t.pistaFactor(g, p, f)]); malos.push([`${fmt(a * 100)} ${g}`, t.pistaFactor(g, p, f)]); }
+        else if(f !== 10) malos.push([`${fmt(b * 100)} ${g}`, t.pistaDiez(g, p, f)]);
+        if(b - f > 0) malos.push([`${fmtEntero(b - f)} ${g}`, `Subtracting ${f} takes away only one ${nomU(g, true)}. Divide by ${f} to find how many groups of ${f} there are.`]);
+        enunciado = t.convAGrande(fmtEntero(b), p, g); ayuda = ES.convAGrande(fmtEntero(b), p, g);
+        fin = t.convFinGrande(fmtEntero(b), p, fmtEntero(f), a, g);
+        esc.insertAdjacentHTML("beforeend", `<div class="par-num"><span>${fmtEntero(b)} ${p}</span><span>=</span><span class="signo-c">?</span><span>${g}</span></div>`);
+        if(!reto){ esc.appendChild(tablaConvEl(cv.sis, cv.cat)); esc.appendChild(piensaEl(t.convPiensaGrande(g, p))); }
+      }
+      ponerInstruccion(enunciado, null, ayuda);
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>{ const s = esc.querySelector(".signo-c"); s.textContent = bien.split(" ")[0]; s.classList.add("lleno"); acertar(fin); }, (x)=> pistas[x] || t.pistaFactor(g, p, f));
+      return;
+    }
+    if(tipo === "dec" || tipo === "decChico"){
+      /* métricas con decimales: 5 cm = 0.05 m ; 2.5 m = 250 cm */
+      const cv = elegir(CONV.filter(c=>c.sis === "m"));
+      const f = cv.f, g = cv.g, p = cv.p, k = String(f).length - 1;
+      const malos = [];
+      let bien, enunciado, ayuda, fin, izq, der;
+      if(tipo === "dec"){
+        let b;
+        do{ b = elegir([azar(1, 9), azar(11, 99), azar(101, 999), azar(1001, 2999)]); } while(b % 10 === 0 || b >= f * 10);
+        const r = b * 1000 / f;                                  // milésimas de la unidad grande
+        bien = `${fmt(r)} ${g}`;
+        malos.push([`${fmtEntero(b * f)} ${g}`, t.pistaMultiplico(g, p, f)]);
+        malos.push([`${fmt(r * 10)} ${g}`, t.pistaFactor(g, p, f)]);
+        if(r % 10 === 0) malos.push([`${fmt(r / 10)} ${g}`, t.pistaFactor(g, p, f)]);
+        else malos.push([`${fmt(r * 100)} ${g}`, t.pistaFactor(g, p, f)]);
+        enunciado = t.convAGrande(fmtEntero(b), p, g); ayuda = ES.convAGrande(fmtEntero(b), p, g);
+        fin = `${fmtEntero(b)} ${p} = ${fmtEntero(b)} ÷ ${fmtEntero(f)} = ${fmt(r)} ${g}. Dividing by ${fmtEntero(f)} moves each digit ${k} ${k === 1 ? "place" : "places"} to the right.`;
+        izq = `${fmtEntero(b)} ${p}`; der = g;
+      } else {
+        const a = numAzar(1, azar(1, k));
+        const r = a * f / 1000;
+        bien = `${fmtEntero(r)} ${p}`;
+        const ceros = fmt(a) + "0".repeat(k);
+        malos.push([`${ceros} ${p}`, `Writing zeros after the digits of a decimal doesn't change its value: ${ceros} is still ${fmt(a)}. Multiply by ${fmtEntero(f)}: move each digit ${k} ${k === 1 ? "place" : "places"} to the left.`]);
+        if(a % f === 0) malos.push([`${fmt(a / f)} ${p}`, t.pistaDividio(g, p, f)]);
+        malos.push([`${fmtEntero(r * 10)} ${p}`, t.pistaFactor(g, p, f)]);
+        if(r % 10 === 0) malos.push([`${fmtEntero(r / 10)} ${p}`, t.pistaFactor(g, p, f)]);
+        else malos.push([`${fmt(r * 100)} ${p}`, t.pistaFactor(g, p, f)]);
+        enunciado = t.convAChico(fmt(a), g, p); ayuda = ES.convAChico(fmt(a), g, p);
+        fin = `${fmt(a)} ${g} = ${fmt(a)} × ${fmtEntero(f)} = ${fmtEntero(r)} ${p}. Multiplying by ${fmtEntero(f)} moves each digit ${k} ${k === 1 ? "place" : "places"} to the left.`;
+        izq = `${fmt(a)} ${g}`; der = p;
+      }
+      esc.insertAdjacentHTML("beforeend", `<div class="par-num"><span>${izq}</span><span>=</span><span class="signo-c">?</span><span>${der}</span></div>`);
+      ponerInstruccion(enunciado, null, ayuda);
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>{ const s = esc.querySelector(".signo-c"); s.textContent = bien.split(" ")[0]; s.classList.add("lleno"); acertar(fin); }, (x)=> pistas[x] || t.pistaFactor(g, p, f));
+      return;
+    }
+    if(tipo === "resto"){
+      /* 50 in = 4 ft 2 in : dividir y quedarse con el residuo */
+      const cv = elegir([CONV[0], CONV[3], CONV[1], CONV[4]]);
+      const f = cv.f, g = cv.g, p = cv.p;
+      const [n1] = nombresAzar(1);
+      let q, rr, b;
+      do{ q = azar(2, 6); rr = azar(1, f - 1); b = q * f + rr; } while(Math.floor(b / 10) === q && b % 10 === rr);
+      const cosa = {ft:["ribbon is","long",`La cinta de ${n1} mide`], lb:["bag of apples weighs","",`La bolsa de manzanas de ${n1} pesa`], yd:["rope is","long",`La cuerda de ${n1} mide`], gal:["fish tank holds","of water",`La pecera de ${n1} contiene`]}[g];
+      const bien = `${q} ${g} ${rr} ${p}`;
+      const malos = [[`${q}.${rr} ${g}`, t.pistaPuntoResto(q, rr, g, p, f)],
+                     [`${Math.floor(b / 10)} ${g} ${b % 10} ${p}`, t.pistaRestoDiez(g, p, f)],
+                     [`${q + 1} ${g} ${f - rr} ${p}`, t.pistaResto(g, p)],
+                     [`${fmtEntero(b * f)} ${g}`, t.pistaMultiplico(g, p, f)]];
+      const enun = `${n1}'s ${cosa[0]} ${b} ${p}${cosa[1] ? " " + cosa[1] : ""}. How much is that in ${nomU(g)} and ${nomU(p)}?`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(enun)}</p>`);
+      ponerInstruccion(enun, null, `${cosa[2]} ${b} ${nomUEs(p)}. ¿Cuánto es eso en ${nomUEs(g)} y ${nomUEs(p)}?`);
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>acertar(`${b} ÷ ${f} = ${q} R ${rr}, so ${b} ${p} = ${q} ${g} ${rr} ${p}. Check: ${q} × ${f} + ${rr} = ${b}.`), (x)=> pistas[x] || t.pistaResto(g, p));
+      return;
+    }
+    /* pasos: problema de varios pasos */
+    const [n1] = nombresAzar(1);
+    if(Math.random() < 0.5){
+      const lb = azar(2, 5), usa = azar(9, 15) + (Math.random() < 0.5 ? 16 : 0), r = lb * 16 - usa;
+      const enun = `${n1} has ${lb} lb of flour for baking. The cookies use ${usa} oz. How many ounces of flour are left?`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(enun)}</p>`);
+      esc.appendChild(pasosEl(["Change pounds to ounces.", "Subtract the ounces used."]));
+      ponerInstruccion(enun, null, `${n1} tiene ${lb} libras de harina para hornear. Las galletas usan ${usa} onzas. ¿Cuántas onzas de harina quedan?`);
+      const bien = `${r} oz`;
+      const malos = [[lb * 10 - usa > 0 ? `${lb * 10 - usa} oz` : null, `1 lb is 16 oz, not 10 oz. First: ${lb} × 16 = ${lb * 16} oz.`],
+                     [`${lb * 16} oz`, `That is all the flour, ${lb} lb in ounces. Now subtract the ${usa} oz used.`],
+                     [`${lb * 16 + usa} oz`, `The cookies use flour, so there is less left. Subtract; don't add.`]];
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>acertar(`${lb} lb = ${lb} × 16 = ${lb * 16} oz. Then ${lb * 16} − ${usa} = ${r} oz left.`), (x)=> pistas[x]);
+    } else {
+      let m, pz, cm, r;
+      do{ m = azar(2, 4); pz = azar(3, 5); cm = elegir([25, 30, 35, 40, 45, 55]); r = m * 100 - pz * cm; } while(r < 20);
+      const enun = `${n1} has a ribbon ${m} m long. ${n1} cuts ${pz} pieces that are ${cm} cm each for the science fair. How many centimeters of ribbon are left?`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(enun)}</p>`);
+      esc.appendChild(pasosEl(["Change meters to centimeters.", "Find how much was cut.", "Subtract."]));
+      ponerInstruccion(enun, null, `${n1} tiene una cinta de ${m} metros. Corta ${pz} pedazos de ${cm} centímetros cada uno para la feria de ciencias. ¿Cuántos centímetros de cinta quedan?`);
+      const bien = `${r} cm`;
+      const malos = [[`${m * 100 - cm} cm`, `${n1} cuts ${pz} pieces, not one. First: ${pz} × ${cm} = ${pz * cm} cm.`],
+                     [`${fmtEntero(m * 1000 - pz * cm)} cm`, `1 m is 100 cm, not 1,000 cm. ${m} m = ${m * 100} cm.`],
+                     [`${pz * cm} cm`, `That is how much ribbon was cut. Subtract it from ${m * 100} cm.`]];
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>acertar(`${m} m = ${m * 100} cm. ${pz} × ${cm} = ${pz * cm} cm cut. ${m * 100} − ${pz * cm} = ${r} cm left.`), (x)=> pistas[x]);
+    }
+    return;
+  }
+
+  /* --- 2. Diagrama de puntos (5.MD.2) --- */
+  if(S.juego === "diagrama"){
+    const tipo = reto ? elegir(["total","totalTodo","repartir","repartir","dif"]) : elegir(["cuantos","cuantos","dif","total"]);
+    let dp = datosPlot(reto, tipo === "repartir" || tipo === "totalTodo");
+    if(tipo === "repartir"){
+      for(let i=0;i<300;i++){ const S0 = dp.cuentas.reduce((a, c, j)=>a + c * (dp.ini + j), 0); if(S0 % dp.n === 0 && S0 / dp.n % dp.den !== 0) break; dp = datosPlot(reto, true); }
+    }
+    const val = (i)=> dp.ini + i;                              // numerador sobre dp.den
+    const u = dp.u, conU = (n)=> `${fmtFr(n, dp.den)} ${u}`;
+    const usados = dp.cuentas.map((c, i)=>c > 0 ? i : -1).filter(i=>i >= 0);
+    const [n1] = nombresAzar(1);
+    esc.insertAdjacentHTML("beforeend", dibujoPlot({...dp, leyenda:dp.leyenda}));
+    if(!reto) esc.appendChild(piensaEl(`Each jump on the line is ${medidaEn(1, dp.den, u)}.`));
+    const intro = `${n1} ${dp.quien}.`, introEs = `${n1} ${dp.quienEs}.`;
+    let enun, ayuda, bien, malos = [], fin;
+    if(tipo === "cuantos"){
+      const i = elegir(usados), c = dp.cuentas[i], v = fmtFr(val(i), dp.den);
+      enun = `${intro} ${dp.cuantos(medidaEn(val(i), dp.den, u))}`;
+      ayuda = `${introEs} ${dp.cuantosEs(medidaEs(val(i), dp.den, u))}`;
+      bien = String(c);
+      const vec = [i - 1, i + 1].filter(j=>j >= 0 && j < dp.cuentas.length && dp.cuentas[j] !== c);
+      vec.forEach(j=>malos.push([String(dp.cuentas[j]), t.pistaVecino(v)]));
+      malos.push([String(dp.n), t.pistaTodos]);
+      malos.push([String(c + 1), t.pistaContarX]); malos.push([String(Math.max(0, c - 1)), t.pistaContarX]);
+      fin = `There ${c === 1 ? "is 1 X mark" : "are " + c + " X marks"} above ${v}, so the answer is ${c}: each X is one ${dp.cosa1}.`;
+    } else if(tipo === "dif"){
+      const a = usados[0], z = usados[usados.length - 1], d = val(z) - val(a);
+      enun = `${intro} What is the difference between the greatest and the least measurement?`;
+      ayuda = `${introEs} ¿Cuál es la diferencia entre la medida mayor y la medida menor?`;
+      bien = conU(d);
+      malos.push([conU(val(z) + val(a)), t.pistaSumaDif]);
+      malos.push([`${z - a} ${u}`, t.pistaSaltos(`${fmtFr(1, dp.den)} ${u}`)]);
+      const cd = Math.abs(dp.cuentas[z] - dp.cuentas[a]);
+      if(cd > 0) malos.push([`${cd} ${u}`, t.pistaMarcas]);
+      malos.push([conU(d + 1), "Count the jumps between the least and the greatest again."]);
+      malos.push([conU(Math.max(1, d - 1)), "Count the jumps between the least and the greatest again."]);
+      fin = `The greatest is ${fmtFr(val(z), dp.den)} and the least is ${fmtFr(val(a), dp.den)}. ${fmtFr(val(z), dp.den)} − ${fmtFr(val(a), dp.den)} = ${conU(d)}.`;
+    } else if(tipo === "total"){
+      const cand = usados.filter(i=>dp.cuentas[i] >= 2 && val(i) % dp.den !== 0);
+      const i = cand.length ? elegir(cand) : usados.find(j=>val(j) % dp.den !== 0) ?? usados[0];
+      if(dp.cuentas[i] < 2) dp.cuentas[i] = 2;
+      const c = dp.cuentas[i], v = fmtFr(val(i), dp.den);
+      esc.innerHTML = ""; esc.insertAdjacentHTML("beforeend", dibujoPlot(dp));
+      if(!reto) esc.appendChild(piensaEl(`Each jump on the line is ${medidaEn(1, dp.den, u)}.`));
+      const que = u === "L" ? "water" : "length";
+      enun = `${intro} What is the total ${que} of the ${dp.cosa} at ${medidaEn(val(i), dp.den, u)}?`;
+      ayuda = `${introEs} ¿Cuál es el total ${u === "L" ? "de agua" : "del largo"} de ${dp.losEs} que marcan ${medidaEs(val(i), dp.den, u)}?`;
+      bien = conU(c * val(i));
+      malos.push([conU(val(i)), t.pistaUno(v)]);
+      malos.push([conU(c * dp.den + val(i)), t.pistaEnteros(c, v)]);
+      if(val(i) < dp.den){ const gg = mcd(val(i), dp.den); malos.push([`${c * val(i) / gg}/${c * dp.den / gg} ${u}`, t.pistaDen]); }
+      malos.push([`${c} ${u}`, t.pistaCuantasMarcas]);
+      fin = `${c} × ${v} = ${conU(c * val(i))}.${c * val(i) >= dp.den ? " That is " + c + " groups of " + v + "." : ""}`;
+    } else if(tipo === "totalTodo"){
+      const S0 = dp.cuentas.reduce((a, c, j)=>a + c * val(j), 0);
+      const S1 = usados.reduce((a, j)=>a + val(j), 0);
+      enun = `${intro} What is the total amount of water in all the beakers?`;
+      ayuda = `${introEs} ¿Cuánta agua hay en total en todos los vasos?`;
+      bien = conU(S0);
+      malos.push([`${dp.n} ${u}`, t.pistaCuantasMarcas]);
+      malos.push([conU(S1), t.pistaUnaVez]);
+      const j = elegir(usados.filter(k=>dp.cuentas[k] > 0));
+      malos.push([conU(S0 - dp.cuentas[j] * val(j)), t.pistaFalta(fmtFr(val(j), dp.den))]);
+      fin = `Add every X: ${usados.map(k=>`${dp.cuentas[k]} × ${fmtFr(val(k), dp.den)}`).join(" + ")} = ${conU(S0)}.`;
+    } else {
+      /* repartir en partes iguales: como en el estándar, el agua de todos los vasos se reparte igual */
+      const S0 = dp.cuentas.reduce((a, c, j)=>a + c * val(j), 0), n = dp.n;
+      enun = `${intro} If all the water were poured out and shared equally among the ${n} beakers, how much would each beaker hold?`;
+      ayuda = `${introEs} Si toda el agua se vaciara y se repartiera en partes iguales entre los ${n} vasos, ¿cuánta agua tendría cada vaso?`;
+      bien = `${fmtFr(S0, dp.den * n)} ${u}`;
+      malos.push([conU(S0), t.pistaTotalRep(n)]);
+      if(usados.length !== n) malos.push([`${fmtFr(S0, dp.den * usados.length)} ${u}`, t.pistaColumnas(n, usados.length)]);
+      const moda = dp.cuentas.indexOf(Math.max(...dp.cuentas));
+      malos.push([conU(val(moda)), t.pistaModa]);
+      malos.push([`${fmtFr(S0, dp.den * (n + 1))} ${u}`, `Divide by the number of beakers: there are ${n}.`]);
+      fin = `Total: ${usados.map(k=>`${dp.cuentas[k]} × ${fmtFr(val(k), dp.den)}`).join(" + ")} = ${conU(S0)}. Shared by ${n}: ${fmtFr(S0, dp.den)} ÷ ${n} = ${fmtFr(S0, dp.den * n)} ${u} each.`;
+    }
+    ponerInstruccion(enun, null, ayuda);
+    const {lista, pistas} = armar(bien, malos, 4);
+    opcionesTexto(lista, bien, ()=>acertar(fin), (x)=> pistas[x] || t.pistaContarX);
+    return;
+  }
+
+  /* --- 3. Contar cubos (5.MD.3, 5.MD.4) --- */
+  if(S.juego === "cubos"){
+    const l = reto ? azar(3, 5) : azar(2, 4), w = reto ? azar(2, 4) : azar(2, 3), h = reto ? azar(2, 4) : azar(2, 3);
+    const V = l * w * h;
+    const un = reto ? elegir([["cm³","centimeter"],["in³","inch"],["ft³","foot"],["","sugar cube"]]) : ["",""];
+    const [uc, lado] = un;
+    esc.insertAdjacentHTML("beforeend", dibujoCubos(l, w, h, !reto));
+    if(!reto) esc.appendChild(piensaEl(`Count the cubes in one layer. Then count the layers.`));
+    const caras = l * w + l * h + w * h, visibles = V - (l - 1) * (w - 1) * (h - 1);
+    const conU = (n, cuad)=> uc ? `${n} ${cuad ? uc.replace("³", "²") : uc}` : `${n} ${n === 1 ? "cube" : "cubes"}`;
+    let enun, ayuda;
+    if(!reto){ enun = "How many unit cubes are in the box?"; ayuda = "¿Cuántos cubos unitarios hay en la caja?"; }
+    else if(uc){ enun = `Each cube is 1 ${lado} on each side. What is the volume of the box?`; ayuda = `Cada cubo mide 1 ${({centimeter:"centímetro",inch:"pulgada",foot:"pie"})[lado]} de lado. ¿Cuál es el volumen de la caja?`; }
+    else { enun = "Selena packs sugar cubes into a box with no gaps. What is the volume in sugar cubes?"; ayuda = "Selena llena una caja con cubos de azúcar sin dejar huecos. ¿Cuál es el volumen en cubos de azúcar?"; }
+    const bien = conU(V);
+    const malos = [[conU(caras), t.pistaCaras], [conU(l * w), t.pistaCapa(h)], [conU(visibles), t.pistaVisibles], [conU(l + w + h), t.pistaSumaAristas]];
+    if(reto && uc) malos.splice(1, 0, [conU(V, true), t.pistaCuadradas]);
+    ponerInstruccion(enun, null, ayuda);
+    const {lista, pistas} = armar(bien, malos, 4);
+    opcionesTexto(lista, bien, ()=>acertar(`One layer has ${l} × ${w} = ${l * w} cubes, and there are ${h} layers: ${l * w} × ${h} = ${V}. The volume is ${conU(V)}${uc ? "" : ""}.`), (x)=> pistas[x] || t.pistaCaras);
+    return;
+  }
+
+  /* --- 4. Fórmulas del volumen (5.MD.5) --- */
+  if(S.juego === "formula"){
+    const tipo = reto ? elegir(["lwh","Bh","falta","faltaB"]) : "lwh";
+    const u = elegir(["cm","in","ft","m"]), u3 = u + "³", u2 = u + "²";
+    const ue = UN[u3], [n1] = nombresAzar(1);
+    if(tipo === "lwh"){
+      const l = reto ? azar(4, 12) : azar(2, 6), w = reto ? azar(3, 9) : azar(2, 4), h = reto ? azar(3, 10) : azar(2, 5), V = l * w * h;
+      esc.insertAdjacentHTML("beforeend", dibujoCaja(l, w, h, u, !reto));
+      if(!reto) esc.insertAdjacentHTML("beforeend", `<p class="formula-l">V = l × w × h</p>`);
+      ponerInstruccion(`What is the volume of the box?`, `What is the volume of a box ${l} ${u} long, ${w} ${u} wide and ${h} ${u} tall?`, `¿Cuál es el volumen de la caja? Mide ${l} × ${w} × ${h} (${UN[u][3]}).`);
+      const bien = `${fmtEntero(V)} ${u3}`;
+      const malos = [[`${l + w + h} ${u3}`, t.pistaSumaDim], [`${l * w} ${u3}`, t.pistaBase], [`${fmtEntero(V)} ${u2}`, t.pistaCuadradas], [`${l * h} ${u3}`, t.pistaDosDim], [`${w * h} ${u3}`, t.pistaDosDim]];
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>acertar(`V = l × w × h = ${l} × ${w} × ${h} = ${fmtEntero(V)} ${u3}.`), (x)=> pistas[x]);
+      return;
+    }
+    if(tipo === "Bh"){
+      const B = azar(12, 60), h = azar(3, 12), V = B * h;
+      const cosa = elegir([["fish tank","de la pecera"],["planter box","de la jardinera"],["toy chest","del baúl de juguetes"]]);
+      const enun = `The base of ${n1}'s ${cosa[0]} has an area of ${B} ${u2}. It is ${h} ${u} tall. What is its volume?`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(enun)}</p>`);
+      esc.insertAdjacentHTML("beforeend", `<p class="formula-l">B = ${B} ${u2} · h = ${h} ${u} · V = ?</p>`);
+      ponerInstruccion(enun, null, `La base ${cosa[1]} de ${n1} tiene un área de ${B} ${UN[u2][3]}. Mide ${h} ${UN[u][3]} de alto. ¿Cuál es su volumen?`);
+      const bien = `${fmtEntero(V)} ${u3}`;
+      const malos = [[`${B + h} ${u3}`, t.pistaBmasH], [`${B} ${u3}`, t.pistaBase], [`${fmtEntero(V)} ${u2}`, t.pistaCuadradas]];
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>acertar(`V = B × h = ${B} × ${h} = ${fmtEntero(V)} ${u3}. The base holds ${B} cubes in one layer, and there are ${h} layers.`), (x)=> pistas[x]);
+      return;
+    }
+    if(tipo === "falta"){
+      const l = azar(3, 10), w = azar(2, 8), h = azar(2, 9), V = l * w * h;
+      const enun = `A box has a volume of ${fmtEntero(V)} ${u3}. It is ${l} ${u} long and ${w} ${u} wide. How tall is it?`;
+      esc.insertAdjacentHTML("beforeend", dibujoCaja(l, w, h, u, false, null, true));
+      esc.insertAdjacentHTML("beforeend", `<p class="formula-l">V = ${fmtEntero(V)} ${u3}</p>`);
+      ponerInstruccion(enun, null, `Una caja tiene un volumen de ${fmtEntero(V)} ${UN[u3][3]}. Mide ${l} ${UN[u][3]} de largo y ${w} de ancho. ¿Cuánto mide de alto?`);
+      const bien = `${h} ${u}`;
+      const malos = [];
+      if(V - l - w > 0) malos.push([`${fmtEntero(V - l - w)} ${u}`, t.pistaRestaFalta]);
+      if(V % l === 0) malos.push([`${fmtEntero(V / l)} ${u}`, t.pistaDivUno(l)]);
+      if(l * w !== h) malos.push([`${l * w} ${u}`, t.pistaEsBase]);
+      malos.push([`${h} ${u3}`, t.pistaLargoCubico]);
+      const {lista, pistas} = armar(bien, malos, 4);
+      opcionesTexto(lista, bien, ()=>acertar(`The base is ${l} × ${w} = ${l * w} ${u2}. h = ${fmtEntero(V)} ÷ ${l * w} = ${h} ${u}. Check: ${l} × ${w} × ${h} = ${fmtEntero(V)}.`), (x)=> pistas[x] || t.pistaRestaFalta);
+      return;
+    }
+    const B = azar(10, 40), h = azar(3, 12), V = B * h;
+    const enun = `${n1} builds a box with a volume of ${fmtEntero(V)} ${u3}. The area of the base is ${B} ${u2}. How tall is the box?`;
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(enun)}</p>`);
+    esc.insertAdjacentHTML("beforeend", `<p class="formula-l">V = B × h → ${fmtEntero(V)} = ${B} × ?</p>`);
+    ponerInstruccion(enun, null, `${n1} construye una caja con un volumen de ${fmtEntero(V)} ${UN[u3][3]}. El área de la base es ${B} ${UN[u2][3]}. ¿Cuánto mide de alto la caja?`);
+    const bien = `${h} ${u}`;
+    const malos = [[`${fmtEntero(V - B)} ${u}`, t.pistaRestaB], [`${h} ${u3}`, t.pistaLargoCubico], [`${fmtEntero(V * B)} ${u}`, t.pistaMultFalta]];
+    const {lista, pistas} = armar(bien, malos, 4);
+    opcionesTexto(lista, bien, ()=>acertar(`V = B × h, so h = ${fmtEntero(V)} ÷ ${B} = ${h} ${u}. Check: ${B} × ${h} = ${fmtEntero(V)}.`), (x)=> pistas[x]);
+    return;
+  }
+
+  /* --- 5. Dos cajas juntas (5.MD.5c) --- */
+  if(S.juego === "compuesta"){
+    const u = elegir(["cm","in","ft","m"]), u3 = u + "³";
+    const l1 = azar(2, 4), l2 = azar(2, reto ? 5 : 4), w = azar(2, reto ? 4 : 3), h1 = azar(4, reto ? 7 : 6), h2 = azar(1, h1 - 2);
+    const L = l1 + l2, VA = l1 * w * h1, VB = l2 * w * h2, V = VA + VB;
+    esc.insertAdjacentHTML("beforeend", dibujoCompuesta({l1, l2, w, h1, h2}, u, reto));
+    if(!reto) esc.appendChild(piensaEl("Volume of box A + volume of box B"));
+    const enun = reto ? `The figure is made of two boxes. Find the length of box B first. What is the total volume?` : `The figure is made of two boxes, A and B. What is its total volume?`;
+    const ayuda = reto ? `La figura está formada por dos cajas. Primero halla el largo de la caja B. ¿Cuál es el volumen total?` : `La figura está formada por dos cajas, A y B. ¿Cuál es su volumen total?`;
+    const voz = reto ? `${enun} The whole figure is ${L} ${u} long and ${w} ${u} wide. Box A is ${l1} ${u} long and ${h1} ${u} tall. Box B is ${h2} ${u} tall.`
+                     : `${enun} Both boxes are ${w} ${u} wide. Box A is ${l1} ${u} long and ${h1} ${u} tall. Box B is ${l2} ${u} long and ${h2} ${u} tall.`;
+    ponerInstruccion(enun, voz, ayuda);
+    const bien = `${fmtEntero(V)} ${u3}`;
+    const malos = [[`${fmtEntero(VA + L * w * h2)} ${u3}`, t.pistaDoble], [`${fmtEntero(L * w * h1)} ${u3}`, t.pistaCajaGrande],
+                   [`${fmtEntero(VA)} ${u3}`, t.pistaSoloUna], [`${fmtEntero(VB)} ${u3}`, t.pistaSoloUna], [`${fmtEntero(VA * VB)} ${u3}`, t.pistaMultVol]];
+    const {lista, pistas} = armar(bien, malos, 4);
+    opcionesTexto(lista, bien, ()=>acertar(`${reto ? `Box B is ${L} − ${l1} = ${l2} ${u} long. ` : ""}A: ${l1} × ${w} × ${h1} = ${VA}. B: ${l2} × ${w} × ${h2} = ${VB}. Total: ${VA} + ${VB} = ${fmtEntero(V)} ${u3}.`), (x)=> pistas[x] || t.pistaDoble);
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (5.MD.1–5.MD.5): decidir y, en el Reto, explicar por qué --- */
+  if(S.juego === "razon"){
+    const [n1] = nombresAzar(1);
+    const tipos = reto ? ["divide","cmM","caras","orden","grande","beakers","cuadradas","lb10","decChico"] : ["divide","cmM","caras","orden","lb10","cuadradas"];
+    const tipo = elegir(tipos);
+    let dicho, verdad, expl, razones, dibujo = "";
+    if(tipo === "divide"){
+      const a = azar(2, 9);
+      dicho = `${n1}: “To change ${a} ft to inches, I divide by 12, because inches are small.”`;
+      verdad = false; expl = `Inches are small, so you need MORE of them: multiply. ${a} ft = ${a} × 12 = ${a * 12} in.`;
+      razones = [[`Smaller units mean more of them, so multiply by 12.`, true],
+                 [`It is right: when you change to a smaller unit, the number always gets smaller.`, false],
+                 [`It is wrong because there are 10 inches in a foot, so you multiply by 10.`, false]];
+    } else if(tipo === "cmM"){
+      const b = azar(2, 9);
+      dicho = `${n1}: “${b} cm = 0.0${b} m.”`;
+      verdad = true; expl = `1 m = 100 cm, so ${b} cm = ${b} ÷ 100 = 0.0${b} m, which is ${b} hundredths of a meter.`;
+      razones = [[`1 cm is 1/100 of a meter, so ${b} cm is ${b}/100 m.`, true],
+                 [`It is wrong: ${b} cm is 0.${b} m, because a meter is 10 centimeters long.`, false],
+                 [`It is wrong: ${b} cm = ${b * 100} m, because you multiply by 100 to change units.`, false]];
+    } else if(tipo === "caras"){
+      const l = azar(3, 4), w = 2, h = azar(2, 3), V = l * w * h, c = l * w + l * h + w * h;
+      dibujo = dibujoCubos(l, w, h, false, 300);
+      dicho = `${n1}: “This box has ${c} unit cubes. I counted all the squares I can see.”`;
+      verdad = false; expl = `Some squares belong to the same cube, and some cubes are hidden. One layer has ${l} × ${w} = ${l * w} cubes and there are ${h} layers: ${l * w} × ${h} = ${V} cubes.`;
+      razones = [[`Counting faces is not counting cubes; it has ${V}.`, true],
+                 [`It is right: every square you can see on the outside is one different unit cube.`, false],
+                 [`It is wrong: you have to add the length, width and height, so it has ${l + w + h} cubes.`, false]];
+    } else if(tipo === "orden"){
+      const a = azar(2, 5), b = azar(3, 6), c = azar(6, 9);
+      dicho = `${n1}: “A box ${a} in × ${b} in × ${c} in and a box ${c} in × ${b} in × ${a} in have the same volume.”`;
+      verdad = true; expl = `${a} × ${b} × ${c} = ${a * b * c} and ${c} × ${b} × ${a} = ${a * b * c}. You can multiply in any order, so both are ${a * b * c} in³.`;
+      razones = [[`Multiplying in any order gives the same product.`, true],
+                 [`It is wrong: the box that starts with the bigger number always holds more.`, false],
+                 [`It is wrong: a tall box always has a bigger volume than a short, wide box.`, false]];
+    } else if(tipo === "grande"){
+      const l1 = azar(2, 3), l2 = azar(2, 4), w = azar(2, 3), h1 = azar(5, 7), h2 = azar(2, 3);
+      const V = l1 * w * h1 + l2 * w * h2, M = (l1 + l2) * w * h1;
+      dibujo = dibujoCompuesta({l1, l2, w, h1, h2}, "cm", false, 320);
+      dicho = `${n1}: “The volume of this figure is ${l1 + l2} × ${w} × ${h1} = ${M} cm³.”`;
+      verdad = false; expl = `That treats the figure as one big box, but the top corner is empty. A: ${l1} × ${w} × ${h1} = ${l1 * w * h1}; B: ${l2} × ${w} × ${h2} = ${l2 * w * h2}; total ${V} cm³.`;
+      razones = [[`The figure is not one full box; add A and B.`, true],
+                 [`It is right: you always multiply the longest length, the width and the tallest height.`, false],
+                 [`It is wrong: you should multiply the volumes of box A and box B together.`, false]];
+    } else if(tipo === "beakers"){
+      const set = elegir([[[1,4],[2,4],[2,4],[3,4]], [[1,8],[3,8],[5,8],[7,8]], [[1,4],[1,4],[3,4],[3,4]], [[1,2],[1,4],[3,4],[1,2]]]);
+      const tot8 = set.reduce((a, [n, d])=>a + n * 8 / d, 0), cada = fmtFr(tot8, 32);
+      const ok = Math.random() < 0.6, dice = ok ? cada : fmtFr(tot8, 8);
+      const lista = set.map(([n, d])=>fmtFr(n, d)).join(" L, ") + " L";
+      dicho = `${n1}: “Four beakers hold ${lista}. If we share all the water equally, each beaker gets ${dice} L.”`;
+      verdad = ok;
+      expl = `The total is ${fmtFr(tot8, 8)} L. Shared by 4: ${fmtFr(tot8, 8)} ÷ 4 = ${cada} L in each beaker.`;
+      razones = ok ? [[`The total is ${fmtFr(tot8, 8)} L, and ${fmtFr(tot8, 8)} ÷ 4 = ${cada}.`, true],
+                      [`It is wrong: each beaker keeps its own amount, so there is no equal share at all.`, false],
+                      [`It is wrong: the equal share is the total, ${fmtFr(tot8, 8)} L, in every beaker.`, false]]
+                   : [[`${dice} L is the total; each gets ${cada} L.`, true],
+                      [`It is right: when you share the water, every beaker gets the whole total amount.`, false],
+                      [`It is wrong: each beaker gets the biggest amount, because the water is shared.`, false]];
+    } else if(tipo === "cuadradas"){
+      const l = azar(3, 6), w = azar(2, 5), h = azar(2, 6);
+      dicho = `${n1}: “My box is ${l} in by ${w} in by ${h} in, so its volume is ${l * w * h} square inches.”`;
+      verdad = false; expl = `${l} × ${w} × ${h} = ${l * w * h} is right, but volume is measured in cubic units: ${l * w * h} in³ (cubic inches).`;
+      razones = [[`Volume uses cubic units, not square units.`, true],
+                 [`It is right: square inches and cubic inches are just two names for the same unit.`, false],
+                 [`It is wrong: the number should be ${l + w + h}, because you add the three sides.`, false]];
+    } else if(tipo === "lb10"){
+      const a = azar(2, 6);
+      dicho = `${n1}: “${a} lb = ${a * 10} oz.”`;
+      verdad = false; expl = `1 lb = 16 oz, not 10 oz. ${a} lb = ${a} × 16 = ${a * 16} oz.`;
+      razones = [[`1 pound is 16 ounces, so it is ${a * 16} oz.`, true],
+                 [`It is right: every unit conversion uses 10, 100 or 1,000, like the metric system does.`, false],
+                 [`It is wrong: you divide, so ${a} lb is less than 1 ounce of the same weight.`, false]];
+    } else {
+      const a = azar(1, 4) * 1000 + elegir([250, 500, 750]);
+      dicho = `${n1}: “${fmt(a)} L = ${fmtEntero(a)} mL.”`;
+      verdad = true; expl = `1 L = 1,000 mL, so ${fmt(a)} × 1,000 = ${fmtEntero(a)} mL. Each digit moves 3 places to the left.`;
+      razones = [[`1 L = 1,000 mL, and ${fmt(a)} × 1,000 = ${fmtEntero(a)}.`, true],
+                 [`It is wrong: ${fmt(a)} L = ${fmt(a)}000 mL, because you write three zeros at the end.`, false],
+                 [`It is wrong: you divide by 1,000, because milliliters are smaller than liters.`, false]];
+    }
+    if(dibujo) esc.insertAdjacentHTML("beforeend", dibujo);
+    const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
+    esc.appendChild(p);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opcionesTexto(razones.map(r=>r[0]), buena, ()=>acertar(expl), t.pistaPorque, true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const ln = '<i class="linea"></i>';
+  $("hoja-conv").innerHTML = ["4 ft = ____ in", "5 cm = ____ m", "3 lb = ____ oz", "2.5 L = ____ mL", "48 in = ____ ft", "750 g = ____ kg", "6 qt = ____ pt", "50 in = ____ ft ____ in"]
+    .map(s=>`<div>${s.replace(/____/g, ln)}</div>`).join("");
+  $("hoja-plot").innerHTML = dibujoPlot({ini:4, den:8, cuentas:[1,0,2,3,0,2,1,1,0], titulo:"Leaf lengths (inches)", leyenda:"Each × is one leaf", u:"in"}, 520);
+  $("hoja-plot-q").innerHTML = ["a) How many leaves are 7/8 inch long? " + ln, "b) What is the difference between the longest and the shortest leaf? " + ln, "c) What is the total length of the leaves that are 3/4 inch long? " + ln]
+    .map(s=>`<div>${s}</div>`).join("");
+  $("hoja-vol").innerHTML = `<div>${dibujoCubos(4, 2, 3, false, 220)}<p>Volume = ${ln} cubic units</p></div><div>${dibujoCaja(6, 3, 4, "cm", false, 260)}<p>V = ${ln} cm³</p></div><div><p>A box has a base of B = 15 in² and a height of 4 in.</p><p>V = ${ln} in³</p></div>`;
+  $("hoja-comp").innerHTML = `<div>${dibujoCompuesta({l1:3, l2:4, w:2, h1:6, h2:2}, "ft", false, 300)}</div><div><p>Box A: ${ln} ft³</p><p>Box B: ${ln} ft³</p><p>Total: ${ln} ft³</p></div>`;
+  $("hoja-razon").textContent = "Athena: “To change 5 ft to inches, I divide by 12, because inches are small.” Is she right? Why?";
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+pintarHoja();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="5"></script>
+</body>
+</html>

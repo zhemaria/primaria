@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<!--
+  Fifth Grade Math — Fractions as division
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 5: 5.NF.3
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fractions as division · Fifth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Fifth grade fraction games with Lumi: sharing pizzas and brownies equally, a/b = a ÷ b, improper fractions and mixed numbers, estimating between whole numbers, word problems and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Fracciones apiladas y modelos ---------- */
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.02;margin:0 .1em;font-size:.8em;position:relative}
+.frac .num{border-bottom:.09em solid currentColor;padding:0 .14em .05em;display:block}
+.frac .den{padding:.05em .14em 0;display:block}
+.opcion-texto.larga .frac{font-size:.78em}
+.problema .frac,.aviso .frac{font-size:.82em}
+.modelo{width:100%;max-width:620px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.modelo svg{width:100%;height:auto;display:block}
+.leyenda{margin:0;font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;max-width:52ch}
+.regla{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;background:var(--acento-claro);
+  border-radius:16px;padding:8px 16px;font-weight:700;font-size:clamp(20px,4vw,30px);color:var(--acento)}
+.regla small{font-size:.5em;color:var(--tinta-suave);font-weight:600;display:block;text-align:center}
+.cuenta{font-weight:700;color:var(--acento);font-size:clamp(19px,3.6vw,26px);text-align:center;margin:0}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1>Fractions as division</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./">🏠 All games</a>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi5-calculadora.jpg" alt="" class="lumi-d" width="450" height="595"></span><span>🍕</span><span>🍫</span><span>➗</span><span>💬</span></div>
+    <h2>Share it fair and square!</h2>
+    <p id="txt-portada">A fraction is also a division: <span class="frac"><span class="num">3</span><span class="sr-only">/</span><span class="den">4</span></span> means 3 ÷ 4. When 4 friends share 3 pizzas equally, each friend gets <span class="frac"><span class="num">3</span><span class="sr-only">/</span><span class="den">4</span></span> of a pizza. With Lumi you will share pizzas and brownies, write divisions as fractions, turn improper fractions into mixed numbers, find between which two whole numbers an answer lies, solve word problems and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Una fracción también es una división: 3/4 quiere decir 3 ÷ 4. Si 4 amigos se reparten 3 pizzas en partes iguales, cada uno recibe 3/4 de pizza. Con Lumi vas a repartir pizzas y brownies, escribir divisiones como fracciones, convertir fracciones impropias en números mixtos, descubrir entre qué dos números enteros está una respuesta, resolver problemas y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: fractions as division</button></p>
+    <p>Aligned to the Illinois fifth grade mathematics standard 5.NF.3 (interpret a fraction as division of the numerator by the denominator, a/b = a ÷ b; solve word problems involving division of whole numbers leading to answers in the form of fractions or mixed numbers, e.g., by using visual fraction models or equations to represent the problem; for example, if 9 people want to share a 50-pound sack of rice equally by weight, how many pounds of rice should each person get? Between what two whole numbers does your answer lie?). At the Easy level a model is on screen: pizzas, sandwiches and brownie pans cut and dealt out, fraction bars grouped into wholes, a double number line with the multiples of the divisor, and an estimate before each word problem; at the Challenge level the work is with the numbers alone, with bigger numbers, two-step word problems, mixed numbers in both directions, and in “Who is right?” the child must also choose the reason. Fractions appear stacked, and the voice reads them the way they are said in class (“three fourths”, “three and two fifths”). The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #compartir, #escribir, #mixto, #entre, #problemas and #razon.</p>
+    <p class="ayuda-es" lang="es">Alineado con el estándar de matemáticas de Illinois para quinto grado 5.NF.3 (interpretar una fracción como la división del numerador entre el denominador, a/b = a ÷ b; resolver problemas verbales de división de números enteros cuyas respuestas son fracciones o números mixtos, por ejemplo con modelos visuales de fracciones o ecuaciones; por ejemplo, si 9 personas se reparten por igual un saco de arroz de 50 libras, ¿cuántas libras recibe cada una? ¿Entre qué dos números enteros está la respuesta?). En el nivel Fácil hay un modelo en pantalla; en el Reto se trabaja solo con los números, con problemas de dos pasos, y en «¿Quién tiene razón?» también hay que elegir la razón. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Fractions as division</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Share equally. How much does each person get?</h3>
+  <div class="caja-h" id="hoja-compartir"></div>
+  <h3>2. Write the division as a fraction, or the fraction as a division.</h3>
+  <div class="caja-h" id="hoja-escribir"></div>
+  <h3>3. Write each improper fraction as a mixed number.</h3>
+  <div class="caja-h" id="hoja-mixto"></div>
+  <h3>4. Between which two whole numbers is the answer?</h3>
+  <div class="caja-h" id="hoja-entre"></div>
+  <h3>5. Solve. Draw a model or write an equation.</h3>
+  <p class="razon-h" id="hoja-problema"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Is it right? Explain why.</h3>
+  <p class="razon-h" id="hoja-razon"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés).
+   Los números mixtos se escriben con un espacio duro: "3 2/5" = 3 2/5. */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+const INICIAL = {"Israel":"Is","Daniel":"Da","Elías":"El","Sophia":"So","Athena":"At","Salma":"Sa","Selena":"Se"};
+const COSAS = {
+  pizza:   {s:"pizza", p:"pizzas", es:"pizza", esp:"pizzas", un:"una", cu:"Cuántas"},
+  sandwich:{s:"sandwich", p:"sandwiches", es:"sándwich", esp:"sándwiches", un:"un", cu:"Cuántos"},
+  brownie: {s:"brownie pan", p:"brownie pans", es:"bandeja de brownies", esp:"bandejas de brownies", un:"una", cu:"Cuántas"}
+};
+const ESP = " ";
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  /* 1. Compartir */
+  compPropio:(quien,n,c)=>`${quien} share ${n} ${c.p} equally. What part of a ${c.s} does each friend get?`,
+  compMixto:(p,n,c)=>`${p} friends share ${n} ${c.p} equally. How many ${c.p} does each friend get? Write a mixed number.`,
+  compAtras:(p,f,c)=>`${p} friends shared some ${c.p} equally. Each friend got ${f.includes(ESP) ? f + " " + c.p : f + " of a " + c.s}. How many ${c.p} were shared?`,
+  compFin:(n,p,c)=>`${n} ÷ ${p} = ${n}/${p}. Each ${c.s} is cut into ${p} equal pieces, and each friend gets 1 piece from each of the ${n} ${c.p}: ${n} pieces of 1/${p}.`,
+  compFinMixto:(n,p,q,r,m,c)=>`${n} ÷ ${p} = ${n}/${p} = ${m}. Each friend gets ${q} whole ${q === 1 ? c.s : c.p}, and then the friends share the ${r} left over: ${r}/${p} more.`,
+  compFinAtras:(p,f,n)=>`${p} × ${f} = ${n}. If each of ${p} friends got ${f}, then ${n} ÷ ${p} = ${f}, so there were ${n}.`,
+  pistaVolteo:(n,p)=>`That is ${p} ÷ ${n}. The things being shared are divided by the number of friends: ${n} ÷ ${p}.`,
+  pistaPedazo:(p,n)=>`1/${p} is just one piece. Each friend gets one piece from every one of the ${n}.`,
+  pistaOtroCorte:(n,p)=>`1/${n} would be one piece if each one were cut into ${n}. There are ${p} friends, so each one is cut into ${p} pieces.`,
+  pistaMixtoDen:(p)=>`The leftover pieces are shared by ${p} friends, so the denominator is ${p}.`,
+  pistaRedondeo:(n,p)=>`There are not enough for that: ${p} friends would need more than ${n}. Each friend gets a whole number and a fraction.`,
+  pistaAtrasDen:(n)=>`That is the denominator: the number of pieces in each one. Multiply the number of friends by the share.`,
+  pistaAtrasMult:"Multiply the number of friends by the fraction each one got, not the two numbers in the fraction.",
+  pistaAtrasSuma:"Adding doesn't work here. Each friend got the same share, so multiply the number of friends by the share.",
+  /* 2. Escribir */
+  escFrac:(a,b)=>`Write ${a} ÷ ${b} as a fraction.`,
+  escDiv:(f)=>`Write ${f} as a division.`,
+  escFalta:(f,a,b,cual)=>cual === "a" ? `What number is missing? ? ÷ ${b} = ${f}` : `What number is missing? ${a} ÷ ? = ${f}`,
+  escMixDiv:(m)=>`Which division is equal to ${m}?`,
+  escFinFrac:(a,b)=>`${a} ÷ ${b} = ${a}/${b}. The number being divided is the numerator, and the number you divide by is the denominator.`,
+  escFinDiv:(a,b)=>`${a}/${b} = ${a} ÷ ${b}. The fraction bar means “divided by”: numerator ÷ denominator.`,
+  escFinFalta:(a,b)=>`${a} ÷ ${b} = ${a}/${b}. The numerator is the number being divided; the denominator is the divisor.`,
+  escFinMix:(m,q,b,r,a)=>`${m} = ${q} × ${b}/${b} + ${r}/${b} = ${a}/${b}, and ${a}/${b} = ${a} ÷ ${b}.`,
+  pistaOrden:(a,b)=>`The order matters. The first number, ${a}, is the one being divided, so it goes on top.`,
+  pistaOrdenDiv:(a,b)=>`The numerator ${a} is the number being divided, so it comes first: ${a} ÷ ${b}.`,
+  pistaPor:"The fraction bar means divide, not multiply.",
+  pistaMenos:"The fraction bar means divide, not subtract.",
+  pistaTotal:(a,b)=>`That fraction compares ${a} with ${a + b}. In ${a} ÷ ${b}, the ${a} is split into ${b} equal parts.`,
+  pistaFaltaA:(b)=>`Look at the fraction: the numerator is the number being divided, and ${b} is the divisor.`,
+  pistaFaltaB:(a)=>`Look at the fraction: ${a} is the numerator, and the denominator is the divisor.`,
+  pistaFaltaProd:"Don't multiply. A fraction and its division use the same two numbers.",
+  pistaMixSuma:(q,b)=>`Each whole is ${b}/${b}, so ${q} wholes are ${q} × ${b} pieces, not ${q} pieces.`,
+  pistaMixMal:(q,b)=>`Multiply the whole number ${q} by the denominator ${b}, then add the numerator.`,
+  /* 3. Mixto */
+  mixA:(f)=>`Write ${f} as a mixed number.`,
+  mixB:(m)=>`Write ${m} as an improper fraction.`,
+  mixFinA:(a,b,q,r,m)=>`${a}/${b} = ${a} ÷ ${b} = ${q} R${r} = ${m}. There ${q === 1 ? "is 1 whole" : "are " + q + " wholes"} and ${r} ${r === 1 ? "piece" : "pieces"} of 1/${b} left over.`,
+  mixFinB:(m,q,b,r,a)=>`${m} = ${q} × ${b} + ${r} = ${a} pieces of 1/${b}, so ${m} = ${a}/${b}.`,
+  pistaCambio:(q,r)=>`You swapped them. The quotient ${q} is the whole number, and the remainder ${r} is the numerator.`,
+  pistaUnoMas:(b,q1,a)=>`Check the whole number: ${b} × ${q1} = ${b * q1}, which is more than ${a}.`,
+  pistaDenNum:(b)=>`The pieces are still 1/${b}, so the denominator stays ${b}.`,
+  pistaSumaMix:(q,b)=>`You added the whole number. Each whole is ${b}/${b}, so ${q} wholes are ${q * b}/${b}.`,
+  pistaSinResto:(r,b)=>`You forgot the extra ${r}/${b}. Add it to the wholes.`,
+  pistaMenosUno:(b,q,a)=>`${b} × ${q} = ${b * q}, and ${a} − ${b * q} is ${b} or more, so another whole fits: the whole number is bigger than ${q - 1}.`,
+  pistaMultMal:(q,b)=>`Multiply the whole number ${q} by the denominator ${b}, not by the numerator.`,
+  /* 4. Entre */
+  entreF:(a,b)=>`${a} ÷ ${b} is between which two whole numbers?`,
+  entreArroz:(n,a)=>`${n} people share a ${a}-pound sack of rice equally. Each gets ${a} ÷ ${n} pounds. Between which two whole numbers is that?`,
+  entreFrac:(f)=>`${f} is between which two whole numbers?`,
+  entreFin:(a,b,q,m)=>`${b} × ${q} = ${b * q} and ${b} × ${q + 1} = ${b * (q + 1)}. ${a} is between them, so ${a} ÷ ${b} = ${m} is between ${q} and ${q + 1}.`,
+  pistaBajo:(b,q,a)=>`${b} × ${q} = ${b * q} is still less than ${a}, so the answer is more than ${q}.`,
+  pistaAlto:(b,q1,a)=>`${b} × ${q1} = ${b * q1} is more than ${a}, so the answer is less than ${q1}.`,
+  pistaCero:(a,b)=>`A fraction can be greater than 1! ${a} is greater than ${b}, so ${a} ÷ ${b} is more than 1.`,
+  /* 5. Problemas */
+  pistaVolteoP:(a,b)=>`That is ${b} ÷ ${a}. Divide the total, ${a}, by the number of equal shares, ${b}.`,
+  pistaCociente:(r,b)=>`What about the ${r} left over? It can be shared too: ${r}/${b} more for each.`,
+  pistaResto:(r,b)=>`A remainder is not part of the answer here. Share the ${r} left over: each gets ${r}/${b} more.`,
+  pistaSobreTotal:(b)=>`The leftover is shared by ${b}, so each extra piece is 1/${b}. The denominator is ${b}.`,
+  pistaUnaParte:(b)=>`1/${b} is the share of only 1. Share the whole total.`,
+  pistaPaso1:"Read the problem again: there is a first step before you divide.",
+  probFin:(a,b,m,u)=>`${a} ÷ ${b} = ${a}/${b}${m !== `${a}/${b}` ? " = " + m : ""} ${u}. Check: the answer is between ${Math.floor(a / b)} and ${Math.floor(a / b) + 1}.`,
+  /* 6. ¿Quién tiene razón? */
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Think about which number is divided and what happens to the remainder.",
+  pistaPorque:"That reason doesn't explain it. Think about what the fraction bar means: numerator ÷ denominator.",
+  estrategias:[
+    ["I cut the wholes and dealt out the pieces","Great! Cutting each whole into equal pieces shows that a ÷ b = a/b."],
+    ["I read the fraction bar as “divided by”","Excellent! The numerator is divided by the denominator."],
+    ["I divided and used the remainder","Smart! The quotient is the whole number, and the remainder goes over the divisor."],
+    ["I estimated with multiplication facts","Awesome! 9 × 5 = 45 and 9 × 6 = 54, so 50 ÷ 9 is between 5 and 6."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  compPropio:(quien,n,c)=>`${quien} se reparten ${n} ${c.esp} en partes iguales. ¿Qué parte de ${c.un} ${c.es} recibe cada uno?`,
+  compMixto:(p,n,c)=>`${p} amigos se reparten ${n} ${c.esp} en partes iguales. ¿${c.cu} ${c.esp} recibe cada uno? Escribe un número mixto.`,
+  compAtras:(p,f,c)=>`${p} amigos se repartieron ${c.esp} en partes iguales. Cada uno recibió ${f.includes(ESP) ? f + " " + c.esp : f + " de " + c.un + " " + c.es}. ¿${c.cu} ${c.esp} se repartieron?`,
+  escFrac:(a,b)=>`Escribe ${a} ÷ ${b} como fracción.`,
+  escDiv:(f)=>`Escribe ${f} como una división.`,
+  escFalta:(f,a,b,cual)=>cual === "a" ? `¿Qué número falta? ? ÷ ${b} = ${f}` : `¿Qué número falta? ${a} ÷ ? = ${f}`,
+  escMixDiv:(m)=>`¿Qué división es igual a ${m}?`,
+  mixA:(f)=>`Escribe ${f} como número mixto.`,
+  mixB:(m)=>`Escribe ${m} como fracción impropia.`,
+  entreF:(a,b)=>`¿Entre qué dos números enteros está ${a} ÷ ${b}?`,
+  entreArroz:(n,a)=>`${n} personas se reparten por igual un saco de arroz de ${a} libras. Cada una recibe ${a} ÷ ${n} libras. ¿Entre qué dos números enteros está esa cantidad?`,
+  entreFrac:(f)=>`¿Entre qué dos números enteros está ${f}?`,
+  opcEntre:"Las opciones dicen «5 and 6» = 5 y 6.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"compartir", emoji:"🍕", en:"Share it equally",         es:"Repartir en partes iguales", meta:"3 pizzas, 4 friends: 3/4 each"},
+  {id:"escribir",  emoji:"✏️", en:"Fraction or division?",    es:"¿Fracción o división?",      meta:"7 ÷ 3 = 7/3"},
+  {id:"mixto",     emoji:"🧮", en:"Mixed numbers",            es:"Números mixtos",             meta:"17/5 = 3 R2 = 3 2/5"},
+  {id:"entre",     emoji:"📏", en:"Between which whole numbers?", es:"¿Entre qué números enteros?", meta:"50 ÷ 9 is between 5 and 6"},
+  {id:"problemas", emoji:"🍫", en:"Word problems",            es:"Problemas",                  meta:"Ribbon, rice, juice and a relay race"},
+  {id:"razon",     emoji:"💬", en:"Who is right?",            es:"¿Quién tiene razón?",        meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+
+/* ============ Fracciones ============
+   Toda fracción es un par de enteros; los números mixtos se escriben "q r/b" con espacio duro.
+   Se eligen numeradores y denominadores primos entre sí, así cada fracción ya está simplificada. */
+const mcd = (a, b)=>{ a = Math.abs(a); b = Math.abs(b); while(b){ [a, b] = [b, a % b]; } return a; };
+const fr = (a, b)=> `${a}/${b}`;
+/* a/b como número mixto (o entero, o fracción propia), ya simplificado */
+function mixtoDe(a, b){
+  const g = mcd(a, b); a /= g; b /= g;
+  const q = Math.floor(a / b), r = a % b;
+  if(r === 0) return String(q);
+  if(q === 0) return fr(r, b);
+  return `${q}${ESP}${fr(r, b)}`;
+}
+const mx = (q, r, b)=> `${q}${ESP}${fr(r, b)}`;
+/* Par de enteros primos entre sí al azar */
+function parCoprimo(aMin, aMax, bMin, bMax, cond){
+  for(let i=0;i<300;i++){
+    const a = azar(aMin, aMax), b = azar(bMin, bMax);
+    if(a !== b && mcd(a, b) === 1 && (!cond || cond(a, b))) return [a, b];
+  }
+  return [7, 3];
+}
+/* Fracciones apiladas: convierte "3 2/5" y "7/3" (ya escapados) en HTML con .frac.
+   El "/" queda oculto para la vista pero presente en textContent y para los lectores de pantalla. */
+const FRAC = (n, d)=> `<span class="frac"><span class="num">${n}</span><span class="sr-only">/</span><span class="den">${d}</span></span>`;
+function fracHTML(s){
+  return String(s).replace(/(\d+)\/(\d+)/g, (x, n, d)=> FRAC(n, d));
+}
+const listaNombres = (l)=> l.length < 2 ? l.join("") : l.slice(0, -1).join(", ") + " and " + l[l.length - 1];
+const listaNombresEs = (l)=> l.length < 2 ? l.join("") : l.slice(0, -1).join(", ") + " y " + l[l.length - 1];
+
+/* Fracciones dichas con palabras: 3/4 → «3 fourths» / «3 cuartos»; 3 2/5 → «3 and 2 fifths» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],11:["eleventh","elevenths"],12:["twelfth","twelfths"],13:["thirteenth","thirteenths"],14:["fourteenth","fourteenths"],15:["fifteenth","fifteenths"],16:["sixteenth","sixteenths"],20:["twentieth","twentieths"],25:["twenty-fifth","twenty-fifths"],100:["hundredth","hundredths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],11:["onceavo","onceavos"],12:["doceavo","doceavos"],13:["treceavo","treceavos"],14:["catorceavo","catorceavos"],15:["quinceavo","quinceavos"],16:["dieciseisavo","dieciseisavos"],20:["veinteavo","veinteavos"],100:["centésimo","centésimos"]};
+function fracEnVoz(txt, es){
+  const palabra = (n, d)=>{
+    const t = (es ? DEN_ES : DEN_EN)[d];
+    if(!t) return es ? `${n} sobre ${d}` : `${n} over ${d}`;
+    return `${n} ${Number(n) === 1 ? t[0] : t[1]}`;
+  };
+  return String(txt)
+    .replace(/(\d+) (\d+)\/(\d+)/g, (x, q, n, d)=> `${q} ${es ? (Number(q) === 1 ? "entero" : "enteros") + " y" : "and"} ${palabra(n, d)}`)
+    .replace(/(\d+)\/(\d+)/g, (x, n, d)=> palabra(n, d));
+}
+
+/* ============ Modelos (SVG) ============ */
+const COLORES = ["#F8C85F","#9ED9DD","#F4A7A0","#B9D98C","#C9B6E4","#FFC48A"];
+/* n cosas, cada una cortada en p pedazos; el pedazo k es del amigo k (color e iniciales) */
+function svgReparto(n, p, tipo, nombres){
+  const ancho = 130, alto = 130, W = n * ancho + 10;
+  const c = COSAS[tipo];
+  let g = "";
+  for(let i=0;i<n;i++){
+    const x0 = 5 + i * ancho;
+    if(tipo === "pizza"){
+      const cx = x0 + 65, cy = 65, R = 56;
+      for(let k=0;k<p;k++){
+        const a1 = -Math.PI / 2 + 2 * Math.PI * k / p, a2 = -Math.PI / 2 + 2 * Math.PI * (k + 1) / p, am = (a1 + a2) / 2;
+        const x1 = cx + R * Math.cos(a1), y1 = cy + R * Math.sin(a1), x2 = cx + R * Math.cos(a2), y2 = cy + R * Math.sin(a2);
+        g += `<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${R},${R} 0 ${p === 1 ? 1 : 0} 1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${COLORES[k]}" stroke="#8A4B00" stroke-width="2.5"/>`;
+        g += `<text x="${(cx + R * 0.6 * Math.cos(am)).toFixed(1)}" y="${(cy + R * 0.6 * Math.sin(am) + 5).toFixed(1)}" text-anchor="middle" font-size="14" font-weight="700" fill="#14313A">${INICIAL[nombres[k]]}</text>`;
+      }
+      g += `<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#B5651D" stroke-width="5"/>`;
+    } else {
+      const bx = x0 + 8, by = tipo === "sandwich" ? 30 : 20, bw = 114, bh = tipo === "sandwich" ? 70 : 90, wk = bw / p;
+      for(let k=0;k<p;k++){
+        g += `<rect x="${(bx + k * wk).toFixed(1)}" y="${by}" width="${wk.toFixed(1)}" height="${bh}" fill="${COLORES[k]}" stroke="#5B3A1E" stroke-width="2"/>`;
+        g += `<text x="${(bx + k * wk + wk / 2).toFixed(1)}" y="${by + bh / 2 + 5}" text-anchor="middle" font-size="13" font-weight="700" fill="#14313A">${INICIAL[nombres[k]]}</text>`;
+      }
+      g += `<rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${tipo === "sandwich" ? 14 : 3}" fill="none" stroke="${tipo === "sandwich" ? "#B07A3A" : "#5B3A1E"}" stroke-width="${tipo === "sandwich" ? 6 : 7}"/>`;
+    }
+  }
+  const etiqueta = `${n} ${n === 1 ? c.s : c.p}, each cut into ${p} equal pieces. Each piece is labeled with a friend's initials: every friend gets one piece from each ${c.s}.`;
+  return `<div class="modelo"><svg viewBox="0 0 ${W} ${alto}" role="img" aria-label="${escaparHTML(etiqueta)}" style="max-width:${Math.min(620, W * 1.2)}px">${g}</svg>
+    <p class="leyenda">${nombres.map((nm, k)=>`<span style="white-space:nowrap"><span style="display:inline-block;width:1em;height:1em;background:${COLORES[k]};border:2px solid #5B3A1E;border-radius:4px;vertical-align:middle" aria-hidden="true"></span> ${INICIAL[nm]} = ${nm}</span>`).join(" &nbsp; ")}</p></div>`;
+}
+/* Barras de fracción: a pedazos de 1/b agrupados en enteros */
+function svgBarras(a, b){
+  const filas = Math.ceil(a / b), cw = Math.min(70, 440 / b), alto = 46, W = b * cw + 130, H = filas * (alto + 12) + 6;
+  let g = "";
+  for(let f=0;f<filas;f++){
+    const y = 6 + f * (alto + 12);
+    for(let k=0;k<b;k++){
+      const lleno = f * b + k < a;
+      g += `<rect x="${(10 + k * cw).toFixed(1)}" y="${y}" width="${cw.toFixed(1)}" height="${alto}" fill="${lleno ? "#45A6AD" : "#FFFFFF"}" stroke="#194F5A" stroke-width="2"${lleno ? "" : ' stroke-dasharray="5 4"'}/>`;
+    }
+    const llena = (f + 1) * b <= a;
+    g += `<text x="${(20 + b * cw).toFixed(1)}" y="${y + alto / 2 + 6}" font-size="18" font-weight="700" fill="#14313A">${llena ? "1 whole" : "left over"}</text>`;
+  }
+  const q = Math.floor(a / b), r = a % b;
+  const etiqueta = `${a} pieces of one ${DEN_EN[b] ? DEN_EN[b][0] : "part"}, grouped in bars of ${b}: ${q} full ${q === 1 ? "bar" : "bars"} and ${r} ${r === 1 ? "piece" : "pieces"} left over.`;
+  return `<div class="modelo"><svg viewBox="0 0 ${W.toFixed(0)} ${H}" role="img" aria-label="${escaparHTML(etiqueta)}">${g}</svg>
+    <p class="leyenda">Each bar is 1 whole = ${b} pieces. Shaded pieces: ${a}.</p></div>`;
+}
+/* Recta numérica doble: arriba los múltiplos de b, abajo el cociente; una marca en a */
+function svgRecta(a, b){
+  const q = Math.floor(a / b), max = q + 1, W = 470, x0 = 62, x1 = 450, esc = (v)=> x0 + (x1 - x0) * v / (max * b);
+  let g = `<line x1="${x0}" y1="60" x2="${x1}" y2="60" stroke="#194F5A" stroke-width="3"/>`;
+  g += `<text x="2" y="40" font-size="17" font-weight="700" fill="#3F5F66">total</text><text x="2" y="100" font-size="17" font-weight="700" fill="#3F5F66">÷ ${b}</text>`;
+  for(let k=0;k<=max;k++){
+    const x = esc(k * b);
+    g += `<line x1="${x.toFixed(1)}" y1="48" x2="${x.toFixed(1)}" y2="72" stroke="#194F5A" stroke-width="3"/>`;
+    g += `<text x="${x.toFixed(1)}" y="40" text-anchor="middle" font-size="21" font-weight="700" fill="#14313A">${k * b}</text>`;
+    g += `<text x="${x.toFixed(1)}" y="100" text-anchor="middle" font-size="24" font-weight="700" fill="#194F5A">${k}</text>`;
+  }
+  const xa = esc(a);
+  g += `<path d="M${xa.toFixed(1)},62 l-9,18 h18 z" fill="#B71C1C"/><text x="${xa.toFixed(1)}" y="130" text-anchor="middle" font-size="22" font-weight="700" fill="#B71C1C">${a}</text>`;
+  const etiqueta = `Double number line. Top: multiples of ${b} from 0 to ${max * b}. Bottom: 0 to ${max}. A red mark shows ${a}.`;
+  return `<div class="modelo"><svg viewBox="0 0 ${W} 138" role="img" aria-label="${escaparHTML(etiqueta)}">${g}</svg>
+    <p class="leyenda">Where does ${a} land? Read the number below it.</p></div>`;
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fracEnVoz(String(texto), es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) R(\d+)/g, es ? "$1 residuo $2" : "$1 remainder $2")
+    .replace(/\blb\b/g, es ? "libras" : "pounds")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/−/g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g5-08-fractions-division.html#mixto */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").innerHTML = fracHTML(escaparHTML(frase));
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").innerHTML = fracHTML(escaparHTML(t));
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.innerHTML = fracHTML(escaparHTML(texto));
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").innerHTML = fracHTML(escaparHTML(pantalla));
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista, larga){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{ if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, typeof pista === "function" ? pista(x) : pista); });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+/* Completa con valores distintos hasta tener n opciones */
+function completar(lista, n, extra){ let i = 1; while(lista.length < n && i < 50){ const v = extra(i++); if(v !== null && !lista.includes(v)) lista.push(v); } return lista; }
+
+/* ============ Rondas ============ */
+const parNum = (izq, der)=> `<div class="par-num"><span>${fracHTML(escaparHTML(izq))}</span><span>=</span><span class="signo-c">${der === undefined ? "?" : fracHTML(escaparHTML(der))}</span></div>`;
+function llenarSigno(txt){ const s = $("escena").querySelector(".signo-c"); if(s){ s.innerHTML = fracHTML(escaparHTML(txt)); s.classList.add("lleno"); } }
+function ponerProblema(txt){ const p = document.createElement("p"); p.className = "problema"; p.innerHTML = fracHTML(escaparHTML(txt)); $("escena").appendChild(p); return p; }
+
+function nuevaRonda(){
+  limpiar();
+  const t = T, esc = $("escena"), reto = S.reto;
+
+  /* --- 1. Repartir en partes iguales (5.NF.3) --- */
+  if(S.juego === "compartir"){
+    const tipoCosa = elegir(Object.keys(COSAS)), c = COSAS[tipoCosa];
+    const modo = reto ? elegir(["propio","mixto","mixto","atras"]) : "propio";
+    if(modo === "propio"){
+      const [n, p] = reto ? parCoprimo(3, 11, 5, 12, (a, b)=>a < b) : parCoprimo(2, 5, 3, 6, (a, b)=>a < b);
+      const nombres = p <= 7 ? nombresAzar(p) : null;
+      const quien = nombres ? listaNombres(nombres) : `${p} friends`;
+      const quienEs = nombres ? listaNombresEs(nombres) : `${p} amigos`;
+      if(!reto) esc.insertAdjacentHTML("beforeend", svgReparto(n, p, tipoCosa, nombres));
+      else esc.insertAdjacentHTML("beforeend", parNum(`${n} ÷ ${p}`));
+      ponerInstruccion(t.compPropio(quien, n, c), null, ES.compPropio(quienEs, n, c));
+      const lista = [fr(n, p), fr(p, n), fr(1, p), fr(1, n)];
+      opcionesTexto(lista, fr(n, p), ()=>{ llenarSigno(fr(n, p)); acertar(t.compFin(n, p, c)); }, (x)=>{
+        if(x === fr(p, n)) return t.pistaVolteo(n, p);
+        if(x === fr(1, p)) return t.pistaPedazo(p, n);
+        return t.pistaOtroCorte(n, p);
+      });
+      return;
+    }
+    if(modo === "mixto"){
+      const [n, p] = parCoprimo(7, 29, 3, 8, (a, b)=>a > b);
+      const q = Math.floor(n / p), r = n % p, bien = mx(q, r, p);
+      esc.insertAdjacentHTML("beforeend", parNum(`${n} ÷ ${p}`));
+      ponerInstruccion(t.compMixto(p, n, c), null, ES.compMixto(p, n, c));
+      const malos = [];
+      if(q < p && q !== r) malos.push([mx(r, q, p), "cambio"]);
+      malos.push([mx(q, r, n), "den"], [String(q + 1), "redondeo"], [fr(p, n), "volteo"]);
+      const lista = [bien, ...malos.map(m=>m[0])].slice(0, 4);
+      opcionesTexto(lista, bien, ()=>{ llenarSigno(bien); acertar(t.compFinMixto(n, p, q, r, bien, c)); }, (x)=>{
+        const m = malos.find(m=>m[0] === x);
+        if(m && m[1] === "cambio") return t.pistaCambio(q, r);
+        if(m && m[1] === "den") return t.pistaMixtoDen(p);
+        if(m && m[1] === "redondeo") return t.pistaRedondeo(n, p);
+        return t.pistaVolteo(n, p);
+      });
+      return;
+    }
+    /* atrás: se conoce la parte de cada uno y se busca el total */
+    const [n, p] = parCoprimo(2, 11, 3, 9);
+    const f = n > p ? mixtoDe(n, p) : fr(n, p);
+    esc.insertAdjacentHTML("beforeend", `<div class="par-num"></div>`);
+    esc.querySelector(".par-num").innerHTML = `<span class="signo-c">?</span><span>÷ ${p}</span><span>=</span><span>${fracHTML(escaparHTML(f))}</span>`;
+    ponerInstruccion(t.compAtras(p, f, c), null, ES.compAtras(p, f, c));
+    const malos = [[String(p), "den"], [String(n + p), "suma"], [String(n * p), "mult"]];
+    opcionesTexto([String(n), ...malos.map(m=>m[0])], String(n), ()=>{ llenarSigno(String(n)); acertar(t.compFinAtras(p, f, n)); }, (x)=>{
+      const m = malos.find(m=>m[0] === x);
+      if(m && m[1] === "den") return t.pistaAtrasDen(n);
+      if(m && m[1] === "suma") return t.pistaAtrasSuma;
+      return t.pistaAtrasMult;
+    });
+    return;
+  }
+
+  /* --- 2. ¿Fracción o división? (5.NF.3) --- */
+  if(S.juego === "escribir"){
+    const modo = reto ? elegir(["frac","div","falta","falta","mix"]) : elegir(["frac","div"]);
+    const [a, b] = reto ? parCoprimo(2, 25, 2, 12) : parCoprimo(1, 12, 2, 9);
+    if(!reto){
+      esc.insertAdjacentHTML("beforeend", `<div class="regla"><span>${FRAC("a","b")}</span><span>=</span><span>a ÷ b<small>numerator ÷ denominator</small></span></div>`);
+    }
+    if(modo === "frac"){
+      esc.insertAdjacentHTML("beforeend", parNum(`${a} ÷ ${b}`));
+      ponerInstruccion(t.escFrac(a, b), null, ES.escFrac(a, b));
+      const lista = [fr(a, b), fr(b, a), fr(a, a + b)];
+      if(reto) lista.push(fr(b, a + b));
+      opcionesTexto(lista, fr(a, b), ()=>{ llenarSigno(fr(a, b)); acertar(t.escFinFrac(a, b)); }, (x)=> x === fr(b, a) ? t.pistaOrden(a, b) : t.pistaTotal(a, b));
+      return;
+    }
+    if(modo === "div"){
+      esc.insertAdjacentHTML("beforeend", parNum(fr(a, b)));
+      ponerInstruccion(t.escDiv(fr(a, b)), null, ES.escDiv(fr(a, b)));
+      const malos = [[`${b} ÷ ${a}`, "orden"], [`${a} × ${b}`, "por"]];
+      if(a > b) malos.push([`${a} − ${b}`, "menos"]);
+      const bien = `${a} ÷ ${b}`;
+      opcionesTexto([bien, ...malos.map(m=>m[0])], bien, ()=>{ llenarSigno(bien); acertar(t.escFinDiv(a, b)); }, (x)=>{
+        const m = malos.find(m=>m[0] === x);
+        if(m && m[1] === "orden") return t.pistaOrdenDiv(a, b);
+        if(m && m[1] === "por") return t.pistaPor;
+        return t.pistaMenos;
+      });
+      return;
+    }
+    if(modo === "falta"){
+      const cual = elegir(["a","b"]), f = fr(a, b);
+      if(cual === "a") esc.insertAdjacentHTML("beforeend", `<div class="par-num"><span class="signo-c">?</span><span>÷ ${b}</span><span>=</span><span>${FRAC(a, b)}</span></div>`);
+      else esc.insertAdjacentHTML("beforeend", `<div class="par-num"><span>${a} ÷</span><span class="signo-c">?</span><span>=</span><span>${FRAC(a, b)}</span></div>`);
+      const voz = cual === "a" ? `What number divided by ${b} equals ${f}?` : `${a} divided by what number equals ${f}?`;
+      ponerInstruccion(t.escFalta(f, a, b, cual), voz, ES.escFalta(f, a, b, cual));
+      const bien = String(cual === "a" ? a : b), otro = String(cual === "a" ? b : a);
+      opcionesTexto([bien, otro, String(a * b)], bien, ()=>{ llenarSigno(bien); acertar(t.escFinFalta(a, b)); }, (x)=>{
+        if(x === otro) return cual === "a" ? t.pistaFaltaA(b) : t.pistaFaltaB(a);
+        return t.pistaFaltaProd;
+      });
+      return;
+    }
+    /* número mixto → división */
+    const bb = azar(3, 9), q = azar(2, 6); let r = azar(1, bb - 1); while(mcd(r, bb) !== 1) r = azar(1, bb - 1);
+    const aa = q * bb + r, m = mx(q, r, bb);
+    esc.insertAdjacentHTML("beforeend", parNum(m));
+    ponerInstruccion(t.escMixDiv(m), null, ES.escMixDiv(m));
+    const bien = `${aa} ÷ ${bb}`;
+    const malos = [[`${q + r} ÷ ${bb}`, "suma"], [`${q * r + bb} ÷ ${bb}`, "mal"], [`${bb} ÷ ${aa}`, "orden"]].filter(x=>x[0] !== bien);
+    opcionesTexto([bien, ...malos.map(x=>x[0])], bien, ()=>{ llenarSigno(bien); acertar(t.escFinMix(m, q, bb, r, aa)); }, (x)=>{
+      const mm = malos.find(y=>y[0] === x);
+      if(mm && mm[1] === "suma") return t.pistaMixSuma(q, bb);
+      if(mm && mm[1] === "mal") return t.pistaMixMal(q, bb);
+      return t.pistaOrdenDiv(aa, bb);
+    });
+    return;
+  }
+
+  /* --- 3. Números mixtos con la división y el residuo (5.NF.3) --- */
+  if(S.juego === "mixto"){
+    const modo = reto ? elegir(["A","A","B","B"]) : "A";
+    if(modo === "A"){
+      const [a, b] = reto ? parCoprimo(13, 99, 3, 12, (x, y)=>x > 2 * y) : parCoprimo(5, 23, 2, 6, (x, y)=>x > y && x <= 4 * y);
+      const q = Math.floor(a / b), r = a % b, bien = mx(q, r, b);
+      esc.insertAdjacentHTML("beforeend", parNum(fr(a, b)));
+      if(!reto) esc.insertAdjacentHTML("beforeend", svgBarras(a, b));
+      ponerInstruccion(t.mixA(fr(a, b)), null, ES.mixA(fr(a, b)));
+      const malos = [];
+      if(q < b && q !== r) malos.push([mx(r, q, b), "cambio"]);
+      malos.push([mx(q + 1, r, b), "uno"], [mx(q, r, a), "den"]);
+      if(reto && malos.length < 3) malos.push([mx(q - 1, r, b), "uno"]);
+      opcionesTexto([bien, ...malos.map(m=>m[0])], bien, ()=>{
+        llenarSigno(bien);
+        esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${a} ÷ ${b} = ${q} R${r}</p>`);
+        acertar(t.mixFinA(a, b, q, r, bien));
+      }, (x)=>{
+        const m = malos.find(m=>m[0] === x);
+        if(m && m[1] === "cambio") return t.pistaCambio(q, r);
+        if(m && m[1] === "den") return t.pistaDenNum(b);
+        return x === mx(q + 1, r, b) ? t.pistaUnoMas(b, q + 1, a) : t.pistaMenosUno(b, q - 1, a);
+      });
+      return;
+    }
+    /* B: número mixto → fracción impropia */
+    const b = azar(3, 12), q = azar(2, 9); let r = azar(1, b - 1); while(mcd(r, b) !== 1) r = azar(1, b - 1);
+    const a = q * b + r, m = mx(q, r, b), bien = fr(a, b);
+    esc.insertAdjacentHTML("beforeend", parNum(m));
+    ponerInstruccion(t.mixB(m), null, ES.mixB(m));
+    const malos = [[fr(q + r, b), "suma"], [fr(q * r + b, b), "mult"], [fr(q * b, b), "sin"]].filter(x=>x[0] !== bien);
+    opcionesTexto([bien, ...malos.map(x=>x[0])], bien, ()=>{ llenarSigno(bien); acertar(t.mixFinB(m, q, b, r, a)); }, (x)=>{
+      const mm = malos.find(y=>y[0] === x);
+      if(mm && mm[1] === "suma") return t.pistaSumaMix(q, b);
+      if(mm && mm[1] === "mult") return t.pistaMultMal(q, b);
+      return t.pistaSinResto(r, b);
+    });
+    return;
+  }
+
+  /* --- 4. ¿Entre qué números enteros? (5.NF.3) --- */
+  if(S.juego === "entre"){
+    const modo = reto ? elegir(["arroz","frac","div"]) : elegir(["div","div","arroz"]);
+    let a, b;
+    if(modo === "arroz"){ [a, b] = reto ? parCoprimo(20, 100, 6, 12, (x, y)=>x > y) : parCoprimo(10, 50, 3, 9, (x, y)=>x > y && x < 6 * y); }
+    else { [a, b] = reto ? parCoprimo(20, 120, 4, 12, (x, y)=>x > y) : parCoprimo(7, 50, 3, 9, (x, y)=>x > y && x < 6 * y); }
+    const q = Math.floor(a / b), m = mixtoDe(a, b);
+    let ins, insEs;
+    if(modo === "arroz"){ ins = t.entreArroz(b, a); insEs = ES.entreArroz(b, a); ponerProblema(`🍚 ${a} lb ÷ ${b} people`); }
+    else if(modo === "frac"){ ins = t.entreFrac(fr(a, b)); insEs = ES.entreFrac(fr(a, b)); esc.insertAdjacentHTML("beforeend", `<p class="numero-grande">${FRAC(a, b)}</p>`); }
+    else { ins = t.entreF(a, b); insEs = ES.entreF(a, b); esc.insertAdjacentHTML("beforeend", `<p class="numero-grande">${a} ÷ ${b}</p>`); }
+    if(!reto) esc.insertAdjacentHTML("beforeend", svgRecta(a, b));
+    ponerInstruccion(ins, null, insEs + " " + ES.opcEntre);
+    const par = (x)=> `${x} and ${x + 1}`, bien = par(q);
+    const lista = [bien, par(q + 1)];
+    if(q >= 1) lista.push(par(q - 1));
+    if(q >= 2) lista.push(par(0));
+    if(lista.length < 4) lista.push(par(q + 2));
+    opcionesTexto(lista.slice(0, 4), bien, ()=>acertar(t.entreFin(a, b, q, m)), (x)=>{
+      const k = Number(x.split(" ")[0]);
+      if(k === 0 && q >= 2) return t.pistaCero(a, b);
+      if(k < q) return t.pistaBajo(b, k + 1, a);
+      return t.pistaAlto(b, k, a);
+    });
+    return;
+  }
+
+  /* --- 5. Problemas (5.NF.3) --- */
+  if(S.juego === "problemas"){
+    const [n1, n2] = nombresAzar(2);
+    const ctx = elegir(["cinta","arroz","jugo","relevo"]);
+    const dosPasos = reto && Math.random() < 0.6;
+    let a, b, s = 0, k = 0, txt, txtEs, u;
+    for(let i=0;i<200;i++){
+      if(dosPasos){ k = azar(2, 4); s = azar(2, 9); b = azar(3, 9); a = k * s; }
+      else if(reto){ b = azar(3, 12); a = azar(4, 60); }
+      else { b = azar(2, 8); a = azar(2, 30); }
+      if(a % b !== 0 && mcd(a, b) === 1 && (!dosPasos || s % b !== 0) && (ctx !== "relevo" || a <= 26)) break;
+    }
+    if(ctx === "cinta"){
+      u = "feet";
+      txt = dosPasos ? `${n1} has ${k} ribbons, each ${s} feet long. ${n1} cuts all the ribbon into ${b} equal pieces for the science fair. How many feet long is each piece?`
+                     : `${n1} has a ribbon ${a} feet long and cuts it into ${b} equal pieces for the science fair. How many feet long is each piece?`;
+      txtEs = dosPasos ? `${n1} tiene ${k} cintas de ${s} pies cada una. Corta toda la cinta en ${b} pedazos iguales para la feria de ciencias. ¿Cuántos pies mide cada pedazo?`
+                       : `${n1} tiene una cinta de ${a} pies y la corta en ${b} pedazos iguales para la feria de ciencias. ¿Cuántos pies mide cada pedazo?`;
+    } else if(ctx === "arroz"){
+      u = "pounds";
+      txt = dosPasos ? `The school pantry has ${k} bags of rice, each ${s} pounds. ${b} families share all the rice equally by weight. How many pounds does each family get?`
+                     : `${b} families share a ${a}-pound sack of rice equally by weight. How many pounds of rice does each family get?`;
+      txtEs = dosPasos ? `La despensa de la escuela tiene ${k} bolsas de arroz de ${s} libras cada una. ${b} familias se reparten todo el arroz por igual. ¿Cuántas libras recibe cada familia?`
+                       : `${b} familias se reparten por igual un saco de arroz de ${a} libras. ¿Cuántas libras de arroz recibe cada familia?`;
+    } else if(ctx === "jugo"){
+      u = "quarts";
+      txt = dosPasos ? `${n1} and ${n2} buy ${k} jugs of juice with ${s} quarts each. They pour all the juice equally into ${b} bottles for the soccer team. How many quarts go in each bottle?`
+                     : `${n1} pours ${a} quarts of juice equally into ${b} bottles for the soccer team. How many quarts go in each bottle?`;
+      txtEs = dosPasos ? `${n1} y ${n2} compran ${k} jarras de jugo de ${s} cuartos de galón cada una. Reparten todo el jugo por igual en ${b} botellas para el equipo de fútbol. ¿Cuántos cuartos de galón van en cada botella?`
+                       : `${n1} reparte ${a} cuartos de galón de jugo por igual en ${b} botellas para el equipo de fútbol. ¿Cuántos cuartos de galón van en cada botella?`;
+    } else {
+      u = "miles";
+      txt = dosPasos ? `A relay race goes ${k} times around a ${s}-mile loop. ${b} runners, including ${n1}, each run the same distance. How many miles does each runner run?`
+                     : `A relay race is ${a} miles long. ${b} runners, including ${n1}, each run the same distance. How many miles does each runner run?`;
+      txtEs = dosPasos ? `Una carrera de relevos da ${k} vueltas a un circuito de ${s} millas. ${b} corredores, entre ellos ${n1}, corren la misma distancia cada uno. ¿Cuántas millas corre cada uno?`
+                       : `Una carrera de relevos mide ${a} millas. ${b} corredores, entre ellos ${n1}, corren la misma distancia cada uno. ¿Cuántas millas corre cada uno?`;
+    }
+    ponerProblema(txt);
+    const q = Math.floor(a / b), r = a % b, bien = mixtoDe(a, b);
+    if(!reto){
+      esc.insertAdjacentHTML("beforeend", `<p class="cuenta">${a} ÷ ${b} = ?</p>`);
+      esc.appendChild(pasosEl(q >= 1
+        ? [`Estimate: ${b} × ${q} = ${b * q} and ${b} × ${q + 1} = ${b * (q + 1)}.`, `So the answer is between ${q} and ${q + 1}.`]
+        : [`Estimate: ${a} is less than ${b}.`, `So each share is less than 1.`]));
+    }
+    ponerInstruccion("Solve the problem. Write the answer as a fraction or a mixed number.", txt + " Write the answer as a fraction or a mixed number.", txtEs + " Escribe la respuesta como fracción o número mixto.");
+    /* el distractor «residuo sobre el total» va antes, así la correcta no queda como la más larga */
+    const malos = [];
+    if(dosPasos && s % b !== 0) malos.push([mixtoDe(s, b), "paso1"]);
+    if(q >= 1) malos.push([mx(q, r, a), "sobre"]);
+    malos.push([mixtoDe(b, a), "volteo"]);
+    if(q >= 1){ malos.push([`${q} R${r}`, "resto"]); if(!dosPasos) malos.push([String(q), "cociente"]); }
+    else malos.push([fr(1, b), "una"]);
+    const lista = unicos([bien, ...malos.map(m=>m[0])].filter((x, i)=> i === 0 || x !== bien)).slice(0, 4);
+    opcionesTexto(lista, bien, ()=>acertar(t.probFin(a, b, bien, u) + (dosPasos ? ` First: ${k} × ${s} = ${a}.` : "")), (x)=>{
+      const m = malos.find(m=>m[0] === x);
+      const tipo = m ? m[1] : "";
+      if(tipo === "volteo") return t.pistaVolteoP(a, b);
+      if(tipo === "resto") return t.pistaResto(r, b);
+      if(tipo === "sobre") return t.pistaSobreTotal(b);
+      if(tipo === "una") return t.pistaUnaParte(b);
+      if(tipo === "paso1") return t.pistaPaso1;
+      return t.pistaCociente(r, b);
+    });
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (5.NF.3): decidir y, en el Reto, explicar por qué --- */
+  if(S.juego === "razon"){
+    const [n1] = nombresAzar(1);
+    const tipos = reto ? ["volteo","igual","resto","mixBien","entreMal","menosUno","noSePuede","entreBien","volteo","resto"] : ["volteo","igual","menosUno","noSePuede","mixBien"];
+    const tipo = elegir(tipos);
+    let dicho, verdad, expl, razones;
+    if(tipo === "volteo"){
+      const [n, p] = parCoprimo(2, 7, 3, 9, (x, y)=>x < y), c = COSAS[elegir(Object.keys(COSAS))];
+      dicho = `${n1}: “When ${p} friends share ${n} ${c.p} equally, each friend gets ${fr(p, n)} of a ${c.s}.”`;
+      verdad = false; expl = `The ${c.p} are divided by the friends: ${n} ÷ ${p} = ${fr(n, p)}. Each friend gets ${fr(n, p)} of a ${c.s}, which is less than 1.`;
+      razones = [[`Divide the ${c.p} by the friends: ${n} ÷ ${p} = ${fr(n, p)}.`, true],
+                 [`It is right: the bigger number always goes on top of the fraction.`, false],
+                 [`It is wrong: each friend gets ${fr(1, p)}, because each one takes just 1 piece.`, false]];
+    } else if(tipo === "igual"){
+      const [a, b] = parCoprimo(2, 15, 2, 9);
+      dicho = `${n1}: “${fr(a, b)} means the same as ${a} ÷ ${b}.”`;
+      verdad = true; expl = `A fraction is a division: the numerator is divided by the denominator, so ${fr(a, b)} = ${a} ÷ ${b}.`;
+      razones = [[`The fraction bar means “divided by”: numerator ÷ denominator.`, true],
+                 [`It is wrong: ${fr(a, b)} means ${b} ÷ ${a}, because you divide by the top number.`, false],
+                 [`It is right only when the numerator is smaller than the denominator.`, false]];
+    } else if(tipo === "resto"){
+      const [a, b] = parCoprimo(11, 40, 3, 8, (x, y)=>x > y), q = Math.floor(a / b), r = a % b;
+      dicho = `${n1}: “${a} ÷ ${b} = ${q} R${r}, so ${fr(a, b)} = ${mx(q, r, a)}.”`;
+      verdad = false; expl = `The ${r} left over is shared by ${b}, so it is ${fr(r, b)}: ${fr(a, b)} = ${mx(q, r, b)}.`;
+      razones = [[`The remainder ${r} is shared by ${b}, so it becomes ${fr(r, b)}, not ${fr(r, a)}.`, true],
+                 [`It is right: the remainder always goes over the number you started with.`, false],
+                 [`It is wrong: the remainder should be dropped, so the answer is just ${q}.`, false]];
+    } else if(tipo === "mixBien"){
+      const [a, b] = parCoprimo(7, 40, 2, 8, (x, y)=>x > y), q = Math.floor(a / b), r = a % b;
+      dicho = `${n1}: “${fr(a, b)} = ${mx(q, r, b)}, because ${b} × ${q} = ${b * q} and there ${r === 1 ? "is" : "are"} ${r} left over.”`;
+      verdad = true; expl = `${a} ÷ ${b} = ${q} R${r}. That is ${q} wholes and ${r} more ${r === 1 ? "piece" : "pieces"} of ${fr(1, b)}: ${mx(q, r, b)}.`;
+      razones = [[`${a} ÷ ${b} is ${q} R${r}: ${q} wholes and ${fr(r, b)} more.`, true],
+                 [`It is wrong: an improper fraction can't be written as a mixed number.`, false],
+                 [`It is right because ${q} + ${r} + ${b} gives back the numerator ${a}.`, false]];
+    } else if(tipo === "entreMal" || tipo === "entreBien"){
+      const [a, b] = parCoprimo(20, 90, 4, 12, (x, y)=>x > 2 * y), q = Math.floor(a / b);
+      const dice = tipo === "entreBien" ? q : q + 1;
+      dicho = `${n1}: “If ${b} people share a ${a}-pound sack of rice equally, each one gets between ${dice} and ${dice + 1} pounds.”`;
+      verdad = tipo === "entreBien";
+      expl = `${b} × ${q} = ${b * q} and ${b} × ${q + 1} = ${b * (q + 1)}. ${a} is between them, so ${a} ÷ ${b} = ${mixtoDe(a, b)} pounds, between ${q} and ${q + 1}.`;
+      razones = verdad
+        ? [[`${b} × ${q} = ${b * q} and ${b} × ${q + 1} = ${b * (q + 1)}, and ${a} is between them.`, true],
+           [`It is right because ${a} ÷ ${b} always lands right in the middle of two numbers.`, false],
+           [`It is wrong: you can't share ${a} pounds by ${b} because it doesn't come out even.`, false]]
+        : [[`${b} × ${q + 1} = ${b * (q + 1)} is already more than ${a}, so it is less than ${q + 1}.`, true],
+           [`It is right because ${b} × ${q + 1} = ${b * (q + 1)} is the closest product to ${a}.`, false],
+           [`It is wrong: each person gets exactly ${q} pounds, and the rest is thrown away.`, false]];
+    } else if(tipo === "menosUno"){
+      const [n, p] = parCoprimo(2, 9, 3, 12, (x, y)=>x < y), c = COSAS[elegir(Object.keys(COSAS))];
+      dicho = `${n1}: “When ${p} friends share ${n} ${c.p} equally, each friend gets less than 1 ${c.s}.”`;
+      verdad = true; expl = `Each friend gets ${n} ÷ ${p} = ${fr(n, p)} of a ${c.s}. The numerator is less than the denominator, so ${fr(n, p)} is less than 1.`;
+      razones = [[`${n} ÷ ${p} = ${fr(n, p)}, and ${n} is less than ${p}, so it's less than 1.`, true],
+                 [`It is wrong: everyone always gets at least 1 whole when you share.`, false],
+                 [`It is right because ${p} − ${n} = ${p - n}, and that is a small number.`, false]];
+    } else {
+      const [a, b] = parCoprimo(1, 7, 3, 12, (x, y)=>x < y);
+      dicho = `${n1}: “You can't do ${a} ÷ ${b}, because ${b} is bigger than ${a}.”`;
+      verdad = false; expl = `You can divide a smaller number by a bigger one. The answer is a fraction less than 1: ${a} ÷ ${b} = ${fr(a, b)}.`;
+      razones = [[`${a} ÷ ${b} = ${fr(a, b)}: the answer is a fraction less than 1.`, true],
+                 [`It is right: in a division, the first number must always be the bigger one.`, false],
+                 [`It is wrong: ${a} ÷ ${b} is the same as ${b} ÷ ${a}, so it is ${mixtoDe(b, a)}.`, false]];
+    }
+    ponerProblema(dicho).insertAdjacentHTML("afterbegin", `<span aria-hidden="true">💬</span> `);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opcionesTexto(razones.map(r=>r[0]), buena, ()=>acertar(expl), t.pistaPorque, true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const ln = '<i class="linea"></i>';
+  const h = (s)=> fracHTML(escaparHTML(s));
+  $("hoja-compartir").innerHTML = ["3 pizzas, 4 friends: ", "2 sandwiches, 5 friends: ", "5 brownie pans, 6 friends: ", "7 pizzas, 3 friends: "]
+    .map(s=>`<div>${h(s)}${ln}</div>`).join("");
+  $("hoja-escribir").innerHTML = ["7 ÷ 3 = ", "2 ÷ 9 = ", "5/8 = ___ ÷ ___", "11/4 = ___ ÷ ___"]
+    .map(s=>`<div>${h(s)}${s.includes("___") ? "" : ln}</div>`).join("");
+  $("hoja-mixto").innerHTML = ["17/5 = ", "23/4 = ", "19/6 = ", "31/8 = "]
+    .map(s=>`<div>${h(s)}${ln}</div>`).join("");
+  $("hoja-entre").innerHTML = ["50 ÷ 9", "29 ÷ 4", "40 ÷ 7", "65/8"]
+    .map(s=>`<div>${h(s)}: between ${ln} and ${ln}</div>`).join("");
+  $("hoja-problema").innerHTML = h("9 families share a 50-pound sack of rice equally by weight. How many pounds of rice does each family get? Between what two whole numbers does your answer lie?");
+  $("hoja-razon").innerHTML = h("Daniel: “When 8 friends share 3 pizzas equally, each friend gets 8/3 of a pizza.” Is he right? Why?");
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+pintarHoja();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="5"></script>
+</body>
+</html>

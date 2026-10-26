@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<!--
+  Fifth Grade Math — Expressions and patterns
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 5: 5.OA.1, 5.OA.2, 5.OA.3
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expressions and patterns · Fifth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Fifth grade expressions games with Lumi: parentheses and brackets first, writing and interpreting expressions without calculating, two related number patterns with ordered pairs on a graph, and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1>Expressions and patterns</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="./">🏠 All games</a>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi5-calculadora.jpg" alt="" class="lumi-d" width="450" height="595"></span><span>🧩</span><span>➕</span><span>📈</span><span>💬</span></div>
+    <h2>Parentheses first, then crack the code!</h2>
+    <p id="txt-portada">Math has its own grammar. Parentheses ( ) and brackets [ ] tell you what to do first, and without them you multiply and divide before you add and subtract. With Lumi you will find the value of expressions, write the expression that tells a story, compare expressions without calculating, decide where the parentheses go, build two number patterns and graph them, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Las matemáticas tienen su propia gramática. Los paréntesis ( ) y los corchetes [ ] dicen qué se hace primero, y sin ellos se multiplica y se divide antes de sumar y restar. Con Lumi vas a hallar el valor de expresiones, escribir la expresión que cuenta una historia, comparar expresiones sin calcular, decidir dónde van los paréntesis, construir dos patrones de números y graficarlos, y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: expressions and patterns</button></p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.OA.1 (use parentheses, brackets, or braces in numerical expressions, and evaluate expressions with these symbols), 5.OA.2 (write simple expressions that record calculations with numbers, and interpret numerical expressions without evaluating them; for example, express the calculation “add 8 and 7, then multiply by 2” as 2 × (8 + 7), and recognize that 3 × (18932 + 921) is three times as large as 18932 + 921, without having to calculate the indicated sum or product) and 5.OA.3 (generate two numerical patterns using two given rules; identify apparent relationships between corresponding terms; form ordered pairs consisting of corresponding terms from the two patterns, and graph the ordered pairs on a coordinate plane). Every expression comes with a situation, and the games show that without parentheses the usual order (× and ÷ before + and −) gives a different result. At the Easy level the part inside the parentheses is highlighted with the first step, bar models show the groups, and the patterns appear in a table; at the Challenge level there are brackets inside brackets, bigger numbers, patterns as lists, graphs of ordered pairs, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #evaluar, #escribir, #interpretar, #parentesis, #patrones and #razon.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.OA.1 (usar paréntesis, corchetes o llaves en expresiones numéricas y evaluar expresiones con estos símbolos), 5.OA.2 (escribir expresiones sencillas que registren cálculos con números e interpretar expresiones numéricas sin evaluarlas; por ejemplo, escribir «suma 8 y 7, luego multiplica por 2» como 2 × (8 + 7) y reconocer que 3 × (18932 + 921) es tres veces mayor que 18932 + 921 sin calcular la suma ni el producto) y 5.OA.3 (generar dos patrones numéricos a partir de dos reglas dadas, identificar relaciones entre los términos correspondientes, formar pares ordenados con esos términos y graficarlos en un plano de coordenadas). Cada expresión viene con una situación. En el nivel Fácil se resalta lo que está dentro de los paréntesis y los patrones aparecen en una tabla; en el Reto hay corchetes, números más grandes y gráficas. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Expressions and patterns</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Find the value. Work inside ( ) and [ ] first.</h3>
+  <div class="caja-h" id="hoja-evaluar"></div>
+  <h3>2. Write an expression. Do not calculate.</h3>
+  <div class="caja-h una" id="hoja-escribir"></div>
+  <h3>3. Compare without calculating.</h3>
+  <div class="caja-h una" id="hoja-interpretar"></div>
+  <h3>4. Two patterns. Both start at 0.</h3>
+  <div id="hoja-patrones"></div>
+  <h3>5. Who is right? Explain why.</h3>
+  <p class="razon-h" id="hoja-razon"></p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+const SUP = {"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹"};
+const ORD_EN = ["zeroth","first","second","third","fourth","fifth","sixth"];
+const ORD_ES = ["cero","primera","segunda","tercera","cuarta","quinta","sexta"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  /* 1. Primero los paréntesis */
+  evalF:"Find the value. First inside the parentheses!",
+  evalR:"Find the value. Work from the inside out.",
+  evalSin:"Find the value. No parentheses: × and ÷ come first!",
+  evalV:(cuento, e)=>`${cuento} What is the value of ${e}?`,
+  /* 2. Escribe la expresión */
+  escF:"Which expression matches the words?",
+  escR:"Which expression matches the story? Don't calculate.",
+  /* 3. Compara sin calcular */
+  intVeces:"Compare without calculating.",
+  intMayor:"Which is greater? Don't calculate.",
+  /* 4. ¿Dónde van los paréntesis? */
+  parF:"Where do the parentheses go to make it true?",
+  sinPar:"No parentheses needed",
+  /* 5. Dos patrones */
+  patHueco:"What number goes in the empty box?",
+  patTermino:(p, w)=>`What is the term of Pattern B for ${p} ${w}?`,
+  patRelB:"Each term in Pattern B is ___ the matching term in Pattern A.",
+  patRelA:"Each term in Pattern A is ___ the matching term in Pattern B.",
+  patGraf:"Which graph shows the ordered pairs (A, B)?",
+  /* 6. ¿Quién tiene razón? */
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Work inside the parentheses first, and remember: × and ÷ before + and −.",
+  pistaPorque:"That reason doesn't explain it. Think about what the parentheses tell you to do first.",
+  estrategias:[
+    ["I worked inside ( ) and [ ] first","Great! The innermost parentheses always go first, then the brackets."],
+    ["I did × and ÷ before + and −","Excellent! Without parentheses, multiply and divide before you add and subtract."],
+    ["I compared without calculating","Smart! 3 × (a sum) is 3 copies of that sum, so it is 3 times as large."],
+    ["I made a table of the two patterns","Awesome! A table lines up the matching terms so you can see the relationship."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  evalF:"Primero resuelve lo que está dentro de los paréntesis.",
+  evalR:"Trabaja de adentro hacia afuera: primero los paréntesis, luego los corchetes.",
+  evalSin:"No hay paréntesis: primero se multiplica y se divide, luego se suma y se resta.",
+  evalV:(cuento, e)=>`${cuento} ¿Cuál es el valor de ${e}?`,
+  escF:(f)=>`¿Qué expresión corresponde a las palabras? «${f}»`,
+  escR:(c)=>`${c} ¿Qué expresión corresponde a la historia? No calcules.`,
+  sinPar:"«No parentheses needed» = no hacen falta paréntesis.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"evaluar",     emoji:"🧩", en:"Parentheses first",           es:"Primero los paréntesis",      meta:"3 × (4 + 5) = 3 × 9 = 27"},
+  {id:"escribir",    emoji:"✏️", en:"Write the expression",        es:"Escribe la expresión",        meta:"Add 8 and 7, then × 2 → 2 × (8 + 7)"},
+  {id:"interpretar", emoji:"⚖️", en:"Compare without calculating", es:"Compara sin calcular",        meta:"3 × (452 + 87) is 3 times as large"},
+  {id:"parentesis",  emoji:"🔍", en:"Where do the parentheses go?", es:"¿Dónde van los paréntesis?", meta:"2 × (5 + 3) = 16"},
+  {id:"patrones",    emoji:"📈", en:"Two patterns",                es:"Dos patrones",                meta:"Add 3 and add 6: B is 2 times A"},
+  {id:"razon",       emoji:"💬", en:"Who is right?",               es:"¿Quién tiene razón?",         meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const fmtEntero = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const F = fmtEntero;
+
+/* ============ Expresiones ============
+   Una expresión se escribe como texto ("3 × (4 + 5)") y se convierte en un árbol.
+   Todo es aritmética entera: una resta negativa o una división inexacta da null.
+   g guarda el símbolo de agrupación del nodo: "(", "[" o "{". */
+const CIERRA = {"(":")","[":"]","{":"}"};
+function calc(op, a, b){
+  if(a === null || b === null) return null;
+  if(op === "+") return a + b;
+  if(op === "−") return a - b < 0 ? null : a - b;
+  if(op === "×") return a * b;
+  if(op === "÷") return b !== 0 && a % b === 0 ? a / b : null;
+  return null;
+}
+const tokenizar = (s)=> String(s).match(/\d[\d,]*|[()\[\]{}+−×÷]/g);
+function parsear(tk){
+  let i = 0;
+  function factor(){
+    const x = tk[i++];
+    if(x === "(" || x === "[" || x === "{"){ const n = expr(); i++; if(n.v === undefined) n.g = x; return n; }
+    return {v:Number(x.replace(/,/g, ""))};
+  }
+  function term(){ let n = factor(); while(tk[i] === "×" || tk[i] === "÷"){ const op = tk[i++]; n = {op, a:n, b:factor(), g:null}; } return n; }
+  function expr(){ let n = term(); while(tk[i] === "+" || tk[i] === "−"){ const op = tk[i++]; n = {op, a:n, b:term(), g:null}; } return n; }
+  return expr();
+}
+const arbol = (s)=> parsear(tokenizar(s));
+const hoja = (t)=> t.v !== undefined;
+function ev(t){ return hoja(t) ? t.v : calc(t.op, ev(t.a), ev(t.b)); }
+function tokens(t, conGrupos, marca){
+  let out;
+  if(hoja(t)) out = [F(t.v)];
+  else{
+    out = [...tokens(t.a, conGrupos, marca), t.op, ...tokens(t.b, conGrupos, marca)];
+    if(conGrupos && t.g) out = [t.g, ...out, CIERRA[t.g]];
+  }
+  return t === marca ? ["\u0001", ...out, "\u0002"] : out;
+}
+function unir(tk){
+  let s = "";
+  tk.forEach((x, i)=>{ if(i > 0 && !"([{\u0001".includes(tk[i-1]) && !")]}\u0002".includes(x)) s += " "; s += x; });
+  return s;
+}
+const texto = (t)=> unir(tokens(t, true));
+const textoSin = (t)=> unir(tokens(t, false));
+/* De izquierda a derecha, sin paréntesis ni orden de operaciones (el error típico) */
+function izqDer(t){
+  const tk = tokens(t, false); let v = Number(tk[0].replace(/,/g, ""));
+  for(let i=1;i<tk.length;i+=2) v = calc(tk[i], v, Number(tk[i+1].replace(/,/g, "")));
+  return v;
+}
+/* El siguiente paso: lo más adentro de los paréntesis; luego × y ÷; luego de izquierda a derecha */
+function nodoSiguiente(t){
+  const c = [];
+  (function rec(n, prof){
+    if(hoja(n)) return;
+    const p = prof + (n.g ? 1 : 0);
+    if(hoja(n.a) && hoja(n.b)) c.push({n, p, m:(n.op === "×" || n.op === "÷") ? 1 : 0});
+    rec(n.a, p); rec(n.b, p);
+  })(t, 0);
+  c.sort((x, y)=> (y.p - x.p) || (y.m - x.m));
+  return c.length ? c[0].n : null;
+}
+function reducir(t, nodo){
+  if(t === nodo) return {v:ev(t)};
+  if(hoja(t)) return t;
+  return {op:t.op, a:reducir(t.a, nodo), b:reducir(t.b, nodo), g:t.g};
+}
+function pasos(t){
+  const lista = [texto(t)];
+  while(!hoja(t)){ t = reducir(t, nodoSiguiente(t)); lista.push(texto(t)); }
+  return lista;
+}
+function primerGrupo(t){
+  if(hoja(t)) return null;
+  if(t.g) return t;
+  return primerGrupo(t.a) || primerGrupo(t.b);
+}
+function hojas(t){ return hoja(t) ? [t.v] : [...hojas(t.a), ...hojas(t.b)]; }
+function htmlMarcado(t, marca){
+  return escaparHTML(unir(tokens(t, true, marca))).replace("\u0001", '<span class="marcado">').replace("\u0002", "</span>");
+}
+const nombreGrupos = (s)=> s.includes("{") ? "braces, brackets and parentheses" : s.includes("[") ? "brackets and parentheses" : "parentheses";
+
+/* ============ Modelos dibujados ============ */
+/* Modelo de barras: cada fila muestra cuántas copias de la suma a + b hay */
+function barras(filas, a, b, etiqueta){
+  const maxC = Math.max(...filas.map(f=>f.copias)), x0 = 168, W = 580, alto = 34, sep = 58;
+  const ancho = Math.min(150, (W - x0 - 8) / maxC), wa = Math.max(14, Math.round((ancho - 4) * a / (a + b)));
+  let s = `<svg class="modelo" viewBox="0 0 ${W} ${filas.length * sep + 8}" role="img" aria-label="${escaparHTML(etiqueta)}">`;
+  filas.forEach((f, i)=>{
+    const y = 8 + i * sep;
+    s += `<text x="${x0 - 10}" y="${y + alto / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="#14313A">${escaparHTML(f.rot)}</text>`;
+    for(let c=0;c<f.copias;c++){
+      const x = x0 + c * ancho;
+      s += `<rect x="${x}" y="${y}" width="${wa}" height="${alto}" rx="4" fill="#45A6AD" stroke="#194F5A" stroke-width="2"/>`;
+      s += `<rect x="${x + wa}" y="${y}" width="${ancho - 4 - wa}" height="${alto}" rx="4" fill="#F8C85F" stroke="#194F5A" stroke-width="2"/>`;
+    }
+  });
+  return s + "</svg>";
+}
+/* Cuadrícula de coordenadas pequeña con puntos */
+function grafica(puntos, maxEje, paso, oculta){
+  const x0 = 30, y0 = 172, L = 158, k = L / maxEje;
+  let s = oculta ? `<svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">` : `<svg viewBox="0 0 200 200" role="img" aria-label="Graph with points ${puntos.map(([x, y])=>`(${x}, ${y})`).join(", ")}">`;
+  s += `<rect x="0" y="0" width="200" height="200" fill="#fff"/>`;
+  for(let v=0; v<=maxEje; v+=paso){
+    const px = x0 + v * k, py = y0 - v * k;
+    s += `<line x1="${px}" y1="${y0}" x2="${px}" y2="${y0 - L}" stroke="#C9E3E5" stroke-width="1"/><line x1="${x0}" y1="${py}" x2="${x0 + L}" y2="${py}" stroke="#C9E3E5" stroke-width="1"/>`;
+    if((v / paso) % 2 === 0){
+      s += `<text x="${px}" y="${y0 + 13}" font-size="10" text-anchor="middle" fill="#14313A">${v}</text>`;
+      if(v) s += `<text x="${x0 - 4}" y="${py + 3.5}" font-size="10" text-anchor="end" fill="#14313A">${v}</text>`;
+    }
+  }
+  s += `<line x1="${x0}" y1="${y0}" x2="${x0 + L + 4}" y2="${y0}" stroke="#14313A" stroke-width="2"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0 - L - 4}" stroke="#14313A" stroke-width="2"/>`;
+  s += `<text x="${x0 + L}" y="${y0 + 26}" font-size="11" font-weight="700" text-anchor="end" fill="#14313A">A</text><text x="${x0 + 8}" y="${y0 - L - 2}" font-size="11" font-weight="700" fill="#14313A">B</text>`;
+  puntos.forEach(([x, y])=>{ s += `<circle cx="${x0 + x * k}" cy="${y0 - y * k}" r="5.5" fill="#194F5A" stroke="#fff" stroke-width="1.5"/>`; });
+  return s + "</svg>";
+}
+const listaPares = (pp)=> pp.map(([x, y])=>`(${x}, ${y})`).join(", ");
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return s;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(texto, es)
+    .replace(/10([⁰¹²³⁴⁵⁶⁷⁸⁹]+)/g, (s, x)=>{ const k = Number(x.split("").map(c=>Object.keys(SUP).find(d=>SUP[d] === c)).join("")); return es ? `10 a la ${ORD_ES[k] || k} potencia` : `10 to the ${ORD_EN[k] || k} power`; })
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/\{/g, es ? ", abre llave, " : ", open brace, ").replace(/\}/g, es ? ", cierra llave, " : ", close brace, ")
+    .replace(/\[/g, es ? ", abre corchete, " : ", open bracket, ").replace(/\]/g, es ? ", cierra corchete, " : ", close bracket, ")
+    .replace(/\((?=[\d\[{(])/g, es ? ", abre paréntesis, " : ", open parenthesis, ").replace(/(?<=[\d\]})])\)/g, es ? ", cierra paréntesis, " : ", close parenthesis, ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi5-calculadora.jpg" alt="" class="lumi-m" width="450" height="595">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g5-01-place-value-powers-of-ten.html#potencias */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista, larga){
+  const cont = $("opciones");
+  mezclar(unicos(lista)).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{ if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, typeof pista === "function" ? pista(x) : pista); });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+function pasosEl(lista){
+  const ol = document.createElement("ol"); ol.className = "pistas-l";
+  ol.innerHTML = lista.map(p=>`<li>${escaparHTML(p)}</li>`).join("");
+  return ol;
+}
+/* Completa con valores distintos hasta tener n opciones */
+function completar(lista, n, extra){ let i = 1; while(lista.length < n && i < 50){ const v = extra(i++); if(v !== null && !lista.includes(v)) lista.push(v); } return lista; }
+
+
+/* ============ Situaciones para el juego 1 ============
+   Cada plantilla devuelve {e: expresión, en: historia en inglés, es: historia en español}. */
+const SIT_PAR = [
+  ()=>{ const a=azar(3,9), b=azar(2,9), c=azar(3,6), [n]=nombresAzar(1);
+    return {e:`${c} × (${a} + ${b})`, en:`${n} makes ${c} gift bags. Each bag has ${a} red pencils and ${b} blue pencils.`, es:`${n} prepara ${c} bolsitas de regalo. Cada bolsita tiene ${a} lápices rojos y ${b} lápices azules.`}; },
+  ()=>{ const a=azar(2,6), b=azar(2,5), c=azar(3,5);
+    return {e:`(${a} + ${b}) × ${c}`, en:`The soccer team runs ${a} laps before practice and ${b} laps after practice. They practice ${c} days a week.`, es:`El equipo de fútbol corre ${a} vueltas antes de la práctica y ${b} vueltas después. Practican ${c} días a la semana.`}; },
+  ()=>{ const a=azar(2,5), b=azar(8,12), c=azar(2,b-3), [n]=nombresAzar(1);
+    return {e:`${a} × (${b} − ${c})`, en:`${n} buys ${a} boxes of muffins. Each box has ${b} muffins, and ${c} of them are blueberry. The rest are chocolate.`, es:`${n} compra ${a} cajas de panecillos. Cada caja tiene ${b} panecillos y ${c} son de arándano. Los demás son de chocolate.`}; },
+  ()=>{ const c=azar(2,6), q=azar(3,9), b=azar(1,5), a=c*q+b, [n]=nombresAzar(1);
+    return {e:`(${a} − ${b}) ÷ ${c}`, en:`${n} bakes ${a} cookies, eats ${b}, and shares the rest equally with ${c} friends.`, es:`${n} hornea ${a} galletas, se come ${b} y reparte las demás en partes iguales entre ${c} amigos.`}; },
+  ()=>{ const c=elegir([4,5,6]), q=azar(3,8), tot=c*q, a=azar(3,tot-3), b=tot-a, [n,m]=nombresAzar(2);
+    return {e:`(${a} + ${b}) ÷ ${c}`, en:`${n} picks ${a} tomatoes in the garden and ${m} picks ${b}. They put them in bags of ${c}.`, es:`${n} recoge ${a} tomates en el huerto y ${m} recoge ${b}. Los ponen en bolsas de ${c}.`}; },
+  ()=>{ const a=azar(25,50), b=azar(6,15), c=azar(2,8), [n]=nombresAzar(1);
+    return {e:`${a} − (${b} + ${c})`, en:`${n} has $${a}. At the store, a book costs $${b} and a snack costs $${c}.`, es:`${n} tiene $${a}. En la tienda, un libro cuesta $${b} y una merienda cuesta $${c}.`}; }
+];
+const SIT_SIN = [
+  (r)=>{ const a=azar(5, r ? 60 : 20), b=azar(2, r ? 9 : 5), c=azar(4, r ? 12 : 10), [n]=nombresAzar(1);
+    return {e:`${a} + ${b} × ${c}`, en:`${n} has ${a} stickers and buys ${b} packs with ${c} stickers each.`, es:`${n} tiene ${a} calcomanías y compra ${b} paquetes con ${c} calcomanías cada uno.`}; },
+  (r)=>{ const b=azar(3, r ? 9 : 6), c=azar(2,4), a=b*c+azar(4, r ? 30 : 15);
+    return {e:`${a} − ${b} × ${c}`, en:`The school bus has ${a} seats. ${b} rows with ${c} seats each are full. How many seats are empty?`, es:`El autobús escolar tiene ${a} asientos. Hay ${b} filas de ${c} asientos llenas. ¿Cuántos asientos están vacíos?`}; },
+  (r)=>{ const a=azar(4, r ? 15 : 8), b=azar(2,5), c=azar(3, r ? 15 : 8), d=azar(1,3), [n]=nombresAzar(1);
+    return {e:`${a} × ${b} + ${c} × ${d}`, en:`At the science fair, ${n} sells ${a} lemonades for $${b} each and ${c} cookies for $${d} each.`, es:`En la feria de ciencias, ${n} vende ${a} limonadas a $${b} cada una y ${c} galletas a $${d} cada una.`}; },
+  (r)=>{ const b=azar(3,6), q=azar(4, r ? 12 : 8), a=b*q, c=azar(2,9), [n]=nombresAzar(1);
+    return {e:`${a} ÷ ${b} + ${c}`, en:`${n} shares ${a} crayons equally among ${b} tables. Each table already had ${c} crayons.`, es:`${n} reparte ${a} crayones en partes iguales entre ${b} mesas. Cada mesa ya tenía ${c} crayones.`}; }
+];
+const SIT_COR = [
+  ()=>{ const a=azar(3,8), b=azar(6,15), c=azar(4,12), d=azar(2,5);
+    return {e:`${a} × [(${b} + ${c}) − ${d}]`, en:`The library gets ${a} boxes. Each box has ${b} fiction books and ${c} science books, but ${d} books in each box are damaged.`, es:`La biblioteca recibe ${a} cajas. Cada caja trae ${b} libros de ficción y ${c} de ciencias, pero ${d} libros de cada caja están dañados.`}; },
+  ()=>{ const a=azar(4,12), b=azar(3,9), c=azar(4,9), d=azar(3,15);
+    return {e:`[(${a} + ${b}) × ${c}] − ${d}`, en:`For the science fair, each of ${c} tables gets ${a} red cups and ${b} blue cups. Then ${d} cups break.`, es:`Para la feria de ciencias, cada una de ${c} mesas recibe ${a} vasos rojos y ${b} azules. Luego se rompen ${d} vasos.`}; },
+  ()=>{ const b=azar(2,5), c=azar(4,9), d=azar(1,3), a=b*(c+d)+azar(3,40), [n]=nombresAzar(1);
+    return {e:`${a} − [${b} × (${c} + ${d})]`, en:`${n} has $${a} and buys lunch for ${b} friends. Each lunch is a $${c} sandwich and a $${d} drink.`, es:`${n} tiene $${a} y compra el almuerzo de ${b} amigos. Cada almuerzo es un sándwich de $${c} y una bebida de $${d}.`}; },
+  ()=>{ const d=azar(3,6), q=azar(4,10), b=azar(2,6), c=azar(2,6), a=d*q+b+c, [n]=nombresAzar(1);
+    return {e:`[${a} − (${b} + ${c})] ÷ ${d}`, en:`${n} bakes ${a} cupcakes, gives ${b} to the teacher and ${c} to a neighbor, and packs the rest equally in ${d} boxes.`, es:`${n} hornea ${a} pastelitos, regala ${b} a la maestra y ${c} a un vecino, y empaca los demás en partes iguales en ${d} cajas.`}; },
+  ()=>{ const n=azar(2,4), a=azar(2,4), b=azar(3,6), c=azar(5,8), d=azar(1,2);
+    return {e:`${n} × {${a} + [${b} × (${c} − ${d})]}`, en:`${n} classes visit the museum. Each class has ${a} adults and ${b} groups of ${c} students, but ${d} students in each group are absent.`, es:`${n} grupos visitan el museo. Cada grupo tiene ${a} adultos y ${b} equipos de ${c} estudiantes, pero faltan ${d} estudiantes en cada equipo.`}; }
+];
+
+/* Quita un solo símbolo de agrupación y vuelve a leer la expresión (el error de saltarse ese símbolo) */
+function sinEseGrupo(t, nodo){
+  function copia(n){ if(hoja(n)) return n; return {op:n.op, a:copia(n.a), b:copia(n.b), g: n === nodo ? null : n.g}; }
+  return ev(arbol(texto(copia(t))));
+}
+function grupos(t){ if(hoja(t)) return []; return [...(t.g ? [t] : []), ...grupos(t.a), ...grupos(t.b)]; }
+
+/* ============ Juego 4: lugares posibles para los paréntesis ============ */
+function colocaciones(nums, ops){
+  const [a, b, c, d] = nums.map(F), [o1, o2, o3] = ops;
+  if(nums.length === 3) return [`(${a} ${o1} ${b}) ${o2} ${c}`, `${a} ${o1} (${b} ${o2} ${c})`];
+  return [`(${a} ${o1} ${b}) ${o2} ${c} ${o3} ${d}`, `${a} ${o1} (${b} ${o2} ${c}) ${o3} ${d}`, `${a} ${o1} ${b} ${o2} (${c} ${o3} ${d})`,
+          `(${a} ${o1} ${b} ${o2} ${c}) ${o3} ${d}`, `${a} ${o1} (${b} ${o2} ${c} ${o3} ${d})`, `(${a} ${o1} ${b}) ${o2} (${c} ${o3} ${d})`,
+          `[(${a} ${o1} ${b}) ${o2} ${c}] ${o3} ${d}`, `${a} ${o1} [${b} ${o2} (${c} ${o3} ${d})]`];
+}
+const cadena = (s)=> pasos(arbol(s)).join(" = ");
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, esc = $("escena"), reto = S.reto;
+
+  /* --- 1. Primero los paréntesis (5.OA.1) --- */
+  if(S.juego === "evaluar"){
+    let sit, tr, bien, malos;
+    for(let intento=0; intento<40; intento++){
+      const conPar = Math.random() < 0.7;
+      sit = conPar ? elegir(reto ? SIT_COR : SIT_PAR)() : elegir(SIT_SIN)(reto);
+      tr = arbol(sit.e); bien = ev(tr);
+      if(bien === null) continue;
+      const g = grupos(tr), s = nombreGrupos(sit.e);
+      malos = [];
+      const izq = izqDer(tr);
+      malos.push([izq, g.length ? `That is what you get going from left to right and ignoring the ${s}. Work inside the ${s} first, from the inside out.`
+                                : `That is what you get going from left to right. Without parentheses, multiply and divide before you add and subtract.`]);
+      if(g.length){
+        malos.push([ev(arbol(textoSin(tr))), `You ignored the ${s} and only used × and ÷ first. The ${s} tell you what to do first.`]);
+        if(g.length > 1) g.forEach(n=>{ const sim = n.g + " " + CIERRA[n.g]; malos.push([sinEseGrupo(tr, n), `You skipped the ${sim}. Every symbol counts: work from the innermost parentheses out.`]); });
+      }
+      const n1 = nodoSiguiente(tr), v1 = ev(n1);
+      malos.push([v1, `That is only the first step (${textoSin(n1)} = ${F(v1)}). Keep going until the whole expression is one number.`]);
+      malos = malos.filter(([v], i)=> v !== null && v !== bien && malos.findIndex(([w])=>w === v) === i).slice(0, 3);
+      if(malos.length >= 2) break;
+    }
+    const g = grupos(tr), marca = nodoSiguiente(tr);
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(sit.en)}</p>`);
+    esc.insertAdjacentHTML("beforeend", `<p class="expr">${reto ? escaparHTML(texto(tr)) : htmlMarcado(tr, marca)} = <span class="signo-c">?</span></p>`);
+    let pant, esIns;
+    if(!reto){
+      const n1 = marca;
+      esc.insertAdjacentHTML("beforeend", g.length
+        ? `<p class="nota">Step 1, first inside the parentheses: <b>${escaparHTML(textoSin(n1))} = ${F(ev(n1))}</b></p>`
+        : `<p class="nota">No parentheses, so multiply or divide first: <b>${escaparHTML(textoSin(n1))} = ${F(ev(n1))}</b></p>`);
+      pant = g.length ? t.evalF : t.evalSin; esIns = g.length ? ES.evalF : ES.evalSin;
+    } else { pant = g.length ? t.evalR : t.evalSin; esIns = g.length ? ES.evalR : ES.evalSin; }
+    ponerInstruccion(pant, t.evalV(sit.en, texto(tr)), esIns + " " + ES.evalV(sit.es, texto(tr)));
+    const camino = pasos(tr).join(" = ");
+    let extra = "";
+    if(g.length){ const sp = ev(arbol(textoSin(tr))); if(sp !== null && sp !== bien) extra = ` Without the ${nombreGrupos(sit.e)}, ${textoSin(tr)} would be ${F(sp)}.`; }
+    else { const iz = izqDer(tr); if(iz !== null && iz !== bien) extra = ` Going left to right would give ${F(iz)}, but × and ÷ come first.`; }
+    opcionesTexto([F(bien), ...malos.map(([v])=>F(v))], F(bien), ()=>{
+      const sg = esc.querySelector(".signo-c"); sg.textContent = F(bien); sg.classList.add("lleno");
+      esc.appendChild(pasosEl(pasos(tr)));
+      acertar(camino + "." + extra);
+    }, (x)=>{ const m = malos.find(([v])=>F(v) === x); return m ? m[1] : t.otra[0]; });
+    return;
+  }
+
+  /* --- 2. Escribe la expresión (5.OA.2) --- */
+  if(S.juego === "escribir"){
+    let it;
+    if(!reto){
+      const k = elegir([1,2,3,4,5]);
+      if(k === 1){ const a=azar(3,12), b=azar(2,9), c=azar(2,6);
+        it = {en:`Add ${a} and ${b}, then multiply by ${c}.`, es:`Suma ${a} y ${b}, luego multiplica por ${c}.`, ok:`${c} × (${a} + ${b})`,
+          fin:`First you add, so ${a} + ${b} goes in parentheses: ${c} × (${a} + ${b}).`,
+          malos:[[`${a} + ${b} × ${c}`, `Without parentheses, × comes first, so this multiplies ${b} by ${c} before adding. Put ${a} + ${b} in parentheses.`],
+                 [`${c} × ${a} + ${b}`, `This multiplies only ${a} by ${c}. The whole sum ${a} + ${b} must be multiplied, so it needs parentheses.`],
+                 [`(${a} + ${b}) + ${c}`, `“Multiply by ${c}” means × ${c}, not + ${c}.`]]}; }
+      else if(k === 2){ const c=azar(2,5), b=azar(2,9), a=b+c*azar(2,6);
+        it = {en:`Subtract ${b} from ${a}, then divide by ${c}.`, es:`Resta ${b} de ${a}, luego divide entre ${c}.`, ok:`(${a} − ${b}) ÷ ${c}`,
+          fin:`First you subtract, so ${a} − ${b} goes in parentheses: (${a} − ${b}) ÷ ${c}.`,
+          malos:[[`${a} − ${b} ÷ ${c}`, `Without parentheses, ÷ comes first, so only ${b} would be divided. Put ${a} − ${b} in parentheses.`],
+                 [`(${b} − ${a}) ÷ ${c}`, `“Subtract ${b} from ${a}” means start with ${a} and take away ${b}: ${a} − ${b}.`],
+                 [`${c} ÷ (${a} − ${b})`, `“Divide by ${c}” means the difference is split into ${c} parts, so ${c} goes after the ÷ sign.`]]}; }
+      else if(k === 3){ const a=azar(2,9), b=azar(2,9), c=azar(2,9);
+        it = {en:`Multiply ${a} by ${b}, then add ${c}.`, es:`Multiplica ${a} por ${b}, luego suma ${c}.`, ok:`${a} × ${b} + ${c}`,
+          fin:`× already comes before +, so no parentheses are needed: ${a} × ${b} + ${c}.`,
+          malos:[[`${a} × (${b} + ${c})`, `The parentheses make you add ${b} + ${c} first. The words say multiply first.`],
+                 [`${a} + ${b} × ${c}`, `This multiplies ${b} by ${c}. The words say multiply ${a} by ${b}.`],
+                 [`(${a} + ${c}) × ${b}`, `This adds ${a} and ${c} first. The words say multiply first, then add ${c}.`]]}; }
+      else if(k === 4){ const m=elegir([2,3]), w=m === 2 ? "Double" : "Triple", ww=m === 2 ? "Duplica" : "Triplica", b=azar(2,9), a=b+azar(2,15);
+        it = {en:`${w} the difference of ${a} and ${b}.`, es:`${ww} la diferencia de ${a} y ${b}.`, ok:`${m} × (${a} − ${b})`,
+          fin:`The difference is ${a} − ${b}, and “${w.toLowerCase()}” means ${m} ×, so ${m} × (${a} − ${b}).`,
+          malos:[[`${m} × ${a} − ${b}`, `This multiplies only ${a} by ${m}. The whole difference must be multiplied, so it needs parentheses.`],
+                 [`${m} + (${a} − ${b})`, `“${w}” means ${m} times, not + ${m}.`],
+                 [`${a} − ${b} × ${m}`, `Without parentheses, × comes first, so only ${b} would be multiplied by ${m}.`]]}; }
+      else { const b=azar(2,6), a=b*azar(3,9), c=azar(1,3);
+        it = {en:`Divide ${a} by ${b}, then subtract ${c}.`, es:`Divide ${a} entre ${b}, luego resta ${c}.`, ok:`${a} ÷ ${b} − ${c}`,
+          fin:`÷ already comes before −, so no parentheses are needed: ${a} ÷ ${b} − ${c}.`,
+          malos:[[`${a} ÷ (${b} − ${c})`, `The parentheses make you subtract ${b} − ${c} first. The words say divide first.`],
+                 [`${c} − ${a} ÷ ${b}`, `“Subtract ${c}” means take ${c} away from the quotient, so − ${c} goes at the end.`],
+                 [`(${a} − ${c}) ÷ ${b}`, `This subtracts ${c} before dividing. The words say divide first.`]]}; }
+    } else {
+      const k = elegir([1,2,3,4,5,6,7]), [n] = nombresAzar(1);
+      if(k === 1){ const a=azar(3,9), b=azar(2,7), c=azar(12,30);
+        it = {en:`${n} buys ${a} notebooks at $${b} each and one $${c} backpack. Which expression shows the total cost?`, es:`${n} compra ${a} cuadernos a $${b} cada uno y una mochila de $${c}. ¿Qué expresión muestra el costo total?`, ok:`${a} × ${b} + ${c}`,
+          fin:`${a} notebooks at $${b} is ${a} × ${b}, plus one backpack: ${a} × ${b} + ${c}.`,
+          malos:[[`${a} × (${b} + ${c})`, `This buys ${a} backpacks! There is only one backpack, so $${c} is not multiplied by ${a}.`],
+                 [`(${a} + ${b}) × ${c}`, `${a} is the number of notebooks; it multiplies their price, $${b}.`],
+                 [`${a} + ${b} + ${c}`, `The notebooks cost $${b} each, so ${a} notebooks cost ${a} × ${b}, not ${a} + ${b}.`]]}; }
+      else if(k === 2){ const b=azar(3,6), c=azar(5,12), a=b*c+azar(5,30);
+        it = {en:`${n} had $${a} and bought ${b} movie tickets at $${c} each. Which expression shows the money left?`, es:`${n} tenía $${a} y compró ${b} boletos de cine a $${c} cada uno. ¿Qué expresión muestra el dinero que le queda?`, ok:`${a} − ${b} × ${c}`,
+          fin:`The tickets cost ${b} × ${c}, and × comes before −, so ${a} − ${b} × ${c} works without parentheses.`,
+          malos:[[`(${a} − ${b}) × ${c}`, `This takes away ${b} dollars first. ${b} is the number of tickets, not dollars.`],
+                 [`${b} × (${a} − ${c})`, `This takes $${c} away from $${a} only once and then multiplies everything. The ${b} tickets cost ${b} × ${c}.`],
+                 [`${a} − ${b} + ${c}`, `Each ticket costs $${c}, so ${b} tickets cost ${b} × ${c}.`]]}; }
+      else if(k === 3){ const a=azar(6,15), b=azar(3,8), c=azar(2,6);
+        it = {en:`In the cafeteria, each of ${a} tables has ${b} red chairs and ${c} blue chairs. Which expression shows all the chairs?`, es:`En la cafetería, cada una de ${a} mesas tiene ${b} sillas rojas y ${c} sillas azules. ¿Qué expresión muestra todas las sillas?`, ok:`${a} × (${b} + ${c})`,
+          fin:`Each table has ${b} + ${c} chairs, and there are ${a} tables: ${a} × (${b} + ${c}).`,
+          malos:[[`${a} × ${b} + ${c}`, `Every table has blue chairs too, so the ${c} must be multiplied as well: put ${b} + ${c} in parentheses.`],
+                 [`${a} + ${b} + ${c}`, `There are ${a} tables with chairs, so you need ${a} times the chairs at one table.`],
+                 [`(${a} + ${b}) × ${c}`, `This adds tables and chairs together. Add the chairs at one table first: ${b} + ${c}.`]]}; }
+      else if(k === 4){ const c=azar(4,8), b=azar(2,6), a=b+c*azar(3,8);
+        it = {en:`${n} baked ${a} cookies, ate ${b}, and shared the rest equally among ${c} friends. Which expression shows each friend's share?`, es:`${n} horneó ${a} galletas, se comió ${b} y repartió las demás en partes iguales entre ${c} amigos. ¿Qué expresión muestra lo que recibe cada amigo?`, ok:`(${a} − ${b}) ÷ ${c}`,
+          fin:`First the cookies left, ${a} − ${b}, then split them: (${a} − ${b}) ÷ ${c}.`,
+          malos:[[`${a} − ${b} ÷ ${c}`, `Without parentheses, ÷ comes first, so only ${b} cookies would be shared.`],
+                 [`${a} ÷ ${c} − ${b}`, `${n} ate the cookies before sharing, so subtract first and then divide.`],
+                 [`(${a} + ${b}) ÷ ${c}`, `Eating ${b} cookies takes them away: ${a} − ${b}, not ${a} + ${b}.`]]}; }
+      else if(k === 5){ const a=azar(3,8), b=azar(10,25), c=azar(3,9);
+        it = {en:`${n}'s class collects cans for 2 weeks. Each week they fill ${a} bags with ${b} cans each, plus ${c} loose cans.`, es:`El salón de ${n} recolecta latas durante 2 semanas. Cada semana llenan ${a} bolsas de ${b} latas cada una, más ${c} latas sueltas.`, ok:`2 × (${a} × ${b} + ${c})`,
+          fin:`One week is ${a} × ${b} + ${c} cans, and there are 2 weeks: 2 × (${a} × ${b} + ${c}).`,
+          malos:[[`2 × ${a} × ${b} + ${c}`, `The ${c} loose cans come every week, so they must be doubled too. Put one week in parentheses.`],
+                 [`2 × ${a} × (${b} + ${c})`, `The loose cans are not in every bag, so ${c} is not added to each bag.`],
+                 [`2 + ${a} × ${b} + ${c}`, `“For 2 weeks” means 2 times one week, not + 2.`]]}; }
+      else if(k === 6){ const d=elegir([2,3,4]), a=d*azar(2,4), b=azar(4,9), c=azar(2,5);
+        it = {en:`The garden has ${a} rows with ${b} plants each. ${n} adds ${c} plants to every row. Then the plants are shared equally among ${d} classes.`, es:`El huerto tiene ${a} hileras de ${b} plantas cada una. ${n} agrega ${c} plantas a cada hilera. Luego las plantas se reparten en partes iguales entre ${d} grupos.`, ok:`[${a} × (${b} + ${c})] ÷ ${d}`,
+          fin:`Each row has ${b} + ${c} plants, the garden has ${a} × (${b} + ${c}), and then ÷ ${d}: [${a} × (${b} + ${c})] ÷ ${d}.`,
+          malos:[[`[${a} × ${b} + ${c}] ÷ ${d}`, `${c} plants go in every row, so add ${c} to ${b} before you multiply by ${a}.`],
+                 [`${a} × ${b} + ${c} ÷ ${d}`, `Without brackets, ÷ comes first, so only ${c} plants would be shared.`],
+                 [`[(${a} + ${c}) × ${b}] ÷ ${d}`, `The ${c} plants are added to each row's ${b} plants, not to the number of rows.`]]}; }
+      else { const a=azar(2,4), b=azar(1,2), c=azar(1,3);
+        it = {en:`${n} doubles a recipe that uses ${a} cups of flour and ${b} cups of sugar. Then ${n} adds ${c} cups of chocolate chips.`, es:`${n} duplica una receta que lleva ${a} tazas de harina y ${b} tazas de azúcar. Luego le agrega ${c} tazas de chispas de chocolate.`, ok:`2 × (${a} + ${b}) + ${c}`,
+          fin:`The recipe is ${a} + ${b} cups, doubled is 2 × (${a} + ${b}), and the chips are added once: 2 × (${a} + ${b}) + ${c}.`,
+          malos:[[`2 × (${a} + ${b} + ${c})`, `Only the recipe is doubled. The chips are added once at the end.`],
+                 [`2 × ${a} + ${b} + ${c}`, `Doubling the recipe doubles the sugar too, so ${a} + ${b} needs parentheses.`],
+                 [`2 + (${a} + ${b}) + ${c}`, `“Doubles” means 2 times, not + 2.`]]}; }
+    }
+    esc.insertAdjacentHTML("beforeend", `<p class="problema"><span aria-hidden="true">${reto ? "📖" : "✏️"}</span> ${escaparHTML(reto ? it.en : "“" + it.en + "”")}</p>`);
+    if(!reto) esc.insertAdjacentHTML("beforeend", `<p class="nota">Ask yourself: what do I do <b>first</b>? That part goes in parentheses.</p>`);
+    ponerInstruccion(reto ? t.escR : t.escF, (reto ? "" : t.escF + " ") + it.en + (reto ? " " + t.escR : ""), reto ? ES.escR(it.es) : ES.escF(it.es));
+    opcionesTexto([it.ok, ...it.malos.map(m=>m[0])], it.ok, ()=>acertar(it.fin), (x)=>{ const m = it.malos.find(m=>m[0] === x); return m ? m[1] : t.otra[0]; });
+    return;
+  }
+
+  /* --- 3. Compara sin calcular (5.OA.2) --- */
+  if(S.juego === "interpretar"){
+    const tipo = reto ? elegir(["veces","veces","mayor","mayor"]) : elegir(["veces","veces","mayor"]);
+    const [n1, n2] = nombresAzar(2);
+    if(tipo === "veces"){
+      const div = reto && Math.random() < 0.35;
+      const k = reto ? azar(3, 9) : azar(2, 5);
+      let a = reto ? azar(10000, 99999) : azar(100, 999), b = reto ? azar(100, 999) : azar(10, 99);
+      if(div){ while((a + b) % k) a++; }
+      const sum = `${F(a)} + ${F(b)}`, e = div ? `(${sum}) ÷ ${k}` : `${k} × (${sum})`;
+      const CTX = [[`The school library lent ${F(a)} books in September and ${F(b)} in October.`, `La biblioteca escolar prestó ${F(a)} libros en septiembre y ${F(b)} en octubre.`],
+                   [`${n1} walked ${F(a)} steps on Saturday and ${F(b)} steps on Sunday.`, `${n1} caminó ${F(a)} pasos el sábado y ${F(b)} pasos el domingo.`],
+                   [`${n1} scored ${F(a)} points in level 1 of a video game and ${F(b)} points in level 2.`, `${n1} sacó ${F(a)} puntos en el nivel 1 de un videojuego y ${F(b)} puntos en el nivel 2.`]];
+      const [cEn, cEs] = elegir(CTX);
+      const frase = `${e} is ___ ${sum}.`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(cEn)}</p><p class="expr" style="font-size:clamp(22px,4.6vw,34px)">${escaparHTML(e)} is ___ ${escaparHTML(sum)}</p>`);
+      if(!reto) esc.insertAdjacentHTML("beforeend", barras([{rot:sum, copias:1}, {rot:`${k} × ( )`, copias:k}], a, b, `Bar model: the first row is one copy of ${sum}; the second row is ${k} copies of the same sum.`));
+      ponerInstruccion(t.intVeces, cEn + " " + t.intVeces + " " + frase,
+        `${cEs} Compara sin calcular: ${e} es ___ ${sum}. Opciones: «${k} times as large as» = ${k} veces más grande que; «${k} more than» = ${k} más que; «1/${k} as large as» = 1/${k} del tamaño de; «exactly the same size as» = exactamente del mismo tamaño que.`);
+      const OK = div ? `1/${k} as large as` : `${k} times as large as`;
+      const lista = [`${k} times as large as`, `${k} more than`, `1/${k} as large as`, `exactly the same size as`];
+      opcionesTexto(lista, OK, ()=>acertar(div
+        ? `${e} splits the same sum into ${k} equal parts, so it is 1/${k} as large as ${sum}. No calculating needed!`
+        : `${e} is ${k} copies of the same sum ${sum}, so it is ${k} times as large. No calculating needed!`), (x)=>{
+        if(x === `${k} more than`) return div ? `÷ ${k} is not − ${k}. Dividing by ${k} splits the whole sum into ${k} equal parts.` : `× ${k} is not + ${k}. It means ${k} copies of the whole sum ${sum}.`;
+        if(x === `exactly the same size as`) return div ? `Dividing by ${k} changes the size: it makes ${k} equal parts of the sum.` : `The parentheses keep the sum together, and × ${k} makes ${k} copies of it. That is not the same size.`;
+        if(x === `${k} times as large as`) return `Dividing by ${k} makes it smaller, not ${k} times as large. Think: ${k} equal parts of the sum.`;
+        return `Multiplying by a whole number greater than 1 makes it larger, not smaller.`;
+      }, true);
+      return;
+    }
+    /* ¿Cuál es mayor? */
+    const COSAS = [["chairs for the school play","sillas para la obra de la escuela"],["cans collected","latas recolectadas"],["points in the game","puntos en el juego"],["pages read","páginas leídas"]];
+    const [cosa, cosaEs] = elegir(COSAS);
+    const pares = reto ? ["parMal","mitad","resta","conm"] : ["parMal","copias","repetida"];
+    const p = elegir(pares);
+    const a = reto ? azar(120, 980) : azar(12, 98), b = reto ? azar(15, 99) : azar(5, 40), k = reto ? azar(3, 9) : azar(2, 5);
+    let A, B, gana, pistaA, pistaB, pistaI, fin;
+    if(p === "parMal"){
+      A = `${k} × (${F(a)} + ${F(b)})`; B = `${k} × ${F(a)} + ${F(b)}`; gana = "A";
+      pistaB = `In ${B}, only ${F(a)} is multiplied by ${k}; ${F(b)} is added once. In ${A}, ${F(b)} is multiplied by ${k} too.`;
+      pistaI = `They look alike, but the parentheses change what is multiplied by ${k}.`;
+      fin = `${A} has ${k} copies of ${F(b)}; ${B} has only one. So ${A} is greater.`;
+    } else if(p === "copias"){
+      const jj = azar(1, k - 1);
+      A = `${jj} × (${F(a)} + ${F(b)})`; B = `${k} × (${F(a)} + ${F(b)})`; gana = "B";
+      pistaA = `Both multiply the same sum. Compare the number of copies: ${jj} copies or ${k} copies?`;
+      pistaI = `The sum is the same, but the number of copies is different.`;
+      fin = `Same sum, but ${k} copies is more than ${jj} copies. So ${B} is greater.`;
+    } else if(p === "repetida"){
+      A = `${F(a)} + ${F(b)} + ${F(a)} + ${F(b)} + ${F(a)} + ${F(b)}`; B = `3 × (${F(a)} + ${F(b)})`; gana = "I";
+      pistaA = `Count the copies of ${F(a)} + ${F(b)} in the long one: there are 3. That is the same as 3 × (${F(a)} + ${F(b)}).`;
+      pistaB = `3 × (${F(a)} + ${F(b)}) means 3 copies of the sum, and the long one also has 3 copies.`;
+      fin = `Both are 3 copies of ${F(a)} + ${F(b)}, so they are equal.`;
+    } else if(p === "mitad"){
+      A = `(${F(a)} + ${F(b)}) ÷ 2`; B = `${F(a)} + ${F(b)}`; gana = "B";
+      pistaA = `Dividing by 2 splits the sum into 2 equal parts, so it is half as large.`;
+      pistaI = `÷ 2 changes the size: it is half of the sum.`;
+      fin = `${A} is half of ${B}, so ${B} is greater.`;
+    } else if(p === "resta"){
+      const a2 = a + b * k;
+      A = `${k} × (${F(a2)} − ${F(b)})`; B = `${k} × ${F(a2)} − ${F(b)}`; gana = "B";
+      pistaA = `In ${A} you take away ${F(b)} ${k} times. In ${B} you take it away only once, so more is left.`;
+      pistaI = `The parentheses change how many times ${F(b)} is taken away.`;
+      fin = `${A} takes away ${k} copies of ${F(b)}; ${B} takes away only one. So ${B} is greater.`;
+    } else {
+      A = `${k} × (${F(a)} + ${F(b)})`; B = `(${F(b)} + ${F(a)}) × ${k}`; gana = "I";
+      pistaA = `Look closely: both have the same sum (order doesn't matter in a sum) multiplied by ${k}.`;
+      pistaB = pistaA;
+      fin = `The order of the numbers in a sum or a product doesn't change the value, so they are equal.`;
+    }
+    const IG = "They have the same value";
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(`${n1} and ${n2} wrote expressions for the number of ${cosa}.`)}</p>`);
+    esc.insertAdjacentHTML("beforeend", `<p class="nota"><b>${escaparHTML(n1)}:</b> ${escaparHTML(A)}<br><b>${escaparHTML(n2)}:</b> ${escaparHTML(B)}</p>`);
+    if(!reto && p === "copias"){ const jj = Number(A.split(" ")[0]); esc.insertAdjacentHTML("beforeend", barras([{rot:`${jj} × ( )`, copias:jj}, {rot:`${k} × ( )`, copias:k}], a, b, `Bar model: ${jj} copies of the sum compared with ${k} copies of the same sum.`)); }
+    ponerInstruccion(t.intMayor, `${n1} wrote ${A}. ${n2} wrote ${B}. ${t.intMayor}`,
+      `${n1} y ${n2} escribieron expresiones para el número de ${cosaEs}. ${n1}: ${A}. ${n2}: ${B}. ¿Cuál es mayor? No calcules. «They have the same value» = tienen el mismo valor.`);
+    const bien = gana === "A" ? A : gana === "B" ? B : IG;
+    opcionesTexto([A, B, IG], bien, ()=>acertar(fin), (x)=> x === A ? (pistaA || pistaI) : x === B ? (pistaB || pistaI) : pistaI, true);
+    return;
+  }
+
+  /* --- 4. ¿Dónde van los paréntesis? (5.OA.1) --- */
+  if(S.juego === "parentesis"){
+    let nums, ops, conv, objetivo, bienTxt, malos;
+    for(let intento=0; intento<200; intento++){
+      if(!reto){
+        ops = elegir([["×","+"],["+","×"],["×","−"],["−","×"],["+","÷"],["÷","+"]]);
+        nums = [azar(2,9), azar(2,9), azar(2,9)];
+      } else {
+        ops = [elegir(["+","−","×","÷"]), elegir(["+","−","×","÷"]), elegir(["+","−","×","÷"])];
+        if(!ops.some(o=>o === "×" || o === "÷") || !ops.some(o=>o === "+" || o === "−")) continue;
+        nums = [azar(2,12), azar(2,9), azar(2,9), azar(2,9)];
+      }
+      const base = nums.map((v, i)=> i ? ops[i-1] + " " + F(v) : F(v)).join(" ");
+      conv = ev(arbol(base));
+      if(conv === null) continue;
+      const cols = colocaciones(nums, ops).map(s=>({s, v:ev(arbol(s))})).filter(c=>c.v !== null);
+      const cand = cols.filter(c=> c.v !== conv && cols.filter(d=>d.v === c.v).length === 1);
+      if(!cand.length) continue;
+      const elegida = elegir(cand); objetivo = elegida.v; bienTxt = elegida.s;
+      const otros = mezclar(cols.filter(c=>c.v !== objetivo));
+      const vistos = [conv]; malos = [];
+      otros.forEach(c=>{ if(malos.length < (reto ? 2 : 1) && (!reto || !vistos.includes(c.v))){ malos.push(c); vistos.push(c.v); } });
+      if(malos.length < 1) continue;
+      malos.push({s:t.sinPar, v:conv, base});
+      break;
+    }
+    if(!malos || !malos.length || !malos[malos.length - 1].base){
+      nums = [2, 5, 3]; ops = ["×","+"]; objetivo = 16; bienTxt = "2 × (5 + 3)";
+      malos = [{s:"(2 × 5) + 3", v:13}, {s:t.sinPar, v:13, base:"2 × 5 + 3"}];
+    }
+    const base = malos[malos.length - 1].base;
+    const [n] = nombresAzar(1);
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(`${n} wrote this in a notebook, but forgot the parentheses. Help ${n} make it true!`)}</p>`);
+    esc.insertAdjacentHTML("beforeend", `<p class="expr">${escaparHTML(base)} = <span class="meta-v">${F(objetivo)}</span></p>`);
+    if(!reto) esc.insertAdjacentHTML("beforeend", `<p class="nota">Without parentheses: ${escaparHTML(cadena(base))}. That is not ${F(objetivo)}!</p>`);
+    ponerInstruccion(t.parF, `${base} = ${F(objetivo)}. ${t.parF}`,
+      `${n} escribió esto en su cuaderno, pero olvidó los paréntesis. ¿Dónde van los paréntesis para que ${base} = ${F(objetivo)} sea verdad? ${ES.sinPar}`);
+    opcionesTexto([bienTxt, ...malos.map(m=>m.s)], bienTxt, ()=>{
+      esc.querySelector(".expr").innerHTML = `${escaparHTML(bienTxt)} = <span class="meta-v">${F(objetivo)}</span>`;
+      acertar(`${cadena(bienTxt)}. The parentheses change what you do first.`);
+    }, (x)=>{
+      const m = malos.find(m=>m.s === x);
+      if(!m) return t.otra[0];
+      if(x === t.sinPar) return `Without parentheses, × and ÷ come first: ${cadena(base)}, not ${F(objetivo)}.`;
+      return `Check it: ${cadena(x)}, not ${F(objetivo)}.`;
+    }, true);
+    return;
+  }
+
+  /* --- 5. Dos patrones (5.OA.3) --- */
+  if(S.juego === "patrones"){
+    const tipo = reto ? elegir(["termino","rel","graf","graf"]) : elegir(["hueco","hueco","rel"]);
+    const a = tipo === "graf" ? azar(1, 3) : reto ? azar(3, 8) : azar(2, 5);
+    const m = tipo === "graf" ? azar(2, 3) : reto ? azar(2, 5) : azar(2, 3);
+    const b = a * m, N = reto ? 5 : 6;
+    const A = [...Array(N)].map((_, i)=>a * i), B = A.map(x=>x * m);
+    const reglas = `Pattern A: start at 0, add ${a}. Pattern B: start at 0, add ${b}.`;
+    const reglasEs = `Patrón A: empieza en 0 y suma ${a}. Patrón B: empieza en 0 y suma ${b}.`;
+    let hueco = null;
+    const pintarTabla = ()=>{
+      let h = `<table class="tabla-pat"><caption class="sr-only">Two patterns</caption><tbody>`;
+      [["A", a, A], ["B", b, B]].forEach(([r, s, L])=>{
+        h += `<tr><th scope="row">Pattern ${r} (add ${s})</th>` + L.map((v, i)=> hueco && hueco.r === r && hueco.i === i ? `<td class="hueco" aria-label="missing number">?</td>` : `<td>${v}</td>`).join("") + "</tr>";
+      });
+      return h + "</tbody></table>";
+    };
+    const listas = ()=> `<div class="lista-pat"><span class="rot">Pattern A (start at 0, add ${a})</span>${A.join(", ")}, …<span class="rot" style="margin-top:6px">Pattern B (start at 0, add ${b})</span>${B.join(", ")}, …</div>`;
+
+    if(tipo === "hueco"){
+      const r = elegir(["A","B"]), i = azar(2, N - 1), L = r === "A" ? A : B, s = r === "A" ? a : b, o = r === "A" ? b : a, v = L[i], prev = L[i - 1];
+      hueco = {r, i};
+      esc.insertAdjacentHTML("beforeend", pintarTabla());
+      esc.insertAdjacentHTML("beforeend", `<p class="nota">${escaparHTML(reglas)}</p>`);
+      ponerInstruccion(t.patHueco, `${reglas} ${t.patHueco}`, `${reglasEs} ¿Qué número va en la casilla vacía del patrón ${r}?`);
+      const malos = [[v + s, `Count again: the box comes right after ${prev}, so add ${s} only once.`],
+                     [(r === "A" ? B : A)[i], `That number belongs to the other pattern. Pattern ${r} starts at 0 and adds ${s}.`],
+                     [prev + o, `That adds ${o}, the rule of the other pattern. Pattern ${r} adds ${s}.`]].filter(([x])=>x > 0 && x !== v);
+      const lista = unicos([v, ...malos.map(([x])=>x)]).slice(0, 4).map(String);
+      opcionesTexto(lista, String(v), ()=>{
+        const td = esc.querySelector("td.hueco"); td.textContent = v; td.className = "lleno"; td.removeAttribute("aria-label");
+        acertar(`${prev} + ${s} = ${v}.` + (r === "B" ? ` Look: ${v} is ${m} times ${A[i]}, the matching term in Pattern A.` : ` Look: ${B[i]} in Pattern B is ${m} times ${v}.`));
+      }, (x)=>{ const mm = malos.find(([y])=>String(y) === x); return mm ? mm[1] : t.otra[0]; });
+      return;
+    }
+    if(tipo === "rel"){
+      const deB = Math.random() < 0.65;
+      esc.insertAdjacentHTML("beforeend", reto ? listas() : pintarTabla());
+      const i1 = 1, i2 = 2;
+      const preg = deB ? t.patRelB : t.patRelA;
+      ponerInstruccion(preg, `${reglas} ${preg}`, `${reglasEs} ${deB ? "Cada término del patrón B es ___ el término correspondiente del patrón A." : "Cada término del patrón A es ___ el término correspondiente del patrón B."} «${m} times» = ${m} veces; «1/${m} of» = 1/${m} de; «more than» = más que; «less than» = menos que.`);
+      let lista, bien, pistas;
+      if(deB){
+        bien = `${m} times`;
+        lista = [bien, `1/${m} of`, `${b - a} more than`, `${b} times`];
+        pistas = {[`1/${m} of`]:`Check the direction: the terms in Pattern B are bigger, so B is not a part of A.`,
+                  [`${b - a} more than`]:`Check more than one pair: ${B[i1]} is ${b - a} more than ${A[i1]}, but ${B[i2]} is not ${b - a} more than ${A[i2]}. The difference keeps growing.`,
+                  [`${b} times`]:`${b} is what Pattern B adds each time. Compare matching terms: ${A[i2]} and ${B[i2]}.`};
+      } else {
+        bien = `1/${m} of`;
+        lista = [bien, `${m} times`, `${b - a} less than`, `1/${b} of`];
+        pistas = {[`${m} times`]:`Check the direction: the terms in Pattern A are smaller, so A is a part of B.`,
+                  [`${b - a} less than`]:`Check more than one pair: ${A[i1]} is ${b - a} less than ${B[i1]}, but ${A[i2]} is not ${b - a} less than ${B[i2]}. The difference keeps growing.`,
+                  [`1/${b} of`]:`${b} is what Pattern B adds each time. Compare matching terms: ${A[i2]} and ${B[i2]}.`};
+      }
+      opcionesTexto(lista, bien, ()=>acertar(deB
+        ? `Each term in B is ${m} times the term in A: ${A[1]} × ${m} = ${B[1]}, ${A[2]} × ${m} = ${B[2]}, ${A[3]} × ${m} = ${B[3]}. That's because ${b} is ${m} times ${a}.`
+        : `Each term in A is 1/${m} of the term in B: ${B[2]} ÷ ${m} = ${A[2]}, ${B[3]} ÷ ${m} = ${A[3]}. That's because ${a} is 1/${m} of ${b}.`), (x)=>pistas[x] || t.otra[0], true);
+      return;
+    }
+    if(tipo === "termino"){
+      const j = azar(7, 12), X = a * j, v = X * m;
+      esc.insertAdjacentHTML("beforeend", listas());
+      const preg = `When Pattern A is ${X}, what is the matching term in Pattern B?`;
+      ponerInstruccion(preg, `${reglas} ${preg}`, `${reglasEs} Cuando el patrón A llega a ${X}, ¿cuál es el término correspondiente del patrón B?`);
+      const malos = [[X + (b - a), `${b - a} is the difference only at the first step. The difference keeps growing; compare: B is ${m} times A.`],
+                     [X * b, `${b} is what Pattern B adds each time, not what you multiply by. B is ${m} times A.`],
+                     [v + b, `That is one term too far. ${X} is term number ${j} after 0 in Pattern A; use the matching term.`],
+                     [v - b, `That is one term too early. Each term in B is ${m} times the matching term in A.`]].filter(([x])=>x > 0 && x !== v);
+      const lista = unicos([v, ...mezclar(malos).map(([x])=>x)]).slice(0, 4).map(String);
+      opcionesTexto(lista, String(v), ()=>acertar(`Each term in B is ${m} times the term in A, so ${X} × ${m} = ${v}. You didn't need to list all the terms!`),
+        (x)=>{ const mm = malos.find(([y])=>String(y) === x); return mm ? mm[1] : t.otra[0]; });
+      return;
+    }
+    /* graf: la gráfica correcta de los pares ordenados (A, B) */
+    const K = 4, ok = [...Array(K)].map((_, i)=>[A[i], B[i]]);
+    const ops = [{p:ok, h:null},
+                 {p:ok.map(([x, y])=>[y, x]), h:`These points are (B, A). In an ordered pair (A, B), the first number comes from Pattern A and goes across.`},
+                 {p:ok.map(([x], i)=>[x, b * (i + 1)]), h:`These pairs don't match: the 1st term of A must go with the 1st term of B, and both patterns start at 0.`},
+                 {p:ok.map(([x])=>[x, x]), h:`In these points B equals A, as if both patterns added ${a}. Pattern B adds ${b}.`}];
+    const mx = Math.max(...ops.flatMap(o=>o.p.flat()));
+    const paso = mx <= 12 ? 1 : mx <= 24 ? 2 : 3, maxEje = Math.ceil(mx / paso) * paso;
+    esc.insertAdjacentHTML("beforeend", listas());
+    ponerInstruccion(t.patGraf, `${reglas} ${t.patGraf}`, `${reglasEs} Forma pares ordenados (A, B) con los términos correspondientes. ¿Qué gráfica muestra esos pares?`);
+    const cont = $("opciones");
+    let bienBtn = null;
+    mezclar(ops).forEach((o, idx)=>{
+      const b2 = document.createElement("button"); b2.type = "button"; b2.className = "opcion-graf";
+      b2.setAttribute("aria-label", `Graph ${idx + 1}: points ${listaPares(o.p)}`);
+      b2.innerHTML = grafica(o.p, maxEje, paso, true) + `<span aria-hidden="true">Graph ${idx + 1}</span>`;
+      b2.addEventListener("click", ()=>{
+        if(S.bloqueado) return; sonToque();
+        if(!o.h){ sonBoing(); acertar(`The ordered pairs are ${listaPares(ok)}: each pair is (term in A, term in B). B is always ${m} times A.`); }
+        else fallar(b2, o.h);
+      });
+      if(!o.h) bienBtn = b2;
+      cont.appendChild(b2);
+    });
+    S.resolver = ()=>{ if(bienBtn) bienBtn.click(); };
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (5.OA.1, 5.OA.2, 5.OA.3): decidir y, en el Reto, explicar por qué --- */
+  if(S.juego === "razon"){
+    const [n1] = nombresAzar(1);
+    const tipos = reto ? ["izq","parOk","veces","vecesMal","quitar","quitarMal","patMal","patOk","corchetes","par"] : ["izq","parOk","veces","vecesMal","quitarMal","patOk"];
+    const tipo = elegir(tipos);
+    let dicho, verdad, expl, razones;
+    if(tipo === "izq"){
+      const a = azar(2, 9), b = azar(2, 9), c = azar(2, 6), mal = (a + b) * c, bien = a + b * c;
+      dicho = `${n1}: “${a} + ${b} × ${c} = ${mal}, because I always go from left to right.”`;
+      verdad = false; expl = `Without parentheses, multiply first: ${a} + ${b} × ${c} = ${a} + ${b * c} = ${bien}. To get ${mal} you would need (${a} + ${b}) × ${c}.`;
+      razones = [[`× comes before + when there are no parentheses, so ${b} × ${c} goes first.`, true],
+                 [`It is right: you always work from left to right, the same way you read a sentence.`, false],
+                 [`It is wrong because you should always do the operation with the biggest numbers first.`, false]];
+    } else if(tipo === "parOk"){
+      const a = azar(4, 9), b = azar(3, 9), c = azar(2, 5);
+      dicho = `${n1}: “In ${c} × (${a} + ${b}), I add ${a} and ${b} first, so it equals ${c * (a + b)}.”`;
+      verdad = true; expl = `The parentheses go first: ${c} × (${a} + ${b}) = ${c} × ${a + b} = ${c * (a + b)}.`;
+      razones = [[`The parentheses say to add ${a} + ${b} first, then multiply by ${c}.`, true],
+                 [`It is wrong: you always multiply before you add, even when there are parentheses.`, false],
+                 [`It is right because addition always comes first in any expression, with or without parentheses.`, false]];
+    } else if(tipo === "veces"){
+      const k = azar(3, 8), a = azar(1000, 9999), b = azar(100, 999);
+      dicho = `${n1}: “${k} × (${F(a)} + ${F(b)}) is ${k} times as large as ${F(a)} + ${F(b)}. I don't need to calculate.”`;
+      verdad = true; expl = `${k} × (${F(a)} + ${F(b)}) is ${k} copies of the same sum, so it is ${k} times as large. No calculating needed.`;
+      razones = [[`It is ${k} copies of the same sum ${F(a)} + ${F(b)}.`, true],
+                 [`It is wrong: you can never compare two expressions until you calculate both of them.`, false],
+                 [`It is right because ${k} × something is always ${k} more than that something.`, false]];
+    } else if(tipo === "vecesMal"){
+      const k = azar(4, 9), a = azar(100, 999), b = azar(10, 99);
+      dicho = `${n1}: “${k} × (${a} + ${b}) is ${k} more than ${a} + ${b}.”`;
+      verdad = false; expl = `× ${k} means ${k} copies of the sum, so ${k} × (${a} + ${b}) is ${k} times as large as ${a} + ${b}, not just ${k} more.`;
+      razones = [[`× ${k} makes ${k} copies of the sum, so it is ${k} times as large.`, true],
+                 [`It is right: multiplying by ${k} and adding ${k} always give the same answer for any sum.`, false],
+                 [`It is wrong because ${k} × (${a} + ${b}) is smaller than ${a} + ${b}.`, false]];
+    } else if(tipo === "quitar"){
+      const a = azar(3, 9), b = azar(3, 9), c = azar(2, 9);
+      dicho = `${n1}: “(${a} × ${b}) + ${c} and ${a} × ${b} + ${c} have the same value.”`;
+      verdad = true; expl = `Both are ${a * b} + ${c} = ${a * b + c}. The parentheses are around the part that goes first anyway, so they don't change anything.`;
+      razones = [[`× goes first anyway, so those parentheses don't change the order.`, true],
+                 [`It is wrong: parentheses always change the value of an expression, wherever they are.`, false],
+                 [`It is right because parentheses never matter when an expression has a plus sign.`, false]];
+    } else if(tipo === "quitarMal"){
+      const a = azar(3, 9), b = azar(3, 9), c = azar(2, 9);
+      dicho = `${n1}: “${a} × (${b} + ${c}) and ${a} × ${b} + ${c} have the same value.”`;
+      verdad = false; expl = `${a} × (${b} + ${c}) = ${a} × ${b + c} = ${a * (b + c)}, but ${a} × ${b} + ${c} = ${a * b} + ${c} = ${a * b + c}.`;
+      razones = [[`The parentheses make you add first, so ${c} gets multiplied by ${a} too.`, true],
+                 [`It is right: the numbers and the signs are the same, so the value has to be the same.`, false],
+                 [`It is wrong because ${a} × ${b} + ${c} has no answer without parentheses.`, false]];
+    } else if(tipo === "patMal" || tipo === "patOk"){
+      const a = azar(2, 5), m = azar(2, 4), b = a * m;
+      if(tipo === "patMal"){
+        dicho = `${n1}: “Pattern A adds ${a} and Pattern B adds ${b}, both starting at 0. So each term in B is ${b - a} more than the term in A.”`;
+        verdad = false; expl = `A: 0, ${a}, ${2 * a}, ${3 * a}… B: 0, ${b}, ${2 * b}, ${3 * b}… The difference keeps growing (${b - a}, ${2 * (b - a)}, ${3 * (b - a)}…). Each term in B is ${m} times the term in A.`;
+        razones = [[`The difference grows each step; B is always ${m} times A.`, true],
+                   [`It is right: the difference between the rules, ${b} − ${a}, is always the difference between the terms.`, false],
+                   [`It is wrong because each term in B is ${b} times the matching term in A.`, false]];
+      } else {
+        dicho = `${n1}: “Pattern A adds ${a} and Pattern B adds ${b}, both starting at 0. So each term in B is ${m} times the term in A.”`;
+        verdad = true; expl = `A: 0, ${a}, ${2 * a}, ${3 * a}… B: 0, ${b}, ${2 * b}, ${3 * b}… Each term in B is ${m} times the term in A, because ${b} is ${m} times ${a}.`;
+        razones = [[`${b} is ${m} times ${a}, so every term of B is ${m} times the term of A.`, true],
+                   [`It is wrong: each term in B is ${b - a} more than the matching term in A, at every step.`, false],
+                   [`It is right only for the first two terms; after that the patterns stop matching.`, false]];
+      }
+    } else if(tipo === "corchetes"){
+      const b = azar(2, 5), c = azar(1, 4), a = b + c + azar(3, 9), k = azar(2, 5);
+      dicho = `${n1}: “To find ${k} × [${a} − (${b} + ${c})], I do ${a} − ${b} first.”`;
+      verdad = false; expl = `Start with the innermost parentheses: ${b} + ${c} = ${b + c}. Then the brackets: ${a} − ${b + c} = ${a - b - c}. Then ${k} × ${a - b - c} = ${k * (a - b - c)}.`;
+      razones = [[`The innermost parentheses (${b} + ${c}) go first, then the brackets.`, true],
+                 [`It is right: inside the brackets you always work from left to right, ignoring the parentheses.`, false],
+                 [`It is wrong because you should multiply ${k} × ${a} first, since × comes before −.`, false]];
+    } else {
+      const x = azar(1, 4), y = x + azar(2, 5);
+      dicho = `${n1}: “The ordered pairs (${x}, ${y}) and (${y}, ${x}) are the same point on the graph.”`;
+      verdad = false; expl = `(${x}, ${y}) means ${x} across and ${y} up; (${y}, ${x}) means ${y} across and ${x} up. They are different points.`;
+      razones = [[`The first number goes across and the second goes up, so the order matters.`, true],
+                 [`It is right: an ordered pair uses the same two numbers, so the order doesn't change the point.`, false],
+                 [`It is wrong because (${y}, ${x}) can't be graphed when the bigger number comes first.`, false]];
+    }
+    const p = document.createElement("p"); p.className = "problema"; p.innerHTML = `<span aria-hidden="true">💬</span> ${escaparHTML(dicho)}`;
+    esc.appendChild(p);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dicho));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opcionesTexto(razones.map(r=>r[0]), buena, ()=>acertar(expl), t.pistaPorque, true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const ln = '<i class="linea"></i>';
+  $("hoja-evaluar").innerHTML = ["3 × (4 + 5) = ", "(20 − 8) ÷ 4 = ", "18 − 3 × 4 = ", "2 × [15 − (4 + 6)] = ", "[(7 + 5) × 3] − 6 = ", "40 ÷ (2 × 4) + 1 = "]
+    .map(s=>`<div>${s}${ln}</div>`).join("");
+  $("hoja-escribir").innerHTML = ["a) Add 9 and 6, then multiply by 4.", "b) Salma buys 3 notebooks at $2 each and one $7 backpack.", "c) Daniel bakes 30 muffins, eats 2, and shares the rest equally in 4 boxes."]
+    .map(s=>`<div>${s} ${ln}${ln}</div>`).join("");
+  $("hoja-interpretar").innerHTML = ["a) 5 × (2,385 + 914) is ____________ as large as 2,385 + 914.", "b) Which is greater: 4 × (63 + 28) or 4 × 63 + 28? Why? ____________________________"]
+    .map(s=>`<div>${s}</div>`).join("");
+  $("hoja-patrones").innerHTML = `<table class="tabla-h"><tbody><tr><th>Pattern A (add 4)</th><td>0</td><td>4</td><td></td><td></td><td></td></tr><tr><th>Pattern B (add 8)</th><td>0</td><td>8</td><td></td><td></td><td></td></tr></tbody></table>
+    <p class="razon-h">Each term in Pattern B is ____________ the matching term in Pattern A.<br>Ordered pairs (A, B): (0, 0), ( ___ , ___ ), ( ___ , ___ ), ( ___ , ___ )</p>`;
+  $("hoja-razon").textContent = "Elías: “12 − 2 × 5 = 50, because 12 − 2 is 10 and 10 × 5 is 50.” Is he right? Why?";
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+pintarHoja();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="5"></script>
+</body>
+</html>
