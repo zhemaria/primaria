@@ -11,7 +11,7 @@
    ================================================================== */
 (function () {
   "use strict";
-  var LUMI = "https://zhemaria.github.io/lumi/";
+  var LUMI = "https://www.lumi-educa.com/";
   var GRADOS = [
     { id: "prek", ancla: "prek", es: "Prekínder", en: "Pre-K" },
     { id: "k",    ancla: "k",    es: "Kínder",    en: "K" },
