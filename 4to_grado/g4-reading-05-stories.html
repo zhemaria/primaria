@@ -159,6 +159,7 @@ button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offse
 .opcion-texto[lang="en"]{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif}
 .pasaje{font-family:"Andika","Century Gothic","Fredoka","Trebuchet MS",sans-serif;background:var(--blanco);border:3px solid var(--linea);
   border-radius:18px;padding:12px 18px;max-width:46ch;font-size:clamp(18px,3.8vw,23px);line-height:1.6;text-align:left;margin:0}
+.pasaje .lamina-l{display:block;width:100%;max-height:240px;object-fit:cover;border-radius:12px;margin:0 0 8px}
 .pasaje h3{margin:0 0 4px;font-size:1.05em;color:var(--acento)}
 .pasaje p{margin:0 0 .4em}
 .pasaje .frase.leyendo{background:#FFF3C4;border-radius:6px}
@@ -367,7 +368,7 @@ const T = {
     reflexion:"¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?",
     escucha:"Escucha el texto mientras lees. Después contesta la pregunta.",
     escuchaR:"Lee el texto tú solo. Después contesta la pregunta.",
-    btnLeer:"🔊 Escuchar el texto",
+    btnLeer:"🔊 Escuchar el texto", btnVideo:"🎬 Ver la lámina en movimiento",
     finPregunta:(a)=>`‹${a}›. ¡Lo encontraste en el texto!`,
     pistaPregunta:"Vuelve al texto y busca la oración que habla de eso.",
     inferir:"Lee con atención. La respuesta no está escrita tal cual: usa las pistas del texto.",
@@ -439,7 +440,7 @@ const T = {
     reflexion:"Which strategy did you use most? What would you change next time?",
     escucha:"Listen to the text as you read. Then answer the question.",
     escuchaR:"Read the text on your own. Then answer the question.",
-    btnLeer:"🔊 Listen to the text",
+    btnLeer:"🔊 Listen to the text", btnVideo:"🎬 See the picture move",
     finPregunta:(a)=>`‹${a}›. You found it in the text!`,
     pistaPregunta:"Go back to the text and find the sentence that talks about it.",
     inferir:"Read carefully. The answer is not written word for word: use clues from the text.",
@@ -1287,6 +1288,38 @@ function vozTeatro(s){
   }
   return s.replace(/[()]/g, "");
 }
+/* Láminas de los cuentos (compartidas con la lectura en español). Si falta una, la página sigue igual. */
+const LAMINAS = {
+  "The Volcano That Wouldn't": ["volcan", "At a school science fair, Israel holds a notebook and explains to a smiling judge while Daniel looks down, embarrassed, next to their brown volcano that did not erupt."],
+  "Where Is Biscuit?": ["biscuit", "Sophia and Athena run toward Biscuit, a small muddy brown dog barking at three ducks at the edge of a lagoon in a Chicago park."],
+  "The Last Kick": ["penal", "Elías kicks a penalty low toward the corner of the goal while the other goalie dives; his teammates and the families in the bleachers watch."],
+  "The Garden on Our Block": ["huerto", "Mr. Okafor waves in a community garden full of tomatoes and sunflowers while Salma and Selena water the plants; an old shopping cart holds watering cans."],
+  "Snowed In": ["nieve", "On a snowy Chicago street, Israel shovels the sidewalk while Daniel makes a snow angel, and Mrs. Kowalski smiles on her porch with a broom."],
+  "Drawing Number 2": ["museo", "In a museum hall with a giant T. rex skeleton, Athena draws in her sketchbook while a gray-haired guide shows her own drawing and Salma peeks over her shoulder."],
+  "My Shaky Song": ["canto", "Selena sings with her eyes closed on a school stage while Salma waves a glittery sign in the front row; a dreamy cloud shows a grandmother's kitchen."],
+  "Sour Business": ["limonada", "At a lemonade stand on a city sidewalk, Daniel and Elías watch, surprised, as Mr. Patel puckers his face after a sip and a little girl sticks out her tongue."]
+};
+const VIDEOS_L = ["biscuit", "penal", "nieve", "canto"];
+function laminaEn(d, c){
+  const l = LAMINAS[c.titulo]; if(!l) return;
+  const [slug, alt] = l;
+  const im = document.createElement("img"); im.className = "lamina-l"; im.src = "l4-lamina-" + slug + ".jpg"; im.alt = alt;
+  im.width = 1376; im.height = 768; im.addEventListener("error", ()=> im.remove());
+  d.prepend(im);
+  if(!VIDEOS_L.includes(slug)) return;
+  const bv = document.createElement("button"); bv.type = "button"; bv.className = "oir-r"; bv.textContent = T[S.idioma].btnVideo; bv.hidden = true;
+  const prueba = document.createElement("video"); prueba.preload = "metadata"; prueba.muted = true; prueba.src = "l4-lamina-" + slug + ".mp4";
+  prueba.addEventListener("loadedmetadata", ()=>{ bv.hidden = false; });
+  bv.addEventListener("click", ()=>{
+    if(window.speechSynthesis) window.speechSynthesis.cancel();
+    const actual = d.querySelector(".lamina-l");
+    const v = document.createElement("video"); v.src = prueba.src; v.controls = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.className = "lamina-l";
+    v.setAttribute("aria-label", alt); if(actual && actual.tagName === "IMG") v.poster = actual.src;
+    if(actual) actual.replaceWith(v); else d.prepend(v);
+    bv.remove(); const pr = v.play(); if(pr && pr.catch) pr.catch(()=>{});
+  });
+  $("escena").appendChild(bv);
+}
 function pasajeEl(c, marcarYo, version){
   const d = document.createElement("div"); d.className = "pasaje " + (c.forma || "prose"); d.lang = "en";
   let i = 0;
@@ -1300,6 +1333,7 @@ function pasajeEl(c, marcarYo, version){
   const b = document.createElement("button"); b.type = "button"; b.className = "oir-r"; b.textContent = T[S.idioma].btnLeer;
   b.addEventListener("click", ()=> leerPasaje(d));
   $("escena").appendChild(b);
+  if(!version) laminaEn(d, c);
   return d;
 }
 function preguntaEl(q, es){
