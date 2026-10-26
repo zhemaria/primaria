@@ -332,12 +332,12 @@ const ES = {
   funciones:(w)=>`¿La palabra marcada, ‘${w}’, es una conjunción (conjunction), una preposición (preposition) o una interjección (interjection)?`,
   funciones2:(w)=>`¿Qué hace la palabra ‘${w}’ en esta oración?`,
   perfectos:(v)=>`¿Qué forma del verbo ‘${v}’ completa la oración? Mira la línea del tiempo.`,
-  cambios1:(t)=>`Un verbo salta al tiempo equivocado. Toca ese verbo. (El párrafo está en ${t}).`,
+  cambios1:(t)=>`Este párrafo ocurre en el ${t}. Un verbo salta a otro tiempo. Toca ese verbo.`,
   cambios2:(w)=>`¿Cómo se debe escribir ‘${w}’ para que coincida con el resto del párrafo?`,
-  cambiosR:"Un verbo cambia de tiempo sin razón. ¿Qué versión lo corrige?",
+  cambiosR:"Un verbo cambia a otro tiempo sin razón. ¿Qué versión lo corrige?",
   correl2:"¿Qué palabra completa la pareja?",
   correl1:"¿Qué palabra empieza la pareja?",
-  correlR:"¿Qué palabras completan la oración? Escoge la pareja de la conjunción y el verbo.",
+  correlR:"¿Qué palabras completan la oración? Escoge la palabra que completa la pareja y el verbo.",
   comas:"¿Qué oración usa bien las comas?",
   titulos:"¿Qué oración escribe bien los dos títulos?",
   combine:"¿Cuál es la mejor manera de unir estas oraciones en una sola?",
@@ -644,7 +644,7 @@ function pistaTipo(o, x){
     return `A conjunction joins words or ideas, but ‘${w}’ is not joining anything. It stands at the start and shows a feeling.`;
   if(x === "interjection" && o.tipo === "preposition")
     return `An interjection shows a feeling and stands alone. ‘${w}’ is part of the phrase ‘${w} ${o.obj}’.`;
-  return `An interjection shows a feeling and stands alone, like Wow! or Oops! ‘${w}’ is inside the sentence, joining words or ideas.`;
+  return `An interjection shows a feeling and stands alone, like Wow! or Oops! ‘${w}’ is part of the sentence: it joins words or ideas.`;
 }
 const PISTA_JOB = {
   where:(w)=>`Read the words right after ‘${w}’. Do they name a place?`,
@@ -663,34 +663,34 @@ const PISTA_JOB = {
    [oración, verbo base, tiempo, participio, momento de referencia, sujeto plural o "I" (have), participio equivocado] */
 const PERF_F = [
   ["By the time the bus came, Israel ___ his breakfast.","finish","past","finished","the bus came"],
-  ["Daniel ___ the piano every day since September.","practice","present","practiced","now"],
+  ["Daniel ___ the piano every day since September, and now he can play ten songs.","practice","present","practiced","now"],
   ["By next Friday, Sophia ___ her science project.","complete","future","completed","next Friday"],
-  ["Before the game started, the team ___ for an hour.","practice","past","practiced","game started"],
-  ["Athena and Salma ___ in Chicago since they were babies.","live","present","lived","now",true],
-  ["By the end of the summer, Elías ___ to dive.","learn","future","learned","end of summer"],
-  ["When Mom got home, Selena ___ the kitchen.","clean","past","cleaned","Mom got home"],
-  ["Our class ___ the Field Museum three times this year.","visit","present","visited","now"],
-  ["By the time Grandma arrives, we ___ the apartment.","decorate","future","decorated","Grandma arrives"],
-  ["Israel ___ his library book before it was due.","return","past","returned","book was due"],
-  ["Mr. and Mrs. Lee ___ the corner store for twenty years.","own","present","owned","now",true],
+  ["Before the game started, the team ___ for an hour, so they felt ready.","practice","past","practiced","game started"],
+  ["Athena and Salma ___ in Chicago since they were babies, and they still live there today.","live","present","lived","now",true],
+  ["By the end of next summer, Elías ___ to dive.","learn","future","learned","end of next summer"],
+  ["When Mom got home, Selena ___ the kitchen, and it sparkled.","clean","past","cleaned","Mom got home"],
+  ["So far, our class ___ the Field Museum three times this year.","visit","present","visited","now"],
+  ["By the time Grandma arrives, we ___ the apartment.","decorate","future","decorated","Grandma arrives",true],
+  ["Israel ___ his library book two days before it was due, so he got a sticker.","return","past","returned","it was due"],
+  ["Mr. and Mrs. Lee ___ the corner store for twenty years, and they still open it every day.","own","present","owned","now",true],
   ["By June, Salma ___ a whole notebook with poems.","fill","future","filled","June"],
-  ["Daniel ___ the dog before he left for school.","walk","past","walked","he left"],
+  ["Daniel ___ the dog before he left for school, so the dog napped all morning.","walk","past","walked","he left"],
   ["I ___ my homework, so now I can play outside.","finish","present","finished","now",true]
 ].map(([s, v, t, p, ref, pl, mal])=>({s, v, t, p, ref, pl:!!pl, mal}));
 const PERF_R = [
   ["By the time the teacher collected the papers, Sophia ___ two pages.","write","past","written","papers collected",false,"wrote"],
   ["Israel ___ home already; his backpack is not here.","go","present","gone","now",false,"went"],
   ["By the time we land in Miami, the plane ___ over five states.","fly","future","flown","we land",false,"flew"],
-  ["When the guests arrived, the kids ___ all the tamales.","eat","past","eaten","guests arrived",false,"ate"],
+  ["When the guests arrived, the kids ___ all the tamales.","eat","past","eaten","guests arrived",true,"ate"],
   ["Athena ___ her bike to school every day this week.","ride","present","ridden","now",false,"rode"],
   ["By noon tomorrow, the class ___ a name for the new pet.","choose","future","chosen","noon tomorrow",false,"chose"],
   ["Before the race began, Salma ___ ten laps for practice.","swim","past","swum","race began",false,"swam"],
-  ["Selena ___ a picture of every bridge on the Chicago River.","draw","present","drawn","now",false,"drew"],
+  ["So far, Selena ___ a picture of every bridge on the Chicago River.","draw","present","drawn","now",false,"drew"],
   ["By the end of the season, Daniel ___ more than fifty pitches.","throw","future","thrown","season ends",false,"threw"],
   ["Oh no! Someone ___ the classroom window!","break","present","broken","now",false,"broke"],
-  ["By morning, the water in the bird bath ___ solid.","freeze","past","frozen","morning",false,"froze"],
+  ["By the time we woke up, the water in the bird bath ___ solid.","freeze","past","frozen","we woke up",false,"froze"],
   ["By next spring, the little tree ___ taller than the fence.","grow","future","grown","next spring",false,"growed"],
-  ["My grandparents ___ each other for fifty years.","know","present","known","now",true,"knew"],
+  ["My grandparents ___ each other for fifty years, and they still hold hands.","know","present","known","now",true,"knew"],
   ["By the time the concert ends, the choir ___ six songs.","sing","future","sung","concert ends",false,"sang"],
   ["The movie ___ before we found our seats.","begin","past","begun","we found seats",false,"began"]
 ].map(([s, v, t, p, ref, pl, mal])=>({s, v, t, p, ref, pl:!!pl, mal}));
@@ -750,10 +750,10 @@ const CAMB_R = [
    malas:[["Next week the fifth graders performed a play. Elías played the king.","otro"],["Next week the fifth graders will perform a play. Elías has played the king.","sigue"]], tw:"Next week"},
   {txt:"In class yesterday, Athena learned that the moon reflects light from the sun. She draws a diagram to show it.",
    ok:"In class yesterday, Athena learned that the moon reflects light from the sun. She drew a diagram to show it.",
-   malas:[["In class yesterday, Athena learned that the moon reflected light from the sun. She drew a diagram to show it.","verdad"],["In class yesterday, Athena learns that the moon reflects light from the sun. She draws a diagram to show it.","otro"]], tw:"yesterday", fact:"reflects"},
+   malas:[["In class yesterday, Athena learned that the moon reflects light from the sun. She drawing a diagram to show it.","ing"],["In class yesterday, Athena learns that the moon reflects light from the sun. She draws a diagram to show it.","otro"]], tw:"yesterday", fact:"reflects"},
   {txt:"Every Sunday, Salma calls her abuela in Puerto Rico. They talked for an hour about everything.",
    ok:"Every Sunday, Salma calls her abuela in Puerto Rico. They talk for an hour about everything.",
-   malas:[["Every Sunday, Salma calls her abuela in Puerto Rico. They will talk for an hour about everything.","sigue"],["Every Sunday, Salma calls her abuela in Puerto Rico. They talking for an hour about everything.","ing"]], tw:"Every Sunday"},
+   malas:[["Every Sunday, Salma calls her abuela in Puerto Rico. They were talking for an hour about everything.","sigue"],["Every Sunday, Salma calls her abuela in Puerto Rico. They talking for an hour about everything.","ing"]], tw:"Every Sunday"},
   {txt:"When the fire drill started, the students lined up quietly. Mr. Okafor counts every student twice.",
    ok:"When the fire drill started, the students lined up quietly. Mr. Okafor counted every student twice.",
    malas:[["When the fire drill started, the students line up quietly. Mr. Okafor counted every student twice.","mueve"],["When the fire drill started, the students lined up quietly. Mr. Okafor will count every student twice.","sigue"]], tw:"started"},
@@ -762,7 +762,7 @@ const CAMB_R = [
    malas:[["Israel’s family moves to Chicago in 2019. Now they live near Humboldt Park, and Israel likes his new school.","need"],["Israel’s family moved to Chicago in 2019. Now they lived near Humboldt Park, and Israel liked his new school.","now"]], tw:"Now"},
   {txt:"By tonight, Daniel will have finished his model rocket. Then he launched it in the park.",
    ok:"By tonight, Daniel will have finished his model rocket. Then he will launch it in the park.",
-   malas:[["By tonight, Daniel had finished his model rocket. Then he launched it in the park.","otro"],["By tonight, Daniel will have finished his model rocket. Then he launches it in the park.","sigue"]], tw:"By tonight"},
+   malas:[["By tonight, Daniel had finished his model rocket. Then he launched it in the park.","otro"],["By tonight, Daniel will have finished his model rocket. Then he has launched it in the park.","sigue"]], tw:"By tonight"},
   {txt:"At the museum last Friday, the guide showed us a mummy. She explains that it is very old.",
    ok:"At the museum last Friday, the guide showed us a mummy. She explained that it is very old.",
    malas:[["At the museum last Friday, the guide shows us a mummy. She explains that it is very old.","otro"],["At the museum last Friday, the guide showed us a mummy. She will explain that it is very old.","sigue"]], tw:"last Friday"},
@@ -816,7 +816,7 @@ const CORR_M = [
    malas:[["neither … nor","sentidoNeither"],["either … nor","mezcla"]], expl:"‘Either … or’ gives two choices, and only one will happen."},
   {s:"___ the cat ___ the dog noticed the squirrel; they both kept sleeping.", ok:"neither … nor",
    malas:[["either … or","sentidoEither"],["not only … but also","sentidoNot"]], expl:"‘Neither … nor’ says that not one of them noticed."},
-  {s:"___ the teachers ___ the students cheered when the snow day was announced.", ok:"both … and",
+  {s:"___ the teachers ___ the students cheered when the snow day was announced; the whole school was happy.", ok:"both … and",
    malas:[["neither … nor","sentidoNeither"],["both … or","mezcla"]], expl:"‘Both … and’ says the two groups cheered."},
   {s:"Athena ___ won the spelling bee ___ broke the school record for the hardest word!", ok:"not only … but also",
    malas:[["not only … and also","mezclaNot"],["either … or","sentidoEither"]], expl:"‘Not only … but also’ adds a second, even bigger success."},
@@ -894,7 +894,7 @@ const PISTA_COMA = {
 const TITULOS = [
   ["Sophia read the chapter {The Cyclone} in [The Wonderful Wizard of Oz].","chapter","book"],
   ["Israel’s class sang {Take Me Out to the Ball Game} after reading [Baseball Days in Chicago].","song","book"],
-  ["Athena memorized the poem {The Road Not Taken} for the book [Famous American Poets].","poem","book"],
+  ["Athena memorized the poem {The Road Not Taken} from the book [Famous American Poets].","poem","book"],
   ["Daniel watched the movie [The Lake Monster Mystery] and hummed its song {Waves at Midnight} all day.","song","movie"],
   ["Ms. Rivera read us the chapter {The Robin Who Showed the Way} from [The Secret Garden].","chapter","book"],
   ["Selena found the article {Ten Fun Facts About Owls} in the magazine [Kids Nature World].","article","magazine"],
@@ -974,9 +974,9 @@ const COMB = [
    ok:"I think the Shedd Aquarium is the best place in Chicago.",
    malas:[["The Shedd Aquarium is in Chicago.","lost"],["In my opinion, I think the Shedd Aquarium is the best place in Chicago.","still"],["In my opinion I think that the Shedd is the best.","still"]],
    why:"‘In my opinion’ and ‘I think’ say the same thing; it keeps one."},
-  {tipo:"reduce", src:["Salma and Selena, the two twin sisters, both of them sang a song together at the same time."],
-   ok:"Salma and Selena, the twin sisters, sang a song together.",
-   malas:[["Salma sang a song.","lost"],["Salma and Selena, the two twin sisters, sang a song together at the same time.","still"],["Salma and Selena, the twin sisters, both of them sang together.","still"]],
+  {tipo:"reduce", src:["Salma’s little cousins, the two twin sisters, both of them sang a song together at the same time."],
+   ok:"Salma’s little cousins, the twin sisters, sang a song together.",
+   malas:[["Salma’s cousin sang a song.","lost"],["Salma’s little cousins, the two twin sisters, sang a song together at the same time.","still"],["Salma’s little cousins, the twin sisters, both of them sang together.","still"]],
    why:"‘Twin’ already means two, and ‘together’ means at the same time."},
   {tipo:"reduce", src:["Elías repeated his question again because his abuela did not hear it and missed it."],
    ok:"Elías repeated his question because his abuela did not hear it.",
@@ -1256,7 +1256,7 @@ function pintarHoja(){
   $("hoja-perfectos").innerHTML = ["By the time the movie started, we ___ our popcorn. (eat)","Daniel ___ in three spelling bees this year. (compete)","By next June, Athena ___ ten chapter books. (read)"]
     .map(x=>`<li>${x.replace("___", L)}</li>`).join("");
   $("hoja-cambios").innerHTML = `<li>Last Sunday, Elías visited the Lincoln Park Zoo. He watched the gorillas, and then he buys a snow cone. ${L}</li>`;
-  $("hoja-comas").innerHTML = ["Yes I packed apples crackers and juice for the trip.","Selena did you read the chapter The Lost Key in the book The Secret Garden?","After the game ended the team cheered didn’t they?","Israel sang the song Take Me Out to the Ball Game while we watched the movie Summer in Chicago."]
+  $("hoja-comas").innerHTML = ["Yes I packed apples crackers and juice for the trip.","Selena did you read the chapter The Cyclone in the book The Wonderful Wizard of Oz?","After the game ended the team cheered didn’t they?","Israel sang the song Take Me Out to the Ball Game while we watched the movie Summer in Chicago."]
     .map(x=>`<li>${x}<span class="larga"></span></li>`).join("");
   $("hoja-combinar").innerHTML = ["Salma likes soccer. Salma likes swimming.","The L train was crowded. We stood the whole way."]
     .map(x=>`<li>${x}<span class="larga"></span></li>`).join("");

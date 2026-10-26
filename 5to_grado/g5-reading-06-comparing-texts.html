@@ -652,12 +652,13 @@ const sinPunto = (s)=> s.replace(/[.!]$/, "");
 const finDe = (q)=> q.ok || (q.prueba ? `${sinPunto(q.a)}. The text says: “${q.prueba}”` : `${sinPunto(q.a)}.`);
 
 /* Paso «Demuéstralo» del Reto: elegir la oración que prueba la respuesta */
-function probar(cont, prueba, excl, fin){
+function probar(cont, prueba, excl, fin, pq){
+  const en = pq ? pq[0] : T.probar, es = pq ? pq[1] : ES.probar;
   $("opciones").innerHTML = ""; $("aviso").className = "aviso"; $("aviso").textContent = "";
-  $("txt-instruccion").textContent = T.probar; hablar(T.probar);
-  $("btn-bocina").onclick = ()=>hablar(T.probar);
-  $("btn-repetir").onclick = ()=>{ if(!S.bloqueado) hablar(T.probar); };
-  $("txt-ayuda").textContent = ES.probar; $("btn-bocina-es").onclick = ()=>hablar(ES.probar, null, "es");
+  $("txt-instruccion").textContent = en; hablar(en);
+  $("btn-bocina").onclick = ()=>hablar(en);
+  $("btn-repetir").onclick = ()=>{ if(!S.bloqueado) hablar(en); };
+  $("txt-ayuda").textContent = es; $("btn-bocina-es").onclick = ()=>hablar(es, null, "es");
   const todas = [...cont.querySelectorAll(".frase")].map(f=>f.textContent);
   const fuera = new Set([prueba, ...(excl || [])]);
   let cand = todas.filter(s=> !fuera.has(s) && s.length > 30);
@@ -669,7 +670,7 @@ function probar(cont, prueba, excl, fin){
 function hacerPregunta(cont, q, sinProbar){
   const mapa = new Map(q.malas);
   opcionesTexto([q.a, ...q.malas.map(m=>m[0])], q.a, ()=>{
-    if(S.reto && q.prueba && !sinProbar){ probar(cont, q.prueba, q.excl, finDe(q)); return; }
+    if(S.reto && q.prueba && !sinProbar){ probar(cont, q.prueba, q.excl, finDe(q), q.pq); return; }
     if(q.prueba) resaltar(cont, q.prueba, "prueba");
     acertar(finDe(q));
   }, (x)=>{ if(!S.reto && q.prueba) resaltar(cont, q.prueba, "marca"); return pista(mapa.get(x)); }, true);
@@ -706,11 +707,11 @@ const RELATOS = [
     prueba:"Dear Diary, my hands were shaking when I walked up to bat in the seventh inning."},
    {n:"r", q:"Why does the newsletter give the score, while the diary never mentions it?", qes:"¿Por qué el boletín da el marcador y el diario nunca lo menciona?", a:"The newsletter informs readers; the diary records Elías's feelings.",
     malas:[["Elías never found out the final score of the championship game at all.","The diary doesn't say that. Think about the purpose of each text, not what Elías knew."],["The newsletter writer stood at home plate next to Elías.","Nothing shows where the newsletter writer stood. Think about why each text was written."],["Both accounts give the score, just in different words.","Read the diary again: it never gives the score."]],
-    prueba:"Today was the best day of my whole life!"},
+    pq:["Prove it: which sentence shows that the diary records Elías's feelings?","Demuéstralo: ¿qué oración muestra que el diario recoge los sentimientos de Elías?"], prueba:"Today was the best day of my whole life!", excl:["Dear Diary, my hands were shaking when I walked up to bat in the seventh inning.","I couldn't even look at the bleachers, because I knew my whole family was there.","The first pitch was so fast that I didn't even swing, and I heard someone groan."]},
    {n:"r", q:"Why can't Elías tell where the ball went?", qes:"¿Por qué Elías no puede decir adónde fue la pelota?", a:"He closed his eyes for a moment as he swung.",
     malas:[["He was looking at his family in the bleachers.","He says he could NOT look at the bleachers. Reread that sentence."],["The newsletter writer forgot to tell him.","Neither account says that. Think about what Elías himself could see."],["The wind blew the ball out of the park.","nadie"]],
     prueba:"On the next pitch, I closed my eyes for half a second and swung.", excl:["I didn't see where the ball went, but I heard the crowd scream and saw Sophia running home."]}],
-  dichos:[{txt:"Only the diary tells how Elías felt when he went up to bat.", v:true, ev:"Dear Diary, my hands were shaking when I walked up to bat in the seventh inning.", ex:"Right: the newsletter gives facts about the game, and only Elías's diary shows his shaking hands."},
+  dichos:[{txt:"Only the diary tells how Elías felt when he went up to bat.", v:true, ev:"Dear Diary, my hands were shaking when I walked up to bat in the seventh inning.", ex:"Right: the newsletter gives facts about the game, and only Elías's diary shows his shaking hands.", excl:["I couldn't even look at the bleachers, because I knew my whole family was there.","Today was the best day of my whole life!","The first pitch was so fast that I didn't even swing, and I heard someone groan."]},
           {txt:"The newsletter says the Eagles lost the championship game.", v:false, ev:"On Saturday, the Kelly Park Eagles won the city youth baseball championship, 5 to 4.", ex:"No: the newsletter says the Eagles won, 5 to 4."}]},
 
  {id:"rioVerde", titulo:"The green river",
@@ -718,7 +719,7 @@ const RELATOS = [
     "On Saturday morning, the Chicago River downtown turned bright green for St. Patrick's Day.",
     "A small crew in boats poured an orange powder into the water, and within minutes the river turned green.",
     "The tradition of dyeing the river green began in 1962.",
-    "+Crowds lined the bridges and the Riverwalk to watch, and the color usually lasts for several hours.",
+    "+Crowds lined the bridges and the Riverwalk to watch, and the bright green color fades within a day or two.",
     "+Organizers say the powder is safe for the river."]},
   b:{tipo:"Diary entry", titulo:"Sophia's diary", e:"📔", t:[
     "Dear Diary, Grandma and I got to the bridge so early that my breath made little clouds.",
@@ -736,11 +737,11 @@ const RELATOS = [
     prueba:"The tradition of dyeing the river green began in 1962."},
    {n:"r", q:"Why does Sophia think the orange powder is a mistake, while the report explains it calmly?", qes:"¿Por qué Sophia cree que el polvo anaranjado es un error, mientras que el reportaje lo explica con calma?", a:"The reporter knows how the dye works; Sophia is seeing it for the first time.",
     malas:[["The reporter wasn't there, so the reporter never saw the orange color at all.","The report describes the orange powder. Think about what each writer already knew."],["Sophia knows more about the dye than the reporter, so she can tell it's wrong.","Sophia is surprised, so she did not know how the dye works. The reporter did."],["Sophia's grandma told her that the powder was supposed to be orange.","The diary doesn't say that. Think about what each writer already knew."]],
-    prueba:"When they poured the powder, it looked orange, and I thought it was a mistake!"},
+    pq:["Prove it: which sentence shows that Sophia did not know how the dye works?","Demuéstralo: ¿qué oración muestra que Sophia no sabía cómo funciona el tinte?"], prueba:"When they poured the powder, it looked orange, and I thought it was a mistake!"},
    {n:"r", q:"What is the main purpose of each account?", qes:"¿Cuál es el propósito principal de cada relato?", a:"The report informs readers; the diary keeps a personal memory.",
     malas:[["The report tells the writer's feelings; the diary gives facts for the city.","alreves"],["Both accounts try to persuade people to come and watch the river.","Neither account tells readers what they should do. Think about why each was written."],["Both accounts only list facts about the green dye and the boats.","The diary is full of feelings, like frozen toes and a lime popsicle."]],
-    prueba:"Then the water swirled and turned the greenest green I have ever seen, like a giant lime popsicle."}],
-  dichos:[{txt:"Only the diary tells that the morning was very cold.", v:true, ev:"My toes were frozen, but I didn't want to leave.", ex:"Right: Sophia writes about her frozen toes and her breath making clouds; the report doesn't mention the cold."},
+    pq:["Prove it: which sentence shows that the diary keeps a personal memory?","Demuéstralo: ¿qué oración muestra que el diario guarda un recuerdo personal?"], prueba:"Then the water swirled and turned the greenest green I have ever seen, like a giant lime popsicle.", excl:["Dear Diary, Grandma and I got to the bridge so early that my breath made little clouds.","We squeezed next to the railing so I could see the boats.","When they poured the powder, it looked orange, and I thought it was a mistake!","Grandma told me she watched the same thing when she was my age.","My toes were frozen, but I didn't want to leave."]}],
+  dichos:[{txt:"Only the diary tells that the morning was very cold.", v:true, ev:"My toes were frozen, but I didn't want to leave.", ex:"Right: Sophia writes about her frozen toes and her breath making clouds; the report doesn't mention the cold.", excl:["Dear Diary, Grandma and I got to the bridge so early that my breath made little clouds."]},
           {txt:"The newspaper says the river turned green on a Sunday.", v:false, ev:"On Saturday morning, the Chicago River downtown turned bright green for St. Patrick's Day.", ex:"No: the newspaper says it happened on Saturday morning."}]},
 
  {id:"ventisca", titulo:"The blizzard of 1967",
@@ -767,10 +768,10 @@ const RELATOS = [
     prueba:"I was ten years old, and the snow started while I was at school."},
    {n:"r", q:"Why does the article give an exact amount of snow, but Grandpa's letter does not?", qes:"¿Por qué el artículo da la cantidad exacta de nieve y la carta del abuelo no?", a:"The article uses records; Grandpa tells what he saw as a boy.",
     malas:[["Grandpa forgot that it snowed during the blizzard at all.","Grandpa remembers the snow very well. Think about where each writer got the information."],["The article's writer measured the snow right outside Grandpa's front door.","Nothing says that. The article gives facts from records about the whole city."],["Grandpa's letter does give the exact amount of the snow.","Reread the letter: it says the drifts were higher than the door, but it never gives inches."]],
-    prueba:"About 23 inches of snow fell in less than two days."},
+    pq:["Prove it: which sentence gives an exact measurement from the records?","Demuéstralo: ¿qué oración da una medida exacta tomada de los registros?"], prueba:"About 23 inches of snow fell in less than two days.", excl:["On January 26, 1967, a snowstorm began in Chicago that became the biggest snowstorm ever recorded in the city."]},
    {n:"r", q:"What can Grandpa's letter show that the article cannot?", qes:"¿Qué puede mostrar la carta del abuelo que el artículo no puede?", a:"What the storm was like for one family on one block",
     malas:[["The date when the big snowstorm began","That is in the article, not in the letter."],["How many cars and buses got stuck on the streets of the city","That is in the article: it gives facts about the whole city."],["What the weather will be like next winter","nadie"]],
-    prueba:"By the next morning, the drifts were higher than our front door, and my father had to climb out a window to start shoveling."}],
+    prueba:"By the next morning, the drifts were higher than our front door, and my father had to climb out a window to start shoveling.", excl:["For days there was no school, and my friends and I built tunnels through the snow piles on our block.","My mother made soup for the neighbors who could not get to the store."]}],
   dichos:[{txt:"The article tells the date the storm began, but the letter doesn't.", v:true, ev:"On January 26, 1967, a snowstorm began in Chicago that became the biggest snowstorm ever recorded in the city.", ex:"Right: only the article gives the date, January 26, 1967."},
           {txt:"Both accounts say that Grandpa Luis was ten years old.", v:false, ev:"I was ten years old, and the snow started while I was at school.", ex:"No: only Grandpa's letter says that. The article never mentions him."}]},
 
@@ -797,10 +798,10 @@ const RELATOS = [
     prueba:"I was so surprised that I dropped my lunch bag."},
    {n:"r", q:"Why do Daniel and Ms. Okafor describe the animal so differently?", qes:"¿Por qué Daniel y la Sra. Okafor describen al animal de manera tan distinta?", a:"Ms. Okafor knows about city coyotes; Daniel had never seen one.",
     malas:[["Daniel was standing much closer to the animal than Ms. Okafor was.","Neither text says who was closer. Think about what each writer already knew."],["Ms. Okafor saw a different animal on a different day of the week.","Both saw it that same morning near the school."],["Daniel wants to scare the families, and Ms. Okafor wants to warn them.","Ms. Okafor wants families to stay calm, and Daniel is excited, not trying to scare anyone."]],
-    prueba:"Coyotes live in many Chicago neighborhoods, and they usually avoid people."},
+    pq:["Prove it: which sentence shows that Ms. Okafor knows about city coyotes?","Demuéstralo: ¿qué oración muestra que la Sra. Okafor sabe sobre los coyotes de la ciudad?"], prueba:"Coyotes live in many Chicago neighborhoods, and they usually avoid people.", excl:["At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park.","I reminded the children to stay calm, keep their distance and never feed wild animals."]},
    {n:"r", q:"How is the purpose of Ms. Okafor's note different from Daniel's post?", qes:"¿En qué se diferencia el propósito de la nota de la Sra. Okafor del de la publicación de Daniel?", a:"Her note informs the office so families stay calm; his post shares his excitement.",
     malas:[["Her note shares her excitement with the class; his post informs the office calmly.","alreves"],["Both texts were written to make their readers excited about the wild animal.","Ms. Okafor's note is calm and gives facts. Only Daniel is excited."],["Her note entertains the class with a funny story about a wolf at school.","Ms. Okafor's note gives facts and safety advice; it is not meant to be funny."]],
-    prueba:"Please tell families that there is no reason to be afraid, but students should not try to follow it."}],
+    pq:["Prove it: which sentence shows that her note is meant to keep families calm?","Demuéstralo: ¿qué oración muestra que su nota busca que las familias estén tranquilas?"], prueba:"Please tell families that there is no reason to be afraid, but students should not try to follow it.", excl:["I reminded the children to stay calm, keep their distance and never feed wild animals.","Coyotes live in many Chicago neighborhoods, and they usually avoid people."]}],
   dichos:[{txt:"Ms. Okafor's note tells what time the animal crossed the road.", v:true, ev:"At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park.", ex:"Right: her note says it crossed at 7:40."},
           {txt:"Both writers agree that the animal was a wolf.", v:false, ev:"At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park.", ex:"No: Ms. Okafor says it was a coyote. Only Daniel calls it a wolf."}]},
 
@@ -828,10 +829,10 @@ const RELATOS = [
     prueba:"Then I push the controls, and powerful motors tip the two leaves up."},
    {n:"r", q:"Why doesn't Israel's journal explain how the bridge moves?", qes:"¿Por qué el diario de Israel no explica cómo se mueve el puente?", a:"From the Riverwalk, he couldn't see who ran the bridge.",
     malas:[["Israel already knew that motors move it, so he found it boring.","Israel calls it “the coolest thing.” He was not bored, and he didn't know who moved it."],["Mr. Ruiz told him that the controls are a secret.","Neither text says that. Think about what Israel could see from where he stood."],["The bridge did not move at all on that Saturday.","Both texts tell that the bridge rose."]],
-    prueba:"I wondered who was making the bridge move, because I couldn't see anybody."},
+    prueba:"I wondered who was making the bridge move, because I couldn't see anybody.", excl:["From my window, I see kids waving at the boats, but they almost never notice me."]},
    {n:"r", q:"What do Mr. Ruiz's words add to Israel's account?", qes:"¿Qué aportan las palabras del Sr. Ruiz al relato de Israel?", a:"The reason for the lift and how it is done",
     malas:[["How it feels to watch the bridge rise for the first time","That is what Israel's journal gives, not Mr. Ruiz."],["The names of all of the sailboats that pass through","nadie"],["That the gates come down in front of the cars","ambos"]],
-    prueba:"In spring, we raise the bridges again and again so sailboats can reach Lake Michigan from the boatyards where they spend the winter.", excl:["Then I push the controls, and powerful motors tip the two leaves up."]}],
+    prueba:"In spring, we raise the bridges again and again so sailboats can reach Lake Michigan from the boatyards where they spend the winter.", excl:["Then I push the controls, and powerful motors tip the two leaves up.","Before I lift it, I ring the bells, lower the gates and check that nobody is still on the bridge.","My job is to raise the bridge from a small house at one corner of it, called the bridge house."]}],
   dichos:[{txt:"Only Mr. Ruiz says he checks that nobody is still on the bridge.", v:true, ev:"Before I lift it, I ring the bells, lower the gates and check that nobody is still on the bridge.", ex:"Right: only the bridge tender tells about checking the bridge."},
           {txt:"Israel says the bridge turned sideways in the river.", v:false, ev:"Then the two halves of the bridge rose until they pointed at the sky, like a giant opening its arms.", ex:"No: Israel says the two halves rose until they pointed at the sky."}]},
 
@@ -862,8 +863,8 @@ const RELATOS = [
    {n:"r", q:"Why doesn't Selena's journal tell how the audience reacted?", qes:"¿Por qué el diario de Selena no cuenta cómo reaccionó el público?", a:"The bright lights kept her from seeing them.",
     malas:[["She was not at the concert that night.","She sang the solo, so she was there. Think about what she could see."],["Mrs. Kim asked her not to write about the audience.","Neither text says that. Think about what Selena could see from the stage."],["She thought the audience was not important.","She cared a lot; she was afraid they were laughing. Think about what she could see."]],
     prueba:"The stage lights were so bright that the audience looked like a dark, quiet ocean.", excl:["I couldn't see anyone's face, so I didn't know if they were laughing at me."]}],
-  dichos:[{txt:"Both accounts say that Selena sang a solo.", v:true, ev:"The fifth grade chorus sang four songs, and Selena sang a solo in the last one.", ex:"Right: Selena writes about her first solo, and Mrs. Kim says Selena sang a solo in the last song."},
-          {txt:"Selena's journal says the audience clapped to encourage her when her voice cracked.", v:false, ev:"When I bowed, I heard clapping, but I was too embarrassed to look up.", ex:"No: Selena only heard clapping at the end. Only the newsletter says the audience clapped to encourage her."}]},
+  dichos:[{txt:"Both accounts say that Selena sang a solo.", v:true, ev:"The fifth grade chorus sang four songs, and Selena sang a solo in the last one.", ex:"Right: Selena writes about her first solo, and Mrs. Kim says Selena sang a solo in the last song.", excl:["Tonight I sang my first solo in the winter concert."]},
+          {txt:"Selena's journal says the audience clapped to encourage her when her voice cracked.", v:false, ev:"When I bowed, I heard clapping, but I was too embarrassed to look up.", ex:"No: Selena only heard clapping at the end. Only the newsletter says the audience clapped to encourage her.", excl:["When her voice cracked on a high note, the audience grew quiet and then clapped to encourage her."]}]},
 
  {id:"bici", titulo:"On the Lakefront Trail",
   a:{tipo:"City news brief", titulo:"Ride the Lakefront Trail", e:"📰", t:[
@@ -886,12 +887,12 @@ const RELATOS = [
    {n:"f", q:"Which detail is only in Salma's diary?", qes:"¿Qué detalle está solo en el diario de Salma?", a:"A fast rider yelled “On your left!”",
     malas:[["The trail runs along Lake Michigan.","ambos"],["Thousands use the trail on weekends.","That detail is in the news brief, not in the diary."],["The trail is closed on weekends.","nadie"]],
     prueba:"A man on a fast bike yelled “On your left!” and zoomed past me, and I nearly fell over."},
-   {n:"r", q:"Why does the news brief explain the trail rules, while Salma learns them the hard way?", qes:"¿Por qué el boletín explica las reglas del sendero, mientras Salma las aprende a la mala?", a:"The brief guides many riders; Salma tells about her own first ride.",
+   {n:"r", q:"Why does the news brief explain the trail rules, while Salma learns them the hard way?", qes:"¿Por qué el boletín explica las reglas del sendero, mientras Salma las aprende por las malas?", a:"The brief guides many riders; Salma tells about her own first ride.",
     malas:[["The brief tells one rider's first ride; Salma writes a guide for many riders.","alreves"],["Salma already knew all the rules before she started riding.","She nearly fell over and changed sides afterward, so she learned the rules on the ride."],["The news brief writer nearly fell off a bike that same day.","nadie"]],
-    prueba:"After that, I stayed on the right side and kept my eyes on the path."},
+    pq:["Prove it: which sentence shows that Salma learned a trail rule on her own ride?","Demuéstralo: ¿qué oración muestra que Salma aprendió una regla del sendero en su propio paseo?"], prueba:"After that, I stayed on the right side and kept my eyes on the path.", excl:["A man on a fast bike yelled “On your left!” and zoomed past me, and I nearly fell over."]},
    {n:"r", q:"How is the diary's description of the lake different from the news brief's?", qes:"¿En qué se diferencia la descripción del lago en el diario de la del boletín?", a:"The diary shows how the lake looked to her; the brief only says where the trail is.",
     malas:[["The brief shows how the lake looked to someone; the diary only says where the trail is.","alreves"],["Both accounts describe the lake as blue and sparkly in the same words.","Only Salma describes the lake as blue and sparkly."],["Neither of the accounts mentions Lake Michigan or the lake at all.","Both mention the lake. Compare how each one talks about it."]],
-    prueba:"The lake was so blue and sparkly that I almost forgot to watch where I was going."}],
+    pq:["Prove it: which sentence shows how the lake looked to Salma?","Demuéstralo: ¿qué oración muestra cómo se veía el lago para Salma?"], prueba:"The lake was so blue and sparkly that I almost forgot to watch where I was going."}],
   dichos:[{txt:"The news brief tells how long the trail is.", v:true, ev:"The Lakefront Trail runs for about 18 miles along Lake Michigan, from the north side of Chicago to the south side.", ex:"Right: the brief says the trail runs for about 18 miles."},
           {txt:"Salma's diary says she rode the trail with her dad.", v:false, ev:"Today Mom and I rode our bikes on the Lakefront Trail for the very first time.", ex:"No: Salma rode with her mom."}]},
 
@@ -921,7 +922,7 @@ const RELATOS = [
     prueba:"She smiled and wrote something down, and I wished I could read her notes!"},
    {n:"r", q:"How is the judge's point of view different from Athena's?", qes:"¿En qué se diferencia el punto de vista de la jueza del de Athena?", a:"The judge evaluates the project; Athena tells what presenting felt like.",
     malas:[["The judge tells what presenting felt like; Athena evaluates the project.","alreves"],["Both writers tell how nervous they felt at the science fair.","The judge's notes don't mention any feelings."],["The judge tells about her own science project from long ago.","The notes are about Project 14, Athena and Daniel's project."]],
-    prueba:"My hands were sweaty when the judge stopped at our table."}],
+    pq:["Prove it: which sentence shows what presenting felt like for Athena?","Demuéstralo: ¿qué oración muestra cómo se sintió Athena al presentar?"], prueba:"My hands were sweaty when the judge stopped at our table.", excl:["I forgot the first sentence I had practiced, so Daniel started explaining instead.","Daniel says I talked so fast that I sounded like an auctioneer.","Then the judge asked why we tested each brand three times, and suddenly I remembered everything."]}],
   dichos:[{txt:"The judge's notes tell which brand held the most water.", v:true, ev:"Their bar graph shows that Brand C held the most water.", ex:"Right: the notes say Brand C held the most water."},
           {txt:"Athena's journal says she explained everything perfectly from the start.", v:false, ev:"I forgot the first sentence I had practiced, so Daniel started explaining instead.", ex:"No: Athena forgot her first sentence, and Daniel started explaining."}]}
 ];
@@ -940,7 +941,7 @@ const INTEGRAR = [
    {titulo:"Falcons Downtown", e:"🏙️", t:[
      "By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT.",
      "After DDT was banned, scientists and volunteers helped the birds return.",
-     "Today, several pairs of peregrines nest on tall buildings and bridges in Chicago.",
+     "Today, peregrines nest on tall buildings and bridges in Chicago.",
      "+To a falcon, the ledge of a skyscraper looks a lot like a cliff.",
      "+Pigeons, which are common in the city, are one of their favorite foods."]}],
   q:[
@@ -952,15 +953,15 @@ const INTEGRAR = [
     prueba:"By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT."},
    {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"The fastest animal on Earth, once nearly gone, now nests on Chicago's buildings.",
     malas:[["Peregrine falcons can dive at more than 200 miles per hour to catch a bird in the air.","soloA"],["After DDT was banned, the falcons came back and now nest on Chicago buildings and bridges.","soloB"],["Peregrines left Chicago because the ledges of skyscrapers are nothing like cliffs at all.","It mixes the texts but gets them wrong: Text B says ledges look like cliffs, and falcons nest there."]],
-    prueba:"Today, several pairs of peregrines nest on tall buildings and bridges in Chicago.", excl:["The peregrine falcon is the fastest animal on Earth.","By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT.","After DDT was banned, scientists and volunteers helped the birds return.","To a falcon, the ledge of a skyscraper looks a lot like a cliff."]},
+    pq:["Prove it: which sentence from Text B gives part of this statement?","Demuéstralo: ¿qué oración del texto B da una parte de esta afirmación?"], prueba:"Today, peregrines nest on tall buildings and bridges in Chicago.", excl:["The peregrine falcon is the fastest animal on Earth.","By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT.","After DDT was banned, scientists and volunteers helped the birds return.","To a falcon, the ledge of a skyscraper looks a lot like a cliff."]},
    {n:"r", q:"Text A says peregrines nest on cliff ledges. How does Text B help explain why they nest in Chicago?", qes:"El texto A dice que los peregrinos anidan en salientes de acantilados. ¿Cómo ayuda el texto B a explicar por qué anidan en Chicago?", a:"It says a skyscraper ledge looks like a cliff to a falcon.",
     malas:[["It says peregrines can dive at more than 200 miles per hour.","That is from Text A, and it is about speed, not nesting."],["It says DDT was banned, so the cliffs grew back in the city.","Text B doesn't say anything about cliffs growing back."],["It says pigeons build the nests for the falcons downtown.","Text B says pigeons are food for falcons, not nest builders."]],
-    prueba:"To a falcon, the ledge of a skyscraper looks a lot like a cliff.", excl:["Today, several pairs of peregrines nest on tall buildings and bridges in Chicago.","Peregrines usually nest on high cliff ledges, where they can see far in every direction."]}]},
+    prueba:"To a falcon, the ledge of a skyscraper looks a lot like a cliff.", excl:["Today, peregrines nest on tall buildings and bridges in Chicago.","Peregrines usually nest on high cliff ledges, where they can see far in every direction."]}]},
 
  {titulo:"Monarch butterflies", textos:[
    {titulo:"Our State Insect", e:"🦋", t:[
      "In 1975, the monarch butterfly became the official state insect of Illinois.",
-     "Students from schools around the state wrote letters asking lawmakers to choose it.",
+     "Schoolchildren wrote letters asking lawmakers to choose it.",
      "+Its bright orange wings with black lines make it easy to recognize."]},
    {titulo:"Milkweed Matters", e:"🌿", t:[
      "Monarch caterpillars can eat only one kind of plant: milkweed.",
@@ -979,7 +980,7 @@ const INTEGRAR = [
     prueba:"In 1975, the monarch butterfly became the official state insect of Illinois."},
    {n:"r", q:"Which statement uses information from Text B AND Text C?", qes:"¿Qué afirmación usa información del texto B Y del texto C?", a:"Monarchs lay their eggs on milkweed, and each fall many fly to Mexico.",
     malas:[["The monarch became the Illinois state insect in 1975 after students wrote letters.","That information is only in Text A."],["Some monarchs travel more than two thousand miles to the mountains of Mexico.","That information is only in Text C, so it does not combine two texts."],["Monarchs fly to Mexico every fall because Illinois has no milkweed at all.","Neither text says that. Text B says fewer milkweed plants grow today, not that there are none."]],
-    prueba:"Female monarchs lay their eggs on milkweed leaves.", excl:["Monarch caterpillars can eat only one kind of plant: milkweed.","Each fall, monarchs from the eastern United States and Canada fly to the mountains of central Mexico.","Some of them travel more than two thousand miles."]},
+    pq:["Prove it: which sentence from Text B gives part of this statement?","Demuéstralo: ¿qué oración del texto B da una parte de esta afirmación?"], prueba:"Female monarchs lay their eggs on milkweed leaves.", excl:["Monarch caterpillars can eat only one kind of plant: milkweed.","Each fall, monarchs from the eastern United States and Canada fly to the mountains of central Mexico.","Some of them travel more than two thousand miles."]},
    {n:"r", q:"Why might Illinois students plant milkweed today? Use more than one text.", qes:"¿Por qué los estudiantes de Illinois podrían sembrar algodoncillo (milkweed) hoy? Usa más de un texto.", a:"The monarch is our state insect, and its caterpillars need milkweed.",
     malas:[["Milkweed helps adult monarchs fly much faster on the long trip to Mexico.","No text says that milkweed makes monarchs faster."],["Lawmakers asked all students to plant milkweed back in 1975.","Text A says students wrote letters in 1975; it says nothing about planting."],["Monarchs eat milkweed in the mountains of central Mexico.","No text says that. Text B tells that caterpillars eat milkweed."]],
     prueba:"Fewer milkweed plants grow today than in the past, so people are planting milkweed in yards, schoolyards and parks.", excl:["Monarch caterpillars can eat only one kind of plant: milkweed.","In 1975, the monarch butterfly became the official state insect of Illinois.","Female monarchs lay their eggs on milkweed leaves."]}]},
@@ -1004,7 +1005,7 @@ const INTEGRAR = [
     prueba:"In 1900, after years of digging, engineers finished a long canal called the Sanitary and Ship Canal."},
    {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Waste in the river dirtied the lake's water, so engineers made the river flow away.",
     malas:[["Long ago the river flowed into Lake Michigan, carrying the waste of the growing city.","soloA"],["In 1900, engineers finished a canal that made the river flow toward the Mississippi.","soloB"],["Engineers dug the canal so ships could bring clean drinking water from the Mississippi.","Neither text says that ships brought drinking water. The canal changed the river's direction."]],
-    prueba:"The canal made the main part of the river flow away from Lake Michigan instead of into it.", excl:["As the city grew, sewage and waste from the city flowed down the river and into the lake.","That was a serious problem, because the city got its drinking water from the lake.","In 1900, after years of digging, engineers finished a long canal called the Sanitary and Ship Canal.","Now the water flows toward the Des Plaines River, then the Illinois River and finally the Mississippi River."]},
+    pq:["Prove it: which sentence from Text B gives part of this statement?","Demuéstralo: ¿qué oración del texto B da una parte de esta afirmación?"], prueba:"The canal made the main part of the river flow away from Lake Michigan instead of into it.", excl:["As the city grew, sewage and waste from the city flowed down the river and into the lake.","That was a serious problem, because the city got its drinking water from the lake.","In 1900, after years of digging, engineers finished a long canal called the Sanitary and Ship Canal.","Now the water flows toward the Des Plaines River, then the Illinois River and finally the Mississippi River."]},
    {n:"r", q:"How does Text B answer the problem described in Text A?", qes:"¿Cómo responde el texto B al problema que describe el texto A?", a:"The canal sent the waste away from the lake's drinking water.",
     malas:[["The canal pumped the lake water straight into everyone's homes.","Text B says nothing about pumping water into homes."],["Text B says that many people became sick from dirty water.","That is in Text A, and it is the problem, not the answer."],["The canal stopped the city of Chicago from growing any bigger.","nadie"]],
     prueba:"The canal made the main part of the river flow away from Lake Michigan instead of into it.", excl:["Now the water flows toward the Des Plaines River, then the Illinois River and finally the Mississippi River."]}]},
@@ -1028,7 +1029,7 @@ const INTEGRAR = [
     prueba:"The skeleton is about 40 feet long, as long as a school bus."},
    {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Bones found in South Dakota in 1990 now form a giant skeleton in Chicago.",
     malas:[["Sue Hendrickson found huge bones sticking out of a cliff in South Dakota.","soloA"],["Sue is about forty feet long, and it is on display at the Field Museum.","soloB"],["Sue Hendrickson found the bones inside the Field Museum in Chicago in 1990.","It mixes the texts but gets them wrong: the bones were found in South Dakota."]],
-    prueba:"Today, Sue is on display at the Field Museum in Chicago.", excl:["In 1990, a fossil hunter named Sue Hendrickson discovered huge bones sticking out of a cliff in South Dakota.","The skeleton was named Sue in her honor.","The skeleton is about 40 feet long, as long as a school bus.","Sue is one of the largest and most complete T. rex skeletons ever found."]},
+    pq:["Prove it: which sentence from Text B gives part of this statement?","Demuéstralo: ¿qué oración del texto B da una parte de esta afirmación?"], prueba:"Today, Sue is on display at the Field Museum in Chicago.", excl:["In 1990, a fossil hunter named Sue Hendrickson discovered huge bones sticking out of a cliff in South Dakota.","The skeleton was named Sue in her honor.","The skeleton is about 40 feet long, as long as a school bus.","Sue is one of the largest and most complete T. rex skeletons ever found."]},
    {n:"r", q:"What does Text B add to what you learn in Text A?", qes:"¿Qué añade el texto B a lo que aprendes en el texto A?", a:"Where Sue is now and how big it is",
     malas:[["Who discovered the bones and in what year","That is in Text A, not Text B."],["How Sue Hendrickson became a fossil hunter","nadie"],["Which other dinosaurs lived next to Sue","nadie"]],
     prueba:"The skeleton is about 40 feet long, as long as a school bus.", excl:["Today, Sue is on display at the Field Museum in Chicago.","Sue is one of the largest and most complete T. rex skeletons ever found."]}]},
@@ -1053,7 +1054,7 @@ const INTEGRAR = [
     prueba:"Today, the L has eight lines, and each one is named after a color, such as the Red Line and the Blue Line."},
    {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Built in 1892 to rise above crowded streets, the L now has eight color lines.",
     malas:[["In 1892, tracks were raised above Chicago's crowded streets for the first elevated line.","soloA"],["Today the L has eight lines named after colors, and several of them run around the Loop.","soloB"],["The L was built underground in 1892 because people wanted trains named after colors.","It mixes the texts but gets them wrong: the first line was raised above the street."]],
-    prueba:"Today, the L has eight lines, and each one is named after a color, such as the Red Line and the Blue Line.", excl:["In 1892, the city's first elevated train line opened, with tracks raised high above the street.","In the late 1800s, Chicago's streets were crowded with people, horses, wagons and streetcars.","There was little room for new train tracks on the ground."]},
+    pq:["Prove it: which sentence from Text B gives part of this statement?","Demuéstralo: ¿qué oración del texto B da una parte de esta afirmación?"], prueba:"Today, the L has eight lines, and each one is named after a color, such as the Red Line and the Blue Line.", excl:["In 1892, the city's first elevated train line opened, with tracks raised high above the street.","In the late 1800s, Chicago's streets were crowded with people, horses, wagons and streetcars.","There was little room for new train tracks on the ground."]},
    {n:"r", q:"Text A says the tracks were raised above the streets. What does Text B add?", qes:"El texto A dice que las vías se elevaron sobre las calles. ¿Qué añade el texto B?", a:"Today, some parts run underground or at street level.",
     malas:[["The streets were crowded with horses and wagons.","That is in Text A, not Text B."],["The very first line opened in the year 1892.","That is in Text A, not Text B."],["All of the old elevated L tracks were torn down long ago.","nadie"]],
     prueba:"Some parts of the L run underground in subways, and others run at street level or in the middle of expressways."}]},
@@ -1076,7 +1077,7 @@ const INTEGRAR = [
     prueba:"Coyotes are smart and shy, and they usually hunt at night."},
    {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Thousands of shy coyotes live around Chicago and help by eating rats and mice.",
     malas:[["At least two thousand coyotes live in and around Chicago, and they hunt at night.","soloA"],["Coyotes eat mice, rats and rabbits, which helps keep the number of rodents down.","soloB"],["Thousands of coyotes live in Chicago because people feed them every single night.","It mixes the texts but gets them wrong: Text B says people should never feed coyotes."]],
-    prueba:"By eating rodents, coyotes help keep the number of rats and mice down.", excl:["Coyotes eat mostly small animals such as mice, rats and rabbits.","Scientists who study coyotes think that at least two thousand of them live in and around Chicago.","Coyotes are smart and shy, and they usually hunt at night."]},
+    pq:["Prove it: which sentence from Text B gives part of this statement?","Demuéstralo: ¿qué oración del texto B da una parte de esta afirmación?"], prueba:"By eating rodents, coyotes help keep the number of rats and mice down.", excl:["Coyotes eat mostly small animals such as mice, rats and rabbits.","Scientists who study coyotes think that at least two thousand of them live in and around Chicago.","Coyotes are smart and shy, and they usually hunt at night."]},
    {n:"r", q:"Why should people not feed coyotes? Use both texts.", qes:"¿Por qué la gente no debe dar de comer a los coyotes? Usa los dos textos.", a:"Coyotes are shy, but feeding them can make them lose their fear.",
     malas:[["Coyotes eat only rabbits, so any other food will make them sick.","No text says that. Text B says coyotes eat mice, rats and rabbits."],["Coyotes hunt in the daytime, so they need to rest all night long.","Text A says coyotes usually hunt at night."],["Feeding them would make it hard for them to wear tracking collars.","No text connects food and tracking collars."]],
     prueba:"Experts say people should never feed coyotes, because coyotes that get food from people may lose their fear of humans.", excl:["Coyotes are smart and shy, and they usually hunt at night."]}]},
@@ -1103,7 +1104,7 @@ const INTEGRAR = [
     prueba:"The roots of some prairie plants can reach more than ten feet underground."},
    {n:"r", q:"Which statement uses information from Text B AND Text C?", qes:"¿Qué afirmación usa información del texto B Y del texto C?", a:"Roots more than ten feet deep stay safe from fires that kill young trees.",
     malas:[["Illinois is called the Prairie State, but only a tiny part of the prairie is left.","That information is only in Text A."],["Long ago, natural fires swept across the prairie and killed many young trees.","That information is only in Text C, so it does not combine two texts."],["Deep roots help prairie plants start fires on the prairie during dry summers.","Neither text says roots start fires. Text C says fires can't harm the roots."]],
-    prueba:"Prairie plants survive fire because their roots are safe underground, but many young trees are killed.", excl:["The roots of some prairie plants can reach more than ten feet underground.","Many prairie plants have very long roots.","Long ago, natural fires often swept across the prairie."]},
+    pq:["Prove it: which sentence from Text C gives part of this statement?","Demuéstralo: ¿qué oración del texto C da una parte de esta afirmación?"], prueba:"Prairie plants survive fire because their roots are safe underground, but many young trees are killed.", excl:["The roots of some prairie plants can reach more than ten feet underground.","Many prairie plants have very long roots.","Long ago, natural fires often swept across the prairie."]},
    {n:"r", q:"Text A says prairie once covered much of Illinois. How do Texts B and C help explain why trees didn't take over?", qes:"El texto A dice que la pradera cubría gran parte de Illinois. ¿Cómo ayudan los textos B y C a explicar por qué los árboles no la invadieron?", a:"Fires killed young trees, while deep-rooted prairie plants survived.",
     malas:[["Farmers planted grass every year to keep the trees away.","nadie"],["Prairie roots are very short, so no trees were ever able to grow there.","Text B says many prairie roots are very long."],["Only a tiny part of the prairie is left today.","That is from Text A, and it doesn't explain why trees didn't take over."]],
     prueba:"Prairie plants survive fire because their roots are safe underground, but many young trees are killed.", excl:["Long ago, natural fires often swept across the prairie.","Many prairie plants have very long roots.","The roots of some prairie plants can reach more than ten feet underground."]}]},
@@ -1126,7 +1127,7 @@ const INTEGRAR = [
     prueba:"Chicago gets its drinking water from Lake Michigan."},
    {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Water left by melting Ice Age glaciers is now Chicago's drinking water.",
     malas:[["Water enters large pipes far out in the lake at structures called intake cribs.","soloA"],["Glaciers carved deep valleys, and melting ice filled them to form the lake.","soloB"],["Glaciers built the water intake cribs during the Ice Age to give Chicago water.","It mixes the texts but gets them wrong: people built the cribs, and glaciers formed the lake."]],
-    prueba:"Chicago gets its drinking water from Lake Michigan.", excl:["Lake Michigan was formed by glaciers during the last Ice Age.","When the huge sheets of ice melted, their water filled the deep valleys they had carved.","Water enters through large pipes far out in the lake, at structures called water intake cribs."]},
+    pq:["Prove it: which sentence tells how the lake got its water?","Demuéstralo: ¿qué oración cuenta cómo se llenó de agua el lago?"], prueba:"When the huge sheets of ice melted, their water filled the deep valleys they had carved.", excl:["Lake Michigan was formed by glaciers during the last Ice Age."]},
    {n:"r", q:"What does Text A add to what Text B tells about Lake Michigan?", qes:"¿Qué añade el texto A a lo que cuenta el texto B sobre el lago Michigan?", a:"How people in Chicago use the lake's water today",
     malas:[["How the glaciers carved the deep valleys","That is in Text B, not Text A."],["That the lake lies entirely within the United States","That is in Text B, not Text A."],["How many kinds of fish live in the lake","nadie"]],
     prueba:"Chicago gets its drinking water from Lake Michigan.", excl:["Water enters through large pipes far out in the lake, at structures called water intake cribs.","The water then travels through tunnels to purification plants, where it is cleaned before it reaches homes."]}]}
@@ -1191,7 +1192,7 @@ const GENERO = [
     prueba:"He remembered from science class that melting snow can make tracks spread out and look much bigger."},
    {n:"r", q:"How does each story use humor at the end of the mystery?", qes:"¿Cómo usa el humor cada cuento al final del misterio?", a:"The “bear” is a yawning cat; the muffin thief has a purple tongue.",
     malas:[["The cat has a purple tongue; the muffin thief yawns and goes to sleep.","alreves"],["Neither of the stories has a funny moment at the end at all.","Both endings have funny surprises. Look at the last sentences."],["Both stories end with a grown-up angrily scolding the children.","Grandma laughs, and nobody scolds anyone in the paw-print story."]],
-    prueba:"The “bear” blinked at them and yawned."}]},
+    prueba:"The “bear” blinked at them and yawned.", excl:["Leo opened his mouth, and his tongue was bright purple.","Grandma laughed and gave him a job: baking a new batch with her."]}]},
 
  {genero:"Adventure", a:{titulo:"Paddling Against the Wind", e:"🛶", t:[
     "Sophia and Selena were halfway down the Chicago River in their kayak when the wind suddenly picked up.",
@@ -1216,10 +1217,10 @@ const GENERO = [
     prueba:"“We have to paddle together,” Sophia shouted. “Left, right, left, right!”"},
    {n:"r", q:"How is the danger different in the two stories?", qes:"¿En qué se diferencia el peligro en los dos cuentos?", a:"The kayak danger comes from nature; Elías's danger is his own fear.",
     malas:[["Elías's danger comes from nature; the kayak danger is the girls' own fear.","alreves"],["Both dangers come from strong winds and big waves on the water.","Only the kayak story has wind and waves. Elías is on stairs."],["Neither story has any danger or problem at all.","Both stories have a challenge. Compare where each one comes from."]],
-    prueba:"He was afraid of heights, but he told himself to look only at the next step.", excl:["Elías froze at the bottom of the tall wooden stairs that climbed out of the canyon at Starved Rock."]},
+    prueba:"He was afraid of heights, but he told himself to look only at the next step.", excl:["Elías froze at the bottom of the tall wooden stairs that climbed out of the canyon at Starved Rock.","Sophia and Selena were halfway down the Chicago River in their kayak when the wind suddenly picked up.","Waves slapped the boat, and Selena's paddle kept splashing in the wrong direction.","His heart pounded, and he counted every step under his breath."]},
    {n:"r", q:"How do both stories show the reward for facing a challenge?", qes:"¿Cómo muestran los dos cuentos la recompensa por enfrentar un reto?", a:"Each ends with joy: grinning kayakers and a great view.",
     malas:[["Each ends with a prize given to the kids by a grown-up.","A high five is not a prize, and the view isn't given by anyone."],["Each ends with the characters deciding never to try again.","Both endings are happy, and nobody decides to quit."],["Each ends with someone getting hurt on the way home.","nadie"]],
-    prueba:"He decided that the view was worth every scary step.", excl:["Their arms ached, but they couldn't stop grinning."]}]},
+    prueba:"He decided that the view was worth every scary step.", excl:["Their arms ached, but they couldn't stop grinning.","When he reached the top, he could see the Illinois River shining below.","Together, they reached the dock, where their guide gave them a high five."]}]},
 
  {genero:"Adventure", a:{titulo:"The Wrong Train", e:"🚇", t:[
     "Israel and his grandmother were riding the L home when Israel realized they were on the wrong train.",
@@ -1244,7 +1245,7 @@ const GENERO = [
     prueba:"He led Grandma off the train and onto the right one, holding her hand the whole way."},
    {n:"r", q:"How is the problem in the train story different from the problem at the beach?", qes:"¿En qué se diferencia el problema del cuento del tren del problema en la playa?", a:"Israel must find the way; Salma must stop a dog near a road.",
     malas:[["Salma must find the way; Israel must stop a dog before the road.","alreves"],["Both kids must find their own way home after getting lost.","Only Israel is on the wrong train. Salma isn't lost."],["Both kids must read a big map of the city to fix the problem.","Only Israel uses a map. Salma uses food and a calm voice."]],
-    prueba:"Its owner was nowhere in sight, and the dog was heading toward the busy road."},
+    prueba:"Its owner was nowhere in sight, and the dog was heading toward the busy road.", excl:["Israel and his grandmother were riding the L home when Israel realized they were on the wrong train.","Grandma had left her glasses at home and couldn't read the station signs.","Salma was building a sandcastle at Montrose Beach when she saw a small dog running alone along the water."]},
    {n:"r", q:"Which tool does each character use to solve the problem?", qes:"¿Qué herramienta usa cada personaje para resolver el problema?", a:"Israel uses the train map; Salma uses food and a calm voice.",
     malas:[["Salma uses the train map; Israel uses food and a calm voice.","alreves"],["Both of them use a phone to call a grown-up for help right away.","Only Salma's dad uses a phone, after the dog comes back."],["Both of them use a map of Chicago to find their way.","Only Israel studies a map."]],
     prueba:"Salma grabbed a piece of her sandwich and called the dog in a calm, gentle voice.", excl:["Israel took a deep breath and studied the map above the doors."]}]},
@@ -1275,7 +1276,7 @@ const GENERO = [
     prueba:"He threw every scoop into Lake Michigan, which is why the lake is so cold.", excl:["Her wind cooled the city so well that people still call Chicago the Windy City."]},
    {n:"r", q:"How is the problem in each tale different?", qes:"¿En qué se diferencia el problema de cada cuento?", a:"Wanda fights terrible heat; Benny fights terrible snow.",
     malas:[["Benny fights terrible heat; Wanda fights terrible snow.","alreves"],["Both heroes fight a terrible flood on the lake.","There is no flood in either tale."],["Both heroes fight a giant monster downtown.","There is no monster in either tale."]],
-    prueba:"One summer, the city got so hot that the sidewalks started to melt like butter."}]},
+    prueba:"One summer, the city got so hot that the sidewalks started to melt like butter.", excl:["During the worst blizzard ever, the snow piled up higher than the rooftops of the city."]}]},
 
  {genero:"Fable", a:{titulo:"The Pigeon Who Bragged", e:"🐦", t:[
     "A pigeon on Wacker Drive bragged that it was the fastest bird in Chicago.",
@@ -1302,7 +1303,7 @@ const GENERO = [
     prueba:"Moral: Bragging may win attention, but only the truth wins trust.", excl:["Moral: Those who brag the loudest often have the least to show."]},
    {n:"r", q:"How do the other characters act differently in each fable?", qes:"¿En qué se diferencia la manera de actuar de los otros personajes en cada fábula?", a:"The falcon simply wins; the friends share even though the squirrel lied.",
     malas:[["The friends simply win a race; the falcon shares its food with the pigeon.","alreves"],["In both fables, the other characters laugh at the bragger and walk away.","Nobody laughs in either fable. Look at what the falcon and the friends do."],["In both fables, the other characters believe every word the bragger says.","The falcon races to test the pigeon, and nobody believes the squirrel afterward."]],
-    prueba:"Its friends shared their acorns anyway, but nobody believed its stories after that."}]},
+    prueba:"Its friends shared their acorns anyway, but nobody believed its stories after that.", excl:["The pigeon flapped as hard as it could, but the falcon zoomed past it like a rocket.","When the pigeon finally reached the top, panting, the falcon was already cleaning its feathers."]}]},
 
  {genero:"Science fiction", a:{titulo:"Unit 7 on Duty", e:"🤖", t:[
     "In the year 2085, a robot crossing guard named Unit 7 helped kids cross Western Avenue.",
@@ -1327,13 +1328,13 @@ const GENERO = [
     prueba:"The next week, Unit 7 surprised everyone by saying, “Good morning, Selena,” in a cheerful voice."},
    {n:"r", q:"How do the two stories approach the theme from opposite directions?", qes:"¿Cómo tratan el tema los dos cuentos desde direcciones opuestas?", a:"A machine learns from a person; a person learns not to depend on a machine.",
     malas:[["A person learns from a machine; a machine learns not to depend on a person.","alreves"],["Both stories show machines replacing people at school and in the street forever.","Both stories end with people mattering more, not with machines replacing them."],["Both stories show kids learning how to build and repair their own robots.","Nobody builds or repairs a robot in either story."]],
-    prueba:"It had been watching Mrs. Alvarez and learning."},
+    prueba:"It had been watching Mrs. Alvarez and learning.", excl:["He kept the watch in his backpack after that, for emergencies only.","The next day, he asked Elías and Athena to study with him again, and they said yes.","The next week, Unit 7 surprised everyone by saying, “Good morning, Selena,” in a cheerful voice."]},
    {n:"r", q:"How are the settings of the two stories different?", qes:"¿En qué se diferencian los escenarios de los dos cuentos?", a:"One is set far in the future; the other could happen today.",
     malas:[["The first could happen today; the second is set far in the future.","alreves"],["Both of the stories happen on another planet far from Earth.","Both happen in ordinary places: a street and a school."],["Both of the stories are set long ago, before there were cars.","Unit 7 checks the speed of cars, and Daniel has a smartwatch."]],
-    prueba:"In the year 2085, a robot crossing guard named Unit 7 helped kids cross Western Avenue."}]},
+    prueba:"In the year 2085, a robot crossing guard named Unit 7 helped kids cross Western Avenue.", excl:["Daniel's new smartwatch could answer any homework question in less than a second."]}]},
 
  {genero:"Realistic fiction", a:{titulo:"The New Kid", e:"✏️", t:[
-    "On Mateo's first day at our school, he sat alone at lunch, staring at his tray.",
+    "On Mateo's first day at school, he sat alone at lunch, staring at his tray.",
     "Athena remembered how scared she had felt when her family moved to Chicago.",
     "She walked over and asked if he liked drawing, because she had seen dragons on his notebook.",
     "+He nodded shyly, and soon they were sketching dragons on napkins.",
@@ -1463,12 +1464,12 @@ const VISUALES = [
     malas:[["The year the canal was finished","texto"],["That waste once went into the lake","texto"],["How many workers it took to dig the canal by hand","ninguno"]],
     prueba:"After that, the main part of the river flowed away from the lake, toward other rivers to the southwest."}]},
 
- {titulo:"A Green River", e:"☘️", tipo:"photo", vis:()=>fotoMarco("A wide view of the Chicago River, bright green from bank to bank. Families in green hats crowd a bridge. A boy on his father's shoulders points at the water and laughs.", "Spectators cheer as the river turns green on the Saturday before St. Patrick's Day."), t:[
+ {titulo:"A Green River", e:"☘️", tipo:"photo", vis:()=>fotoMarco("A wide view of the Chicago River, bright green from bank to bank. Families in green hats crowd a bridge. A boy on his father's shoulders points at the water and laughs.", "Spectators cheer as the river turns green on the morning of the St. Patrick's Day parade."), t:[
    "Every March, the Chicago River downtown is dyed green.",
    "The tradition began in 1962.",
-   "+A crew in boats spreads an orange powder that turns the water green."],
+   "A crew in boats spreads an orange powder that turns the water green."],
   q:[
-   {n:"f", q:"What does the caption tell you that the text does not?", qes:"¿Qué te dice el pie de foto que el texto no dice?", a:"The day the river is dyed each year",
+   {n:"f", q:"What does the caption tell you that the text does not?", qes:"¿Qué te dice el pie de foto que el texto no dice?", a:"That it happens on parade day",
     malas:[["The year the tradition began","texto"],["The color of the powder that is used","texto"]]},
    {n:"f", q:"How do the people in the photo seem to feel?", qes:"¿Cómo parecen sentirse las personas de la foto?", a:"Excited and happy",
     malas:[["Bored and sleepy","leer"],["Scared and worried","leer"]]},
@@ -1523,7 +1524,7 @@ const VISUALES = [
    "It is still the biggest snowstorm ever recorded in the city.",
    "+Many people had to leave their cars and walk home."],
   q:[
-   {n:"f", q:"What does the photo show stuck in the street?", qes:"¿Qué muestra la foto atascado en la calle?", a:"A city bus",
+   {n:"f", q:"What does the photo show stuck in the street?", qes:"Según la foto, ¿qué quedó atascado en la calle?", a:"A city bus",
     malas:[["A sailboat","leer"],["A horse and wagon","leer"]]},
    {n:"f", q:"What does the caption tell you?", qes:"¿Qué te dice el pie de foto?", a:"Where and when the photo was taken",
     malas:[["How many inches of snow fell","texto"],["The name of the person who took the photo","ninguno"]]},
@@ -1789,7 +1790,7 @@ function nuevaRonda(){
         $("txt-instruccion").textContent = T.evidencia; hablar(T.evidencia);
         $("btn-bocina").onclick = ()=>hablar(T.evidencia);
         $("txt-ayuda").textContent = ES.evidencia; $("btn-bocina-es").onclick = ()=>hablar(ES.evidencia, null, "es");
-        const todas = [...cont.querySelectorAll(".frase")].map(f=>f.textContent).filter(s=> s !== d.ev && s.length > 30);
+        const todas = [...cont.querySelectorAll(".frase")].map(f=>f.textContent).filter(s=> s !== d.ev && !(d.excl || []).includes(s) && s.length > 30);
         opcionesTexto([d.ev, ...distractores(todas, d.ev, 3)], d.ev, ()=>{ resaltar(cont, d.ev, "prueba"); acertar(d.ex); }, H.prueba, true);
       }));
     });

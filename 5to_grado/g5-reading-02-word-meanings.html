@@ -452,6 +452,12 @@ function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.
 const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const negrita = (s)=> escaparHTML(s).replace(/\*(.*?)\*/, "<b>$1</b>");
 const sinSignos = (s)=> String(s).replace(/[*\[\]]/g, "");
+/* n distractores al azar, procurando que al menos uno sea tan largo como la respuesta correcta */
+function elegirParejos(pool, bien, n){
+  const largos = mezclar(pool.filter(x=>x.length >= bien.length));
+  if(!largos.length) return mezclar(pool).slice(0, n);
+  return [largos[0], ...mezclar(pool.filter(x=>x !== largos[0])).slice(0, n - 1)];
+}
 /* Elige uno distinto al de la ronda anterior (para que no se repita seguido) */
 const ULTIMOS = {};
 function elegirNuevo(clave, arr){
@@ -716,13 +722,13 @@ const PISTAS = [
    extra:["The stores are still closed, and the only other people are a few joggers and a man sweeping the sidewalk in front of a café.", "Sometimes Daniel and his dad stop on the bridge to watch the sun rise over the river.", "By noon, the noise is back, so Daniel and his dad always go early.", "Daniel says it feels like having the whole city to themselves."],
    clave:"Michigan Avenue roars with buses, honking horns and crowds of shoppers",
    malos:[["noisy and crowded with people","clue"],["open early on Sundays for shoppers","det"],["full of people walking their dogs","adv"]],
-   citas:[["By noon, the noise is back, so Daniel and his dad always go early","That tells when they go. The contrast clue is the description of the street on weekdays, after the word ‘however’ flips it."],["Sometimes Daniel and his dad stop on the bridge to watch the sun rise over the river","That tells what they like to do. It doesn't give the opposite of the word."]]},
+   citas:[["By noon, the noise is back, so Daniel and his dad always go early","That tells when they go. The contrast clue is the description of the street on weekdays; the word ‘however’ tells you Sunday is the opposite."],["Sometimes Daniel and his dad stop on the bridge to watch the sun rise over the river","That tells what they like to do. It doesn't give the opposite of the word."]]},
   {w:"novice", tipo:"contrast", m:"a beginner who just started learning",
    texto:["Salma has played chess for six years, and she has won three city tournaments.", "She can plan five moves ahead and knows dozens of famous openings by heart.", "Her cousin Luis, on the other hand, is a *novice*: he learned how the pieces move only last week.", "He still forgets that bishops move only diagonally, and sometimes he asks which piece is the queen.", "When they play, Salma gives him hints and lets him take back his moves.", "She remembers how confusing the game felt when she was just starting."],
    extra:["Luis loses almost every game, but he doesn't give up.", "Every time he loses, he asks Salma to show him what he did wrong.", "He practices at the library after school with a chess club for kids, and he reads a chess book for beginners before bed.", "Last Saturday, he captured Salma's knight for the very first time and cheered so loudly that the neighbors knocked on the wall.", "Salma thinks that one day he might even beat her."],
-   clave:"he learned how the pieces move only last week",
+   clave:"Salma has played chess for six years",
    malos:[["an expert who wins city tournaments","clue"],["a cousin who lives in another city","adv"],["a player who takes back his moves","det"]],
-   citas:[["she has won three city tournaments","That describes Salma, the expert. ‘On the other hand’ tells you Luis is the opposite."],["He practices at the library after school with a chess club for kids","That tells what Luis does now, not how new he is to the game."]]},
+   citas:[["When they play, Salma gives him hints and lets him take back his moves","That shows how Salma helps Luis. It doesn't show the opposite of the word."],["He practices at the library after school with a chess club for kids","That tells what Luis does now, not how new he is to the game."]]},
   {w:"replica", tipo:"compare", m:"a close copy of a real thing",
    texto:["On a field trip to the Museum of Science and Industry, Sophia walked through a *replica* of a coal mine.", "Just as a model airplane copies a real airplane, the replica copies every tunnel, cart and lamp of a real mine.", "The walls look like real rock, and an old elevator shakes and rattles as it takes visitors down.", "The big difference is that it is safe for visitors.", "No one has to worry about falling rocks or bad air, and the exit is always close by."],
    extra:["A guide in a hard hat explained how miners worked deep underground a hundred years ago.", "He showed the class the heavy tools they used and the tiny lamps they wore on their helmets.", "Sophia was surprised by how dark and narrow the tunnels felt, even with the lights on.", "She imagined working there all day without seeing the sun.", "She decided she liked the museum version much better."],
@@ -806,7 +812,7 @@ const FAMILIAS_PRON = [
   [["electric","ih-LEK-trik"],["electricity","ih-lek-TRIS-ih-tee"],["electrician","ih-lek-TRISH-uhn"]],
   [["economy","ih-KON-uh-mee"],["economic","ek-uh-NOM-ik"],["economist","ih-KON-uh-mist"]],
   [["equal","EE-kwuhl"],["equality","ih-KWOL-ih-tee"],["equator","ih-KWAY-ter"]],
-  [["desert","DEZ-ert"],["dessert","dih-ZURT"],["deserve","dih-ZURV"]],
+  [["origin","OR-ih-jin"],["original","uh-RIJ-uh-nuhl"],["originality","uh-rij-uh-NAL-ih-tee"]],
   [["atom","AT-uhm"],["atomic","uh-TOM-ik"],["anatomy","uh-NAT-uh-mee"]],
   [["politics","POL-ih-tiks"],["political","puh-LIT-ih-kuhl"],["politician","pol-ih-TISH-uhn"]]
 ];
@@ -826,7 +832,7 @@ const ENTRADAS = [
    ors:[["Under the microscope, Selena saw a single onion cell.",0],["Each cell in the honeycomb was full of honey.",1],["Dad called from his cell to say he was running late.",2]]},
   {w:"plain", defs:[["playn","adjective","simple, without decoration"],["playn","noun","a large area of flat land"],["playn","adjective","easy to see or understand"]],
    ors:[["Daniel wore a plain white T-shirt to the game.",0],["The wagon crossed a wide, grassy plain.",1],["It was plain from her smile that Salma had won.",2]]},
-  {w:"sound", defs:[["sound","noun","something you can hear"],["sound","adjective","strong and in good condition"],["sound","noun","a long, narrow body of water"]],
+  {w:"sound", defs:[["sownd","noun","something you can hear"],["sownd","adjective","strong and in good condition"],["sownd","noun","a long, narrow body of water"]],
    ors:[["Elías heard the sound of the L train.",0],["The engineer said the old bridge was still sound.",1],["The ferry crossed the sound to reach the island.",2]]},
   {w:"bark", defs:[["bahrk","noun","the hard outer covering of a tree"],["bahrk","verb","to make the short, loud sound of a dog"],["bahrk","noun","a kind of sailing ship"]],
    ors:[["The bark of the birch tree is white and papery.",0],["Our neighbor's dog likes to bark at the mail carrier.",1],["The explorers crossed the ocean in a small bark.",2]]},
@@ -863,9 +869,9 @@ const GLOSARIOS = [
   {materia:"science", materiaEs:"ciencias", titulo:"Chapter 2: Properties of Matter", terms:{
     mixture:["two or more substances combined that can be separated again","Trail mix is a ___ because you can pick out the raisins and nuts."],
     dissolve:["to mix completely into a liquid","Sugar will ___ in warm tea until you can't see it."],
-    liquid:["matter that takes the shape of its container","Juice is a ___: it takes the shape of the glass."],
+    liquid:["matter that takes the shape of its container","Water is a ___: it takes the shape of the glass."],
     solid:["matter that keeps its own shape","An ice cube is a ___ that keeps its shape until it melts."],
-    gas:["matter that spreads out to fill any space","The air inside a balloon is a ___ that spreads out to fill it."]}},
+    gas:["matter that spreads out to fill any space","The helium inside a party balloon is a ___ that spreads out to fill it."]}},
   {materia:"social studies", materiaEs:"estudios sociales", titulo:"Unit 3: A New Nation", terms:{
     colony:["a settlement ruled by a faraway country","Virginia was a British ___ before the American Revolution."],
     constitution:["a written plan of government","The U.S. ___ is a written plan for how the government works."],
@@ -928,11 +934,11 @@ const DICHOS = [
    malos:[["slap his books with his hands","lit"],["take a long break from schoolwork","op"]],
    sit:"Selena reviewed her notes and practiced vocabulary for two hours before the test.",
    sits:[["Daniel bumped the shelf, and a pile of books fell and hit the floor with a bang.","lit"],["The night before the test, Israel watched movies and never opened his notebook.","op"],["Salma helped her dad carry groceries up the stairs to their third-floor apartment.","otro"]]},
-  {f:"the ball is in your court", k:"idiom", s:"Daniel apologized and asked Israel to be his science partner again. Now *the ball is in Israel's court*.", m:"it's Israel's turn to decide or act",
+  {f:"the ball is in your court", k:"idiom", s:"Daniel apologized and asked Israel to be his science partner again. Now *the ball is in Israel's court*.", m:"it's Israel's turn to decide or act", mg:"it's your turn to decide or act",
    malos:[["a ball landed on Israel's tennis court","lit"],["Israel has nothing left to decide","op"]],
    sit:"Salma made an offer for the used bike, and now the seller has to say yes or no.",
    sits:[["During tennis practice, Athena hit the ball over the net onto her coach's side.","lit"],["The principal had already made the decision, so nobody else had any choice.","op"],["Elías packed a sandwich, two apples and a bottle of water for the field trip.","otro"]]},
-  {f:"bite off more than you can chew", k:"idiom", s:"Sophia signed up for soccer, chess, band and the school play. She may have *bitten off more than she can chew*.", m:"taken on more than she can handle",
+  {f:"bite off more than you can chew", k:"idiom", s:"Sophia signed up for soccer, chess, band and the school play. She may have *bitten off more than she can chew*.", m:"taken on more than she can handle", mg:"take on more than you can handle",
    malos:[["put too much food in her mouth","lit"],["chosen too few activities to stay busy","op"]],
    sit:"Israel promised to build three robots in one weekend and couldn't finish even one.",
    sits:[["Daniel took such a huge bite of his burrito that he could barely close his mouth.","lit"],["Athena picked one small project she could easily finish in a single afternoon.","op"],["Selena's family drove to Wisconsin to visit her aunt and uncle on their dairy farm.","otro"]]},
@@ -1023,11 +1029,11 @@ const SINANT = [
 
 /* 6. Palabras de enlace (L.5.6) */
 const TIPOS_REL = {
-  contrast:  {senal:"a contrast: the next idea is different from what you would expect", desc:"Contrast: the second idea goes against the first"},
+  contrast:  {senal:"a contrast: the next idea is different from what you would expect", desc:"Contrast: the two ideas go against each other"},
   addition:  {senal:"addition: one more idea of the same kind", desc:"Addition: the second idea adds one more point"},
-  similarity:{senal:"a comparison: the two ideas are alike", desc:"Comparison: the two ideas are alike in some way"},
+  similarity:{senal:"a comparison: the two ideas are alike", desc:"Comparison: the two ideas are alike"},
   cause:     {senal:"cause and effect: one thing makes another happen", desc:"Cause and effect: one idea leads to the other"},
-  example:   {senal:"an example: a specific case of the first idea", desc:"Example: the second idea gives one specific case"},
+  example:   {senal:"an example: a specific case of the first idea", desc:"Example: the second idea names one case"},
   condition: {senal:"a condition: something happens only if another thing doesn't", desc:"Condition: one thing depends on another"}
 };
 const EXPL_REL = {
@@ -1070,7 +1076,9 @@ const SUBORDINADAS = [
   ["Daniel is the shortest player on the team, he scores the most baskets.","Although","Here being the shortest would make you expect fewer baskets, but the opposite happens."],
   ["the museum was crowded, Athena found a quiet bench to sketch on.","Although","Here a crowded museum would make a quiet bench hard to find, but she found one."],
   ["the power went out, the family read by flashlight.","Because","Here the first part tells why they used a flashlight."],
-  ["Selena studied every night, she knew every answer on the test.","Because","Here the first part tells why she knew every answer."]
+  ["Selena studied every night, she knew every answer on the test.","Because","Here the first part tells why she knew every answer."],
+  ["the lake was frozen solid, the kids could skate across it.","Because","Here the first part tells why the kids could skate."],
+  ["it rains tomorrow, we will have our class picnic in the park.","Unless","Here rain is the one thing that would stop the picnic."]
 ].map(([b, bien, rel])=>({b, bien, rel, tipo: tipoDe(bien)}));
 
 /* ============ Rondas ============ */
@@ -1151,7 +1159,7 @@ function nuevaRonda(){
       const html = reto ? negrita(o.s).replace(/[\[\]]/g, "") : negrita(o.s).replace(/\[(.*?)\]/, "<mark>$1</mark>");
       oracionEl(html); esc.appendChild(botonOir(sinSignos(o.s), t.oir));
       let pal = Object.keys(o.defs);
-      if(!reto) pal = [o.bien, ...mezclar(pal.filter(x=>x !== o.bien)).slice(0, 2)];
+      if(!reto) pal = [o.bien, ...elegirParejos(pal.filter(x=>x !== o.bien), o.bien, 2)];
       pal = mezclar(pal);
       esc.insertAdjacentHTML("beforeend", `<div class="glosario" lang="en"><h3>📖 ${t.tituloTes}: ${o.w}</h3><dl>${pal.map(x=>`<div><dt>${x}</dt>: <dd>${o.defs[x]}</dd></div>`).join("")}</dl></div>`);
       ponerInstruccion(t.tesauro(o.w), null, ES.tesauro(o.w));
@@ -1165,7 +1173,8 @@ function nuevaRonda(){
     esc.insertAdjacentHTML("beforeend", `<div class="glosario" lang="en"><h3>📘 ${t.tituloGlos} · ${g.titulo}</h3><dl>${orden.map(x=>`<div><dt>${x}</dt>: <dd>${g.terms[x][0]}</dd></div>`).join("")}</dl></div>`);
     const p = oracionEl(escaparHTML(frase).replace("___", '<span class="blanco">?</span>'));
     ponerInstruccion(t.glosario(g.materia), null, ES.glosario(g.materiaEs));
-    const lista = [term, ...mezclar(orden.filter(x=>x !== term)).slice(0, reto ? 3 : 2)];
+    const EXCLUYE = {predator:["consumer"]};
+    const lista = [term, ...elegirParejos(orden.filter(x=>x !== term && !(EXCLUYE[term] || []).includes(x)), term, reto ? 3 : 2)];
     opcionesTexto(lista, term, ()=>{ const bl = p.querySelector(".blanco"); bl.textContent = term; bl.classList.add("lleno"); acertar(t.finGlos(term, def)); }, (x)=>t.pistaGlos(x, g.terms[x][0]));
     return;
   }
@@ -1201,8 +1210,8 @@ function nuevaRonda(){
     }
     oracionEl(`<b>“${escaparHTML(d.f)}”</b>`); esc.appendChild(botonOir(d.f, t.oir));
     ponerInstruccion(t.dichosR(k), t.dichosR(k) + " " + d.f, ES.dichosR(d.k));
-    opcionesTexto([d.sit, ...d.sits.map(m=>m[0])], d.sit, ()=>acertar(t.finDichos(d.corta, d.m)),
-      (x)=>t.errSit[d.sits.find(m=>m[0]===x)[1]] + t.recuerda(d.corta, d.m), true);
+    opcionesTexto([d.sit, ...d.sits.map(m=>m[0])], d.sit, ()=>acertar(t.finDichos(d.corta, d.mg || d.m)),
+      (x)=>t.errSit[d.sits.find(m=>m[0]===x)[1]] + t.recuerda(d.corta, d.mg || d.m), true);
     return;
   }
 
@@ -1241,7 +1250,8 @@ function nuevaRonda(){
     } else {
       const o = elegirNuevo("con", CONECTORES);
       tipo = o.tipo; rel = o.rel; bien = elegir(CONECTORES_DE[tipo]);
-      const otros = mezclar(Object.keys(CONECTORES_DE).filter(k=>k !== tipo)).slice(0, reto ? 3 : 2).map(k=>{ const largos = CONECTORES_DE[k].filter(c=>c.length >= bien.length); return largos.length && Math.random() < 0.6 ? elegir(largos) : elegir(CONECTORES_DE[k]); });
+      const CHOQUE = {similarity:"addition", addition:"similarity"};
+      const otros = mezclar(Object.keys(CONECTORES_DE).filter(k=>k !== tipo && k !== CHOQUE[tipo])).slice(0, reto ? 3 : 2).map(k=>{ const largos = CONECTORES_DE[k].filter(c=>c.length >= bien.length); return largos.length && Math.random() < 0.6 ? elegir(largos) : elegir(CONECTORES_DE[k]); });
       lista = [bien, ...otros];
       mostrarPar = ()=>{ esc.insertAdjacentHTML("beforeend", `<div class="par-or" lang="en"><p>${escaparHTML(o.a)}</p><p><span class="oracion-r" style="font-size:inherit"><span class="blanco">?</span></span>, ${escaparHTML(o.b)}</p></div>`); };
     }
@@ -1255,7 +1265,7 @@ function nuevaRonda(){
     opcionesTexto(lista, bien, ()=>{
       llenar();
       segundoPaso(t.conectoresPrueba(bien), ES.conectoresPrueba(bien));
-      const tipos = [tipo, ...mezclar(["contrast","addition","similarity","cause","example"].filter(k=>k !== tipo)).slice(0, 3)];
+      const tipos = [tipo, ...mezclar(["contrast","addition","similarity","cause","example"].filter(k=>k !== tipo && k !== ({similarity:"addition", addition:"similarity"})[tipo])).slice(0, 3)];
       opcionesTexto(tipos.map(k=>TIPOS_REL[k].desc), TIPOS_REL[tipo].desc, ()=>acertar(fin),
         (x)=>{ const k = Object.keys(TIPOS_REL).find(q=>TIPOS_REL[q].desc === x); return t.errTipoRel(EXPL_REL[k], bien); }, true);
     }, err);

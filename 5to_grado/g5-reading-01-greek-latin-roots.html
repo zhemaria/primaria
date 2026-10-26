@@ -350,7 +350,7 @@ const RAICES = [
     ["measure","In thermometer, “measure” comes from meter. Therm means heat."],
     ["cold","Therm means heat. A thermos can keep drinks cold too, but the root is about heat."],
     ["earth","In geothermal, “earth” comes from geo. Therm means heat."]]},
-  {k:"meter", f:["meter"], m:"measure", o:"Greek", g:"measure", ws:["thermometer","centimeter","perimeter","speedometer","kilometer"], conf:[
+  {k:"meter", f:["meter","metr"], m:"measure", o:"Greek", g:"measure", ws:["thermometer","centimeter","perimeter","speedometer","kilometer"], conf:[
     ["heat","In thermometer, “heat” comes from therm. Meter means measure."],
     ["around","In perimeter, “around” comes from the prefix peri-. Meter means measure."],
     ["hundred","In centimeter, “hundred” comes from centi-. Meter means measure."]]},
@@ -434,7 +434,7 @@ const RAICES = [
 const raizDe = (k)=> RAICES.find(r=>r.k===k);
 /* Cómo se nombra el significado de un grupo con dos raíces */
 const GM = {see:"see or look", sound:"sound or hearing", earth:"earth or land", write:"write"};
-const GM_ES = {hear:"oír", look:"mirar", land:"tierra", see:"ver o mirar", sound:"sonido u oír", earth:"tierra", write:"escribir", life:"vida", light:"luz", far:"lejos", heat:"calor",
+const GM_ES = {hear:"oír", look:"mirar", land:"tierra", see:"ver", sound:"sonido", earth:"tierra", write:"escribir", life:"vida", light:"luz", far:"lejos", heat:"calor",
   measure:"medir", time:"tiempo", build:"construir", "break":"romper", say:"decir", "throw":"lanzar", carry:"llevar", pull:"jalar",
   shape:"forma", send:"enviar", believe:"creer", water:"agua", star:"estrella", small:"pequeño", self:"uno mismo"};
 /* Palabras que parecen de la familia pero no lo son: [palabra, explicación] */
@@ -539,7 +539,7 @@ const CONS = [
   ["cannot be seen","que no se puede ver",["in","vis","ible"],["aud","ful"]],
   ["too strange to be believed","demasiado extraño para creerlo",["in","cred","ible"],["re","dict"]],
   ["to say what will happen before it happens","decir lo que va a pasar antes de que pase",["pre","dict"],["re","spect"]],
-  ["to break in between someone's words","interrumpir las palabras de alguien",["inter","rupt"],["trans","struct"]],
+  ["to break in between someone's words","cortar a alguien en medio de lo que dice",["inter","rupt"],["trans","struct"]],
   ["to carry across from one place to another","llevar de un lugar a otro",["trans","port"],["inter","tract"]],
   ["can be carried easily","que se puede llevar con facilidad",["port","able"],["ject","less"]],
   ["to pull someone's attention away","jalar la atención de alguien hacia otro lado",["dis","tract"],["re","port"]],
@@ -634,13 +634,15 @@ const LARGAS = [
   ["trans|for|ma|tion","trans|*form|ation"],["au|di|ence","*aud|ience"],["e|rup|tion","e|*rupt|ion"],
   ["pro|jec|tor","pro|*ject|or"],["au|di|to|ri|um","*aud|itorium"],["mis|in|for|ma|tion","mis|in|*form|ation"],
   ["su|per|vi|sion","super|*vis|ion"],["sub|trac|tion","sub|*tract|ion"],["dic|tion|ar|y","*dict|ionary"],
-  ["a|quat|ic","*aqu|atic"],["as|tro|naut","*astro|naut"],["in|ter|jec|tion","inter|*ject|ion"],["un|be|liev|a|ble","un|*believ|able"]
+  ["a|quat|ic","*aqu|atic"],["por|ta|ble","*port|able"],["in|ter|jec|tion","inter|*ject|ion"],["un|be|liev|a|ble","un|*believ|able"]
 ].map(([s, m])=>{ const mor = m.split("|"); const ri = mor.findIndex(x=>x[0]==="*");
   return {w: s.replace(/\|/g,""), sil: s.split("|"), mor: mor.map(x=>x.replace("*","")), ri}; });
 const SIGNIF_RAIZ = {dict:"say", vis:"see", port:"carry", rupt:"break", cred:"believe", spect:"look", struct:"build", terr:"land", tract:"pull",
   miss:"send", form:"shape", aud:"hear", ject:"throw", aqu:"water", astro:"star", believ:"believe"};
 const PREF_SIG = {un:"not", pre:"before", "in":"not", trans:"across", inter:"between", de:"down; the opposite of", con:"with; together",
   dis:"not", re:"again; back", e:"out", pro:"forward", mis:"wrongly", "super":"above", sub:"under"};
+/* El mismo prefijo puede significar otra cosa en una palabra concreta (in- = into en inspector; dis- = away en distraction) */
+const PREF_W = {inspector:{"in":"in; into"}, misinformation:{"in":"in; into"}, distraction:{dis:"apart; away"}};
 
 /* ============ Textos ============
    Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
@@ -690,7 +692,7 @@ const T = {
   silRaiz:(w)=>`Which part of ${w} is the root?`,
   silPartir:(w)=>`Which shows ${w} split into syllables correctly?`,
   silPocas:"Too few. Say the word slowly and clap each beat. A suffix like -able has two beats: a-ble.",
-  silMuchas:"Too many. Count the beats you hear, not the vowel letters: -tion says just “shun,” and vowel teams like ie or au can be one sound.",
+  silMuchas:"Too many. Count the beats you hear, not the vowel letters: -tion says just “shun,” and vowel teams like au or ea often make just one sound.",
   silSinVocal:(x)=>`“${x}” has no vowel sound, so it can't be a syllable.`,
   silJuntas:(x)=>`“${x}” has more than one beat. Say it slowly: it needs to be split.`,
   silSeparadas:(x)=>`“${x}” is a single beat; don't cut it apart.`,
@@ -721,7 +723,7 @@ const ES = {
   ctxPrueba:(w)=>`Demuéstralo: ¿qué palabras de la oración son la mejor pista para ${w}?`,
   silCuantas:(w)=>`¿Cuántas sílabas tiene ${w}?`,
   silRaiz:(w)=>`¿Qué parte de ${w} es la raíz?`,
-  silPartir:(w)=>`¿Cuál muestra ${w} bien dividida en sílabas?`
+  silPartir:(w)=>`¿Qué opción muestra la palabra ${w} bien dividida en sílabas?`
 };
 const JUEGOS = [
   {id:"raiz",      emoji:"🌱", en:"What does the root mean?", es:"¿Qué significa la raíz?", meta:"photo, chron, ject, tract…"},
@@ -1061,7 +1063,10 @@ function nuevaRonda(){
       opcionesTexto([imp.w, ...tres], imp.w, ()=>acertar(imp.fin), (x)=>t.famPertenece(x, formaEn(r, x), r.m));
     } else {
       const r = elegirNuevo(RAICES, x=>x.k);
-      const w = elegir(r.ws);
+      /* Una palabra con una sola raíz de la lista: si tuviera dos (photograph), «la raíz» sería ambigua */
+      const solas = r.ws.filter(v=> raicesDe(v).every(y=>y.g === r.g));
+      const w = elegir(solas.length ? solas : r.ws);
+      const gruposW = raicesDe(w).map(y=>y.g);
       const otrasMismo = RAICES.filter(x=>x.g === r.g && x.k !== r.k);
       let buena, rb;
       const deOtra = otrasMismo.length && Math.random() < 0.7;
@@ -1069,7 +1074,8 @@ function nuevaRonda(){
       [buena, rb] = elegir(pool.filter(([v])=>v !== w && !raicesDe(w).some(y=>raicesDe(v).includes(y) && y.g !== r.g)));
       /* distractores: trampas del grupo, palabras con raíces que se confunden, otras raíces */
       const trampas = RAICES.filter(x=>x.g === r.g).flatMap(x=>TRAMPAS[x.k] || []).map(x=>({t:x[0], p:t.famRtrampa(x[0], x[1], formaEn(r, w), r.m)}));
-      const ajenas = unicos(RAICES.filter(x=>x.g !== r.g).flatMap(x=>x.ws)).filter(v=>!tieneGrupo(v, r.g) && v !== w && v !== buena)
+      /* Ninguna palabra distractora puede compartir un significado de raíz con w (si no, también sería correcta) */
+      const ajenas = unicos(RAICES.filter(x=>x.g !== r.g).flatMap(x=>x.ws)).filter(v=>!raicesDe(v).some(y=>gruposW.includes(y.g)) && v !== w && v !== buena)
         .map(v=>{ const q = raicesDe(v)[0]; return {t:v, p:t.famRotra(v, formaEn(q, v), q.m, formaEn(r, w), r.m)}; });
       const lista = mezclar(trampas).slice(0, 1).concat(mezclar(ajenas));
       const malas = equilibrar(buena, lista.slice(0, 8), 3);
@@ -1181,14 +1187,18 @@ function nuevaRonda(){
       d.innerHTML = lista.map(x=>`<span>${escaparHTML(x)}</span>`).join(""); if(oculta) d.classList.add("oculto"); return d; };
     const pal = palabraEl(escaparHTML(p.w)); esc.appendChild(pal);
     /* Opciones para «¿cuál es la raíz?»: los afijos, una sílaba que corta la raíz y el prefijo pegado a la raíz */
+    const PS = (m)=> (PREF_W[p.w] || {})[m] || PREF_SIG[m];
     const preguntaRaiz = (alAcertar)=>{
       const ops = [{t:raiz, ok:true}];
       p.mor.forEach((m, i)=>{ if(i === p.ri) return;
-        if(i < p.ri) ops.push({t:m, p:t.silPre(m, PREF_SIG[m] || "a prefix meaning", raiz, mr)});
+        if(i < p.ri) ops.push({t:m, p:t.silPre(m, PS(m) || "a prefix meaning", raiz, mr)});
         else ops.push({t:m, p:t.silSuf(m, raiz, mr)}); });
-      if(p.ri > 0){ const junto = p.mor[p.ri - 1] + raiz; ops.push({t:junto, p:`${junto} = ${p.mor[p.ri-1]}- + ${raiz}. ${t.silPre(p.mor[p.ri-1], PREF_SIG[p.mor[p.ri-1]] || "a prefix", raiz, mr)}`}); }
+      if(p.ri > 0){ const junto = p.mor[p.ri - 1] + raiz; ops.push({t:junto, p:`${junto} = ${p.mor[p.ri-1]}- + ${raiz}. ${t.silPre(p.mor[p.ri-1], PS(p.mor[p.ri-1]) || "a prefix", raiz, mr)}`}); }
       const corta = p.sil.find(s=> s !== raiz && raiz.startsWith(s.slice(0, 2)) && s.length >= 2);
       if(corta && !ops.some(o=>o.t === corta)) ops.push({t:corta, p:t.silSilaba(corta, raiz, mr)});
+      /* Siempre al menos tres opciones: una sílaba que comparte letras con la raíz (aquatic: quat) */
+      if(ops.length < 3){ const otra = p.sil.filter(s=> s !== raiz && !ops.some(o=>o.t === s) && (raiz.includes(s.slice(0, 2)) || s.includes(raiz.slice(-2)))).sort((a, b)=> b.length - a.length)[0];
+        if(otra) ops.push({t:otra, p:t.silSilaba(otra, raiz, mr)}); }
       const malas = equilibrar(raiz, unicos(ops.filter(o=>!o.ok).map(o=>o.t)).map(x=>ops.find(o=>o.t===x)), 3);
       opcionesTexto([raiz, ...malas.map(o=>o.t)], raiz, alAcertar, (x)=> malas.find(o=>o.t===x).p);
     };
