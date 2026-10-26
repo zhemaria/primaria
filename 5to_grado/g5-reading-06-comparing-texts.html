@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<!--
+  Fifth Grade Reading — Points of view and comparing texts
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for English Language Arts, Grade 5:
+  RI.5.6, RI.5.9, RL.5.9, RL.5.7, W.5.1b (and RI.5.1 / RL.5.1, quote accurately)
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question (never the texts, the options or the hints).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Points of view and comparing texts · Fifth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Fifth grade reading games with Lumi: compare two accounts of the same event, put together information from several texts, compare stories of the same genre, see what visuals add, tell facts from opinions and decide who is right.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna y la pregunta) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.fila-fichas.lista{flex-direction:column;align-items:center;gap:12px}
+.fila-fichas.lista .opcion-texto{width:min(100%,680px)}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.2vw,22px);padding:10px 16px;text-align:left;font-weight:600;min-height:56px}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+/* ---------- Textos ---------- */
+.textos{display:grid;grid-template-columns:1fr;gap:14px;width:100%}
+@media (min-width:760px){
+  .textos.dos{grid-template-columns:1fr 1fr}
+  .textos.tres{grid-template-columns:repeat(3,1fr)}
+}
+.pasaje{font-family:"Andika","Century Gothic","Trebuchet MS",sans-serif;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:18px;padding:12px 16px;font-size:clamp(17px,3.4vw,20px);line-height:1.6;text-align:left;margin:0;min-width:0}
+.textos:not(.dos):not(.tres) .pasaje{max-width:52ch;margin:0 auto}
+.pasaje h3{margin:0 0 6px;font-size:1.02em;color:var(--acento);line-height:1.35}
+.pasaje h3 .version{display:inline-block;background:var(--acento);color:#fff;border-radius:999px;padding:0 10px;font-size:.78em;margin:0 6px 4px 0}
+.pasaje p{margin:0}
+.pasaje .frase.leyendo{background:#FFF3C4;border-radius:6px}
+.pasaje .frase.marca{background:#FFE0B2;border-radius:6px;outline:2px dashed var(--reintento)}
+.pasaje .frase.prueba{background:#C8E6C9;border-radius:6px}
+.pregunta-r{font-family:"Andika","Century Gothic","Trebuchet MS",sans-serif;font-weight:700;font-size:clamp(19px,3.8vw,24px);text-align:center;max-width:44ch;margin:0}
+.oir-r{border:3px solid var(--acento);background:var(--blanco);color:var(--acento);border-radius:999px;padding:4px 14px;font-weight:700;min-height:44px}
+.lamina-l{display:block;width:100%;max-width:640px;max-height:260px;object-fit:cover;border-radius:14px}
+.dichos{display:flex;flex-direction:column;gap:10px;width:min(100%,640px)}
+.dicho{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:14px;padding:8px 14px;margin:0;font-weight:600;text-align:left}
+.dicho b{color:var(--acento)}
+.visual{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:10px 12px;width:min(100%,520px);margin:0}
+.visual-t{font-weight:700;text-align:center;margin:0 0 4px;color:var(--acento)}
+.visual-svg{width:100%;height:auto;display:block}
+.foto-marco{border:8px solid #EDE6D6;outline:2px solid #B9AE95;background:#FBF8F1;border-radius:6px;padding:12px 14px;margin:0;text-align:left}
+.foto-marco .tipo-f{font-weight:700;color:var(--tinta-suave);font-size:.85em;margin:0 0 4px}
+.foto-marco .desc-f{margin:0 0 8px;font-size:.95em}
+.foto-marco figcaption{font-style:italic;border-top:2px solid #D9CFB8;padding-top:6px;font-size:.92em}
+.orden{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;width:min(100%,640px)}
+.orden li{display:flex;gap:10px;align-items:center;border:3px dashed var(--acento);border-radius:12px;background:var(--blanco);padding:6px 10px;min-height:52px;text-align:left;font-weight:600}
+.orden li b{color:var(--acento);flex:0 0 auto}
+.orden li.lleno{border-style:solid;border-color:var(--acierto);background:var(--acierto-fondo)}
+.chip-ev{font-weight:600;font-size:clamp(16px,3.2vw,20px);border:3px solid var(--acento);background:var(--blanco);
+  color:var(--tinta);border-radius:12px;padding:8px 14px;min-height:52px;box-shadow:var(--sombra);text-align:left;width:min(100%,640px)}
+.chip-ev:disabled{opacity:.35;cursor:default}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.reflexion .pregunta-r{font-family:inherit;font-size:1em;margin:0 0 10px;max-width:none}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:4mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .dos-h{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+  .hoja .cuento-h{font-size:11pt;line-height:1.45;border:1pt solid #000;border-radius:3mm;padding:2mm 4mm;margin:0}
+  .hoja .cuento-h h4{margin:0 0 1mm;font-size:11.5pt}
+  .hoja .cuento-h p{margin:0}
+  .hoja ol{font-size:12pt;line-height:1.6;margin:1mm 0;padding-left:6mm}
+  .hoja .larga{display:block;width:100%;border-bottom:1pt solid #000;height:8mm}
+  .hoja .creditos{margin-top:4mm;font-size:8.5pt;color:#444}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <h1>Points of view and comparing texts</h1>
+    <span class="crece"></span>
+    <a class="boton casa" id="enlace-casa" href="reading.html">🏠 All games</a>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi5-lectura.jpg" alt="" class="lumi-d" width="450" height="595"></span><span>⚖️</span><span>📰</span><span>📔</span><span>🗺️</span></div>
+    <h2>Two texts, two points of view!</h2>
+    <p id="txt-portada">The same event can look very different to a reporter, a fan, a player or a crossing guard. With Lumi you will compare two accounts of the same event, put together facts from several texts, compare stories of the same genre, find out what a map, a photo or an illustration adds, tell facts from opinions and decide who is right. Quote the text to prove it! With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">El mismo suceso puede verse muy distinto para un reportero, un aficionado, un jugador o una guardia de cruce. Con Lumi vas a comparar dos relatos del mismo suceso, juntar datos de varios textos, comparar cuentos del mismo género, descubrir qué aporta un mapa, una foto o una ilustración, distinguir hechos de opiniones y decidir quién tiene razón. ¡Cita el texto para demostrarlo!</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi5-lectura.jpg" alt="" class="lumi-m" width="450" height="595"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: two accounts</button></p>
+    <p>Aligned to the Illinois fifth grade English Language Arts standards RI.5.6 (analyze multiple accounts of the same event or topic, noting important similarities and differences in the point of view they represent), RI.5.9 (integrate information from several texts on the same topic in order to write or speak about the subject knowledgeably), RL.5.9 (compare and contrast stories in the same genre, such as mysteries and adventure stories, on their approaches to similar themes and topics), RL.5.7 (analyze how visual and multimedia elements contribute to the meaning, tone or beauty of a text) and W.5.1b (provide logically ordered reasons that are supported by facts and details), together with RI.5.1 and RL.5.1 (quote accurately from a text when explaining what it says). Lumi can read the texts aloud, highlighting each sentence. At the Easy level the texts are shorter, the questions ask what is the same, what is different, which text tells a fact, which sentence is a fact or an opinion and what a visual shows, and after a mistake the sentence with the answer is marked in the text; at the Challenge level the texts are longer, the questions ask why the accounts differ (point of view, purpose, what each writer could see or know), which statement combines information from two texts, how two stories approach the same theme, how a visual adds to meaning or tone, which reason is supported by facts and in what order the reasons go, and the child must prove the answer by picking the sentence that supports it. Every wrong answer comes from a typical mistake (a detail that only one text gives, two accounts switched, an opinion taken as a fact, a reason with no support), and its hint explains it. The people in the accounts and stories are made-up characters; the facts about Chicago, its history and nature are true. The optional “Ayuda en español” button translates only the instruction and the question; the texts, the options and the hints stay in English (WIDA-friendly support that keeps the reading level and the home-language help separate). Each game has its own direct link: #relatos, #integrar, #genero, #visuales, #hechoOpinion and #debate.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de Lengua y Literatura de Illinois para quinto grado: RI.5.6 (analizar varios relatos del mismo suceso o tema y señalar semejanzas y diferencias importantes en el punto de vista que representan), RI.5.9 (integrar información de varios textos sobre el mismo tema para escribir o hablar del tema con conocimiento), RL.5.9 (comparar y contrastar cuentos del mismo género, como los de misterio y de aventuras, en su manera de tratar temas parecidos), RL.5.7 (analizar cómo los elementos visuales y multimedia contribuyen al significado, al tono o a la belleza de un texto) y W.5.1b (dar razones en un orden lógico, apoyadas en hechos y detalles). En el nivel Fácil los textos son más cortos y, tras un error, se marca la oración con la respuesta; en el Reto los textos son más largos y hay que demostrar la respuesta eligiendo la oración que la apoya. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna y la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Points of view: two accounts of the same event</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <div class="dos-h" id="hoja-textos"></div>
+  <h3>Answer in complete sentences. Quote the text when you can.</h3>
+  <ol id="hoja-preguntas"></ol>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos de la interfaz ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (los textos, las opciones y las pistas siguen en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  btnLeer:"🔊 Listen to the texts",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  relatos:"Read both accounts of the same event. Then answer the question.",
+  integrar:"Read the texts on the same topic and put their information together.",
+  genero:"Read two stories of the same genre and compare them.",
+  visuales:"Read the text and study the visual. Then answer the question.",
+  hecho:"Read the opinion piece. Tell facts from opinions.",
+  apoyo:"Read the opinion piece and check the writer's reasons.",
+  orden:"Put the parts of the argument in a logical order. Tap them one at a time.",
+  debate:"Who is right? Read the two accounts and what your classmates say.",
+  probar:"Prove it: pick the sentence from the text that best supports your answer.",
+  evidencia:"Now pick the best evidence from the accounts.",
+  pistaDebate:"Check the claim against both accounts, sentence by sentence. Does a sentence prove it or show it is wrong?",
+  finProbar:"That sentence proves it! It is marked in the text.",
+  estrategias:[
+    ["I asked where each writer was and what each one could see or know","Great! Point of view depends on what each writer saw, knew and wanted to do."],
+    ["I looked for facts that only one text gives","Excellent! Then you can put the texts together to learn more."],
+    ["I compared how each story handles the same theme","Smart! Stories of the same genre can share a theme and still be told very differently."],
+    ["I checked whether each reason was backed up by a fact","Awesome! Good reasons are supported by facts and details, not just feelings."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  relatos:"Lee los dos relatos del mismo suceso. Luego contesta la pregunta.",
+  integrar:"Lee los textos sobre el mismo tema y junta su información.",
+  genero:"Lee dos cuentos del mismo género y compáralos.",
+  visuales:"Lee el texto y observa bien la imagen. Luego contesta la pregunta.",
+  hecho:"Lee el texto de opinión. Distingue los hechos de las opiniones.",
+  apoyo:"Lee el texto de opinión y revisa las razones de quien lo escribió.",
+  orden:"Pon las partes del argumento en un orden lógico. Tócalas una por una.",
+  debate:"¿Quién tiene razón? Lee los dos relatos y lo que dicen tus compañeros.",
+  probar:"Demuéstralo: elige la oración del texto que mejor apoya tu respuesta.",
+  evidencia:"Ahora elige la mejor evidencia de los relatos."
+};
+/* Pistas generales (las opciones incorrectas pueden traer su propia pista escrita) */
+const H = {
+  solo:"Only one of the texts says that. The question asks what BOTH texts tell.",
+  ambos:"Both texts tell that, so it is not a difference between them.",
+  nadie:"Neither text says that. Go back and check each one.",
+  alreves:"You switched them around. Check which text or character goes with each part.",
+  soloA:"That information is only in the first text, so it does not combine both texts.",
+  soloB:"That information is only in the second text, so it does not combine both texts.",
+  leer:"Look at the visual again carefully: read its labels, its caption and its details.",
+  texto:"The text already says that. What does the visual add that the words don't?",
+  ninguno:"Neither the text nor the visual shows that.",
+  restar:"Subtract the earlier year from the later year, and check your subtraction.",
+  detalle:"That is just one detail from one story, not an idea both stories share.",
+  opinion:"That is an opinion about the stories, not a theme they show.",
+  prueba:"That sentence is in the text, but it doesn't prove the answer. Find the one that shows exactly that.",
+  pHecho:"That sentence tells what someone thinks or feels. Words like best, fun, ugly or should are clues to an opinion, which can't be proven.",
+  pOpinion:"That sentence can be checked or proven, so it is a fact. An opinion tells a feeling or a belief.",
+  op:"That reason is backed up only by an opinion, not by a fact or detail from the text.",
+  fuera:"That reason has nothing to do with the writer's claim.",
+  exag:"The text gives no facts to support that; it is an exaggeration.",
+  ordClaim:"Start with the claim, so readers know what you are arguing for.",
+  ordAlso:"“Also” adds another reason, so it comes after the first reason.",
+  ordFin:"That sentence wraps up the argument, so it goes at the end."
+};
+const pista = (k)=> H[k] || k;
+
+const JUEGOS = [
+  {id:"relatos",      emoji:"📰", en:"Two accounts, one event", es:"Dos relatos, un suceso",  meta:"A diary and a news report"},
+  {id:"integrar",     emoji:"🧩", en:"Put the texts together",  es:"Junta los textos",       meta:"Facts from two or three texts"},
+  {id:"genero",       emoji:"🕵️", en:"Same genre, two stories", es:"Mismo género, dos cuentos", meta:"Mysteries, adventures, tall tales"},
+  {id:"visuales",     emoji:"🗺️", en:"What does the visual add?", es:"¿Qué aporta la imagen?", meta:"Maps, photos, illustrations"},
+  {id:"hechoOpinion", emoji:"🧐", en:"Fact, opinion and reasons", es:"Hecho, opinión y razones", meta:"Reasons backed by facts"},
+  {id:"debate",       emoji:"⚖️", en:"Who is right?",            es:"¿Quién tiene razón?",    meta:"Decide and find the evidence"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const limpio = (s)=> s[0] === "+" ? s.slice(1) : s;
+/* Oraciones visibles: las que empiezan con "+" solo salen en el Reto (texto más largo) */
+const visibles = (t)=> t.filter(s=> s[0] !== "+" || S.reto).map(limpio);
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  const t = String(texto).replace(/[“”]/g, '"');
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+/* Lee los textos frase por frase y resalta la que va leyendo */
+function leerPasaje(cont){
+  const frases = [...cont.querySelectorAll(".frase")];
+  if(!window.speechSynthesis || !frases.length) return;
+  window.speechSynthesis.cancel();
+  const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith("en"));
+  frases.forEach((f)=>{
+    const u = new SpeechSynthesisUtterance(f.textContent.replace(/[“”]/g, '"')); u.lang = "en-US"; if(v) u.voice = v; u.rate = 0.88;
+    u.onstart = ()=>{ frases.forEach(x=>x.classList.remove("leyendo")); f.classList.add("leyendo"); };
+    u.onend = ()=>{ f.classList.remove("leyendo"); };
+    window.speechSynthesis.speak(u);
+  });
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi5-lectura.jpg" alt="" class="lumi-m" width="450" height="595">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "reading.html" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g5-reading-06-comparing-texts.html#debate */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.ultimos = [];
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = ""; $("opciones").className = "fila-fichas";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt).trim()); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna y la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta) */
+function opcionesTexto(lista, bien, alAcertar, pista, larga){
+  const cont = $("opciones"); cont.innerHTML = "";
+  if(larga) cont.classList.add("lista");
+  mezclar(unicos(lista)).forEach(x=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{ if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, typeof pista === "function" ? pista(x) : pista); });
+    b.lang = "en";
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Escoge n distractores al azar, procurando que al menos uno sea más largo que la respuesta correcta */
+function distractores(cands, bien, n){
+  const m = mezclar(unicos(cands).filter(s=>s !== bien));
+  const largo = m.find(s=>s.length > bien.length);
+  const res = largo ? [largo] : [];
+  m.forEach(s=>{ if(res.length < n && !res.includes(s)) res.push(s); });
+  return res;
+}
+/* Elige un elemento evitando los usados en las últimas rondas */
+function elegirNuevo(lista, clave){
+  const usados = S.ultimos || [];
+  const libres = lista.filter(x=> !usados.includes(clave(x)));
+  const x = elegir(libres.length ? libres : lista);
+  S.ultimos = [...usados, clave(x)].slice(-Math.max(1, Math.min(4, lista.length - 2)));
+  return x;
+}
+
+/* ============ Textos en pantalla ============ */
+/* lista = [{etiqueta, titulo, e, t}] → uno, dos o tres textos lado a lado */
+function textosEl(lista){
+  const cont = document.createElement("div");
+  cont.className = "textos" + (lista.length === 3 ? " tres" : lista.length === 2 ? " dos" : "");
+  lista.forEach(c=>{
+    const d = document.createElement("div"); d.className = "pasaje"; d.lang = "en";
+    d.innerHTML = `<h3>${c.etiqueta ? `<span class="version">${escaparHTML(c.etiqueta)}</span>` : ""}<span aria-hidden="true">${c.e || ""}</span> ${escaparHTML(c.titulo)}</h3>` +
+      `<p>${visibles(c.t).map(s=>`<span class="frase">${escaparHTML(s)}</span>`).join(" ")}</p>`;
+    cont.appendChild(d);
+  });
+  $("escena").appendChild(cont);
+  const b = document.createElement("button"); b.type = "button"; b.className = "oir-r"; b.textContent = T.btnLeer;
+  b.addEventListener("click", ()=> leerPasaje(cont));
+  $("escena").appendChild(b);
+  return cont;
+}
+function resaltar(cont, frase, clase){
+  cont.querySelectorAll(".frase").forEach(f=>{ if(f.textContent === frase) f.classList.add(clase); });
+}
+function preguntaEl(q){ $("escena").insertAdjacentHTML("beforeend", `<p class="pregunta-r" lang="en">❓ ${escaparHTML(q)}</p>`); }
+/* Láminas (ilustraciones opcionales). Si falta el archivo, la página sigue igual. */
+const LAMINAS = {
+  partido:["Elías swings a bat at home plate in a Chicago park while Sophia runs from second base and families cheer in the bleachers."],
+  rioVerde:["Sophia and her grandmother, bundled in coats, watch from a downtown bridge as a small boat turns the Chicago River bright green."],
+  ventisca:["A boy in a 1960s winter coat climbs out of a snowy window while his father shovels a huge drift on a Chicago street."],
+  coyote:["A coyote trots past a bus stop near a school while a crossing guard with a stop sign keeps a group of surprised students back."],
+  puente:["Israel and his father watch from the Riverwalk as a Chicago bridge rises; a bridge tender looks out of the small bridge house window."],
+  concierto:["Selena sings a solo on a school stage under bright lights while families in the gym clap and a music teacher smiles."],
+  bici:["Salma and her mother ride bikes on the Lakefront Trail beside Lake Michigan as a fast cyclist passes on the left."],
+  feria:["At a school science fair, Athena and Daniel explain their paper towel experiment to a smiling judge holding a clipboard."]
+};
+function laminaEl(slug){
+  const l = LAMINAS[slug]; if(!l) return;
+  const im = document.createElement("img"); im.className = "lamina-l"; im.src = "l5-lamina-pov-" + slug + ".jpg"; im.alt = l[0];
+  im.width = 1376; im.height = 768; im.addEventListener("error", ()=> im.remove());
+  $("escena").appendChild(im);
+}
+/* Explicación al acertar */
+const sinPunto = (s)=> s.replace(/[.!]$/, "");
+const finDe = (q)=> q.ok || (q.prueba ? `${sinPunto(q.a)}. The text says: “${q.prueba}”` : `${sinPunto(q.a)}.`);
+
+/* Paso «Demuéstralo» del Reto: elegir la oración que prueba la respuesta */
+function probar(cont, prueba, excl, fin){
+  $("opciones").innerHTML = ""; $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("txt-instruccion").textContent = T.probar; hablar(T.probar);
+  $("btn-bocina").onclick = ()=>hablar(T.probar);
+  $("btn-repetir").onclick = ()=>{ if(!S.bloqueado) hablar(T.probar); };
+  $("txt-ayuda").textContent = ES.probar; $("btn-bocina-es").onclick = ()=>hablar(ES.probar, null, "es");
+  const todas = [...cont.querySelectorAll(".frase")].map(f=>f.textContent);
+  const fuera = new Set([prueba, ...(excl || [])]);
+  let cand = todas.filter(s=> !fuera.has(s) && s.length > 30);
+  if(cand.length < 2) cand = todas.filter(s=> !fuera.has(s));
+  const otras = distractores(cand, prueba, 3);
+  opcionesTexto([prueba, ...otras], prueba, ()=>{ resaltar(cont, prueba, "prueba"); acertar(T.finProbar + " " + fin); }, H.prueba, true);
+}
+/* Pregunta con opciones y pistas; en Fácil, un error marca la oración con la respuesta; en el Reto, hay que demostrarla */
+function hacerPregunta(cont, q, sinProbar){
+  const mapa = new Map(q.malas);
+  opcionesTexto([q.a, ...q.malas.map(m=>m[0])], q.a, ()=>{
+    if(S.reto && q.prueba && !sinProbar){ probar(cont, q.prueba, q.excl, finDe(q)); return; }
+    if(q.prueba) resaltar(cont, q.prueba, "prueba");
+    acertar(finDe(q));
+  }, (x)=>{ if(!S.reto && q.prueba) resaltar(cont, q.prueba, "marca"); return pista(mapa.get(x)); }, true);
+}
+
+/* =====================================================================
+   1. DOS RELATOS DEL MISMO SUCESO (RI.5.6)
+   q: n "f" (Fácil) o "r" (Reto) · a = respuesta · malas = [[texto, pista]] · prueba = oración que la demuestra
+   dichos: afirmaciones de compañeros para «¿Quién tiene razón?» (v = verdadera, ev = evidencia)
+   ===================================================================== */
+const RELATOS = [
+ {id:"partido", titulo:"The championship game",
+  a:{tipo:"School newsletter", titulo:"Eagles Win in Extra Innings", e:"📰", t:[
+    "On Saturday, the Kelly Park Eagles won the city youth baseball championship, 5 to 4.",
+    "The game was tied 4 to 4 after six innings, so the teams played an extra inning.",
+    "In the seventh inning, Sophia hit a double, and Elías then hit a single that brought her home.",
+    "+More than two hundred families filled the bleachers, even though the sky was gray and the wind was cold.",
+    "+Coach Rivera said the team had practiced three days a week since April.",
+    "The Eagles will receive their trophy at the school assembly on Friday."]},
+  b:{tipo:"Diary entry", titulo:"Elías's diary", e:"📔", t:[
+    "Dear Diary, my hands were shaking when I walked up to bat in the seventh inning.",
+    "I couldn't even look at the bleachers, because I knew my whole family was there.",
+    "Sophia was standing on second base, and she gave me a thumbs-up.",
+    "+The first pitch was so fast that I didn't even swing, and I heard someone groan.",
+    "On the next pitch, I closed my eyes for half a second and swung.",
+    "+I didn't see where the ball went, but I heard the crowd scream and saw Sophia running home.",
+    "Today was the best day of my whole life!"]},
+  q:[
+   {n:"f", q:"What do both accounts tell you?", qes:"¿Qué te dicen los dos relatos?", a:"Sophia got to second base before Elías batted.",
+    malas:[["Elías's hands were shaking at bat.","Only Elías's diary tells how he felt. The question asks what BOTH accounts tell."],["The Eagles won the game by a final score of 5 to 4.","Only the newsletter gives the score. Look for something both accounts tell."],["It was a sunny, warm afternoon.","nadie"]],
+    prueba:"Sophia was standing on second base, and she gave me a thumbs-up."},
+   {n:"f", q:"What does the diary tell you that the newsletter does not?", qes:"¿Qué te dice el diario que el boletín no dice?", a:"How nervous Elías felt at bat",
+    malas:[["The final score of the championship game","That is in the newsletter, not in the diary."],["That Sophia played in the game","ambos"],["The name of the other team's pitcher","nadie"]],
+    prueba:"Dear Diary, my hands were shaking when I walked up to bat in the seventh inning."},
+   {n:"r", q:"Why does the newsletter give the score, while the diary never mentions it?", qes:"¿Por qué el boletín da el marcador y el diario nunca lo menciona?", a:"The newsletter informs readers; the diary records Elías's feelings.",
+    malas:[["Elías never found out the final score of the championship game at all.","The diary doesn't say that. Think about the purpose of each text, not what Elías knew."],["The newsletter writer stood at home plate next to Elías.","Nothing shows where the newsletter writer stood. Think about why each text was written."],["Both accounts give the score, just in different words.","Read the diary again: it never gives the score."]],
+    prueba:"Today was the best day of my whole life!"},
+   {n:"r", q:"Why can't Elías tell where the ball went?", qes:"¿Por qué Elías no puede decir adónde fue la pelota?", a:"He closed his eyes for a moment as he swung.",
+    malas:[["He was looking at his family in the bleachers.","He says he could NOT look at the bleachers. Reread that sentence."],["The newsletter writer forgot to tell him.","Neither account says that. Think about what Elías himself could see."],["The wind blew the ball out of the park.","nadie"]],
+    prueba:"On the next pitch, I closed my eyes for half a second and swung.", excl:["I didn't see where the ball went, but I heard the crowd scream and saw Sophia running home."]}],
+  dichos:[{txt:"Only the diary tells how Elías felt when he went up to bat.", v:true, ev:"Dear Diary, my hands were shaking when I walked up to bat in the seventh inning.", ex:"Right: the newsletter gives facts about the game, and only Elías's diary shows his shaking hands."},
+          {txt:"The newsletter says the Eagles lost the championship game.", v:false, ev:"On Saturday, the Kelly Park Eagles won the city youth baseball championship, 5 to 4.", ex:"No: the newsletter says the Eagles won, 5 to 4."}]},
+
+ {id:"rioVerde", titulo:"The green river",
+  a:{tipo:"Newspaper report", titulo:"River Turns Green Again", e:"📰", t:[
+    "On Saturday morning, the Chicago River downtown turned bright green for St. Patrick's Day.",
+    "A small crew in boats poured an orange powder into the water, and within minutes the river turned green.",
+    "The tradition of dyeing the river green began in 1962.",
+    "+Crowds lined the bridges and the Riverwalk to watch, and the color usually lasts for several hours.",
+    "+Organizers say the powder is safe for the river."]},
+  b:{tipo:"Diary entry", titulo:"Sophia's diary", e:"📔", t:[
+    "Dear Diary, Grandma and I got to the bridge so early that my breath made little clouds.",
+    "We squeezed next to the railing so I could see the boats.",
+    "When they poured the powder, it looked orange, and I thought it was a mistake!",
+    "+Then the water swirled and turned the greenest green I have ever seen, like a giant lime popsicle.",
+    "+Grandma told me she watched the same thing when she was my age.",
+    "My toes were frozen, but I didn't want to leave."]},
+  q:[
+   {n:"f", q:"What do both accounts tell you?", qes:"¿Qué te dicen los dos relatos?", a:"The powder poured into the river was orange.",
+    malas:[["Sophia's toes were frozen.","Only the diary says that. Look for something both accounts tell."],["The tradition began in 1962.","Only the newspaper gives that date. Look for something both accounts tell."],["The river stayed bright green for a whole month after that.","nadie"]],
+    prueba:"When they poured the powder, it looked orange, and I thought it was a mistake!"},
+   {n:"f", q:"Which detail appears only in the newspaper report?", qes:"¿Qué detalle aparece solo en el reportaje del periódico?", a:"The tradition began in 1962.",
+    malas:[["Crews poured powder into the river.","ambos"],["Sophia stood next to the railing.","That detail is only in the diary, not in the newspaper."],["The river turned purple at the end.","nadie"]],
+    prueba:"The tradition of dyeing the river green began in 1962."},
+   {n:"r", q:"Why does Sophia think the orange powder is a mistake, while the report explains it calmly?", qes:"¿Por qué Sophia cree que el polvo anaranjado es un error, mientras que el reportaje lo explica con calma?", a:"The reporter knows how the dye works; Sophia is seeing it for the first time.",
+    malas:[["The reporter wasn't there, so the reporter never saw the orange color at all.","The report describes the orange powder. Think about what each writer already knew."],["Sophia knows more about the dye than the reporter, so she can tell it's wrong.","Sophia is surprised, so she did not know how the dye works. The reporter did."],["Sophia's grandma told her that the powder was supposed to be orange.","The diary doesn't say that. Think about what each writer already knew."]],
+    prueba:"When they poured the powder, it looked orange, and I thought it was a mistake!"},
+   {n:"r", q:"What is the main purpose of each account?", qes:"¿Cuál es el propósito principal de cada relato?", a:"The report informs readers; the diary keeps a personal memory.",
+    malas:[["The report tells the writer's feelings; the diary gives facts for the city.","alreves"],["Both accounts try to persuade people to come and watch the river.","Neither account tells readers what they should do. Think about why each was written."],["Both accounts only list facts about the green dye and the boats.","The diary is full of feelings, like frozen toes and a lime popsicle."]],
+    prueba:"Then the water swirled and turned the greenest green I have ever seen, like a giant lime popsicle."}],
+  dichos:[{txt:"Only the diary tells that the morning was very cold.", v:true, ev:"My toes were frozen, but I didn't want to leave.", ex:"Right: Sophia writes about her frozen toes and her breath making clouds; the report doesn't mention the cold."},
+          {txt:"The newspaper says the river turned green on a Sunday.", v:false, ev:"On Saturday morning, the Chicago River downtown turned bright green for St. Patrick's Day.", ex:"No: the newspaper says it happened on Saturday morning."}]},
+
+ {id:"ventisca", titulo:"The blizzard of 1967",
+  a:{tipo:"Letter from a grandparent", titulo:"Grandpa Luis remembers", e:"✉️", t:[
+    "Dear Israel, you asked me about the big blizzard, so here is what I remember.",
+    "I was ten years old, and the snow started while I was at school.",
+    "By the next morning, the drifts were higher than our front door, and my father had to climb out a window to start shoveling.",
+    "+For days there was no school, and my friends and I built tunnels through the snow piles on our block.",
+    "+My mother made soup for the neighbors who could not get to the store.",
+    "I have seen many snowstorms since then, but none like that one.",
+    "Love, Grandpa Luis"]},
+  b:{tipo:"History article", titulo:"The Blizzard of 1967", e:"📘", t:[
+    "On January 26, 1967, a snowstorm began in Chicago that became the biggest snowstorm ever recorded in the city.",
+    "About 23 inches of snow fell in less than two days.",
+    "Thousands of cars and buses were stuck on city streets, and many people had to walk home through the snow.",
+    "+Strong winds piled the snow into deep drifts, and schools and businesses closed.",
+    "+It took many days for the city to dig out."]},
+  q:[
+   {n:"f", q:"What do both accounts tell you about the blizzard?", qes:"¿Qué te dicen los dos relatos sobre la ventisca?", a:"There was a huge amount of snow.",
+    malas:[["About 23 inches of snow fell.","Only the history article gives that number. Look for something both tell."],["Grandpa's father climbed out a window.","Only Grandpa's letter tells that. Look for something both tell."],["The storm happened in the summer.","nadie"]],
+    prueba:"About 23 inches of snow fell in less than two days."},
+   {n:"f", q:"Which account is a firsthand account, written by someone who was there?", qes:"¿Cuál relato es de primera mano, escrito por alguien que estuvo ahí?", a:"Grandpa Luis's letter",
+    malas:[["The history article","The article gives dates and numbers but never says I or my. Its writer tells what records show."],["Both of the accounts","Only one writer uses I, my and our to tell what happened to him."],["Neither of the accounts","Grandpa Luis says “I was ten years old”: he was there."]],
+    prueba:"I was ten years old, and the snow started while I was at school."},
+   {n:"r", q:"Why does the article give an exact amount of snow, but Grandpa's letter does not?", qes:"¿Por qué el artículo da la cantidad exacta de nieve y la carta del abuelo no?", a:"The article uses records; Grandpa tells what he saw as a boy.",
+    malas:[["Grandpa forgot that it snowed during the blizzard at all.","Grandpa remembers the snow very well. Think about where each writer got the information."],["The article's writer measured the snow right outside Grandpa's front door.","Nothing says that. The article gives facts from records about the whole city."],["Grandpa's letter does give the exact amount of the snow.","Reread the letter: it says the drifts were higher than the door, but it never gives inches."]],
+    prueba:"About 23 inches of snow fell in less than two days."},
+   {n:"r", q:"What can Grandpa's letter show that the article cannot?", qes:"¿Qué puede mostrar la carta del abuelo que el artículo no puede?", a:"What the storm was like for one family on one block",
+    malas:[["The date when the big snowstorm began","That is in the article, not in the letter."],["How many cars and buses got stuck on the streets of the city","That is in the article: it gives facts about the whole city."],["What the weather will be like next winter","nadie"]],
+    prueba:"By the next morning, the drifts were higher than our front door, and my father had to climb out a window to start shoveling."}],
+  dichos:[{txt:"The article tells the date the storm began, but the letter doesn't.", v:true, ev:"On January 26, 1967, a snowstorm began in Chicago that became the biggest snowstorm ever recorded in the city.", ex:"Right: only the article gives the date, January 26, 1967."},
+          {txt:"Both accounts say that Grandpa Luis was ten years old.", v:false, ev:"I was ten years old, and the snow started while I was at school.", ex:"No: only Grandpa's letter says that. The article never mentions him."}]},
+
+ {id:"coyote", titulo:"The animal near school",
+  a:{tipo:"Class blog post", titulo:"A Wolf at School!", e:"💻", t:[
+    "This morning I saw a WOLF on the corner of our school block!",
+    "It was gray and brown, with a long bushy tail, and it trotted right past the bus stop.",
+    "I was so surprised that I dropped my lunch bag.",
+    "+I think it was hunting for kids' breakfasts, because it sniffed every trash can.",
+    "+By the time I got my mom's phone out to take a picture, it was gone.",
+    "Everybody in my class wants to see it now! — Daniel"]},
+  b:{tipo:"Note to the school office", titulo:"From Ms. Okafor, crossing guard", e:"📝", t:[
+    "At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park.",
+    "It was about the size of a medium dog and did not come near any students.",
+    "Coyotes live in many Chicago neighborhoods, and they usually avoid people.",
+    "+I reminded the children to stay calm, keep their distance and never feed wild animals.",
+    "+Please tell families that there is no reason to be afraid, but students should not try to follow it."]},
+  q:[
+   {n:"f", q:"What do both writers tell you about the animal?", qes:"¿Qué te dicen los dos autores sobre el animal?", a:"It passed near the school that morning.",
+    malas:[["It was a wolf.","Only Daniel calls it a wolf. Ms. Okafor, who knows about coyotes, says it was a coyote."],["It was the size of a medium dog.","Only Ms. Okafor says that. Look for something both writers tell."],["It chased the school bus down the street.","nadie"]],
+    prueba:"At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park."},
+   {n:"f", q:"Which sentence shows Daniel's feelings?", qes:"¿Qué oración muestra los sentimientos de Daniel?", a:"I was so surprised that I dropped my lunch bag.",
+    malas:[["It was gray and brown, with a long bushy tail, and it trotted right past the bus stop.","That sentence describes what the animal looked like, not how Daniel felt."],["Coyotes live in many Chicago neighborhoods, and they usually avoid people.","That sentence is from Ms. Okafor's note, and it gives a fact."],["It was about the size of a medium dog and did not come near any students.","That sentence is from Ms. Okafor's note. It describes the animal calmly."]],
+    prueba:"I was so surprised that I dropped my lunch bag."},
+   {n:"r", q:"Why do Daniel and Ms. Okafor describe the animal so differently?", qes:"¿Por qué Daniel y la Sra. Okafor describen al animal de manera tan distinta?", a:"Ms. Okafor knows about city coyotes; Daniel had never seen one.",
+    malas:[["Daniel was standing much closer to the animal than Ms. Okafor was.","Neither text says who was closer. Think about what each writer already knew."],["Ms. Okafor saw a different animal on a different day of the week.","Both saw it that same morning near the school."],["Daniel wants to scare the families, and Ms. Okafor wants to warn them.","Ms. Okafor wants families to stay calm, and Daniel is excited, not trying to scare anyone."]],
+    prueba:"Coyotes live in many Chicago neighborhoods, and they usually avoid people."},
+   {n:"r", q:"How is the purpose of Ms. Okafor's note different from Daniel's post?", qes:"¿En qué se diferencia el propósito de la nota de la Sra. Okafor del de la publicación de Daniel?", a:"Her note informs the office so families stay calm; his post shares his excitement.",
+    malas:[["Her note shares her excitement with the class; his post informs the office calmly.","alreves"],["Both texts were written to make their readers excited about the wild animal.","Ms. Okafor's note is calm and gives facts. Only Daniel is excited."],["Her note entertains the class with a funny story about a wolf at school.","Ms. Okafor's note gives facts and safety advice; it is not meant to be funny."]],
+    prueba:"Please tell families that there is no reason to be afraid, but students should not try to follow it."}],
+  dichos:[{txt:"Ms. Okafor's note tells what time the animal crossed the road.", v:true, ev:"At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park.", ex:"Right: her note says it crossed at 7:40."},
+          {txt:"Both writers agree that the animal was a wolf.", v:false, ev:"At 7:40 this morning, a coyote crossed Pulaski Road near the school and walked into the park.", ex:"No: Ms. Okafor says it was a coyote. Only Daniel calls it a wolf."}]},
+
+ {id:"puente", titulo:"The bridge lift",
+  a:{tipo:"Journal entry", titulo:"Israel's journal", e:"📔", t:[
+    "On Saturday, my dad and I waited on the Riverwalk for the bridge to go up.",
+    "Bells clanged, and the gates came down in front of the cars.",
+    "Then the two halves of the bridge rose until they pointed at the sky, like a giant opening its arms.",
+    "+A whole line of sailboats glided through, and I waved at every single one.",
+    "+I wondered who was making the bridge move, because I couldn't see anybody.",
+    "It was the coolest thing I've seen all spring."]},
+  b:{tipo:"Interview in the school paper", titulo:"Meet Mr. Ruiz, bridge tender", e:"🎙️", t:[
+    "My job is to raise the bridge from a small house at one corner of it, called the bridge house.",
+    "Before I lift it, I ring the bells, lower the gates and check that nobody is still on the bridge.",
+    "Then I push the controls, and powerful motors tip the two leaves up.",
+    "+In spring, we raise the bridges again and again so sailboats can reach Lake Michigan from the boatyards where they spend the winter.",
+    "+From my window, I see kids waving at the boats, but they almost never notice me.",
+    "I've done this for twelve years, and I still think it's exciting."]},
+  q:[
+   {n:"f", q:"What do both accounts describe?", qes:"¿Qué describen los dos relatos?", a:"Bells ring and gates stop the cars.",
+    malas:[["Israel's dad waited on the Riverwalk with him.","Only Israel's journal tells that. Look for something both accounts describe."],["Motors tip the leaves of the bridge up.","Only Mr. Ruiz tells about the motors. Look for something both describe."],["The bridge sinks under the river.","nadie"]],
+    prueba:"Bells clanged, and the gates came down in front of the cars."},
+   {n:"f", q:"Who tells how the bridge is controlled?", qes:"¿Quién cuenta cómo se controla el puente?", a:"Mr. Ruiz, the bridge tender",
+    malas:[["Israel, who watched from the Riverwalk","Israel only watched the bridge; he never mentions any controls."],["Israel's dad, standing next to him","Israel's dad doesn't tell anything in either account."],["Both of the writers tell it","Only one writer runs the bridge and tells about the controls."]],
+    prueba:"Then I push the controls, and powerful motors tip the two leaves up."},
+   {n:"r", q:"Why doesn't Israel's journal explain how the bridge moves?", qes:"¿Por qué el diario de Israel no explica cómo se mueve el puente?", a:"From the Riverwalk, he couldn't see who ran the bridge.",
+    malas:[["Israel already knew that motors move it, so he found it boring.","Israel calls it “the coolest thing.” He was not bored, and he didn't know who moved it."],["Mr. Ruiz told him that the controls are a secret.","Neither text says that. Think about what Israel could see from where he stood."],["The bridge did not move at all on that Saturday.","Both texts tell that the bridge rose."]],
+    prueba:"I wondered who was making the bridge move, because I couldn't see anybody."},
+   {n:"r", q:"What do Mr. Ruiz's words add to Israel's account?", qes:"¿Qué aportan las palabras del Sr. Ruiz al relato de Israel?", a:"The reason for the lift and how it is done",
+    malas:[["How it feels to watch the bridge rise for the first time","That is what Israel's journal gives, not Mr. Ruiz."],["The names of all of the sailboats that pass through","nadie"],["That the gates come down in front of the cars","ambos"]],
+    prueba:"In spring, we raise the bridges again and again so sailboats can reach Lake Michigan from the boatyards where they spend the winter.", excl:["Then I push the controls, and powerful motors tip the two leaves up."]}],
+  dichos:[{txt:"Only Mr. Ruiz says he checks that nobody is still on the bridge.", v:true, ev:"Before I lift it, I ring the bells, lower the gates and check that nobody is still on the bridge.", ex:"Right: only the bridge tender tells about checking the bridge."},
+          {txt:"Israel says the bridge turned sideways in the river.", v:false, ev:"Then the two halves of the bridge rose until they pointed at the sky, like a giant opening its arms.", ex:"No: Israel says the two halves rose until they pointed at the sky."}]},
+
+ {id:"concierto", titulo:"The winter concert",
+  a:{tipo:"Journal entry", titulo:"Selena's journal", e:"📔", t:[
+    "Tonight I sang my first solo in the winter concert.",
+    "The stage lights were so bright that the audience looked like a dark, quiet ocean.",
+    "In the middle of the song, my voice cracked on the high note, and my face turned hot.",
+    "+I couldn't see anyone's face, so I didn't know if they were laughing at me.",
+    "+I kept singing anyway, and I finished the last line strong.",
+    "When I bowed, I heard clapping, but I was too embarrassed to look up."]},
+  b:{tipo:"Class newsletter", titulo:"From Mrs. Kim, music teacher", e:"📰", t:[
+    "Our winter concert on Thursday was a great success, with more than 150 families in the gym.",
+    "The fifth grade chorus sang four songs, and Selena sang a solo in the last one.",
+    "When her voice cracked on a high note, the audience grew quiet and then clapped to encourage her.",
+    "+She kept going and finished the song beautifully, which is exactly what professional singers do.",
+    "+Thank you to all the parents who helped set up the chairs."]},
+  q:[
+   {n:"f", q:"What do both accounts say happened during the solo?", qes:"¿Qué dicen los dos relatos que pasó durante el solo?", a:"Selena's voice cracked on a high note.",
+    malas:[["More than 150 families came.","Only the newsletter gives that number. Look for something both accounts say."],["Selena's face turned hot.","Only Selena can tell that. Look for something both accounts say."],["Selena stopped singing and ran off the stage.","nadie"]],
+    prueba:"In the middle of the song, my voice cracked on the high note, and my face turned hot."},
+   {n:"f", q:"Which account was written for many families to read?", qes:"¿Cuál relato se escribió para que lo leyeran muchas familias?", a:"Mrs. Kim's newsletter",
+    malas:[["Selena's journal","A journal is personal. Selena writes it for herself."],["Both of the accounts","Only one of them is written to many families."],["Neither of the accounts","A class newsletter is written for families to read."]],
+    prueba:"Our winter concert on Thursday was a great success, with more than 150 families in the gym."},
+   {n:"r", q:"Selena worries that people are laughing. What does the newsletter show really happened?", qes:"Selena teme que la gente se esté riendo. ¿Qué muestra el boletín que pasó en realidad?", a:"The audience grew quiet and then clapped to encourage her.",
+    malas:[["The audience laughed loudly when her voice cracked.","The newsletter never says anyone laughed. Reread what the audience did."],["Nobody in the gym heard her voice crack, so nobody reacted at all.","The newsletter says the audience grew quiet when it happened, so they heard it."],["Most of the families left before her solo began.","nadie"]],
+    prueba:"When her voice cracked on a high note, the audience grew quiet and then clapped to encourage her."},
+   {n:"r", q:"Why doesn't Selena's journal tell how the audience reacted?", qes:"¿Por qué el diario de Selena no cuenta cómo reaccionó el público?", a:"The bright lights kept her from seeing them.",
+    malas:[["She was not at the concert that night.","She sang the solo, so she was there. Think about what she could see."],["Mrs. Kim asked her not to write about the audience.","Neither text says that. Think about what Selena could see from the stage."],["She thought the audience was not important.","She cared a lot; she was afraid they were laughing. Think about what she could see."]],
+    prueba:"The stage lights were so bright that the audience looked like a dark, quiet ocean.", excl:["I couldn't see anyone's face, so I didn't know if they were laughing at me."]}],
+  dichos:[{txt:"Both accounts say that Selena sang a solo.", v:true, ev:"The fifth grade chorus sang four songs, and Selena sang a solo in the last one.", ex:"Right: Selena writes about her first solo, and Mrs. Kim says Selena sang a solo in the last song."},
+          {txt:"Selena's journal says the audience clapped to encourage her when her voice cracked.", v:false, ev:"When I bowed, I heard clapping, but I was too embarrassed to look up.", ex:"No: Selena only heard clapping at the end. Only the newsletter says the audience clapped to encourage her."}]},
+
+ {id:"bici", titulo:"On the Lakefront Trail",
+  a:{tipo:"City news brief", titulo:"Ride the Lakefront Trail", e:"📰", t:[
+    "The Lakefront Trail runs for about 18 miles along Lake Michigan, from the north side of Chicago to the south side.",
+    "In many places, the trail has separate paths for people on bikes and people walking or running.",
+    "On warm weekends, thousands of people use the trail.",
+    "+Riders are asked to stay on the right, pass on the left and call out before passing.",
+    "+The trail also passes beaches, parks, harbors and museums."]},
+  b:{tipo:"Diary entry", titulo:"Salma's diary", e:"📔", t:[
+    "Today Mom and I rode our bikes on the Lakefront Trail for the very first time.",
+    "The lake was so blue and sparkly that I almost forgot to watch where I was going.",
+    "A man on a fast bike yelled “On your left!” and zoomed past me, and I nearly fell over.",
+    "+After that, I stayed on the right side and kept my eyes on the path.",
+    "+We stopped at a beach to eat sandwiches and watch the sailboats.",
+    "My legs are sore, but I want to ride again next weekend."]},
+  q:[
+   {n:"f", q:"What do both accounts tell you about the trail?", qes:"¿Qué te dicen los dos relatos sobre el sendero?", a:"People ride bikes on it by the lake.",
+    malas:[["It is about 18 miles long.","Only the news brief gives its length. Look for something both tell."],["Salma nearly fell over.","Only Salma's diary tells that. Look for something both tell."],["Cars and trucks drive on it every night.","nadie"]],
+    prueba:"In many places, the trail has separate paths for people on bikes and people walking or running."},
+   {n:"f", q:"Which detail is only in Salma's diary?", qes:"¿Qué detalle está solo en el diario de Salma?", a:"A fast rider yelled “On your left!”",
+    malas:[["The trail runs along Lake Michigan.","ambos"],["Thousands use the trail on weekends.","That detail is in the news brief, not in the diary."],["The trail is closed on weekends.","nadie"]],
+    prueba:"A man on a fast bike yelled “On your left!” and zoomed past me, and I nearly fell over."},
+   {n:"r", q:"Why does the news brief explain the trail rules, while Salma learns them the hard way?", qes:"¿Por qué el boletín explica las reglas del sendero, mientras Salma las aprende a la mala?", a:"The brief guides many riders; Salma tells about her own first ride.",
+    malas:[["The brief tells one rider's first ride; Salma writes a guide for many riders.","alreves"],["Salma already knew all the rules before she started riding.","She nearly fell over and changed sides afterward, so she learned the rules on the ride."],["The news brief writer nearly fell off a bike that same day.","nadie"]],
+    prueba:"After that, I stayed on the right side and kept my eyes on the path."},
+   {n:"r", q:"How is the diary's description of the lake different from the news brief's?", qes:"¿En qué se diferencia la descripción del lago en el diario de la del boletín?", a:"The diary shows how the lake looked to her; the brief only says where the trail is.",
+    malas:[["The brief shows how the lake looked to someone; the diary only says where the trail is.","alreves"],["Both accounts describe the lake as blue and sparkly in the same words.","Only Salma describes the lake as blue and sparkly."],["Neither of the accounts mentions Lake Michigan or the lake at all.","Both mention the lake. Compare how each one talks about it."]],
+    prueba:"The lake was so blue and sparkly that I almost forgot to watch where I was going."}],
+  dichos:[{txt:"The news brief tells how long the trail is.", v:true, ev:"The Lakefront Trail runs for about 18 miles along Lake Michigan, from the north side of Chicago to the south side.", ex:"Right: the brief says the trail runs for about 18 miles."},
+          {txt:"Salma's diary says she rode the trail with her dad.", v:false, ev:"Today Mom and I rode our bikes on the Lakefront Trail for the very first time.", ex:"No: Salma rode with her mom."}]},
+
+ {id:"feria", titulo:"The science fair",
+  a:{tipo:"Judge's notes", titulo:"Dr. Mensah's notes", e:"📋", t:[
+    "Project 14: “Which Paper Towel Holds the Most Water?” by Athena and Daniel.",
+    "The students tested four brands three times each and recorded the results in a clear table.",
+    "Their bar graph shows that Brand C held the most water.",
+    "+I suggested that next time they also compare the price of each brand.",
+    "+Score: 18 out of 20, with excellent use of fair testing."]},
+  b:{tipo:"Journal entry", titulo:"Athena's journal", e:"📔", t:[
+    "My hands were sweaty when the judge stopped at our table.",
+    "I forgot the first sentence I had practiced, so Daniel started explaining instead.",
+    "Then the judge asked why we tested each brand three times, and suddenly I remembered everything.",
+    "+I told her that one test could be a fluke, but three tests make the results more trustworthy.",
+    "+She smiled and wrote something down, and I wished I could read her notes!",
+    "Daniel says I talked so fast that I sounded like an auctioneer."]},
+  q:[
+   {n:"f", q:"What do both accounts tell you about the project?", qes:"¿Qué te dicen los dos relatos sobre el proyecto?", a:"Each brand was tested three times.",
+    malas:[["Brand C held the most water.","Only the judge's notes give the result. Look for something both tell."],["Athena's hands were sweaty.","Only Athena's journal tells that. Look for something both tell."],["They tested only one brand of paper towel.","nadie"]],
+    prueba:"The students tested four brands three times each and recorded the results in a clear table.", excl:["Then the judge asked why we tested each brand three times, and suddenly I remembered everything."]},
+   {n:"f", q:"What do the judge's notes tell you that Athena's journal does not?", qes:"¿Qué te dicen las notas de la jueza que el diario de Athena no dice?", a:"Which brand held the most water",
+    malas:[["How Athena felt when the judge came","That is in Athena's journal, not in the judge's notes."],["That the judge asked them a question","Only Athena tells about the judge's question."],["That Daniel and Athena were partners","ambos"]],
+    prueba:"Their bar graph shows that Brand C held the most water."},
+   {n:"r", q:"Why does Athena wish she could read the judge's notes?", qes:"¿Por qué Athena desea poder leer las notas de la jueza?", a:"She saw the judge write but couldn't know what she thought.",
+    malas:[["She wanted to copy the judge's neat handwriting for her own project.","Nothing in the journal is about handwriting. Think about what Athena could and couldn't know."],["The judge told her the score would stay secret forever.","Neither text says that."],["She already knew her score was 18 out of 20.","Only the judge's notes give the score. Athena doesn't know it."]],
+    prueba:"She smiled and wrote something down, and I wished I could read her notes!"},
+   {n:"r", q:"How is the judge's point of view different from Athena's?", qes:"¿En qué se diferencia el punto de vista de la jueza del de Athena?", a:"The judge evaluates the project; Athena tells what presenting felt like.",
+    malas:[["The judge tells what presenting felt like; Athena evaluates the project.","alreves"],["Both writers tell how nervous they felt at the science fair.","The judge's notes don't mention any feelings."],["The judge tells about her own science project from long ago.","The notes are about Project 14, Athena and Daniel's project."]],
+    prueba:"My hands were sweaty when the judge stopped at our table."}],
+  dichos:[{txt:"The judge's notes tell which brand held the most water.", v:true, ev:"Their bar graph shows that Brand C held the most water.", ex:"Right: the notes say Brand C held the most water."},
+          {txt:"Athena's journal says she explained everything perfectly from the start.", v:false, ev:"I forgot the first sentence I had practiced, so Daniel started explaining instead.", ex:"No: Athena forgot her first sentence, and Daniel started explaining."}]}
+];
+
+/* =====================================================================
+   2. JUNTAR LA INFORMACIÓN DE VARIOS TEXTOS (RI.5.9)
+   ===================================================================== */
+const OPC_AB = (bien, otro, pOtro, pAmbos)=> [[otro, pOtro],["Both texts", pAmbos],["Neither text","Go back and look: one of the texts does tell it."]];
+const INTEGRAR = [
+ {titulo:"Peregrine falcons", textos:[
+   {titulo:"The Fastest Animal", e:"🦅", t:[
+     "The peregrine falcon is the fastest animal on Earth.",
+     "When it dives to catch a bird in the air, it can reach more than 200 miles per hour.",
+     "Peregrines usually nest on high cliff ledges, where they can see far in every direction.",
+     "+Their sharp eyesight lets them spot prey from far away."]},
+   {titulo:"Falcons Downtown", e:"🏙️", t:[
+     "By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT.",
+     "After DDT was banned, scientists and volunteers helped the birds return.",
+     "Today, several pairs of peregrines nest on tall buildings and bridges in Chicago.",
+     "+To a falcon, the ledge of a skyscraper looks a lot like a cliff.",
+     "+Pigeons, which are common in the city, are one of their favorite foods."]}],
+  q:[
+   {n:"f", q:"Which text tells you how fast a peregrine falcon can dive?", qes:"¿Qué texto te dice qué tan rápido puede lanzarse en picada un halcón peregrino?", a:"Text A",
+    malas:OPC_AB("Text A","Text B","Text B tells how the falcons came back and where they nest in Chicago; it never gives a speed.","Only one text gives the speed. Check Text B again."),
+    prueba:"When it dives to catch a bird in the air, it can reach more than 200 miles per hour."},
+   {n:"f", q:"Which fact appears in only one of the texts?", qes:"¿Qué dato aparece en solo uno de los textos?", a:"Falcons nearly disappeared because of DDT.",
+    malas:[["Peregrine falcons nest in high places.","Both texts tell that: cliffs in Text A, tall buildings in Text B."],["Peregrine falcons are a kind of bird.","Both texts are about the same bird, so both tell that."],["Peregrine falcons live only in deep forests far from cities.","nadie"]],
+    prueba:"By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT."},
+   {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"The fastest animal on Earth, once nearly gone, now nests on Chicago's buildings.",
+    malas:[["Peregrine falcons can dive at more than 200 miles per hour to catch a bird in the air.","soloA"],["After DDT was banned, the falcons came back and now nest on Chicago buildings and bridges.","soloB"],["Peregrines left Chicago because the ledges of skyscrapers are nothing like cliffs at all.","It mixes the texts but gets them wrong: Text B says ledges look like cliffs, and falcons nest there."]],
+    prueba:"Today, several pairs of peregrines nest on tall buildings and bridges in Chicago.", excl:["The peregrine falcon is the fastest animal on Earth.","By the 1960s, peregrine falcons had nearly disappeared from the eastern United States, mostly because of a harmful pesticide called DDT.","After DDT was banned, scientists and volunteers helped the birds return.","To a falcon, the ledge of a skyscraper looks a lot like a cliff."]},
+   {n:"r", q:"Text A says peregrines nest on cliff ledges. How does Text B help explain why they nest in Chicago?", qes:"El texto A dice que los peregrinos anidan en salientes de acantilados. ¿Cómo ayuda el texto B a explicar por qué anidan en Chicago?", a:"It says a skyscraper ledge looks like a cliff to a falcon.",
+    malas:[["It says peregrines can dive at more than 200 miles per hour.","That is from Text A, and it is about speed, not nesting."],["It says DDT was banned, so the cliffs grew back in the city.","Text B doesn't say anything about cliffs growing back."],["It says pigeons build the nests for the falcons downtown.","Text B says pigeons are food for falcons, not nest builders."]],
+    prueba:"To a falcon, the ledge of a skyscraper looks a lot like a cliff.", excl:["Today, several pairs of peregrines nest on tall buildings and bridges in Chicago.","Peregrines usually nest on high cliff ledges, where they can see far in every direction."]}]},
+
+ {titulo:"Monarch butterflies", textos:[
+   {titulo:"Our State Insect", e:"🦋", t:[
+     "In 1975, the monarch butterfly became the official state insect of Illinois.",
+     "Students from schools around the state wrote letters asking lawmakers to choose it.",
+     "+Its bright orange wings with black lines make it easy to recognize."]},
+   {titulo:"Milkweed Matters", e:"🌿", t:[
+     "Monarch caterpillars can eat only one kind of plant: milkweed.",
+     "Female monarchs lay their eggs on milkweed leaves.",
+     "+Fewer milkweed plants grow today than in the past, so people are planting milkweed in yards, schoolyards and parks."]},
+   {titulo:"The Long Trip", e:"🗺️", t:[
+     "Each fall, monarchs from the eastern United States and Canada fly to the mountains of central Mexico.",
+     "Some of them travel more than two thousand miles.",
+     "+Many of the monarchs that pass through Chicago follow the shore of Lake Michigan."]}],
+  q:[
+   {n:"f", q:"Which text tells you what monarch caterpillars eat?", qes:"¿Qué texto te dice qué comen las orugas de la monarca?", a:"Text B",
+    malas:[["Text A","Text A tells how the monarch became our state insect."],["Text C","Text C tells about the long trip to Mexico."],["All three texts","Only one text tells about milkweed."]],
+    prueba:"Monarch caterpillars can eat only one kind of plant: milkweed."},
+   {n:"f", q:"Which text tells you when the monarch became the Illinois state insect?", qes:"¿Qué texto te dice cuándo la monarca se convirtió en el insecto del estado de Illinois?", a:"Text A",
+    malas:[["Text B","Text B is about milkweed, the plant monarch caterpillars eat."],["Text C","Text C is about the trip to Mexico."],["All three texts","Only one text gives the year 1975."]],
+    prueba:"In 1975, the monarch butterfly became the official state insect of Illinois."},
+   {n:"r", q:"Which statement uses information from Text B AND Text C?", qes:"¿Qué afirmación usa información del texto B Y del texto C?", a:"Monarchs lay their eggs on milkweed, and each fall many fly to Mexico.",
+    malas:[["The monarch became the Illinois state insect in 1975 after students wrote letters.","That information is only in Text A."],["Some monarchs travel more than two thousand miles to the mountains of Mexico.","That information is only in Text C, so it does not combine two texts."],["Monarchs fly to Mexico every fall because Illinois has no milkweed at all.","Neither text says that. Text B says fewer milkweed plants grow today, not that there are none."]],
+    prueba:"Female monarchs lay their eggs on milkweed leaves.", excl:["Monarch caterpillars can eat only one kind of plant: milkweed.","Each fall, monarchs from the eastern United States and Canada fly to the mountains of central Mexico.","Some of them travel more than two thousand miles."]},
+   {n:"r", q:"Why might Illinois students plant milkweed today? Use more than one text.", qes:"¿Por qué los estudiantes de Illinois podrían sembrar algodoncillo (milkweed) hoy? Usa más de un texto.", a:"The monarch is our state insect, and its caterpillars need milkweed.",
+    malas:[["Milkweed helps adult monarchs fly much faster on the long trip to Mexico.","No text says that milkweed makes monarchs faster."],["Lawmakers asked all students to plant milkweed back in 1975.","Text A says students wrote letters in 1975; it says nothing about planting."],["Monarchs eat milkweed in the mountains of central Mexico.","No text says that. Text B tells that caterpillars eat milkweed."]],
+    prueba:"Fewer milkweed plants grow today than in the past, so people are planting milkweed in yards, schoolyards and parks.", excl:["Monarch caterpillars can eat only one kind of plant: milkweed.","In 1975, the monarch butterfly became the official state insect of Illinois.","Female monarchs lay their eggs on milkweed leaves."]}]},
+
+ {titulo:"The Chicago River", textos:[
+   {titulo:"A Dirty River", e:"🏭", t:[
+     "Long ago, the Chicago River flowed into Lake Michigan.",
+     "As the city grew, sewage and waste from the city flowed down the river and into the lake.",
+     "That was a serious problem, because the city got its drinking water from the lake.",
+     "+Many people became sick from diseases spread through dirty water."]},
+   {titulo:"Digging the Canal", e:"⛏️", t:[
+     "In 1900, after years of digging, engineers finished a long canal called the Sanitary and Ship Canal.",
+     "The canal made the main part of the river flow away from Lake Michigan instead of into it.",
+     "+Now the water flows toward the Des Plaines River, then the Illinois River and finally the Mississippi River.",
+     "+The project was one of the biggest engineering jobs of its time."]}],
+  q:[
+   {n:"f", q:"Which text tells you why the city's drinking water was in danger?", qes:"¿Qué texto te dice por qué el agua potable de la ciudad estaba en peligro?", a:"Text A",
+    malas:OPC_AB("Text A","Text B","Text B tells about the canal, the solution. The danger is explained in the other text.","Only one text explains the danger to the drinking water."),
+    prueba:"That was a serious problem, because the city got its drinking water from the lake."},
+   {n:"f", q:"Which fact appears in only one of the texts?", qes:"¿Qué dato aparece en solo uno de los textos?", a:"The canal was finished in 1900.",
+    malas:[["The river is connected to Lake Michigan.","Both texts tell that the river and the lake are connected."],["The texts are about the Chicago River.","Both texts are about the same river."],["The river flows into the Pacific Ocean.","nadie"]],
+    prueba:"In 1900, after years of digging, engineers finished a long canal called the Sanitary and Ship Canal."},
+   {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Waste in the river dirtied the lake's water, so engineers made the river flow away.",
+    malas:[["Long ago the river flowed into Lake Michigan, carrying the waste of the growing city.","soloA"],["In 1900, engineers finished a canal that made the river flow toward the Mississippi.","soloB"],["Engineers dug the canal so ships could bring clean drinking water from the Mississippi.","Neither text says that ships brought drinking water. The canal changed the river's direction."]],
+    prueba:"The canal made the main part of the river flow away from Lake Michigan instead of into it.", excl:["As the city grew, sewage and waste from the city flowed down the river and into the lake.","That was a serious problem, because the city got its drinking water from the lake.","In 1900, after years of digging, engineers finished a long canal called the Sanitary and Ship Canal.","Now the water flows toward the Des Plaines River, then the Illinois River and finally the Mississippi River."]},
+   {n:"r", q:"How does Text B answer the problem described in Text A?", qes:"¿Cómo responde el texto B al problema que describe el texto A?", a:"The canal sent the waste away from the lake's drinking water.",
+    malas:[["The canal pumped the lake water straight into everyone's homes.","Text B says nothing about pumping water into homes."],["Text B says that many people became sick from dirty water.","That is in Text A, and it is the problem, not the answer."],["The canal stopped the city of Chicago from growing any bigger.","nadie"]],
+    prueba:"The canal made the main part of the river flow away from Lake Michigan instead of into it.", excl:["Now the water flows toward the Des Plaines River, then the Illinois River and finally the Mississippi River."]}]},
+
+ {titulo:"Sue the T. rex", textos:[
+   {titulo:"Finding Sue", e:"⛏️", t:[
+     "In 1990, a fossil hunter named Sue Hendrickson discovered huge bones sticking out of a cliff in South Dakota.",
+     "The skeleton was named Sue in her honor.",
+     "+It took a team of people many days to carefully dig the bones out of the rock."]},
+   {titulo:"Sue at the Field Museum", e:"🦖", t:[
+     "Today, Sue is on display at the Field Museum in Chicago.",
+     "Sue is one of the largest and most complete T. rex skeletons ever found.",
+     "The skeleton is about 40 feet long, as long as a school bus.",
+     "+Scientists study Sue's bones to learn how T. rex lived, grew and got hurt."]}],
+  q:[
+   {n:"f", q:"Which text tells you where Sue's bones were found?", qes:"¿Qué texto te dice dónde se encontraron los huesos de Sue?", a:"Text A",
+    malas:OPC_AB("Text A","Text B","Text B tells where Sue is now, in Chicago. Where the bones were found is in the other text.","Only one text tells where the bones were found."),
+    prueba:"In 1990, a fossil hunter named Sue Hendrickson discovered huge bones sticking out of a cliff in South Dakota."},
+   {n:"f", q:"Which text tells you how long Sue's skeleton is?", qes:"¿Qué texto te dice cuánto mide el esqueleto de Sue?", a:"Text B",
+    malas:OPC_AB("Text B","Text A","Text A tells who found the bones and where. It never gives the length.","Only one text gives the length."),
+    prueba:"The skeleton is about 40 feet long, as long as a school bus."},
+   {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Bones found in South Dakota in 1990 now form a giant skeleton in Chicago.",
+    malas:[["Sue Hendrickson found huge bones sticking out of a cliff in South Dakota.","soloA"],["Sue is about forty feet long, and it is on display at the Field Museum.","soloB"],["Sue Hendrickson found the bones inside the Field Museum in Chicago in 1990.","It mixes the texts but gets them wrong: the bones were found in South Dakota."]],
+    prueba:"Today, Sue is on display at the Field Museum in Chicago.", excl:["In 1990, a fossil hunter named Sue Hendrickson discovered huge bones sticking out of a cliff in South Dakota.","The skeleton was named Sue in her honor.","The skeleton is about 40 feet long, as long as a school bus.","Sue is one of the largest and most complete T. rex skeletons ever found."]},
+   {n:"r", q:"What does Text B add to what you learn in Text A?", qes:"¿Qué añade el texto B a lo que aprendes en el texto A?", a:"Where Sue is now and how big it is",
+    malas:[["Who discovered the bones and in what year","That is in Text A, not Text B."],["How Sue Hendrickson became a fossil hunter","nadie"],["Which other dinosaurs lived next to Sue","nadie"]],
+    prueba:"The skeleton is about 40 feet long, as long as a school bus.", excl:["Today, Sue is on display at the Field Museum in Chicago.","Sue is one of the largest and most complete T. rex skeletons ever found."]}]},
+
+ {titulo:"The L", textos:[
+   {titulo:"Trains in the Air", e:"🚆", t:[
+     "In the late 1800s, Chicago's streets were crowded with people, horses, wagons and streetcars.",
+     "There was little room for new train tracks on the ground.",
+     "In 1892, the city's first elevated train line opened, with tracks raised high above the street.",
+     "+People started calling the elevated trains the “L” for short."]},
+   {titulo:"Riding the L Today", e:"🎫", t:[
+     "Today, the L has eight lines, and each one is named after a color, such as the Red Line and the Blue Line.",
+     "Downtown, several lines run around a rectangle of elevated tracks called the Loop.",
+     "+Some parts of the L run underground in subways, and others run at street level or in the middle of expressways.",
+     "+The Blue Line runs all the way to O'Hare International Airport."]}],
+  q:[
+   {n:"f", q:"Which text tells you when the first elevated line opened?", qes:"¿Qué texto te dice cuándo se abrió la primera línea elevada?", a:"Text A",
+    malas:OPC_AB("Text A","Text B","Text B tells about the L today. The year it opened is in the other text.","Only one text gives the year 1892."),
+    prueba:"In 1892, the city's first elevated train line opened, with tracks raised high above the street."},
+   {n:"f", q:"Which fact appears in only one of the texts?", qes:"¿Qué dato aparece en solo uno de los textos?", a:"The L has eight lines named after colors.",
+    malas:[["The L has tracks above the street.","Both texts tell that: raised tracks in Text A, elevated tracks downtown in Text B."],["The L is a train system in Chicago.","Both texts are about the same train system."],["The very first L line opened in the year 2000.","nadie"]],
+    prueba:"Today, the L has eight lines, and each one is named after a color, such as the Red Line and the Blue Line."},
+   {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Built in 1892 to rise above crowded streets, the L now has eight color lines.",
+    malas:[["In 1892, tracks were raised above Chicago's crowded streets for the first elevated line.","soloA"],["Today the L has eight lines named after colors, and several of them run around the Loop.","soloB"],["The L was built underground in 1892 because people wanted trains named after colors.","It mixes the texts but gets them wrong: the first line was raised above the street."]],
+    prueba:"Today, the L has eight lines, and each one is named after a color, such as the Red Line and the Blue Line.", excl:["In 1892, the city's first elevated train line opened, with tracks raised high above the street.","In the late 1800s, Chicago's streets were crowded with people, horses, wagons and streetcars.","There was little room for new train tracks on the ground."]},
+   {n:"r", q:"Text A says the tracks were raised above the streets. What does Text B add?", qes:"El texto A dice que las vías se elevaron sobre las calles. ¿Qué añade el texto B?", a:"Today, some parts run underground or at street level.",
+    malas:[["The streets were crowded with horses and wagons.","That is in Text A, not Text B."],["The very first line opened in the year 1892.","That is in Text A, not Text B."],["All of the old elevated L tracks were torn down long ago.","nadie"]],
+    prueba:"Some parts of the L run underground in subways, and others run at street level or in the middle of expressways."}]},
+
+ {titulo:"City coyotes", textos:[
+   {titulo:"Coyotes Among Us", e:"🐺", t:[
+     "Scientists who study coyotes think that at least two thousand of them live in and around Chicago.",
+     "Coyotes are smart and shy, and they usually hunt at night.",
+     "+Researchers have put tracking collars on some coyotes to learn where they travel."]},
+   {titulo:"What's for Dinner?", e:"🐭", t:[
+     "Coyotes eat mostly small animals such as mice, rats and rabbits.",
+     "By eating rodents, coyotes help keep the number of rats and mice down.",
+     "+Experts say people should never feed coyotes, because coyotes that get food from people may lose their fear of humans."]}],
+  q:[
+   {n:"f", q:"Which text tells you what coyotes eat?", qes:"¿Qué texto te dice qué comen los coyotes?", a:"Text B",
+    malas:OPC_AB("Text B","Text A","Text A tells how many coyotes live here and when they hunt, but not what they eat.","Only one text tells what coyotes eat."),
+    prueba:"Coyotes eat mostly small animals such as mice, rats and rabbits."},
+   {n:"f", q:"Which text tells you when coyotes usually hunt?", qes:"¿Qué texto te dice cuándo cazan normalmente los coyotes?", a:"Text A",
+    malas:OPC_AB("Text A","Text B","Text B tells what coyotes eat, not when they hunt.","Only one text tells when coyotes hunt."),
+    prueba:"Coyotes are smart and shy, and they usually hunt at night."},
+   {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Thousands of shy coyotes live around Chicago and help by eating rats and mice.",
+    malas:[["At least two thousand coyotes live in and around Chicago, and they hunt at night.","soloA"],["Coyotes eat mice, rats and rabbits, which helps keep the number of rodents down.","soloB"],["Thousands of coyotes live in Chicago because people feed them every single night.","It mixes the texts but gets them wrong: Text B says people should never feed coyotes."]],
+    prueba:"By eating rodents, coyotes help keep the number of rats and mice down.", excl:["Coyotes eat mostly small animals such as mice, rats and rabbits.","Scientists who study coyotes think that at least two thousand of them live in and around Chicago.","Coyotes are smart and shy, and they usually hunt at night."]},
+   {n:"r", q:"Why should people not feed coyotes? Use both texts.", qes:"¿Por qué la gente no debe dar de comer a los coyotes? Usa los dos textos.", a:"Coyotes are shy, but feeding them can make them lose their fear.",
+    malas:[["Coyotes eat only rabbits, so any other food will make them sick.","No text says that. Text B says coyotes eat mice, rats and rabbits."],["Coyotes hunt in the daytime, so they need to rest all night long.","Text A says coyotes usually hunt at night."],["Feeding them would make it hard for them to wear tracking collars.","No text connects food and tracking collars."]],
+    prueba:"Experts say people should never feed coyotes, because coyotes that get food from people may lose their fear of humans.", excl:["Coyotes are smart and shy, and they usually hunt at night."]}]},
+
+ {titulo:"The prairie", textos:[
+   {titulo:"The Prairie State", e:"🌾", t:[
+     "Illinois is nicknamed the Prairie State.",
+     "Long ago, tall grasses and wildflowers covered much of the land.",
+     "+Today, only a tiny part of the original prairie is left, because most of it became farms, towns and cities."]},
+   {titulo:"Roots Run Deep", e:"🌱", t:[
+     "Many prairie plants have very long roots.",
+     "The roots of some prairie plants can reach more than ten feet underground.",
+     "+Deep roots help prairie plants survive dry summers, because they can reach water far below the surface."]},
+   {titulo:"Fire on the Prairie", e:"🔥", t:[
+     "Long ago, natural fires often swept across the prairie.",
+     "Prairie plants survive fire because their roots are safe underground, but many young trees are killed.",
+     "+Today, trained crews set careful, planned fires to keep prairies healthy."]}],
+  q:[
+   {n:"f", q:"Which text tells you the nickname of Illinois?", qes:"¿Qué texto te dice el apodo de Illinois?", a:"Text A",
+    malas:[["Text B","Text B is about prairie roots."],["Text C","Text C is about fire on the prairie."],["All three texts","Only one text gives the nickname."]],
+    prueba:"Illinois is nicknamed the Prairie State."},
+   {n:"f", q:"Which text tells you how deep some prairie roots grow?", qes:"¿Qué texto te dice qué tan hondo crecen algunas raíces de la pradera?", a:"Text B",
+    malas:[["Text A","Text A is about the nickname and how much prairie there was."],["Text C","Text C says roots are safe underground, but it doesn't say how deep they grow."],["All three texts","Only one text gives a depth."]],
+    prueba:"The roots of some prairie plants can reach more than ten feet underground."},
+   {n:"r", q:"Which statement uses information from Text B AND Text C?", qes:"¿Qué afirmación usa información del texto B Y del texto C?", a:"Roots more than ten feet deep stay safe from fires that kill young trees.",
+    malas:[["Illinois is called the Prairie State, but only a tiny part of the prairie is left.","That information is only in Text A."],["Long ago, natural fires swept across the prairie and killed many young trees.","That information is only in Text C, so it does not combine two texts."],["Deep roots help prairie plants start fires on the prairie during dry summers.","Neither text says roots start fires. Text C says fires can't harm the roots."]],
+    prueba:"Prairie plants survive fire because their roots are safe underground, but many young trees are killed.", excl:["The roots of some prairie plants can reach more than ten feet underground.","Many prairie plants have very long roots.","Long ago, natural fires often swept across the prairie."]},
+   {n:"r", q:"Text A says prairie once covered much of Illinois. How do Texts B and C help explain why trees didn't take over?", qes:"El texto A dice que la pradera cubría gran parte de Illinois. ¿Cómo ayudan los textos B y C a explicar por qué los árboles no la invadieron?", a:"Fires killed young trees, while deep-rooted prairie plants survived.",
+    malas:[["Farmers planted grass every year to keep the trees away.","nadie"],["Prairie roots are very short, so no trees were ever able to grow there.","Text B says many prairie roots are very long."],["Only a tiny part of the prairie is left today.","That is from Text A, and it doesn't explain why trees didn't take over."]],
+    prueba:"Prairie plants survive fire because their roots are safe underground, but many young trees are killed.", excl:["Long ago, natural fires often swept across the prairie.","Many prairie plants have very long roots.","The roots of some prairie plants can reach more than ten feet underground."]}]},
+
+ {titulo:"Lake Michigan", textos:[
+   {titulo:"Water From the Lake", e:"🚰", t:[
+     "Chicago gets its drinking water from Lake Michigan.",
+     "Water enters through large pipes far out in the lake, at structures called water intake cribs.",
+     "+The water then travels through tunnels to purification plants, where it is cleaned before it reaches homes."]},
+   {titulo:"A Lake Made by Ice", e:"🧊", t:[
+     "Lake Michigan was formed by glaciers during the last Ice Age.",
+     "When the huge sheets of ice melted, their water filled the deep valleys they had carved.",
+     "+Lake Michigan is the only Great Lake that lies entirely within the United States."]}],
+  q:[
+   {n:"f", q:"Which text tells you how Lake Michigan was formed?", qes:"¿Qué texto te dice cómo se formó el lago Michigan?", a:"Text B",
+    malas:OPC_AB("Text B","Text A","Text A tells how Chicago gets water from the lake, not how the lake formed.","Only one text tells about the glaciers."),
+    prueba:"Lake Michigan was formed by glaciers during the last Ice Age."},
+   {n:"f", q:"Which text tells you where Chicago's drinking water comes from?", qes:"¿Qué texto te dice de dónde viene el agua potable de Chicago?", a:"Text A",
+    malas:OPC_AB("Text A","Text B","Text B tells how the lake formed. It never mentions drinking water.","Only one text tells about drinking water."),
+    prueba:"Chicago gets its drinking water from Lake Michigan."},
+   {n:"r", q:"Which statement uses information from BOTH texts?", qes:"¿Qué afirmación usa información de los DOS textos?", a:"Water left by melting Ice Age glaciers is now Chicago's drinking water.",
+    malas:[["Water enters large pipes far out in the lake at structures called intake cribs.","soloA"],["Glaciers carved deep valleys, and melting ice filled them to form the lake.","soloB"],["Glaciers built the water intake cribs during the Ice Age to give Chicago water.","It mixes the texts but gets them wrong: people built the cribs, and glaciers formed the lake."]],
+    prueba:"Chicago gets its drinking water from Lake Michigan.", excl:["Lake Michigan was formed by glaciers during the last Ice Age.","When the huge sheets of ice melted, their water filled the deep valleys they had carved.","Water enters through large pipes far out in the lake, at structures called water intake cribs."]},
+   {n:"r", q:"What does Text A add to what Text B tells about Lake Michigan?", qes:"¿Qué añade el texto A a lo que cuenta el texto B sobre el lago Michigan?", a:"How people in Chicago use the lake's water today",
+    malas:[["How the glaciers carved the deep valleys","That is in Text B, not Text A."],["That the lake lies entirely within the United States","That is in Text B, not Text A."],["How many kinds of fish live in the lake","nadie"]],
+    prueba:"Chicago gets its drinking water from Lake Michigan.", excl:["Water enters through large pipes far out in the lake, at structures called water intake cribs.","The water then travels through tunnels to purification plants, where it is cleaned before it reaches homes."]}]}
+];
+
+/* =====================================================================
+   3. MISMO GÉNERO, DOS CUENTOS (RL.5.9)
+   ===================================================================== */
+const GENERO = [
+ {genero:"Mystery", a:{titulo:"The Missing Trophy", e:"🏆", t:[
+    "On Monday, the shiny basketball trophy was missing from the glass case in the school hallway.",
+    "Everyone blamed the seventh graders, who had lost the championship game.",
+    "Israel noticed a trail of tiny drops on the floor, leading from the case to the custodian's closet.",
+    "+He knelt and sniffed one drop; it smelled like lemon cleaner.",
+    "Inside the closet, Mr. Bell was polishing the trophy with a rag.",
+    "+“It was covered in fingerprints,” Mr. Bell said, laughing.",
+    "Clues, not rumors, had solved the case."]},
+  b:{titulo:"The Tomato Thief", e:"🍅", t:[
+    "Every morning that week, one ripe tomato disappeared from Mrs. Lee's community garden.",
+    "Salma's neighbor was sure that a teenager down the block was stealing them.",
+    "Salma didn't want to blame anyone without proof, so she hid behind the fence at sunrise and waited.",
+    "+For an hour, nothing happened, and her legs started to cramp.",
+    "Then a fat gray squirrel hopped over the fence, grabbed a tomato and ran up a tree.",
+    "+The next day, Mrs. Lee put a net over the plants, and the neighbor apologized to the teenager."]},
+  q:[
+   {n:"f", q:"What lesson do both mysteries share?", qes:"¿Qué lección comparten los dos misterios?", a:"Don't blame someone before you have evidence.",
+    malas:[["Gardens need nets to protect them.","detalle"],["Always tell the custodian about problems.","detalle"],["Seventh graders are always sore losers after a game.","That's the rumor in the story, and it turned out to be wrong."]],
+    prueba:"Clues, not rumors, had solved the case."},
+   {n:"f", q:"How do the two detectives solve their cases differently?", qes:"¿En qué se diferencia la manera en que los dos detectives resuelven sus casos?", a:"Israel follows a trail of clues; Salma hides and watches.",
+    malas:[["Salma follows a trail of clues; Israel hides and watches.","alreves"],["Both of them ask a grown-up to solve the case for them.","Neither detective asks a grown-up to solve it. Compare what each one does."],["Both of them find the answer by asking lots of questions.","Neither detective solves the case by asking questions. Look at what each one does."]],
+    prueba:"Salma didn't want to blame anyone without proof, so she hid behind the fence at sunrise and waited."},
+   {n:"r", q:"Both stories are about blaming the wrong person. How do the endings handle that theme differently?", qes:"Los dos cuentos tratan de culpar a la persona equivocada. ¿En qué se diferencian sus finales al tratar ese tema?", a:"The trophy story ends with laughter; the garden story ends with an apology.",
+    malas:[["The trophy story ends with an apology; the garden story ends with laughter.","alreves"],["Both stories end with the blamed people getting punished by a grown-up.","Nobody is punished in either story. Compare how each one ends."],["Neither story shows that blaming those people was a mistake.","Both stories show the blame was wrong: one thief was a squirrel, and nothing was stolen in the other."]],
+    prueba:"The next day, Mrs. Lee put a net over the plants, and the neighbor apologized to the teenager.", excl:["“It was covered in fingerprints,” Mr. Bell said, laughing."]},
+   {n:"r", q:"Why is a squirrel a surprising answer to the garden mystery?", qes:"¿Por qué una ardilla es una respuesta sorprendente para el misterio del huerto?", a:"The neighbor was sure a person took them.",
+    malas:[["Squirrels never eat any vegetables or fruits.","The story doesn't say that. Think about who the neighbor blamed."],["Salma had already seen the squirrel many times.","The story doesn't say that. She was surprised too."],["The trophy story also had an animal thief.","In the trophy story, nobody stole anything."]],
+    prueba:"Salma's neighbor was sure that a teenager down the block was stealing them."}]},
+
+ {genero:"Mystery", a:{titulo:"The Giant Paw Prints", e:"🐾", t:[
+    "When Daniel opened the back door, he saw enormous paw prints in the snow, leading under the porch.",
+    "His little brother whispered that a bear must be hiding there.",
+    "Daniel noticed that the sun had been shining on the yard all morning.",
+    "+He remembered from science class that melting snow can make tracks spread out and look much bigger.",
+    "He knelt down, peeked under the porch and found Mrs. Novak's orange cat, curled up in a ball.",
+    "+The “bear” blinked at them and yawned."]},
+  b:{titulo:"The Purple Clue", e:"🫐", t:[
+    "Somebody had eaten half of the blueberry muffins that Athena's grandma had baked for the bake sale.",
+    "Her cousin Leo said he had been reading in his room the whole afternoon.",
+    "Athena didn't argue; she just asked him to say “Ah.”",
+    "Leo opened his mouth, and his tongue was bright purple.",
+    "+He sighed and admitted he had eaten four muffins.",
+    "+Grandma laughed and gave him a job: baking a new batch with her."]},
+  q:[
+   {n:"f", q:"What do both detectives do to solve their mysteries?", qes:"¿Qué hacen los dos detectives para resolver sus misterios?", a:"They study the evidence instead of guessing.",
+    malas:[["They call the police and wait for help.","nadie"],["They both find an orange cat hiding under the porch.","Only Daniel finds a cat."],["They both bake a new batch of muffins.","Only Leo bakes muffins, at the end of the second story."]],
+    prueba:"Daniel noticed that the sun had been shining on the yard all morning."},
+   {n:"f", q:"How are the two mysteries different?", qes:"¿En qué se diferencian los dos misterios?", a:"In one, nobody did wrong; in the other, someone wasn't honest.",
+    malas:[["In both mysteries, someone lies about what really happened that day.","In the paw-print story, nobody lies. Only Leo isn't honest."],["Both mysteries turn out to have a wild animal hiding in them.","The “bear” is a pet cat, and the muffin story has no animal at all."],["In both mysteries, the detective is wrong at the very end.","Both detectives are right. Compare who did something wrong."]],
+    prueba:"Her cousin Leo said he had been reading in his room the whole afternoon."},
+   {n:"r", q:"Which kind of knowledge helps Daniel but not Athena?", qes:"¿Qué tipo de conocimiento le sirve a Daniel pero no a Athena?", a:"Science facts about how melting snow changes tracks",
+    malas:[["Knowing how blueberries can stain a person's tongue","That is what helps Athena, not Daniel."],["Knowing the right way to bake blueberry muffins","Neither detective needs to bake to solve the case."],["Knowing which of his neighbors own orange cats","The story doesn't say he knew that before he looked."]],
+    prueba:"He remembered from science class that melting snow can make tracks spread out and look much bigger."},
+   {n:"r", q:"How does each story use humor at the end of the mystery?", qes:"¿Cómo usa el humor cada cuento al final del misterio?", a:"The “bear” is a yawning cat; the muffin thief has a purple tongue.",
+    malas:[["The cat has a purple tongue; the muffin thief yawns and goes to sleep.","alreves"],["Neither of the stories has a funny moment at the end at all.","Both endings have funny surprises. Look at the last sentences."],["Both stories end with a grown-up angrily scolding the children.","Grandma laughs, and nobody scolds anyone in the paw-print story."]],
+    prueba:"The “bear” blinked at them and yawned."}]},
+
+ {genero:"Adventure", a:{titulo:"Paddling Against the Wind", e:"🛶", t:[
+    "Sophia and Selena were halfway down the Chicago River in their kayak when the wind suddenly picked up.",
+    "Waves slapped the boat, and Selena's paddle kept splashing in the wrong direction.",
+    "“We have to paddle together,” Sophia shouted. “Left, right, left, right!”",
+    "+Selena counted out loud with her, and slowly their paddles began to match.",
+    "Together, they reached the dock, where their guide gave them a high five.",
+    "+Their arms ached, but they couldn't stop grinning."]},
+  b:{titulo:"The Canyon Stairs", e:"🪜", t:[
+    "Elías froze at the bottom of the tall wooden stairs that climbed out of the canyon at Starved Rock.",
+    "His family was already at the top, waving at him.",
+    "He was afraid of heights, but he told himself to look only at the next step.",
+    "+His heart pounded, and he counted every step under his breath.",
+    "When he reached the top, he could see the Illinois River shining below.",
+    "+He decided that the view was worth every scary step."]},
+  q:[
+   {n:"f", q:"What theme do both adventure stories share?", qes:"¿Qué tema comparten los dos cuentos de aventuras?", a:"Keep going, and you can beat a hard challenge.",
+    malas:[["Kayaking is more fun than hiking.","opinion"],["Always bring a grown-up guide on any outdoor trip.","detalle"],["The Illinois River is beautiful.","detalle"]],
+    prueba:"He was afraid of heights, but he told himself to look only at the next step."},
+   {n:"f", q:"How do the characters face their challenges differently?", qes:"¿En qué se diferencia la manera en que los personajes enfrentan sus retos?", a:"Sophia and Selena work as a team; Elías talks himself through it.",
+    malas:[["Elías works with a team; Sophia and Selena each talk themselves through it.","alreves"],["All of the characters give up and wait for a grown-up to rescue them.","Nobody gives up: the girls reach the dock and Elías reaches the top."],["All of the characters face their challenge alone, without any help.","Sophia and Selena paddle together. Only Elías faces his challenge by himself."]],
+    prueba:"“We have to paddle together,” Sophia shouted. “Left, right, left, right!”"},
+   {n:"r", q:"How is the danger different in the two stories?", qes:"¿En qué se diferencia el peligro en los dos cuentos?", a:"The kayak danger comes from nature; Elías's danger is his own fear.",
+    malas:[["Elías's danger comes from nature; the kayak danger is the girls' own fear.","alreves"],["Both dangers come from strong winds and big waves on the water.","Only the kayak story has wind and waves. Elías is on stairs."],["Neither story has any danger or problem at all.","Both stories have a challenge. Compare where each one comes from."]],
+    prueba:"He was afraid of heights, but he told himself to look only at the next step.", excl:["Elías froze at the bottom of the tall wooden stairs that climbed out of the canyon at Starved Rock."]},
+   {n:"r", q:"How do both stories show the reward for facing a challenge?", qes:"¿Cómo muestran los dos cuentos la recompensa por enfrentar un reto?", a:"Each ends with joy: grinning kayakers and a great view.",
+    malas:[["Each ends with a prize given to the kids by a grown-up.","A high five is not a prize, and the view isn't given by anyone."],["Each ends with the characters deciding never to try again.","Both endings are happy, and nobody decides to quit."],["Each ends with someone getting hurt on the way home.","nadie"]],
+    prueba:"He decided that the view was worth every scary step.", excl:["Their arms ached, but they couldn't stop grinning."]}]},
+
+ {genero:"Adventure", a:{titulo:"The Wrong Train", e:"🚇", t:[
+    "Israel and his grandmother were riding the L home when Israel realized they were on the wrong train.",
+    "Grandma had left her glasses at home and couldn't read the station signs.",
+    "Israel took a deep breath and studied the map above the doors.",
+    "+He found that they could get off at the next stop and take a train back the other way.",
+    "He led Grandma off the train and onto the right one, holding her hand the whole way.",
+    "+“You were my eyes today,” she told him."]},
+  b:{titulo:"The Runaway Dog", e:"🐕", t:[
+    "Salma was building a sandcastle at Montrose Beach when she saw a small dog running alone along the water.",
+    "Its owner was nowhere in sight, and the dog was heading toward the busy road.",
+    "Salma grabbed a piece of her sandwich and called the dog in a calm, gentle voice.",
+    "+The dog stopped, sniffed and trotted back to her.",
+    "She read the phone number on its collar, and her dad called the owner, who came running.",
+    "+The owner hugged the dog and thanked Salma again and again."]},
+  q:[
+   {n:"f", q:"What theme do both stories share?", qes:"¿Qué tema comparten los dos cuentos?", a:"Staying calm helps you solve problems.",
+    malas:[["Dogs should always wear a collar.","detalle"],["Grandmas should never forget their glasses.","detalle"],["Trains are faster than walking.","nadie"]],
+    prueba:"Israel took a deep breath and studied the map above the doors."},
+   {n:"f", q:"Who gets help in each story?", qes:"¿Quién recibe ayuda en cada cuento?", a:"Israel helps his grandma; Salma helps a lost dog and its owner.",
+    malas:[["Salma helps her grandma; Israel helps a lost dog and its owner.","alreves"],["In both stories, a kid helps a lost dog find its way home.","Only Salma helps a dog. Israel helps his grandmother."],["In both stories, a grown-up has to rescue the kid in trouble.","The kids do the helping in both stories."]],
+    prueba:"He led Grandma off the train and onto the right one, holding her hand the whole way."},
+   {n:"r", q:"How is the problem in the train story different from the problem at the beach?", qes:"¿En qué se diferencia el problema del cuento del tren del problema en la playa?", a:"Israel must find the way; Salma must stop a dog near a road.",
+    malas:[["Salma must find the way; Israel must stop a dog before the road.","alreves"],["Both kids must find their own way home after getting lost.","Only Israel is on the wrong train. Salma isn't lost."],["Both kids must read a big map of the city to fix the problem.","Only Israel uses a map. Salma uses food and a calm voice."]],
+    prueba:"Its owner was nowhere in sight, and the dog was heading toward the busy road."},
+   {n:"r", q:"Which tool does each character use to solve the problem?", qes:"¿Qué herramienta usa cada personaje para resolver el problema?", a:"Israel uses the train map; Salma uses food and a calm voice.",
+    malas:[["Salma uses the train map; Israel uses food and a calm voice.","alreves"],["Both of them use a phone to call a grown-up for help right away.","Only Salma's dad uses a phone, after the dog comes back."],["Both of them use a map of Chicago to find their way.","Only Israel studies a map."]],
+    prueba:"Salma grabbed a piece of her sandwich and called the dog in a calm, gentle voice.", excl:["Israel took a deep breath and studied the map above the doors."]}]},
+
+ {genero:"Tall tale", a:{titulo:"Windy Wanda", e:"🌬️", t:[
+    "Wanda was born in Chicago on a day so windy that she blew into the hospital through the window.",
+    "By age five, she could whistle up a breeze strong enough to dry the whole block's laundry in one second.",
+    "One summer, the city got so hot that the sidewalks started to melt like butter.",
+    "+Wanda climbed to the top of the tallest building, took a giant breath and whistled for three days straight.",
+    "Her wind cooled the city so well that people still call Chicago the Windy City.",
+    "+Some say you can still hear her whistling down Michigan Avenue in January."]},
+  b:{titulo:"Big Snow Benny", e:"⛄", t:[
+    "Benny was so tall that he used the clouds as pillows.",
+    "During the worst blizzard ever, the snow piled up higher than the rooftops of the city.",
+    "Benny scooped up the snow with a shovel the size of a bridge.",
+    "+He threw every scoop into Lake Michigan, which is why the lake is so cold.",
+    "In just one morning, every street was clear, and the kids were back in school, which made them a little sad.",
+    "+To thank him, the city baked him a pancake as big as a baseball field."]},
+  q:[
+   {n:"f", q:"What do both tall tales have in common?", qes:"¿Qué tienen en común los dos cuentos exagerados (tall tales)?", a:"A hero with amazing powers saves the city.",
+    malas:[["Both of them happen during a heat wave.","Only Wanda's story has a heat wave. Benny's has a blizzard."],["Both of them tell only true facts.","Tall tales use exaggeration: nobody can blow in through a window at birth."],["Both heroes are ordinary, small kids from school.","Both heroes are larger than life, with amazing powers."]],
+    prueba:"Benny scooped up the snow with a shovel the size of a bridge."},
+   {n:"f", q:"How do the heroes solve the problem differently?", qes:"¿En qué se diferencia la manera en que los héroes resuelven el problema?", a:"Wanda whistles up wind; Benny shovels with a giant shovel.",
+    malas:[["Benny whistles up wind; Wanda shovels with a giant shovel.","alreves"],["Both of them use their giant size to lift up the city.","Neither hero lifts the city. Compare their special powers."],["Both of them ask the people of the city to help them.","Each hero solves the problem alone, with a special power."]],
+    prueba:"Her wind cooled the city so well that people still call Chicago the Windy City."},
+   {n:"r", q:"Both tales give a made-up reason for something real about Chicago. Which is true?", qes:"Los dos cuentos inventan una razón para algo real de Chicago. ¿Qué es cierto?", a:"Wanda's tale explains the nickname; Benny's explains the cold lake.",
+    malas:[["Benny's tale explains the nickname; Wanda's explains the cold lake.","alreves"],["Both tales explain why Chicago has so many very tall buildings.","Neither tale explains the tall buildings. Look at the end of each one."],["Neither tale explains anything at all about Chicago.","Each tale ends with a made-up reason for something real. Look again."]],
+    prueba:"He threw every scoop into Lake Michigan, which is why the lake is so cold.", excl:["Her wind cooled the city so well that people still call Chicago the Windy City."]},
+   {n:"r", q:"How is the problem in each tale different?", qes:"¿En qué se diferencia el problema de cada cuento?", a:"Wanda fights terrible heat; Benny fights terrible snow.",
+    malas:[["Benny fights terrible heat; Wanda fights terrible snow.","alreves"],["Both heroes fight a terrible flood on the lake.","There is no flood in either tale."],["Both heroes fight a giant monster downtown.","There is no monster in either tale."]],
+    prueba:"One summer, the city got so hot that the sidewalks started to melt like butter."}]},
+
+ {genero:"Fable", a:{titulo:"The Pigeon Who Bragged", e:"🐦", t:[
+    "A pigeon on Wacker Drive bragged that it was the fastest bird in Chicago.",
+    "A peregrine falcon heard this and offered to race it to the top of a skyscraper.",
+    "The pigeon flapped as hard as it could, but the falcon zoomed past it like a rocket.",
+    "+When the pigeon finally reached the top, panting, the falcon was already cleaning its feathers.",
+    "From then on, the pigeon let its flying speak for itself.",
+    "Moral: Those who brag the loudest often have the least to show."]},
+  b:{titulo:"The Squirrel and the Acorns", e:"🐿️", t:[
+    "A squirrel in Lincoln Park told everyone it had gathered more acorns than any squirrel in the park.",
+    "When winter came, its friends asked to see the giant pile.",
+    "The squirrel had to admit that it had spent the fall napping and had only three acorns.",
+    "+Its friends shared their acorns anyway, but nobody believed its stories after that.",
+    "Moral: Bragging may win attention, but only the truth wins trust."]},
+  q:[
+   {n:"f", q:"What theme do both fables share?", qes:"¿Qué tema comparten las dos fábulas?", a:"Bragging can get you into trouble.",
+    malas:[["Falcons are faster than pigeons.","detalle"],["Always gather food before winter.","detalle"],["Squirrels and pigeons are good friends.","nadie"]],
+    prueba:"Moral: Those who brag the loudest often have the least to show."},
+   {n:"f", q:"How is each bragger shown to be wrong?", qes:"¿Cómo se demuestra que cada fanfarrón estaba equivocado?", a:"The pigeon loses a race; the squirrel has almost no acorns.",
+    malas:[["The squirrel loses a race; the pigeon has almost no acorns.","alreves"],["Both of them lose a race to a peregrine falcon.","Only the pigeon races the falcon."],["Both of them are caught napping in the park.","Only the squirrel napped, and nobody caught it napping."]],
+    prueba:"The squirrel had to admit that it had spent the fall napping and had only three acorns."},
+   {n:"r", q:"How are the two morals different?", qes:"¿En qué se diferencian las dos moralejas?", a:"One warns against bragging; the other adds that lies cost you trust.",
+    malas:[["Both morals are about sharing your food with your friends in winter.","Neither moral is about sharing. Read each moral again."],["One moral is about speed; the other is about the winter weather.","Those are story details, not the morals."],["The two morals say exactly the same thing in the very same words.","The words are different, and the second moral adds the idea of trust."]],
+    prueba:"Moral: Bragging may win attention, but only the truth wins trust.", excl:["Moral: Those who brag the loudest often have the least to show."]},
+   {n:"r", q:"How do the other characters act differently in each fable?", qes:"¿En qué se diferencia la manera de actuar de los otros personajes en cada fábula?", a:"The falcon simply wins; the friends share even though the squirrel lied.",
+    malas:[["The friends simply win a race; the falcon shares its food with the pigeon.","alreves"],["In both fables, the other characters laugh at the bragger and walk away.","Nobody laughs in either fable. Look at what the falcon and the friends do."],["In both fables, the other characters believe every word the bragger says.","The falcon races to test the pigeon, and nobody believes the squirrel afterward."]],
+    prueba:"Its friends shared their acorns anyway, but nobody believed its stories after that."}]},
+
+ {genero:"Science fiction", a:{titulo:"Unit 7 on Duty", e:"🤖", t:[
+    "In the year 2085, a robot crossing guard named Unit 7 helped kids cross Western Avenue.",
+    "Unit 7 knew the exact speed of every car, but it never said good morning.",
+    "One day, Selena dropped her drawings in a puddle, and Unit 7 just beeped: “Keep moving.”",
+    "+Mrs. Alvarez, the old crossing guard who still came by to visit, knelt down and helped her gather the pages.",
+    "The next week, Unit 7 surprised everyone by saying, “Good morning, Selena,” in a cheerful voice.",
+    "+It had been watching Mrs. Alvarez and learning."]},
+  b:{titulo:"The Helper Watch", e:"⌚", t:[
+    "Daniel's new smartwatch could answer any homework question in less than a second.",
+    "Soon he stopped asking his friends for help and stopped studying with them after school.",
+    "When the watch's battery died during a test, Daniel couldn't remember anything.",
+    "+He felt lonely and embarrassed walking home by himself.",
+    "The next day, he asked Elías and Athena to study with him again, and they said yes.",
+    "+He kept the watch in his backpack after that, for emergencies only."]},
+  q:[
+   {n:"f", q:"What theme do both science fiction stories share?", qes:"¿Qué tema comparten los dos cuentos de ciencia ficción?", a:"People and kindness matter more than clever machines.",
+    malas:[["Robots will be crossing guards in 2085.","That is a detail of the setting, not a theme both stories share."],["Smartwatches should be banned at every school in Chicago.","opinion"],["Tests at school are always unfair.","nadie"]],
+    prueba:"The next day, he asked Elías and Athena to study with him again, and they said yes."},
+   {n:"f", q:"Who changes in each story?", qes:"¿Quién cambia en cada cuento?", a:"The robot changes in one story; Daniel changes in the other.",
+    malas:[["Selena changes in one story; Elías changes in the other.","Selena and Elías stay the same. Look for who acts differently at the end."],["Nobody changes at all in either of the two stories.","Unit 7 starts saying good morning, and Daniel studies with friends again."],["Mrs. Alvarez changes in one story; the watch changes in the other.","Mrs. Alvarez is kind from the start, and the watch stays the same."]],
+    prueba:"The next week, Unit 7 surprised everyone by saying, “Good morning, Selena,” in a cheerful voice."},
+   {n:"r", q:"How do the two stories approach the theme from opposite directions?", qes:"¿Cómo tratan el tema los dos cuentos desde direcciones opuestas?", a:"A machine learns from a person; a person learns not to depend on a machine.",
+    malas:[["A person learns from a machine; a machine learns not to depend on a person.","alreves"],["Both stories show machines replacing people at school and in the street forever.","Both stories end with people mattering more, not with machines replacing them."],["Both stories show kids learning how to build and repair their own robots.","Nobody builds or repairs a robot in either story."]],
+    prueba:"It had been watching Mrs. Alvarez and learning."},
+   {n:"r", q:"How are the settings of the two stories different?", qes:"¿En qué se diferencian los escenarios de los dos cuentos?", a:"One is set far in the future; the other could happen today.",
+    malas:[["The first could happen today; the second is set far in the future.","alreves"],["Both of the stories happen on another planet far from Earth.","Both happen in ordinary places: a street and a school."],["Both of the stories are set long ago, before there were cars.","Unit 7 checks the speed of cars, and Daniel has a smartwatch."]],
+    prueba:"In the year 2085, a robot crossing guard named Unit 7 helped kids cross Western Avenue."}]},
+
+ {genero:"Realistic fiction", a:{titulo:"The New Kid", e:"✏️", t:[
+    "On Mateo's first day at our school, he sat alone at lunch, staring at his tray.",
+    "Athena remembered how scared she had felt when her family moved to Chicago.",
+    "She walked over and asked if he liked drawing, because she had seen dragons on his notebook.",
+    "+He nodded shyly, and soon they were sketching dragons on napkins.",
+    "By Friday, Mateo was sitting at a full table, laughing."]},
+  b:{titulo:"The Edge of the Field", e:"⚽", t:[
+    "Elías noticed that Nadia, the newest player on his soccer team, always stood at the edge of the field during water breaks.",
+    "Nobody was being mean, but nobody was talking to her either.",
+    "At the next practice, Elías passed her the ball again and again during the scrimmage.",
+    "+When she scored, the whole team ran over to cheer.",
+    "After that, Nadia was always in the middle of the huddle."]},
+  q:[
+   {n:"f", q:"What theme do both stories share?", qes:"¿Qué tema comparten los dos cuentos?", a:"A small kindness can help someone feel they belong.",
+    malas:[["Dragons are fun to draw on napkins.","detalle"],["Soccer practice should be a lot longer than one hour.","opinion"],["New kids always want to be left alone.","Both newcomers end up happy with a group, so that is not what the stories show."]],
+    prueba:"By Friday, Mateo was sitting at a full table, laughing."},
+   {n:"f", q:"How do Athena and Elías help differently?", qes:"¿En qué se diferencia la ayuda de Athena y la de Elías?", a:"Athena talks to Mateo; Elías includes Nadia in the game.",
+    malas:[["Elías starts a conversation; Athena includes Mateo in a game.","alreves"],["Both of them ask a teacher to help the new kid make friends.","No teacher helps in either story. Compare what each kid does."],["Both of them invite the new kid to a birthday party.","There is no party in either story."]],
+    prueba:"At the next practice, Elías passed her the ball again and again during the scrimmage."},
+   {n:"r", q:"Why does Athena understand how Mateo feels?", qes:"¿Por qué Athena entiende cómo se siente Mateo?", a:"She once felt scared after moving to Chicago.",
+    malas:[["Mateo told her exactly how he felt about the new school.","Mateo doesn't say anything about his feelings. Look at what Athena remembers."],["She loves to draw dragons on napkins, too.","That is how she connects with him, not why she understands him."],["Elías told her about the new girl Nadia.","Elías is in the other story. The two stories are not connected."]],
+    prueba:"Athena remembered how scared she had felt when her family moved to Chicago."},
+   {n:"r", q:"How do the endings show the theme in a similar way?", qes:"¿Cómo muestran los finales el tema de manera parecida?", a:"Both newcomers end up in the middle of a group.",
+    malas:[["Both of the newcomers move away at the end.","Neither newcomer moves away. Look at the last sentence of each story."],["Both stories end with a team winning a big championship.","Neither story is about winning a championship."],["Only one of the stories shows the newcomer included.","Both stories show it: a full table and the middle of the huddle."]],
+    prueba:"After that, Nadia was always in the middle of the huddle.", excl:["By Friday, Mateo was sitting at a full table, laughing."]}]}
+];
+
+/* =====================================================================
+   4. ¿QUÉ APORTA LA IMAGEN? (RL.5.7)
+   ===================================================================== */
+const AZUL = "#1565C0", AZUL_C = "#BBDEFB", TIERRA = "#F1ECDD";
+const flechaDef = (id, color)=> `<defs><marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="${color}"/></marker></defs>`;
+const txt = (x, y, s, o={})=> `<text x="${x}" y="${y}" font-size="${o.fs||16}" font-weight="${o.fw||700}" fill="${o.c||"#14313A"}" text-anchor="${o.a||"start"}" font-family="Trebuchet MS, sans-serif">${s}</text>`;
+function mapaRio(){
+  let s = `<svg class="visual-svg" viewBox="0 0 400 270" role="img" aria-label="Map: the Chicago River leaves Lake Michigan at Chicago and flows west, then southwest through the Sanitary and Ship Canal. Arrows point away from the lake, toward the Des Plaines, Illinois and Mississippi rivers.">` + flechaDef("fr", "#0D47A1");
+  s += `<rect width="400" height="270" fill="${TIERRA}"/>`;
+  s += `<path d="M300,0 L400,0 L400,270 L320,270 Q306,200 312,140 Q318,80 300,0 Z" fill="${AZUL_C}"/>`;
+  s += txt(356, 190, "Lake", {fs:17, a:"middle", c:"#0D47A1"}) + txt(356, 210, "Michigan", {fs:17, a:"middle", c:"#0D47A1"});
+  s += `<path d="M312,112 L220,112 Q190,112 170,140 L50,240" fill="none" stroke="${AZUL}" stroke-width="7" stroke-linecap="round"/>`;
+  s += `<line x1="300" y1="100" x2="244" y2="100" stroke="#0D47A1" stroke-width="3" marker-end="url(#fr)"/>`;
+  s += `<line x1="150" y1="176" x2="104" y2="214" stroke="#0D47A1" stroke-width="3" marker-end="url(#fr)"/>`;
+  s += `<circle cx="300" cy="112" r="7" fill="#B71C1C"/>` + txt(292, 140, "Chicago", {fs:16, a:"end"});
+  s += txt(230, 92, "Chicago River", {fs:15, a:"middle"});
+  s += txt(196, 196, "Sanitary and", {fs:14}) + txt(196, 213, "Ship Canal", {fs:14});
+  s += txt(8, 262, "To the Des Plaines, Illinois and Mississippi rivers", {fs:12.5, fw:600});
+  s += `<line x1="30" y1="54" x2="30" y2="18" stroke="#14313A" stroke-width="3" marker-end="url(#fr)"/>` + txt(30, 72, "N", {fs:16, a:"middle"});
+  return s + "</svg>";
+}
+function amanecer(){
+  let s = `<svg class="visual-svg" viewBox="0 0 400 240" role="img" aria-label="Illustration: a pink and gold sunrise over Lake Michigan. The sun is half above the water, with a golden path on the waves. Two small figures, a man and a boy, stand on the sand, and the city skyline is a dark shape on the left.">`;
+  s += `<defs><linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7A1B5"/><stop offset="1" stop-color="#FFD27A"/></linearGradient></defs>`;
+  s += `<rect width="400" height="150" fill="url(#cielo)"/>`;
+  s += `<circle cx="250" cy="150" r="38" fill="#FFB300"/>`;
+  s += `<rect y="150" width="400" height="50" fill="#5C8FB8"/>`;
+  s += `<path d="M232,156 L268,156 L280,196 L220,196 Z" fill="#FFD27A" opacity=".8"/>`;
+  s += `<g fill="#3A4E63"><rect x="0" y="92" width="18" height="58"/><rect x="20" y="70" width="16" height="80"/><rect x="38" y="104" width="22" height="46"/><rect x="62" y="84" width="14" height="66"/></g>`;
+  s += `<rect y="196" width="400" height="44" fill="#E9D3A4"/>`;
+  s += `<g fill="#2B2B3A"><circle cx="150" cy="168" r="7"/><rect x="144" y="175" width="12" height="26" rx="4"/><circle cx="172" cy="176" r="5.5"/><rect x="167" y="182" width="10" height="19" rx="4"/></g>`;
+  return s + "</svg>";
+}
+function escalaSue(){
+  let s = `<svg class="visual-svg" viewBox="0 0 400 230" role="img" aria-label="Diagram: an outline of Sue the T. rex above a yellow school bus of the same length. A measuring line under both reads about 40 feet.">` + flechaDef("fs", "#14313A");
+  s += `<path d="M30,92 Q60,70 120,66 Q170,50 220,58 L250,40 L300,34 Q330,34 336,52 L318,62 L300,62 Q280,70 268,86 Q250,100 220,104 L226,128 L214,128 L206,106 L170,108 L176,128 L164,128 L156,106 Q110,104 30,92 Z" fill="#8D6E63" stroke="#4E342E" stroke-width="2"/>`;
+  s += `<circle cx="318" cy="44" r="3" fill="#fff"/>`;
+  s += `<rect x="30" y="140" width="306" height="46" rx="8" fill="#F8C85F" stroke="#8A6D00" stroke-width="2"/>`;
+  [50,96,142,188,234].forEach(x=>{ s += `<rect x="${x}" y="148" width="34" height="18" rx="3" fill="#E3F2FD" stroke="#8A6D00"/>`; });
+  s += `<circle cx="80" cy="188" r="11" fill="#333"/><circle cx="286" cy="188" r="11" fill="#333"/>`;
+  s += `<line x1="34" y1="212" x2="332" y2="212" stroke="#14313A" stroke-width="2.5" marker-start="url(#fs)" marker-end="url(#fs)"/>`;
+  s += txt(183, 228, "about 40 feet", {fs:16, a:"middle"});
+  s += txt(350, 92, "Sue", {fs:16}) + txt(344, 168, "school", {fs:14}) + txt(344, 184, "bus", {fs:14});
+  return s + "</svg>";
+}
+function lineaTiempo(eventos, etiqueta){
+  const H2 = 30 + eventos.length*92;
+  let s = `<svg class="visual-svg" viewBox="0 0 400 ${H2}" role="img" aria-label="${etiqueta}">`;
+  s += `<line x1="92" y1="20" x2="92" y2="${H2-16}" stroke="#14313A" stroke-width="5" stroke-linecap="round"/>`;
+  eventos.forEach(([anio, lineas], i)=>{
+    const y = 44 + i*92;
+    s += `<circle cx="92" cy="${y}" r="11" fill="#194F5A" stroke="#fff" stroke-width="3"/>`;
+    s += txt(76, y+7, anio, {fs:21, a:"end", c:"#194F5A"});
+    lineas.forEach((l, k)=>{ s += txt(112, y+7+k*22, l, {fs:k ? 16 : 18, fw:k ? 600 : 700}); });
+  });
+  return s + "</svg>";
+}
+function nocheCiudad(){
+  let s = `<svg class="visual-svg" viewBox="0 0 400 240" role="img" aria-label="Illustration: a dark blue night sky with stars over tall city buildings full of warm yellow windows. In the front, a girl stands at her own lit window, looking out at the city.">`;
+  s += `<rect width="400" height="240" fill="#1B2E4A"/>`;
+  [[30,20],[90,40],[150,16],[220,34],[300,14],[360,40],[260,60],[120,64]].forEach(([x,y])=>{ s += `<circle cx="${x}" cy="${y}" r="2" fill="#FFF8D6"/>`; });
+  const edif = [[150,90,50,150],[205,60,44,180],[254,100,56,140],[315,74,48,166],[367,110,33,130]];
+  edif.forEach(([x,y,w,h])=>{
+    s += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#2C4366"/>`;
+    for(let yy=y+10; yy<y+h-8; yy+=18) for(let xx=x+6; xx<x+w-8; xx+=13){ if((xx*7+yy*3)%5 !== 0) s += `<rect x="${xx}" y="${yy}" width="7" height="9" fill="#FFD54F"/>`; }
+  });
+  s += `<rect x="0" y="0" width="138" height="240" fill="#3E2C2C"/>`;
+  s += `<rect x="18" y="56" width="104" height="128" fill="#FFE9A8" stroke="#6D4C41" stroke-width="6"/>`;
+  s += `<line x1="70" y1="56" x2="70" y2="184" stroke="#6D4C41" stroke-width="4"/>`;
+  s += `<g fill="#2B2B3A"><circle cx="58" cy="118" r="12"/><path d="M40,184 Q42,138 58,134 Q74,138 76,184 Z"/></g>`;
+  return s + "</svg>";
+}
+function mapaMonarca(){
+  let s = `<svg class="visual-svg" viewBox="0 0 400 290" role="img" aria-label="Map, not to scale: a dashed orange arrow runs from Chicago, near Lake Michigan in the United States, south and west to the monarch forests in the mountains of central Mexico. The Gulf of Mexico is to the east of the path. A note says the trip is about 1,700 miles in a straight line.">` + flechaDef("fm", "#C75A00");
+  s += `<rect width="400" height="290" fill="${TIERRA}"/>`;
+  s += `<path d="M190,170 Q240,160 300,178 Q340,200 330,250 Q300,290 230,290 L230,240 Q220,205 190,190 Z" fill="${AZUL_C}"/>`;
+  s += txt(282, 232, "Gulf of", {fs:14, a:"middle", c:"#0D47A1"}) + txt(282, 248, "Mexico", {fs:14, a:"middle", c:"#0D47A1"});
+  s += `<path d="M262,20 Q270,40 266,62 Q260,74 254,62 Q252,40 262,20 Z" fill="${AZUL_C}"/>`;
+  s += txt(296, 36, "Lake Michigan", {fs:12.5, c:"#0D47A1"});
+  s += `<line x1="0" y1="150" x2="196" y2="168" stroke="#7A6A4F" stroke-width="2" stroke-dasharray="6 5"/>`;
+  s += txt(20, 128, "UNITED STATES", {fs:14, fw:700, c:"#5D4E37"}) + txt(30, 200, "MEXICO", {fs:14, fw:700, c:"#5D4E37"});
+  s += `<circle cx="258" cy="70" r="6" fill="#B71C1C"/>` + txt(250, 92, "Chicago", {fs:15, a:"end"});
+  s += `<circle cx="120" cy="252" r="7" fill="#2E7D32"/>` + txt(40, 280, "Monarch forests, central Mexico", {fs:13});
+  s += `<path d="M252,80 Q200,150 128,242" fill="none" stroke="#C75A00" stroke-width="4" stroke-dasharray="9 6" marker-end="url(#fm)"/>`;
+  s += txt(176, 118, "Fall migration", {fs:14, c:"#8A3D00"});
+  s += txt(394, 284, "Not to scale · about 1,700 miles in a straight line", {fs:11, fw:600, a:"end"});
+  return s + "</svg>";
+}
+const fotoMarco = (desc, pie)=> `<figure class="foto-marco"><p class="tipo-f">📷 Photo (described in words)</p><p class="desc-f">${desc}</p><figcaption>${pie}</figcaption></figure>`;
+
+const VISUALES = [
+ {titulo:"A River That Changed Direction", e:"🗺️", tipo:"map", vis:mapaRio, t:[
+   "Before 1900, the Chicago River carried the city's waste into Lake Michigan.",
+   "Engineers finished the Sanitary and Ship Canal in 1900.",
+   "+After that, the main part of the river flowed away from the lake, toward other rivers to the southwest."],
+  q:[
+   {n:"f", q:"What do the arrows on the map show?", qes:"¿Qué muestran las flechas del mapa?", a:"The direction the river flows today",
+    malas:[["How deep the river is in each place","leer"],["Where the schools of the city are","ninguno"]]},
+   {n:"f", q:"According to the map, which way does the river flow from the lake?", qes:"Según el mapa, ¿hacia dónde corre el río desde el lago?", a:"West, away from the lake",
+    malas:[["East, into Lake Michigan","The arrows point away from the lake, not into it. Look at them again."],["North, toward Canada","Find the N arrow: the river does not go north."]]},
+   {n:"r", q:"What does the map add that the text does not make clear?", qes:"¿Qué aporta el mapa que el texto no deja claro?", a:"Where the canal is and which way the water goes",
+    malas:[["The year the canal was finished","texto"],["That waste once went into the lake","texto"],["How many workers it took to dig the canal by hand","ninguno"]],
+    prueba:"After that, the main part of the river flowed away from the lake, toward other rivers to the southwest."}]},
+
+ {titulo:"A Green River", e:"☘️", tipo:"photo", vis:()=>fotoMarco("A wide view of the Chicago River, bright green from bank to bank. Families in green hats crowd a bridge. A boy on his father's shoulders points at the water and laughs.", "Spectators cheer as the river turns green on the Saturday before St. Patrick's Day."), t:[
+   "Every March, the Chicago River downtown is dyed green.",
+   "The tradition began in 1962.",
+   "+A crew in boats spreads an orange powder that turns the water green."],
+  q:[
+   {n:"f", q:"What does the caption tell you that the text does not?", qes:"¿Qué te dice el pie de foto que el texto no dice?", a:"The day the river is dyed each year",
+    malas:[["The year the tradition began","texto"],["The color of the powder that is used","texto"]]},
+   {n:"f", q:"How do the people in the photo seem to feel?", qes:"¿Cómo parecen sentirse las personas de la foto?", a:"Excited and happy",
+    malas:[["Bored and sleepy","leer"],["Scared and worried","leer"]]},
+   {n:"r", q:"How does the photo add to the tone of the text?", qes:"¿Cómo contribuye la foto al tono del texto?", a:"It makes the event feel joyful and exciting.",
+    malas:[["It makes the event feel dangerous and frightening.","Look at the people: they are cheering and laughing, not afraid."],["It gives the exact year when the tradition started.","texto"],["It makes the event feel quiet, serious and sad.","Look at the people again: they point, laugh and cheer."]],
+    prueba:"Every March, the Chicago River downtown is dyed green."}]},
+
+ {titulo:"Before Sunrise", e:"🌅", tipo:"illustration", vis:amanecer, t:[
+   "Israel couldn't sleep, so he and his uncle walked to the beach before sunrise.",
+   "The sand was cold, and the city behind them was still asleep.",
+   "+Slowly, the sky over the lake turned pink, then gold, and neither of them said a word."],
+  q:[
+   {n:"f", q:"What time of day does the illustration show?", qes:"¿Qué momento del día muestra la ilustración?", a:"Sunrise",
+    malas:[["Noon","leer"],["Midnight","leer"]]},
+   {n:"f", q:"Who is shown in the illustration?", qes:"¿Quién aparece en la ilustración?", a:"Two people on the beach",
+    malas:[["A crowd of swimmers in the lake","leer"],["A dog chasing a ball on the sand","leer"]]},
+   {n:"r", q:"What mood do the warm colors of the illustration add to the story?", qes:"¿Qué ambiente aportan los colores cálidos de la ilustración al cuento?", a:"Calm and quiet",
+    malas:[["Angry and loud","The soft pink and gold colors and the still figures don't feel angry or loud."],["Spooky and dark","The sky is bright pink and gold, not dark and spooky."],["Silly and funny","Nothing in the picture is a joke; the colors feel peaceful."]],
+    prueba:"Slowly, the sky over the lake turned pink, then gold, and neither of them said a word."}]},
+
+ {titulo:"How Big Was Sue?", e:"🦖", tipo:"diagram", vis:escalaSue, t:[
+   "Sue is a T. rex skeleton at the Field Museum in Chicago.",
+   "It is one of the largest and most complete T. rex skeletons ever found.",
+   "+Scientists study its bones to learn how T. rex lived."],
+  q:[
+   {n:"f", q:"What does the diagram compare Sue to?", qes:"¿Con qué compara el diagrama a Sue?", a:"A school bus",
+    malas:[["A house","leer"],["A tall giraffe","leer"]]},
+   {n:"f", q:"About how long is Sue, according to the diagram?", qes:"Según el diagrama, ¿aproximadamente cuánto mide Sue?", a:"About 40 feet",
+    malas:[["About 4 feet","leer"],["About 400 feet","leer"]]},
+   {n:"r", q:"Why did the author include the diagram?", qes:"¿Por qué el autor incluyó el diagrama?", a:"To help readers picture Sue's size",
+    malas:[["To show where the Field Museum is","The diagram shows no map or place. Look at what it compares."],["To show what a T. rex liked to eat","ninguno"],["To tell who discovered Sue's bones","ninguno"]],
+    prueba:"It is one of the largest and most complete T. rex skeletons ever found."}]},
+
+ {titulo:"The L Grows Up", e:"🚆", tipo:"timeline", vis:()=>lineaTiempo([["1892",["First elevated","line opens"]],["1897",["The Loop tracks are","finished downtown"]],["1943",["First subway opens","under State Street"]],["1984",["The Blue Line reaches","O'Hare Airport"]]],
+   "Timeline: 1892, the first elevated line opens. 1897, the Loop tracks are finished downtown. 1943, the first subway opens under State Street. 1984, the Blue Line reaches O'Hare Airport."), t:[
+   "Chicago's trains, called the L, have carried riders for more than 130 years.",
+   "Over time, the system grew and changed.",
+   "+Today, trains run above the streets, at street level and underground."],
+  q:[
+   {n:"f", q:"In what year did the first subway open?", qes:"¿En qué año se abrió el primer metro subterráneo?", a:"1943",
+    malas:[["1892","leer"],["1897","leer"]]},
+   {n:"f", q:"Which event on the timeline happened first?", qes:"¿Qué suceso de la línea de tiempo ocurrió primero?", a:"The first L line opened.",
+    malas:[["The Loop tracks were finished.","leer"],["The Blue Line reached O'Hare.","leer"]]},
+   {n:"r", q:"How does the timeline help explain the words “the system grew and changed”?", qes:"¿Cómo ayuda la línea de tiempo a explicar las palabras «el sistema creció y cambió»?", a:"It shows each change in order, with its year.",
+    malas:[["It tells how many people ride the L today.","ninguno"],["It repeats that the L is more than 130 years old.","texto"],["It shows a map with every station of the L.","The timeline shows years and events, not a map."]],
+    prueba:"Over time, the system grew and changed."},
+   {n:"r", q:"How many years after the first elevated line did the first subway open?", qes:"¿Cuántos años después de la primera línea elevada se abrió el primer metro subterráneo?", a:"51 years",
+    malas:[["41 years","restar"],["61 years","restar"],["46 years","Check which events you used: subtract 1892, the year of the first elevated line, from 1943."]]}]},
+
+ {titulo:"The Big Snow", e:"❄️", tipo:"photo", vis:()=>fotoMarco("A black-and-white photo of a city street. Parked cars are buried in snow up to their windows. Two men with shovels stand on a snow pile taller than they are, and a city bus is stuck in the middle of the street.", "A Chicago street after the blizzard of January 1967."), t:[
+   "In January 1967, about 23 inches of snow fell on Chicago in less than two days.",
+   "It is still the biggest snowstorm ever recorded in the city.",
+   "+Many people had to leave their cars and walk home."],
+  q:[
+   {n:"f", q:"What does the photo show stuck in the street?", qes:"¿Qué muestra la foto atascado en la calle?", a:"A city bus",
+    malas:[["A sailboat","leer"],["A horse and wagon","leer"]]},
+   {n:"f", q:"What does the caption tell you?", qes:"¿Qué te dice el pie de foto?", a:"Where and when the photo was taken",
+    malas:[["How many inches of snow fell","texto"],["The name of the person who took the photo","ninguno"]]},
+   {n:"r", q:"What does the photo add to the words “about 23 inches of snow”?", qes:"¿Qué aporta la foto a las palabras «unas 23 pulgadas de nieve»?", a:"It shows how deep that much snow really looks.",
+    malas:[["It gives the exact number of inches of snow.","texto"],["It shows that the snow melted away in one hour.","leer"],["It makes the storm seem small and harmless.","leer"]],
+    prueba:"In January 1967, about 23 inches of snow fell on Chicago in less than two days."}]},
+
+ {titulo:"A Thousand Windows", e:"🌃", tipo:"illustration", vis:nocheCiudad, t:[
+   "On her first night in Chicago, Selena missed her old town and her old friends.",
+   "From her new window, she could see hundreds of lit windows across the city.",
+   "+She wondered if another kid behind one of them was also new, and the thought made her smile."],
+  q:[
+   {n:"f", q:"What does the illustration show?", qes:"¿Qué muestra la ilustración?", a:"A city at night with many lit windows",
+    malas:[["A farm with cows in the middle of the day","leer"],["A beach at sunrise","leer"]]},
+   {n:"f", q:"Where is Selena in the illustration?", qes:"¿Dónde está Selena en la ilustración?", a:"At a window, looking out",
+    malas:[["On a crowded train downtown","leer"],["Asleep in her new bed","leer"]]},
+   {n:"r", q:"How do the warm yellow windows in the illustration add to the mood?", qes:"¿Cómo contribuyen las ventanas amarillas y cálidas de la ilustración al ambiente?", a:"They make the big city feel friendly, not lonely.",
+    malas:[["They make the city feel cold and very scary.","Warm yellow lights feel cozy, not cold or scary."],["They show that everyone in the city is fast asleep.","Lit windows mean people are awake inside."],["They tell the reader exactly what Selena is thinking.","A picture can't tell her exact thoughts; the text does that."]],
+    prueba:"From her new window, she could see hundreds of lit windows across the city."}]},
+
+ {titulo:"Flying South", e:"🦋", tipo:"map", vis:mapaMonarca, t:[
+   "Monarch butterflies that hatch near Chicago in late summer don't stay for the winter.",
+   "Each fall, they fly south to forests in the mountains of central Mexico.",
+   "+In spring, their children and grandchildren will be the ones that reach Illinois."],
+  q:[
+   {n:"f", q:"On the map, where do the monarchs fly from Chicago?", qes:"En el mapa, ¿adónde vuelan las monarcas desde Chicago?", a:"To central Mexico",
+    malas:[["Up north to Canada","leer"],["To Florida","leer"]]},
+   {n:"f", q:"What does the dashed arrow on the map show?", qes:"¿Qué muestra la flecha punteada del mapa?", a:"The path of the fall migration",
+    malas:[["The border between two countries","The border is the gray dashed line. The orange arrow is labeled “Fall migration.”"],["A road for cars and trucks","leer"]]},
+   {n:"r", q:"What does the map add to the text?", qes:"¿Qué aporta el mapa al texto?", a:"How far the trip is and which way they fly",
+    malas:[["That monarchs hatch in late summer","texto"],["Why monarch caterpillars need milkweed","ninguno"],["That they spend the winter in mountain forests","texto"]],
+    prueba:"Each fall, they fly south to forests in the mountains of central Mexico."}]}
+];
+
+/* =====================================================================
+   5. HECHOS, OPINIONES Y RAZONES (W.5.1b)
+   t: [oración, "c" (afirmación), "f" (hecho) u "o" (opinión)]
+   orden: [afirmación, primera razón, otra razón, conclusión] · razones: [texto, pista]; la primera es la buena
+   pr: oración del texto que da el hecho de la razón buena
+   ===================================================================== */
+const OPINIONES = [
+ {titulo:"Our School Needs a Garden", autor:"Israel", e:"🥕", t:[
+   ["Dear Ms. Duarte, I think our school should build a vegetable garden in the empty lot behind the gym.","c"],
+   ["Gardens are the most fun way to learn science, and nobody could ever think a garden is boring.","o"],
+   ["In a garden, students can measure how tall plants grow each week and record the data.","f"],
+   ["Last spring, 32 students in our grade signed a paper saying they would help take care of a garden.","f"],
+   ["Tomatoes picked from a school garden would taste much better than any tomatoes from a store.","o"],
+   ["The lot behind the gym gets sunlight for most of the day.","f"],
+   ["Please say yes, because a garden would be the best and most exciting project our school has ever had!","o"]],
+  orden:["I think our school should build a vegetable garden.","First, a garden would help us learn science, because we could measure and record how plants grow.","Also, many students are ready to help: 32 kids have already signed up.","For these reasons, a school garden would be a smart choice."],
+  razones:[["Students are ready to help, since 32 of them already signed up.","ok"],["Gardens are the most fun way to learn, so everyone would love it.","op"],["The gym also needs brand-new basketball hoops this year.","fuera"],["Every single student in Chicago wants a garden at school.","exag"]],
+  pr:"Last spring, 32 students in our grade signed a paper saying they would help take care of a garden."},
+ {titulo:"Recess Should Be Longer", autor:"Daniel", e:"⏱️", t:[
+   ["Our recess should be 30 minutes long instead of 15.","c"],
+   ["Doctors recommend that children get at least 60 minutes of activity a day.","f"],
+   ["Right now, students at our school have one 15-minute recess.","f"],
+   ["Recess is easily the best part of the school day, and every student I know agrees with me.","o"],
+   ["Sitting still at a desk all day long is the most terrible feeling in the world.","o"],
+   ["Several studies have found that students pay better attention in class after a break.","f"],
+   ["A longer recess would make every single student and teacher at our school so much happier.","o"]],
+  orden:["Our recess should be 30 minutes long.","First, doctors say kids need 60 minutes of activity a day, and 15 minutes is far from that.","Also, studies show that students pay better attention after a break.","That is why a longer recess would help us stay healthy and learn."],
+  razones:[["Kids need more activity: doctors say 60 minutes a day.","ok"],["Recess is the best part of the day, so it should be longer.","op"],["The cafeteria should serve pizza every single Friday.","fuera"],["Without a longer recess, nobody at school can learn anything.","exag"]],
+  pr:"Doctors recommend that children get at least 60 minutes of activity a day."},
+ {titulo:"Visit Lincoln Park Zoo", autor:"Athena", e:"🦁", t:[
+   ["Every family in Chicago should visit Lincoln Park Zoo at least once a year.","c"],
+   ["Lincoln Park Zoo opened in 1868, making it one of the oldest zoos in the country.","f"],
+   ["Admission to the zoo is free.","f"],
+   ["Gorillas are the most amazing animals to watch, and the zoo's gorillas are the cutest of all.","o"],
+   ["The zoo is so much more fun than any museum in the city, especially on a sunny Saturday.","o"],
+   ["The zoo is in Lincoln Park, a short walk from the lakefront.","f"],
+   ["You will never be bored there, because watching the animals is more exciting than anything else.","o"]],
+  orden:["Every family in Chicago should visit Lincoln Park Zoo.","First, the zoo is free, so any family can go.","Also, it is easy to reach, since it is a short walk from the lakefront.","So pack a lunch and visit the zoo this year!"],
+  razones:[["Any family can go, because admission to the zoo is free.","ok"],["Gorillas are the most amazing animals, so everyone will love it.","op"],["Lake Michigan is a great place to swim in July.","fuera"],["The zoo has every kind of animal that lives on Earth.","exag"]],
+  pr:"Admission to the zoo is free."},
+ {titulo:"Our Block Needs More Trees", autor:"Salma", e:"🌳", t:[
+   ["Our block should plant more trees along the sidewalk.","c"],
+   ["Trees give shade, which can make a street feel cooler on hot days.","f"],
+   ["Tree leaves and roots can help soak up rainwater.","f"],
+   ["Right now, there are only two trees on our whole block.","f"],
+   ["A street without trees looks sad and ugly, and nobody enjoys walking down a street like that.","o"],
+   ["Birds singing in the trees are the best neighbors that anyone could ever have.","o"],
+   ["Everyone on our block would agree that planting more trees is a wonderful idea.","o"]],
+  orden:["Our block should plant more trees along the sidewalk.","First, trees give shade, which can keep our street cooler in summer.","Also, trees help soak up rainwater, so there would be fewer puddles.","For these reasons, our block should plant more trees."],
+  razones:[["Trees would keep the street cooler, since they give shade.","ok"],["A street without trees looks ugly, so we need more of them.","op"],["Our alley needs a brand-new streetlight at the corner.","fuera"],["Planting trees would stop every flood in Chicago forever.","exag"]],
+  pr:"Trees give shade, which can make a street feel cooler on hot days."},
+ {titulo:"Every Fifth Grader Should Learn to Swim", autor:"Sophia", e:"🏊", t:[
+   ["Every fifth grader should take swimming lessons.","c"],
+   ["Chicago has many public beaches along Lake Michigan.","f"],
+   ["The city's park district offers swimming lessons at many park pools.","f"],
+   ["Lifeguards are on duty at Chicago beaches only during the summer season.","f"],
+   ["Swimming is the most exciting sport in the world, much more exciting than soccer or baseball.","o"],
+   ["Kids who don't know how to swim are missing out on all the best fun of the summer.","o"],
+   ["Learning to swim helps people stay safe in and near water.","f"]],
+  orden:["Every fifth grader should take swimming lessons.","First, knowing how to swim helps people stay safe in and near water.","Also, Chicago has many beaches, so kids here are often near water.","That is why swimming lessons should be part of fifth grade."],
+  razones:[["Kids here are often near water: Chicago has many beaches.","ok"],["Swimming is the most exciting sport, so everyone should do it.","op"],["Our school should start a chess club after school.","fuera"],["Everyone who learns to swim will win an Olympic medal.","exag"]],
+  pr:"Chicago has many public beaches along Lake Michigan."},
+ {titulo:"Let's Take the L on Field Trips", autor:"Selena", e:"🚆", t:[
+   ["Our class should ride the L to get to field trips.","c"],
+   ["The L has eight lines, and they connect many neighborhoods with downtown.","f"],
+   ["Many museums, like the Art Institute, are a short walk from an L station.","f"],
+   ["Last year, our bus got stuck in traffic, and we missed half of our museum visit.","f"],
+   ["Riding the train is way more exciting than sitting on a boring yellow school bus.","o"],
+   ["Every kid in our school should know how to ride the L, because it is such an awesome adventure.","o"],
+   ["The L is the best thing about Chicago, better than the beaches, the parks and the pizza.","o"]],
+  orden:["Our class should ride the L to get to field trips.","First, many museums are a short walk from an L station.","Also, the train doesn't get stuck in traffic the way our bus did last year.","So, for our next field trip, let's take the L!"],
+  razones:[["Trains avoid jams like the one that cut our visit short.","ok"],["Riding the train is more exciting than riding a boring bus.","op"],["The cafeteria should have more salad choices at lunch.","fuera"],["The L can take you to every city in the United States.","exag"]],
+  pr:"Last year, our bus got stuck in traffic, and we missed half of our museum visit."},
+ {titulo:"Our Library Should Lend Games", autor:"Elías", e:"🎲", t:[
+   ["Our school library should lend board games, not just books.","c"],
+   ["Many board games make players use math, such as counting money or keeping score.","f"],
+   ["Some public libraries already lend games, tools and even musical instruments.","f"],
+   ["In a survey of our class, 21 out of 26 students said they would borrow games.","f"],
+   ["Board games are much better than video games, and they are a lot more fun to play with friends.","o"],
+   ["Rainy weekends are so boring when you don't have something new and exciting to play at home.","o"],
+   ["With games on the shelves, ours would be the coolest and most popular library in all of Chicago.","o"]],
+  orden:["Our school library should lend board games, not just books.","First, many board games help players practice math.","Also, most of our class wants this: 21 out of 26 students said they would borrow games.","For these reasons, our library should start lending games."],
+  razones:[["Students want it: 21 of 26 in our class would borrow games.","ok"],["Board games are better than video games, so we need them.","op"],["Our gym needs new volleyball nets before the spring.","fuera"],["Every library in the whole world already lends board games.","exag"]],
+  pr:"In a survey of our class, 21 out of 26 students said they would borrow games."},
+ {titulo:"Join Our Block Clean-Up Day", autor:"Ms. Grant, a neighbor", e:"🧤", t:[
+   ["Our block should hold a clean-up day every spring.","c"],
+   ["Last April, volunteers on Maple Street filled 30 bags of litter in three hours.","f"],
+   ["Litter on the street can wash into storm drains and end up in the river.","f"],
+   ["Working together outside is the very best way to get to know your neighbors.","o"],
+   ["A clean street is always a beautiful street, and ours could be the prettiest block in the city.","o"],
+   ["The hardware store on the corner has offered to donate gloves and trash bags.","f"],
+   ["Nobody likes walking past garbage, and it is the worst thing to see on the way to school.","o"]],
+  orden:["Our block should hold a clean-up day every spring.","First, a clean-up makes a big difference: Maple Street volunteers collected 30 bags of litter in three hours.","Also, picking up litter keeps it from washing into storm drains and the river.","So mark your calendars and join us this spring!"],
+  razones:[["A clean-up works: volunteers filled 30 bags in three hours.","ok"],["A clean street is a beautiful street, so we should clean it.","op"],["Our block needs a new basketball court in the park.","fuera"],["One clean-up day would end all the litter in Chicago forever.","exag"]],
+  pr:"Last April, volunteers on Maple Street filled 30 bags of litter in three hours."}
+];
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const reto = S.reto, nivel = reto ? "r" : "f";
+
+  /* --- 1. Dos relatos del mismo suceso (RI.5.6) --- */
+  if(S.juego === "relatos"){
+    const r = elegirNuevo(RELATOS, x=>x.id);
+    const q = elegir(r.q.filter(x=>x.n === nivel));
+    laminaEl(r.id);
+    const cont = textosEl([{...r.a, etiqueta:"Account 1 · " + r.a.tipo}, {...r.b, etiqueta:"Account 2 · " + r.b.tipo}]);
+    preguntaEl(q.q);
+    ponerInstruccion(T.relatos, T.relatos + " " + q.q, ES.relatos + " " + q.qes);
+    hacerPregunta(cont, q);
+    return;
+  }
+
+  /* --- 2. Juntar información de varios textos (RI.5.9) --- */
+  if(S.juego === "integrar"){
+    const s = elegirNuevo(INTEGRAR, x=>x.titulo);
+    const q = elegir(s.q.filter(x=>x.n === nivel));
+    const cont = textosEl(s.textos.map((c, i)=>({...c, etiqueta:"Text " + "ABC"[i]})));
+    preguntaEl(q.q);
+    ponerInstruccion(T.integrar, T.integrar + " " + q.q, ES.integrar + " " + q.qes);
+    hacerPregunta(cont, q);
+    return;
+  }
+
+  /* --- 3. Dos cuentos del mismo género (RL.5.9) --- */
+  if(S.juego === "genero"){
+    const g = elegirNuevo(GENERO, x=>x.a.titulo);
+    const q = elegir(g.q.filter(x=>x.n === nivel));
+    const cont = textosEl([{...g.a, etiqueta:"Story 1 · " + g.genero}, {...g.b, etiqueta:"Story 2 · " + g.genero}]);
+    preguntaEl(q.q);
+    ponerInstruccion(T.genero, T.genero + " " + q.q, ES.genero + " " + q.qes);
+    hacerPregunta(cont, q);
+    return;
+  }
+
+  /* --- 4. ¿Qué aporta la imagen? (RL.5.7) --- */
+  if(S.juego === "visuales"){
+    const v = elegirNuevo(VISUALES, x=>x.titulo);
+    const q = elegir(v.q.filter(x=>x.n === nivel));
+    const cont = textosEl([{titulo:v.titulo, e:v.e, t:v.t}]);
+    const d = document.createElement("div"); d.className = "visual"; d.lang = "en";
+    d.innerHTML = `<p class="visual-t">${v.e} ${escaparHTML(v.titulo)}</p>` + v.vis();
+    cont.after(d);
+    preguntaEl(q.q);
+    ponerInstruccion(T.visuales, T.visuales + " " + q.q, ES.visuales + " " + q.qes);
+    hacerPregunta(cont, q, true);
+    return;
+  }
+
+  /* --- 5. Hechos, opiniones y razones (W.5.1b) --- */
+  if(S.juego === "hechoOpinion"){
+    const o = elegirNuevo(OPINIONES, x=>x.titulo);
+    const cont = textosEl([{titulo:o.titulo, e:o.e, etiqueta:"Opinion piece by " + o.autor, t:o.t.map(x=>x[0])}]);
+    const modo = reto ? elegir(["apoyo","orden","apoyo","orden","opinion"]) : elegir(["hecho","opinion"]);
+    if(modo === "hecho" || modo === "opinion"){
+      const hechos = o.t.filter(x=>x[1] === "f").map(x=>x[0]), opin = o.t.filter(x=>x[1] !== "f").map(x=>x[0]);
+      const esHecho = modo === "hecho";
+      const pool = esHecho ? hechos : opin, otros = esHecho ? opin : hechos;
+      const conLargo = pool.filter(x=> otros.some(y=> y.length > x.length));
+      const bien = elegir(conLargo.length ? conLargo : pool);
+      const malas = distractores(otros, bien, reto ? 3 : 2);
+      const q = esHecho ? ["Which sentence from the text is a fact?","¿Qué oración del texto es un hecho?"] : ["Which sentence from the text is an opinion?","¿Qué oración del texto es una opinión?"];
+      preguntaEl(q[0]);
+      ponerInstruccion(T.hecho, T.hecho + " " + q[0], ES.hecho + " " + q[1]);
+      opcionesTexto([bien, ...malas], bien, ()=>{
+        resaltar(cont, bien, "prueba");
+        acertar(esHecho ? "That sentence can be checked or proven, so it is a fact." : "That sentence tells a feeling or a belief, so it is an opinion.");
+      }, esHecho ? H.pHecho : H.pOpinion, true);
+      return;
+    }
+    if(modo === "apoyo"){
+      const q = ["Which reason is best supported by facts and details from the text?","¿Qué razón está mejor apoyada por hechos y detalles del texto?"];
+      preguntaEl(q[0]);
+      ponerInstruccion(T.apoyo, T.apoyo + " " + q[0], ES.apoyo + " " + q[1]);
+      const bien = o.razones[0][0], mapa = new Map(o.razones.slice(1));
+      opcionesTexto(o.razones.map(x=>x[0]), bien, ()=>{
+        probar(cont, o.pr, [], "A good reason is backed up by a fact from the text.");
+      }, (x)=> pista(mapa.get(x)), true);
+      return;
+    }
+    /* orden lógico del argumento */
+    preguntaEl("Put the parts of the argument in a logical order.");
+    ponerInstruccion(T.orden, null, ES.orden);
+    const ol = document.createElement("ol"); ol.className = "orden";
+    ol.innerHTML = o.orden.map((_, i)=>`<li><b>${i+1}.</b> <span></span></li>`).join("");
+    $("escena").appendChild(ol);
+    const opc = $("opciones"); opc.classList.add("lista");
+    let paso = 0;
+    mezclar(o.orden.map((s, i)=>[s, i])).forEach(([s, i])=>{
+      const b = botonTexto(s, "chip-ev", null, (bt)=>{
+        if(i !== paso){
+          fallar(bt, paso === 0 ? H.ordClaim : i === 3 ? H.ordFin : i === 2 ? H.ordAlso : H.ordClaim);
+          return;
+        }
+        bt.disabled = true;
+        const li = ol.children[paso]; li.classList.add("lleno"); li.querySelector("span").textContent = s;
+        paso++;
+        if(paso === o.orden.length) acertar("Claim first, then reasons with facts, and a conclusion at the end. That's a logical order!");
+        else { $("aviso").className = "aviso"; $("aviso").textContent = ""; }
+      });
+      b.dataset.i = i; b.lang = "en";
+      opc.appendChild(b);
+    });
+    S.resolver = ()=>{ for(let k=0; k<5 && paso < o.orden.length && !S.bloqueado; k++){ const b = [...opc.querySelectorAll("button")].find(x=> Number(x.dataset.i) === paso); if(b) b.click(); else break; } };
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (RI.5.6, RI.5.1): sí o no y, en el Reto, la mejor evidencia --- */
+  if(S.juego === "debate"){
+    const r = elegirNuevo(RELATOS, x=>x.id);
+    const textoTodo = r.a.t.concat(r.b.t).join(" ");
+    const [n1, n2] = mezclar(NOMBRES.filter(n=> !textoTodo.includes(n))).slice(0, 2);
+    const ds = mezclar(r.dichos);
+    const cont = textosEl([{...r.a, etiqueta:"Account 1 · " + r.a.tipo}, {...r.b, etiqueta:"Account 2 · " + r.b.tipo}]);
+    const caja = document.createElement("div"); caja.className = "dichos";
+    caja.innerHTML = [[n1, ds[0]], [n2, ds[1]]].map(([n, d])=>`<p class="dicho" lang="en"><span aria-hidden="true">💬</span> <b>${n}:</b> “${escaparHTML(d.txt)}”</p>`).join("");
+    $("escena").appendChild(caja);
+    const k = Math.random() < 0.5 ? 0 : 1, quien = k ? n2 : n1, d = ds[k];
+    preguntaEl(`Is ${quien} right?`);
+    ponerInstruccion(T.debate, T.debate + " " + quien + ": " + d.txt + " Is " + quien + " right?", ES.debate + " ¿Tiene razón " + quien + "?");
+    const opc = $("opciones");
+    [[true, T.si, "opcion-vf v"], [false, T.no, "opcion-vf f"]].forEach(([v, tx, cls])=>{
+      opc.appendChild(botonTexto(tx, cls, null, (bt)=>{
+        if(v !== d.v){ if(!reto) resaltar(cont, d.ev, "marca"); fallar(bt, T.pistaDebate); return; }
+        sonBoing();
+        if(!reto){ resaltar(cont, d.ev, "prueba"); acertar(d.ex); return; }
+        opc.innerHTML = ""; $("aviso").className = "aviso"; $("aviso").textContent = "";
+        $("txt-instruccion").textContent = T.evidencia; hablar(T.evidencia);
+        $("btn-bocina").onclick = ()=>hablar(T.evidencia);
+        $("txt-ayuda").textContent = ES.evidencia; $("btn-bocina-es").onclick = ()=>hablar(ES.evidencia, null, "es");
+        const todas = [...cont.querySelectorAll(".frase")].map(f=>f.textContent).filter(s=> s !== d.ev && s.length > 30);
+        opcionesTexto([d.ev, ...distractores(todas, d.ev, 3)], d.ev, ()=>{ resaltar(cont, d.ev, "prueba"); acertar(d.ex); }, H.prueba, true);
+      }));
+    });
+    S.resolver = resolverTexto(d.v ? T.si : T.no);
+    return;
+  }
+}
+
+/* ============ Hoja imprimible ============ */
+function pintarHoja(){
+  const r = RELATOS.find(x=>x.id === "coyote");
+  $("hoja-textos").innerHTML = [r.a, r.b].map((c, i)=>`<div class="cuento-h"><h4>Account ${i+1} · ${escaparHTML(c.tipo)}: ${escaparHTML(c.titulo)}</h4><p>${c.t.map(limpio).map(escaparHTML).join(" ")}</p></div>`).join("");
+  $("hoja-preguntas").innerHTML = ["What do both accounts tell about the animal? Quote one sentence from each account.",
+    "Daniel calls the animal a wolf, and Ms. Okafor calls it a coyote. Why do they describe it so differently?",
+    "What is the purpose of each account? Explain how you know.",
+    "Find one opinion in Daniel's post and one fact in Ms. Okafor's note. Copy them.",
+    "Daniel says, “Both writers agree that the animal was dangerous.” Is he right? Give evidence from the texts."]
+    .map(q=>`<li>${escaparHTML(q)}<span class="larga"></span><span class="larga"></span></li>`).join("");
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([tx, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = tx; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+pintarHoja();
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="5"></script>
+</body>
+</html>
