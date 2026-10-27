@@ -196,6 +196,38 @@ body.con-ayuda .ayuda-es{display:block}
   .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
   .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
 }
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:22px 0 0}
+.menu-tarea p{font-weight:700;margin:0 0 10px}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
   .confeti{display:none}
@@ -280,6 +312,11 @@ body.con-ayuda .ayuda-es{display:block}
   <section id="p-menu" class="oculto">
     <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
     <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Why is every square a rectangle?</span></span></button>
+    </div>
   </section>
 
   <!-- JUEGO -->
@@ -320,9 +357,82 @@ body.con-ayuda .ayuda-es{display:block}
     </div>
   </section>
 
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Use what you know about the attributes of shapes: their sides, their angles and their parallel sides.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Usa lo que sabes sobre los atributos de las figuras: sus lados, sus ángulos y sus lados paralelos.</p>
+      </div></div>
+    </div>
+
+    <div class="figuras">
+      <figure><svg width="130" height="130" viewBox="0 0 130 130" role="img" aria-labelledby="t-cuadrado"><title id="t-cuadrado">A square: four equal sides and four right angles</title>
+          <rect x="15" y="15" width="100" height="100" fill="#E8F5F6" stroke="#194F5A" stroke-width="4"/>
+          <path d="M15 33 H33 V15 M97 15 V33 H115 M115 97 H97 V115 M33 115 V97 H15" fill="none" stroke="#194F5A" stroke-width="2.5"/>
+          <path d="M65 9 V21 M65 109 V121 M9 65 H21 M109 65 H121" stroke="#B71C1C" stroke-width="3"/></svg><figcaption>Square</figcaption></figure>
+      <figure><svg width="200" height="130" viewBox="0 0 200 130" role="img" aria-labelledby="t-rombo"><title id="t-rombo">A rhombus: four equal sides, but no right angles</title>
+          <polygon points="20,110 120,110 180,30 80,30" fill="#E8F5F6" stroke="#194F5A" stroke-width="4"/>
+          <path d="M70 104 V116 M130 24 V36 M45 66 L55 74 M145 66 L155 74" stroke="#B71C1C" stroke-width="3"/></svg><figcaption>Rhombus</figcaption></figure>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Israel says: “Every square is a rectangle.” Explain why he is right.</p>
+      <p class="ayuda-es" lang="es">Israel dice: «Todo cuadrado es un rectángulo». Explica por qué tiene razón.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> A rectangle is a quadrilateral with ___. A square has ___. So a square ___.</p>
+        <p><b>Useful words:</b> quadrilateral, right angle, opposite sides, parallel, equal, attribute.</p>
+      </div>
+      <p class="solo-reto consigna">Challenge: write your explanation without sentence starters, and use the word “attribute”.</p>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new shape</h3>
+      <p class="consigna" id="consigna-2">Salma says: “Every rhombus is a square.” Is she right? Explain, and describe or draw a shape that proves your answer.</p>
+      <p class="ayuda-es" lang="es">Salma dice: «Todo rombo es un cuadrado». ¿Tiene razón? Explica y describe o dibuja una figura que demuestre tu respuesta.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Salma is ___ because a rhombus only needs ___. For example, ___.</p>
+      </div>
+      <p class="solo-reto consigna">Challenge: also tell which shapes can be both a rhombus and a rectangle.</p>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used attributes as evidence: sides, angles or parallel sides.<span class="es" lang="es">Usé atributos como evidencia: lados, ángulos o lados paralelos.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how those attributes support my answer.<span class="es" lang="es">Expliqué cómo esos atributos apoyan mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to a new shape in Part 2.<span class="es" lang="es">Apliqué la idea a una figura nueva en la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> A rectangle is a quadrilateral with four right angles. A square also has four right angles, so it has every attribute a rectangle needs. Its four equal sides are an extra attribute. That is why every square is a rectangle: a special rectangle.</p>
+        <p><b>Part 2.</b> Salma is not right. A rhombus only needs four equal sides. Its angles do not have to be right angles, like the rhombus in the picture, which leans. That rhombus is not a square. Some rhombuses are squares, but not every rhombus is.</p>
+        <p class="solo-reto"><b>Challenge.</b> Only a square can be both a rhombus and a rectangle, because it has four equal sides and four right angles.</p>
+        <p>Your words can be different. What matters is that your answer uses attributes and explains how they prove it.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: coordinates and shapes</button></p>
-    <p>Aligned to the Illinois fifth grade mathematics standards 5.G.1 (use a pair of perpendicular number lines, called axes, to define a coordinate system, with the intersection of the lines (the origin) arranged to coincide with the 0 on each line and a given point in the plane located by using an ordered pair of numbers, called its coordinates; understand that the first number indicates how far to travel from the origin in the direction of one axis, and the second number indicates how far to travel in the direction of the second axis, with the convention that the names of the two axes and the coordinates correspond: x-axis and x-coordinate, y-axis and y-coordinate), 5.G.2 (represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation), 5.G.3 (understand that attributes belonging to a category of two-dimensional figures also belong to all subcategories of that category; for example, all rectangles have four right angles and squares are rectangles, so all squares have four right angles) and 5.G.4 (classify two-dimensional figures in a hierarchy based on properties). At the Easy level the grid shows guide lines and steps, the maps ask one-step questions and every shape is drawn with tick marks, right-angle marks and parallel arrows; at the Challenge level points sit on the axes or must be found from another point, map questions take two steps, the child picks all the names or shapes that apply, and in “Who is right?” the child must also choose the reason. These games use the inclusive definition of a trapezoid: a quadrilateral with at least one pair of parallel sides, so every parallelogram is also a trapezoid. On the “Plot the point” grid every intersection is a button, so it can be played with the keyboard. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #leer, #ubicar, #mapa, #atributos, #jerarquia and #razon.</p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.G.1 (use a pair of perpendicular number lines, called axes, to define a coordinate system, with the intersection of the lines (the origin) arranged to coincide with the 0 on each line and a given point in the plane located by using an ordered pair of numbers, called its coordinates; understand that the first number indicates how far to travel from the origin in the direction of one axis, and the second number indicates how far to travel in the direction of the second axis, with the convention that the names of the two axes and the coordinates correspond: x-axis and x-coordinate, y-axis and y-coordinate), 5.G.2 (represent real world and mathematical problems by graphing points in the first quadrant of the coordinate plane, and interpret coordinate values of points in the context of the situation), 5.G.3 (understand that attributes belonging to a category of two-dimensional figures also belong to all subcategories of that category; for example, all rectangles have four right angles and squares are rectangles, so all squares have four right angles) and 5.G.4 (classify two-dimensional figures in a hierarchy based on properties). At the Easy level the grid shows guide lines and steps, the maps ask one-step questions and every shape is drawn with tick marks, right-angle marks and parallel arrows; at the Challenge level points sit on the axes or must be found from another point, map questions take two steps, the child picks all the names or shapes that apply, and in “Who is right?” the child must also choose the reason. These games use the inclusive definition of a trapezoid: a quadrilateral with at least one pair of parallel sides, so every parallelogram is also a trapezoid. On the “Plot the point” grid every intersection is a button, so it can be played with the keyboard. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #leer, #ubicar, #mapa, #atributos, #jerarquia and #razon, and the final task (build and explain an answer without options) is #tarea.</p>
     <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.G.1 (usar un par de rectas numéricas perpendiculares, llamadas ejes, para definir un sistema de coordenadas cuyo origen coincide con el 0 de cada recta; entender que el primer número indica cuánto avanzar desde el origen en la dirección del eje x y el segundo, cuánto avanzar en la dirección del eje y), 5.G.2 (representar problemas de la vida real y matemáticos marcando puntos en el primer cuadrante e interpretar las coordenadas según la situación), 5.G.3 (entender que los atributos de una categoría de figuras planas también pertenecen a todas sus subcategorías: todo rectángulo tiene cuatro ángulos rectos y los cuadrados son rectángulos, así que todo cuadrado tiene cuatro ángulos rectos) y 5.G.4 (clasificar figuras planas en una jerarquía según sus propiedades). Se usa la definición inclusiva de trapecio: un cuadrilátero con al menos un par de lados paralelos. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
@@ -344,6 +454,11 @@ body.con-ayuda .ayuda-es{display:block}
   <h3>5. Who is right? Explain why.</h3>
   <p class="razon-h" id="hoja-razon"></p>
   <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Israel says: “Every square is a rectangle.” Explain why he is right.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Salma says: “Every rhombus is a square.” Is she right? Explain, and draw a shape that proves your answer.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
   <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0. Trapezoid = a quadrilateral with at least one pair of parallel sides.</p>
 </div>
 
@@ -754,7 +869,7 @@ function ponerAyuda(on){
 
 /* ============ Navegación ============ */
 function mostrar(cual){
-  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
   $(cual).classList.remove("oculto");
 }
 function pintarMenu(){
@@ -1414,10 +1529,45 @@ function pintarReflexion(){
   });
 }
 
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
 /* ============ Eventos ============ */
 $("btn-empezar").addEventListener("click", ()=>{
   try{ ctx(); }catch(e){}
   sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
   const j = juegoDelAncla();
   if(j){ iniciarJuego(j); return; }
   hablar(T.menu); mostrar("p-menu");
@@ -1435,6 +1585,7 @@ $("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
 $("btn-imprimir").addEventListener("click", ()=>window.print());
 function ponerReto(r){
   S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
   $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
   if(S.juego) nuevaRonda();
 }
