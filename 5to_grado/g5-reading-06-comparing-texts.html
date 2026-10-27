@@ -646,6 +646,21 @@ function laminaEl(slug){
   const im = document.createElement("img"); im.className = "lamina-l"; im.src = "l5-lamina-pov-" + slug + ".jpg"; im.alt = l[0];
   im.width = 1376; im.height = 768; im.addEventListener("error", ()=> im.remove());
   $("escena").appendChild(im);
+  videoDeLamina(im, "l5-lamina-pov-" + slug, $("escena"));
+}
+
+/* Si existe un video corto de la lámina (mismo nombre, .mp4), aparece un botón para verla en movimiento. */
+function videoDeLamina(im, base, cont){
+  const bv = document.createElement("button"); bv.type = "button"; bv.className = "oir-r"; bv.textContent = "🎬 See the picture move"; bv.hidden = true;
+  const prueba = document.createElement("video"); prueba.preload = "metadata"; prueba.muted = true; prueba.src = base + ".mp4";
+  prueba.addEventListener("loadedmetadata", ()=>{ if(im.isConnected) bv.hidden = false; });
+  bv.addEventListener("click", ()=>{
+    if(window.speechSynthesis) window.speechSynthesis.cancel();
+    const v = document.createElement("video"); v.src = prueba.src; v.controls = true; v.playsInline = true; v.setAttribute("playsinline", ""); v.muted = true;
+    v.className = "lamina-l"; v.setAttribute("aria-label", im.alt); v.poster = im.src;
+    im.replaceWith(v); bv.remove(); const pr = v.play(); if(pr && pr.catch) pr.catch(()=>{});
+  });
+  im.insertAdjacentElement("afterend", bv);
 }
 /* Explicación al acertar */
 const sinPunto = (s)=> s.replace(/[.!]$/, "");
