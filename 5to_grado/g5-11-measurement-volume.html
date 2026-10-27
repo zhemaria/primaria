@@ -200,6 +200,38 @@ body.con-ayuda .ayuda-es{display:block}
   .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
   .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
 }
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
   .confeti{display:none}
@@ -236,6 +268,11 @@ body.con-ayuda .ayuda-es{display:block}
   <section id="p-menu" class="oculto">
     <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
     <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Explain the volume with layers and boxes</span></span></button>
+    </div>
   </section>
 
   <!-- JUEGO -->
@@ -276,9 +313,72 @@ body.con-ayuda .ayuda-es{display:block}
     </div>
   </section>
 
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Show your numbers, a model or a drawing, and tell how they prove your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Muestra tus números, un modelo o un dibujo, y di cómo demuestran tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Elías builds a box with unit cubes: each layer has 4 rows of 3 cubes, and there are 2 layers. He says the volume is 24 cubic units. Explain why he is right, using the layers.</p>
+      <p class="ayuda-es" lang="es">Elías construye una caja con cubos unitarios: cada capa tiene 4 filas de 3 cubos y hay 2 capas. Dice que el volumen es 24 unidades cúbicas. Explica por qué tiene razón usando las capas.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> One layer has ___ × ___ = ___ cubes. There are ___ layers, so the volume is ___ × ___ = ___ cubic units. This is the same as V = l × w × h = ___.</p>
+        <p><b>Useful words:</b> unit cube, layer, base, height, cubic units, volume.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also explain why V = B × h gives the same answer.</p><p class="ayuda-es" lang="es">Reto: explica también por qué V = B × h da la misma respuesta.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">A planter is made of two boxes that do not overlap. Box A is 5 ft × 2 ft × 2 ft, and Box B is 3 ft × 2 ft × 1 ft. Selena says the volume is 5 × 2 × 2 × 3 × 2 × 1 = 120 cubic feet. Is she right? Explain, and find the correct volume.</p>
+      <p class="ayuda-es" lang="es">Una jardinera está formada por dos cajas que no se superponen. La caja A mide 5 pies × 2 pies × 2 pies y la caja B, 3 pies × 2 pies × 1 pie. Selena dice que el volumen es 5 × 2 × 2 × 3 × 2 × 1 = 120 pies cúbicos. ¿Tiene razón? Explica y halla el volumen correcto.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Selena is ___. Box A = ___ ft³ and Box B = ___ ft³. Because the boxes do not overlap, I ___ the volumes: ___ + ___ = ___ ft³.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also explain why the boxes must not overlap for this method to work.</p><p class="ayuda-es" lang="es">Reto: explica también por qué las cajas no deben superponerse para que este método funcione.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: numbers, a model, a drawing or a math rule.<span class="es" lang="es">Usé evidencia: números, un modelo, un dibujo o una regla matemática.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> One layer has 4 rows of 3 cubes, so 4 × 3 = 12 cubes. There are 2 layers, so 12 × 2 = 24 cubes. The volume is 24 cubic units. With the formula, V = 4 × 3 × 2 = 24.</p>
+        <p><b>Part 2.</b> Selena is not right. She multiplied all six numbers together, but each box has its own volume. Box A: 5 × 2 × 2 = 20 ft³. Box B: 3 × 2 × 1 = 6 ft³. The boxes do not overlap, so I add them: 20 + 6 = 26 ft³.</p>
+        <p class="solo-reto"><b>Challenge.</b> B is the area of the base: 4 × 3 = 12 square units, and h = 2, so V = 12 × 2 = 24. If the boxes overlapped, the shared space would be counted twice, and the sum would be too big.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: measurement and volume</button></p>
-    <p>Aligned to the Illinois fifth grade mathematics standards 5.MD.1 (convert among different-sized standard measurement units within a given measurement system, e.g., convert 5 cm to 0.05 m, and use these conversions in solving multi-step, real world problems), 5.MD.2 (make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8); use operations on fractions for this grade to solve problems involving information presented in line plots), 5.MD.3 (recognize volume as an attribute of solid figures and understand concepts of volume measurement: a cube with side length 1 unit is a “unit cube”, and a solid figure which can be packed without gaps or overlaps using n unit cubes has a volume of n cubic units), 5.MD.4 (measure volumes by counting unit cubes, using cubic cm, cubic in, cubic ft, and improvised units) and 5.MD.5 (relate volume to the operations of multiplication and addition: find the volume of a right rectangular prism with whole-number side lengths by packing it with unit cubes, apply the formulas V = l × w × h and V = b × h, and find volumes of solid figures composed of two non-overlapping right rectangular prisms by adding the volumes of the non-overlapping parts). At the Easy level a conversion table, labeled line plots, a box split into layers and drawings with every dimension show the structure; at the Challenge level there are multi-step problems, eighths, missing dimensions, square-versus-cubic units and figures where one length must be found first, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #convertir, #diagrama, #cubos, #formula, #compuesta and #razon.</p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.MD.1 (convert among different-sized standard measurement units within a given measurement system, e.g., convert 5 cm to 0.05 m, and use these conversions in solving multi-step, real world problems), 5.MD.2 (make a line plot to display a data set of measurements in fractions of a unit (1/2, 1/4, 1/8); use operations on fractions for this grade to solve problems involving information presented in line plots), 5.MD.3 (recognize volume as an attribute of solid figures and understand concepts of volume measurement: a cube with side length 1 unit is a “unit cube”, and a solid figure which can be packed without gaps or overlaps using n unit cubes has a volume of n cubic units), 5.MD.4 (measure volumes by counting unit cubes, using cubic cm, cubic in, cubic ft, and improvised units) and 5.MD.5 (relate volume to the operations of multiplication and addition: find the volume of a right rectangular prism with whole-number side lengths by packing it with unit cubes, apply the formulas V = l × w × h and V = b × h, and find volumes of solid figures composed of two non-overlapping right rectangular prisms by adding the volumes of the non-overlapping parts). At the Easy level a conversion table, labeled line plots, a box split into layers and drawings with every dimension show the structure; at the Challenge level there are multi-step problems, eighths, missing dimensions, square-versus-cubic units and figures where one length must be found first, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #convertir, #diagrama, #cubos, #formula, #compuesta and #razon, and the final task (build and explain an answer without options) is #tarea.</p>
     <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.MD.1 (convertir entre unidades de distinto tamaño dentro de un mismo sistema de medidas, por ejemplo 5 cm a 0.05 m, y usar esas conversiones en problemas de varios pasos de la vida real), 5.MD.2 (hacer un diagrama de puntos con medidas en fracciones de unidad (1/2, 1/4, 1/8) y usar operaciones con fracciones para resolver problemas con esa información), 5.MD.3 y 5.MD.4 (reconocer el volumen como atributo de los cuerpos sólidos y medirlo contando cubos unitarios en centímetros, pulgadas y pies cúbicos) y 5.MD.5 (relacionar el volumen con la multiplicación y la suma: V = l × a × h y V = B × h, y hallar el volumen de figuras formadas por dos prismas rectangulares que no se superponen sumando sus volúmenes). Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
@@ -301,6 +401,11 @@ body.con-ayuda .ayuda-es{display:block}
   <h3>5. Is it right? Explain why.</h3>
   <p class="razon-h" id="hoja-razon"></p>
   <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) A box has layers of 4 rows of 3 unit cubes, and 2 layers. Explain why its volume is 24 cubic units.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Box A is 5 × 2 × 2 ft and Box B is 3 × 2 × 1 ft, with no overlap. Selena says the volume is 120 ft³. Is she right? Find the correct volume.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
   <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
 </div>
 
@@ -790,7 +895,7 @@ function ponerAyuda(on){
 
 /* ============ Navegación ============ */
 function mostrar(cual){
-  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
   $(cual).classList.remove("oculto");
 }
 function pintarMenu(){
@@ -1369,10 +1474,45 @@ function pintarReflexion(){
   });
 }
 
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
 /* ============ Eventos ============ */
 $("btn-empezar").addEventListener("click", ()=>{
   try{ ctx(); }catch(e){}
   sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
   const j = juegoDelAncla();
   if(j){ iniciarJuego(j); return; }
   hablar(T.menu); mostrar("p-menu");
@@ -1390,6 +1530,7 @@ $("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
 $("btn-imprimir").addEventListener("click", ()=>window.print());
 function ponerReto(r){
   S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
   $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
   if(S.juego) nuevaRonda();
 }

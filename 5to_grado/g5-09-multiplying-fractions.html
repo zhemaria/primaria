@@ -219,6 +219,38 @@ body.con-ayuda .ayuda-es{display:block}
   .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
   .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
 }
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
   .confeti{display:none}
@@ -254,6 +286,11 @@ body.con-ayuda .ayuda-es{display:block}
   <section id="p-menu" class="oculto">
     <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
     <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Will the product be bigger or smaller?</span></span></button>
+    </div>
   </section>
 
   <!-- JUEGO -->
@@ -294,9 +331,72 @@ body.con-ayuda .ayuda-es{display:block}
     </div>
   </section>
 
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Show your numbers, a model or a drawing, and tell how they prove your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Muestra tus números, un modelo o un dibujo, y di cómo demuestran tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Athena says: “5/6 × 48 is less than 48.” Explain why she is right without calculating.</p>
+      <p class="ayuda-es" lang="es">Athena dice: «5/6 × 48 es menor que 48». Explica por qué tiene razón sin calcular.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> 5/6 is ___ than 1. Multiplying 48 by a fraction less than 1 gives ___ of 48. So 5/6 × 48 is ___ 48.</p>
+        <p><b>Useful words:</b> scaling, less than 1, greater than 1, product, factor.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also predict whether 5/4 × 48 is greater or less than 48, and explain.</p><p class="ayuda-es" lang="es">Reto: predice también si 5/4 × 48 es mayor o menor que 48, y explica.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Daniel says: “When you multiply, the answer is always bigger.” Is he right? Explain, and find 2/3 × 3/4 with an area model.</p>
+      <p class="ayuda-es" lang="es">Daniel dice: «Cuando multiplicas, la respuesta siempre es mayor». ¿Tiene razón? Explica y halla 2/3 × 3/4 con un modelo de área.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Daniel is ___. For example, 2/3 × 3/4 = ___, which is ___ than 3/4. In an area model, ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also explain when a product is greater than one of its factors.</p><p class="ayuda-es" lang="es">Reto: explica también cuándo un producto es mayor que uno de sus factores.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: numbers, a model, a drawing or a math rule.<span class="es" lang="es">Usé evidencia: números, un modelo, un dibujo o una regla matemática.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Athena is right. 5/6 is less than 1, so 5/6 × 48 means only part of 48. The product must be less than 48. (It is 40.)</p>
+        <p><b>Part 2.</b> Daniel is not right. 2/3 × 3/4 = 6/12, which is 1/2, and 1/2 is less than 3/4. In an area model, divide a square into 3 rows and 4 columns, making 12 parts. Shade 2 rows and 3 columns: 6 of the 12 parts are shaded twice, so the product is 6/12. Multiplying by a fraction less than 1 makes a number smaller.</p>
+        <p class="solo-reto"><b>Challenge.</b> 5/4 is greater than 1, so 5/4 × 48 is greater than 48 (it is 60). A product is greater than a factor when the other factor is greater than 1.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: multiplying fractions</button></p>
-    <p>Aligned to the Illinois fifth grade mathematics standards 5.NF.4 (apply and extend previous understandings of multiplication to multiply a fraction or whole number by a fraction: interpret the product (a/b) × q as a parts of a partition of q into b equal parts, or as a × q ÷ b; find the area of a rectangle with fractional side lengths by tiling it with unit squares of the appropriate unit fraction side lengths, and show that the area is the same as would be found by multiplying the side lengths), 5.NF.5 (interpret multiplication as scaling (resizing): compare the size of a product to the size of one factor on the basis of the size of the other factor, without performing the indicated multiplication; explain why multiplying a given number by a fraction greater than 1 results in a product greater than the given number, and by a fraction less than 1 in a product smaller than the given number; relate the principle of fraction equivalence a/b = (n × a)/(n × b) to the effect of multiplying a/b by 1) and 5.NF.6 (solve real world problems involving multiplication of fractions and mixed numbers, e.g., by using visual fraction models or equations to represent the problem). At the Easy level there are visual models on screen: equal groups of dots, area models shaded one way and the other, a number line that compares the factor with 1, and the steps of the multiplication; at the Challenge level the work is with the numbers alone, with mixed numbers, rectangles with fractional sides, ordering three products, two-step problems and the steps on screen, and in “Who is right?” the child must also choose the reason. Fractions are shown stacked, and the voice reads them with words (“2 thirds”, “1 half”). The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #deEntero, #area, #multiplicar, #escalar, #problemas and #razon.</p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.NF.4 (apply and extend previous understandings of multiplication to multiply a fraction or whole number by a fraction: interpret the product (a/b) × q as a parts of a partition of q into b equal parts, or as a × q ÷ b; find the area of a rectangle with fractional side lengths by tiling it with unit squares of the appropriate unit fraction side lengths, and show that the area is the same as would be found by multiplying the side lengths), 5.NF.5 (interpret multiplication as scaling (resizing): compare the size of a product to the size of one factor on the basis of the size of the other factor, without performing the indicated multiplication; explain why multiplying a given number by a fraction greater than 1 results in a product greater than the given number, and by a fraction less than 1 in a product smaller than the given number; relate the principle of fraction equivalence a/b = (n × a)/(n × b) to the effect of multiplying a/b by 1) and 5.NF.6 (solve real world problems involving multiplication of fractions and mixed numbers, e.g., by using visual fraction models or equations to represent the problem). At the Easy level there are visual models on screen: equal groups of dots, area models shaded one way and the other, a number line that compares the factor with 1, and the steps of the multiplication; at the Challenge level the work is with the numbers alone, with mixed numbers, rectangles with fractional sides, ordering three products, two-step problems and the steps on screen, and in “Who is right?” the child must also choose the reason. Fractions are shown stacked, and the voice reads them with words (“2 thirds”, “1 half”). The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #deEntero, #area, #multiplicar, #escalar, #problemas and #razon, and the final task (build and explain an answer without options) is #tarea.</p>
     <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.NF.4 (multiplicar una fracción o un número entero por una fracción: interpretar (a/b) × q como a partes de q repartido en b partes iguales, o como a × q ÷ b; hallar el área de un rectángulo con lados fraccionarios cubriéndolo con cuadrados de lados fraccionarios unitarios y mostrar que es igual a multiplicar los lados), 5.NF.5 (interpretar la multiplicación como un cambio de tamaño: comparar el producto con uno de los factores sin multiplicar; explicar por qué multiplicar por una fracción mayor que 1 da un producto mayor y por una fracción menor que 1 da un producto menor; relacionar a/b = (n × a)/(n × b) con multiplicar a/b por 1) y 5.NF.6 (resolver problemas de la vida real con multiplicación de fracciones y números mixtos). En el nivel Fácil hay modelos en la pantalla; en el Reto se trabaja con los números, con números mixtos, problemas de dos pasos y, en «¿Quién tiene razón?», hay que elegir también la razón. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
@@ -321,6 +421,11 @@ body.con-ayuda .ayuda-es{display:block}
   <h3>6. Who is right? Explain why.</h3>
   <p class="razon-h" id="hoja-razon"></p>
   <div class="renglon"></div><div class="renglon"></div>
+  <h3>7. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Athena says 5/6 × 48 is less than 48. Explain why she is right without calculating.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Daniel says: “When you multiply, the answer is always bigger.” Is he right? Explain, and find 2/3 × 3/4 with an area model.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
   <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
 </div>
 
@@ -751,7 +856,7 @@ function ponerAyuda(on){
 
 /* ============ Navegación ============ */
 function mostrar(cual){
-  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
   $(cual).classList.remove("oculto");
 }
 function pintarMenu(){
@@ -1300,10 +1405,45 @@ function pintarReflexion(){
   });
 }
 
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
 /* ============ Eventos ============ */
 $("btn-empezar").addEventListener("click", ()=>{
   try{ ctx(); }catch(e){}
   sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
   const j = juegoDelAncla();
   if(j){ iniciarJuego(j); return; }
   hablar(T.menu); mostrar("p-menu");
@@ -1321,6 +1461,7 @@ $("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
 $("btn-imprimir").addEventListener("click", ()=>window.print());
 function ponerReto(r){
   S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
   $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
   if(S.juego) nuevaRonda();
 }

@@ -208,6 +208,38 @@ body.con-ayuda .ayuda-es{display:block}
   .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
   .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
 }
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
   .confeti{display:none}
@@ -244,6 +276,11 @@ body.con-ayuda .ayuda-es{display:block}
   <section id="p-menu" class="oculto">
     <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
     <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Share it or fit it? Explain</span></span></button>
+    </div>
   </section>
 
   <!-- JUEGO -->
@@ -284,9 +321,72 @@ body.con-ayuda .ayuda-es{display:block}
     </div>
   </section>
 
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Show your numbers, a model or a drawing, and tell how they prove your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Muestra tus números, un modelo o un dibujo, y di cómo demuestran tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Salma says: “4 ÷ 1/5 = 20.” Explain why she is right, and tell a story that matches the division.</p>
+      <p class="ayuda-es" lang="es">Salma dice: «4 ÷ 1/5 = 20». Explica por qué tiene razón y cuenta una historia que corresponda a la división.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Each whole has ___ fifths. 4 wholes have 4 × ___ = ___ fifths. So 4 ÷ 1/5 = ___. My story: ___.</p>
+        <p><b>Useful words:</b> unit fraction, how many fit, share, divide, check, multiply.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also check your answer with multiplication.</p><p class="ayuda-es" lang="es">Reto: comprueba también tu respuesta con una multiplicación.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Israel says: “1/3 ÷ 4 = 4/3.” Is he right? Explain with a story or a model, and give the correct answer.</p>
+      <p class="ayuda-es" lang="es">Israel dice: «1/3 ÷ 4 = 4/3». ¿Tiene razón? Explica con una historia o un modelo y da la respuesta correcta.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Israel is ___. If 4 friends share 1/3 of a ___, each friend gets ___. 4/3 is ___ than 1/3, so it can’t be right. Check: ___ × 4 = 1/3.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also explain why dividing a whole number by a unit fraction gives a bigger number, but dividing a unit fraction by a whole number gives a smaller one.</p><p class="ayuda-es" lang="es">Reto: explica también por qué al dividir un número entero entre una fracción unitaria el resultado es mayor, pero al dividir una fracción unitaria entre un número entero el resultado es menor.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: numbers, a model, a drawing or a math rule.<span class="es" lang="es">Usé evidencia: números, un modelo, un dibujo o una regla matemática.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Salma is right. Each whole has 5 fifths, so 4 wholes have 4 × 5 = 20 fifths. A story: I have 4 cups of juice, and each small glass holds 1/5 of a cup. I can fill 20 glasses.</p>
+        <p><b>Part 2.</b> Israel is not right. If 4 friends share 1/3 of a chocolate bar equally, each one gets less than 1/3, but 4/3 is more than a whole bar. Splitting 1/3 into 4 equal parts makes twelfths, so each friend gets 1/12 of the bar. Check: 1/12 × 4 = 4/12 = 1/3.</p>
+        <p class="solo-reto"><b>Challenge.</b> Check: 20 × 1/5 = 20/5 = 4. Dividing by 1/5 asks how many fifths fit, and many small pieces fit in a whole number. Dividing 1/3 by 4 shares a small amount among 4, so each share is smaller.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: dividing with unit fractions</button></p>
-    <p>Aligned to the Illinois fifth grade mathematics standard 5.NF.7: apply and extend previous understandings of division to divide unit fractions by whole numbers and whole numbers by unit fractions. 5.NF.7a: interpret division of a unit fraction by a non-zero whole number, and compute such quotients (for example, 1/3 ÷ 4 = 1/12 because 1/12 × 4 = 1/3). 5.NF.7b: interpret division of a whole number by a unit fraction, and compute such quotients (for example, 4 ÷ 1/5 = 20 because 20 × 1/5 = 4). 5.NF.7c: solve real world problems involving division of unit fractions by non-zero whole numbers and division of whole numbers by unit fractions, for example by using visual fraction models and equations to represent the problem. At the Easy level fraction strips show the unit fraction being shared or the wholes being cut into pieces, and the check rule is on screen; at the Challenge level the work is with the numbers alone, with bigger numbers, missing numbers and two-step problems, and in “Who is right?” the child must also choose the reason. Fractions are shown stacked, and the voice reads them in words (“1 third”, “1 twelfth”). The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #fraccionEntre, #enteroEntre, #comprobar, #cuento, #problemas and #razon.</p>
+    <p>Aligned to the Illinois fifth grade mathematics standard 5.NF.7: apply and extend previous understandings of division to divide unit fractions by whole numbers and whole numbers by unit fractions. 5.NF.7a: interpret division of a unit fraction by a non-zero whole number, and compute such quotients (for example, 1/3 ÷ 4 = 1/12 because 1/12 × 4 = 1/3). 5.NF.7b: interpret division of a whole number by a unit fraction, and compute such quotients (for example, 4 ÷ 1/5 = 20 because 20 × 1/5 = 4). 5.NF.7c: solve real world problems involving division of unit fractions by non-zero whole numbers and division of whole numbers by unit fractions, for example by using visual fraction models and equations to represent the problem. At the Easy level fraction strips show the unit fraction being shared or the wholes being cut into pieces, and the check rule is on screen; at the Challenge level the work is with the numbers alone, with bigger numbers, missing numbers and two-step problems, and in “Who is right?” the child must also choose the reason. Fractions are shown stacked, and the voice reads them in words (“1 third”, “1 twelfth”). The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #fraccionEntre, #enteroEntre, #comprobar, #cuento, #problemas and #razon, and the final task (build and explain an answer without options) is #tarea.</p>
     <p class="ayuda-es" lang="es">Alineado con el estándar de matemáticas de Illinois para quinto grado 5.NF.7: aplicar y ampliar lo que se sabe de la división para dividir fracciones unitarias entre números enteros y números enteros entre fracciones unitarias. 5.NF.7a: interpretar la división de una fracción unitaria entre un número entero distinto de cero y calcular esos cocientes (por ejemplo, 1/3 ÷ 4 = 1/12 porque 1/12 × 4 = 1/3). 5.NF.7b: interpretar la división de un número entero entre una fracción unitaria y calcular esos cocientes (por ejemplo, 4 ÷ 1/5 = 20 porque 20 × 1/5 = 4). 5.NF.7c: resolver problemas de la vida diaria con estas divisiones, usando modelos visuales de fracciones y ecuaciones. En el nivel Fácil hay tiras de fracciones en pantalla; en el Reto se trabaja solo con los números, con problemas de dos pasos, y en «¿Quién tiene razón?» hay que elegir además la razón. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
@@ -308,6 +408,11 @@ body.con-ayuda .ayuda-es{display:block}
   <h3>5. Who is right? Explain why.</h3>
   <p class="razon-h" id="hoja-razon"></p>
   <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Salma says 4 ÷ 1/5 = 20. Explain why she is right, and tell a story that matches.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Israel says 1/3 ÷ 4 = 4/3. Is he right? Explain with a story or a model, and give the correct answer.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
   <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
 </div>
 
@@ -644,7 +749,7 @@ function ponerAyuda(on){
 
 /* ============ Navegación ============ */
 function mostrar(cual){
-  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
   $(cual).classList.remove("oculto");
 }
 function pintarMenu(){
@@ -1195,10 +1300,45 @@ function pintarReflexion(){
   });
 }
 
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
 /* ============ Eventos ============ */
 $("btn-empezar").addEventListener("click", ()=>{
   try{ ctx(); }catch(e){}
   sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
   const j = juegoDelAncla();
   if(j){ iniciarJuego(j); return; }
   hablar(T.menu); mostrar("p-menu");
@@ -1216,6 +1356,7 @@ $("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
 $("btn-imprimir").addEventListener("click", ()=>window.print());
 function ponerReto(r){
   S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
   $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
   if(S.juego) nuevaRonda();
 }

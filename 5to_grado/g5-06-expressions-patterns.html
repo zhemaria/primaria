@@ -219,6 +219,38 @@ body.con-ayuda .ayuda-es{display:block}
   .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
   .hoja .tabla-h tbody th{text-align:left}
 }
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
 @media (prefers-reduced-motion:reduce){
   *{animation:none !important;transition:none !important}
   .confeti{display:none}
@@ -255,6 +287,11 @@ body.con-ayuda .ayuda-es{display:block}
   <section id="p-menu" class="oculto">
     <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
     <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Why do parentheses matter?</span></span></button>
+    </div>
   </section>
 
   <!-- JUEGO -->
@@ -295,9 +332,72 @@ body.con-ayuda .ayuda-es{display:block}
     </div>
   </section>
 
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Show your numbers, a model or a drawing, and tell how they prove your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Muestra tus números, un modelo o un dibujo, y di cómo demuestran tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Athena says: “3 × (4 + 5) and 3 × 4 + 5 are not equal.” Explain why she is right.</p>
+      <p class="ayuda-es" lang="es">Athena dice: «3 × (4 + 5) y 3 × 4 + 5 no son iguales». Explica por qué tiene razón.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> In 3 × (4 + 5), I first ___, so it is 3 × ___ = ___. In 3 × 4 + 5, I first ___, so it is ___ + 5 = ___. The parentheses ___.</p>
+        <p><b>Useful words:</b> parentheses, brackets, order of operations, expression, evaluate, first.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also evaluate 2 × [10 − (3 + 4)] and explain which part you do first.</p><p class="ayuda-es" lang="es">Reto: calcula también 2 × [10 − (3 + 4)] y explica qué parte resuelves primero.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Daniel says: “3 × (452 + 87) is 3 times as large as 452 + 87, so I don’t need to calculate it.” Is he right? Explain, and write your own example.</p>
+      <p class="ayuda-es" lang="es">Daniel dice: «3 × (452 + 87) es 3 veces mayor que 452 + 87, así que no necesito calcularlo». ¿Tiene razón? Explica y escribe tu propio ejemplo.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Daniel is ___ because 3 × (452 + 87) means ___. Another example is ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: also write and evaluate an expression with parentheses, brackets and braces: add 2 and 3, multiply the sum by 4, subtract the result from 50, then divide by 3.</p><p class="ayuda-es" lang="es">Reto: escribe y calcula también una expresión con paréntesis, corchetes y llaves: suma 2 y 3, multiplica la suma por 4, resta el resultado de 50 y luego divide entre 3.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: numbers, a model, a drawing or a math rule.<span class="es" lang="es">Usé evidencia: números, un modelo, un dibujo o una regla matemática.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Athena is right. In 3 × (4 + 5), the parentheses tell you to add first: 4 + 5 = 9, and 3 × 9 = 27. In 3 × 4 + 5, there are no parentheses, so you multiply first: 3 × 4 = 12, and 12 + 5 = 17. Since 27 is not 17, the expressions are not equal. Parentheses change the order of the operations.</p>
+        <p><b>Part 2.</b> Daniel is right. 3 × (452 + 87) means 3 groups of (452 + 87), so it is 3 times as large as 452 + 87, without calculating the sum. Another example: 5 × (18 + 6) is 5 times as large as 18 + 6.</p>
+        <p class="solo-reto"><b>Challenge.</b> In 2 × [10 − (3 + 4)], work from the inside out: first the parentheses, 3 + 4 = 7; then the brackets, 10 − 7 = 3; then 2 × 3 = 6. With braces: {50 − [4 × (2 + 3)]} ÷ 3 = {50 − 20} ÷ 3 = 30 ÷ 3 = 10.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
   <footer class="pie">
     <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: expressions and patterns</button></p>
-    <p>Aligned to the Illinois fifth grade mathematics standards 5.OA.1 (use parentheses, brackets, or braces in numerical expressions, and evaluate expressions with these symbols), 5.OA.2 (write simple expressions that record calculations with numbers, and interpret numerical expressions without evaluating them; for example, express the calculation “add 8 and 7, then multiply by 2” as 2 × (8 + 7), and recognize that 3 × (18932 + 921) is three times as large as 18932 + 921, without having to calculate the indicated sum or product) and 5.OA.3 (generate two numerical patterns using two given rules; identify apparent relationships between corresponding terms; form ordered pairs consisting of corresponding terms from the two patterns, and graph the ordered pairs on a coordinate plane). Every expression comes with a situation, and the games show that without parentheses the usual order (× and ÷ before + and −) gives a different result. At the Easy level the part inside the parentheses is highlighted with the first step, bar models show the groups, and the patterns appear in a table; at the Challenge level there are brackets inside brackets, bigger numbers, patterns as lists, graphs of ordered pairs, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #evaluar, #escribir, #interpretar, #parentesis, #patrones and #razon.</p>
+    <p>Aligned to the Illinois fifth grade mathematics standards 5.OA.1 (use parentheses, brackets, or braces in numerical expressions, and evaluate expressions with these symbols), 5.OA.2 (write simple expressions that record calculations with numbers, and interpret numerical expressions without evaluating them; for example, express the calculation “add 8 and 7, then multiply by 2” as 2 × (8 + 7), and recognize that 3 × (18932 + 921) is three times as large as 18932 + 921, without having to calculate the indicated sum or product) and 5.OA.3 (generate two numerical patterns using two given rules; identify apparent relationships between corresponding terms; form ordered pairs consisting of corresponding terms from the two patterns, and graph the ordered pairs on a coordinate plane). Every expression comes with a situation, and the games show that without parentheses the usual order (× and ÷ before + and −) gives a different result. At the Easy level the part inside the parentheses is highlighted with the first step, bar models show the groups, and the patterns appear in a table; at the Challenge level there are brackets inside brackets, bigger numbers, patterns as lists, graphs of ordered pairs, and in “Who is right?” the child must also choose the reason. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #evaluar, #escribir, #interpretar, #parentesis, #patrones and #razon, and the final task (build and explain an answer without options) is #tarea.</p>
     <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para quinto grado: 5.OA.1 (usar paréntesis, corchetes o llaves en expresiones numéricas y evaluar expresiones con estos símbolos), 5.OA.2 (escribir expresiones sencillas que registren cálculos con números e interpretar expresiones numéricas sin evaluarlas; por ejemplo, escribir «suma 8 y 7, luego multiplica por 2» como 2 × (8 + 7) y reconocer que 3 × (18932 + 921) es tres veces mayor que 18932 + 921 sin calcular la suma ni el producto) y 5.OA.3 (generar dos patrones numéricos a partir de dos reglas dadas, identificar relaciones entre los términos correspondientes, formar pares ordenados con esos términos y graficarlos en un plano de coordenadas). Cada expresión viene con una situación. En el nivel Fácil se resalta lo que está dentro de los paréntesis y los patrones aparecen en una tabla; en el Reto hay corchetes, números más grandes y gráficas. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
     <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
       <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
@@ -319,6 +419,11 @@ body.con-ayuda .ayuda-es{display:block}
   <h3>5. Who is right? Explain why.</h3>
   <p class="razon-h" id="hoja-razon"></p>
   <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Athena says: “3 × (4 + 5) and 3 × 4 + 5 are not equal.” Explain why she is right.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Daniel says 3 × (452 + 87) is 3 times as large as 452 + 87. Is he right? Explain, and write your own example.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
   <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
 </div>
 
@@ -630,7 +735,7 @@ function ponerAyuda(on){
 
 /* ============ Navegación ============ */
 function mostrar(cual){
-  ["p-portada","p-menu","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
   $(cual).classList.remove("oculto");
 }
 function pintarMenu(){
@@ -1308,10 +1413,45 @@ function pintarReflexion(){
   });
 }
 
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
 /* ============ Eventos ============ */
 $("btn-empezar").addEventListener("click", ()=>{
   try{ ctx(); }catch(e){}
   sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
   const j = juegoDelAncla();
   if(j){ iniciarJuego(j); return; }
   hablar(T.menu); mostrar("p-menu");
@@ -1329,6 +1469,7 @@ $("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
 $("btn-imprimir").addEventListener("click", ()=>window.print());
 function ponerReto(r){
   S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
   $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
   if(S.juego) nuevaRonda();
 }
