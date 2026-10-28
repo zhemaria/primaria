@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<!--
+  Sixth Grade Math — Equations and inequalities
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 6: 6.EE.5, 6.EE.6, 6.EE.7, 6.EE.8
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equations and inequalities · Sixth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Sixth grade games with Lumi on equations and inequalities: testing solutions by substitution, solving x + p = q with a balance, solving px = q, writing equations for stories, inequalities on the number line, and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Equations and inequalities</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi6-matematicas.png" alt="" class="lumi-d" width="450" height="594"></span><span>⚖️</span><span>❓</span><span>🟰</span><span>➡️</span></div>
+    <h2>Keep it balanced!</h2>
+    <p id="txt-portada">An equation is like a balance: both sides weigh the same. With Lumi you will test which values make an equation true, solve equations like x + 7 = 15 and 4x = 28, write the equation that tells a story, show inequalities like x &gt; 3 on a number line, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Una ecuación es como una balanza: los dos lados pesan lo mismo. Con Lumi vas a comprobar qué valores hacen verdadera una ecuación, resolver ecuaciones como x + 7 = 15 y 4x = 28, escribir la ecuación que cuenta una historia, mostrar desigualdades como x &gt; 3 en una recta numérica y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">How much does Salma save each week?</span></span></button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi6-matematicas.png" alt="" class="lumi-m" width="450" height="594"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Write the equation or inequality, solve it, and check by putting your answer back in.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Escribe la ecuación o la desigualdad, resuélvela y comprueba sustituyendo tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Salma saves the same amount of money every week. After 6 weeks she has $87. Elías writes 6 + x = 87 and gets x = 81. Athena writes 6x = 87 and gets x = 14.50. Who wrote the right equation? Explain what x means, and check the answer by substitution.</p>
+      <p class="ayuda-es" lang="es">Salma ahorra la misma cantidad de dinero cada semana. Después de 6 semanas tiene $87. Elías escribe 6 + x = 87 y obtiene x = 81. Athena escribe 6x = 87 y obtiene x = 14.50. ¿Quién escribió la ecuación correcta? Explica qué significa x y comprueba la respuesta sustituyéndola.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> x means ___. Salma saves x dollars 6 times, so the equation is ___. To solve it, I ___ both sides by ___, so x = ___. Check: ___. Elías's equation means ___.</p>
+        <p><b>Useful words:</b> variable, equation, solution, substitute, inverse operation, both sides, check.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: write a different story that really matches Elías's equation 6 + x = 87.</p><p class="ayuda-es" lang="es">Reto: escribe otra historia que de verdad corresponda a la ecuación de Elías, 6 + x = 87.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">A school elevator can carry at most 1,500 pounds. Write an inequality for the weight w it can carry, describe how to show it on a number line, and say whether 1,500 pounds and 1,600 pounds are solutions. Then a ride says riders must be taller than 48 inches: write that inequality too, and explain the difference between the two.</p>
+      <p class="ayuda-es" lang="es">El ascensor de la escuela puede llevar como máximo 1,500 libras. Escribe una desigualdad para el peso w que puede llevar, describe cómo mostrarla en una recta numérica y di si 1,500 y 1,600 libras son soluciones. Después, una atracción dice que los usuarios deben medir más de 48 pulgadas: escribe también esa desigualdad y explica la diferencia entre las dos.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> “At most” means ___, so w ___ 1,500. On the number line, the circle at 1,500 is ___ and the arrow points ___. 1,500 is ___ and 1,600 is ___. “Taller than” means ___, so h ___ 48, with an ___ circle.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: why does an inequality like x &gt; 4.5 have infinitely many solutions? Give three solutions that are not whole numbers.</p><p class="ayuda-es" lang="es">Reto: ¿por qué una desigualdad como x &gt; 4.5 tiene infinitas soluciones? Da tres soluciones que no sean números enteros.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: an equation, an inequality, a check or a number line.<span class="es" lang="es">Usé evidencia: una ecuación, una desigualdad, una comprobación o una recta numérica.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Athena wrote the right equation. x is the money Salma saves each week. She saves x dollars 6 times, so 6x = 87. To undo multiplying by 6, divide both sides by 6: x = 87 ÷ 6 = 14.50. Check: 6 × 14.50 = 87. Elías's equation 6 + x = 87 means “6 plus some amount is 87”, which would be one deposit of $81, not 6 equal weeks.</p>
+        <p><b>Part 2.</b> “At most” means less than or equal to, so w ≤ 1,500. On the number line, put a closed (filled) circle at 1,500 and an arrow to the left. 1,500 pounds is a solution (it is equal to the limit), and 1,600 is not. “Taller than 48” means h &gt; 48: an open circle at 48 and an arrow to the right, because exactly 48 inches is not enough.</p>
+        <p class="solo-reto"><b>Challenge.</b> A story for 6 + x = 87: “Elías had $6 and his grandmother gave him some money; now he has $87.” For x &gt; 4.5, every number to the right of 4.5 works, and between any two numbers there are always more numbers, so there are infinitely many solutions: for example 4.6, 5 1/4 and 9.75.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: equations and inequalities</button></p>
+    <p>Aligned to the Illinois sixth grade mathematics standards 6.EE.5 (solving an equation or inequality is answering which values make it true; use substitution to decide whether a number makes it true), 6.EE.6 (use variables to represent numbers and write expressions for real-world problems; a variable can stand for an unknown number or for any number in a set), 6.EE.7 (solve real-world and mathematical problems by writing and solving equations of the form x + p = q and px = q, where p, q and x are nonnegative rational numbers) and 6.EE.8 (write an inequality of the form x &gt; c or x &lt; c for a constraint, recognize that such inequalities have infinitely many solutions, and represent them on number line diagrams). At the Easy level a balance shows the equation, the numbers are whole and the inequality graphs come with their words; at the Challenge level there are decimals and fractions, stories to solve, inequality words such as “at least” and “at most”, and in “Who is right?” the child must also choose the reason. Typical mistakes get their own hints: doing the same operation instead of the inverse, solving only one side, and confusing open and closed circles. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #verdad, #balanza, #multiplica, #plantear, #desigualdad and #quien, and the final task (build and explain an answer without options) is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para sexto grado 6.EE.5 (resolver una ecuación o desigualdad es hallar qué valores la hacen verdadera; usar la sustitución para comprobarlo), 6.EE.6 (usar variables para representar números en problemas reales), 6.EE.7 (resolver problemas escribiendo y resolviendo ecuaciones de la forma x + p = q y px = q con números racionales no negativos) y 6.EE.8 (escribir una desigualdad x &gt; c o x &lt; c para una condición, reconocer que tiene infinitas soluciones y representarla en la recta numérica). En el nivel Fácil una balanza muestra la ecuación y los números son enteros; en el Reto hay decimales y fracciones, historias para resolver y palabras como «por lo menos» y «como máximo». Los errores típicos tienen su propia pista: hacer la misma operación en lugar de la inversa, resolver solo un lado y confundir el círculo abierto con el cerrado. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Equations and inequalities</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Which value from {3, 4, 5, 6} makes the equation true?</h3>
+  <div class="caja-h">
+    <div>a) 3x + 4 = 19: <i class="linea"></i></div>
+    <div>b) 2x − 1 = 5: <i class="linea"></i></div>
+  </div>
+  <h3>2. Solve. Check by substitution.</h3>
+  <div class="caja-h">
+    <div>a) x + 7 = 15 → x = <i class="linea"></i></div>
+    <div>b) 4x = 28 → x = <i class="linea"></i></div>
+    <div>c) x + 2.5 = 7.25 → x = <i class="linea"></i></div>
+    <div>d) 0.5x = 3 → x = <i class="linea"></i></div>
+    <div>e) x + 1/4 = 2 → x = <i class="linea"></i></div>
+    <div>f) 3x = 7.5 → x = <i class="linea"></i></div>
+  </div>
+  <h3>3. Write an equation, then solve it.</h3>
+  <p class="razon-h">a) Selena had some stickers. After she got 12 more, she had 40. <i class="linea"></i></p>
+  <p class="razon-h">b) 5 friends share the cost of a pizza equally and each pays $4.50. What does the pizza cost? <i class="linea"></i></p>
+  <h3>4. Write an inequality and draw it on a number line.</h3>
+  <div class="caja-h una">
+    <div>a) You must be at least 12 years old: <i class="linea"></i></div>
+    <div>b) Fewer than 30 students fit in the room: <i class="linea"></i></div>
+    <div>c) The temperature was above 4 °F: <i class="linea"></i></div>
+  </div>
+  <h3>5. Who is right? Explain why.</h3>
+  <p class="razon-h">Daniel: “To solve x + 9 = 20, I add 9 to both sides, so x = 29.”</p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Salma saves the same amount each week and has $87 after 6 weeks. Elías writes 6 + x = 87; Athena writes 6x = 87. Who is right? Solve and check.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) An elevator carries at most 1,500 pounds. Write the inequality, describe its graph, and decide whether 1,500 and 1,600 are solutions.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  inversaSuma:"Use the inverse operation: to undo adding, subtract the same number from both sides.",
+  inversaMult:"Use the inverse operation: to undo multiplying, divide both sides by the same number.",
+  circulo:"An open circle means the number itself is not included (> or <); a closed circle means it is included (≥ or ≤).",
+  flecha:"Look at the arrow: to the right means greater, to the left means less.",
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Use the inverse operation, then check by putting the answer back in.",
+  pistaPorque:"That reason doesn't explain it. Think about keeping both sides balanced, or which numbers make it true.",
+  estrategias:[
+    ["I substituted to check","Great! Putting the value back in shows if the equation is true."],
+    ["I used the inverse operation","Excellent! Subtract to undo adding; divide to undo multiplying."],
+    ["I kept both sides balanced","Smart! Whatever you do to one side, you do to the other."],
+    ["I thought about all the numbers that work","Awesome! An inequality has infinitely many solutions, shown with a ray."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"verdad",      emoji:"❓", en:"Does it make it true?",   es:"¿La hace verdadera?",        meta:"x = 5 makes 3x + 4 = 19 true"},
+  {id:"balanza",     emoji:"⚖️", en:"Balance: x + p = q",      es:"Balanza: x + p = q",         meta:"x + 7 = 15 → x = 8"},
+  {id:"multiplica",  emoji:"✖️", en:"Solve px = q",             es:"Resolver px = q",            meta:"4x = 28 → x = 7"},
+  {id:"plantear",    emoji:"📝", en:"Write the equation",       es:"Plantear la ecuación",       meta:"12 more makes 40: s + 12 = 40"},
+  {id:"desigualdad", emoji:"➡️", en:"Inequalities",             es:"Desigualdades",              meta:"At least 48 → h ≥ 48"},
+  {id:"quien",       emoji:"💬", en:"Who is right?",            es:"¿Quién tiene razón?",        meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+/* ============ Números ============ */
+const nd = (v)=> { const r = Math.round(v * 10000) / 10000; return r < 0 ? "−" + String(-r) : String(r); };
+const OPS = {">":"is greater than", "<":"is less than", "≥":"is greater than or equal to", "≤":"is less than or equal to"};
+
+/* ============ Dibujos ============ */
+/* Balanza: a la izquierda «cajas» x más p cubos; a la derecha q cubos */
+function balanza(cajas, p, q, etiquetaX){
+  const W = 620, H = 250, yv = 70, cx1 = 160, cx2 = 460, lado = q > 24 || p > 24 ? 12 : 17, porFila = q > 24 ? 10 : 8;
+  let s = `<svg class="modelo" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(`A balance. Left side: ${cajas === 1 ? "a box marked x" : cajas + " boxes marked x"}${p ? ` and ${p} unit cubes` : ""}. Right side: ${q} unit cubes. Both sides weigh the same.`)}">`;
+  s += `<path d="M${W / 2} ${yv} L${W / 2 - 30} ${H - 8} L${W / 2 + 30} ${H - 8} Z" fill="#9FD3C7" stroke="#194F5A" stroke-width="3"/>`;
+  s += `<line x1="70" y1="${yv}" x2="${W - 70}" y2="${yv}" stroke="#194F5A" stroke-width="6" stroke-linecap="round"/>`;
+  [cx1, cx2].forEach(cx=>{
+    s += `<line x1="${cx}" y1="${yv}" x2="${cx - 100}" y2="${yv + 120}" stroke="#194F5A" stroke-width="2"/><line x1="${cx}" y1="${yv}" x2="${cx + 100}" y2="${yv + 120}" stroke="#194F5A" stroke-width="2"/>`;
+    s += `<path d="M${cx - 110} ${yv + 120} L${cx + 110} ${yv + 120} L${cx + 92} ${yv + 134} L${cx - 92} ${yv + 134} Z" fill="#F8C85F" stroke="#8A4B00" stroke-width="2.5"/>`;
+  });
+  const pila = (cx, n, x0)=>{
+    let h = "";
+    for(let i=0; i<n; i++){
+      const f = Math.floor(i / porFila), c = i % porFila, filaN = Math.min(porFila, n - f * porFila);
+      const x = cx - filaN * (lado + 2) / 2 + c * (lado + 2) + (x0 || 0), y = yv + 118 - (f + 1) * (lado + 2);
+      h += `<rect x="${x}" y="${y}" width="${lado}" height="${lado}" rx="2" fill="#45A6AD" stroke="#194F5A" stroke-width="1.5"/>`;
+    }
+    return h;
+  };
+  const anchoCajas = cajas * 44 - 4, cubosW = p ? Math.min(p, porFila) * (lado + 2) : 0, total = anchoCajas + (p ? 12 + cubosW : 0), ini = cx1 - total / 2;
+  for(let i=0; i<cajas; i++){
+    const x = ini + i * 44, y = yv + 118 - 40;
+    s += `<rect x="${x}" y="${y}" width="40" height="40" rx="5" fill="#1B5E20" stroke="#0E3B12" stroke-width="2"/><text x="${x + 20}" y="${y + 28}" font-size="22" font-weight="700" text-anchor="middle" fill="#fff">${etiquetaX || "x"}</text>`;
+  }
+  if(p) s += pila(ini + anchoCajas + 12 + cubosW / 2, p, 0);
+  s += pila(cx2, q);
+  return s + "</svg>";
+}
+/* Recta numérica con una desigualdad: círculo en c (abierto o cerrado) y rayo hacia un lado */
+function rectaDesig(c, op, chica, oculta){
+  const min = c - 5, max = c + 5, W = chica ? 300 : 620, x0 = chica ? 18 : 36, x1 = W - x0, y = chica ? 44 : 70, px = (v)=> x0 + (x1 - x0) * (v - min) / (max - min);
+  const derecha = op === ">" || op === "≥", lleno = op === "≥" || op === "≤";
+  let s = oculta ? `<svg style="width:min(205px,40vw)" viewBox="0 0 ${W} ${chica ? 80 : 120}" aria-hidden="true" focusable="false">` : `<svg class="modelo" viewBox="0 0 ${W} 120" role="img" aria-label="${escaparHTML(`Number line with ${lleno ? "a closed" : "an open"} circle at ${nd(c)} and an arrow pointing ${derecha ? "right" : "left"}`)}">`;
+  s += `<rect width="${W}" height="${chica ? 80 : 120}" fill="#fff"/>`;
+  s += `<line x1="${x0 - 10}" y1="${y}" x2="${x1 + 10}" y2="${y}" stroke="#14313A" stroke-width="2.5"/>`;
+  for(let v=min; v<=max; v++){
+    s += `<line x1="${px(v)}" y1="${y - 7}" x2="${px(v)}" y2="${y + 7}" stroke="#14313A" stroke-width="2"/>`;
+    if(!chica || (v - min) % 2 === 1) s += `<text x="${px(v)}" y="${y + (chica ? 24 : 30)}" font-size="${chica ? 13 : 17}" font-weight="700" text-anchor="middle" fill="#14313A">${nd(v)}</text>`;
+  }
+  const xc = px(c), xf = derecha ? x1 + 6 : x0 - 6;
+  s += `<line x1="${xc}" y1="${y}" x2="${xf}" y2="${y}" stroke="#B71C1C" stroke-width="6"/>`;
+  s += `<path d="M${xf} ${y} l${derecha ? -14 : 14} -9 v18 Z" fill="#B71C1C"/>`;
+  s += `<circle cx="${xc}" cy="${y}" r="9" fill="${lleno ? "#B71C1C" : "#fff"}" stroke="#B71C1C" stroke-width="3.5"/>`;
+  return s + "</svg>";
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(texto, es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((−?[\d.]+), (−?[\d.]+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/\|([^|]+)\|/g, es ? " el valor absoluto de $1 " : " the absolute value of $1 ")
+    .replace(/ ≥ /g, es ? " es mayor o igual que " : " is greater than or equal to ").replace(/ ≤ /g, es ? " es menor o igual que " : " is less than or equal to ")
+    .replace(/ > /g, es ? " es mayor que " : " is greater than ").replace(/ < /g, es ? " es menor que " : " is less than ")
+    .replace(/°F/g, es ? " grados" : " degrees")
+    .replace(/−(?=[\d$(])/g, es ? "menos " : "negative ")
+    .replace(/²/g, es ? " al cuadrado" : " squared").replace(/³/g, es ? " al cubo" : " cubed")
+    .replace(/⁴/g, es ? " a la cuarta potencia" : " to the fourth power").replace(/⁵/g, es ? " a la quinta potencia" : " to the fifth power")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi6-matematicas.png" alt="" class="lumi-m" width="450" height="594">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g6-08-equations-inequalities.html#balanza */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+/* ============ Situaciones ============ */
+const HISTORIAS = [
+  {tipo:"suma", v:"s", en:(n,p,q)=>`${n} had some stickers. After getting ${p} more, ${n} has ${q} stickers.`, es:(n,p,q)=>`${n} tenía algunas calcomanías. Después de recibir ${p} más, tiene ${q}.`, u:"stickers"},
+  {tipo:"suma", v:"t", en:(n,p,q)=>`In the morning the temperature rose ${p} degrees. Now it is ${q} °F.`, es:(n,p,q)=>`En la mañana la temperatura subió ${p} grados. Ahora es de ${q} °F.`, u:"°F at the start"},
+  {tipo:"suma", v:"m", en:(n,p,q)=>`${n} saved some money, then earned $${p} more walking dogs. Now ${n} has $${q}.`, es:(n,p,q)=>`${n} ahorró algo de dinero y luego ganó $${p} más paseando perros. Ahora tiene $${q}.`, u:"dollars saved first"},
+  {tipo:"mult", v:"c", en:(n,p,q)=>`${n} buys ${p} notebooks that all cost the same. The total is $${q}.`, es:(n,p,q)=>`${n} compra ${p} cuadernos que cuestan lo mismo. El total es $${q}.`, u:"dollars per notebook"},
+  {tipo:"mult", v:"d", en:(n,p,q)=>`${n} reads the same number of pages every day for ${p} days and reads ${q} pages in all.`, es:(n,p,q)=>`${n} lee el mismo número de páginas cada día durante ${p} días y lee ${q} páginas en total.`, u:"pages a day"},
+  {tipo:"mult", v:"r", en:(n,p,q)=>`The class splits into ${p} equal teams. There are ${q} students in all.`, es:(n,p,q)=>`La clase se divide en ${p} equipos iguales. Hay ${q} estudiantes en total.`, u:"students per team"}
+];
+const LIMITES = [
+  {en:(c)=>`You must be at least ${c} years old to join the robotics club.`, es:(c)=>`Debes tener por lo menos ${c} años para entrar al club de robótica.`, v:"a", op:"≥"},
+  {en:(c)=>`At most ${c} students fit on the bus.`, es:(c)=>`Como máximo caben ${c} estudiantes en el autobús.`, v:"s", op:"≤"},
+  {en:(c)=>`A team needs more than ${c} points to win.`, es:(c)=>`Un equipo necesita más de ${c} puntos para ganar.`, v:"p", op:">"},
+  {en:(c)=>`You have less than $${c} to spend.`, es:(c)=>`Tienes menos de $${c} para gastar.`, v:"d", op:"<"},
+  {en:(c)=>`The temperature stayed above ${c} °F all day.`, es:(c)=>`La temperatura se mantuvo sobre ${c} °F todo el día.`, v:"t", op:">"},
+  {en:(c)=>`Screen time must be no more than ${c} minutes.`, es:(c)=>`El tiempo de pantalla debe ser como máximo de ${c} minutos.`, v:"m", op:"≤"},
+  {en:(c)=>`Riders must be at least ${c} inches tall.`, es:(c)=>`Los usuarios deben medir por lo menos ${c} pulgadas.`, v:"h", op:"≥"},
+  {en:(c)=>`Fewer than ${c} people can be in the room.`, es:(c)=>`Pueden estar en el salón menos de ${c} personas.`, v:"n", op:"<"}
+];
+const cumple = (v, op, c)=> op === ">" ? v > c : op === "<" ? v < c : op === "≥" ? v >= c : v <= c;
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, reto = S.reto, esc = $("escena");
+  const expr = (html)=> esc.insertAdjacentHTML("beforeend", `<p class="expr">${html}</p>`);
+  const lleno = (txt)=>{ const sg = esc.querySelector(".signo-c"); if(sg){ sg.textContent = txt; sg.classList.add("lleno"); } };
+
+  /* --- 1. ¿La hace verdadera? Sustituir (6.EE.5) --- */
+  if(S.juego === "verdad"){
+    if(!reto || S.ronda % 2 === 0){
+      const a = azar(2, reto ? 12 : 6), x = azar(1, 9), b = azar(1, 15), c = a * x + b;
+      const cand = mezclar(unicos([x, x + 1, x - 1, x + 2, x - 2].filter(v=>v >= 0))).slice(0, 4);
+      if(!cand.includes(x)) cand[0] = x;
+      expr(`${a}x + ${b} = ${c}`);
+      const qq = `Which value of x makes ${a}x + ${b} = ${c} true?`;
+      ponerInstruccion(qq, qq, `¿Qué valor de x hace verdadera ${a}x + ${b} = ${c}?`);
+      opciones(`x = ${x}`, cand.filter(v=>v !== x).map(v=>[`x = ${v}`, `Check: ${a} × ${v} + ${b} = ${a * v + b}, not ${c}.`]),
+        ()=>acertar(`Check: ${a} × ${x} + ${b} = ${a * x} + ${b} = ${c}. It is true.`));
+    } else {
+      const L = elegir(LIMITES), c = azar(5, 20), op = L.op;
+      const cand = mezclar([c - 2, c, c + 1, c + 3]);
+      const sirve = cand.filter(v=>cumple(v, op, c));
+      const bien = elegir(sirve);
+      expr(`x ${op} ${c}`);
+      const qq = `Which value is a solution of x ${op} ${c}?`;
+      ponerInstruccion(qq, `Which value is a solution of x ${OPS[op]} ${c}?`, `¿Qué valor es una solución de x ${op} ${c}?`);
+      opciones(String(bien), cand.filter(v=>!cumple(v, op, c)).map(v=>[String(v), v === c ? t.circulo : `${v} ${OPS[op]} ${c} is false.`]),
+        ()=>acertar(`${bien} ${OPS[op]} ${c} is true, so ${bien} is a solution. ${op === "≥" || op === "≤" ? c + " is a solution too." : c + " itself is not a solution."}`));
+    }
+    return;
+  }
+
+  /* --- 2. Balanza: x + p = q (6.EE.7) --- */
+  if(S.juego === "balanza"){
+    let p, x, q;
+    if(!reto){ p = azar(1, 9); x = azar(1, 12); q = p + x; }
+    else {
+      if(Math.random() < 0.55){ p = azar(5, 95) / 10 + (Math.random() < 0.4 ? 0.05 : 0); x = azar(1, 90) / 10 + (Math.random() < 0.5 ? 0.25 : 0); }
+      else { p = azar(1, 3) + elegir([0.25, 0.5, 0.75]); x = azar(1, 6) + elegir([0, 0.25, 0.5, 0.75]); }
+      p = Math.round(p * 100) / 100; x = Math.round(x * 100) / 100; q = Math.round((p + x) * 100) / 100;
+    }
+    expr(`x + ${nd(p)} = ${nd(q)}`);
+    if(!reto && q <= 24) esc.insertAdjacentHTML("beforeend", balanza(1, p, q));
+    const qq = reto ? "Solve the equation." : "Solve. Take the same amount off both sides.";
+    ponerInstruccion(qq, `Solve x + ${nd(p)} = ${nd(q)}.`, `Resuelve x + ${nd(p)} = ${nd(q)}. ${reto ? "" : "Quita la misma cantidad de los dos lados."}`);
+    opciones(`x = ${nd(x)}`, [[`x = ${nd(q + p)}`, t.inversaSuma], [`x = ${nd(q)}`, `That is the whole right side. Take ${nd(p)} away from both sides.`], [`x = ${nd(p)}`, t.inversaSuma], [`x = ${nd(x + 1)}`, `Check: ${nd(x + 1)} + ${nd(p)} = ${nd(x + 1 + p)}, not ${nd(q)}.`]],
+      ()=>acertar(`x + ${nd(p)} − ${nd(p)} = ${nd(q)} − ${nd(p)}, so x = ${nd(x)}. Check: ${nd(x)} + ${nd(p)} = ${nd(q)}.`));
+    return;
+  }
+
+  /* --- 3. Resolver px = q (6.EE.7) --- */
+  if(S.juego === "multiplica"){
+    let p, x;
+    if(!reto){ p = azar(2, 5); x = azar(2, 8); }
+    else { p = elegir([2, 3, 4, 5, 6, 8, 0.5, 1.5, 2.5]); x = elegir([azar(2, 20) / 2, azar(11, 99) / 10, azar(2, 15)]); }
+    const q = Math.round(p * x * 100) / 100;
+    expr(`${nd(p)}x = ${nd(q)}`);
+    if(!reto && q <= 40) esc.insertAdjacentHTML("beforeend", balanza(p, 0, q));
+    const qq = reto ? "Solve the equation." : `Solve. Share the cubes equally among the ${p} boxes.`;
+    ponerInstruccion(qq, `Solve ${nd(p)}x = ${nd(q)}.`, `Resuelve ${nd(p)}x = ${nd(q)}. ${reto ? "" : `Reparte los cubos en partes iguales entre las ${p} cajas.`}`);
+    opciones(`x = ${nd(x)}`, [[`x = ${nd(p * q)}`, t.inversaMult], [`x = ${nd(q - p)}`, t.inversaMult + " Subtracting undoes adding, not multiplying."], ...(Math.abs(Math.round(p / q * 100) - p / q * 100) < 1e-9 ? [[`x = ${nd(p / q)}`, `That is ${nd(p)} ÷ ${nd(q)}. Divide ${nd(q)} by ${nd(p)}.`]] : []), [`x = ${nd(x + 1)}`, `Check: ${nd(p)} × ${nd(x + 1)} = ${nd(p * (x + 1))}, not ${nd(q)}.`]],
+      ()=>acertar(`${nd(p)}x ÷ ${nd(p)} = ${nd(q)} ÷ ${nd(p)}, so x = ${nd(x)}. Check: ${nd(p)} × ${nd(x)} = ${nd(q)}.`));
+    return;
+  }
+
+  /* --- 4. Plantear la ecuación (6.EE.6, 6.EE.7) --- */
+  if(S.juego === "plantear"){
+    const H = elegir(HISTORIAS), [n] = nombresAzar(1);
+    let p, q, x;
+    if(H.tipo === "suma"){ p = azar(3, 25); x = azar(5, 40); q = p + x; }
+    else { p = azar(3, 8); x = azar(2, 12); q = p * x; }
+    const txt = H.en(n, p, q), v = H.v;
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(txt)}</p>`);
+    const ecu = H.tipo === "suma" ? `${v} + ${p} = ${q}` : `${p}${v} = ${q}`;
+    if(!reto){
+      const qq = `Which equation matches the story? (${v} is the unknown number)`;
+      ponerInstruccion(qq, `${txt} Which equation matches the story?`, `${H.es(n, p, q)} ¿Qué ecuación corresponde a la historia? (${v} es el número desconocido)`);
+      const malos = H.tipo === "suma"
+        ? [[`${p}${v} = ${q}`, "The story adds a number; it doesn't repeat a group."], [`${v} + ${q} = ${p}`, `The total at the end is ${q}.`], [`${p} + ${q} = ${v}`, `${q} is the total after adding ${p}, so ${v} + ${p} = ${q}.`]]
+        : [[`${v} + ${p} = ${q}`, `There are ${p} equal groups, so it is ${p} times ${v}.`], [`${q}${v} = ${p}`, `${p} groups make ${q} in all.`], [`${v} − ${p} = ${q}`, `There are ${p} equal groups, so multiply.`]];
+      opciones(ecu, malos, ()=>acertar(`${ecu}. Solving it, ${v} = ${x}.`));
+    } else {
+      const qq = "Write an equation in your head and solve it. What is the unknown number?";
+      ponerInstruccion(qq, `${txt} What is the unknown number?`, `${H.es(n, p, q)} ¿Cuál es el número desconocido?`);
+      const malos = H.tipo === "suma" ? [[q + p, t.inversaSuma], [q, "That is the total, not the unknown."], [p, t.inversaSuma]] : [[q * p, t.inversaMult], [q - p, t.inversaMult], [p, t.inversaMult]];
+      opcionesNum(x, malos, ()=>acertar(`${ecu}, so ${v} = ${x} ${H.u}. Check: ${H.tipo === "suma" ? `${x} + ${p} = ${q}` : `${p} × ${x} = ${q}`}.`));
+    }
+    return;
+  }
+
+  /* --- 5. Desigualdades (6.EE.8) --- */
+  if(S.juego === "desigualdad"){
+    const todos = ["<", ">", "≤", "≥"];
+    if(!reto){
+      const c = azar(-3, 9), op = elegir(todos);
+      esc.insertAdjacentHTML("beforeend", rectaDesig(c, op));
+      const qq = "Which inequality does the number line show?";
+      ponerInstruccion(qq, qq, "¿Qué desigualdad muestra la recta numérica?");
+      opciones(`x ${op} ${nd(c)}`, todos.filter(o=>o !== op).map(o=>{
+        const mismoLado = (o === ">" || o === "≥") === (op === ">" || op === "≥");
+        return [`x ${o} ${nd(c)}`, mismoLado ? t.circulo : t.flecha];
+      }), ()=>acertar(`${op === "≥" || op === "≤" ? "Closed" : "Open"} circle at ${nd(c)} and an arrow to the ${op === ">" || op === "≥" ? "right" : "left"}: x ${OPS[op]} ${nd(c)}.`));
+    } else {
+      const L = elegir(LIMITES), c = elegir([5, 8, 10, 12, 15, 20, 25, 30, 48]), frase = L.en(c);
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(frase)}</p>`);
+      if(S.ronda % 2 === 0){
+        const qq = `Which inequality matches? (${L.v} is the number)`;
+        ponerInstruccion(qq, `${frase} Which inequality matches?`, `${L.es(c)} ¿Qué desigualdad corresponde? (${L.v} es el número)`);
+        const pista = "“At least” means ≥ and “at most” or “no more than” means ≤. “More than” and “above” mean >; “less than” and “fewer than” mean <.";
+        opciones(`${L.v} ${L.op} ${c}`, todos.filter(o=>o !== L.op).map(o=>[`${L.v} ${o} ${c}`, pista]),
+          ()=>acertar(`${L.v} ${L.op} ${c}: ${L.op === "≥" || L.op === "≤" ? `${c} itself is allowed.` : `${c} itself is not allowed.`} There are infinitely many solutions.`));
+      } else {
+        const qq = "Which number line shows the situation?";
+        ponerInstruccion(qq, `${frase} Which number line shows it?`, `${L.es(c)} ¿Qué recta numérica la muestra?`);
+        const cont = $("opciones"), orden = mezclar(todos), letras = ["A", "B", "C", "D"];
+        orden.forEach((o, i)=>{
+          const b = document.createElement("button"); b.type = "button"; b.className = "opcion-graf";
+          b.setAttribute("aria-label", `Number line ${letras[i]}: ${o === "≥" || o === "≤" ? "closed" : "open"} circle at ${c}, arrow to the ${o === ">" || o === "≥" ? "right" : "left"}`);
+          b.innerHTML = rectaDesig(c, o, true, true) + `<span aria-hidden="true">${letras[i]}</span>`;
+          b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque();
+            if(o === L.op){ sonBoing(); acertar(`${L.v} ${L.op} ${c}: ${L.op === "≥" || L.op === "≤" ? "closed" : "open"} circle at ${c} and an arrow to the ${L.op === ">" || L.op === "≥" ? "right" : "left"}.`); }
+            else fallar(b, (o === ">" || o === "≥") === (L.op === ">" || L.op === "≥") ? t.circulo : t.flecha); });
+          cont.appendChild(b);
+          if(o === L.op) S.resolver = ()=>b.click();
+        });
+      }
+    }
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (6.EE.5–8) --- */
+  if(S.juego === "quien"){
+    const [n1] = nombresAzar(1);
+    const tipo = tipoRonda(["mismo", "sust", "div", "infinitas", "circulo", "limite", "variable"]);
+    let dicho, dichoEs, verdad, expl, razones;
+    const p = azar(3, 12), x = azar(2, 15), k = azar(3, 9);
+    if(tipo === "mismo"){
+      dicho = `${n1}: “To solve x + ${p} = ${p + x}, I add ${p} to both sides, so x = ${2 * p + x}.”`;
+      dichoEs = `${n1}: «Para resolver x + ${p} = ${p + x}, sumo ${p} a los dos lados, así que x = ${2 * p + x}».`;
+      verdad = false; expl = `To undo adding ${p}, subtract ${p}: x = ${p + x} − ${p} = ${x}. Check: ${x} + ${p} = ${p + x}.`;
+      razones = [[`Subtracting ${p} undoes adding ${p}, so x = ${x}.`, true], ["It is right: you always add the number to both sides.", false], [`It is wrong because x = ${p + x}.`, false]];
+    } else if(tipo === "sust"){
+      dicho = `${n1}: “x = ${x} is a solution of ${k}x + ${p} = ${k * x + p}, because ${k} × ${x} + ${p} = ${k * x + p}.”`;
+      dichoEs = `${n1}: «x = ${x} es una solución de ${k}x + ${p} = ${k * x + p}, porque ${k} × ${x} + ${p} = ${k * x + p}».`;
+      verdad = true; expl = `Substituting ${x} gives ${k * x} + ${p} = ${k * x + p}, which is true.`;
+      razones = [["Substituting the value makes both sides equal.", true], ["It is wrong: you can't put a number in place of x.", false], ["It is right only because the numbers are small.", false]];
+    } else if(tipo === "div"){
+      dicho = `${n1}: “To solve ${k}x = ${k * x}, I subtract ${k} from both sides, so x = ${k * x - k}.”`;
+      dichoEs = `${n1}: «Para resolver ${k}x = ${k * x}, resto ${k} a los dos lados, así que x = ${k * x - k}».`;
+      verdad = false; expl = `${k}x means ${k} times x. Divide both sides by ${k}: x = ${k * x} ÷ ${k} = ${x}.`;
+      razones = [[`Dividing by ${k} undoes multiplying by ${k}, so x = ${x}.`, true], ["It is right: subtracting undoes multiplying.", false], [`It is wrong because x = ${k * x * k}.`, false]];
+    } else if(tipo === "infinitas"){
+      dicho = `${n1}: “x > ${k} has only one solution: x = ${k + 1}.”`;
+      dichoEs = `${n1}: «x > ${k} tiene una sola solución: x = ${k + 1}».`;
+      verdad = false; expl = `${k + 1}, ${k}.5, ${k + 10}, ${k}.01 and every other number greater than ${k} work: there are infinitely many solutions.`;
+      razones = [[`Every number greater than ${k} is a solution, so there are infinitely many.`, true], ["It is right: an inequality always has one solution, like an equation.", false], [`It is wrong: the only solution is ${k}.`, false]];
+    } else if(tipo === "circulo"){
+      dicho = `${n1}: “On a number line, x ≥ ${k} has a closed circle at ${k}.”`;
+      dichoEs = `${n1}: «En una recta numérica, x ≥ ${k} tiene un círculo cerrado en ${k}».`;
+      verdad = true; expl = `≥ includes ${k} itself, so the circle is closed (filled), with an arrow to the right.`;
+      razones = [[`${k} is included in x ≥ ${k}, so the circle is closed.`, true], ["It is wrong: ≥ always has an open circle.", false], ["It is wrong: there is no circle, only an arrow.", false]];
+    } else if(tipo === "limite"){
+      dicho = `${n1}: “${k} is a solution of x < ${k}.”`;
+      dichoEs = `${n1}: «${k} es una solución de x < ${k}».`;
+      verdad = false; expl = `${k} < ${k} is false: ${k} is equal to ${k}, not less. Numbers like ${k - 1} or ${k - 0.5} work.`;
+      razones = [[`${k} is not less than itself, so it is not a solution.`, true], ["It is right: the number in the inequality is always a solution.", false], [`It is wrong: only numbers greater than ${k} are solutions.`, false]];
+    } else {
+      dicho = `${n1}: “In ${k}n = ${k * x}, the variable n stands for ${x}.”`;
+      dichoEs = `${n1}: «En ${k}n = ${k * x}, la variable n representa ${x}».`;
+      verdad = true; expl = `${k} × ${x} = ${k * x}, so n = ${x} makes the equation true.`;
+      razones = [[`${k} × ${x} = ${k * x}, so n = ${x} makes it true.`, true], [`It is wrong: n stands for ${k * x}.`, false], ["It is wrong: a variable can't stand for a number.", false]];
+    }
+    escenaTexto(`<p class="problema"><span aria-hidden="true">💬</span> ${escaparHTML(dicho)}</p>`);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opciones(buena, razones.filter(r=>!r[1]).map(r=>[r[0], t.pistaPorque]), ()=>acertar(expl), true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="6"></script>
+</body>
+</html>
