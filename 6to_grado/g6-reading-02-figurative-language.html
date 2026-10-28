@@ -435,6 +435,7 @@ body.con-ayuda .tarea .criterio .es{display:block}
 
 <script>
 "use strict";
+try{ if("scrollRestoration" in history) history.scrollRestoration = "manual"; }catch(e){}
 /* ============ 1. Pistas del contexto (L.6.4a) ============
    [oración con {} donde va la palabra, palabra, significado, [significado equivocado, pista]x3, pista en la oración, tipo de pista] */
 const PISTAS = [
@@ -837,6 +838,8 @@ function ponerAyuda(on){
 function mostrar(cual){
   ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
   $(cual).classList.remove("oculto");
+  /* Cada pantalla nueva empieza arriba (si no, se queda donde estaba el menú) */
+  try{ window.scrollTo(0, 0); }catch(e){}
 }
 function pintarMenu(){
   const cont = $("rejilla-juegos"); cont.innerHTML = "";
