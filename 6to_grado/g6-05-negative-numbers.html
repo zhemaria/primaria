@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<!--
+  Sixth Grade Math — Negative numbers and absolute value
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 6: 6.NS.5, 6.NS.6 (a, c), 6.NS.7
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Negative numbers · Sixth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Sixth grade games with Lumi on negative numbers: situations above and below zero, points on the number line, opposites, comparing and ordering, absolute value as distance from zero, and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Negative numbers</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi6-matematicas.png" alt="" class="lumi-d" width="450" height="594"></span><span>🌡️</span><span>🌊</span><span>🏦</span><span>📏</span></div>
+    <h2>Below zero!</h2>
+    <p id="txt-portada">Numbers go on to the left of zero too. Negative numbers tell us about temperatures below zero, places below sea level, money we owe and yards lost in a game. With Lumi you will read situations with positive and negative numbers, find points on the number line, find opposites, compare and order numbers, use absolute value as a distance from zero, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Los números siguen también a la izquierda del cero. Los números negativos nos hablan de temperaturas bajo cero, lugares bajo el nivel del mar, dinero que debemos y yardas perdidas en un partido. Con Lumi vas a leer situaciones con números positivos y negativos, hallar puntos en la recta numérica, hallar opuestos, comparar y ordenar números, usar el valor absoluto como distancia al cero y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Which city is the coldest?</span></span></button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi6-matematicas.png" alt="" class="lumi-m" width="450" height="594"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Draw a number line, and tell how it proves your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Dibuja una recta numérica y di cómo demuestra tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">One winter morning it was −3 °F in Chicago, −8 °F in Minneapolis and 2 °F in Detroit. Selena says: “Minneapolis was warmer than Chicago, because 8 is greater than 3.” Is she right? Order the three temperatures from coldest to warmest and explain with a number line.</p>
+      <p class="ayuda-es" lang="es">Una mañana de invierno hacía −3 °F en Chicago, −8 °F en Minneapolis y 2 °F en Detroit. Selena dice: «En Minneapolis hacía más calor que en Chicago, porque 8 es mayor que 3». ¿Tiene razón? Ordena las tres temperaturas de la más fría a la más cálida y explica con una recta numérica.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> On a number line, −8 is to the ___ of −3, so −8 is ___ than −3. From coldest to warmest: ___, ___, ___. Selena ___ because ___.</p>
+        <p><b>Useful words:</b> negative, positive, number line, left, right, greater, less, colder, warmer.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: write the order with the symbols &lt; and &gt;, and explain why a greater absolute value does not mean a warmer temperature.</p><p class="ayuda-es" lang="es">Reto: escribe el orden con los símbolos &lt; y &gt;, y explica por qué un valor absoluto mayor no significa una temperatura más cálida.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Daniel's account balance is −$25 and Athena's is −$40. Who owes more money? Explain with absolute value. Then write your own situation for the number −15 and say what 0 means in it.</p>
+      <p class="ayuda-es" lang="es">El saldo de la cuenta de Daniel es −$25 y el de Athena es −$40. ¿Quién debe más dinero? Explica con el valor absoluto. Después escribe tu propia situación para el número −15 y di qué significa el 0 en ella.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> |−25| = ___ and |−40| = ___, so ___ owes more. Even so, −40 is ___ than −25. In my situation, −15 means ___ and 0 means ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: Elías says, “A balance less than −$30 means a debt of less than $30.” Explain why he is wrong.</p><p class="ayuda-es" lang="es">Reto: Elías dice: «Un saldo menor que −$30 significa una deuda de menos de $30». Explica por qué se equivoca.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: a number line, absolute value or a comparison.<span class="es" lang="es">Usé evidencia: una recta numérica, el valor absoluto o una comparación.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Selena is not right. On a number line, −8 is to the left of −3, so −8 is less than −3: Minneapolis was colder. From coldest to warmest: −8 °F (Minneapolis), −3 °F (Chicago), 2 °F (Detroit). With negative numbers, the number farther from 0 on the left is the smaller one, so “8 is greater than 3” does not decide it.</p>
+        <p><b>Part 2.</b> |−25| = 25 and |−40| = 40, so Athena owes more money: $40. Even so, −40 is less than −25, because it is farther to the left on the number line. My situation: “A submarine is 15 meters below sea level”; −15 means 15 meters down, and 0 means sea level.</p>
+        <p class="solo-reto"><b>Challenge.</b> −8 &lt; −3 &lt; 2, or 2 &gt; −3 &gt; −8. The absolute value tells how far a temperature is from 0, not whether it is warm: |−8| = 8 is greater than |−3| = 3, but −8 °F is 8 degrees below zero, which is colder. A balance less than −$30 is farther left, like −$45, so the debt is more than $30, not less.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: negative numbers</button></p>
+    <p>Aligned to the Illinois sixth grade mathematics standards 6.NS.5 (positive and negative numbers describe quantities with opposite directions or values, such as temperature above or below zero, elevation above or below sea level, credits and debits; explain the meaning of 0 in each situation), 6.NS.6 (a rational number is a point on the number line; opposite signs indicate locations on opposite sides of 0; the opposite of the opposite of a number is the number itself; find and position integers and other rational numbers on a number line) and 6.NS.7 (ordering and absolute value: interpret inequalities as positions on a number line, write and explain statements of order in real-world contexts, understand absolute value as the distance from 0, and distinguish comparisons of absolute value from statements about order, for example that a balance less than −30 dollars is a debt greater than 30 dollars). At the Easy level the number lines use whole numbers and every comparison comes with its position; at the Challenge level there are halves and decimals, the meaning of 0 and of opposite situations, the opposite of an opposite, ordering four numbers, and absolute value in debts and elevations, and in “Who is right?” the child must also choose the reason. The most common mistake, thinking −8 is greater than −3 because 8 is greater than 3, gets its own hint. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #contexto, #recta, #opuesto, #ordenar, #absoluto and #quien, and the final task (build and explain an answer without options) is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para sexto grado 6.NS.5 (los números positivos y negativos describen cantidades opuestas: temperaturas sobre y bajo cero, elevación sobre y bajo el nivel del mar, depósitos y retiros; explicar qué significa el 0 en cada situación), 6.NS.6 (un número racional es un punto de la recta numérica; los signos opuestos indican lados opuestos del 0; el opuesto del opuesto de un número es el mismo número) y 6.NS.7 (orden y valor absoluto: interpretar desigualdades como posiciones en la recta, escribir y explicar comparaciones en situaciones reales, entender el valor absoluto como la distancia al 0 y distinguir las comparaciones de valores absolutos de las de orden; por ejemplo, un saldo menor que −30 dólares es una deuda mayor que 30 dólares). En el nivel Fácil las rectas usan números enteros; en el Reto hay medios y decimales, el significado del 0, el opuesto del opuesto, ordenar cuatro números y el valor absoluto en deudas y elevaciones. El error más común, pensar que −8 es mayor que −3 porque 8 es mayor que 3, tiene su propia pista. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Negative numbers and absolute value</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Write a number for each situation. What does 0 mean?</h3>
+  <div class="caja-h una">
+    <div>a) 12 degrees below zero: <i class="linea"></i>   0 means: <i class="linea" style="width:60mm"></i></div>
+    <div>b) 300 feet above sea level: <i class="linea"></i>   0 means: <i class="linea" style="width:60mm"></i></div>
+    <div>c) A withdrawal of $45: <i class="linea"></i>   0 means: <i class="linea" style="width:60mm"></i></div>
+  </div>
+  <h3>2. Draw a number line from −10 to 10 and mark these points.</h3>
+  <p class="razon-h">A = −7     B = 4     C = −2.5     D = the opposite of −6</p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>3. Opposites</h3>
+  <div class="caja-h">
+    <div>a) The opposite of −9 = <i class="linea"></i></div>
+    <div>b) −(−4) = <i class="linea"></i></div>
+    <div>c) The opposite of 3.5 = <i class="linea"></i></div>
+    <div>d) −(−(−2)) = <i class="linea"></i></div>
+  </div>
+  <h3>4. Write &lt; or &gt;. Then order from least to greatest.</h3>
+  <div class="caja-h">
+    <div>−3 <i class="linea" style="width:12mm"></i> −8</div>
+    <div>−1.5 <i class="linea" style="width:12mm"></i> 0.5</div>
+    <div>−10 <i class="linea" style="width:12mm"></i> −12</div>
+    <div>0 <i class="linea" style="width:12mm"></i> −0.5</div>
+  </div>
+  <p class="razon-h">Order from least to greatest: 2, −4, −0.5, −3.5, 1 → <i class="linea" style="width:80mm"></i></p>
+  <h3>5. Absolute value</h3>
+  <div class="caja-h">
+    <div>a) |−12| = <i class="linea"></i></div>
+    <div>b) |7| = <i class="linea"></i></div>
+    <div>c) Which is farther from sea level: −120 ft or 80 ft? <i class="linea"></i></div>
+    <div>d) A balance less than −$30 is a debt of <i class="linea"></i> than $30.</div>
+  </div>
+  <h3>6. Who is right? Explain why.</h3>
+  <p class="razon-h">Israel: “−8 is greater than −3, because 8 is greater than 3.”</p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>7. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) It was −3 °F in Chicago, −8 °F in Minneapolis and 2 °F in Detroit. Order them from coldest to warmest and explain with a number line.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Daniel's balance is −$25 and Athena's is −$40. Who owes more? Explain with absolute value, and write your own situation for −15.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  lado:"Look at which side of 0 the point is. To the left of 0 the numbers are negative; to the right, positive.",
+  orden:"On a number line, the number farther to the right is greater. With negative numbers, the one closer to 0 is greater.",
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Picture the number line: right is greater, and absolute value is the distance from 0.",
+  pistaPorque:"That reason doesn't explain it. Think about positions on the number line and distances from 0.",
+  estrategias:[
+    ["I pictured the number line","Great! Left is less and right is greater, for negative numbers too."],
+    ["I asked what 0 means in the situation","Excellent! Sea level, zero degrees or no money: 0 is the starting point."],
+    ["I used opposites","Smart! Opposites are the same distance from 0, on opposite sides."],
+    ["I used absolute value as a distance","Awesome! |−12| = 12 because −12 is 12 units from 0."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"contexto", emoji:"🌡️", en:"Above and below zero",  es:"Sobre y bajo cero",       meta:"10 feet below sea level → −10"},
+  {id:"recta",    emoji:"📏", en:"On the number line",    es:"En la recta numérica",    meta:"Find −6 and −2.5"},
+  {id:"opuesto",  emoji:"🪞", en:"Opposites",             es:"Opuestos",                meta:"The opposite of −7 is 7"},
+  {id:"ordenar",  emoji:"↔️", en:"Compare and order",     es:"Comparar y ordenar",      meta:"−3 > −8"},
+  {id:"absoluto", emoji:"🏦", en:"Absolute value",        es:"Valor absoluto",          meta:"|−40| = 40: a debt of $40"},
+  {id:"quien",    emoji:"💬", en:"Who is right?",         es:"¿Quién tiene razón?",     meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+/* ============ Números con signo ============ */
+/* Escribe −7, 2.5, −0.5 con el signo menos tipográfico */
+const nm = (v)=> (v < 0 ? "−" : "") + String(Math.abs(Math.round(v * 100) / 100));
+const absTxt = (v)=> `|${nm(v)}|`;
+/* Número al azar distinto de 0; con medios = true puede ser x.5 */
+function conSigno(max, medios){
+  let v; do{ v = azar(-max, max) + (medios && Math.random() < 0.5 ? 0.5 : 0); }while(v === 0 || Math.abs(v) > max);
+  return v;
+}
+
+/* ============ Dibujos ============ */
+/* Recta numérica de min a max, marcas cada «paso», rótulos cada «cada»; puntos = [{v, txt, color}] */
+function recta(min, max, paso, cada, puntos, etiqueta){
+  const W = 640, x0 = 36, x1 = 604, y = 92, px = (v)=> x0 + (x1 - x0) * (v - min) / (max - min);
+  let s = `<svg class="modelo" style="max-width:620px" viewBox="0 0 ${W} 140" role="img" aria-label="${escaparHTML(etiqueta)}">`;
+  s += `<line x1="${x0 - 22}" y1="${y}" x2="${x1 + 22}" y2="${y}" stroke="#14313A" stroke-width="3"/>`;
+  s += `<path d="M${x0 - 24} ${y} l10 -7 v14 Z M${x1 + 24} ${y} l-10 -7 v14 Z" fill="#14313A"/>`;
+  const n = Math.round((max - min) / paso);
+  for(let k=0; k<=n; k++){
+    const v = min + k * paso, x = px(v), rot = Math.abs(v / cada - Math.round(v / cada)) < 1e-9, cero = Math.abs(v) < 1e-9;
+    s += `<line x1="${x}" y1="${y - (rot ? 12 : 7)}" x2="${x}" y2="${y + (rot ? 12 : 7)}" stroke="#14313A" stroke-width="${cero ? 4 : rot ? 2.5 : 1.5}"/>`;
+    if(rot) s += `<text x="${x}" y="${y + 36}" font-size="${cero ? 21 : 18}" font-weight="700" text-anchor="middle" fill="${cero ? "#194F5A" : "#14313A"}">${nm(v)}</text>`;
+  }
+  (puntos || []).forEach(p=>{
+    const x = px(p.v);
+    s += `<circle cx="${x}" cy="${y}" r="9" fill="${p.color || "#B71C1C"}" stroke="#fff" stroke-width="2"/>`;
+    if(p.txt) s += `<text x="${x}" y="${y - 22}" font-size="21" font-weight="700" text-anchor="middle" fill="${p.color || "#B71C1C"}">${escaparHTML(p.txt)}</text>`;
+  });
+  return s + "</svg>";
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(texto, es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/\|([^|]+)\|/g, es ? " el valor absoluto de $1 " : " the absolute value of $1 ")
+    .replace(/ > /g, es ? " es mayor que " : " is greater than ").replace(/ < /g, es ? " es menor que " : " is less than ")
+    .replace(/°F/g, es ? " grados" : " degrees")
+    .replace(/−(?=[\d$(])/g, es ? "menos " : "negative ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi6-matematicas.png" alt="" class="lumi-m" width="450" height="594">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g6-05-negative-numbers.html#recta */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+/* ============ Situaciones ============ */
+const SITU = [
+  {pos:(k)=>`${k} degrees above zero`, neg:(k)=>`${k} degrees below zero`, posEs:(k)=>`${k} grados sobre cero`, negEs:(k)=>`${k} grados bajo cero`,
+   cero:"zero degrees", ceroEs:"cero grados", ej:(v)=>`The temperature is ${nm(v)} °F.`, ejEs:(v)=>`La temperatura es de ${nm(v)} °F.`},
+  {pos:(k)=>`${k} feet above sea level`, neg:(k)=>`${k} feet below sea level`, posEs:(k)=>`${k} pies sobre el nivel del mar`, negEs:(k)=>`${k} pies bajo el nivel del mar`,
+   cero:"sea level", ceroEs:"el nivel del mar", ej:(v)=>`A diver is at ${nm(v)} feet.`, ejEs:(v)=>`Una buzo está a ${nm(v)} pies.`},
+  {pos:(k)=>`a deposit of $${k}`, neg:(k)=>`a withdrawal of $${k}`, posEs:(k)=>`un depósito de $${k}`, negEs:(k)=>`un retiro de $${k}`,
+   cero:"no change in the bank account", ceroEs:"ningún cambio en la cuenta", ej:(v)=>`The change in the bank account is ${nm(v)} dollars.`, ejEs:(v)=>`El cambio en la cuenta es de ${nm(v)} dólares.`},
+  {pos:(k)=>`a gain of ${k} yards`, neg:(k)=>`a loss of ${k} yards`, posEs:(k)=>`una ganancia de ${k} yardas`, negEs:(k)=>`una pérdida de ${k} yardas`,
+   cero:"no yards gained or lost", ceroEs:"ninguna yarda ganada ni perdida", ej:(v)=>`On one play, the team moves ${nm(v)} yards.`, ejEs:(v)=>`En una jugada, el equipo avanza ${nm(v)} yardas.`},
+  {pos:(k)=>`${k} floors above the ground floor`, neg:(k)=>`${k} floors below the ground floor`, posEs:(k)=>`${k} pisos sobre la planta baja`, negEs:(k)=>`${k} pisos bajo la planta baja`,
+   cero:"the ground floor", ceroEs:"la planta baja", ej:(v)=>`The elevator stops at floor ${nm(v)}.`, ejEs:(v)=>`El ascensor se detiene en el piso ${nm(v)}.`}
+];
+const DIAS = [["Monday", "lunes"], ["Tuesday", "martes"]];
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, reto = S.reto, esc = $("escena");
+
+  /* --- 1. Sobre y bajo cero (6.NS.5) --- */
+  if(S.juego === "contexto"){
+    const C = elegir(SITU);
+    const tipo = reto ? tipoRonda(["cero", "opuesto", "numero", "cero", "opuesto"]) : "numero";
+    if(tipo === "numero"){
+      const k = azar(2, reto ? 500 : 40), negativo = Math.random() < 0.65, v = negativo ? -k : k;
+      const desc = negativo ? C.neg(k) : C.pos(k), descEs = negativo ? C.negEs(k) : C.posEs(k);
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(desc[0].toUpperCase() + desc.slice(1))}</p>`);
+      const qq = `Which number represents ${desc}?`;
+      ponerInstruccion(qq, qq, `¿Qué número representa ${descEs}?`);
+      opciones(nm(v), [[nm(-v), negativo ? "Below zero, a loss or a withdrawal is negative." : "Above zero, a gain or a deposit is positive."],
+                       ["0", `0 means ${C.cero}. This situation is ${k} away from it.`], [nm(v - Math.sign(v)), `Check the number: it is ${k}.`]],
+        ()=>acertar(`${desc[0].toUpperCase() + desc.slice(1)} is ${nm(v)}. Here 0 means ${C.cero}.`));
+    } else if(tipo === "cero"){
+      const v = -azar(3, 60), frase = C.ej(v);
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(frase)}</p>`);
+      const qq = "In this situation, what does 0 mean?";
+      ponerInstruccion(qq, `${frase} ${qq}`, `${C.ejEs(v)} En esta situación, ¿qué significa el 0?`);
+      opciones(C.cero, SITU.filter(x=>x !== C).slice(0, 3).map(x=>[x.cero, "That is what 0 means in a different situation. Read this one again."]),
+        ()=>acertar(`Here 0 means ${C.cero}, and ${nm(v)} is ${Math.abs(v)} on the negative side of it.`), true);
+    } else {
+      const k = azar(5, 90), negativo = Math.random() < 0.5;
+      const desc = negativo ? C.neg(k) : C.pos(k), opu = negativo ? C.pos(k) : C.neg(k), descEs = negativo ? C.negEs(k) : C.posEs(k);
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(desc[0].toUpperCase() + desc.slice(1))}: ${nm(negativo ? -k : k)}</p>`);
+      const qq = `What is the opposite of ${desc}?`;
+      ponerInstruccion(qq, qq, `¿Cuál es el opuesto de ${descEs}?`);
+      opciones(opu, [[desc, "That is the same situation. The opposite goes the other way, the same distance."],
+                     [negativo ? C.pos(k * 2) : C.neg(k * 2), "The opposite is the same distance from 0, not twice as far."],
+                     ["no change at all", `That is 0, ${C.cero}. The opposite of ${nm(negativo ? -k : k)} is ${nm(negativo ? k : -k)}.`]],
+        ()=>acertar(`The opposite of ${nm(negativo ? -k : k)} is ${nm(negativo ? k : -k)}: ${opu}.`), true);
+    }
+    return;
+  }
+
+  /* --- 2. En la recta numérica (6.NS.6) --- */
+  if(S.juego === "recta"){
+    if(!reto){
+      const p = conSigno(10, false);
+      esc.insertAdjacentHTML("beforeend", recta(-10, 10, 1, 5, [{v:p, txt:"?"}], "Number line from −10 to 10 with one marked point"));
+      const qq = "What number is at the red point?";
+      ponerInstruccion(qq, qq, "¿Qué número está en el punto rojo?");
+      opciones(nm(p), [[nm(-p), t.lado], [nm(p + 1), "Count the marks from 0 again. Each mark is 1."], [nm(p - 1), "Count the marks from 0 again. Each mark is 1."]],
+        ()=>acertar(`The point is ${Math.abs(p)} ${Math.abs(p) === 1 ? "unit" : "units"} to the ${p < 0 ? "left" : "right"} of 0, so it is ${nm(p)}.`));
+    } else if(S.ronda % 2 === 0){
+      const p = conSigno(5, true);
+      esc.insertAdjacentHTML("beforeend", recta(-5, 5, 0.5, 1, [{v:p, txt:"?"}], "Number line from −5 to 5, with marks every half, and one marked point"));
+      const qq = "What number is at the red point? Each small mark is one half.";
+      ponerInstruccion(qq, qq, "¿Qué número está en el punto rojo? Cada marca pequeña es un medio.");
+      opciones(nm(p), [[nm(-p), t.lado], [nm(p + 0.5), "Count the half marks again."], [nm(p - 0.5), "Count the half marks again."], [nm(p + 1), "Each small mark is 0.5, not 1."]],
+        ()=>acertar(`The point is ${Math.abs(p)} units to the ${p < 0 ? "left" : "right"} of 0, so it is ${nm(p)}.`));
+    } else {
+      let v; do{ v = -(azar(1, 4) + 0.5); }while(false);
+      const vals = mezclar([v, -v, v - 1, v + 1]), letras = ["A", "B", "C", "D"];
+      esc.insertAdjacentHTML("beforeend", recta(-5, 5, 0.5, 1, vals.map((x, i)=>({v:x, txt:letras[i], color:["#B71C1C", "#194F5A", "#8A4B00", "#5B2C83"][i]})), `Number line from −5 to 5 with points ${vals.map((x, i)=>letras[i]).join(", ")}`));
+      const qq = `Which point is at ${nm(v)}?`;
+      ponerInstruccion(qq, qq, `¿Qué punto está en ${nm(v)}?`);
+      const bien = letras[vals.indexOf(v)];
+      opciones(bien, letras.filter(x=>x !== bien).map(x=>{ const w = vals[letras.indexOf(x)]; return [x, w === -v ? t.lado : `Point ${x} is at ${nm(w)}.`]; }),
+        ()=>acertar(`Point ${bien} is at ${nm(v)}: halfway between ${nm(Math.ceil(v))} and ${nm(Math.floor(v))}.`));
+    }
+    return;
+  }
+
+  /* --- 3. Opuestos (6.NS.6a) --- */
+  if(S.juego === "opuesto"){
+    if(!reto){
+      const a = conSigno(10, false);
+      esc.insertAdjacentHTML("beforeend", recta(-10, 10, 1, 5, [{v:a, txt:nm(a)}], `Number line from −10 to 10 with the point ${nm(a)}`));
+      const qq = `What is the opposite of ${nm(a)}?`;
+      ponerInstruccion(qq, qq, `¿Cuál es el opuesto de ${nm(a)}?`);
+      opciones(nm(-a), [[nm(a), "The opposite is on the other side of 0, at the same distance."], ["0", "0 is its own opposite. Go the same distance on the other side."], [nm(-a + Math.sign(a)), "Go exactly the same distance from 0."]],
+        ()=>{ esc.innerHTML = recta(-10, 10, 1, 5, [{v:a, txt:nm(a)}, {v:-a, txt:nm(-a), color:"#1B5E20"}], `Number line with ${nm(a)} and ${nm(-a)}`);
+              acertar(`${nm(a)} and ${nm(-a)} are both ${Math.abs(a)} units from 0, on opposite sides.`); });
+    } else {
+      const a = conSigno(9, true), veces = elegir([2, 2, 3]);
+      const expr = veces === 2 ? `−(${nm(a)})` : `−(−(${nm(a)}))`, bien = veces === 2 ? -a : a;
+      esc.insertAdjacentHTML("beforeend", `<p class="expr">${expr} = <span class="signo-c">?</span></p>`);
+      const qq = "Each − sign in front means “the opposite of”. What is the value?";
+      ponerInstruccion(qq, `What is the opposite of ${veces === 2 ? "" : "the opposite of "}${nm(a)}?`, `Cada signo − delante significa «el opuesto de». ¿Cuál es el valor de ${expr}?`);
+      opciones(nm(bien), [[nm(-bien), "Count the opposites: each one flips the number to the other side of 0."], [nm(Math.abs(a) + 1), t.otra[0]], ["0", "Taking an opposite doesn't make a number 0."]],
+        ()=>{ const sg = esc.querySelector(".signo-c"); sg.textContent = nm(bien); sg.classList.add("lleno");
+              acertar(veces === 2 ? `The opposite of ${nm(a)} is ${nm(-a)}.` : `The opposite of ${nm(a)} is ${nm(-a)}, and the opposite of that is ${nm(a)} again.`); });
+    }
+    return;
+  }
+
+  /* --- 4. Comparar y ordenar (6.NS.7a, 6.NS.7b) --- */
+  if(S.juego === "ordenar"){
+    if(!reto){
+      let a, b; do{ a = conSigno(12, false); b = conSigno(12, false); }while(a === b || (a > 0 && b > 0));
+      if(S.ronda % 2 === 1){
+        const [n] = nombresAzar(1);
+        const txt = `${n} checks the weather: it was ${nm(a)} °F on Monday and ${nm(b)} °F on Tuesday.`, qq = "Which day was colder?";
+        esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(txt)}</p>`);
+        esc.insertAdjacentHTML("beforeend", recta(-12, 12, 1, 4, [{v:a, txt:"Mon"}, {v:b, txt:"Tue", color:"#194F5A"}], `Number line with Monday at ${nm(a)} and Tuesday at ${nm(b)}`));
+        ponerInstruccion(qq, `${txt} ${qq}`, `${n} revisa el clima: hizo ${nm(a)} °F el lunes y ${nm(b)} °F el martes. ¿Qué día hizo más frío?`);
+        const bien = a < b ? "Monday" : "Tuesday";
+        opciones(bien, [[bien === "Monday" ? "Tuesday" : "Monday", "The colder temperature is the lesser number, the one farther to the left."]],
+          ()=>acertar(`${nm(Math.min(a, b))} < ${nm(Math.max(a, b))}, so ${bien} was colder.`));
+      } else {
+        esc.insertAdjacentHTML("beforeend", recta(-12, 12, 1, 4, [{v:a, txt:nm(a)}, {v:b, txt:nm(b), color:"#194F5A"}], `Number line with the points ${nm(a)} and ${nm(b)}`));
+        const qq = "Which statement is true?";
+        ponerInstruccion(qq, `Compare ${nm(a)} and ${nm(b)}. Which statement is true?`, `Compara ${nm(a)} y ${nm(b)}. ¿Qué afirmación es verdadera?`);
+        const bien = a > b ? `${nm(a)} > ${nm(b)}` : `${nm(a)} < ${nm(b)}`, mal = a > b ? `${nm(a)} < ${nm(b)}` : `${nm(a)} > ${nm(b)}`;
+        opciones(bien, [[mal, t.orden]], ()=>acertar(`${nm(Math.max(a, b))} is to the right of ${nm(Math.min(a, b))} on the number line, so ${bien}.`));
+      }
+    } else {
+      let vals;
+      do{
+        vals = [];
+        while(vals.length < 4){ const v = conSigno(6, true); if(!vals.some(w=>Math.abs(w) === Math.abs(v))) vals.push(v); }
+      }while(!vals.some(v=>v > 0) || vals.filter(v=>v < 0).length < 2);
+      const asc = vals.slice().sort((x, y)=>x - y), desc = asc.slice().reverse(), porAbs = vals.slice().sort((x, y)=>Math.abs(x) - Math.abs(y));
+      const negMal = [...asc.filter(v=>v < 0).sort((x, y)=>Math.abs(x) - Math.abs(y)), ...asc.filter(v=>v > 0)];
+      const tx = (l)=> l.map(nm).join(", ");
+      esc.insertAdjacentHTML("beforeend", `<p class="expr" style="font-size:clamp(24px,5vw,36px)">${mezclar(vals).map(nm).join(" &nbsp; ")}</p>`);
+      const qq = "Order the numbers from least to greatest.";
+      ponerInstruccion(qq, `Order these numbers from least to greatest: ${vals.map(nm).join(", ")}.`, `Ordena estos números de menor a mayor: ${vals.map(nm).join(", ")}.`);
+      opciones(tx(asc), [[tx(negMal), t.orden], [tx(porAbs), "That orders the distances from 0 (absolute values), not the numbers."], [tx(desc), "That is from greatest to least."]],
+        ()=>acertar(`${asc.map(nm).join(" < ")}. The farther left on the number line, the lesser the number.`), true);
+    }
+    return;
+  }
+
+  /* --- 5. Valor absoluto (6.NS.7c, 6.NS.7d) --- */
+  if(S.juego === "absoluto"){
+    if(!reto){
+      const a = conSigno(15, false);
+      esc.insertAdjacentHTML("beforeend", `<p class="expr">${absTxt(a)} = <span class="signo-c">?</span></p>`);
+      esc.insertAdjacentHTML("beforeend", recta(-15, 15, 1, 5, [{v:a, txt:nm(a)}], `Number line from −15 to 15 with the point ${nm(a)}`));
+      const qq = `What is the absolute value of ${nm(a)}? It is the distance from 0.`;
+      ponerInstruccion(qq, qq, `¿Cuál es el valor absoluto de ${nm(a)}? Es la distancia al 0.`);
+      opciones(nm(Math.abs(a)), [[nm(-Math.abs(a)), "Absolute value is a distance from 0, so it is never negative."], [nm(Math.abs(a) + 1), "Count the units from 0 to the point again."], ["0", "Only 0 has an absolute value of 0."]],
+        ()=>{ const sg = esc.querySelector(".signo-c"); sg.textContent = nm(Math.abs(a)); sg.classList.add("lleno");
+              acertar(`${nm(a)} is ${Math.abs(a)} units from 0, so ${absTxt(a)} = ${Math.abs(a)}.`); });
+    } else {
+      const tipo = tipoRonda(["deuda", "lejos", "menor", "deuda", "lejos"]);
+      if(tipo === "deuda"){
+        const nombres = nombresAzar(3); let x, y; do{ x = -azar(10, 90); y = -azar(10, 90); }while(x === y);
+        const z = azar(10, 90), saldos = [x, y, z];
+        esc.insertAdjacentHTML("beforeend", `<div class="tiendas">${nombres.map((n, i)=>`<div class="tienda"><span class="tn">${escaparHTML(n)}'s balance</span><span class="tp">${saldos[i] < 0 ? "−" : ""}$${Math.abs(saldos[i])}</span></div>`).join("")}</div>`);
+        const qq = "Who has the greatest debt?";
+        ponerInstruccion(qq, `${nombres.map((n, i)=>`${n}'s balance is ${saldos[i] < 0 ? "negative " : ""}${Math.abs(saldos[i])} dollars`).join(". ")}. ${qq}`, `${nombres.map((n, i)=>`El saldo de ${n} es ${saldos[i] < 0 ? "−" : ""}$${Math.abs(saldos[i])}`).join(". ")}. ¿Quién tiene la mayor deuda?`);
+        const i = x < y ? 0 : 1, otro = 1 - i;
+        opciones(nombres[i], [[nombres[otro], `${nm(saldos[otro])} is greater than ${nm(saldos[i])}, but its debt is smaller: ${absTxt(saldos[otro])} = ${Math.abs(saldos[otro])}.`], [nombres[2], "A positive balance is money saved, not a debt."]],
+          ()=>acertar(`${nombres[i]} owes $${Math.abs(saldos[i])}: ${absTxt(saldos[i])} = ${Math.abs(saldos[i])}, the greatest debt, even though ${nm(saldos[i])} is the least balance.`));
+      } else if(tipo === "lejos"){
+        let a, b; do{ a = -azar(20, 300); b = azar(20, 300); }while(Math.abs(a) === b);
+        const txt = `A cave is at ${nm(a)} feet and a hill is at ${nm(b)} feet, compared with sea level.`, qq = "Which one is farther from sea level?";
+        esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(txt)}</p>`);
+        ponerInstruccion(qq, `${txt} ${qq}`, `Una cueva está a ${nm(a)} pies y una colina a ${nm(b)} pies, comparadas con el nivel del mar. ¿Cuál está más lejos del nivel del mar?`);
+        const bien = Math.abs(a) > b ? "The cave" : "The hill";
+        opciones(bien, [[bien === "The cave" ? "The hill" : "The cave", "Compare the distances from 0, the absolute values, not the numbers."]],
+          ()=>acertar(`${absTxt(a)} = ${Math.abs(a)} and ${absTxt(b)} = ${b}, so ${bien.toLowerCase()} is farther from sea level.`));
+      } else {
+        const k = 5 * azar(2, 12);
+        const qq = `A bank balance less than −$${k} means…`;
+        esc.insertAdjacentHTML("beforeend", `<p class="expr">balance &lt; −$${k}</p>`);
+        ponerInstruccion(qq, `A bank balance less than negative ${k} dollars means what?`, `Un saldo menor que −$${k} significa…`);
+        opciones(`a debt of more than $${k}`, [[`a debt of less than $${k}`, `Less than −$${k} is farther left, like −$${k + 15}. That is a bigger debt.`], [`more than $${k} saved`, "A negative balance is a debt, not money saved."]],
+          ()=>acertar(`For example, −$${k + 15} < −$${k}, and |−${k + 15}| = ${k + 15}: a debt of more than $${k}.`), true);
+      }
+    }
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (6.NS.5–7) --- */
+  if(S.juego === "quien"){
+    const [n1] = nombresAzar(1);
+    const tipo = tipoRonda(["signo", "abs", "dobleop", "entre", "frio", "absmenor", "cero"]);
+    let dicho, dichoEs, verdad, expl, razones;
+    if(tipo === "signo"){
+      let a, b; do{ a = azar(2, 15); b = azar(2, 15); }while(a <= b);
+      dicho = `${n1}: “−${a} is greater than −${b}, because ${a} is greater than ${b}.”`;
+      dichoEs = `${n1}: «−${a} es mayor que −${b}, porque ${a} es mayor que ${b}».`;
+      verdad = false; expl = `On the number line, −${a} is to the left of −${b}, so −${a} < −${b}. It is ${a} below zero, which is less.`;
+      razones = [[`−${a} is farther left than −${b}, so it is less.`, true],
+                 ["It is right: the bigger digit always makes the bigger number.", false],
+                 [`It is wrong because −${a} and −${b} are equal.`, false]];
+    } else if(tipo === "abs"){
+      const a = azar(3, 40);
+      dicho = `${n1}: “The absolute value of −${a} is ${a}.”`;
+      dichoEs = `${n1}: «El valor absoluto de −${a} es ${a}».`;
+      verdad = true; expl = `−${a} is ${a} units from 0, so |−${a}| = ${a}.`;
+      razones = [[`−${a} is ${a} units away from 0.`, true],
+                 [`It is wrong: the absolute value of −${a} is −${a}.`, false],
+                 ["It is right only because the number is negative.", false]];
+    } else if(tipo === "dobleop"){
+      const a = azar(2, 15);
+      dicho = `${n1}: “The opposite of the opposite of ${a} is −${a}.”`;
+      dichoEs = `${n1}: «El opuesto del opuesto de ${a} es −${a}».`;
+      verdad = false; expl = `The opposite of ${a} is −${a}, and the opposite of −${a} is ${a}. You come back to the same number.`;
+      razones = [[`Two opposites flip the number twice, back to ${a}.`, true],
+                 ["It is right: every opposite makes a number negative.", false],
+                 ["It is wrong because the answer is 0.", false]];
+    } else if(tipo === "entre"){
+      const k = azar(1, 8);
+      dicho = `${n1}: “−${k}.5 is between −${k} and −${k + 1} on the number line.”`;
+      dichoEs = `${n1}: «−${k}.5 está entre −${k} y −${k + 1} en la recta numérica».`;
+      verdad = true; expl = `−${k}.5 is half a unit to the left of −${k}, halfway to −${k + 1}.`;
+      razones = [[`−${k}.5 is halfway between −${k} and −${k + 1}, to the left of 0.`, true],
+                 [`It is wrong: −${k}.5 is between ${k} and ${k + 1}.`, false],
+                 [`It is wrong: −${k}.5 is less than −${k + 1}.`, false]];
+    } else if(tipo === "frio"){
+      let a, b; do{ a = azar(3, 20); b = azar(1, 15); }while(a <= b);
+      dicho = `${n1}: “A temperature of −${a} °F is colder than −${b} °F.”`;
+      dichoEs = `${n1}: «Una temperatura de −${a} °F es más fría que −${b} °F».`;
+      verdad = true; expl = `−${a} < −${b}: it is ${a} degrees below zero, farther below than ${b} degrees.`;
+      razones = [[`−${a} is less than −${b}; it is farther below zero.`, true],
+                 ["It is wrong: the bigger number always means warmer.", false],
+                 ["It is right only in winter.", false]];
+    } else if(tipo === "absmenor"){
+      let a, b; do{ a = azar(4, 15); b = azar(2, 12); }while(a <= b);
+      dicho = `${n1}: “|−${a}| is less than |${b}|, because −${a} is less than ${b}.”`;
+      dichoEs = `${n1}: «|−${a}| es menor que |${b}|, porque −${a} es menor que ${b}».`;
+      verdad = false; expl = `|−${a}| = ${a} and |${b}| = ${b}, so |−${a}| > |${b}|. Comparing distances from 0 is not the same as comparing the numbers.`;
+      razones = [[`|−${a}| = ${a}, which is greater than ${b}: distances from 0 are compared, not the numbers.`, true],
+                 ["It is right: the order of the numbers is always the order of their absolute values.", false],
+                 [`It is wrong because |−${a}| = −${a}.`, false]];
+    } else {
+      dicho = `${n1}: “0 is neither positive nor negative.”`;
+      dichoEs = `${n1}: «El 0 no es ni positivo ni negativo».`;
+      verdad = true; expl = "0 is the point that separates the positive numbers (to its right) from the negative numbers (to its left). It is its own opposite.";
+      razones = [["0 separates the positive and the negative numbers, and it is its own opposite.", true],
+                 ["It is wrong: 0 is a negative number because it is less than 1.", false],
+                 ["It is wrong: 0 is positive because it is not negative.", false]];
+    }
+    escenaTexto(`<p class="problema"><span aria-hidden="true">💬</span> ${escaparHTML(dicho)}</p>`);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opciones(buena, razones.filter(r=>!r[1]).map(r=>[r[0], t.pistaPorque]), ()=>acertar(expl), true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="6"></script>
+</body>
+</html>
