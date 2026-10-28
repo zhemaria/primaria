@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<!--
+  Sixth Grade Math — The four-quadrant coordinate plane
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 6: 6.NS.6 (b, c), 6.NS.8, with 6.G.3
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The coordinate plane · Sixth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Sixth grade games with Lumi on the four-quadrant coordinate plane: reading and plotting points, quadrants, reflections across the axes, distances between points, rectangles on the plane, and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>The coordinate plane</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi6-sociales.png" alt="" class="lumi-d" width="450" height="594"></span><span>🗺️</span><span>📍</span><span>🪞</span><span>📐</span></div>
+    <h2>Four quadrants, one map!</h2>
+    <p id="txt-portada">With negative numbers, the coordinate plane grows to four quadrants, like a map with the center of town at (0, 0). With Lumi you will read and plot ordered pairs, decide which quadrant a point is in, reflect points across the axes, find distances between points on the same row or column, find missing corners of rectangles, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Con los números negativos, el plano de coordenadas crece a cuatro cuadrantes, como un mapa con el centro del pueblo en (0, 0). Con Lumi vas a leer y ubicar pares ordenados, decidir en qué cuadrante está un punto, reflejar puntos respecto a los ejes, hallar distancias entre puntos de la misma fila o columna, hallar esquinas que faltan en rectángulos y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">How far is it from Israel's house to school?</span></span></button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi6-sociales.png" alt="" class="lumi-m" width="450" height="594"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Draw the coordinate plane or use absolute value, and tell how it proves your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Dibuja el plano de coordenadas o usa el valor absoluto, y di cómo demuestra tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">On a map of the town, each unit is one block. Israel's house is at (−4, 3), the school is at (5, 3) and the park is at (5, −2). Daniel says: “The school is 1 block from Israel's house, because 5 − 4 = 1.” Is he right? How far is it from the school to the park?</p>
+      <p class="ayuda-es" lang="es">En un mapa del pueblo, cada unidad es una cuadra. La casa de Israel está en (−4, 3), la escuela en (5, 3) y el parque en (5, −2). Daniel dice: «La escuela está a 1 cuadra de la casa de Israel, porque 5 − 4 = 1». ¿Tiene razón? ¿Cuánto hay de la escuela al parque?</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> The house and the school have the same ___, so the distance is across. −4 is ___ blocks from 0 and 5 is ___ blocks from 0, on opposite sides, so the distance is ___ + ___ = ___. Daniel ___.</p>
+        <p><b>Useful words:</b> ordered pair, x-coordinate, y-coordinate, quadrant, absolute value, distance, opposite sides.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: write a rule for the distance between two points on the same horizontal line when they are on opposite sides of the y-axis, and when they are on the same side.</p><p class="ayuda-es" lang="es">Reto: escribe una regla para la distancia entre dos puntos de la misma recta horizontal cuando están a lados opuestos del eje y, y cuando están del mismo lado.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Selena plots A(2, 3). She reflects A across the y-axis to get B, and then reflects B across the x-axis to get C. What are the coordinates of B and C? Which quadrant is C in, and how are the coordinates of A and C related?</p>
+      <p class="ayuda-es" lang="es">Selena ubica A(2, 3). Refleja A respecto al eje y y obtiene B, y luego refleja B respecto al eje x y obtiene C. ¿Cuáles son las coordenadas de B y de C? ¿En qué cuadrante está C y qué relación hay entre las coordenadas de A y de C?</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Across the y-axis, the ___-coordinate changes sign, so B = (___, ___). Across the x-axis, the ___-coordinate changes sign, so C = (___, ___). C is in quadrant ___. Compared with A, ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: rectangle ABCD has A(−3, 2), B(4, 2) and C(4, −3). Find D, the perimeter and the area.</p><p class="ayuda-es" lang="es">Reto: el rectángulo ABCD tiene A(−3, 2), B(4, 2) y C(4, −3). Halla D, el perímetro y el área.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: a drawing of the plane, coordinates or absolute value.<span class="es" lang="es">Usé evidencia: un dibujo del plano, coordenadas o el valor absoluto.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Daniel is not right. The house (−4, 3) and the school (5, 3) have the same y-coordinate, so the distance is straight across. −4 is 4 blocks to the left of the y-axis and 5 is 5 blocks to the right, on opposite sides, so the distance is |−4| + |5| = 4 + 5 = 9 blocks. From the school (5, 3) to the park (5, −2) the x-coordinate is the same, and 3 and −2 are on opposite sides of the x-axis: 3 + 2 = 5 blocks.</p>
+        <p><b>Part 2.</b> Across the y-axis, the x-coordinate changes sign: B = (−2, 3). Across the x-axis, the y-coordinate changes sign: C = (−2, −3). C is in quadrant III. Both coordinates of C are the opposites of the coordinates of A.</p>
+        <p class="solo-reto"><b>Challenge.</b> Opposite sides: add the absolute values. Same side: subtract the absolute values. For the rectangle, D = (−3, −3). AB = 3 + 4 = 7 and BC = 2 + 3 = 5, so the perimeter is 7 + 5 + 7 + 5 = 24 units and the area is 7 × 5 = 35 square units.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: the coordinate plane</button></p>
+    <p>Aligned to the Illinois sixth grade mathematics standards 6.NS.6 (b: signs of the coordinates indicate the quadrant; when two ordered pairs differ only by signs, the points are reflections across one or both axes; c: find and position pairs of integers and other rational numbers on a coordinate plane) and 6.NS.8 (solve real-world and mathematical problems by graphing points in all four quadrants, including using coordinates and absolute value to find distances between points with the same first coordinate or the same second coordinate), with polygons on the plane as in 6.G.3. At the Easy level the plane goes from −6 to 6 and the points and reflections are drawn; at the Challenge level the plane goes from −10 to 10, quadrants are found from the signs alone, the child names the reflection, finds distances across the axes and in a town map, finds the missing corner of a rectangle and its perimeter, and in “Who is right?” must also choose the reason. Typical mistakes get their own hints: switching x and y, losing a sign, and subtracting instead of adding when two points are on opposite sides of an axis. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #leer, #cuadrante, #reflejo, #distancia, #figuras and #quien, and the final task (build and explain an answer without options) is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para sexto grado 6.NS.6 (b: los signos de las coordenadas indican el cuadrante; si dos pares ordenados solo se diferencian en los signos, los puntos son reflexiones respecto a uno o a los dos ejes; c: ubicar pares de enteros y otros números racionales en el plano) y 6.NS.8 (resolver problemas ubicando puntos en los cuatro cuadrantes y usar las coordenadas y el valor absoluto para hallar distancias entre puntos con la misma primera o segunda coordenada), con polígonos en el plano como en 6.G.3. En el nivel Fácil el plano va de −6 a 6 y los puntos y las reflexiones se ven dibujados; en el Reto el plano va de −10 a 10, el cuadrante se halla solo con los signos, se nombra la reflexión, se hallan distancias que cruzan los ejes y se completa un rectángulo. Los errores típicos tienen su propia pista: cambiar x por y, perder un signo y restar en lugar de sumar cuando los puntos están a lados opuestos de un eje. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>The four-quadrant coordinate plane</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Draw a coordinate plane from −6 to 6 on graph paper and plot these points.</h3>
+  <p class="razon-h">A(3, 4)     B(−5, 2)     C(−2, −6)     D(4, −3)     E(0, −4)     F(−3.5, 1)</p>
+  <h3>2. Which quadrant? Write I, II, III, IV or “on an axis”.</h3>
+  <div class="caja-h">
+    <div>(−7, 3): <i class="linea"></i></div>
+    <div>(4, −9): <i class="linea"></i></div>
+    <div>(−2, −8): <i class="linea"></i></div>
+    <div>(0, 5): <i class="linea"></i></div>
+  </div>
+  <h3>3. Reflect P(4, −3).</h3>
+  <div class="caja-h">
+    <div>Across the x-axis: <i class="linea"></i></div>
+    <div>Across the y-axis: <i class="linea"></i></div>
+    <div>Across both axes: <i class="linea"></i></div>
+  </div>
+  <h3>4. Find the distance.</h3>
+  <div class="caja-h">
+    <div>(−3, 5) and (6, 5): <i class="linea"></i></div>
+    <div>(2, −1) and (2, −7): <i class="linea"></i></div>
+    <div>(−4, −2) and (−4, 6): <i class="linea"></i></div>
+    <div>(−8, 0) and (−1, 0): <i class="linea"></i></div>
+  </div>
+  <h3>5. Three corners of a rectangle are (−2, 4), (5, 4) and (5, −1). Find the fourth corner and the perimeter.</h3>
+  <div class="renglon"></div>
+  <h3>6. Who is right? Explain why.</h3>
+  <p class="razon-h">Elías: “(3, −5) and (−5, 3) are the same point, because they use the same numbers.”</p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>7. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) House (−4, 3), school (5, 3), park (5, −2). How far is the house from the school, and the school from the park? Is Daniel's “1 block” right?</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Reflect A(2, 3) across the y-axis to B, then B across the x-axis to C. Give B and C and the quadrant of C.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  orden:"The x-coordinate comes first: go across (left or right), then up or down for y.",
+  signoX:"Check the sign of x: to the left of the y-axis, x is negative.",
+  signoY:"Check the sign of y: below the x-axis, y is negative.",
+  lados:"The points are on opposite sides of the axis. Add their distances from the axis instead of subtracting.",
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Picture the plane: x is across, y is up or down, and the signs tell the side.",
+  pistaPorque:"That reason doesn't explain it. Think about what each coordinate and each sign tells you.",
+  estrategias:[
+    ["I went across first, then up or down","Great! x first, y second: that is why it is called an ordered pair."],
+    ["I used the signs to find the quadrant","Excellent! (+, +) is I, (−, +) is II, (−, −) is III and (+, −) is IV."],
+    ["I changed one sign to reflect","Smart! Across the x-axis y changes sign; across the y-axis x changes sign."],
+    ["I added absolute values across an axis","Awesome! From −4 to 5 is 4 + 5 = 9 units."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"leer",      emoji:"📍", en:"Read and plot points",    es:"Leer y ubicar puntos",        meta:"P is at (−3, 4)"},
+  {id:"cuadrante", emoji:"🧭", en:"Which quadrant?",         es:"¿Qué cuadrante?",             meta:"(−, −) is in quadrant III"},
+  {id:"reflejo",   emoji:"🪞", en:"Reflections",             es:"Reflexiones",                 meta:"(4, −2) across the x-axis → (4, 2)"},
+  {id:"distancia", emoji:"🚶", en:"Distances on the plane",  es:"Distancias en el plano",      meta:"(−4, 3) to (5, 3) is 9 units"},
+  {id:"figuras",   emoji:"📐", en:"Rectangles on the plane", es:"Rectángulos en el plano",     meta:"Find the missing corner"},
+  {id:"quien",     emoji:"💬", en:"Who is right?",           es:"¿Quién tiene razón?",         meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+/* ============ Números con signo y pares ordenados ============ */
+const nm = (v)=> (v < 0 ? "−" : "") + String(Math.abs(Math.round(v * 100) / 100));
+const par = (x, y)=> `(${nm(x)}, ${nm(y)})`;
+function cuadrante(x, y){ if(x === 0 || y === 0) return "On an axis"; return x > 0 ? (y > 0 ? "I" : "IV") : (y > 0 ? "II" : "III"); }
+const NOMBRE_C = {"I":"quadrant I", "II":"quadrant II", "III":"quadrant III", "IV":"quadrant IV", "On an axis":"on an axis"};
+/* Entero al azar entre −R y R distinto de 0 */
+const ent0 = (R)=>{ let v; do{ v = azar(-R, R); }while(v === 0); return v; };
+
+/* ============ Dibujos ============ */
+/* Plano de −R a R. puntos = [{x, y, txt, color}]; lineas = [[x1, y1, x2, y2, color]]; ejeMarcado = "x" | "y" */
+function plano(R, puntos, opc){
+  opc = opc || {};
+  const W = 440, m = 30, c = (W - 2 * m) / (2 * R), px = (x)=> m + (x + R) * c, py = (y)=> m + (R - y) * c;
+  const cada = R > 6 ? 2 : 1;
+  const etiqueta = opc.etiqueta || `Coordinate plane from −${R} to ${R}` + (puntos && puntos.length ? ` with ${puntos.map(p=>p.txt ? `point ${p.txt}` : "a point").join(", ")}` : "");
+  let s = `<svg class="modelo" style="max-width:440px" viewBox="0 0 ${W} ${W}" role="img" aria-label="${escaparHTML(etiqueta)}"><rect width="${W}" height="${W}" fill="#fff"/>`;
+  for(let k=-R; k<=R; k++){
+    s += `<line x1="${px(k)}" y1="${m}" x2="${px(k)}" y2="${W - m}" stroke="#DDEBEC" stroke-width="1"/>`;
+    s += `<line x1="${m}" y1="${py(k)}" x2="${W - m}" y2="${py(k)}" stroke="#DDEBEC" stroke-width="1"/>`;
+  }
+  if(opc.cuadrantes){
+    [["II", -R / 2, R / 2], ["I", R / 2, R / 2], ["III", -R / 2, -R / 2], ["IV", R / 2, -R / 2]].forEach(([r, x, y])=>{
+      s += `<text x="${px(x)}" y="${py(y) + 12}" font-size="34" font-weight="700" text-anchor="middle" fill="#C9E3E5">${r}</text>`;
+    });
+  }
+  const ejeX = opc.ejeMarcado === "x" ? "#B71C1C" : "#14313A", ejeY = opc.ejeMarcado === "y" ? "#B71C1C" : "#14313A";
+  s += `<line x1="${m - 8}" y1="${py(0)}" x2="${W - m + 8}" y2="${py(0)}" stroke="${ejeX}" stroke-width="${opc.ejeMarcado === "x" ? 4 : 2.5}"/>`;
+  s += `<line x1="${px(0)}" y1="${m - 8}" x2="${px(0)}" y2="${W - m + 8}" stroke="${ejeY}" stroke-width="${opc.ejeMarcado === "y" ? 4 : 2.5}"/>`;
+  s += `<text x="${W - m + 10}" y="${py(0) - 8}" font-size="15" font-weight="700" fill="${ejeX}">x</text><text x="${px(0) + 8}" y="${m - 10}" font-size="15" font-weight="700" fill="${ejeY}">y</text>`;
+  for(let k=-R; k<=R; k+=cada){
+    if(k === 0) continue;
+    s += `<line x1="${px(k)}" y1="${py(0) - 4}" x2="${px(k)}" y2="${py(0) + 4}" stroke="#14313A" stroke-width="2"/><text x="${px(k)}" y="${py(0) + 17}" font-size="11.5" text-anchor="middle" fill="#14313A">${nm(k)}</text>`;
+    s += `<line x1="${px(0) - 4}" y1="${py(k)}" x2="${px(0) + 4}" y2="${py(k)}" stroke="#14313A" stroke-width="2"/><text x="${px(0) - 7}" y="${py(k) + 4}" font-size="11.5" text-anchor="end" fill="#14313A">${nm(k)}</text>`;
+  }
+  s += `<text x="${px(0) - 7}" y="${py(0) + 15}" font-size="11.5" text-anchor="end" fill="#14313A">0</text>`;
+  (opc.poligono ? [opc.poligono] : []).forEach(pts=>{ s += `<polygon points="${pts.map(([x, y])=>`${px(x)},${py(y)}`).join(" ")}" fill="#F8C85F" fill-opacity=".35" stroke="#8A4B00" stroke-width="2.5"/>`; });
+  (opc.lineas || []).forEach(([x1, y1, x2, y2, col])=>{ s += `<line x1="${px(x1)}" y1="${py(y1)}" x2="${px(x2)}" y2="${py(y2)}" stroke="${col || "#194F5A"}" stroke-width="3" stroke-dasharray="7 5"/>`; });
+  (puntos || []).forEach(p=>{
+    const col = p.color || "#B71C1C";
+    s += `<circle cx="${px(p.x)}" cy="${py(p.y)}" r="7" fill="${col}" stroke="#fff" stroke-width="2"/>`;
+    if(p.txt) s += `<text x="${px(p.x) + (p.x >= 0 ? 10 : -10)}" y="${py(p.y) - 9}" font-size="17" font-weight="700" text-anchor="${p.x >= 0 ? "start" : "end"}" fill="${col}" stroke="#fff" stroke-width="4" paint-order="stroke">${escaparHTML(p.txt)}</text>`;
+  });
+  return s + "</svg>";
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(texto, es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((−?[\d.]+), (−?[\d.]+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/\|([^|]+)\|/g, es ? " el valor absoluto de $1 " : " the absolute value of $1 ")
+    .replace(/ > /g, es ? " es mayor que " : " is greater than ").replace(/ < /g, es ? " es menor que " : " is less than ")
+    .replace(/°F/g, es ? " grados" : " degrees")
+    .replace(/−(?=[\d$(])/g, es ? "menos " : "negative ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi6-sociales.png" alt="" class="lumi-m" width="450" height="594">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g6-06-coordinate-plane.html#leer */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+/* ============ Situaciones ============ */
+const LUGARES = [["the library", "la biblioteca"], ["the pool", "la piscina"], ["the bakery", "la panadería"], ["the park", "el parque"], ["the fire station", "la estación de bomberos"], ["the bus stop", "la parada del autobús"], ["the museum", "el museo"]];
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, reto = S.reto, esc = $("escena");
+  const R = reto ? 10 : 6;
+
+  /* --- 1. Leer y ubicar puntos (6.NS.6c) --- */
+  if(S.juego === "leer"){
+    let x, y; do{ x = ent0(R - 1); y = ent0(R - 1); }while(Math.abs(x) === Math.abs(y));
+    if(!reto || S.ronda % 2 === 0){
+      esc.insertAdjacentHTML("beforeend", plano(R, [{x, y, txt:"P"}]));
+      const qq = "What are the coordinates of point P?";
+      ponerInstruccion(qq, qq, "¿Cuáles son las coordenadas del punto P?");
+      opciones(par(x, y), [[par(y, x), t.orden], [par(-x, y), t.signoX], [par(x, -y), t.signoY], [par(-x, -y), "Check both signs: which side of each axis is P on?"]],
+        ()=>acertar(`P is ${Math.abs(x)} ${x < 0 ? "left" : "right"} and ${Math.abs(y)} ${y < 0 ? "down" : "up"}: ${par(x, y)}.`));
+    } else {
+      const pts = [[x, y], [y, x], [-x, y], [x, -y]], letras = ["A", "B", "C", "D"], orden = mezclar([0, 1, 2, 3]);
+      const cols = ["#B71C1C", "#194F5A", "#8A4B00", "#5B2C83"];
+      esc.insertAdjacentHTML("beforeend", plano(R, orden.map((k, i)=>({x:pts[k][0], y:pts[k][1], txt:letras[i], color:cols[i]}))));
+      const qq = `Which point is at ${par(x, y)}?`;
+      ponerInstruccion(qq, qq, `¿Qué punto está en ${par(x, y)}?`);
+      const bien = letras[orden.indexOf(0)];
+      const pistas = {1:t.orden, 2:t.signoX, 3:t.signoY};
+      opciones(bien, orden.map((k, i)=>k === 0 ? null : [letras[i], pistas[k]]).filter(Boolean),
+        ()=>acertar(`Point ${bien}: ${Math.abs(x)} ${x < 0 ? "left" : "right"} and ${Math.abs(y)} ${y < 0 ? "down" : "up"} from (0, 0).`));
+    }
+    return;
+  }
+
+  /* --- 2. ¿Qué cuadrante? (6.NS.6b) --- */
+  if(S.juego === "cuadrante"){
+    const opcionesC = ["I", "II", "III", "IV"];
+    const pistaC = "Use the signs: (+, +) is I, (−, +) is II, (−, −) is III and (+, −) is IV. Quadrants go counterclockwise from the top right.";
+    if(!reto){
+      let x = ent0(6), y = ent0(6); const enEje = Math.random() < 0.15; if(enEje){ if(Math.random() < 0.5) x = 0; else y = 0; }
+      esc.insertAdjacentHTML("beforeend", plano(6, [{x, y, txt:par(x, y)}]));
+      const bien = cuadrante(x, y);
+      const qq = "Which quadrant is the point in?";
+      ponerInstruccion(qq, `The point is at ${par(x, y)}. ${qq}`, `El punto está en ${par(x, y)}. ¿En qué cuadrante está?`);
+      opciones(bien, [...opcionesC, "On an axis"].filter(c=>c !== bien).slice(0, bien === "On an axis" ? 4 : 3).map(c=>[c, c === "On an axis" ? "The point is not on an axis: both coordinates are different from 0." : pistaC]),
+        ()=>acertar(bien === "On an axis" ? `One coordinate is 0, so ${par(x, y)} is on the ${x === 0 ? "y" : "x"}-axis, not in a quadrant.` : `x is ${x > 0 ? "positive" : "negative"} and y is ${y > 0 ? "positive" : "negative"}, so the point is in quadrant ${bien}.`));
+    } else {
+      const tipo = tipoRonda(["par", "signos", "par", "eje", "signos"]);
+      let x, y, frase, fraseEs;
+      if(tipo === "eje"){ x = Math.random() < 0.5 ? 0 : ent0(80); y = x === 0 ? ent0(80) : 0; frase = `The point ${par(x, y)}.`; fraseEs = `El punto ${par(x, y)}.`; }
+      else if(tipo === "par"){ x = ent0(99); y = ent0(99); frase = `The point ${par(x, y)}.`; fraseEs = `El punto ${par(x, y)}.`; }
+      else { x = elegir([-1, 1]); y = elegir([-1, 1]);
+             frase = `A point has a ${x < 0 ? "negative" : "positive"} x-coordinate and a ${y < 0 ? "negative" : "positive"} y-coordinate.`;
+             fraseEs = `Un punto tiene la coordenada x ${x < 0 ? "negativa" : "positiva"} y la coordenada y ${y < 0 ? "negativa" : "positiva"}.`; }
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(frase)}</p>`);
+      const bien = cuadrante(x, y);
+      const qq = "Where is the point? Decide without drawing.";
+      ponerInstruccion(qq, `${frase} Which quadrant is it in?`, `${fraseEs} ¿En qué cuadrante está? Decide sin dibujar.`);
+      const todas = [...opcionesC, "On an axis"];
+      opciones(bien, todas.filter(c=>c !== bien).map(c=>[c, pistaC]),
+        ()=>acertar(bien === "On an axis" ? `A coordinate is 0, so the point is on an axis.` : `Signs (${x > 0 ? "+" : "−"}, ${y > 0 ? "+" : "−"}): quadrant ${bien}.`));
+    }
+    return;
+  }
+
+  /* --- 3. Reflexiones (6.NS.6b) --- */
+  if(S.juego === "reflejo"){
+    let x, y; do{ x = ent0(R - 1); y = ent0(R - 1); }while(Math.abs(x) === Math.abs(y));
+    const ejes = {x:[x, -y], y:[-x, y], ambos:[-x, -y]};
+    const nombreEje = {x:"the x-axis", y:"the y-axis", ambos:"both axes"}, nombreEjeEs = {x:"el eje x", y:"el eje y", ambos:"los dos ejes"};
+    const e = tipoRonda(reto ? ["x", "y", "ambos", "y", "x"] : ["x", "y", "x", "y", "x"]);
+    const [rx, ry] = ejes[e];
+    if(!reto){
+      esc.insertAdjacentHTML("beforeend", plano(R, [{x, y, txt:`P${par(x, y)}`}], {ejeMarcado:e}));
+      const qq = `Reflect P across ${nombreEje[e]}. Where does it land?`;
+      ponerInstruccion(qq, `P is at ${par(x, y)}. ${qq}`, `P está en ${par(x, y)}. Refleja P respecto a ${nombreEjeEs[e]}. ¿Dónde queda?`);
+      const otro = e === "x" ? "y" : "x";
+      opciones(par(rx, ry), [[par(...ejes[otro]), `That is the reflection across ${nombreEje[otro]}. Across ${nombreEje[e]}, the ${e === "x" ? "y" : "x"}-coordinate changes sign.`],
+                             [par(...ejes.ambos), "That changes both signs. A reflection across one axis changes only one sign."], [par(x, y), "That is P itself. The reflection lands on the other side of the axis."]],
+        ()=>{ esc.innerHTML = plano(R, [{x, y, txt:"P"}, {x:rx, y:ry, txt:"P′", color:"#1B5E20"}], {ejeMarcado:e, lineas:[[x, y, rx, ry, "#1B5E20"]]});
+              acertar(`Across ${nombreEje[e]}, the ${e === "x" ? "y" : "x"}-coordinate changes sign: ${par(x, y)} → ${par(rx, ry)}.`); });
+    } else {
+      const frase = `P is at ${par(x, y)} and Q is at ${par(rx, ry)}.`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(frase)}</p>`);
+      const qq = "Q is a reflection of P. Across which axis?";
+      ponerInstruccion(qq, `${frase} ${qq}`, `P está en ${par(x, y)} y Q está en ${par(rx, ry)}. Q es una reflexión de P. ¿Respecto a qué eje?`);
+      const pista = "Compare the signs: if only y changes, the reflection is across the x-axis; if only x changes, across the y-axis; if both change, across both axes.";
+      opciones(`Across ${nombreEje[e]}`, ["x", "y", "ambos"].filter(k=>k !== e).map(k=>[`Across ${nombreEje[k]}`, pista]),
+        ()=>{ esc.insertAdjacentHTML("beforeend", plano(R, [{x, y, txt:"P"}, {x:rx, y:ry, txt:"Q", color:"#1B5E20"}], {ejeMarcado:e === "ambos" ? null : e}));
+              acertar(e === "ambos" ? "Both signs changed, so Q is the reflection of P across both axes." : `Only the ${e === "x" ? "y" : "x"}-coordinate changed sign, so Q is the reflection across ${nombreEje[e]}.`); }, true);
+    }
+    return;
+  }
+
+  /* --- 4. Distancias en el plano (6.NS.8) --- */
+  if(S.juego === "distancia"){
+    const horizontal = Math.random() < 0.5, cruza = Math.random() < (reto ? 0.7 : 0.5);
+    let a, b; do{ a = ent0(R); b = ent0(R); }while(Math.abs(a - b) < 2 || (cruza ? Math.sign(a) === Math.sign(b) : Math.sign(a) !== Math.sign(b)));
+    const fijo = ent0(R), d = Math.abs(a - b);
+    const P = horizontal ? [a, fijo] : [fijo, a], Q = horizontal ? [b, fijo] : [fijo, b];
+    const malos = [[String(Math.abs(Math.abs(a) - Math.abs(b))), cruza ? t.lados : t.otra[0]], [String(d + 1), "Count the units again, from one point to the other."], [String(d - 1), "Count the units again, from one point to the other."], [String(Math.abs(a) + Math.abs(b) + Math.abs(fijo)), `Only one coordinate changes. The ${horizontal ? "y" : "x"}-coordinates are equal, so use only the ${horizontal ? "x" : "y"}-coordinates.`]];
+    const expl = (cruza ? `They are on opposite sides of the ${horizontal ? "y" : "x"}-axis: |${nm(a)}| + |${nm(b)}| = ${Math.abs(a)} + ${Math.abs(b)} = ${d}.` : `They are on the same side of the ${horizontal ? "y" : "x"}-axis: |${nm(a)}| and |${nm(b)}| differ by ${d}.`);
+    if(!reto){
+      esc.insertAdjacentHTML("beforeend", plano(R, [{x:P[0], y:P[1], txt:"A"}, {x:Q[0], y:Q[1], txt:"B", color:"#194F5A"}], {lineas:[[P[0], P[1], Q[0], Q[1]]]}));
+      const qq = `How far is A${par(...P)} from B${par(...Q)}?`;
+      ponerInstruccion(qq, qq, `¿A qué distancia está A${par(...P)} de B${par(...Q)}?`);
+      opciones(String(d), malos, ()=>acertar(`${d} units. ${expl}`));
+    } else {
+      const [l1, l2] = mezclar(LUGARES).slice(0, 2), [n] = nombresAzar(1);
+      const frase = `On ${n}'s town map, each unit is 1 block. ${l1[0][0].toUpperCase() + l1[0].slice(1)} is at ${par(...P)} and ${l2[0]} is at ${par(...Q)}.`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(frase)}</p>`);
+      const qq = "How many blocks apart are they?";
+      ponerInstruccion(qq, `${frase} ${qq}`, `En el mapa del pueblo de ${n}, cada unidad es 1 cuadra. ${l1[1][0].toUpperCase() + l1[1].slice(1)} está en ${par(...P)} y ${l2[1]} está en ${par(...Q)}. ¿A cuántas cuadras están?`);
+      opciones(String(d), malos, ()=>acertar(`${d} blocks. ${expl}`));
+    }
+    return;
+  }
+
+  /* --- 5. Rectángulos en el plano (6.NS.8, 6.G.3) --- */
+  if(S.juego === "figuras"){
+    let x1, x2, y1, y2;
+    do{ x1 = azar(-R + 1, R - 1); x2 = azar(-R + 1, R - 1); y1 = azar(-R + 1, R - 1); y2 = azar(-R + 1, R - 1); }
+    while(Math.abs(x1 - x2) < 2 || Math.abs(y1 - y2) < 2 || x1 === 0 || x2 === 0 || y1 === 0 || y2 === 0 || (Math.sign(x1) === Math.sign(x2) && Math.sign(y1) === Math.sign(y2)));
+    const A = [x1, y1], B = [x2, y1], C = [x2, y2], D = [x1, y2];
+    const w = Math.abs(x1 - x2), h = Math.abs(y1 - y2);
+    if(!reto || S.ronda % 2 === 0){
+      esc.insertAdjacentHTML("beforeend", plano(R, [{x:A[0], y:A[1], txt:"A"}, {x:B[0], y:B[1], txt:"B"}, {x:C[0], y:C[1], txt:"C"}], {lineas:[[...A, ...B], [...B, ...C]]}));
+      const qq = `A${par(...A)}, B${par(...B)} and C${par(...C)} are three corners of rectangle ABCD. Where is D?`;
+      ponerInstruccion(qq, qq, `A${par(...A)}, B${par(...B)} y C${par(...C)} son tres esquinas del rectángulo ABCD. ¿Dónde está D?`);
+      opciones(par(...D), [[par(x2, -y2), "D must be in line with A (same x) and with C (same y)."], [par(y2, x1), t.orden], [par(-x1, y2), t.signoX]],
+        ()=>{ esc.innerHTML = plano(R, [{x:A[0], y:A[1], txt:"A"}, {x:B[0], y:B[1], txt:"B"}, {x:C[0], y:C[1], txt:"C"}, {x:D[0], y:D[1], txt:"D", color:"#1B5E20"}], {poligono:[A, B, C, D]});
+              acertar(`D has the x-coordinate of A and the y-coordinate of C: ${par(...D)}.`); });
+    } else {
+      const pideArea = Math.random() < 0.5;
+      const frase = `Rectangle ABCD has corners A${par(...A)}, B${par(...B)}, C${par(...C)} and D${par(...D)}.`;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(frase)}</p>`);
+      const qq = pideArea ? "What is its area, in square units?" : "What is its perimeter, in units?";
+      ponerInstruccion(qq, `${frase} ${qq}`, `El rectángulo ABCD tiene las esquinas A${par(...A)}, B${par(...B)}, C${par(...C)} y D${par(...D)}. ${pideArea ? "¿Cuál es su área, en unidades cuadradas?" : "¿Cuál es su perímetro, en unidades?"}`);
+      const wMal = Math.abs(Math.abs(x1) - Math.abs(x2)), hMal = Math.abs(Math.abs(y1) - Math.abs(y2));
+      const bien = pideArea ? w * h : 2 * (w + h);
+      opciones(String(bien), [[String(pideArea ? 2 * (w + h) : w * h), pideArea ? "That is the perimeter. The area is length × width." : "That is the area. The perimeter adds all four sides."],
+                              [String(pideArea ? wMal * h : 2 * (wMal + h)), t.lados], [String(pideArea ? w * hMal : 2 * (w + hMal)), t.lados], [String(w + h), "That is only two sides. The perimeter has four sides."]],
+        ()=>{ esc.insertAdjacentHTML("beforeend", plano(R, [{x:A[0], y:A[1], txt:"A"}, {x:B[0], y:B[1], txt:"B"}, {x:C[0], y:C[1], txt:"C"}, {x:D[0], y:D[1], txt:"D"}], {poligono:[A, B, C, D]}));
+              acertar(`AB = ${w} and BC = ${h}. ${pideArea ? `Area = ${w} × ${h} = ${w * h} square units.` : `Perimeter = ${w} + ${h} + ${w} + ${h} = ${2 * (w + h)} units.`}`); });
+    }
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (6.NS.6, 6.NS.8) --- */
+  if(S.juego === "quien"){
+    const [n1] = nombresAzar(1);
+    const tipo = tipoRonda(["mismo", "cuadrante", "reflejo", "distancia", "eje", "signos", "opuestos"]);
+    let dicho, dichoEs, verdad, expl, razones;
+    const a = azar(2, 9); let b; do{ b = azar(2, 9); }while(b === a);
+    if(tipo === "mismo"){
+      dicho = `${n1}: “${par(a, -b)} and ${par(-b, a)} are the same point, because they use the same numbers.”`;
+      dichoEs = `${n1}: «${par(a, -b)} y ${par(-b, a)} son el mismo punto, porque usan los mismos números».`;
+      verdad = false; expl = `${par(a, -b)} is ${a} right and ${b} down (quadrant IV); ${par(-b, a)} is ${b} left and ${a} up (quadrant II). The order and the signs matter.`;
+      razones = [["The first number is always x and the second is y, so the order matters.", true],
+                 ["It is right: the order of the numbers doesn't matter.", false],
+                 ["It is wrong only because one of them is on an axis.", false]];
+    } else if(tipo === "cuadrante"){
+      dicho = `${n1}: “The point ${par(-a, -b)} is in quadrant III.”`;
+      dichoEs = `${n1}: «El punto ${par(-a, -b)} está en el cuadrante III».`;
+      verdad = true; expl = `Both coordinates are negative: left and down. That is quadrant III.`;
+      razones = [["Both coordinates are negative, which is quadrant III.", true],
+                 ["It is wrong: negative points are always in quadrant IV.", false],
+                 ["It is wrong: it is in quadrant I, because it has two numbers.", false]];
+    } else if(tipo === "reflejo"){
+      dicho = `${n1}: “If I reflect ${par(a, b)} across the x-axis, I get ${par(-a, b)}.”`;
+      dichoEs = `${n1}: «Si reflejo ${par(a, b)} respecto al eje x, obtengo ${par(-a, b)}».`;
+      verdad = false; expl = `Across the x-axis the point flips up and down, so the y-coordinate changes sign: ${par(a, -b)}. ${par(-a, b)} is the reflection across the y-axis.`;
+      razones = [[`Across the x-axis, y changes sign: ${par(a, -b)}.`, true],
+                 ["It is right: across the x-axis, x changes sign.", false],
+                 ["It is wrong: across an axis both signs change.", false]];
+    } else if(tipo === "distancia"){
+      const c = ent0(8);
+      dicho = `${n1}: “The distance from ${par(-a, c)} to ${par(b, c)} is ${Math.abs(b - a)}, because ${Math.max(a, b)} − ${Math.min(a, b)} = ${Math.abs(b - a)}.”`;
+      dichoEs = `${n1}: «La distancia de ${par(-a, c)} a ${par(b, c)} es ${Math.abs(b - a)}, porque ${Math.max(a, b)} − ${Math.min(a, b)} = ${Math.abs(b - a)}».`;
+      verdad = false; expl = `The points are on opposite sides of the y-axis: ${a} + ${b} = ${a + b} units.`;
+      razones = [[`They are on opposite sides of the y-axis, so the distance is ${a} + ${b} = ${a + b}.`, true],
+                 ["It is right: you always subtract the smaller number from the bigger one.", false],
+                 [`It is wrong because the distance is ${Math.abs(c)}.`, false]];
+    } else if(tipo === "eje"){
+      dicho = `${n1}: “The point ${par(0, -a)} is on the y-axis.”`;
+      dichoEs = `${n1}: «El punto ${par(0, -a)} está en el eje y».`;
+      verdad = true; expl = `Its x-coordinate is 0, so it doesn't move left or right: it is on the y-axis, ${a} below the origin.`;
+      razones = [["Its x-coordinate is 0, so it is on the y-axis.", true],
+                 ["It is wrong: it is on the x-axis, because x is 0.", false],
+                 ["It is wrong: it is in quadrant III, because −" + a + " is negative.", false]];
+    } else if(tipo === "signos"){
+      dicho = `${n1}: “Every point in quadrant IV has a negative x-coordinate.”`;
+      dichoEs = `${n1}: «Todo punto del cuadrante IV tiene la coordenada x negativa».`;
+      verdad = false; expl = `Quadrant IV is to the right of the y-axis and below the x-axis: x is positive and y is negative, as in ${par(a, -b)}.`;
+      razones = [["In quadrant IV, x is positive and y is negative.", true],
+                 ["It is right: in quadrant IV both coordinates are negative.", false],
+                 ["It is right: quadrant IV is on the left side.", false]];
+    } else {
+      dicho = `${n1}: “${par(a, -b)} and ${par(-a, b)} are reflections of each other across both axes.”`;
+      dichoEs = `${n1}: «${par(a, -b)} y ${par(-a, b)} son reflexiones uno del otro respecto a los dos ejes».`;
+      verdad = true; expl = `Both coordinates changed sign, so one point is the reflection of the other across both axes.`;
+      razones = [["Both signs are different, so it is a reflection across both axes.", true],
+                 ["It is wrong: only the x-coordinate changed.", false],
+                 ["It is wrong: they are the same point.", false]];
+    }
+    escenaTexto(`<p class="problema"><span aria-hidden="true">💬</span> ${escaparHTML(dicho)}</p>`);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opciones(buena, razones.filter(r=>!r[1]).map(r=>[r[0], t.pistaPorque]), ()=>acertar(expl), true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="6"></script>
+</body>
+</html>
