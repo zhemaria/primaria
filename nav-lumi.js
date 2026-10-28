@@ -25,7 +25,9 @@
     { id: "2",    ancla: "g2",   es: "2.º",       en: "2nd",   es2: "2.º grado",  en2: "Grade 2" },
     { id: "3",    ancla: "g3",   es: "3.º",       en: "3rd",   es2: "3.er grado", en2: "Grade 3" },
     { id: "4",    ancla: "g4",   es: "4.º",       en: "4th",   es2: "4.º grado",  en2: "Grade 4" },
-    { id: "5",    ancla: "g5",   es: "5.º",       en: "5th",   es2: "5.º grado",  en2: "Grade 5" }
+    { id: "5",    ancla: "g5",   es: "5.º",       en: "5th",   es2: "5.º grado",  en2: "Grade 5" },
+    /* en preparación: solo se ve en las páginas de sexto hasta que entre en el catálogo de Lumi */
+    { id: "6",    ancla: "g6",   es: "6.º",       en: "6th",   es2: "6.º grado",  en2: "Grade 6", pronto: true }
   ];
 
   /* Materias de cada grado: dirección en inglés y en español
@@ -61,7 +63,8 @@
     "5":  { mate:  { en: P + "5to_grado/",             es: P + "5to_grado/?ayuda=es" },
             read:  { en: P + "5to_grado/reading.html", es: P + "5to_grado/reading.html?ayuda=es" },
             cien:  { en: C + "book-grade5-science.html",        es: C + "book-grade5-science.html" },
-            soci:  { en: C + "book-grade5-social-studies.html", es: C + "book-grade5-social-studies.html" } }
+            soci:  { en: C + "book-grade5-social-studies.html", es: C + "book-grade5-social-studies.html" } },
+    "6":  { mate:  { en: P + "6to_grado/",             es: P + "6to_grado/?ayuda=es" } }
   };
   var ORDEN = ["mate", "read", "lect", "cien", "soci"];
   var NOMBRES = {
@@ -121,6 +124,7 @@
     var g0 = null;
     GRADOS.forEach(function (g) {
       var aqui = g.id === miGrado;
+      if (g.pronto && !aqui) return;
       if (aqui) g0 = g;
       h += '<li><a href="' + LUMI + t.pagGrados + "#" + g.ancla + '"' + (aqui ? ' aria-current="page"' : "") +
            ' aria-label="' + t.grado + g[L + "2"] + (aqui ? t.actual : "") + '">' + g[L] + "</a></li>";
