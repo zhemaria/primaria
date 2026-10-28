@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<!--
+  Sixth Grade Math — Statistical questions and distributions
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 6: 6.SP.1, 6.SP.2, 6.SP.3
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistical questions · Sixth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Sixth grade games with Lumi on statistics: recognizing statistical questions, reading dot plots, the median as a measure of center, the range as a measure of spread, describing the shape of a distribution, and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Statistical questions</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi6-laptop.png" alt="" class="lumi-d" width="450" height="594"></span><span>❓</span><span>📊</span><span>🎯</span><span>↔️</span></div>
+    <h2>Questions with many answers!</h2>
+    <p id="txt-portada">“How old is Israel?” has one answer. “How old are the students in our school?” has many answers, and that variability is what statistics studies. With Lumi you will tell statistical questions from other questions, read dot plots, describe the center, the spread and the shape of a set of data, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">«¿Cuántos años tiene Israel?» tiene una sola respuesta. «¿Cuántos años tienen los estudiantes de nuestra escuela?» tiene muchas respuestas, y esa variabilidad es lo que estudia la estadística. Con Lumi vas a distinguir las preguntas estadísticas de otras preguntas, leer diagramas de puntos, describir el centro, la dispersión y la forma de un conjunto de datos y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">How long do sixth graders sleep?</span></span></button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi6-laptop.png" alt="" class="lumi-m" width="450" height="594"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Use the data, a dot plot or a measure of center or spread, and tell how they prove your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Usa los datos, un diagrama de puntos o una medida de centro o de dispersión, y di cómo demuestran tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Salma asks: “How many hours did I sleep last night?” Elías asks: “How many hours do the sixth graders in our school sleep on a school night?” Which one is a statistical question? Explain why, and say how you would collect the data to answer it.</p>
+      <p class="ayuda-es" lang="es">Salma pregunta: «¿Cuántas horas dormí anoche?». Elías pregunta: «¿Cuántas horas duermen los estudiantes de sexto de nuestra escuela en una noche de clases?». ¿Cuál es una pregunta estadística? Explica por qué y di cómo recogerías los datos para responderla.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> ___'s question is statistical because the answers ___. ___'s question has ___ answer. To collect the data, I would ___.</p>
+        <p><b>Useful words:</b> statistical question, variability, data, survey, answers vary, one answer.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: rewrite Salma's question so that it becomes a statistical question about her own sleep.</p><p class="ayuda-es" lang="es">Reto: vuelve a escribir la pregunta de Salma para que sea una pregunta estadística sobre su propio sueño.</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Elías collects the answers of 11 students (in hours): 7, 8, 8, 9, 9, 9, 9, 10, 10, 11, 6. Describe the data: draw or describe the dot plot, give one number that summarizes the center, and one number that describes the spread. Then describe the shape.</p>
+      <p class="ayuda-es" lang="es">Elías recoge las respuestas de 11 estudiantes (en horas): 7, 8, 8, 9, 9, 9, 9, 10, 10, 11, 6. Describe los datos: dibuja o describe el diagrama de puntos, da un número que resuma el centro y otro que describa la dispersión. Después describe la forma.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> In order, the data are ___. The middle value (median) is ___. The range is ___ − ___ = ___. The data cluster around ___ and the shape is ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: one more student says 3 hours. How does that change the range and the median? Which one changes more, and why?</p><p class="ayuda-es" lang="es">Reto: otro estudiante dice 3 horas. ¿Cómo cambian el rango y la mediana? ¿Cuál cambia más y por qué?</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: the data, a dot plot or a measure of center or spread.<span class="es" lang="es">Usé evidencia: los datos, un diagrama de puntos o una medida de centro o de dispersión.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Elías's question is statistical, because different students sleep different numbers of hours, so we expect many answers that vary. Salma's question has only one answer, the hours she slept last night. To collect the data, I would ask each sixth grader (or a large group of them) how many hours they usually sleep on a school night, and write every answer down.</p>
+        <p><b>Part 2.</b> In order: 6, 7, 8, 8, 9, 9, 9, 9, 10, 10, 11. The dot plot has one dot at 6, one at 7, two at 8, four at 9, two at 10 and one at 11. The median (the middle value, the 6th of 11) is 9 hours. The range is 11 − 6 = 5 hours. The data cluster around 9, with fewer values far from it, so the shape is roughly symmetric, like a hill with its peak at 9.</p>
+        <p class="solo-reto"><b>Challenge.</b> “How many hours do I sleep on school nights this month?” is statistical, because the answer changes from night to night. If one more student says 3 hours, the range becomes 11 − 3 = 8, which is much bigger; the median stays at 9 (it is the middle of 12 values: the 6th and 7th are 9 and 9). The range changes more because it uses only the two extreme values, and the median depends on the middle.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: statistical questions</button></p>
+    <p>Aligned to the Illinois sixth grade mathematics standards 6.SP.1 (recognize a statistical question as one that anticipates variability in the data related to the question and accounts for it in the answers; for example, “How old am I?” is not a statistical question, but “How old are the students in my school?” is), 6.SP.2 (understand that a set of data collected to answer a statistical question has a distribution which can be described by its center, spread and overall shape) and 6.SP.3 (recognize that a measure of center for a numerical data set summarizes all of its values with a single number, while a measure of variation describes how its values vary with a single number). At the Easy level the dot plots are small, the data are already in order and the questions use everyday words (most common, highest, lowest); at the Challenge level the child finds the median of an even number of values, compares the spread of two sets, describes shape with words such as symmetric, skewed, cluster, gap and outlier, decides which measure answers a question, and in “Who is right?” must also choose the reason. Typical mistakes get their own hints: thinking a question about one person is statistical, taking the middle of the list before ordering it, giving the largest value instead of the range, and confusing the most common value with the median. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #pregunta, #puntos, #centro, #dispersion, #forma and #quien, and the final task (build and explain an answer without options) is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para sexto grado 6.SP.1 (reconocer una pregunta estadística como la que anticipa variabilidad en los datos; por ejemplo, «¿Cuántos años tengo?» no es estadística, pero «¿Cuántos años tienen los estudiantes de mi escuela?» sí lo es), 6.SP.2 (un conjunto de datos tiene una distribución que se describe por su centro, su dispersión y su forma) y 6.SP.3 (una medida de centro resume todos los valores en un solo número, mientras que una medida de variación describe con un solo número cómo varían). En el nivel Fácil los diagramas de puntos son pequeños y los datos ya están ordenados; en el Reto se halla la mediana de un número par de datos, se compara la dispersión de dos conjuntos, se describe la forma con palabras como simétrica, sesgada, agrupación, hueco y valor atípico, y se decide qué medida responde una pregunta. Los errores típicos tienen su propia pista: pensar que una pregunta sobre una sola persona es estadística, tomar el valor del medio sin ordenar la lista, dar el valor mayor en lugar del rango y confundir el valor más frecuente con la mediana. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Statistical questions and distributions</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Write S if the question is statistical and N if it is not.</h3>
+  <div class="caja-h una">
+    <div><i class="linea" style="width:12mm"></i> a) How tall is the school flagpole?</div>
+    <div><i class="linea" style="width:12mm"></i> b) How tall are the students in our class?</div>
+    <div><i class="linea" style="width:12mm"></i> c) How many pets do the families on our street have?</div>
+    <div><i class="linea" style="width:12mm"></i> d) How many pets does Daniel have?</div>
+  </div>
+  <h3>2. Number of books read this month by 12 students: 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 7, 12</h3>
+  <p class="razon-h">Draw a dot plot on a number line from 0 to 12.</p>
+  <div class="renglon"></div>
+  <div class="caja-h">
+    <div>a) Most common value (mode): <i class="linea"></i></div>
+    <div>b) Median: <i class="linea"></i></div>
+    <div>c) Range: <i class="linea"></i></div>
+    <div>d) Outlier: <i class="linea"></i></div>
+  </div>
+  <h3>3. Describe the shape of the data in question 2. Is there a cluster? A gap? An outlier?</h3>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>4. Which set has more spread? Explain.</h3>
+  <p class="razon-h">Set A: 5, 6, 6, 7, 7, 8     Set B: 1, 3, 6, 7, 10, 12</p>
+  <div class="renglon"></div>
+  <h3>5. Who is right? Explain why.</h3>
+  <p class="razon-h">Israel: “The median of 9, 2, 7, 4, 5 is 7, because 7 is in the middle of the list.”</p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) “How many hours did I sleep last night?” or “How many hours do the sixth graders in our school sleep on a school night?” Which is statistical? Why? How would you collect the data?</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Data (hours): 7, 8, 8, 9, 9, 9, 9, 10, 10, 11, 6. Describe the center, the spread and the shape.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  variab:"A statistical question expects many different answers. Ask: would different people (or different times) give different answers?",
+  ordenar:"Put the data in order first. The median is the middle value of the ordered list.",
+  rango:"The range is the greatest value minus the least value.",
+  moda:"The most common value is the mode. The median is the middle of the ordered data.",
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Order the data, look at the dot plot, and think about whether the answers vary.",
+  pistaPorque:"That reason doesn't explain it. Think about variability, the middle of the ordered data, or the distance from least to greatest.",
+  estrategias:[
+    ["I asked whether the answers would vary","Great! That is how you spot a statistical question."],
+    ["I put the data in order","Excellent! The median and the range are easy once the data are in order."],
+    ["I looked at the dot plot","Smart! A dot plot shows the center, the spread and the shape at a glance."],
+    ["I used one number for the center and one for the spread","Awesome! A measure of center and a measure of variation describe a whole set of data."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"pregunta",   emoji:"❓", en:"Statistical questions", es:"Preguntas estadísticas",  meta:"Will the answers vary?"},
+  {id:"puntos",     emoji:"📊", en:"Read a dot plot",       es:"Leer un diagrama de puntos", meta:"How many students said 9?"},
+  {id:"centro",     emoji:"🎯", en:"The center",            es:"El centro",               meta:"Median: the middle value"},
+  {id:"dispersion", emoji:"↔️", en:"The spread",            es:"La dispersión",           meta:"Range: greatest − least"},
+  {id:"forma",      emoji:"⛰️", en:"The shape",             es:"La forma",                meta:"Cluster, gap, outlier, symmetric"},
+  {id:"quien",      emoji:"💬", en:"Who is right?",         es:"¿Quién tiene razón?",     meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+/* ============ Datos ============ */
+const nd = (v)=> String(Math.round(v * 100) / 100);
+const ord = (d)=> d.slice().sort((a, b)=>a - b);
+function mediana(d){ const o = ord(d), n = o.length; return n % 2 ? o[(n - 1) / 2] : (o[n / 2 - 1] + o[n / 2]) / 2; }
+const rango = (d)=> Math.max(...d) - Math.min(...d);
+const media = (d)=> d.reduce((s, x)=>s + x, 0) / d.length;
+function frec(d){ const f = {}; d.forEach(x=>{ f[x] = (f[x] || 0) + 1; }); return f; }
+function moda(d){ const f = frec(d); const m = Math.max(...Object.values(f)); const ks = Object.keys(f).filter(k=>f[k] === m).map(Number); return ks.length === 1 ? ks[0] : null; }
+/* Datos con forma de montaña alrededor de c, de n valores entre min y max */
+function montania(n, c, sd, min, max){
+  const d = [];
+  while(d.length < n){ const u = (Math.random() + Math.random() + Math.random() - 1.5) * sd * 1.4; const v = Math.round(c + u); if(v >= min && v <= max) d.push(v); }
+  return d;
+}
+/* Datos sesgados: muchos abajo, cola hacia arriba (o al revés) */
+function sesgados(n, min, max, derecha){
+  const d = [];
+  while(d.length < n){ const r = Math.random() ** 2; const v = derecha ? Math.round(min + r * (max - min)) : Math.round(max - r * (max - min)); d.push(v); }
+  return d;
+}
+
+/* ============ Dibujos ============ */
+/* Diagrama de puntos de min a max */
+function diagramaPuntos(d, min, max, titulo, oculta){
+  const f = frec(d), alto = Math.max(...Object.values(f)), W = 600, r = 9, paso = (W - 70) / (max - min), x0 = 35, y0 = 40 + alto * 22;
+  const H = y0 + 52;
+  let s = oculta ? `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">` : `<svg class="modelo" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(`Dot plot: ${titulo}. ${Object.keys(f).sort((a, b)=>a - b).map(k=>`${f[k]} at ${k}`).join(", ")}.`)}">`;
+  s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
+  s += `<line x1="${x0 - 10}" y1="${y0}" x2="${x0 + (max - min) * paso + 10}" y2="${y0}" stroke="#14313A" stroke-width="2.5"/>`;
+  const cada = max - min > 20 ? 5 : max - min > 12 ? 2 : 1;
+  for(let v=min; v<=max; v++){
+    const x = x0 + (v - min) * paso;
+    s += `<line x1="${x}" y1="${y0 - 5}" x2="${x}" y2="${y0 + 5}" stroke="#14313A" stroke-width="1.5"/>`;
+    if((v - min) % cada === 0) s += `<text x="${x}" y="${y0 + 22}" font-size="14" font-weight="700" text-anchor="middle" fill="#14313A">${v}</text>`;
+    for(let i=0; i<(f[v] || 0); i++) s += `<circle cx="${x}" cy="${y0 - 14 - i * 2.2 * r}" r="${r}" fill="#45A6AD" stroke="#194F5A" stroke-width="1.5"/>`;
+  }
+  s += `<text x="${W / 2}" y="${H - 6}" font-size="15" font-weight="700" text-anchor="middle" fill="#3F5F66">${escaparHTML(titulo)}</text>`;
+  return s + "</svg>";
+}
+const lista = (d)=> d.join(", ");
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(texto, es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi6-laptop.png" alt="" class="lumi-m" width="450" height="594">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g6-11-statistical-questions.html#centro */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+/* ============ Situaciones ============ */
+const PREGUNTAS = [
+  ["How old are the students in our school?", "How old is Israel?", "¿Cuántos años tienen los estudiantes de nuestra escuela?", "¿Cuántos años tiene Israel?"],
+  ["How many hours do sixth graders sleep on a school night?", "How many hours did Salma sleep last night?", "¿Cuántas horas duermen los estudiantes de sexto en una noche de clases?", "¿Cuántas horas durmió Salma anoche?"],
+  ["How many pets do the families on our street have?", "How many pets does Daniel's family have?", "¿Cuántas mascotas tienen las familias de nuestra calle?", "¿Cuántas mascotas tiene la familia de Daniel?"],
+  ["How tall are the players on the basketball team?", "How tall is the school flagpole?", "¿Cuánto miden los jugadores del equipo de baloncesto?", "¿Cuánto mide el asta de la bandera de la escuela?"],
+  ["How many minutes does it take students in our class to get to school?", "How far is the library from the school?", "¿Cuántos minutos tardan los estudiantes de nuestra clase en llegar a la escuela?", "¿A qué distancia está la biblioteca de la escuela?"],
+  ["What is the daily high temperature in Chicago in October?", "What was the high temperature in Chicago yesterday?", "¿Cuál es la temperatura máxima diaria en Chicago en octubre?", "¿Cuál fue la temperatura máxima en Chicago ayer?"],
+  ["How many books did each student in sixth grade read this summer?", "How many pages does our science book have?", "¿Cuántos libros leyó cada estudiante de sexto este verano?", "¿Cuántas páginas tiene nuestro libro de ciencias?"],
+  ["How much do the backpacks in our class weigh?", "How much does Sophia's backpack weigh?", "¿Cuánto pesan las mochilas de nuestra clase?", "¿Cuánto pesa la mochila de Sophia?"]
+];
+const TEMAS = [
+  {t:"Hours of sleep on a school night", te:"horas de sueño en una noche de clases", c:9, sd:1.2, min:5, max:12},
+  {t:"Number of pets per family", te:"número de mascotas por familia", c:2, sd:1.2, min:0, max:7},
+  {t:"Minutes to get to school", te:"minutos para llegar a la escuela", c:15, sd:5, min:3, max:30},
+  {t:"Books read this summer", te:"libros leídos este verano", c:5, sd:2, min:0, max:12},
+  {t:"Goals scored per game", te:"goles por partido", c:3, sd:1.5, min:0, max:9},
+  {t:"Text messages sent today", te:"mensajes enviados hoy", c:8, sd:3, min:0, max:16}
+];
+function conjunto(n, par){
+  for(let i=0; i<100; i++){
+    const T0 = elegir(TEMAS), d = montania(n, T0.c, T0.sd, T0.min, T0.max);
+    if(par !== undefined && (d.length % 2 === 0) !== par) continue;
+    if(rango(d) >= 3) return {T0, d};
+  }
+  return {T0:TEMAS[0], d:[7, 8, 8, 9, 9, 9, 10, 10, 11]};
+}
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, reto = S.reto, esc = $("escena");
+
+  /* --- 1. Preguntas estadísticas (6.SP.1) --- */
+  if(S.juego === "pregunta"){
+    const [si, no, siEs, noEs] = elegir(PREGUNTAS);
+    if(!reto || S.ronda % 2 === 0){
+      const qq = "Which one is a statistical question?";
+      ponerInstruccion(qq, `${qq} ${si} Or: ${no}`, `¿Cuál es una pregunta estadística? «${siEs}» o «${noEs}»`);
+      opciones(si, [[no, t.variab + " This question has only one answer."]], ()=>acertar(`“${si}” expects many different answers: the data vary. “${no}” has one answer.`), true);
+    } else {
+      const esSi = Math.random() < 0.5, q = esSi ? si : no, qEs = esSi ? siEs : noEs;
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">“${escaparHTML(q)}”</p>`);
+      const qq = "Is this a statistical question?";
+      ponerInstruccion(qq, `${q} ${qq}`, `«${qEs}» ¿Es una pregunta estadística?`);
+      const bien = esSi ? "Yes: the answers will vary" : "No: it has one answer";
+      opciones(bien, [[esSi ? "No: it has one answer" : "Yes: the answers will vary", t.variab]], ()=>acertar(esSi ? "Different people or different days give different answers, so we expect variability." : "There is only one correct answer, so there is no variability to study."), true);
+    }
+    return;
+  }
+
+  /* --- 2. Leer un diagrama de puntos (6.SP.2) --- */
+  if(S.juego === "puntos"){
+    const {T0, d} = conjunto(reto ? azar(14, 20) : azar(9, 12));
+    const min = Math.min(T0.min, Math.min(...d)), max = Math.max(T0.max, Math.max(...d));
+    esc.insertAdjacentHTML("beforeend", diagramaPuntos(d, min, max, T0.t));
+    const f = frec(d), vals = Object.keys(f).map(Number);
+    const tipo = reto ? tipoRonda(["total", "masde", "moda", "total", "masde"]) : tipoRonda(["cuantos", "moda", "cuantos", "total", "moda"]);
+    if(tipo === "cuantos"){
+      const v = elegir(vals), n = f[v];
+      const qq = `How many dots are at ${v}?`;
+      ponerInstruccion(qq, `${T0.t}. ${qq}`, `${T0.te}. ¿Cuántos puntos hay en ${v}?`);
+      opcionesNum(n, [[n + 1, "Count the dots above that number again."], [n - 1, "Count the dots above that number again."], [v, `${v} is the value; count the dots above it.`], [n + 2, "Count the dots above that number again."], [Math.max(...Object.values(f)), "That is the tallest column. Look only at the column above " + v + "."]].filter(([x])=>x >= 0 && x !== n), ()=>acertar(`There ${n === 1 ? "is" : "are"} ${n} ${n === 1 ? "dot" : "dots"} at ${v}: ${n} ${n === 1 ? "answer was" : "answers were"} ${v}.`));
+    } else if(tipo === "total"){
+      const qq = "How many data values (answers) are shown?";
+      ponerInstruccion(qq, `${T0.t}. ${qq}`, `${T0.te}. ¿Cuántos datos (respuestas) se muestran?`);
+      opcionesNum(d.length, [[vals.length, "That counts the different values. Each dot is one answer: count all the dots."], [d.length + 1, "Count all the dots again."], [Math.max(...d), "That is the largest value. Count the dots."]], ()=>acertar(`There are ${d.length} dots, so ${d.length} answers.`));
+    } else if(tipo === "moda"){
+      const m = moda(d);
+      if(m === null) return nuevaRonda();
+      const qq = "Which value is the most common?";
+      ponerInstruccion(qq, `${T0.t}. ${qq}`, `${T0.te}. ¿Qué valor es el más frecuente?`);
+      opciones(String(m), [[String(f[m]), "That is how many dots are in the tallest column. The question asks for the value under it."], [String(Math.max(...d)), "That is the greatest value, not the most common."], [String(elegir(vals.filter(v=>v !== m)) ?? m + 1), "Look for the tallest column of dots."]],
+        ()=>acertar(`The tallest column is at ${m}, with ${f[m]} dots. ${m} is the most common value, the mode.`));
+    } else {
+      const corte = elegir(vals.slice(1, -1).length ? vals.slice(1, -1) : vals);
+      const n = d.filter(x=>x > corte).length;
+      const qq = `How many answers are greater than ${corte}?`;
+      ponerInstruccion(qq, `${T0.t}. ${qq}`, `${T0.te}. ¿Cuántas respuestas son mayores que ${corte}?`);
+      opcionesNum(n, [[d.filter(x=>x >= corte).length, `“Greater than ${corte}” doesn't include ${corte} itself.`], [d.filter(x=>x < corte).length, `Count the dots to the right of ${corte}.`], [n + 1, "Count again."]].filter(([x])=>x !== n), ()=>acertar(`${n} dots are to the right of ${corte}.`));
+    }
+    return;
+  }
+
+  /* --- 3. El centro: mediana (6.SP.3) --- */
+  if(S.juego === "centro"){
+    const par = reto && S.ronda % 2 === 0;
+    let d, T0;
+    do{ ({T0, d} = conjunto(reto ? (par ? elegir([8, 10]) : elegir([9, 11])) : elegir([5, 7, 9]))); }while(par && mediana(d) % 1 !== 0 && mediana(d) % 1 !== 0.5);
+    const lst = reto ? mezclar(d) : ord(d), med = mediana(d);
+    esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(T0.t)}</p><p class="expr" style="font-size:clamp(22px,4.6vw,32px)">${lista(lst)}</p>`);
+    const qq = reto ? "What is the median? Put the data in order first." : "The data are in order. What is the median, the middle value?";
+    ponerInstruccion(qq, `${T0.t}: ${lista(lst)}. What is the median?`, `${T0.te}: ${lista(lst)}. ¿Cuál es la mediana? ${reto ? "Ordena primero los datos." : "Es el valor del medio."}`);
+    const sinOrden = lst.length % 2 ? lst[(lst.length - 1) / 2] : (lst[lst.length / 2 - 1] + lst[lst.length / 2]) / 2;
+    const malos = [[nd(media(d)), "That is the mean (the average). The median is the middle value of the ordered data."], [nd(rango(d)), "That is the range, a measure of spread."]];
+    if(sinOrden !== med) malos.unshift([nd(sinOrden), t.ordenar]);
+    const m = moda(d); if(m !== null && m !== med) malos.push([String(m), t.moda]);
+    malos.push([nd(med + 1), t.ordenar]);
+    opciones(nd(med), malos.filter(([v])=>v !== nd(med)), ()=>acertar(`In order: ${lista(ord(d))}. ${d.length % 2 ? `The middle value is ${med}.` : `The two middle values are ${ord(d)[d.length / 2 - 1]} and ${ord(d)[d.length / 2]}, so the median is halfway between them: ${nd(med)}.`}`));
+    return;
+  }
+
+  /* --- 4. La dispersión: rango y comparar (6.SP.3) --- */
+  if(S.juego === "dispersion"){
+    if(!reto || S.ronda % 2 === 0){
+      const {T0, d} = conjunto(azar(7, 11));
+      const lst = reto ? mezclar(d) : ord(d), r = rango(d);
+      esc.insertAdjacentHTML("beforeend", `<p class="problema">${escaparHTML(T0.t)}</p><p class="expr" style="font-size:clamp(22px,4.6vw,32px)">${lista(lst)}</p>`);
+      const qq = "What is the range of the data?";
+      ponerInstruccion(qq, `${T0.t}: ${lista(lst)}. ${qq}`, `${T0.te}: ${lista(lst)}. ¿Cuál es el rango de los datos?`);
+      opcionesNum(r, [[Math.max(...d), t.rango], [lst[lst.length - 1] - lst[0], "Find the greatest and the least values of the whole list, not the last and first ones."], [Math.max(...d) + Math.min(...d), t.rango], [r + 1, t.rango]].filter(([v])=>v !== r && v >= 0),
+        ()=>acertar(`Greatest ${Math.max(...d)} − least ${Math.min(...d)} = ${r}. The range describes the spread with one number.`));
+    } else {
+      const c = azar(5, 10), A = montania(9, c, 0.8, c - 3, c + 3), B = montania(9, c, 3, c - 7, c + 7);
+      if(rango(A) >= rango(B) - 2) return nuevaRonda();
+      const [nA, nB] = nombresAzar(2);
+      const izq = Math.random() < 0.5;
+      esc.insertAdjacentHTML("beforeend", diagramaPuntos(izq ? A : B, c - 7, c + 7, `${izq ? nA : nB}'s class`) + diagramaPuntos(izq ? B : A, c - 7, c + 7, `${izq ? nB : nA}'s class`));
+      const qq = "Minutes of reading each day in two classes. Which class has more spread?";
+      ponerInstruccion(qq, qq, "Minutos de lectura al día en dos clases. ¿Qué clase tiene más dispersión?");
+      opciones(`${nB}'s class`, [[`${nA}'s class`, "More spread means the dots are farther apart: compare the ranges."], ["They have the same spread", "Compare the ranges: greatest − least in each class."]],
+        ()=>acertar(`${nA}'s class has a range of ${rango(A)}; ${nB}'s class has a range of ${rango(B)}. The dots of ${nB}'s class are more spread out.`));
+    }
+    return;
+  }
+
+  /* --- 5. La forma (6.SP.2) --- */
+  if(S.juego === "forma"){
+    const tipo = tipoRonda(reto ? ["atipico", "sesgo", "hueco", "simetrica", "atipico"] : ["simetrica", "atipico", "sesgo", "simetrica", "atipico"]);
+    let d, min = 0, max = 14, bien, malos, expl;
+    const opcionesForma = ["Symmetric: a hill in the middle", "Skewed: most data on one side, with a long tail", "It has an outlier far from the rest", "It has a gap: two separate clusters"];
+    if(tipo === "simetrica"){ d = montania(15, 7, 1.6, 3, 11); if(Math.abs(mediana(d) - 7) > 0.5) d = [4, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 9, 9, 10]; bien = opcionesForma[0]; expl = "The dots make a hill with its peak in the middle, and both sides look about the same."; }
+    else if(tipo === "sesgo"){ d = sesgados(15, 1, 12, true); bien = opcionesForma[1]; expl = "Most dots are on the left, and a few stretch far to the right: the data are skewed."; }
+    else if(tipo === "atipico"){ d = montania(13, 4, 1, 2, 6); const o = azar(12, 14); d.push(o); bien = opcionesForma[2]; expl = `${o} is far from all the other values: it is an outlier.`; }
+    else { d = [...montania(7, 3, 0.8, 1, 5), ...montania(7, 11, 0.8, 9, 13)]; bien = opcionesForma[3]; expl = "There are no values in the middle, between the two groups: that empty space is a gap."; }
+    esc.insertAdjacentHTML("beforeend", diagramaPuntos(d, min, max, "Data collected by the class"));
+    const qq = "Which description fits the shape of the data best?";
+    ponerInstruccion(qq, qq, "¿Qué descripción se ajusta mejor a la forma de los datos?");
+    opciones(bien, opcionesForma.filter(o=>o !== bien).map(o=>[o, "Look at the whole dot plot: where are most dots, and are there any far away or empty spaces?"]), ()=>acertar(expl), true);
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (6.SP.1–3) --- */
+  if(S.juego === "quien"){
+    const [n1] = nombresAzar(1);
+    const tipo = tipoRonda(["noordenada", "uno", "rango", "estad", "centro", "moda", "atipico"]);
+    let dicho, dichoEs, verdad, expl, razones;
+    if(tipo === "noordenada"){
+      let d; do{ d = mezclar([azar(1, 9), azar(1, 9), azar(1, 9), azar(1, 9), azar(1, 9)]); }while(d[2] === mediana(d));
+      dicho = `${n1}: “The median of ${lista(d)} is ${d[2]}, because it is in the middle of the list.”`;
+      dichoEs = `${n1}: «La mediana de ${lista(d)} es ${d[2]}, porque está en el medio de la lista».`;
+      verdad = false; expl = `In order: ${lista(ord(d))}. The median is ${mediana(d)}.`;
+      razones = [["The data must be put in order before finding the middle value.", true], ["It is right: the median is whatever is in the middle of the list.", false], ["It is wrong because the median is the largest value.", false]];
+    } else if(tipo === "uno"){
+      dicho = `${n1}: “‘How many pets does my family have?’ is a statistical question.”`;
+      dichoEs = `${n1}: «“¿Cuántas mascotas tiene mi familia?” es una pregunta estadística».`;
+      verdad = false; expl = "It has only one answer. “How many pets do the families in our class have?” would be statistical.";
+      razones = [["It has only one answer, so there is no variability.", true], ["It is right: every question about numbers is statistical.", false], ["It is wrong because pets can't be counted.", false]];
+    } else if(tipo === "rango"){
+      const d = ord([azar(2, 6), azar(4, 9), azar(5, 10), azar(8, 15), azar(10, 18)]);
+      dicho = `${n1}: “The range of ${lista(d)} is ${Math.max(...d)}.”`;
+      dichoEs = `${n1}: «El rango de ${lista(d)} es ${Math.max(...d)}».`;
+      verdad = false; expl = `${Math.max(...d)} is the greatest value. The range is ${Math.max(...d)} − ${Math.min(...d)} = ${rango(d)}.`;
+      razones = [[`The range is greatest − least: ${Math.max(...d)} − ${Math.min(...d)} = ${rango(d)}.`, true], ["It is right: the range is the largest number.", false], ["It is wrong because the range is the middle value.", false]];
+    } else if(tipo === "estad"){
+      dicho = `${n1}: “‘How long do students in our school spend on homework each night?’ is a statistical question.”`;
+      dichoEs = `${n1}: «“¿Cuánto tiempo dedican los estudiantes de nuestra escuela a la tarea cada noche?” es una pregunta estadística».`;
+      verdad = true; expl = "Different students spend different amounts of time, so the answers vary.";
+      razones = [["Different students give different answers, so we expect variability.", true], ["It is wrong: it has only one answer.", false], ["It is right only because it is about homework.", false]];
+    } else if(tipo === "centro"){
+      dicho = `${n1}: “A measure of center describes a whole set of data with a single number.”`;
+      dichoEs = `${n1}: «Una medida de centro describe todo un conjunto de datos con un solo número».`;
+      verdad = true; expl = "The median (or the mean) summarizes all the values with one number; a measure of spread, like the range, tells how much they vary.";
+      razones = [["The median or the mean summarizes all the values with one number.", true], ["It is wrong: a measure of center needs a list of numbers.", false], ["It is wrong: that is what the range does.", false]];
+    } else if(tipo === "moda"){
+      dicho = `${n1}: “In 2, 2, 2, 5, 7, 8, 9 the median is 2, because 2 appears the most.”`;
+      dichoEs = `${n1}: «En 2, 2, 2, 5, 7, 8, 9 la mediana es 2, porque el 2 aparece más veces».`;
+      verdad = false; expl = "2 is the mode, the most common value. The median is the middle (4th of 7) value: 5.";
+      razones = [["2 is the mode; the median is the middle value, 5.", true], ["It is right: the most common value is always the median.", false], ["It is wrong because the median is 9, the largest value.", false]];
+    } else {
+      dicho = `${n1}: “If one value is very far from the others, the range changes a lot but the median barely changes.”`;
+      dichoEs = `${n1}: «Si un valor está muy lejos de los demás, el rango cambia mucho, pero la mediana casi no cambia».`;
+      verdad = true; expl = "The range uses only the two extreme values, so an outlier changes it a lot; the median depends on the middle.";
+      razones = [["The range uses the extremes; the median uses the middle.", true], ["It is wrong: an outlier changes the median the most.", false], ["It is wrong: an outlier never changes the range.", false]];
+    }
+    escenaTexto(`<p class="problema"><span aria-hidden="true">💬</span> ${escaparHTML(dicho)}</p>`);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opciones(buena, razones.filter(r=>!r[1]).map(r=>[r[0], t.pistaPorque]), ()=>acertar(expl), true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="6"></script>
+</body>
+</html>
