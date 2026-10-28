@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<!--
+  Sixth Grade Math — Dividing fractions by fractions
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 6: 6.NS.1
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dividing fractions · Sixth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Sixth grade games with Lumi on dividing fractions by fractions: how many fit, sharing and finding the whole, the missing side of a rectangle, multiplying by the reciprocal, checking with multiplication, estimating whether the quotient is bigger or smaller, and a who-is-right reasoning game.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Dividing fractions</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi6-matematicas.png" alt="" class="lumi-d" width="450" height="594"></span><span>🥄</span><span>🍫</span><span>🔄</span><span>✅</span></div>
+    <h2>How many 3/4s fit in 3?</h2>
+    <p id="txt-portada">Dividing fractions answers two kinds of questions: how many pieces of one size fit in an amount, and how much goes in one group. With Lumi you will count how many servings fit, share amounts equally, find the missing side of a rectangle, multiply by the reciprocal, check your answers with multiplication, predict whether the answer is bigger or smaller, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Dividir fracciones responde dos tipos de preguntas: cuántas piezas de un tamaño caben en una cantidad y cuánto le toca a un grupo. Con Lumi vas a contar cuántas porciones caben, repartir cantidades en partes iguales, hallar el lado que falta de un rectángulo, multiplicar por el recíproco, comprobar tus respuestas con la multiplicación, anticipar si la respuesta es mayor o menor y decidir quién tiene razón.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">How many bags of trail mix?</span></span></button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi6-matematicas.png" alt="" class="lumi-m" width="450" height="594"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it, the way a mathematician would. Draw a model or write an equation, and tell how it proves your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala, como lo haría un matemático. Dibuja un modelo o escribe una ecuación, y di cómo demuestra tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Daniel has 2 1/4 cups of trail mix and fills bags with 3/4 cup each. Salma says: “He can fill 3 bags.” Elías says: “He can fill 1 11/16 bags, because 2 1/4 × 3/4 = 1 11/16.” Who is right? Explain with a model and with an equation.</p>
+      <p class="ayuda-es" lang="es">Daniel tiene 2 1/4 tazas de mezcla de frutos secos y llena bolsas de 3/4 de taza cada una. Salma dice: «Puede llenar 3 bolsas». Elías dice: «Puede llenar 1 11/16 bolsas, porque 2 1/4 × 3/4 = 1 11/16». ¿Quién tiene razón? Explica con un modelo y con una ecuación.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> The question asks how many ___ fit in ___, so the equation is ___ ÷ ___. In fourths, 2 1/4 is ___ fourths and each bag is ___ fourths, so ___. Elías ___ instead of dividing.</p>
+        <p><b>Useful words:</b> divide, how many fit, fourths, model, equation, quotient, multiply.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: how many bags could Daniel fill with 1/2 cup each? What does the fraction in your answer mean?</p><p class="ayuda-es" lang="es">Reto: ¿cuántas bolsas de 1/2 taza podría llenar Daniel? ¿Qué significa la fracción de tu respuesta?</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">A rectangular mural has an area of 3/4 square yard. It is 1/2 yard tall. How long is it? Write the equation, solve it and check your answer with multiplication. Then write your own story for 3/4 ÷ 1/2.</p>
+      <p class="ayuda-es" lang="es">Un mural rectangular tiene un área de 3/4 de yarda cuadrada. Mide 1/2 yarda de alto. ¿Cuánto mide de largo? Escribe la ecuación, resuélvela y comprueba tu respuesta con la multiplicación. Después escribe tu propia historia para 3/4 ÷ 1/2.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Area = length × height, so 1/2 × ___ = 3/4. The length is 3/4 ÷ 1/2 = ___. Check: ___ × 1/2 = ___. My story: ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: write two different stories for 2/3 ÷ 1/4, one that asks “how many fit?” and one that asks “how much in one whole group?”, and solve them.</p><p class="ayuda-es" lang="es">Reto: escribe dos historias distintas para 2/3 ÷ 1/4, una que pregunte «¿cuántas caben?» y otra que pregunte «¿cuánto hay en un grupo entero?», y resuélvelas.</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: a model, an equation or a check with multiplication.<span class="es" lang="es">Usé evidencia: un modelo, una ecuación o una comprobación con la multiplicación.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained how that evidence supports my answer.<span class="es" lang="es">Expliqué cómo esa evidencia apoya mi respuesta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Salma is right. The question is how many 3/4-cup bags fit in 2 1/4 cups, so the equation is 2 1/4 ÷ 3/4. In fourths, 2 1/4 cups is 9 fourths and each bag is 3 fourths, so 9 ÷ 3 = 3 bags. Check: 3 × 3/4 = 9/4 = 2 1/4. Elías multiplied instead of dividing; his answer is less than 2 1/4, but more than two bags clearly fit.</p>
+        <p><b>Part 2.</b> The length is 1 1/2 yards. Area = length × height, so 1/2 × ? = 3/4, and ? = 3/4 ÷ 1/2 = 3/4 × 2 = 6/4 = 1 1/2. Check: 1 1/2 × 1/2 = 3/4. A story: “I have 3/4 of a pound of clay and each figure uses 1/2 pound. How many figures can I make?” The answer is 1 1/2 figures.</p>
+        <p class="solo-reto"><b>Challenge.</b> With 1/2-cup bags: 2 1/4 ÷ 1/2 = 4 1/2. Daniel fills 4 bags, and the 1/2 means half of a bag: the 1/4 cup left over is half of a 1/2-cup bag. For 2/3 ÷ 1/4 = 2 2/3: “How many 1/4-mile laps fit in a 2/3-mile path?” (2 2/3 laps) and “1/4 of a tank holds 2/3 of a gallon. How much does the whole tank hold?” (2 2/3 gallons).</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: dividing fractions</button></p>
+    <p>Aligned to the Illinois sixth grade mathematics standard 6.NS.1: interpret and compute quotients of fractions, and solve word problems involving division of fractions by fractions, using visual fraction models and equations to represent the problem. For example, create a story context for 2/3 ÷ 3/4 and use a model to show the quotient; use the relationship between multiplication and division to explain that 2/3 ÷ 3/4 = 8/9 because 3/4 of 8/9 is 2/3; find how much chocolate each person gets if 3 people share 1/2 pound equally, how many 3/4-cup servings are in 2/3 of a cup of yogurt, and how wide a rectangle is with length 3/4 mile and area 1/2 square mile. The games work with both meanings of division: “how many fit?” and “how much in one group?”. At the Easy level a number line shows the jumps, a bar shows the shares, and the reciprocal is chosen before computing; at the Challenge level the answers can include part of a group, the child finds the whole from a part and the missing side of a rectangle, computes with the reciprocal, checks claimed answers with multiplication, and in “Who is right?” must also choose the reason. Two typical mistakes get their own hints: multiplying instead of dividing, and naming the leftover amount instead of the fraction of a group. The optional “Ayuda en español” button translates only the instruction or the question; the game itself stays in English. Each game has its own direct link: #cuantas, #compartir, #reciproco, #comprobar, #estimar and #quien, and the final task (build and explain an answer without options) is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con el estándar de matemáticas de Illinois para sexto grado 6.NS.1: interpretar y calcular cocientes de fracciones y resolver problemas de división de fracciones entre fracciones con modelos visuales y ecuaciones. Los juegos trabajan los dos significados de la división: «¿cuántas caben?» y «¿cuánto hay en un grupo?». En el nivel Fácil una recta numérica muestra los saltos y una barra muestra las partes; en el Reto las respuestas pueden incluir parte de un grupo, se halla el total a partir de una parte y el lado que falta de un rectángulo, se calcula con el recíproco y se comprueban resultados con la multiplicación. Dos errores típicos tienen su propia pista: multiplicar en lugar de dividir y dar la cantidad sobrante en lugar de la fracción de un grupo. Desde quinto grado los juegos son en inglés; el botón «Ayuda en español» traduce solo la consigna o la pregunta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.<br>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Dividing fractions by fractions</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. How many fit? Draw a number line if it helps.</h3>
+  <div class="caja-h">
+    <div>a) How many 1/4s are in 3? <i class="linea"></i></div>
+    <div>b) How many 3/4s are in 3? <i class="linea"></i></div>
+    <div>c) How many 2/3s are in 4? <i class="linea"></i></div>
+    <div>d) How many 3/4s are in 2? <i class="linea"></i></div>
+  </div>
+  <h3>2. Share it equally.</h3>
+  <div class="caja-h una">
+    <div>a) 3 friends share 1/2 pound of chocolate. Each gets <i class="linea"></i> pound.</div>
+    <div>b) A bottle is 3/4 full and holds 6 cups now. The full bottle holds <i class="linea"></i> cups.</div>
+    <div>c) A rectangle has area 1/2 square mile and length 3/4 mile. Its width is <i class="linea"></i> mile.</div>
+  </div>
+  <h3>3. Multiply by the reciprocal.</h3>
+  <div class="caja-h">
+    <div>2/3 ÷ 3/4 = 2/3 × <i class="linea"></i> = <i class="linea"></i></div>
+    <div>5/6 ÷ 1/3 = <i class="linea"></i></div>
+    <div>3/8 ÷ 3/4 = <i class="linea"></i></div>
+    <div>4/5 ÷ 2 = <i class="linea"></i></div>
+  </div>
+  <h3>4. Check with multiplication: is 3/5 ÷ 1/2 = 3/10 right? Show the check.</h3>
+  <div class="renglon"></div>
+  <h3>5. Without calculating, write &gt; or &lt;.</h3>
+  <div class="caja-h">
+    <div>6 ÷ 1/3 <i class="linea" style="width:12mm"></i> 6</div>
+    <div>6 ÷ 3 <i class="linea" style="width:12mm"></i> 6</div>
+    <div>5/6 ÷ 2/3 <i class="linea" style="width:12mm"></i> 1</div>
+    <div>1/4 ÷ 3/4 <i class="linea" style="width:12mm"></i> 1</div>
+  </div>
+  <h3>6. Who is right? Explain why.</h3>
+  <p class="razon-h">Athena: “Dividing always makes a number smaller, so 4 ÷ 1/2 is less than 4.”</p>
+  <div class="renglon"></div><div class="renglon"></div>
+  <h3>7. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Daniel has 2 1/4 cups of trail mix and fills bags with 3/4 cup each. Salma says 3 bags; Elías says 1 11/16 bags. Who is right? Explain with a model and an equation.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) A mural has an area of 3/4 square yard and is 1/2 yard tall. How long is it? Check with multiplication and write your own story for 3/4 ÷ 1/2.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés). */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great job!","Excellent!","You did it!","Perfect!","Lumi is glowing!","Nice thinking!"],
+  otra:["So close! Try again!","Oops! Try one more time.","Hmm… try again. You can do it."],
+  escuchar:"🔁 Listen again", si:"✔ Yes, that's right", no:"✘ No, that's wrong",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  multiplicaste:"That is the product, not the quotient. The question asks how many fit (or how much in one group), so divide.",
+  razon:"Is that right? Read what they say and decide.",
+  porque:"Why? Pick the best reason.",
+  pistaRazon:"Read it again slowly. Ask yourself: how many of the divisor fit in the dividend? Then check with multiplication.",
+  pistaPorque:"That reason doesn't explain it. Think about how many of the divisor fit, or check with multiplication.",
+  estrategias:[
+    ["I asked “how many of these fit in that?”","Great! That question turns any division of fractions into something you can picture."],
+    ["I drew a number line or a bar","Excellent! A model shows the jumps or the shares, and the leftover part too."],
+    ["I multiplied by the reciprocal","Smart! Dividing by 3/4 is the same as multiplying by 4/3."],
+    ["I checked with multiplication","Awesome! If a ÷ b = q, then q × b must give back a."]]
+};
+const ES = {
+  menu:"Escoge un juego.",
+  razon:(dicho)=>`¿Tiene razón? Lee lo que dice y decide. ${dicho}`,
+  porque:"¿Por qué? Elige la mejor razón."
+};
+
+const JUEGOS = [
+  {id:"cuantas",   emoji:"🥄", en:"How many fit?",              es:"¿Cuántas caben?",                meta:"How many 3/4s are in 3? → 4"},
+  {id:"compartir", emoji:"🍫", en:"Share it",                   es:"Repartir",                       meta:"1/2 pound shared by 3 → 1/6 each"},
+  {id:"reciproco", emoji:"🔄", en:"Multiply by the reciprocal", es:"Multiplicar por el recíproco",   meta:"2/3 ÷ 3/4 = 2/3 × 4/3"},
+  {id:"comprobar", emoji:"✅", en:"Check with multiplication",  es:"Comprobar con la multiplicación", meta:"2/3 ÷ 3/4 = 8/9 because 8/9 × 3/4 = 2/3"},
+  {id:"estimar",   emoji:"🔭", en:"Bigger or smaller?",         es:"¿Mayor o menor?",                meta:"4 ÷ 1/2 is more than 4"},
+  {id:"quien",     emoji:"💬", en:"Who is right?",              es:"¿Quién tiene razón?",            meta:"Decide and explain why"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+/* ============ Fracciones ============
+   Una fracción es {n, d}, siempre simplificada. fx la escribe como fracción impropia (9/4)
+   y fm como número mixto (2 1/4), que es como se dan las respuestas. */
+const fr = (n, d = 1)=>{ const g = mcd(Math.abs(n), Math.abs(d)) || 1; return {n: n / g, d: d / g}; };
+const fmul = (a, b)=> fr(a.n * b.n, a.d * b.d);
+const fdiv = (a, b)=> fr(a.n * b.d, a.d * b.n);
+const fres = (a, b)=> fr(a.n * b.d - b.n * a.d, a.d * b.d);
+const finv = (a)=> fr(a.d, a.n);
+const fval = (a)=> a.n / a.d;
+const mcm = (a, b)=> a / mcd(a, b) * b;
+const fx = (a)=> a.d === 1 ? String(a.n) : `${a.n}/${a.d}`;
+const fm = (a)=> a.d === 1 ? String(a.n) : a.n > a.d ? `${Math.floor(a.n / a.d)} ${a.n % a.d}/${a.d}` : `${a.n}/${a.d}`;
+const entera = (a)=> a.d === 1;
+/* Fracción propia al azar con denominador de la lista */
+function propia(dens){ const d = elegir(dens); let n; do{ n = azar(1, d - 1); }while(mcd(n, d) !== 1); return fr(n, d); }
+
+/* ============ Dibujos ============ */
+/* Recta numérica con los saltos del divisor sobre el dividendo: ¿cuántos caben? */
+function saltos(total, paso, mostrarParte){
+  const T = fval(total), p = fval(paso), M = Math.max(1, Math.ceil(T - 1e-9));
+  const den = Math.min(12, mcm(total.d, paso.d));
+  const W = 620, x0 = 30, x1 = 590, y = 128, px = (v)=> x0 + (x1 - x0) * v / M;
+  const partes = []; let v = 0, llenos = 0;
+  while(v + p <= T + 1e-9){ partes.push([v, v + p, true]); v += p; llenos++; }
+  const sobra = T - v > 1e-9;
+  if(sobra) partes.push([v, T, false]);
+  const parte = sobra ? fdiv(fres(total, fmul(fr(llenos), paso)), paso) : null;
+  const etiqueta = `Number line from 0 to ${M}, with ${fm(total)} marked. ${llenos} full jumps of ${fx(paso)}` +
+    (sobra ? (mostrarParte ? ` and ${fx(parte)} of one more jump.` : " and part of one more jump.") : ".");
+  let s = `<svg class="modelo" viewBox="0 0 ${W} 196" role="img" aria-label="${escaparHTML(etiqueta)}">`;
+  s += `<rect x="${x0}" y="${y - 7}" width="${px(T) - x0}" height="14" fill="#F8C85F" opacity=".6"/>`;
+  s += `<line x1="${x0}" y1="${y}" x2="${x1 + 12}" y2="${y}" stroke="#14313A" stroke-width="3"/>`;
+  for(let k=0; k<=M*den; k++){
+    const x = px(k / den), ent = k % den === 0;
+    s += `<line x1="${x}" y1="${y - (ent ? 13 : 7)}" x2="${x}" y2="${y + (ent ? 13 : 7)}" stroke="#14313A" stroke-width="${ent ? 3 : 1.5}"/>`;
+    if(ent) s += `<text x="${x}" y="${y + 36}" font-size="20" font-weight="700" text-anchor="middle" fill="#14313A">${k / den}</text>`;
+  }
+  partes.forEach(([a, b, lleno], k)=>{
+    const xa = px(a), xb = px(b), xm = (xa + xb) / 2, h = Math.min(66, 16 + (xb - xa) * 0.4);
+    s += `<path d="M${xa} ${y - 10} Q${xm} ${y - 10 - 2 * h} ${xb} ${y - 10}" fill="none" stroke="${lleno ? (k % 2 ? "#194F5A" : "#45A6AD") : "#8A4B00"}" stroke-width="3.5"${lleno ? "" : ' stroke-dasharray="6 5"'}/>`;
+    s += `<text x="${xm}" y="${y - 16 - h}" font-size="18" font-weight="700" text-anchor="middle" fill="${lleno ? "#14313A" : "#8A4B00"}">${lleno ? k + 1 : (mostrarParte ? fx(parte) : "?")}</text>`;
+  });
+  s += `<line x1="${px(T)}" y1="${y - 18}" x2="${px(T)}" y2="${y + 18}" stroke="#B71C1C" stroke-width="3.5"/>`;
+  if(!entera(total)) s += `<text x="${Math.min(px(T), x1 - 10)}" y="${y + 62}" font-size="17" font-weight="700" text-anchor="middle" fill="#B71C1C">${escaparHTML(fm(total))}</text>`;
+  return s + "</svg>";
+}
+/* Barra de 1 entero partida en b partes; a de ellas se reparten entre k: cada color es una parte */
+function barraReparto(a, b, k){
+  const n = b * k, W = 600, x0 = 20, w = (W - 2 * x0) / n, y = 34, h = 56;
+  const COL = ["#45A6AD", "#F8C85F", "#9FD3C7", "#F3A683"];
+  let s = `<svg class="modelo" viewBox="0 0 ${W} 120" role="img" aria-label="${escaparHTML(`A bar for 1 whole split into ${b} equal parts. ${fx(fr(a, b))} of the bar is shared by ${k}, so each part of ${b} is cut into ${k}. One share, outlined in red, is ${a} of the ${n} small pieces.`)}">`;
+  s += `<path d="M${x0} 26 v-10 H${W - x0} v10" fill="none" stroke="#194F5A" stroke-width="2.5"/>`;
+  s += `<text x="${W / 2}" y="12" font-size="16" font-weight="700" text-anchor="middle" fill="#14313A">1 whole</text>`;
+  for(let i=0; i<n; i++){
+    const fill = i < a * k ? COL[Math.floor(i / a) % COL.length] : "#FFFFFF";
+    s += `<rect x="${x0 + i * w}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="#194F5A" stroke-width="1.2"/>`;
+  }
+  for(let j=0; j<=b; j++) s += `<line x1="${x0 + j * k * w}" y1="${y}" x2="${x0 + j * k * w}" y2="${y + h}" stroke="#14313A" stroke-width="4"/>`;
+  s += `<rect x="${x0}" y="${y}" width="${a * w}" height="${h}" fill="none" stroke="#B71C1C" stroke-width="4.5"/>`;
+  s += `<text x="${x0 + a * w / 2}" y="${y + h + 22}" font-size="15" font-weight="700" text-anchor="middle" fill="#B71C1C">1 share</text>`;
+  return s + "</svg>";
+}
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(String(texto).replace(/(\d+) (\d+)\/(\d+)/g, es ? "$1 y $2/$3" : "$1 and $2/$3"), es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi6-matematicas.png" alt="" class="lumi-m" width="450" height="594">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g6-02-dividing-fractions.html#cuantas */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+/* ============ Situaciones ============ */
+/* «¿Cuántas caben?»: T es la cantidad total y P el tamaño de cada parte (ya escritos como texto) */
+const CUANTAS = [
+  {en:(n,T,P)=>`${n} has ${T} cups of rice and a scoop that holds ${P} cup.`, q:(n,T,P)=>`How many ${P}-cup scoops are in ${T} cups?`,
+   es:(n,T,P)=>`${n} tiene ${T} tazas de arroz y una cuchara que contiene ${P} de taza.`, qes:(n,T,P)=>`¿Cuántas cucharadas de ${P} de taza hay en ${T} tazas?`, u:"scoops"},
+  {en:(n,T,P)=>`${n} has ${T} yards of ribbon and cuts pieces that are ${P} yard long.`, q:(n,T,P)=>`How many pieces can ${n} cut?`,
+   es:(n,T,P)=>`${n} tiene ${T} yardas de cinta y corta trozos de ${P} de yarda.`, qes:(n,T,P)=>`¿Cuántos trozos puede cortar ${n}?`, u:"pieces"},
+  {en:(n,T,P)=>`The hiking club cleans a trail that is ${T} miles long, one section of ${P} mile at a time.`, q:(n,T,P)=>`How many sections does the trail have?`,
+   es:(n,T,P)=>`El club de excursionismo limpia un sendero de ${T} millas, un tramo de ${P} de milla cada vez.`, qes:(n,T,P)=>`¿Cuántos tramos tiene el sendero?`, u:"sections"},
+  {en:(n,T,P)=>`${n} fills ${P}-liter bottles from a jug with ${T} liters of water.`, q:(n,T,P)=>`How many bottles can ${n} fill?`,
+   es:(n,T,P)=>`${n} llena botellas de ${P} de litro con una jarra de ${T} litros de agua.`, qes:(n,T,P)=>`¿Cuántas botellas puede llenar ${n}?`, u:"bottles"},
+  {en:(n,T,P)=>`A container has ${T} cups of yogurt. One serving is ${P} cup.`, q:(n,T,P)=>`How many servings are in the container?`,
+   es:(n,T,P)=>`Un envase tiene ${T} tazas de yogur. Una porción es ${P} de taza.`, qes:(n,T,P)=>`¿Cuántas porciones hay en el envase?`, u:"servings"}
+];
+/* «Repartir»: una cantidad A se reparte entre k */
+const REPARTOS = [
+  {en:(n,A,k)=>`${n} shares ${A} pound of chocolate equally among ${k} friends.`, q:"How much chocolate does each friend get, in pounds?",
+   es:(n,A,k)=>`${n} reparte ${A} de libra de chocolate en partes iguales entre ${k} amigos.`, qes:"¿Cuánto chocolate le toca a cada amigo, en libras?"},
+  {en:(n,A,k)=>`There is ${A} of a pizza left, and ${k} friends share it equally.`, q:"What fraction of the whole pizza does each friend get?",
+   es:(n,A,k)=>`Queda ${A} de una pizza y ${k} amigos se la reparten en partes iguales.`, qes:"¿Qué fracción de la pizza entera le toca a cada amigo?"},
+  {en:(n,A,k)=>`${n} cuts ${A} yard of ribbon into ${k} equal pieces for a craft.`, q:"How long is each piece, in yards?",
+   es:(n,A,k)=>`${n} corta ${A} de yarda de cinta en ${k} trozos iguales para una manualidad.`, qes:"¿Cuánto mide cada trozo, en yardas?"},
+  {en:(n,A,k)=>`${n} pours ${A} gallon of juice equally into ${k} pitchers.`, q:"How much juice goes in each pitcher, in gallons?",
+   es:(n,A,k)=>`${n} vierte ${A} de galón de jugo en partes iguales en ${k} jarras.`, qes:"¿Cuánto jugo va en cada jarra, en galones?"}
+];
+/* «¿Cuánto es el entero?»: la parte p (fracción) contiene m unidades */
+const ENTEROS = [
+  {en:(n,p,m)=>`${n}'s water bottle is ${p} full, and it has ${m} cups of water in it.`, q:"How many cups does the full bottle hold?",
+   es:(n,p,m)=>`La botella de agua de ${n} está llena hasta ${p} y tiene ${m} tazas de agua.`, qes:"¿Cuántas tazas caben en la botella llena?", u:"cups"},
+  {en:(n,p,m)=>`${n} has walked ${m} miles, which is ${p} of the trail.`, q:"How long is the whole trail, in miles?",
+   es:(n,p,m)=>`${n} ha caminado ${m} millas, que son ${p} del sendero.`, qes:"¿Cuánto mide el sendero entero, en millas?", u:"miles"},
+  {en:(n,p,m)=>`A pitcher is ${p} full, with ${m} cups of lemonade.`, q:"How many cups does the full pitcher hold?",
+   es:(n,p,m)=>`Una jarra está llena hasta ${p}, con ${m} tazas de limonada.`, qes:"¿Cuántas tazas caben en la jarra llena?", u:"cups"},
+  {en:(n,p,m)=>`${n} has painted ${m} square yards of the mural, which is ${p} of the whole mural.`, q:"What is the area of the whole mural, in square yards?",
+   es:(n,p,m)=>`${n} ha pintado ${m} yardas cuadradas del mural, que son ${p} del mural entero.`, qes:"¿Cuál es el área del mural entero, en yardas cuadradas?", u:"square yards"}
+];
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, reto = S.reto;
+
+  /* --- 1. ¿Cuántas caben? (6.NS.1, división como medida) --- */
+  if(S.juego === "cuantas"){
+    const C = elegir(CUANTAS), [n] = nombresAzar(1);
+    let D, P;
+    if(!reto){
+      let W, d, c;
+      do{ d = elegir([2, 3, 4, 6, 8]); c = Math.random() < 0.45 ? 1 : azar(2, d - 1); W = azar(2, 4); }
+      while(mcd(c, d) !== 1 || (W * d) % c !== 0 || W * d / c > 12);
+      D = fr(W); P = fr(c, d);
+    } else {
+      let q;
+      do{
+        const L = elegir([4, 6, 8, 12]), divs = [1, 2, 3, 4, 6, 8, 12].filter(x=>L % x === 0);
+        P = propia(divs.filter(x=>x > 1));
+        const b = elegir(divs); D = fr(azar(b + 1, 4 * b), b); q = fdiv(D, P);
+      }while(fval(D) <= fval(P) || q.d > 12 || fval(q) > 12 || (entera(q) && Math.random() < 0.6));
+    }
+    const q = fdiv(D, P), Tt = fm(D), Pt = fx(P);
+    escenaTexto(`<p class="problema">${escaparHTML(C.en(n, Tt, Pt))}</p>`);
+    escenaTexto(`<p class="expr">${escaparHTML(Tt)} ÷ ${escaparHTML(Pt)} = <span class="signo-c">?</span></p>`);
+    if(!reto) escenaTexto(saltos(D, P, true));
+    const extra = reto ? " Part of one counts too." : "", extraEs = reto ? " También cuenta una parte de uno." : "";
+    const qq = C.q(n, Tt, Pt) + extra;
+    ponerInstruccion(qq, C.en(n, Tt, Pt) + " " + qq, C.es(n, Tt, Pt) + " " + C.qes(n, Tt, Pt) + extraEs);
+    const malos = [[fm(fmul(D, P)), t.multiplicaste + ` The equation is ${Tt} ÷ ${Pt}.`],
+                   [fm(fdiv(P, D)), `That is ${Pt} ÷ ${Tt}, how many ${Tt}s fit in ${Pt}. Here ${Pt} is the size of each piece, so it is the divisor.`]];
+    if(!entera(q)){
+      const fl = Math.floor(fval(q)), sob = fres(D, fmul(fr(fl), P));
+      malos.push([`${fl} ${fx(sob)}`, `${fx(sob)} is the amount left over, not the number of ${C.u}. That leftover is ${fx(fdiv(sob, P))} of one more, because ${fx(sob)} ÷ ${Pt} = ${fx(fdiv(sob, P))}.`]);
+      malos.push([String(fl), `${fl} whole ${C.u} fit, but something is left over. Count part of one more too.`]);
+    } else {
+      const piezas = fval(D) * P.d;
+      if(P.n > 1 && Number.isInteger(piezas)) malos.push([String(piezas), `That counts the 1/${P.d}s. Each one is ${Pt}, so group them ${P.n} at a time.`]);
+      malos.push([String(q.n + 1), "Count the jumps again."]);
+      if(q.n > 1) malos.push([String(q.n - 1), "Count the jumps again."]);
+    }
+    opciones(fm(q), malos, ()=>{
+      const sg = $("escena").querySelector(".signo-c"); sg.textContent = fm(q); sg.classList.add("lleno");
+      if(reto) escenaTexto(saltos(D, P, true));
+      acertar(`${Tt} ÷ ${Pt} = ${fm(q)} ${C.u}. Check: ${fm(q)} × ${Pt} = ${Tt}.`);
+    });
+    return;
+  }
+
+  /* --- 2. Repartir y hallar el entero (6.NS.1, división como reparto) --- */
+  if(S.juego === "compartir"){
+    const [n] = nombresAzar(1);
+    const tipo = reto ? tipoRonda(["entero", "area", "entero", "area", "reparto"]) : "reparto";
+    if(tipo === "reparto"){
+      const C = elegir(REPARTOS);
+      let a, b, k; do{ b = azar(2, 5); a = azar(1, b - 1); k = azar(2, 4); }while(mcd(a, b) !== 1 || b * k > 12);
+      const A = fr(a, b), q = fdiv(A, fr(k)), At = fx(A);
+      escenaTexto(`<p class="problema">${escaparHTML(C.en(n, At, k))}</p>`);
+      escenaTexto(`<p class="expr">${At} ÷ ${k} = <span class="signo-c">?</span></p>`);
+      if(!reto) escenaTexto(barraReparto(a, b, k));
+      ponerInstruccion(C.q, C.en(n, At, k) + " " + C.q, C.es(n, At, k) + " " + C.qes);
+      opciones(fx(q), [[fm(fmul(A, fr(k))), `Sharing gives each one less than ${At}, not more. Divide by ${k}.`],
+                       [fx(fr(1, k)), `That would be a share of 1 whole. Only ${At} is being shared.`],
+                       [fx(fr(a, b + k)), `Adding ${k} to the denominator doesn't share it. Cut each ${fx(fr(1, b))} into ${k} equal pieces.`],
+                       [fx(fr(k, b)), t.otra[0]]],
+        ()=>{ const sg = $("escena").querySelector(".signo-c"); sg.textContent = fx(q); sg.classList.add("lleno");
+              acertar(`${At} ÷ ${k} = ${At} × 1/${k} = ${fx(q)}. Check: ${k} × ${fx(q)} = ${At}.`); });
+    } else if(tipo === "entero"){
+      const C = elegir(ENTEROS);
+      const p = propia([3, 4, 5, 6, 8]); let tt = azar(1, 4); if(p.n * tt < 2) tt++;
+      const m = p.n * tt, total = p.d * tt, pt = fx(p);
+      escenaTexto(`<p class="problema">${escaparHTML(C.en(n, pt, m))}</p>`);
+      escenaTexto(`<p class="expr">${pt} × <span class="signo-c">?</span> = ${m}</p>`);
+      ponerInstruccion(C.q, C.en(n, pt, m) + " " + C.q, C.es(n, pt, m) + " " + C.qes);
+      const malos = [[fm(fmul(fr(m), p)), `The whole holds more than ${pt} of it, so the answer must be more than ${m}. Divide: ${m} ÷ ${pt}.`],
+                     [String(m + p.d - p.n), "Adding doesn't find the whole. Ask: if " + pt + " is " + m + ", how much is the whole?"]];
+      if(p.n > 1) malos.push([String(tt), `That is only 1/${p.d} of it. The whole is ${p.d}/${p.d}, so multiply by ${p.d}.`], [String(m * p.d), `${m} is ${p.n} parts of ${p.d}, not 1 part. Find 1 part first: ${m} ÷ ${p.n} = ${tt}.`]);
+      else malos.push([String(total + p.d), t.otra[0]]);
+      opciones(String(total), malos, ()=>{ const sg = $("escena").querySelector(".signo-c"); sg.textContent = String(total); sg.classList.add("lleno");
+        acertar(`${m} ÷ ${pt} = ${m} × ${fx(finv(p))} = ${total} ${C.u}. Each 1/${p.d} is ${tt}, and ${p.d} of them make ${total}.`); });
+    } else {
+      let A, L, w; do{ A = propia([2, 3, 4, 5]); L = propia([2, 3, 4, 5, 6]); w = fdiv(A, L); }while(fval(A) === fval(L) || w.d > 12 || fval(w) > 4);
+      const At = fx(A), Lt = fx(L);
+      const txt = `${n}'s family has a rectangular garden with an area of ${At} square yard. It is ${Lt} yard long.`, q = "How wide is the garden, in yards?";
+      escenaTexto(`<p class="problema">${escaparHTML(txt)}</p>`);
+      escenaTexto(`<p class="expr">${Lt} × <span class="signo-c">?</span> = ${At}</p>`);
+      ponerInstruccion(q, txt + " " + q, `La familia de ${n} tiene un huerto rectangular con un área de ${At} de yarda cuadrada. Mide ${Lt} de yarda de largo. ¿Cuánto mide de ancho, en yardas?`);
+      opciones(fm(w), [[fm(fmul(A, L)), "Area = length × width, so the width is the area ÷ the length, not area × length."],
+                       [fm(fdiv(L, A)), "That is the length ÷ the area. Divide the area by the length."],
+                       [fm(fr(A.n + L.n, A.d + L.d)), "Adding the numerators and the denominators doesn't find a side."]],
+        ()=>{ const sg = $("escena").querySelector(".signo-c"); sg.textContent = fm(w); sg.classList.add("lleno");
+              acertar(`${At} ÷ ${Lt} = ${At} × ${fx(finv(L))} = ${fm(w)} yard. Check: ${Lt} × ${fm(w)} = ${At}.`); });
+    }
+    return;
+  }
+
+  /* --- 3. Multiplicar por el recíproco (6.NS.1) --- */
+  if(S.juego === "reciproco"){
+    let A, B;
+    do{
+      A = reto && Math.random() < 0.3 ? fr(azar(2, 5)) : propia([2, 3, 4, 5, 6, 8, 9]);
+      B = reto && Math.random() < 0.25 ? fr(azar(2, 4)) : propia([2, 3, 4, 5, 6, 8]);
+    }while(fval(A) === fval(B) || (entera(A) && entera(B)));
+    const q = fdiv(A, B), At = fx(A), Bt = fx(B), Rt = B.d === 1 ? `1/${B.n}` : `${B.d}/${B.n}`;
+    const Bx = B.d === 1 ? `${B.n}/1` : Bt, Ax = A.d === 1 ? `${A.n}/1` : At, Ar = A.d === 1 ? `1/${A.n}` : `${A.d}/${A.n}`;
+    escenaTexto(`<p class="expr">${At} ÷ ${Bt}${reto ? ' = <span class="signo-c">?</span>' : ""}</p>`);
+    if(!reto){
+      const qq = `Which multiplication has the same answer as ${At} ÷ ${Bt}?`;
+      ponerInstruccion(qq, qq, `¿Qué multiplicación tiene la misma respuesta que ${At} ÷ ${Bt}?`);
+      opciones(`${At} × ${Rt}`, [[`${At} × ${Bx}`, `Dividing by ${Bt} is the same as multiplying by its reciprocal, ${Rt}. Flip the divisor.`],
+                                 [`${Ar} × ${Bx}`, "Flip only the divisor, the second number. The first number stays the same."],
+                                 [`${Ar} × ${Rt}`, "Flip only the divisor, the second number. The first number stays the same."]],
+        ()=>acertar(`${At} ÷ ${Bt} = ${At} × ${Rt} = ${fm(q)}. Dividing by ${Bt} asks how many ${Bt}s fit, and that is ${Rt} for each 1.`));
+    } else {
+      const qq = `Find the quotient. Write it as a mixed number if it is more than 1.`;
+      ponerInstruccion(qq, `What is ${At} ÷ ${Bt}?`, `¿Cuánto es ${At} ÷ ${Bt}? Escríbelo como número mixto si es mayor que 1.`);
+      opciones(fm(q), [[fm(fmul(A, B)), `That is ${At} × ${Bt}. Multiply by the reciprocal of ${Bt}, which is ${Rt}.`],
+                       [fm(fmul(finv(A), B)), "You flipped the first number. Flip only the divisor."],
+                       [fm(finv(q)), `That is ${Bt} ÷ ${At}, upside down. The dividend comes first.`]],
+        ()=>{ const sg = $("escena").querySelector(".signo-c"); sg.textContent = fm(q); sg.classList.add("lleno");
+              acertar(`${At} ÷ ${Bt} = ${Ax} × ${Rt} = ${fx(fmul(A, finv(B)))}${entera(q) || q.n < q.d ? "" : " = " + fm(q)}. Check: ${fx(q)} × ${Bt} = ${At}.`); });
+    }
+    return;
+  }
+
+  /* --- 4. Comprobar con la multiplicación (6.NS.1) --- */
+  if(S.juego === "comprobar"){
+    let A, B; do{ A = propia([2, 3, 4, 5, 6, 8]); B = propia([2, 3, 4, 5, 6]); }while(fval(A) === fval(B));
+    const q = fdiv(A, B), At = fx(A), Bt = fx(B);
+    if(!reto){
+      escenaTexto(`<p class="expr">${At} ÷ ${Bt} = ${fx(q)}</p>`);
+      const qq = "Which multiplication checks this division?";
+      ponerInstruccion(qq, `${At} ÷ ${Bt} = ${fx(q)}. ${qq}`, `${At} ÷ ${Bt} = ${fx(q)}. ¿Qué multiplicación comprueba esta división?`);
+      opciones(`${fx(q)} × ${Bt} = ${At}`, [[`${fx(q)} × ${At} = ${Bt}`, "Multiply the quotient by the divisor, the number you divided by."],
+                                           [`${At} × ${Bt} = ${fx(q)}`, "That multiplies the two numbers you started with. Multiply the quotient by the divisor."],
+                                           [`${fx(q)} ÷ ${Bt} = ${At}`, "The check for a division is a multiplication."]],
+        ()=>acertar(`If ${At} ÷ ${Bt} = ${fx(q)}, then ${fx(q)} × ${Bt} must give back ${At}. It does: ${fx(q)} × ${Bt} = ${fx(fmul(q, B))}.`), true);
+    } else {
+      const bien = Math.random() < 0.5;
+      let dicho = q;
+      if(!bien){ const opc = [fmul(A, B), fmul(finv(A), B)].filter(x=>fval(x) !== fval(q)); dicho = elegir(opc); }
+      const ok = fval(dicho) === fval(q);
+      escenaTexto(`<p class="expr">${At} ÷ ${Bt} = ${fm(dicho)}</p>`);
+      const qq = "Check with multiplication: is this division right?";
+      ponerInstruccion(qq, `${At} ÷ ${Bt} = ${fm(dicho)}. ${qq}`, `${At} ÷ ${Bt} = ${fm(dicho)}. Comprueba con la multiplicación: ¿está bien esta división?`);
+      const expl = ok ? `Check: ${fx(q)} × ${Bt} = ${At}. It is right.`
+                      : `Check: ${fx(dicho)} × ${Bt} = ${fx(fmul(dicho, B))}, not ${At}. The right answer is ${fm(q)}, because ${fx(q)} × ${Bt} = ${At}.`;
+      const pista = "Multiply the answer by the divisor. Do you get the first number back?";
+      const cont = $("opciones");
+      [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+        cont.appendChild(botonTexto(txt, cls, null, (bt)=>{ if(v !== ok){ fallar(bt, pista); return; } sonBoing(); acertar(expl); }));
+      });
+      S.resolver = resolverTexto(ok ? t.si : t.no);
+    }
+    return;
+  }
+
+  /* --- 5. ¿Mayor o menor? Estimar antes de calcular (6.NS.1) --- */
+  if(S.juego === "estimar"){
+    if(!reto){
+      const W = azar(2, 9), k = elegir(["unidad", "unidad", "entero", "propia", "mayor", "uno"]);
+      let B;
+      if(k === "unidad") B = fr(1, azar(2, 6));
+      else if(k === "entero") B = fr(azar(2, 5));
+      else if(k === "propia") B = propia([3, 4, 5, 6]);
+      else if(k === "mayor"){ do{ B = fr(azar(3, 9), azar(2, 4)); }while(entera(B) || fval(B) <= 1); }
+      else B = fr(1);
+      const q = fdiv(fr(W), B), Bt = fx(B);
+      escenaTexto(`<p class="expr">${W} ÷ ${Bt}</p>`);
+      const qq = `Without calculating: is ${W} ÷ ${Bt} greater than ${W}, less than ${W}, or equal to ${W}?`;
+      ponerInstruccion(qq, qq, `Sin calcular: ¿${W} ÷ ${Bt} es mayor que ${W}, menor que ${W} o igual a ${W}?`);
+      const v = fval(B), bien = v < 1 ? `Greater than ${W}` : v > 1 ? `Less than ${W}` : `Equal to ${W}`;
+      const pista = "Ask: is the divisor less than 1 or greater than 1? A piece smaller than 1 fits more times.";
+      const expl = v < 1 ? `${Bt} is less than 1, so it fits in ${W} more than ${W} times: ${W} ÷ ${Bt} = ${fm(q)}.`
+                 : v > 1 ? `${Bt} is greater than 1, so it fits in ${W} fewer than ${W} times: ${W} ÷ ${Bt} = ${fm(q)}.`
+                 : `Dividing by 1 doesn't change the number: ${W} ÷ 1 = ${W}.`;
+      opciones(bien, [`Greater than ${W}`, `Less than ${W}`, `Equal to ${W}`].filter(x=>x !== bien).map(x=>[x, pista]), ()=>acertar(expl));
+    } else {
+      const tipo = tipoRonda(["uno", "comparar", "uno"]);
+      let A, B; do{ A = propia([2, 3, 4, 5, 6, 8]); B = propia([2, 3, 4, 5, 6, 8]); }while(fval(A) === fval(B));
+      const At = fx(A), Bt = fx(B), q = fdiv(A, B);
+      if(tipo === "uno"){
+        escenaTexto(`<p class="expr">${At} ÷ ${Bt}</p>`);
+        const qq = `Without calculating: is ${At} ÷ ${Bt} greater than 1 or less than 1?`;
+        ponerInstruccion(qq, qq, `Sin calcular: ¿${At} ÷ ${Bt} es mayor que 1 o menor que 1?`);
+        const mayor = fval(A) > fval(B), bien = mayor ? "Greater than 1" : "Less than 1";
+        opciones(bien, [[mayor ? "Less than 1" : "Greater than 1", "Compare the two fractions first. If the divisor is smaller than the dividend, it fits more than once."]],
+          ()=>acertar(`${At} is ${mayor ? "greater" : "less"} than ${Bt}, so ${Bt} fits ${mayor ? "more than once" : "less than once"}: ${At} ÷ ${Bt} = ${fm(q)}.`));
+      } else {
+        const qq = `Without calculating: which is greater?`;
+        const dv = `${At} ÷ ${Bt}`, mu = `${At} × ${Bt}`;
+        escenaTexto(`<p class="expr">${dv} &nbsp;or&nbsp; ${mu}</p>`);
+        ponerInstruccion(qq, `Without calculating: which is greater, ${dv} or ${mu}?`, `Sin calcular: ¿qué es mayor, ${dv} o ${mu}?`);
+        opciones(dv, [[mu, `${Bt} is less than 1. Multiplying by it makes ${At} smaller, and dividing by it makes ${At} bigger.`]],
+          ()=>acertar(`${dv} = ${fm(q)} and ${mu} = ${fm(fmul(A, B))}. Dividing by a number less than 1 gives more than you started with.`));
+      }
+    }
+    return;
+  }
+
+  /* --- 6. ¿Quién tiene razón? (6.NS.1) --- */
+  if(S.juego === "quien"){
+    const [n1] = nombresAzar(1);
+    const tipo = tipoRonda(["achica", "bien", "voltear", "repartir", "sobrante", "comprobar", "mismoden"]);
+    let dicho, dichoEs, verdad, expl, razones;
+    if(tipo === "achica"){
+      const W = azar(2, 9), d = azar(2, 5);
+      dicho = `${n1}: “Dividing always makes a number smaller, so ${W} ÷ 1/${d} is less than ${W}.”`;
+      dichoEs = `${n1}: «Dividir siempre hace más pequeño un número, así que ${W} ÷ 1/${d} es menor que ${W}».`;
+      verdad = false; expl = `${W} ÷ 1/${d} asks how many 1/${d}s fit in ${W}: ${W} × ${d} = ${W * d}. Dividing by a number less than 1 gives a bigger answer.`;
+      razones = [[`1/${d} fits in ${W} more than ${W} times, so the answer is ${W * d}.`, true],
+                 ["It is right: a quotient is always smaller than the number you divide.", false],
+                 [`It is right because ${W} ÷ 1/${d} = ${W}/${d}.`, false]];
+    } else if(tipo === "bien" || tipo === "voltear"){
+      let A, B; do{ A = propia([2, 3, 4, 5, 6]); B = propia([2, 3, 4, 5, 6]); }while(fval(A) === fval(B));
+      const At = fx(A), Bt = fx(B), q = fdiv(A, B);
+      if(tipo === "bien"){
+        dicho = `${n1}: “${At} ÷ ${Bt} = ${At} × ${fx(finv(B))} = ${fm(q)}.”`;
+        dichoEs = `${n1}: «${At} ÷ ${Bt} = ${At} × ${fx(finv(B))} = ${fm(q)}».`;
+        verdad = true; expl = `Dividing by ${Bt} is the same as multiplying by ${fx(finv(B))}. Check: ${fx(q)} × ${Bt} = ${At}.`;
+        razones = [["Dividing by a fraction is the same as multiplying by its reciprocal, and the check works.", true],
+                   ["It is wrong: you must flip both fractions before you multiply.", false],
+                   ["It is wrong: to divide fractions you divide the numerators and add the denominators.", false]];
+      } else {
+        const malo = fmul(finv(A), B);
+        dicho = `${n1}: “To find ${At} ÷ ${Bt}, I flip the first fraction: ${fx(finv(A))} × ${Bt} = ${fm(malo)}.”`;
+        dichoEs = `${n1}: «Para hallar ${At} ÷ ${Bt}, le doy la vuelta a la primera fracción: ${fx(finv(A))} × ${Bt} = ${fm(malo)}».`;
+        verdad = false; expl = `Flip the divisor, not the dividend: ${At} × ${fx(finv(B))} = ${fm(q)}. Check: ${fx(q)} × ${Bt} = ${At}.`;
+        razones = [[`Only the divisor is flipped: ${At} × ${fx(finv(B))} = ${fm(q)}.`, true],
+                   ["It is right: you can flip either fraction, the answer is the same.", false],
+                   ["It is wrong because you should not flip any fraction at all.", false]];
+      }
+    } else if(tipo === "repartir"){
+      let a, b, k; do{ b = azar(2, 5); a = azar(1, b - 1); k = azar(2, 4); }while(mcd(a, b) !== 1 || b * k > 12);
+      const A = fr(a, b), q = fdiv(A, fr(k));
+      dicho = `${n1}: “${k} friends share ${fx(A)} pound of chocolate equally, so each one gets ${fx(q)} pound.”`;
+      dichoEs = `${n1}: «${k} amigos se reparten ${fx(A)} de libra de chocolate en partes iguales, así que a cada uno le toca ${fx(q)} de libra».`;
+      verdad = true; expl = `${fx(A)} ÷ ${k} = ${fx(A)} × 1/${k} = ${fx(q)}. Check: ${k} × ${fx(q)} = ${fx(A)}.`;
+      razones = [[`${fx(A)} ÷ ${k} = ${fx(A)} × 1/${k} = ${fx(q)}, and ${k} shares of ${fx(q)} make ${fx(A)}.`, true],
+                 [`It is wrong: each friend gets ${fm(fmul(A, fr(k)))} pound.`, false],
+                 ["It is wrong: you can't divide a fraction by a whole number.", false]];
+    } else if(tipo === "sobrante"){
+      let P, W, q; do{ P = propia([3, 4]); W = azar(2, 3); q = fdiv(fr(W), P); }while(entera(q) || P.n === 1);
+      const fl = Math.floor(fval(q)), sob = fres(fr(W), fmul(fr(fl), P)), Pt = fx(P);
+      dicho = `${n1}: “With ${W} cups of yogurt and servings of ${Pt} cup, I make ${fl} servings and ${fx(sob)} cup is left over. So ${W} ÷ ${Pt} = ${fl} ${fx(sob)}.”`;
+      dichoEs = `${n1}: «Con ${W} tazas de yogur y porciones de ${Pt} de taza, hago ${fl} porciones y sobra ${fx(sob)} de taza. Así que ${W} ÷ ${Pt} = ${fl} ${fx(sob)}».`;
+      verdad = false; expl = `The leftover ${fx(sob)} cup is ${fx(fdiv(sob, P))} of a serving, because ${fx(sob)} ÷ ${Pt} = ${fx(fdiv(sob, P))}. So ${W} ÷ ${Pt} = ${fm(q)} servings.`;
+      razones = [[`The answer counts servings: the leftover ${fx(sob)} cup is ${fx(fdiv(sob, P))} of a serving, so it is ${fm(q)}.`, true],
+                 [`It is right: the leftover cup is always written next to the whole servings.`, false],
+                 [`It is wrong: the answer is ${fl}, because part of a serving doesn't count.`, false]];
+    } else if(tipo === "comprobar"){
+      let W, B, q; do{ W = azar(2, 9); B = propia([2, 3, 4, 5]); q = fdiv(fr(W), B); }while(q.d > 1 && Math.random() < 0.5);
+      dicho = `${n1}: “${W} ÷ ${fx(B)} = ${fm(q)}, because ${fm(q)} × ${fx(B)} = ${W}.”`;
+      dichoEs = `${n1}: «${W} ÷ ${fx(B)} = ${fm(q)}, porque ${fm(q)} × ${fx(B)} = ${W}».`;
+      verdad = true; expl = `${fx(q)} × ${fx(B)} = ${fx(fmul(q, B))} = ${W}, so the division is right.`;
+      razones = [["Multiplying the quotient by the divisor gives back the dividend, so the check works.", true],
+                 ["It is wrong: to check a division you have to divide again.", false],
+                 ["It is right only because the answer is bigger than the divisor.", false]];
+    } else {
+      const d = azar(5, 12); let a, c; do{ a = azar(2, d - 1); c = azar(1, a - 1); }while(mcd(a, c) === a || c === 0);
+      const q = fr(a, c);
+      dicho = `${n1}: “${a}/${d} ÷ ${c}/${d} = ${fm(q)}, because it asks how many ${c}/${d}s fit in ${a}/${d}, the same as ${a} ÷ ${c}.”`;
+      dichoEs = `${n1}: «${a}/${d} ÷ ${c}/${d} = ${fm(q)}, porque pregunta cuántos ${c}/${d} caben en ${a}/${d}, igual que ${a} ÷ ${c}».`;
+      verdad = true; expl = `Both fractions count pieces of the same size, so it is ${a} pieces ÷ ${c} pieces = ${fm(q)}. Check: ${fx(q)} × ${c}/${d} = ${a}/${d}.`;
+      razones = [[`Both count pieces of the same size, so it is ${a} pieces ÷ ${c} pieces.`, true],
+                 ["It is wrong: fractions with the same denominator can't be divided.", false],
+                 [`It is wrong: the answer must have ${d} as its denominator.`, false]];
+    }
+    escenaTexto(`<p class="problema"><span aria-hidden="true">💬</span> ${escaparHTML(dicho)}</p>`);
+    ponerInstruccion(t.razon, dicho + " " + t.razon, ES.razon(dichoEs));
+    const cont = $("opciones");
+    const elegirRazon = ()=>{
+      cont.innerHTML = "";
+      $("txt-instruccion").textContent = t.porque; hablar(t.porque);
+      $("txt-ayuda").textContent = ES.porque; $("btn-bocina-es").onclick = ()=>hablar(ES.porque, null, "es");
+      const buena = razones.find(r=>r[1])[0];
+      opciones(buena, razones.filter(r=>!r[1]).map(r=>[r[0], t.pistaPorque]), ()=>acertar(expl), true);
+    };
+    [[true, t.si, "opcion-vf v"], [false, t.no, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+      cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+        if(v !== verdad){ fallar(bt, t.pistaRazon); return; }
+        sonBoing();
+        if(reto){ $("aviso").className = "aviso"; $("aviso").textContent = ""; elegirRazon(); }
+        else acertar(expl);
+      }));
+    });
+    S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+}
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="6"></script>
+</body>
+</html>
