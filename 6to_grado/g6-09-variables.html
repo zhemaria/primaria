@@ -278,6 +278,9 @@ body.con-ayuda .tarea .criterio .es{display:block}
 .tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
 .tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
 .opcion-graf svg{width:min(230px,42vw)}
+/* Escena sin dibujo: Lumi señala las opciones, para que no parezca que falta algo */
+.escena:empty{background:#fff url(lumi6-presenta.png) no-repeat center / auto 88%}
+.escena-lumi{height:clamp(150px,26vw,210px);width:auto;display:block}
 </style>
 </head>
 <body>
@@ -736,6 +739,8 @@ function botonTexto(texto, clase, etiqueta, accion){
 const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
 /* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
 function ponerInstruccion(pantalla, voz, ayudaEs){
+  /* Si el juego no dibuja nada en la escena, Lumi la acompaña para que no parezca que falta algo */
+  setTimeout(()=>{ const e = $("escena"); if(e && !e.children.length) e.innerHTML = '<img class="escena-lumi" src="lumi6-presenta.png" alt="" width="450" height="594">'; }, 0);
   $("txt-instruccion").textContent = pantalla;
   hablar(voz || pantalla);
   $("btn-bocina").onclick = ()=>hablar(voz || pantalla);

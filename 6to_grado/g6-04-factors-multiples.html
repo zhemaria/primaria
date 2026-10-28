@@ -280,6 +280,9 @@ body.con-ayuda .tarea .criterio .es{display:block}
 .lista-f{margin:0;font-size:clamp(16px,2.2vw,20px);line-height:1.9;text-align:center;max-width:620px}
 .chipn{display:inline-block;min-width:2.3em;padding:1px 8px;margin:2px 3px;border-radius:999px;border:2px solid var(--linea);background:#fff;font-weight:700;text-align:center}
 .chipn.comun{background:var(--amarillo);border-color:#8A4B00}
+/* Escena sin dibujo: Lumi señala las opciones, para que no parezca que falta algo */
+.escena:empty{background:#fff url(lumi6-presenta.png) no-repeat center / auto 88%}
+.escena-lumi{height:clamp(150px,26vw,210px);width:auto;display:block}
 </style>
 </head>
 <body>
@@ -746,6 +749,8 @@ function botonTexto(texto, clase, etiqueta, accion){
 const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
 /* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
 function ponerInstruccion(pantalla, voz, ayudaEs){
+  /* Si el juego no dibuja nada en la escena, Lumi la acompaña para que no parezca que falta algo */
+  setTimeout(()=>{ const e = $("escena"); if(e && !e.children.length) e.innerHTML = '<img class="escena-lumi" src="lumi6-presenta.png" alt="" width="450" height="594">'; }, 0);
   $("txt-instruccion").textContent = pantalla;
   hablar(voz || pantalla);
   $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
@@ -870,6 +875,7 @@ function nuevaRonda(){
     const g = mcd(a, b), com = comunes(a, b);
     if(!reto){ esc.insertAdjacentHTML("beforeend", fichas(`Factors of ${a}`, factores(a), com) + fichas(`Factors of ${b}`, factores(b), com));
                esc.insertAdjacentHTML("beforeend", `<p class="nota">The common factors are marked in yellow.</p>`); }
+    if(reto) esc.insertAdjacentHTML("beforeend", `<p class="expr">${a} &nbsp;and&nbsp; ${b}</p>`);
     const qq = `What is the greatest common factor (GCF) of ${a} and ${b}?`;
     ponerInstruccion(qq, qq, `¿Cuál es el máximo común divisor (MCD) de ${a} y ${b}?`);
     const malos = [];
@@ -893,6 +899,7 @@ function nuevaRonda(){
       esc.insertAdjacentHTML("beforeend", fichas(`Multiples of ${a}`, ma, mb) + fichas(`Multiples of ${b}`, mb, ma));
       esc.insertAdjacentHTML("beforeend", `<p class="nota">The numbers on both lists are marked in yellow.</p>`);
     }
+    if(reto) esc.insertAdjacentHTML("beforeend", `<p class="expr">${a} &nbsp;and&nbsp; ${b}</p>`);
     const qq = `What is the least common multiple (LCM) of ${a} and ${b}?`;
     ponerInstruccion(qq, qq, `¿Cuál es el mínimo común múltiplo (MCM) de ${a} y ${b}?`);
     const malos = [];
