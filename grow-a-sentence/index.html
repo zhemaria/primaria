@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grow a Sentence</title>
 <style>
@@ -371,7 +372,7 @@ button:focus-visible{outline:4px solid var(--pet)}
       <div class="ctrls">
         <button class="btn" type="button" id="backBtn">↩️ Go back</button>
         <button class="btn" type="button" id="resetBtn">🔁 Start over</button>
-        <button class="btn" type="button" id="soundBtn" aria-pressed="true">🔊 Sound on</button>
+        <button class="btn" type="button" id="soundBtn" aria-pressed="true" data-voz-lumi>🔊 Voice on</button>
       </div>
     </section>
   </div>
@@ -1005,7 +1006,7 @@ button:focus-visible{outline:4px solid var(--pet)}
   }
 
   function say(text){
-    if(!soundOn || !text || !("speechSynthesis" in window)) return;
+    if(!text || !("speechSynthesis" in window)) return;
     try{
       window.speechSynthesis.cancel();
       var u=new SpeechSynthesisUtterance(text);
@@ -1039,12 +1040,7 @@ button:focus-visible{outline:4px solid var(--pet)}
     hintEl.textContent="Pick who your sentence is about."; newRound();
   });
 
-  el("soundBtn").addEventListener("click", function(){
-    soundOn=!soundOn;
-    this.textContent = soundOn ? "🔊 Sound on" : "🔇 Sound off";
-    this.setAttribute("aria-pressed", soundOn?"true":"false");
-    if(!soundOn && "speechSynthesis" in window) window.speechSynthesis.cancel();
-  });
+  /* El botón de voz lo maneja voz-lumi.js (vale para todo Lumi) */
 
   newRound();
 })();
