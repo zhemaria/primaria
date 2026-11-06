@@ -47,7 +47,7 @@
             cien:  { en: C + "book-grade1-science.html",        es: C + "libro-1ro-ciencias.html" },
             soci:  { en: C + "book-grade1-social-studies.html", es: C + "libro-1ro-sociales.html" } },
     "2":  { mate:  { en: P + "2nd_grade/",        es: P + "2do_grado/" },
-            read:  { en: P + "grow-a-sentence/",  es: P + "grow-a-sentence/" },
+            read:  { en: P + "grow-a-sentence/",  es: P + "grow-a-sentence/?lang=es" },
             cien:  { en: C + "book-grade2-science.html",        es: C + "libro-2do-ciencias.html" },
             soci:  { en: C + "book-grade2-social-studies.html", es: C + "libro-2do-sociales.html" } },
     "3":  { mate:  { en: P + "3er_grado/",             es: P + "3er_grado/?lang=es" },
@@ -88,7 +88,7 @@
   var miGrado = yo ? (yo.getAttribute("data-grado") || "") : "";
   var LOGO = '<svg viewBox="0 0 64 64" aria-hidden="true" focusable="false"><path d="M24 16 C23 10 20 7 16 6 M40 16 C41 10 44 7 48 6" fill="none" stroke="#194F5A" stroke-width="3.5" stroke-linecap="round"/><circle cx="15" cy="6" r="4.5" fill="#194F5A"/><circle cx="49" cy="6" r="4.5" fill="#194F5A"/><ellipse cx="32" cy="38" rx="25" ry="23" fill="#6DCEC5" stroke="#194F5A" stroke-width="4"/><path d="M20 41 a4.5 4.5 0 0 1 9 0 M35 41 a4.5 4.5 0 0 1 9 0 M25 48 Q32 55 39 48" fill="none" stroke="#194F5A" stroke-width="3.2" stroke-linecap="round"/></svg>';
 
-  var css = ".lumi-nav{all:initial;display:block;background:#E8F5F6;border-bottom:3px solid #6DCEC5;font-family:'Andika','Trebuchet MS',system-ui,sans-serif;color:#194F5A;line-height:1.3}" +
+  var css = ".lumi-nav{all:initial;display:block;position:relative;z-index:5;background:#E8F5F6;border-bottom:3px solid #6DCEC5;font-family:'Andika','Trebuchet MS',system-ui,sans-serif;color:#194F5A;line-height:1.3}" +
     ".lumi-nav *{box-sizing:border-box;font-family:inherit}" +
     ".lumi-nav .ln-in{max-width:1100px;margin:0 auto;padding:6px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}" +
     ".lumi-nav .ln-in + .ln-in{border-top:1px solid #A9D3D6;padding-top:6px}" +
@@ -146,6 +146,8 @@
       ORDEN.forEach(function (m) {
         if (!M[m]) return;
         var aqui = m === esta;
+        /* En inglés no se ofrece la lectura en español (sí en la versión en español) */
+        if (ESP[m] && L === "en" && !aqui) return;
         h += '<li><a href="' + M[m][L] + '"' + (ESP[m] ? ' lang="es"' : "") + (aqui ? ' aria-current="page"' : "") + ">" +
              NOMBRES[L][m] + "</a></li>";
       });

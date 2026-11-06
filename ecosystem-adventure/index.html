@@ -28,7 +28,11 @@ body{
 }
 .envoltura{max-width:520px;margin:0 auto}
 
-.barra{display:flex;align-items:center;gap:8px;margin-bottom:14px;min-height:48px}
+.barra{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;min-height:48px}
+/* Selector de idioma de Lumi: 🌐 English | Español (igual en todos los interactivos) */
+.chip{display:inline-flex;align-items:center;gap:4px;background:#fff;border:3px solid #D6D0EA;border-radius:999px;padding:4px 8px;box-shadow:0 4px 0 var(--sombra);color:var(--tinta);font-weight:700;font-size:15px}
+.chip button{border:none;background:transparent;color:var(--tinta);padding:5px 10px;border-radius:999px;font:inherit;font-weight:700;min-height:38px;cursor:pointer}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:#fff}
 .barra .titulo{font-size:16px;font-weight:700;flex:1;letter-spacing:.2px}
 .marcador{background:rgba(255,198,60,.16);border:2px solid var(--sol);color:var(--sol);
   border-radius:999px;padding:6px 12px;font-weight:800;font-size:17px;white-space:nowrap}
@@ -165,7 +169,7 @@ details.nota{color:var(--pet-suave)}
   <div class="barra">
     <button class="icono-btn" id="atras" hidden>←</button>
     <span class="titulo" id="tituloBarra">Ecosystem Adventure</span>
-    <button class="icono-btn" id="idiomaBtn" style="font-size:15px">ES</button>
+    <span class="chip" role="group" aria-label="Language"><span aria-hidden="true">🌐</span><button type="button" id="btn-en" aria-pressed="true" lang="en">English</button><button type="button" id="btn-es" aria-pressed="false" lang="es">Español</button></span>
     <button class="icono-btn" id="vozBtn" aria-pressed="true">🔊</button>
     <span class="marcador" id="marcador">⭐ 0</span>
   </div>
@@ -181,6 +185,7 @@ details.nota{color:var(--pet-suave)}
 "use strict";
 
 var L = "en";                     /* idioma activo: en | es */
+try{ var qL=new URLSearchParams(location.search).get("lang"); if(qL==="es"||qL==="en") L=qL; }catch(e){}
 function t(par){ return par[L]; } /* par = {en:"...", es:"..."} */
 
 /* ============ textos de la interfaz ============ */
@@ -222,12 +227,12 @@ var UI = {
     en:["The three missions follow the order taught in class: predator first, then prey, then the plant.",
         "Tap 🔊 to have every question read out loud.",
         "In the seed mission you can drag with a finger, or simply tap a picture and then tap a box.",
-        "Tap ES / EN in the top bar to switch the whole game between English and Spanish.",
+        "Tap English / Español in the top bar to switch the whole game between English and Spanish.",
         "No timer and no penalty: a wrong answer gets an explanation and another try."],
     es:["Las tres misiones siguen el orden aprendido en clase: primero el depredador, después la presa y por último la planta.",
         "Toca 🔊 para que el juego lea cada pregunta en voz alta.",
         "En la misión de las semillas se puede arrastrar con el dedo o tocar la imagen y después la caja.",
-        "Toca ES / EN en la barra de arriba para cambiar todo el juego entre inglés y español.",
+        "Toca English / Español en la barra de arriba para cambiar todo el juego entre inglés y español.",
         "No hay tiempo ni penalización: si se equivoca, el juego explica el porqué y deja intentar otra vez."]
   }
 };
@@ -358,7 +363,7 @@ var SEMILLAS = [
 var estado = { estrellas:0, hechas:{m1:false,m2:false,m3:false}, voz:true, donde:"home", mision:null };
 var pantalla=document.getElementById("pantalla"), marcador=document.getElementById("marcador"),
     tituloBarra=document.getElementById("tituloBarra"), btnAtras=document.getElementById("atras"),
-    btnVoz=document.getElementById("vozBtn"), btnIdioma=document.getElementById("idiomaBtn"),
+    btnVoz=document.getElementById("vozBtn"), btnEn=document.getElementById("btn-en"), btnEs=document.getElementById("btn-es"),
     nota=document.getElementById("nota");
 
 function pintarMarcador(){ marcador.textContent = "⭐ " + estado.estrellas; }
@@ -388,16 +393,23 @@ btnVoz.addEventListener("click", function(){
   if(estado.voz) hablar(t(UI.voiceOn));
   else if(window.speechSynthesis) window.speechSynthesis.cancel();
 });
-btnIdioma.addEventListener("click", function(){
-  L = (L === "en") ? "es" : "en";
-  btnIdioma.textContent = (L === "en") ? "ES" : "EN";
+function ponerIdioma(nuevo){
+  if(nuevo === L) return;
+  L = nuevo;
+  btnEn.setAttribute("aria-pressed", String(L === "en"));
+  btnEs.setAttribute("aria-pressed", String(L === "es"));
   document.documentElement.lang = L;
   if(window.speechSynthesis) window.speechSynthesis.cancel();
   pintarNota();
   if(estado.donde === "home") inicio();
   else if(estado.donde === "m2") misionSemillas();
   else misionQuiz(estado.mision);
-});
+}
+btnEn.addEventListener("click", function(){ ponerIdioma("en"); });
+btnEs.addEventListener("click", function(){ ponerIdioma("es"); });
+btnEn.setAttribute("aria-pressed", String(L === "en"));
+btnEs.setAttribute("aria-pressed", String(L === "es"));
+document.documentElement.lang = L;
 btnAtras.addEventListener("click", inicio);
 
 /* ============ portada ============ */

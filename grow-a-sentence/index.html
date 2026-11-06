@@ -180,6 +180,16 @@
     .page{box-shadow:none;border:none}
     .choices,.ctrls,.rail,.adult,.stage-tools{display:none}
   }
+/* Selector de idioma de Lumi: 🌐 English | Español (igual en todos los interactivos).
+   La oración siempre se arma en inglés; en español solo cambian las instrucciones. */
+.idioma-fila{display:flex;justify-content:flex-end;margin:0 0 8px;padding-right:118px;position:relative;z-index:2}
+.chip{display:inline-flex;align-items:center;gap:4px;background:#fff;border:3px solid #D6D0EA;border-radius:999px;
+  padding:4px 8px;box-shadow:0 4px 0 rgba(30,26,58,.18);color:#1E1A3A;font-weight:700;font-size:16px}
+.chip button{border:none;background:transparent;color:#1E1A3A;padding:5px 12px;border-radius:999px;
+  font:inherit;font-weight:700;min-height:40px;cursor:pointer}
+.chip button[aria-pressed="true"]{background:#1E1A3A;color:#fff}
+.nota-es{font-size:15px;margin:4px 0 0;color:#4C4766}
+@media print{.idioma-fila{display:none!important}}
 </style>
 <style id="tema-lumi">
 /* ==== Tema Lumi (Manual de identidad v1.2): sustituye la paleta anterior ==== */
@@ -238,18 +248,20 @@ button:focus-visible{outline:4px solid var(--pet)}
 </head>
 <body>
 <div class="page">
+  <div class="idioma-fila"><span class="chip" role="group" aria-label="Language"><span aria-hidden="true">🌐</span><button type="button" id="btn-en" aria-pressed="true" lang="en">English</button><button type="button" id="btn-es" aria-pressed="false" lang="es">Español</button></span></div>
   <div class="spiral" aria-hidden="true"></div>
   <img class="lumi" src="../lumi-saluda.jpg" width="96" height="96" alt="Lumi the firefly waving hello">
 
   <h1>Grow a Sentence 🌱</h1>
-  <p class="tagline">Add more details to make your sentence stronger.</p>
+  <p class="tagline" id="tagline">Add more details to make your sentence stronger.</p>
+  <p class="nota-es" id="notaEs" lang="es" hidden>La oración se arma en inglés. Las instrucciones están en español para ayudarte.</p>
 
   <ol class="rail" id="rail">
-    <li data-k="who"><span class="tick">✓</span> Who</li>
-    <li data-k="doing"><span class="tick">✓</span> Doing what</li>
-    <li data-k="where"><span class="tick">✓</span> Where</li>
-    <li data-k="when"><span class="tick">✓</span> When</li>
-    <li data-k="why"><span class="tick">✓</span> Why</li>
+    <li data-k="who"><span class="tick">✓</span> <span class="rail-t">Who</span></li>
+    <li data-k="doing"><span class="tick">✓</span> <span class="rail-t">Doing what</span></li>
+    <li data-k="where"><span class="tick">✓</span> <span class="rail-t">Where</span></li>
+    <li data-k="when"><span class="tick">✓</span> <span class="rail-t">When</span></li>
+    <li data-k="why"><span class="tick">✓</span> <span class="rail-t">Why</span></li>
   </ol>
 
   <div class="grid">
@@ -345,7 +357,7 @@ button:focus-visible{outline:4px solid var(--pet)}
         </svg>
       </div>
 
-      <p class="sentence" id="sentence" aria-live="polite"></p>
+      <p class="sentence" id="sentence" aria-live="polite" lang="en"></p>
     </section>
 
     <section class="ask" aria-label="Question">
@@ -359,12 +371,12 @@ button:focus-visible{outline:4px solid var(--pet)}
       <div id="askPanel">
         <span class="ask-note" id="askNote" data-k="who">Who?</span>
         <p class="ask-help" id="askHelp">Who is your sentence about?</p>
-        <div class="choices" id="choices"></div>
+        <div class="choices" id="choices" lang="en"></div>
       </div>
 
       <div class="finish" id="finish" hidden>
         <img class="lumi-fin" src="../lumi-saluda.jpg" width="110" height="110" alt="">
-        <h2>You grew a big sentence! 🎉</h2>
+        <h2 id="finishTit">You grew a big sentence! 🎉</h2>
         <p id="finishMsg"></p>
         <button class="btn btn-loud" type="button" id="againBtn">🌱 Grow another one</button>
       </div>
@@ -377,7 +389,7 @@ button:focus-visible{outline:4px solid var(--pet)}
     </section>
   </div>
 
-  <details class="adult" lang="en">
+  <details class="adult" id="adultEn" lang="en">
     <summary>For the grown-up helping out</summary>
     <ul>
       <li><strong>The big idea:</strong> a sentence grows in layers. The child sees that <em>A dog</em> is not a sentence yet (it needs an action), and that every new question adds information, not just extra words.</li>
@@ -387,6 +399,18 @@ button:focus-visible{outline:4px solid var(--pet)}
       <li><strong>The grammar moment is step 4:</strong> moving the time to the front brings in a comma, and <em>A dog</em> becomes <em>a dog</em>. Point at it with your finger while it changes.</li>
       <li><strong>To edit the word lists:</strong> open the file and find <code>WHO</code>, <code>PLACES</code>, <code>TIMES</code> and <code>ACTIONS</code> at the top of the script. <code>ACTIONS</code> is grouped by kind of character, and each action names the places, times and reasons that belong to it.</li>
       <li><strong>Accessibility:</strong> works with the keyboard (Tab and Enter), reads aloud, honors the system setting for reduced motion, and prints cleanly with Ctrl+P showing only the picture and the sentence.</li>
+    </ul>
+  </details>
+  <details class="adult" id="adultEs" lang="es" hidden>
+    <summary>Para el adulto que acompaña</summary>
+    <ul>
+      <li><strong>La idea principal:</strong> una oración crece por capas. El niño ve que <em lang="en">A dog</em> todavía no es una oración (le falta una acción) y que cada pregunta nueva añade información, no solo más palabras.</li>
+      <li><strong>Cada elección limita la siguiente.</strong> El personaje decide qué acciones aparecen, y la acción decide los lugares, los momentos y las razones. La oración puede salir graciosa, pero nunca sin sentido.</li>
+      <li><strong>Los colores tienen una función.</strong> Cada parte conserva su color en la oración, en la nota y en la tira de pasos, para que el niño asocie <em>azul = dónde</em> y <em>morado = cuándo</em>.</li>
+      <li><strong>Pregunte antes de que toque:</strong> «¿Dónde crees que come la niña?». El botón solo confirma lo que ya dijo en voz alta.</li>
+      <li><strong>El momento de gramática es el paso 4:</strong> al pasar el tiempo al principio aparece una coma y <em lang="en">A dog</em> se vuelve <em lang="en">a dog</em>. Señálelo con el dedo mientras cambia.</li>
+      <li><strong>La oración se arma en inglés.</strong> En español solo cambian las instrucciones; las palabras y la lectura en voz alta siguen en inglés.</li>
+      <li><strong>Accesibilidad:</strong> funciona con el teclado (Tab y Enter), lee en voz alta, respeta la opción del sistema de reducir el movimiento y se imprime limpia con Ctrl+P.</li>
     </ul>
   </details>
 </div>
@@ -710,6 +734,40 @@ button:focus-visible{outline:4px solid var(--pet)}
     {k:"why",   label:"Why?",        help:"Why does it happen?", hint:""}
   ];
 
+  /* ---------- Interfaz en dos idiomas (la oración siempre en inglés) ---------- */
+  var L = "en";
+  try{ var q=new URLSearchParams(location.search).get("lang"); if(q==="es"||q==="en") L=q; }catch(e){}
+  var UI = {
+    en:{ tagline:"Add more details to make your sentence stronger.",
+         rail:["Who","Doing what","Where","When","Why"],
+         label:["Who?","Doing what?","Where?","When?","Why?"],
+         help:null,
+         hint:null,
+         read:"🔊 Read it to me", back:"↩️ Go back", reset:"🔁 Start over", again:"🌱 Grow another one",
+         finishTit:"You grew a big sentence! 🎉",
+         word:function(n){ return n===1?" word":" words"; },
+         pickWho:"Pick who your sentence is about.", pickFirst:"Pick who your sentence is about first.",
+         tryOther:"Try a different one.",
+         allParts:"Every part answers a question: who, doing what, where, when, why.",
+         finishMsg:function(a,n){ return "You started with "+a+(a===1?" word":" words")+" and grew it to "+n+" words. That is "+(n-a)+" more!"; } },
+    es:{ tagline:"Agrega más detalles para que tu oración sea más fuerte.",
+         rail:["Quién","Qué hace","Dónde","Cuándo","Por qué"],
+         label:["¿Quién? (Who?)","¿Qué hace? (Doing what?)","¿Dónde? (Where?)","¿Cuándo? (When?)","¿Por qué? (Why?)"],
+         help:["¿De quién trata tu oración?","¿Qué hace tu personaje?","¿Dónde lo hace?","¿Cuándo pasa?","¿Por qué pasa?"],
+         hint:["Esa es la parte que nombra. Todavía no es una oración: ¡le falta una acción!",
+               "Ahora sí es una oración completa. Dice quién y qué hace.",
+               "¡Muy bien! Ahora quien lee puede imaginar el lugar.",
+               "Mira: el tiempo pasó al principio, por eso lleva coma.", ""],
+         read:"🔊 Léemela", back:"↩️ Regresar", reset:"🔁 Empezar de nuevo", again:"🌱 Hacer crecer otra",
+         finishTit:"¡Hiciste crecer una oración grande! 🎉",
+         word:function(n){ return n===1?" palabra":" palabras"; },
+         pickWho:"Escoge de quién trata tu oración.", pickFirst:"Primero escoge de quién trata tu oración.",
+         tryOther:"Prueba con otra.",
+         allParts:"Cada parte contesta una pregunta: quién, qué hace, dónde, cuándo, por qué.",
+         finishMsg:function(a,n){ return "Empezaste con "+a+(a===1?" palabra":" palabras")+" y la hiciste crecer a "+n+" palabras. ¡Son "+(n-a)+" más!"; } }
+  };
+  function tx(){ return UI[L]; }
+
   var el = function(id){ return document.getElementById(id); };
   var sentenceEl=el("sentence"), hintEl=el("hint"), choicesEl=el("choices"),
       askNote=el("askNote"), askHelp=el("askHelp"), growthEl=el("growth"),
@@ -775,7 +833,7 @@ button:focus-visible{outline:4px solid var(--pet)}
     sentenceEl.innerHTML=html;
 
     var n=countWords();
-    growthEl.textContent=(n<=2?"🌱":(n<=6?"🌿":"🌳"))+" "+n+(n===1?" word":" words");
+    growthEl.textContent=(n<=2?"🌱":(n<=6?"🌿":"🌳"))+" "+n+tx().word(n);
 
     for(var r=0;r<railItems.length;r++){
       railItems[r].className = r<step ? "done" : (r===step ? "now" : "");
@@ -785,9 +843,9 @@ button:focus-visible{outline:4px solid var(--pet)}
 
     if(step<STEPS.length){
       var s=STEPS[step];
-      askNote.textContent=s.label;
+      askNote.textContent=tx().label[step];
       askNote.setAttribute("data-k", s.k);
-      askHelp.textContent=s.help
+      askHelp.textContent = tx().help ? tx().help[step] : s.help
         .replace("{THE}", state.who ? state.who.the : "your character")
         .replace("{VERB}", state.doing ? state.doing.base : "do it");
       if(!pools[s.k]) pools[s.k]=optionsFor(s.k);
@@ -820,15 +878,14 @@ button:focus-visible{outline:4px solid var(--pet)}
     if(step===1) firstWords=countWords();
 
     if(step>=STEPS.length){ finish(); }
-    else { hintEl.textContent=STEPS[justDone].hint; say(plainText()); }
+    else { hintEl.textContent = tx().hint ? tx().hint[justDone] : STEPS[justDone].hint; say(plainText()); }
   }
 
   function finish(){
     askPanel.hidden=true; finishEl.hidden=false;
-    hintEl.textContent="Every part answers a question: who, doing what, where, when, why.";
+    hintEl.textContent=tx().allParts;
     var n=countWords();
-    finishMsg.textContent="You started with "+firstWords+(firstWords===1?" word":" words")+
-      " and grew it to "+n+" words. That is "+(n-firstWords)+" more!";
+    finishMsg.textContent=tx().finishMsg(firstWords,n);
     say(plainText());
   }
 
@@ -1017,7 +1074,7 @@ button:focus-visible{outline:4px solid var(--pet)}
 
   el("readBtn").addEventListener("click", function(){
     var t=plainText();
-    if(!t){ hintEl.textContent="Pick who your sentence is about first."; return; }
+    if(!t){ hintEl.textContent=tx().pickFirst; return; }
     var on=soundOn; soundOn=true; say(t); soundOn=on;
   });
 
@@ -1029,20 +1086,43 @@ button:focus-visible{outline:4px solid var(--pet)}
     if(k==="who"){ delete pools.doing; }
     if(k==="who" || k==="doing"){ delete pools.where; delete pools.when; delete pools.why; }
     finishEl.hidden=true; askPanel.hidden=false;
-    hintEl.textContent = step===0 ? "Pick who your sentence is about." : "Try a different one.";
+    hintEl.textContent = step===0 ? tx().pickWho : tx().tryOther;
     render();
   });
 
   el("resetBtn").addEventListener("click", function(){
-    hintEl.textContent="Pick who your sentence is about."; newRound();
+    hintEl.textContent=tx().pickWho; newRound();
   });
   el("againBtn").addEventListener("click", function(){
-    hintEl.textContent="Pick who your sentence is about."; newRound();
+    hintEl.textContent=tx().pickWho; newRound();
   });
 
   /* El botón de voz lo maneja voz-lumi.js (vale para todo Lumi) */
 
+  /* Cambiar el idioma de las instrucciones (la oración sigue igual) */
+  function pintarIdioma(){
+    var u=tx();
+    document.documentElement.lang=L;
+    el("btn-en").setAttribute("aria-pressed", String(L==="en"));
+    el("btn-es").setAttribute("aria-pressed", String(L==="es"));
+    el("tagline").textContent=u.tagline;
+    el("notaEs").hidden = L!=="es";
+    var rt=document.querySelectorAll("#rail .rail-t");
+    for(var i=0;i<rt.length;i++) rt[i].textContent=u.rail[i];
+    el("readBtn").textContent=u.read; el("backBtn").textContent=u.back;
+    el("resetBtn").textContent=u.reset; el("againBtn").textContent=u.again;
+    el("finishTit").textContent=u.finishTit;
+    el("adultEn").hidden = L!=="en"; el("adultEs").hidden = L!=="es";
+    if(!finishEl.hidden){ hintEl.textContent=u.allParts; finishMsg.textContent=u.finishMsg(firstWords,countWords()); }
+    else if(step===0) hintEl.textContent=u.pickWho;
+    else hintEl.textContent = u.hint ? u.hint[step-1] : STEPS[step-1].hint;
+    render();
+  }
+  el("btn-en").addEventListener("click", function(){ if(L!=="en"){ L="en"; pintarIdioma(); } });
+  el("btn-es").addEventListener("click", function(){ if(L!=="es"){ L="es"; pintarIdioma(); } });
+
   newRound();
+  pintarIdioma();
 })();
 </script>
 <script src="../nav-lumi.js" data-grado="2"></script>
