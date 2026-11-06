@@ -35,7 +35,8 @@
   var MATERIAS = {
     prek: { mate:  { en: P + "prekinder/?lang=en", es: P + "prekinder/?lang=es" },
             read:  { en: P + "letters/",            es: P + "letters/" },
-            lect:  { en: P + "letras/",             es: P + "letras/" } },
+            lect:  { en: P + "letras/",             es: P + "letras/" },
+            cien:  { en: C + "book-prek-science.html", es: C + "libro-prek-ciencias.html" } },
     k:    { mate:  { en: P + "kindergarten/",              es: P + "kindergarten/?lang=es" },
             read:  { en: P + "kindergarten/reading.html",  es: P + "kindergarten/reading.html" },
             lect:  { en: P + "kindergarten/lectura.html",  es: P + "kindergarten/lectura.html" },
