@@ -571,7 +571,7 @@ function answerFacts(btn, v){
 /* ===================== 2. WORD PROBLEMS ===================== */
 var NAMES = ['Ana', 'Luis', 'Mía', 'Leo', 'Sara', 'Zoe'];
 var THINGS = ['canicas', 'calcomanías', 'conchas', 'manzanas', 'galletas', 'tarjetas'];
-var wp = { answer: 0, eq: '', picked: null };
+var wp = { answer: 0, eq: '', picked: null, tries: 0, calc: null };
 
 function newWordProblem(){
   var n1 = pick(NAMES), n2 = pick(NAMES);
@@ -611,7 +611,12 @@ function newWordProblem(){
     wrong1 = a + ' + ' + b + ' + ' + d + ' = ?'; wrong2 = a + ' \u2212 ' + b + ' \u2212 ' + d + ' = ?';
   }
 
-  wp.answer = ans; wp.eq = eq; wp.picked = null;
+  wp.answer = ans; wp.eq = eq; wp.picked = null; wp.tries = 0;
+  /* what the child has to calculate, used for hints (never the answer) */
+  if (kind === 'result') wp.calc = { op: 'add', x: a, y: b };
+  else if (kind === 'change' || kind === 'takeChange' || kind === 'compare') wp.calc = { op: 'sub', x: c, y: a };
+  else if (kind === 'start' || kind === 'takeResult') wp.calc = { op: 'sub', x: c, y: b };
+  else wp.calc = { op: 'two', x: a, y: b, z: d };
   document.getElementById('word-task').textContent = text;
   document.getElementById('word-unit').textContent = thing + '.';
   document.getElementById('word-input').value = '';
@@ -621,7 +626,7 @@ function newWordProblem(){
     var b2 = document.createElement('button');
     b2.type = 'button'; b2.className = 'choice'; b2.style.fontSize = '1.15rem'; b2.textContent = t;
     b2.addEventListener('click', function(){
-      $$('#word-choices .choice').forEach(function(x){ x.classList.remove('picked'); });
+      $$('#word-choices .choice').forEach(function(x){ x.classList.remove('picked', 'right', 'wrong'); });
       b2.classList.add('picked');
       wp.picked = t;
     });
@@ -630,21 +635,44 @@ function newWordProblem(){
   say(document.getElementById('word-fb'), '', '');
 }
 
+/* Lumi supports and never judges: a mistake gets a hint, not the answer.
+   The answer is shown, worked out, only after three tries. */
+function calcHint(){
+  var c = wp.calc;
+  if (c.op === 'add') return 'suma: ' + c.x + ' + ' + c.y + '';
+  if (c.op === 'sub') return 'resta: ' + c.x + ' \u2212 ' + c.y + '';
+  return 'primero resta: ' + c.x + ' \u2212 ' + c.y + '. Después suma ' + c.z + '';
+}
+
 function checkWord(){
   var fb = document.getElementById('word-fb');
   var box = document.getElementById('word-input');
   if (!wp.picked){ say(fb, 'Escoge primero una ecuación.', 'note'); return; }
   if (box.value === ''){ say(fb, 'Ahora escribe la respuesta en el recuadro.', 'note'); return; }
   var eqOK = (wp.picked === wp.eq), numOK = (Number(box.value) === wp.answer);
-  $$('#word-choices .choice').forEach(function(x){
-    if (x.textContent === wp.eq) x.classList.add('right');
-    else if (x.classList.contains('picked')) x.classList.add('wrong');
+  var choices = $$('#word-choices .choice');
+  choices.forEach(function(x){ x.classList.remove('right'); x.classList.remove('wrong'); });
+  if (eqOK && numOK){
+    choices.forEach(function(x){ if (x.textContent === wp.eq) x.classList.add('right'); });
+    box.style.borderColor = '#146B3A';
+    say(fb, '¡Las dos partes están bien! La ecuación le corresponde al problema y la respuesta es ' + wp.answer + '.', 'ok');
+    return;
+  }
+  wp.tries++;
+  if (wp.tries >= 3){
+    choices.forEach(function(x){ if (x.textContent === wp.eq) x.classList.add('right'); });
+    box.style.borderColor = '';
+    say(fb, 'Vamos a hacerlo juntos. La ecuación es ' + wp.eq + '. Para resolverla, ' + calcHint() + '. La respuesta es ' + wp.answer + '. ¡Ahora prueba un problema nuevo!', 'note');
+    return;
+  }
+  choices.forEach(function(x){
+    if (x.classList.contains('picked')) x.classList.add(eqOK ? 'right' : 'wrong');
   });
   box.style.borderColor = numOK ? '#146B3A' : '#9B1C1C';
-  if (eqOK && numOK) say(fb, 'Las dos partes están bien. La ecuación le corresponde al problema y la respuesta es ' + wp.answer + '.', 'ok');
-  else if (!eqOK && numOK) say(fb, 'La respuesta está bien, pero la ecuación que le corresponde al problema es ' + wp.eq + '.', 'note');
-  else if (eqOK && !numOK) say(fb, 'Buena ecuación. Vuelve a calcularla: la respuesta es ' + wp.answer + '.', 'no');
-  else say(fb, 'Todavía no. La ecuación es ' + wp.eq + ' y la respuesta es ' + wp.answer + '.', 'no');
+  if (eqOK) say(fb, '¡Buena ecuación! Ahora ' + calcHint() + '. Vuelve a intentarlo.', 'no');
+  else if (numOK) say(fb, '¡Tu respuesta está bien! Ahora escoge la ecuación que cuenta el mismo problema. El ? va donde está el número que falta.', 'note');
+  else if (wp.tries === 1) say(fb, 'Todavía no. Vuelve a leer el problema: ¿qué números conoces y cuál falta? Escoge la ecuación donde el ? es el número que falta.', 'no');
+  else say(fb, 'Busca la ecuación que cuenta el problema en orden. Después, ' + calcHint() + '. Vuelve a intentarlo.', 'no');
 }
 
 /* ===================== 3. ODD AND EVEN ===================== */
