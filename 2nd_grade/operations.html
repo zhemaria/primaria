@@ -491,7 +491,7 @@ function newFactsQuestion(){
         'You got ' + ff.score + ' out of 10. Press Start a new round to play again.', 'ok');
     return;
   }
-  ff.q++; ff.locked = false;
+  ff.q++; ff.locked = false; ff.missed = false;
   var kind = pick(['double', 'near', 'maketen', 'counton', 'sub', 'sub']);
   var a, b, hint, mat;
   if (kind === 'double'){
@@ -549,20 +549,21 @@ function updateFactsScore(){
 }
 
 function answerFacts(btn, v){
-  if (ff.locked) return;
-  ff.locked = true;
+  if (ff.locked || btn.disabled) return;
   var fb = document.getElementById('facts-fb');
   if (v === ff.answer){
+    ff.locked = true;
     btn.classList.add('right');
-    ff.score++; ff.streak++;
-    say(fb, ff.streak >= 3 ? 'Right again. That is ' + ff.streak + ' in a row.' : 'Right.', 'ok');
+    if (ff.missed) say(fb, 'Right! You found it.', 'ok');
+    else {
+      ff.score++; ff.streak++;
+      say(fb, ff.streak >= 3 ? 'Right again. That is ' + ff.streak + ' in a row.' : 'Right.', 'ok');
+    }
   } else {
-    btn.classList.add('wrong');
-    ff.streak = 0;
-    $$('#facts-choices .choice').forEach(function(b){
-      if (Number(b.textContent) === ff.answer) b.classList.add('right');
-    });
-    say(fb, 'Not this time. The answer is ' + ff.answer + '.', 'no');
+    /* a mistake gets a hint and another try, never the answer */
+    btn.classList.add('wrong'); btn.disabled = true;
+    ff.streak = 0; ff.missed = true;
+    say(fb, 'Not yet. Read the hint above the choices and try another number.', 'no');
   }
   updateFactsScore();
 }
@@ -714,19 +715,18 @@ function newOddEven(){
 }
 
 function answerOddEven(btn, t){
-  if (oe.done) return;
-  oe.done = true;
+  if (oe.done || btn.disabled) return;
   var fb = document.getElementById('oe-fb');
   var right = (t === 'even') === oe.even;
-  if (right){
-    btn.classList.add('right');
-    say(fb, oe.even ? 'Correct. All ' + oe.n + ' counters have a partner, so ' + oe.n + ' is even.'
-                    : 'Correct. One counter has no partner, so ' + oe.n + ' is odd.', 'ok');
-  } else {
-    btn.classList.add('wrong');
-    say(fb, oe.even ? 'Look again: every counter has a partner, so ' + oe.n + ' is even.'
-                    : 'Look again: the orange counter has no partner, so ' + oe.n + ' is odd.', 'no');
+  if (!right){
+    btn.classList.add('wrong'); btn.disabled = true;
+    say(fb, 'Not yet. Look at the counters: does every counter have a partner? Try again.', 'no');
+    return;
   }
+  oe.done = true;
+  btn.classList.add('right');
+  say(fb, oe.even ? 'Correct. All ' + oe.n + ' counters have a partner, so ' + oe.n + ' is even.'
+                  : 'Correct. One counter has no partner, so ' + oe.n + ' is odd.', 'ok');
   if (oe.even){
     document.getElementById('oe-q2').textContent = 'Now split ' + oe.n + ' into two equal groups.';
     document.getElementById('oe-total').textContent = oe.n;

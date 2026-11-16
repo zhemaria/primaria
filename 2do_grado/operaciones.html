@@ -492,7 +492,7 @@ function newFactsQuestion(){
         'Obtuviste ' + ff.score + ' de 10. Pulsa Empezar otra ronda para jugar de nuevo.', 'ok');
     return;
   }
-  ff.q++; ff.locked = false;
+  ff.q++; ff.locked = false; ff.missed = false;
   var kind = pick(['double', 'near', 'maketen', 'counton', 'sub', 'sub']);
   var a, b, hint, mat;
   if (kind === 'double'){
@@ -550,20 +550,21 @@ function updateFactsScore(){
 }
 
 function answerFacts(btn, v){
-  if (ff.locked) return;
-  ff.locked = true;
+  if (ff.locked || btn.disabled) return;
   var fb = document.getElementById('facts-fb');
   if (v === ff.answer){
+    ff.locked = true;
     btn.classList.add('right');
-    ff.score++; ff.streak++;
-    say(fb, ff.streak >= 3 ? 'Otra vez correcto. Van ' + ff.streak + ' seguidas.' : 'Correcto.', 'ok');
+    if (ff.missed) say(fb, '¡Correcto! Lo encontraste.', 'ok');
+    else {
+      ff.score++; ff.streak++;
+      say(fb, ff.streak >= 3 ? 'Otra vez correcto. Van ' + ff.streak + ' seguidas.' : 'Correcto.', 'ok');
+    }
   } else {
-    btn.classList.add('wrong');
-    ff.streak = 0;
-    $$('#facts-choices .choice').forEach(function(b){
-      if (Number(b.textContent) === ff.answer) b.classList.add('right');
-    });
-    say(fb, 'Esta vez no. La respuesta es ' + ff.answer + '.', 'no');
+    /* a mistake gets a hint and another try, never the answer */
+    btn.classList.add('wrong'); btn.disabled = true;
+    ff.streak = 0; ff.missed = true;
+    say(fb, 'Todavía no. Lee la pista que está encima de las opciones y prueba otro número.', 'no');
   }
   updateFactsScore();
 }
@@ -715,19 +716,18 @@ function newOddEven(){
 }
 
 function answerOddEven(btn, t){
-  if (oe.done) return;
-  oe.done = true;
+  if (oe.done || btn.disabled) return;
   var fb = document.getElementById('oe-fb');
   var right = (t === 'par') === oe.even;
-  if (right){
-    btn.classList.add('right');
-    say(fb, oe.even ? 'Correcto. Las ' + oe.n + ' fichas tienen pareja, así que ' + oe.n + ' es par.'
-                    : 'Correcto. Una ficha se quedó sin pareja, así que ' + oe.n + ' es impar.', 'ok');
-  } else {
-    btn.classList.add('wrong');
-    say(fb, oe.even ? 'Mira otra vez: todas las fichas tienen pareja, así que ' + oe.n + ' es par.'
-                    : 'Mira otra vez: la ficha anaranjada no tiene pareja, así que ' + oe.n + ' es impar.', 'no');
+  if (!right){
+    btn.classList.add('wrong'); btn.disabled = true;
+    say(fb, 'Todavía no. Mira las fichas: ¿todas tienen pareja? Vuelve a intentarlo.', 'no');
+    return;
   }
+  oe.done = true;
+  btn.classList.add('right');
+  say(fb, oe.even ? 'Correcto. Las ' + oe.n + ' fichas tienen pareja, así que ' + oe.n + ' es par.'
+                  : 'Correcto. Una ficha se quedó sin pareja, así que ' + oe.n + ' es impar.', 'ok');
   if (oe.even){
     document.getElementById('oe-q2').textContent = 'Ahora reparte ' + oe.n + ' en dos grupos iguales.';
     document.getElementById('oe-total').textContent = oe.n;

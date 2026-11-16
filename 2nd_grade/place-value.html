@@ -567,12 +567,12 @@ function newMentalQuestion(){
     return;
   }
   mm.q++;
-  mm.locked = false;
+  mm.locked = false; mm.missed = false;
   var n = randInt(100, 900);
   var step = pick([10, -10, 100, -100]);
   if (n + step > 999) step = -Math.abs(step);
   if (n + step < 0) step = Math.abs(step);
-  mm.answer = n + step;
+  mm.answer = n + step; mm.step = step;
   var word = (step > 0 ? Math.abs(step) + ' more than ' : Math.abs(step) + ' less than ');
   document.getElementById('mental-task').innerHTML =
     'What is <span class="num">' + Math.abs(step) + '</span> ' + (step > 0 ? 'more' : 'less') +
@@ -605,20 +605,21 @@ function updateMentalScore(){
 }
 
 function answerMental(btn, v){
-  if (mm.locked) return;
-  mm.locked = true;
+  if (mm.locked || btn.disabled) return;
   var fb = document.getElementById('mental-fb');
   if (v === mm.answer){
+    mm.locked = true;
     btn.classList.add('right');
-    mm.score++; mm.streak++;
-    say(fb, mm.streak >= 3 ? 'Right again. That is ' + mm.streak + ' in a row.' : 'Right.', 'ok');
+    if (mm.missed) say(fb, 'Right! You found it.', 'ok');
+    else {
+      mm.score++; mm.streak++;
+      say(fb, mm.streak >= 3 ? 'Right again. That is ' + mm.streak + ' in a row.' : 'Right.', 'ok');
+    }
   } else {
-    btn.classList.add('wrong');
-    mm.streak = 0;
-    $$('#mental-choices .choice').forEach(function(b){
-      if (Number(b.textContent) === mm.answer) b.classList.add('right');
-    });
-    say(fb, 'Not this time. The answer is ' + mm.answer + '.', 'no');
+    /* a mistake gets a hint and another try, never the answer */
+    btn.classList.add('wrong'); btn.disabled = true;
+    mm.streak = 0; mm.missed = true;
+    say(fb, 'Not yet. When you ' + (mm.step > 0 ? 'add ' : 'take away ') + Math.abs(mm.step) + ', only the ' + (Math.abs(mm.step) === 10 ? 'tens' : 'hundreds') + ' digit changes: it ' + (mm.step > 0 ? 'goes up' : 'goes down') + ' by one. Try again.', 'no');
   }
   updateMentalScore();
 }
@@ -671,18 +672,16 @@ function newExplainProblem(){
 }
 
 function answerExplain(btn, card){
-  if (ex.done) return;
-  ex.done = true;
+  if (ex.done || btn.disabled) return;
   var fb = document.getElementById('explain-fb');
   if (card.ok){
+    ex.done = true;
     btn.classList.add('right');
     say(fb, 'Yes. Ana kept every ten and every one, so nothing was lost.', 'ok');
   } else {
-    btn.classList.add('wrong');
-    $$('#explain-choices .choice').forEach(function(b){
-      if (b.querySelector('strong').textContent === ex.answer) b.classList.add('right');
-    });
-    say(fb, card.why + ' Ana is the one who is right.', 'no');
+    /* a mistake gets an explanation and another try, never the answer */
+    btn.classList.add('wrong'); btn.disabled = true;
+    say(fb, card.why + ' Look for the plan that keeps every ten and every one. Try again.', 'no');
   }
 }
 

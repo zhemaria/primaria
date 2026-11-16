@@ -465,7 +465,7 @@ function newCompare(){
         'Obtuviste ' + cmp.score + ' de 10. Pulsa Empezar otra ronda para jugar de nuevo.', 'ok');
     return;
   }
-  cmp.q++; cmp.locked = false;
+  cmp.q++; cmp.locked = false; cmp.missed = false;
   var a = randInt(102, 989), b;
   var roll = Math.random();
   if (roll < 0.12) b = a;                                   /* equal */
@@ -504,19 +504,18 @@ function compareWhy(){
 }
 
 function answerCompare(btn, sign){
-  if (cmp.locked) return;
-  cmp.locked = true;
+  if (cmp.locked || btn.disabled) return;
   var fb = document.getElementById('cmp-fb');
   if (sign === cmp.answer){
+    cmp.locked = true;
     btn.classList.add('right');
-    cmp.score++;
+    if (!cmp.missed) cmp.score++;
     say(fb, 'Correcto. ' + cmp.a + ' ' + cmp.answer + ' ' + cmp.b + '. ' + compareWhy(), 'ok');
   } else {
-    btn.classList.add('wrong');
-    $$('#cmp-choices .choice').forEach(function(x){
-      if (x.textContent.indexOf(cmp.answer) === 0) x.classList.add('right');
-    });
-    say(fb, 'Esta vez no. ' + cmp.a + ' ' + cmp.answer + ' ' + cmp.b + '. ' + compareWhy(), 'no');
+    /* a mistake gets a hint and another try, never the answer */
+    btn.classList.add('wrong'); btn.disabled = true;
+    cmp.missed = true;
+    say(fb, 'Todavía no. ' + compareWhy() + ' Vuelve a intentarlo.', 'no');
   }
   document.getElementById('cmp-score').textContent =
     'Pregunta ' + Math.min(cmp.q, 10) + ' de 10 \u00B7 Aciertos ' + cmp.score;
