@@ -633,30 +633,32 @@ function newExplainProblem(){
   var ta = Math.floor(a / 10) * 10, oa = a % 10;
   var tb = Math.floor(b / 10) * 10, ob = b % 10;
   var sum = a + b;
+  /* the names change every time, so the right one is not always the same child */
+  var nm = shuffle(['Ana', 'Ben', 'Cleo', 'Leo', 'Mia', 'Sam']).slice(0, 3);
   var good = {
     ok: true,
-    who: 'Ana',
+    who: nm[0],
     text: 'I broke both numbers apart. ' + ta + ' + ' + tb + ' = ' + (ta + tb) +
           '. ' + oa + ' + ' + ob + ' = ' + (oa + ob) + '. ' + (ta + tb) + ' + ' + (oa + ob) + ' = ' + sum + '.'
   };
   var bad1 = {
     ok: false,
-    who: 'Ben',
+    who: nm[1],
     text: 'I broke both numbers apart. ' + ta + ' + ' + tb + ' = ' + (ta + tb) +
           '. ' + oa + ' + ' + ob + ' = ' + (oa + ob) +
           '. Then I wrote my two answers side by side and got ' + String(ta + tb) + String(oa + ob) + '.',
-    why: 'Ben wrote his two answers next to each other instead of adding them together.'
+    why: nm[1] + ' wrote the two answers next to each other instead of adding them together.'
   };
   var hops = [], at = a;
   for (var k = 0; k < tb / 10; k++){ at += 10; hops.push(at); }
   var bad2 = {
     ok: false,
-    who: 'Cleo',
+    who: nm[2],
     text: 'I counted on by tens from ' + a + ': ' + hops.join(', ') +
           '. Then I counted on ' + ob + ' more ones and landed on ' + (sum - 1) + '.',
-    why: 'Cleo jumped the tens correctly, but she miscounted the last ones and stopped one too soon.'
+    why: nm[2] + ' jumped the tens correctly, but miscounted the last ones and stopped one too soon.'
   };
-  ex.answer = 'Ana';
+  ex.answer = nm[0];
   document.getElementById('explain-task').textContent = 'The problem is ' + a + ' + ' + b + '. Who is right?';
   var box = document.getElementById('explain-choices');
   box.innerHTML = '';
@@ -677,7 +679,7 @@ function answerExplain(btn, card){
   if (card.ok){
     ex.done = true;
     btn.classList.add('right');
-    say(fb, 'Yes. Ana kept every ten and every one, so nothing was lost.', 'ok');
+    say(fb, 'Yes. ' + ex.answer + ' kept every ten and every one, so nothing was lost.', 'ok');
   } else {
     /* a mistake gets an explanation and another try, never the answer */
     btn.classList.add('wrong'); btn.disabled = true;

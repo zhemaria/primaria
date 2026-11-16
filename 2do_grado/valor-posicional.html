@@ -634,30 +634,32 @@ function newExplainProblem(){
   var ta = Math.floor(a / 10) * 10, oa = a % 10;
   var tb = Math.floor(b / 10) * 10, ob = b % 10;
   var sum = a + b;
+  /* los nombres cambian cada vez, para que no acierte siempre el mismo niño */
+  var nm = shuffle(['Ana', 'Beto', 'Clara', 'Leo', 'Mía', 'Sam']).slice(0, 3);
   var good = {
     ok: true,
-    who: 'Ana',
+    who: nm[0],
     text: 'Separé los dos números. ' + ta + ' + ' + tb + ' = ' + (ta + tb) +
           '. ' + oa + ' + ' + ob + ' = ' + (oa + ob) + '. ' + (ta + tb) + ' + ' + (oa + ob) + ' = ' + sum + '.'
   };
   var bad1 = {
     ok: false,
-    who: 'Beto',
+    who: nm[1],
     text: 'Separé los dos números. ' + ta + ' + ' + tb + ' = ' + (ta + tb) +
           '. ' + oa + ' + ' + ob + ' = ' + (oa + ob) +
           '. Después escribí mis dos respuestas una junto a la otra y me dio ' + String(ta + tb) + String(oa + ob) + '.',
-    why: 'Beto escribió sus dos respuestas una junto a la otra en vez de sumarlas.'
+    why: nm[1] + ' escribió sus dos respuestas una junto a la otra en vez de sumarlas.'
   };
   var hops = [], at = a;
   for (var k = 0; k < tb / 10; k++){ at += 10; hops.push(at); }
   var bad2 = {
     ok: false,
-    who: 'Clara',
+    who: nm[2],
     text: 'Conté de diez en diez desde ' + a + ': ' + hops.join(', ') +
           '. Después conté ' + ob + ' unidades más y caí en ' + (sum - 1) + '.',
-    why: 'Clara saltó bien las decenas, pero se equivocó al contar las últimas unidades y se detuvo una antes.'
+    why: nm[2] + ' saltó bien las decenas, pero se equivocó al contar las últimas unidades y se detuvo una antes.'
   };
-  ex.answer = 'Ana';
+  ex.answer = nm[0];
   document.getElementById('explain-task').textContent = 'El problema es ' + a + ' + ' + b + '. ¿Quién tiene razón?';
   var box = document.getElementById('explain-choices');
   box.innerHTML = '';
@@ -678,7 +680,7 @@ function answerExplain(btn, card){
   if (card.ok){
     ex.done = true;
     btn.classList.add('right');
-    say(fb, 'Sí. Ana conservó todas las decenas y todas las unidades, así que no se perdió nada.', 'ok');
+    say(fb, 'Sí. ' + ex.answer + ' conservó todas las decenas y todas las unidades, así que no se perdió nada.', 'ok');
   } else {
     /* a mistake gets an explanation and another try, never the answer */
     btn.classList.add('wrong'); btn.disabled = true;
