@@ -143,22 +143,67 @@
         el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
       }
     });
-    u.addEventListener("boundary", function (e) {
-      if (!trozos || !trozos.length || e.name === "sentence") return;
-      var c = e.charIndex;
+    /* Marca la frase (y la palabra) que corresponde a la posición c del texto dicho */
+    var ultimaFrase = -1, ultimaPalabra = -1;
+    function marcarEn(c) {
+      if (!trozos || !trozos.length) return;
       for (var n = 0; n < trozos.length; n++) {
         var tz = trozos[n], seq = tz.seq;
-        if (c < seq[0].i || c >= seq[seq.length - 1].f + 3) continue;
-        if (!propia) CSS.highlights.set("lumi-lee", new Highlight(tz.r));
+        if (c < seq[0].i - 2 || c >= seq[seq.length - 1].f + 3) continue;
+        if (!propia && n !== ultimaFrase) CSS.highlights.set("lumi-lee", new Highlight(tz.r));
+        ultimaFrase = n;
         if (palabraPorPalabra) {
           for (var j = seq.length - 1; j >= 0; j--) if (seq[j].i <= c) {
-            CSS.highlights.set("lumi-palabra", new Highlight(rango(tz.pag, tz.k + j, tz.k + j))); break; }
+            if (n * 1000 + j !== ultimaPalabra) CSS.highlights.set("lumi-palabra", new Highlight(rango(tz.pag, tz.k + j, tz.k + j)));
+            ultimaPalabra = n * 1000 + j; break; }
         }
         return;
       }
+    }
+    /* Muchas voces (las de Google en Chrome, las de las tabletas) no avisan
+       palabra por palabra. Entonces se calcula por el tiempo: se sabe más o
+       menos cuántas letras por segundo dice la voz, y Lumi va aprendiendo
+       esa velocidad con cada lectura (se guarda en el aparato).          */
+    var conAvisos = false, t0 = 0, reloj = null, pesos = null;
+    u.addEventListener("boundary", function (e) {
+      if (e.name === "sentence") return;
+      conAvisos = true; parar();
+      marcarEn(e.charIndex);
     });
-    function fin() { limpiarResaltado(); trozos = null; }
+    function parar() { if (reloj) { clearInterval(reloj); if (relojActivo === reloj) relojActivo = null; reloj = null; } }
+    u.addEventListener("start", function () {
+      t0 = Date.now(); conAvisos = false; ultimaFrase = ultimaPalabra = -1;
+      var t = u.text || "", acum = 0; pesos = [];
+      for (var i = 0; i < t.length; i++) {            // las pausas de la voz «pesan» como letras
+        acum += 1 + (/[.!?…]/.test(t[i]) ? 7 : /[,;:]/.test(t[i]) ? 3 : 0); pesos.push(acum);
+      }
+      parar(); pararRelojActivo(); marcarEn(0);
+      reloj = relojActivo = setInterval(function () {
+        if (conAvisos || !trozos || !trozos.length) return;
+        var avance = (Date.now() - t0) / 1000 * velocidad() * (u.rate || 1);
+        var c = 0; while (c < pesos.length - 1 && pesos[c] < avance) c++;
+        marcarEn(c);
+      }, 90);
+    });
+    function fin(e) {
+      parar();
+      if (e && e.type === "end" && !conAvisos && pesos && pesos.length > 25) {
+        var seg = (Date.now() - t0) / 1000;
+        if (seg > 1) aprenderVelocidad(pesos[pesos.length - 1] / seg / (u.rate || 1));
+      }
+      limpiarResaltado(); trozos = null;
+    }
     u.addEventListener("end", fin); u.addEventListener("error", fin);
+  }
+  /* Letras por segundo de la voz de este aparato (a velocidad normal) */
+  /* Solo un reloj a la vez: al empezar otra lectura (o al callar) se detiene el anterior */
+  var relojActivo = null;
+  function pararRelojActivo() { if (relojActivo) { clearInterval(relojActivo); relojActivo = null; } }
+  var CLAVE_VEL = "lumi-voz-velocidad";
+  function velocidad() { var v = parseFloat(guardado(CLAVE_VEL)); return v > 6 && v < 40 ? v : 14; }
+  function aprenderVelocidad(v) {
+    if (!(v > 6 && v < 40)) return;
+    guardar(CLAVE_VEL, (velocidad() * 0.6 + v * 0.4).toFixed(2));
   }
   if (hayResaltado) {
     var st0 = document.createElement("style");
@@ -188,7 +233,7 @@
       }, 250);
     };
     var callarDeVerdad = ss.cancel.bind(ss);
-    ss.cancel = function () { limpiarResaltado(); return callarDeVerdad(); };
+    ss.cancel = function () { pararRelojActivo(); limpiarResaltado(); return callarDeVerdad(); };
   }
 
   /* ---------- Botón ---------- */
