@@ -60,6 +60,114 @@
   document.addEventListener("click", anotarToque, true);
   document.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") anotarToque(e); }, true);
 
+
+  /* ---------- Resaltado de lo que Lumi lee (DUA) ----------
+     Cuando una página lee en voz alta, se busca en pantalla el texto que
+     se está diciendo y se marca con la API de resaltado de CSS (no se
+     toca el HTML de la página). Mientras suena, se marca la frase; en
+     prekínder, kínder, 1.º y en las páginas de letras, también la palabra.
+     Si el texto dicho no está en pantalla, no se marca nada.            */
+  var hayResaltado = !!(window.CSS && CSS.highlights && window.Highlight);
+  var palabraPorPalabra = /\/(prekinder|kindergarten|1er_grado|1st_grade|letras|letters)\//i.test(location.pathname);
+  var tocadoUltimo = null;
+  document.addEventListener("pointerdown", function (e) { tocadoUltimo = e.target; }, true);
+  document.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") tocadoUltimo = e.target; }, true);
+  var RE_TOKEN;
+  try { RE_TOKEN = new RegExp("[\\p{L}\\p{N}]+", "gu"); } catch (x) { RE_TOKEN = /[A-Za-z0-9À-ɏ]+/g; }
+  function fichas(texto) {             // palabras de un texto, en minúsculas y sin tildes, con su posición
+    var out = [], m; RE_TOKEN.lastIndex = 0;
+    while ((m = RE_TOKEN.exec(texto))) out.push({ t: m[0].toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""), i: m.index, f: m.index + m[0].length });
+    return out;
+  }
+  function fichasDePagina() {          // palabras visibles de la página, con el nodo de texto donde están
+    var out = [], w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        var el = n.parentElement;
+        if (!el || !n.nodeValue.trim() || /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|OPTION)$/.test(el.tagName)) return NodeFilter.FILTER_REJECT;
+        if (el.closest(".lumi-voz, .lumi-voz-aviso, [hidden]") || !el.getClientRects().length) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      } }), n;
+    while ((n = w.nextNode())) fichas(n.nodeValue).forEach(function (f) { f.nodo = n; out.push(f); });
+    return out;
+  }
+  function rango(pag, a, b) {          // incluye los signos pegados (¡¿ al principio; .!?, al final)
+    var r = document.createRange(), A = pag[a], B = pag[b];
+    var antes = A.nodo.nodeValue.slice(0, A.i).match(/[¡¿«"“(]*$/)[0].length;
+    var despues = B.nodo.nodeValue.slice(B.f).match(/^[.!?…,;:»"”')]*/)[0].length;
+    r.setStart(A.nodo, A.i - antes); r.setEnd(B.nodo, B.f + despues); return r;
+  }
+  function buscar(pag, seq) {          // dónde aparece en pantalla una sucesión de palabras
+    var hallados = [];
+    for (var k = 0; k + seq.length <= pag.length; k++) {
+      var j = 0; while (j < seq.length && pag[k + j].t === seq[j].t) j++;
+      if (j === seq.length) hallados.push(k);
+    }
+    if (!hallados.length) return -1;
+    if (hallados.length === 1) return hallados[0];
+    if (seq.length < 2) return -1;      // una sola palabra repetida en la página: mejor no adivinar
+    var zona = tocadoUltimo && tocadoUltimo.closest ? tocadoUltimo.closest("section, article, li, .card, .tarjeta, .problem, .problema, fieldset, form, main") : null;
+    var alto = window.innerHeight;
+    var mejor = hallados.filter(function (k) { return zona && zona.contains(pag[k].nodo); })[0];
+    if (mejor === undefined) mejor = hallados.filter(function (k) {
+      var c = pag[k].nodo.parentElement.getBoundingClientRect(); return c.bottom > 0 && c.top < alto; })[0];
+    return mejor === undefined ? hallados[0] : mejor;
+  }
+  function frasesDe(texto) {           // frases del texto dicho, cada una con sus palabras
+    var out = [], re = /[^.!?…]+[.!?…]*/g, m;
+    while ((m = re.exec(texto))) {
+      var f = fichas(m[0]).map(function (x) { return { t: x.t, i: x.i + m.index, f: x.f + m.index }; });
+      if (f.length) out.push(f);
+    }
+    return out;
+  }
+  function limpiarResaltado() { if (hayResaltado) { CSS.highlights.delete("lumi-lee"); CSS.highlights.delete("lumi-palabra"); } }
+  function seguirLectura(u) {
+    if (!hayResaltado || !u || !u.addEventListener || u.__lumiSigue) return;
+    u.__lumiSigue = true;
+    var trozos = null, propia = false; // trozos: [{palabras del texto dicho, dónde están en la página}]
+    u.addEventListener("start", function () {
+      limpiarResaltado();
+      var pag = fichasDePagina(); trozos = [];
+      frasesDe(u.text || "").forEach(function (seq) {
+        var k = buscar(pag, seq); if (k >= 0) trozos.push({ seq: seq, k: k, r: rango(pag, k, k + seq.length - 1), pag: pag });
+      });
+      if (!trozos.length) return;
+      /* Si la página ya marca por su cuenta lo que lee (clase .leyendo), no se duplica la marca */
+      propia = !!document.querySelector(".leyendo");
+      if (propia) return;
+      /* todo lo que dice este trozo; si la voz avisa por palabras, se afina a la frase */
+      CSS.highlights.set("lumi-lee", new Highlight(...trozos.map(function (tz) { return tz.r; })));
+      var c = trozos[0].r.getBoundingClientRect();
+      if (c.height && (c.top < 0 || c.bottom > window.innerHeight)) {
+        var el = trozos[0].pag[trozos[0].k].nodo.parentElement;
+        el.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+      }
+    });
+    u.addEventListener("boundary", function (e) {
+      if (!trozos || !trozos.length || e.name === "sentence") return;
+      var c = e.charIndex;
+      for (var n = 0; n < trozos.length; n++) {
+        var tz = trozos[n], seq = tz.seq;
+        if (c < seq[0].i || c >= seq[seq.length - 1].f + 3) continue;
+        if (!propia) CSS.highlights.set("lumi-lee", new Highlight(tz.r));
+        if (palabraPorPalabra) {
+          for (var j = seq.length - 1; j >= 0; j--) if (seq[j].i <= c) {
+            CSS.highlights.set("lumi-palabra", new Highlight(rango(tz.pag, tz.k + j, tz.k + j))); break; }
+        }
+        return;
+      }
+    });
+    function fin() { limpiarResaltado(); trozos = null; }
+    u.addEventListener("end", fin); u.addEventListener("error", fin);
+  }
+  if (hayResaltado) {
+    var st0 = document.createElement("style");
+    st0.textContent = "::highlight(lumi-lee){background-color:#FFF1A8;color:#1F1F1F}" +
+      "::highlight(lumi-palabra){background-color:#FFC94D;color:#1F1F1F;text-decoration:underline 3px #7A4A00}" +
+      "@media (forced-colors: active){::highlight(lumi-lee),::highlight(lumi-palabra){background-color:Highlight;color:HighlightText}}";
+    (document.head || document.documentElement).appendChild(st0);
+  }
+
   if (ss && ss.speak) {
     var hablarDeVerdad = ss.speak.bind(ss);
     ss.speak = function (u) {
@@ -68,6 +176,7 @@
         if (!activa && u && u.addEventListener) {
           u.addEventListener("end", function () { permitidoHasta = Date.now() + 1500; });
         }
+        seguirLectura(u);
         return hablarDeVerdad(u);
       }
       /* Voz apagada: no se habla, pero se avisa «terminé» para que el juego siga */
@@ -78,6 +187,8 @@
         try { u.dispatchEvent(ev); } catch (x) {}
       }, 250);
     };
+    var callarDeVerdad = ss.cancel.bind(ss);
+    ss.cancel = function () { limpiarResaltado(); return callarDeVerdad(); };
   }
 
   /* ---------- Botón ---------- */
