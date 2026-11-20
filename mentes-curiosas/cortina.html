@@ -679,12 +679,21 @@ function repetirGuia(extra){
   guia(pasos);
 }
 /* Con ratón o teclado: al pasar por un botón, Lumi dice qué hace */
+/* Con ratón: Lumi nombra el botón solo si el ratón de verdad se mueve sobre él
+   (si los botones se redibujan bajo un ratón quieto, no dice nada) */
+let ultimoBajoRaton=null;
+document.addEventListener("pointermove", e=>{
+  if(e.pointerType!=="mouse") return;
+  const el=e.target.closest && e.target.closest("button,canvas,#colores");
+  if(el===ultimoBajoRaton) return;
+  ultimoBajoRaton=el; clearTimeout(relojDice);
+  if(el && !el.disabled) if(DICE[el.id]) decirBoton(el);
+});
 let relojDice=null;
 function decirBoton(el){ if(!DICE[el.id]) return; clearTimeout(relojDice);
   relojDice=setTimeout(()=>guia([{el, texto:tx(DICE[el.id])}]), 250); }
 Object.keys(DICE).forEach(id=>{
   const el=$(id); if(!el) return;
-  el.addEventListener("pointerenter", e=>{ if(e.pointerType==="mouse") decirBoton(el); });
   el.addEventListener("pointerleave", ()=>clearTimeout(relojDice));
   el.addEventListener("pointerdown", ()=>clearTimeout(relojDice));
   el.addEventListener("focus", ()=>{ if(el.matches(":focus-visible")) decirBoton(el); });

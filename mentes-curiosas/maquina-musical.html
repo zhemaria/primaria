@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — The music machine / La máquina musical (Pre-K and Kindergarten)
+  Thinking together: which toy makes the machine play music? A friend in the story thinks differently,
+  and the child finds out by testing toys one at a time. With a friend, each player has a secret clue
+  that only makes sense together with the other's, so they have to talk and test together.
+  Inspired by Jan Engelmann's research on joint scientific reasoning and disagreement (UC Berkeley).
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The music machine · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A thinking-together game for Pre-K and Kindergarten: which toy makes the machine play music? When a friend disagrees, find out by testing. With a friend, each player has a secret clue. English and Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4;
+  --amarillo:#F2B705; --azul:#1F6FD1; --verde:#2E7D32; --verde-fondo:#DFF3E0;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+button:disabled{cursor:default}
+.oculto{display:none !important}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton .ico{font-size:1.35em;line-height:1}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:8px 10px}
+.portada .desfile{font-size:clamp(44px,9vw,70px);line-height:1.2;display:flex;justify-content:center;gap:.2em}
+.portada .desfile span{display:inline-block;animation:saltito 1.8s ease-in-out infinite}
+.portada .desfile span:nth-child(2){animation-delay:.25s}.portada .desfile span:nth-child(3){animation-delay:.5s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0 6px}
+.portada p.intro{color:var(--tinta-suave);max-width:52ch;margin:0 auto 14px}
+.portada .bocina{margin:0 auto 4px}
+.pregunta{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+
+/* ---------- Lumi y su mensaje ---------- */
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:64px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,23px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+
+/* ---------- La máquina ---------- */
+.escena{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:clamp(10px,3vw,30px);flex-wrap:wrap;
+  background:linear-gradient(#EEF6FF,#E3ECF9);border:4px solid var(--linea);border-radius:22px;padding:18px 14px 14px;box-shadow:var(--sombra);min-height:250px}
+.maquina{position:relative;width:min(300px,78vw)}
+.maquina .plataforma{height:74px;margin:0 22px;background:linear-gradient(#C9C2E8,#A99FD8);border:4px solid var(--tinta);border-bottom:none;
+  border-radius:18px 18px 0 0;display:flex;align-items:center;justify-content:center;gap:6px;font-size:46px;line-height:1}
+.maquina .cuerpo{background:linear-gradient(#7B5CD6,#4B2E9A);border:4px solid var(--tinta);border-radius:22px;padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px}
+.maquina .bocina-m{width:78px;height:78px;border-radius:50%;background:repeating-radial-gradient(circle,#2B1B66 0 5px,#3E2A8A 5px 10px);border:4px solid #FFFFFF55}
+.maquina .luces{display:flex;gap:8px}
+.maquina .luz{width:24px;height:24px;border-radius:50%;background:#5E4BA8;border:3px solid #FFFFFF55;transition:background .2s, box-shadow .2s}
+.maquina.suena .luz:nth-child(1){background:#FF5C7A;box-shadow:0 0 14px #FF5C7A}
+.maquina.suena .luz:nth-child(2){background:#FFD23F;box-shadow:0 0 14px #FFD23F}
+.maquina.suena .luz:nth-child(3){background:#4BE08A;box-shadow:0 0 14px #4BE08A}
+.maquina.suena .cuerpo{animation:baila .35s ease-in-out infinite alternate}
+.maquina.calla .cuerpo{filter:saturate(.6)}
+.notas{position:absolute;left:0;right:0;top:-10px;height:0;pointer-events:none}
+.nota{position:absolute;font-size:30px;animation:sube 1.6s ease-out forwards}
+.estado-maquina{position:absolute;right:-6px;top:-14px;font-size:42px;line-height:1}
+
+.amigo{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:260px}
+.amigo .cara{font-size:64px;line-height:1}
+.amigo .dice{background:var(--blanco);border:3px solid var(--tinta);border-radius:18px;padding:8px 12px;font-weight:700;text-align:center;position:relative}
+.amigo .dice::after{content:"";position:absolute;left:50%;bottom:-12px;margin-left:-10px;border:10px solid transparent;border-top-color:var(--tinta);border-bottom:0}
+
+.subtitulo{font-weight:700;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.estante{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:14px 10px 10px;border-bottom:14px solid #C79A62;border-radius:12px 12px 6px 6px;background:#F3EAF9}
+.juguete{width:clamp(92px,17vw,116px);height:clamp(100px,18vw,124px);border:4px solid var(--linea);border-radius:20px;background:var(--blanco);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--sombra);position:relative}
+.juguete .grande{font-size:clamp(44px,8vw,58px);line-height:1.1}
+.juguete small{font-weight:700;font-size:.72em}
+.juguete:hover:not(:disabled){border-color:var(--tinta)}
+.juguete:disabled{opacity:.55}
+.juguete .marca{position:absolute;top:2px;right:6px;font-size:.95em}
+.juguete .quien{position:absolute;top:-12px;left:-8px;font-size:1.5em;line-height:1;background:var(--blanco);border:3px solid var(--tinta);border-radius:999px;padding:2px 4px}
+.juguete .quien.amigo{left:auto;right:-8px;top:auto;bottom:-10px}
+
+/* Pruebas */
+.pruebas{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:10px 14px;margin-top:14px;box-shadow:var(--sombra)}
+.pruebas h3{margin:0 0 6px;font-size:1em;display:flex;align-items:center;gap:8px}
+.pruebas ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.pruebas li{display:inline-flex;align-items:center;gap:4px;background:var(--papel);border-radius:12px;padding:4px 10px;font-size:1.5em;line-height:1.2}
+.pruebas li.si{background:var(--verde-fondo)} .pruebas li .flecha{font-size:.6em;color:var(--tinta-suave)}
+.pruebas .vacio{color:var(--tinta-suave);font-size:.9em;margin:0}
+
+/* Pistas secretas */
+.tarjetas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:12px}
+.tarjeta{width:min(300px,90vw);min-height:150px;border:5px solid var(--linea);border-radius:22px;background:var(--blanco);box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;font-weight:700}
+.tarjeta.amarillo{border-color:var(--amarillo);background:#FFF8D6} .tarjeta.azul{border-color:var(--azul);background:#E3EEFC}
+.tarjeta .tapa{font-size:2.6em;line-height:1}
+.tarjeta .pista{font-size:2.4em;line-height:1.2;display:flex;align-items:center;gap:.15em;flex-wrap:wrap;justify-content:center}
+.tarjeta .pista .chico{font-size:.6em}
+.tarjeta.vista{opacity:.75}
+
+.acciones{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:14px}
+.turno-chip{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.punto{display:inline-block;width:18px;height:18px;border-radius:50%;border:2px solid var(--tinta)}
+.punto.amarillo{background:var(--amarillo)} .punto.azul{background:var(--azul)}
+
+/* Lumi señala: el botón del que está hablando se ilumina */
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+
+/* ---------- Final ---------- */
+.lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto;mix-blend-mode:multiply}
+.resumen{display:flex;flex-direction:column;gap:10px;max-width:640px;margin:10px auto;text-align:left}
+.resumen div{background:var(--blanco);border:4px solid var(--oro);border-radius:18px;padding:10px 14px;font-weight:600;display:flex;gap:10px;align-items:center}
+.resumen .grande{font-size:1.8em}
+.reto-real{background:var(--oro-claro);border:3px solid var(--oro);border-radius:18px;padding:12px 16px;max-width:60ch;margin:16px auto;font-weight:600}
+.creditos{font-size:.78em;color:var(--tinta-suave);text-align:center;margin-top:26px}
+.creditos a{color:var(--acento)}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:50;animation:caer 2s linear forwards;pointer-events:none}
+.velo{position:fixed;inset:0;background:rgba(30,26,58,.82);z-index:40;display:flex;align-items:center;justify-content:center;padding:20px}
+.velo .caja{background:var(--blanco);border-radius:24px;padding:20px;text-align:center;max-width:420px;width:100%}
+.velo .caja.amarillo{border:8px solid var(--amarillo)} .velo .caja.azul{border:8px solid var(--azul)}
+.velo .pista{font-size:3.2em;line-height:1.2;display:flex;align-items:center;justify-content:center;gap:.15em;flex-wrap:wrap}
+.velo .pista .chico{font-size:.55em}
+.velo p{font-weight:700;margin:8px 0}
+
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@keyframes baila{from{transform:rotate(-1.5deg)}to{transform:rotate(1.5deg)}}
+@keyframes sube{0%{transform:translateY(0) scale(.6);opacity:0}20%{opacity:1}100%{transform:translateY(-90px) scale(1.2);opacity:0}}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation:none !important;transition:none !important} }
+@media print{.barra,.consejo,.acciones{display:none}}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" href="./"><span aria-hidden="true">◀</span> <span data-es="Mentes curiosas" data-en="Curious Minds">Curious Minds</span></a>
+    <h1 data-es="La máquina musical" data-en="The music machine">The music machine</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🎵</span><span>🚗</span><span>🐸</span></div>
+    <h2 data-es="¿Qué juguete hace sonar la máquina?" data-en="Which toy makes the machine play?">Which toy makes the machine play?</h2>
+    <p class="intro" data-es="Una máquina toca música con uno de los juguetes. ¿Con cuál? Cuando alguien piensa distinto, ¡lo averiguamos probando! Así trabajan los científicos: juntos."
+       data-en="A machine plays music with one of the toys. Which one? When someone thinks differently, we find out by testing! That's how scientists work: together.">A machine plays music with one of the toys. Which one? When someone thinks differently, we find out by testing! That's how scientists work: together.</p>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta" id="preg-quien" data-es="¿Quién juega?" data-en="Who is playing?">Who is playing?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span data-es="Yo solo" data-en="Just me">Just me</span></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span data-es="Con un adulto" data-en="With a grown-up">With a grown-up</span>
+        <small data-es="con consejos para el adulto" data-en="with tips for the grown-up">with tips for the grown-up</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span data-es="Con un amigo" data-en="With a friend">With a friend</span>
+        <small data-es="pistas secretas para los dos" data-en="secret clues for both">secret clues for both</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta" id="preg-nivel" data-es="¿En qué grado estás?" data-en="What grade are you in?">What grade are you in?</p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="prek" aria-pressed="true"><span class="ico" aria-hidden="true">🧸</span><span data-es="Prekínder" data-en="Pre-K">Pre-K</span></button>
+        <button class="opcion" data-nivel="k" aria-pressed="false"><span class="ico" aria-hidden="true">🎒</span><span data-es="Kínder" data-en="Kindergarten">Kindergarten</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar"><span aria-hidden="true">▶</span> <span data-es="¡A jugar!" data-en="Let's play!">Let's play!</span></button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+
+    <div class="escena" id="escena">
+      <div class="maquina" id="maquina" role="img" aria-label="">
+        <div class="notas" id="notas" aria-hidden="true"></div>
+        <span class="estado-maquina" id="estado-maquina" aria-hidden="true"></span>
+        <div class="plataforma" id="plataforma" aria-hidden="true"></div>
+        <div class="cuerpo"><div class="bocina-m"></div><div class="luces"><span class="luz"></span><span class="luz"></span><span class="luz"></span></div></div>
+      </div>
+      <div class="amigo oculto" id="amigo">
+        <div class="dice" id="amigo-dice"></div>
+        <div class="cara" id="amigo-cara" aria-hidden="true">🧒</div>
+      </div>
+    </div>
+
+    <!-- Pistas secretas (con un amigo) -->
+    <div class="tarjetas oculto" id="tarjetas">
+      <button class="tarjeta amarillo" id="tarjeta-amarillo"><span class="tapa" aria-hidden="true">🟡🔒</span><span data-es="Pista secreta de amarillo" data-en="Yellow's secret clue">Yellow's secret clue</span></button>
+      <button class="tarjeta azul" id="tarjeta-azul"><span class="tapa" aria-hidden="true">🔵🔒</span><span data-es="Pista secreta de azul" data-en="Blue's secret clue">Blue's secret clue</span></button>
+    </div>
+
+    <p class="subtitulo"><span aria-hidden="true">🧸</span> <span data-es="Los juguetes" data-en="The toys">The toys</span></p>
+    <div class="estante" id="estante"></div>
+
+    <div class="acciones" id="acciones">
+      <button class="boton oculto" id="btn-ver-otra"><span class="ico" aria-hidden="true">🔁</span> <span data-es="Verlo otra vez" data-en="Watch again">Watch again</span></button>
+      <button class="boton oculto" id="btn-nose"><span class="ico" aria-hidden="true">🤔</span> <span data-es="Todavía no sé" data-en="I don't know yet">I don't know yet</span></button>
+      <button class="boton fuerte oculto" id="btn-probar"><span class="ico" aria-hidden="true">🔬</span> <span data-es="¡Vamos a probar!" data-en="Let's test it!">Let's test it!</span></button>
+      <button class="boton oculto" id="btn-creerle"><span class="ico" aria-hidden="true">🤝</span> <span id="txt-creerle"></span></button>
+      <button class="boton oculto" id="btn-mia"><span class="ico" aria-hidden="true">✋</span> <span data-es="Me quedo con mi idea" data-en="I'll keep my idea">I'll keep my idea</span></button>
+      <button class="boton fuerte oculto" id="btn-ya-se"><span class="ico" aria-hidden="true">✅</span> <span data-es="¡Ya sé cuál es!" data-en="I know which one!">I know which one!</span></button>
+      <button class="boton fuerte oculto" id="btn-siguiente"><span class="ico" aria-hidden="true">▶</span> <span id="txt-siguiente"></span></button>
+    </div>
+
+    <div class="pruebas oculto" id="pruebas">
+      <h3><span aria-hidden="true">🔬</span> <span data-es="Mis pruebas" data-en="My tests">My tests</span></h3>
+      <ul id="lista-pruebas"></ul>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto portada">
+    <img class="lumi-grande" src="../lumi-saluda.jpg" alt="" width="360" height="469">
+    <h2 id="tit-final"></h2>
+    <div class="resumen" id="resumen"></div>
+    <p class="reto-real" data-es="💧 Ahora, de verdad y con un compañero: junten cosas pequeñas (una piedrita, un corcho, una cuchara, una hoja). ¿Cuáles flotan en el agua? Primero cada uno dice su idea… ¡y después lo prueban juntos!"
+       data-en="💧 Now for real, with a partner: gather small things (a pebble, a cork, a spoon, a leaf). Which ones float in water? First each of you says your idea… then test it together!">💧 Now for real, with a partner: gather small things (a pebble, a cork, a spoon, a leaf). Which ones float in water? First each of you says your idea… then test it together!</p>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span class="ico" aria-hidden="true">🔁</span> <span data-es="Jugar otra vez" data-en="Play again">Play again</span></button>
+      <a class="boton volver-hub" href="./"><span aria-hidden="true">🧠</span> <span data-es="Otros juegos" data-en="Other games">Other games</span></a>
+    </div>
+  </section>
+
+  <p class="creditos"><span data-es="Inspirado en las investigaciones de Jan Engelmann sobre el razonamiento científico conjunto y el desacuerdo (Universidad de California en Berkeley)." data-en="Inspired by Jan Engelmann's research on joint scientific reasoning and disagreement (University of California, Berkeley).">Inspired by Jan Engelmann's research on joint scientific reasoning and disagreement (University of California, Berkeley).</span>
+    · <a class="enlace-adultos" href="para-adultos.html" data-es="Para adultos: por qué este juego" data-en="For grown-ups: why this game">For grown-ups: why this game</a>
+    · José M. Fernández · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a></p>
+</div>
+
+<div class="velo oculto" id="velo" role="dialog" aria-modal="true" aria-labelledby="velo-tit">
+  <div class="caja" id="velo-caja">
+    <p id="velo-tit"></p>
+    <div class="pista" id="velo-pista" aria-hidden="true"></div>
+    <p id="velo-texto"></p>
+    <button class="boton fuerte" id="btn-velo"><span class="ico" aria-hidden="true">🙈</span> <span id="txt-velo"></span></button>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ============ Los juguetes ============ f: femenino (para «la/una») */
+const JUGUETES = [
+  {e:"🚗", n:{en:"car",es:"carrito"}},
+  {e:"🐸", n:{en:"frog",es:"rana"}, f:1},
+  {e:"🧸", n:{en:"teddy bear",es:"osito"}},
+  {e:"🦆", n:{en:"duck",es:"patito"}},
+  {e:"🎈", n:{en:"balloon",es:"globo"}},
+  {e:"⚽", n:{en:"ball",es:"pelota"}, f:1},
+  {e:"🦖", n:{en:"dinosaur",es:"dinosaurio"}},
+  {e:"🚀", n:{en:"rocket",es:"cohete"}},
+  {e:"🐢", n:{en:"turtle",es:"tortuga"}, f:1},
+  {e:"🐰", n:{en:"bunny",es:"conejito"}}
+];
+const el_ = (j)=>S.idioma==="es" ? (j.f?"la ":"el ")+j.n.es : "the "+j.n.en;     // «el carrito» / «the car»
+const El_ = (j)=>{ const t=el_(j); return t.charAt(0).toUpperCase()+t.slice(1); };
+const solito = (j)=>j.f ? "solita" : "solito";                                      // «la rana solita»
+const AMIGOS = [ {nombre:"Adrián", cara:"🧒"}, {nombre:"Génesis", cara:"👧"} ];
+const NIVEL = { prek:{rondas:3, juguetes:3}, k:{rondas:4, juguetes:4} };
+
+/* ============ Textos de Lumi ============ */
+const T = {
+  demo:{en:(a,b)=>`Look! I put ${el_(a)} and ${el_(b)} on the machine together… and it plays music! Which toy makes the machine play? Tap the toy you think.`,
+        es:(a,b)=>`¡Mira! Pongo ${el_(a)} y ${el_(b)} juntos en la máquina… ¡y suena música! ¿Qué juguete hace sonar la máquina? Toca el juguete que tú crees.`},
+  amigoCree:{en:(j)=>`I think it's ${el_(j)}!`, es:(j)=>`¡Yo creo que es ${el_(j)}!`},
+  noAcuerdo:{en:(a,n,b)=>`You think it's ${el_(a)}, and ${n} thinks it's ${el_(b)}. You don't agree! How can we find out?`,
+             es:(a,n,b)=>`Tú crees que es ${el_(a)}, y ${n} cree que es ${el_(b)}. ¡No están de acuerdo! ¿Cómo podemos averiguarlo?`},
+  noSabe:{en:(n,b)=>`You don't know yet, and ${n} thinks it's ${el_(b)}. Is ${n} right? How can we find out?`,
+          es:(n,b)=>`Tú todavía no sabes, y ${n} cree que es ${el_(b)}. ¿Tendrá razón ${n}? ¿Cómo podemos averiguarlo?`},
+  creerle:{en:n=>`Believe ${n}`, es:n=>`Creerle a ${n}`},
+  puedeSer:{en:"Maybe… but how can we be sure? Let's test the toys one at a time!",es:"Puede ser… pero, ¿cómo podemos estar seguros? ¡Probemos los juguetes uno por uno!"},
+  probar:{en:"Tap a toy to put it on the machine by itself. Does it play or not?",es:"Toca un juguete para ponerlo solito en la máquina. ¿Suena o no suena?"},
+  suena:{en:j=>`${El_(j)} by itself… plays music!`,es:j=>`${El_(j)} ${solito(j)}… ¡suena!`},
+  noSuena:{en:j=>`${El_(j)} by itself… no music.`,es:j=>`${El_(j)} ${solito(j)}… no suena.`},
+  sigueProbando:{en:"Test another toy, or tap «I know which one» when you are sure.",es:"Prueba otro juguete, o toca «¡Ya sé cuál es!» cuando estés seguro."},
+  cualEs:{en:"Which toy makes the machine play? Tap it.",es:"¿Qué juguete hace sonar la máquina? Tócalo."},
+  pistaSilencio:{en:j=>`Look at your tests: when you put ${el_(j)} by itself, did it play? Try another one.`,
+                 es:j=>`Mira tus pruebas: cuando pusiste ${el_(j)} ${solito(j)}, ¿sonó? Busca otro.`},
+  pistaSinProbar:{en:j=>`Did you test ${el_(j)} by itself? Test it to be sure!`,
+                  es:j=>`¿Ya probaste ${el_(j)} ${solito(j)}? ¡Pruébal${j.f?"a":"o"} para estar seguro!`},
+  bien:{en:j=>`Yes! ${El_(j)} makes the machine play. You proved it by testing, like a scientist!`,
+        es:j=>`¡Sí! ${El_(j)} hace sonar la máquina. ¡Lo comprobaste probando, como los científicos!`},
+  teniasRazon:{en:"Your idea was right, and now you have the proof.",es:"Tu idea era correcta, y ahora tienes la prueba."},
+  amigoRazon:{en:n=>`${n} was right this time. Good thing you checked!`,es:n=>`Esta vez ${n} tenía razón. ¡Qué bien que lo comprobaste!`},
+  nadieRazon:{en:"Neither idea was right, but testing found the answer!",es:"Ninguna de las dos ideas era la correcta, ¡pero probando encontraste la respuesta!"},
+  /* con un amigo */
+  pistasIntro:{en:"Each of you has a secret clue. Yellow, tap your card and look. Blue, cover your eyes!",
+               es:"Cada uno tiene una pista secreta. Amarillo, toca tu tarjeta y mira. Azul, ¡tápate los ojos!"},
+  pistasAzul:{en:"Now Blue: tap your card and look. Yellow, cover your eyes!",es:"Ahora azul: toca tu tarjeta y mira. Amarillo, ¡tápate los ojos!"},
+  cuentense:{en:"Now tell each other your clues. Which toy makes the machine play? Decide together and tap it.",
+             es:"Ahora cuéntense sus pistas. ¿Qué juguete hace sonar la máquina? Decidan juntos y tóquenlo."},
+  juntosCreen:{en:j=>`Together you think it's ${el_(j)}. Are you sure? Let's test it!`,es:j=>`Juntos creen que es ${el_(j)}. ¿Están seguros? ¡Vamos a probarlo!`},
+  turnoProbar:{en:c=>`${c} turn: tap a toy to test it.`,es:c=>`Turno ${c}: toca un juguete para probarlo.`},
+  bienJuntos:{en:j=>`Yes! ${El_(j)} makes the machine play. You found it out together: one clue alone was not enough!`,
+              es:j=>`¡Sí! ${El_(j)} hace sonar la máquina. ¡Lo descubrieron juntos: una sola pista no alcanzaba!`},
+  veloTit:{en:c=>`${c}'s secret clue`,es:c=>`Pista secreta de ${c}`},
+  veloSi:{en:"The machine played with these toys together.",es:"Con estos juguetes juntos, la máquina sonó."},
+  veloNo:{en:"With this toy by itself, the machine did NOT play.",es:"Con este juguete solito, la máquina NO sonó."},
+  veloBoton:{en:"Hide my clue",es:"Esconder mi pista"},
+  amarillo:{en:"Yellow",es:"amarillo"}, azul:{en:"Blue",es:"azul"},
+  siguiente:{en:"Next machine",es:"Otra máquina"}, alFinal:{en:"Finish",es:"Terminar"},
+  finalTit:{en:"You are a scientist!",es:"¡Eres un científico!"},
+  finalTitAmigos:{en:"You are a team of scientists!",es:"¡Son un equipo de científicos!"},
+  resPruebas:{en:n=>`You tested toys ${n} ${n===1?"time":"times"}.`,es:n=>n===1?"Probaste juguetes una vez.":`Probaste juguetes ${n} veces.`},
+  resMaquinas:{en:n=>`You solved ${n} ${n===1?"machine":"machines"}.`,es:n=>n===1?"Resolviste una máquina.":`Resolviste ${n} máquinas.`},
+  resLeccion:{en:"When people don't agree, testing helps us find out together.",es:"Cuando no estamos de acuerdo, probar nos ayuda a averiguarlo juntos."},
+  vacio:{en:"No tests yet.",es:"Todavía no hay pruebas."}
+};
+const C = {
+  demo:{en:"Ask: «Which one do you think? Why?» Any idea is a good start.",es:"Pregunte: «¿Cuál crees que es? ¿Por qué?» Cualquier idea es un buen comienzo."},
+  desacuerdo:{en:"Don't settle the disagreement. Ask: «How can we find out?» Testing is the answer, not who says it.",
+              es:"No resuelva usted el desacuerdo. Pregunte: «¿Cómo podemos averiguarlo?» La respuesta la da la prueba, no quién lo dice."},
+  probar:{en:"Help test one toy at a time. After each test, ask: «What happened?»",es:"Ayude a probar un juguete a la vez. Después de cada prueba, pregunte: «¿Qué pasó?»"},
+  decidir:{en:"Ask: «How do you know?» Celebrate the evidence, not only the answer.",es:"Pregunte: «¿Cómo lo sabes?» Celebre la prueba, no solo la respuesta."},
+  pistas:{en:"Make sure each child sees only their own clue. Then encourage them to explain their clue to each other.",
+          es:"Asegúrese de que cada niño vea solo su pista. Después, anímelos a explicarse la pista el uno al otro."}
+};
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", modo:"solo", nivel:"prek", ronda:0, rondas:3, estante:[], musical:null, demo:[], idea:null, amigo:null, amigoIdea:null,
+           fase:"", pruebas:[], totalPruebas:0, resueltas:0, turno:0, vistos:{}, ultimaGuia:null, ultimo:null, ultimoConsejo:null, pistasVistas:{}};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ if(typeof o==="function") return o(); const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = arr=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el,clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const colorJ = i=>i===0 ? "amarillo" : "azul";
+const nomColor = i=>tx(T[colorJ(i)]);
+const esperar = ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz = 0;
+function hablar(texto, despues, interno){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma==="es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos: la música de la máquina ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs,dur,tipo,vol){
+  try{ const a=ctx(); let t=a.currentTime;
+    frecs.forEach(f=>{ const o=a.createOscillator(), g=a.createGain(); o.type=tipo||"sine"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol||0.15,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur); t+=dur*0.9; });
+  }catch(e){}
+}
+const melodia = ()=>tono([523,659,784,659,523,784,1047],0.2,"triangle",0.18);
+const silencio = ()=>tono([196,147],0.25,"sine",0.12);
+const sonTada = ()=>tono([523,659,784,1047],0.16);
+
+/* La máquina toca (o no) con los juguetes que tiene encima */
+async function maquina(juguetes, suena){
+  const m=$("maquina"), p=$("plataforma");
+  p.textContent = juguetes.map(j=>j.e).join("");
+  m.classList.remove("suena","calla"); $("estado-maquina").textContent="";
+  await esperar(500);
+  if(suena){
+    m.classList.add("suena"); $("estado-maquina").textContent="🎵"; melodia();
+    if(!sinMovimiento()) for(let i=0;i<7;i++){ setTimeout(()=>{ const n=document.createElement("span"); n.className="nota";
+      n.textContent=elegir(["🎵","🎶","♪"]); n.style.left=azar(10,85)+"%"; $("notas").appendChild(n); setTimeout(()=>n.remove(),1700); }, i*220); }
+  } else { m.classList.add("calla"); $("estado-maquina").textContent="🔇"; silencio(); }
+  pintarMaquinaLabel(juguetes, suena);
+  await esperar(1800);
+  m.classList.remove("suena");
+}
+function pintarMaquinaLabel(juguetes, suena){
+  const es=S.idioma==="es";
+  const que = juguetes.length ? juguetes.map(j=>j.n[S.idioma]).join(es?" y ":" and ") : (es?"nada":"nothing");
+  $("maquina").setAttribute("aria-label", (es?"Máquina musical. Encima: ":"Music machine. On top: ")+que+
+    (suena===undefined ? "" : suena ? (es?". Suena música.":". It plays music.") : (es?". No suena.":". No music.")));
+}
+
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas=["🎵","🎶","⭐","✨","🎉"];
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=elegir(piezas); p.style.left=azar(2,94)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+
+/* ============ Lumi dice y señala ============ */
+function decir(cual, clave, ...p){
+  const objeto = typeof clave==="string" ? T[clave] : clave;
+  S.ultimo = {cual, objeto, p};
+  $(cual).textContent = tx(objeto,...p);
+  guiar($(cual).textContent);
+}
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave;
+  caja.classList.toggle("oculto", !ver);
+  if(!ver) return;
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  caja.querySelector("p").textContent = tx(C[clave]);
+}
+const DICE = {
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"},
+  "btn-ver-otra":{en:"Tap the arrows to watch it again.",            es:"Toca las flechitas para verlo otra vez."},
+  "btn-nose":    {en:"Tap the thinking face if you don't know yet.", es:"Toca la carita pensativa si todavía no sabes."},
+  "btn-probar":  {en:"Tap the microscope to test the toys.",         es:"Toca el microscopio para probar los juguetes."},
+  "btn-creerle": {en:"Tap the handshake to believe your friend.",    es:"Toca las manos para creerle a tu amigo."},
+  "btn-mia":     {en:"Tap the hand to keep your idea.",              es:"Toca la mano para quedarte con tu idea."},
+  "btn-ya-se":   {en:"Tap the green check when you know which one it is.", es:"Toca la palomita verde cuando sepas cuál es."},
+  "btn-siguiente":{en:"Tap the purple button to go on.",              es:"Toca el botón morado para seguir."},
+  "tarjeta-amarillo":{en:"Yellow: tap your card to see your secret clue.", es:"Amarillo: toca tu tarjeta para ver tu pista secreta."},
+  "tarjeta-azul":{en:"Blue: tap your card to see your secret clue.",  es:"Azul: toca tu tarjeta para ver tu pista secreta."},
+  "btn-velo":    {en:"Tap here to hide your clue.",                  es:"Toca aquí para esconder tu pista."},
+  "btn-otra-vez":{en:"Tap here to play again.",                      es:"Toca aquí para jugar otra vez."}
+};
+const ORDEN_GUIA = ["tarjeta-amarillo","tarjeta-azul","btn-ver-otra","btn-nose","btn-probar","btn-creerle","btn-mia","btn-ya-se","btn-siguiente","btn-otra-vez"];
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasosDe(ids){ return ids.map(id=>typeof id==="string" ? $(id) : id).filter(el=>visible(el) && !el.disabled)
+  .map(el=>({el, texto: el.dataset.dice || (DICE[el.id] && tx(DICE[el.id])) || ""})).filter(p=>p.texto); }
+document.addEventListener("pointerdown", ()=>{ if(!document.querySelector(".senalado")) return; turnoVoz++; limpiarSenal(); }, true);
+function guia(pasos, volver){
+  if(volver===undefined) volver=true;
+  const mio=++turnoVoz; limpiarSenal();
+  let i=-1, yInicial=null;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=pasos.length){
+      if(volver && yInicial!==null && Math.abs(window.scrollY-yInicial)>4) window.scrollTo({top:yInicial, behavior: sinMovimiento()?"auto":"smooth"});
+      return;
+    }
+    const p=pasos[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40){
+        if(yInicial===null) yInicial=window.scrollY;
+        p.el.scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
+      }
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:600)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500 + p.texto.length*85);
+  }
+  siguiente();
+}
+/* El mensaje y, las dos primeras veces, los botones visibles (y los juguetes, si se pueden tocar) */
+function guiar(msg){
+  const jug=[...document.querySelectorAll("#estante .juguete:not(:disabled)")];
+  const ids = ORDEN_GUIA.slice();
+  const todos = pasosDe(ids);
+  const conJuguetes = jug.length && ["adivinar","probar","decidir","juntos"].includes(S.fase);
+  const pasosJ = conJuguetes ? jug.map(b=>({el:b, texto:b.dataset.dice})) : [];
+  const clave = S.fase + ":" + todos.map(p=>p.el.id).join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  S.ultimaGuia = ()=>[{texto:msg}].concat(conJuguetes ? [...document.querySelectorAll("#estante .juguete:not(:disabled)")].map(b=>({el:b, texto:b.dataset.dice})) : []).concat(pasosDe(ids));
+  guia([{texto:msg}].concat(S.vistos[clave]<=2 ? pasosJ.concat(todos) : []));
+}
+function repetirGuia(){ if(S.ultimaGuia) guia(S.ultimaGuia()); }
+let relojDice=null;
+function decirBoton(el){ const t=el.dataset.dice || (DICE[el.id] && tx(DICE[el.id])); if(!t) return; clearTimeout(relojDice);
+  relojDice=setTimeout(()=>guia([{el, texto:t}]), 250); }
+/* Con ratón: Lumi nombra el botón solo si el ratón de verdad se mueve sobre él
+   (si los botones se redibujan bajo un ratón quieto, no dice nada) */
+let ultimoBajoRaton=null;
+document.addEventListener("pointermove", e=>{
+  if(e.pointerType!=="mouse") return;
+  const el=e.target.closest && e.target.closest("button");
+  if(el===ultimoBajoRaton) return;
+  ultimoBajoRaton=el; clearTimeout(relojDice);
+  if(el && !el.disabled) decirBoton(el);
+});
+document.addEventListener("pointerdown", ()=>clearTimeout(relojDice), true);
+document.addEventListener("focusin", e=>{ if(e.target.matches && e.target.matches("button:focus-visible")) decirBoton(e.target); });
+
+/* ============ Pantallas ============ */
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click",()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click",()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+$("btn-empezar").addEventListener("click", ()=>{
+  S.ronda=0; S.rondas=NIVEL[S.nivel].rondas; S.totalPruebas=0; S.resueltas=0; S.vistos={};
+  mostrar("p-juego"); nuevaRonda();
+});
+$("btn-otra-vez").addEventListener("click", ()=>mostrar("p-portada"));
+
+/* ============ Una ronda ============ */
+let usados=[];
+function nuevaRonda(){
+  let libres=JUGUETES.filter(j=>!usados.includes(j.e));
+  if(libres.length < NIVEL[S.nivel].juguetes){ usados=[]; libres=JUGUETES.slice(); }
+  S.estante = mezclar(libres).slice(0, NIVEL[S.nivel].juguetes);
+  S.estante.forEach(j=>usados.push(j.e));
+  S.musical = elegir(S.estante);
+  const otro = elegir(S.estante.filter(j=>j!==S.musical));
+  S.demo = mezclar([S.musical, otro]);
+  S.idea=null; S.amigoIdea=null; S.pruebas=[]; S.turno=0; S.pistasVistas={};
+  S.amigo = AMIGOS[S.ronda % 2];
+  $("amigo").classList.add("oculto");
+  $("plataforma").textContent=""; $("estado-maquina").textContent=""; $("maquina").className="maquina";
+  pintarMaquinaLabel([]);
+  pintarPruebas(); $("pruebas").classList.add("oculto");
+  ocultarBotones();
+  if(S.modo==="amigos") pistas();
+  else demo();
+}
+function ocultarBotones(){ ["btn-ver-otra","btn-nose","btn-probar","btn-creerle","btn-mia","btn-ya-se","btn-siguiente"].forEach(id=>$(id).classList.add("oculto")); $("tarjetas").classList.add("oculto"); }
+function pintarEstante(habilitar, marcarIdeas){
+  const cont=$("estante"); cont.innerHTML="";
+  S.estante.forEach(j=>{
+    const b=document.createElement("button"); b.className="juguete";
+    b.innerHTML='<span class="grande" aria-hidden="true">'+j.e+'</span><small>'+j.n[S.idioma]+'</small>';
+    b.setAttribute("aria-label", j.n[S.idioma]);
+    b.dataset.dice = el_(j);
+    b.disabled = !habilitar;
+    const prueba = S.pruebas.find(p=>p.j===j);
+    if(prueba){ const m=document.createElement("span"); m.className="marca"; m.setAttribute("aria-hidden","true"); m.textContent = prueba.suena ? "🎵" : "🔇"; b.appendChild(m); }
+    /* quién cree qué: 🙋 la idea del niño (🤝 la de los dos), y la carita del amigo para la suya */
+    if(marcarIdeas){
+      if(S.idea===j){ const q=document.createElement("span"); q.className="quien"; q.setAttribute("aria-hidden","true");
+        q.textContent = S.modo==="amigos" ? "🤝" : "🙋"; b.appendChild(q);
+        b.setAttribute("aria-label", j.n[S.idioma]+(S.idioma==="es" ? (S.modo==="amigos"?", la idea de los dos":", tu idea") : (S.modo==="amigos"?", your shared idea":", your idea"))); }
+      if(S.amigoIdea===j && S.modo!=="amigos"){ const q=document.createElement("span"); q.className="quien amigo"; q.setAttribute("aria-hidden","true");
+        q.textContent=S.amigo.cara; b.appendChild(q);
+        b.setAttribute("aria-label", b.getAttribute("aria-label")+(S.idioma==="es" ? ", la idea de "+S.amigo.nombre : ", "+S.amigo.nombre+"'s idea")); }
+    }
+    b.addEventListener("click", ()=>tocarJuguete(j));
+    cont.appendChild(b);
+  });
+}
+
+/* --- Solo / con adulto: la demostración --- */
+async function demo(){
+  S.fase="demo"; ocultarBotones(); pintarEstante(false);
+  $("msg").textContent = tx(T.demo, S.demo[0], S.demo[1]);
+  consejo("demo");
+  await maquina(S.demo, true);
+  $("plataforma").textContent=""; $("estado-maquina").textContent=""; pintarMaquinaLabel([]);
+  S.fase="adivinar"; pintarEstante(true);
+  $("btn-ver-otra").classList.remove("oculto"); $("btn-nose").classList.remove("oculto");
+  decir("msg","demo", S.demo[0], S.demo[1]);
+}
+$("btn-ver-otra").addEventListener("click", async ()=>{
+  hablar("");
+  await maquina(S.demo, true); $("plataforma").textContent=""; $("estado-maquina").textContent=""; pintarMaquinaLabel([]);
+});
+
+function tocarJuguete(j){
+  if(S.fase==="adivinar") return adivinar(j);
+  if(S.fase==="probar") return probar(j);
+  if(S.fase==="decidir") return decidir(j);
+  if(S.fase==="juntos") return decidirJuntos(j);
+}
+$("btn-nose").addEventListener("click", ()=>adivinar(null));
+
+function adivinar(j){
+  S.idea=j;
+  /* el amigo piensa distinto: si el niño eligió uno de la demostración, el amigo elige el otro;
+     así a veces el amigo tiene razón y a veces no */
+  if(j && S.demo.includes(j)) S.amigoIdea = S.demo.find(x=>x!==j);
+  else S.amigoIdea = elegir(S.demo);
+  S.fase="desacuerdo";
+  pintarEstante(false, true);
+  $("amigo-cara").textContent=S.amigo.cara;
+  $("amigo-dice").textContent = S.amigo.nombre+": "+tx(T.amigoCree, S.amigoIdea);
+  $("amigo").classList.remove("oculto");
+  ocultarBotones();
+  $("btn-probar").classList.remove("oculto");
+  $("txt-creerle").textContent = tx(T.creerle, S.amigo.nombre); $("btn-creerle").classList.remove("oculto");
+  if(j) $("btn-mia").classList.remove("oculto");
+  consejo("desacuerdo");
+  hablar(S.amigo.nombre+": "+tx(T.amigoCree, S.amigoIdea), ()=>{
+    if(j) decir("msg","noAcuerdo", j, S.amigo.nombre, S.amigoIdea);
+    else decir("msg","noSabe", S.amigo.nombre, S.amigoIdea);
+  });
+  $("msg").textContent = j ? tx(T.noAcuerdo, j, S.amigo.nombre, S.amigoIdea) : tx(T.noSabe, S.amigo.nombre, S.amigoIdea);
+}
+$("btn-creerle").addEventListener("click", ()=>{ $("msg").textContent=tx(T.puedeSer); hablar(tx(T.puedeSer), ()=>empezarPruebas(true)); });
+$("btn-mia").addEventListener("click", ()=>{ $("msg").textContent=tx(T.puedeSer); hablar(tx(T.puedeSer), ()=>empezarPruebas(true)); });
+$("btn-probar").addEventListener("click", ()=>empezarPruebas(false));
+
+/* --- Probar uno por uno --- */
+function empezarPruebas(){
+  S.fase="probar"; ocultarBotones();
+  $("pruebas").classList.remove("oculto"); pintarPruebas();
+  pintarEstante(true, true);
+  consejo("probar");
+  if(S.modo==="amigos") decir("msg","turnoProbar", nomColor(S.turno));
+  else decir("msg","probar");
+}
+let probando=false;
+async function probar(j){
+  if(probando) return; probando=true;
+  hablar("");
+  const suena = j===S.musical;
+  pintarEstante(false, true);
+  await maquina([j], suena);
+  if(!S.pruebas.find(p=>p.j===j)) S.pruebas.push({j, suena});
+  S.totalPruebas++;
+  pintarPruebas(); pintarEstante(true, true);
+  $("plataforma").textContent="";
+  $("btn-ya-se").classList.remove("oculto");
+  probando=false;
+  if(S.modo==="amigos") S.turno=1-S.turno;
+  const dicho = tx(suena ? T.suena : T.noSuena, j);
+  const sig = S.modo==="amigos" ? tx(T.turnoProbar, nomColor(S.turno)) : tx(T.sigueProbando);
+  S.ultimo={cual:"msg", objeto:()=>dicho+" "+sig, p:[]};
+  $("msg").textContent = dicho+" "+sig;
+  guiar($("msg").textContent);
+}
+function pintarPruebas(){
+  const ul=$("lista-pruebas"); ul.innerHTML="";
+  if(!S.pruebas.length){ const li=document.createElement("li"); li.className="vacio"; li.style.fontSize=".9em"; li.textContent=tx(T.vacio); ul.appendChild(li); return; }
+  S.pruebas.forEach(p=>{ const li=document.createElement("li"); if(p.suena) li.className="si";
+    li.innerHTML='<span aria-hidden="true">'+p.j.e+'</span><span class="flecha" aria-hidden="true">➜</span><span aria-hidden="true">'+(p.suena?"🎵":"🔇")+'</span>';
+    li.setAttribute("aria-label", tx(p.suena ? T.suena : T.noSuena, p.j)); ul.appendChild(li); });
+}
+$("btn-ya-se").addEventListener("click", ()=>{
+  S.fase="decidir"; ocultarBotones(); pintarEstante(true, true);
+  consejo("decidir");
+  decir("msg","cualEs");
+});
+
+/* --- Decidir: con pistas, nunca con la respuesta --- */
+function decidir(j){
+  const prueba=S.pruebas.find(p=>p.j===j);
+  if(j!==S.musical){
+    S.fase="probar"; pintarEstante(true, true); $("btn-ya-se").classList.remove("oculto");
+    if(prueba) decir("msg","pistaSilencio", j); else decir("msg","pistaSinProbar", j);
+    return;
+  }
+  if(!prueba){ S.fase="probar"; pintarEstante(true, true); $("btn-ya-se").classList.remove("oculto"); decir("msg","pistaSinProbar", j); return; }
+  resuelta(j);
+}
+function resuelta(j){
+  S.fase="fin"; S.resueltas++;
+  pintarEstante(false, true); ocultarBotones();
+  $("plataforma").textContent=j.e; $("maquina").classList.add("suena"); melodia(); confeti();
+  setTimeout(()=>$("maquina").classList.remove("suena"), 1800);
+  let extra="";
+  if(S.modo==="amigos") extra="";
+  else if(S.idea===j) extra=tx(T.teniasRazon);
+  else if(S.amigoIdea===j) extra=tx(T.amigoRazon, S.amigo.nombre);
+  else extra=tx(T.nadieRazon);
+  const ultima = S.ronda >= S.rondas-1;
+  $("txt-siguiente").textContent = tx(ultima ? T.alFinal : T.siguiente);
+  $("btn-siguiente").classList.remove("oculto");
+  const base = S.modo==="amigos" ? T.bienJuntos : T.bien;
+  S.ultimo={cual:"msg", objeto:()=>tx(base, j)+(extra?" "+extra:""), p:[]};
+  $("msg").textContent = tx(S.ultimo.objeto);
+  guiar($("msg").textContent);
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  if(S.ronda < S.rondas-1){ S.ronda++; nuevaRonda(); } else final();
+});
+
+/* --- Con un amigo: pistas secretas (información repartida) --- */
+function pistas(){
+  S.fase="pistas"; ocultarBotones(); pintarEstante(false);
+  $("tarjetas").classList.remove("oculto");
+  ["amarillo","azul"].forEach(c=>{ $("tarjeta-"+c).classList.remove("vista"); $("tarjeta-"+c).disabled = c==="azul"; });
+  consejo("pistas");
+  decir("msg","pistasIntro");
+}
+/* Amarillo ve: los dos juguetes juntos suenan. Azul ve: el que no es, solito, no suena.
+   Ninguno puede saber la respuesta solo: tienen que contarse sus pistas. */
+function verPista(c){
+  const otro=S.demo.find(x=>x!==S.musical);
+  $("velo-caja").className="caja "+c;
+  $("velo-tit").textContent = tx(T.veloTit, c==="amarillo" ? tx(T.amarillo) : tx(T.azul));
+  if(c==="amarillo"){
+    $("velo-pista").innerHTML='<span>'+S.demo[0].e+'</span><span class="chico">+</span><span>'+S.demo[1].e+'</span><span class="chico">=</span><span>🎵</span>';
+    $("velo-texto").textContent = tx(T.veloSi);
+  } else {
+    $("velo-pista").innerHTML='<span>'+otro.e+'</span><span class="chico">=</span><span>🔇</span>';
+    $("velo-texto").textContent = tx(T.veloNo);
+  }
+  $("txt-velo").textContent = tx(T.veloBoton);
+  $("velo").classList.remove("oculto");
+  /* la pista no se lee en voz alta: el otro jugador la oiría. Son dibujos: basta con mirar */
+  hablar($("velo-tit").textContent+". "+(S.idioma==="es" ? "Mira bien tu pista, sin decirla todavía." : "Look carefully at your clue, without saying it yet."));
+  $("btn-velo").focus();
+  S.pistasVistas[c]=true;
+}
+["amarillo","azul"].forEach(c=>$("tarjeta-"+c).addEventListener("click", ()=>verPista(c)));
+$("btn-velo").addEventListener("click", ()=>{
+  $("velo").classList.add("oculto");
+  const c = S.pistasVistas.azul ? "azul" : "amarillo";
+  $("tarjeta-"+c).classList.add("vista");
+  if(!S.pistasVistas.azul){ $("tarjeta-azul").disabled=false; $("tarjeta-amarillo").disabled=true; decir("msg","pistasAzul"); }
+  else {
+    $("tarjeta-amarillo").disabled=false; $("tarjeta-azul").disabled=false;
+    S.fase="juntos"; pintarEstante(true);
+    decir("msg","cuentense");
+  }
+});
+function decidirJuntos(j){
+  S.idea=j; S.fase="probar";
+  $("tarjetas").classList.add("oculto");
+  $("pruebas").classList.remove("oculto"); pintarPruebas();
+  pintarEstante(true, true);
+  const t=tx(T.juntosCreen, j)+" "+tx(T.turnoProbar, nomColor(S.turno));
+  S.ultimo={cual:"msg", objeto:()=>tx(T.juntosCreen, j)+" "+tx(T.turnoProbar, nomColor(S.turno)), p:[]};
+  $("msg").textContent=t; consejo("probar");
+  guiar(t);
+}
+
+/* ============ Final ============ */
+function final(){
+  mostrar("p-final");
+  $("tit-final").textContent = tx(S.modo==="amigos" ? T.finalTitAmigos : T.finalTit);
+  const r=$("resumen"); r.innerHTML="";
+  [["🔬", tx(T.resPruebas, S.totalPruebas)], ["🎵", tx(T.resMaquinas, S.resueltas)], ["🤝", tx(T.resLeccion)]].forEach(([e,t])=>{
+    const d=document.createElement("div"); d.innerHTML='<span class="grande" aria-hidden="true">'+e+'</span><span></span>';
+    d.querySelector("span:last-child").textContent=t; r.appendChild(d); });
+  confeti(); sonTada();
+  const msg=$("tit-final").textContent+" "+[...r.querySelectorAll("div")].map(d=>d.textContent).join(" ")+" "+$("p-final").querySelector(".reto-real").textContent.replace("💧","");
+  S.ultimaGuia=()=>[{texto:msg}].concat(pasosDe(["btn-otra-vez"]));
+  guia(S.ultimaGuia());
+}
+
+/* ============ Idioma ============ */
+let gradoFijo=null;
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es"); $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  const es=S.idioma==="es";
+  document.title = es ? "La máquina musical · Mentes curiosas" : "The music machine · Curious Minds";
+  $("btn-oir").setAttribute("aria-label", es ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  $("bocina").setAttribute("aria-label", es ? "Escuchar otra vez" : "Hear it again");
+  const q=[gradoFijo ? "grado="+gradoFijo : "", es ? "lang=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(x=>x.setAttribute("href","./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(x=>x.setAttribute("href","para-adultos.html"+(q?"?"+q:"")+"#"+(es?"es":"en")+"-juegos"));
+  if(!$("p-juego").classList.contains("oculto")){
+    if(S.estante.length) pintarEstante(["adivinar","probar","decidir","juntos"].includes(S.fase), S.fase!=="adivinar");
+    pintarPruebas();
+    if(S.ultimo) $("msg").textContent = tx(S.ultimo.objeto, ...S.ultimo.p);
+    if(!$("amigo").classList.contains("oculto") && S.amigoIdea) $("amigo-dice").textContent = S.amigo.nombre+": "+tx(T.amigoCree, S.amigoIdea);
+    if(S.amigo) $("txt-creerle").textContent = tx(T.creerle, S.amigo.nombre);
+    $("txt-siguiente").textContent = tx(S.ronda >= S.rondas-1 ? T.alFinal : T.siguiente);
+    if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  }
+  if(!$("p-final").classList.contains("oculto")) final();
+}
+try{
+  const q=new URLSearchParams(location.search);
+  if(q.get("lang")==="es") S.idioma="es";
+  if(q.get("grado")==="prek" || q.get("grado")==="k") gradoFijo=q.get("grado");
+}catch(e){}
+if(gradoFijo){
+  S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+  document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", x.dataset.nivel===gradoFijo));
+}
+aplicarIdioma();
+$("bocina").addEventListener("click", repetirGuia);
+
+let presentado=false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado=true;
+  guia([{texto: document.querySelector("#p-portada h2").textContent + " " + document.querySelector("#p-portada p.intro").textContent},
+        {el:$("btn-empezar"), texto:tx(DICE["btn-empezar"])}]);
+}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+  if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel]")) return;
+  presentar(); }, {once:true}));
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+presentar();
+setTimeout(()=>{ const s=window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>

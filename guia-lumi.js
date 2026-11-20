@@ -173,14 +173,15 @@
     clearTimeout(relojPaso);
     relojPaso = setTimeout(function () { guia([{ el: el, texto: t }]); }, 300);
   }
-  document.addEventListener("pointerover", function (e) {
+  /* solo cuando el ratón de verdad se mueve (si los botones se redibujan bajo
+     un ratón quieto, Lumi no interrumpe), y nunca en botones desactivados */
+  var bajoRaton = null;
+  document.addEventListener("pointermove", function (e) {
     if (e.pointerType !== "mouse") return;
     var el = e.target.closest && e.target.closest("button");
-    if (el && !el.contains(e.relatedTarget)) alPasar(el);
-  });
-  document.addEventListener("pointerout", function (e) {
-    var el = e.target.closest && e.target.closest("button");
-    if (el && !el.contains(e.relatedTarget)) clearTimeout(relojPaso);
+    if (el === bajoRaton) return;
+    bajoRaton = el; clearTimeout(relojPaso);
+    if (el && !el.disabled) alPasar(el);
   });
   /* Si el niño toca la pantalla (p. ej. empieza a trazar), Lumi deja de presentar
      y la página se queda donde está */

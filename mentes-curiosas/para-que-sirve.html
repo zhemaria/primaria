@@ -560,12 +560,16 @@ function repetirGuia(){ if(S.ultimaGuia) guia(S.ultimaGuia()); }
 let relojDice=null;
 function decirBoton(el){ const t=el.dataset.dice || (DICE[el.id] && tx(DICE[el.id])); if(!t) return; clearTimeout(relojDice);
   relojDice=setTimeout(()=>guia([{el, texto:t}]), 250); }
-document.addEventListener("pointerover", e=>{
+/* Con ratón: Lumi nombra el botón solo si el ratón de verdad se mueve sobre él
+   (si los botones se redibujan bajo un ratón quieto, no dice nada) */
+let ultimoBajoRaton=null;
+document.addEventListener("pointermove", e=>{
   if(e.pointerType!=="mouse") return;
   const el=e.target.closest && e.target.closest("button,canvas,#colores");
-  if(el && !el.contains(e.relatedTarget)) decirBoton(el);
+  if(el===ultimoBajoRaton) return;
+  ultimoBajoRaton=el; clearTimeout(relojDice);
+  if(el && !el.disabled) decirBoton(el);
 });
-document.addEventListener("pointerout", e=>{ const el=e.target.closest && e.target.closest("button,canvas,#colores"); if(el && !el.contains(e.relatedTarget)) clearTimeout(relojDice); });
 document.addEventListener("pointerdown", ()=>clearTimeout(relojDice), true);
 document.addEventListener("focusin", e=>{ if(e.target.matches && e.target.matches("button:focus-visible")) decirBoton(e.target); });
 
