@@ -173,7 +173,12 @@
     var el = e.target.closest && e.target.closest("button");
     if (el && !el.contains(e.relatedTarget)) clearTimeout(relojPaso);
   });
-  document.addEventListener("pointerdown", function () { clearTimeout(relojPaso); }, true);
+  /* Si el niño toca la pantalla (p. ej. empieza a trazar), Lumi deja de presentar
+     y la página se queda donde está */
+  document.addEventListener("pointerdown", function () {
+    clearTimeout(relojPaso);
+    if (document.querySelector(".lumi-senalado")) { turno++; limpiar(); }
+  }, true);
   document.addEventListener("focusin", function (e) {
     var el = e.target;
     if (el && el.matches && el.matches("button:focus-visible")) alPasar(el);

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — What else could it be? / ¿Para qué más sirve? (Pre-K and Kindergarten)
+  Divergent thinking: an everyday object and many new uses. Children explore Lumi's ideas by tapping
+  pictures and invent their own ideas by saying them (recording stays on this device) or drawing them.
+  A "spark" button helps when ideas run out. Every idea goes into the idea jar: there are no wrong answers.
+  Play alone, with a grown-up, or with a friend on the same tablet.
+  Inspired by research on divergent thinking and creative potential (Jonathan Plucker, Roger Beaty).
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What else could it be? · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A creative-thinking game for Pre-K and Kindergarten: an everyday object and many new uses. Explore, invent, say or draw your ideas and fill the idea jar. Play alone, with a grown-up or with a friend. English and Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4;
+  --amarillo:#F2B705; --azul:#1F6FD1;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:8px 10px}
+.portada .desfile{font-size:clamp(44px,9vw,70px);line-height:1.2;display:flex;justify-content:center;gap:.2em}
+.portada .desfile span{display:inline-block;animation:saltito 1.8s ease-in-out infinite}
+.portada .desfile span:nth-child(2){animation-delay:.25s}.portada .desfile span:nth-child(3){animation-delay:.5s}
+.portada .desfile span:nth-child(4){animation-delay:.75s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0 6px}
+.portada p.intro{color:var(--tinta-suave);max-width:52ch;margin:0 auto 14px}
+.portada .bocina{margin:0 auto 4px}
+.pregunta{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+
+/* ---------- Lumi y su mensaje ---------- */
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:64px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,23px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+
+/* ---------- Escoger objeto ---------- */
+.objetos{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.objeto-btn{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:12px;min-height:150px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;box-shadow:var(--sombra);font-weight:700;position:relative}
+.objeto-btn .grande{font-size:clamp(56px,10vw,76px);line-height:1.1}
+.objeto-btn:hover{border-color:var(--tinta)}
+.objeto-btn .hecho{position:absolute;top:8px;right:10px;font-size:.9em;background:var(--oro-claro);border:2px solid var(--oro);border-radius:999px;padding:0 8px}
+
+/* ---------- Escena del objeto ---------- */
+.escena{position:relative;background:radial-gradient(ellipse at 50% 40%,#FFFFFF 0,#EEE8FB 70%,#E0D6F7 100%);
+  border:4px solid var(--linea);border-radius:22px;min-height:clamp(220px,34vh,290px);box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;overflow:hidden}
+.combinado{display:flex;align-items:center;justify-content:center;gap:.25em;font-size:clamp(84px,15vw,130px);line-height:1}
+.combinado .mas{font-size:.4em;color:var(--tinta-suave)}
+.combinado img{height:1em;width:auto;max-width:1.6em;object-fit:contain;background:#fff;border:3px solid var(--linea);border-radius:14px}
+.combinado.salta{animation:aparece .6s ease-out}
+.burbuja{background:var(--blanco);border:3px solid var(--tinta);border-radius:18px;padding:8px 16px;font-weight:700;text-align:center;
+  max-width:92%;box-shadow:var(--sombra)}
+.burbuja.chispa{border-color:var(--oro);background:var(--oro-claro)}
+
+.subtitulo{font-weight:700;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.cosas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cosa{width:clamp(92px,17vw,118px);height:clamp(92px,17vw,118px);border:4px solid var(--linea);border-radius:20px;background:var(--blanco);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--sombra);position:relative}
+.cosa .grande{font-size:clamp(40px,7vw,54px);line-height:1.1}
+.cosa small{font-weight:700;font-size:.72em}
+.cosa:hover{border-color:var(--tinta)}
+.cosa.vista{border-color:var(--oro);background:var(--oro-claro)}
+.cosa.vista::after{content:"✓";position:absolute;top:2px;right:8px;font-weight:700;color:#8A5A00}
+
+.formas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:10px;min-height:96px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:2.6em;line-height:1.1}
+.forma:hover{border-color:var(--tinta)}
+.forma.chispa{border-color:var(--oro)}
+
+/* Frasco de ideas */
+.frasco{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:10px 14px;margin-top:14px;box-shadow:var(--sombra)}
+.frasco .tarro{font-size:2.4em;line-height:1}
+.frasco .cuenta{font-weight:700;font-size:1.1em;white-space:nowrap}
+.frasco .dentro{display:flex;flex-wrap:wrap;gap:4px;font-size:1.4em;line-height:1.2;flex:1 1 auto}
+.frasco .dentro span{display:inline-flex;align-items:center;justify-content:center;min-width:1.4em;border-radius:8px;padding:0 2px}
+.frasco .dentro .amarillo{background:#FFF0B3} .frasco .dentro .azul{background:#D6E6FB}
+.frasco.lleno .tarro{animation:brinco .6s ease-out}
+
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:14px;margin-top:12px;box-shadow:var(--sombra)}
+.cuadro h3{margin:0 0 10px;font-size:1em}
+.acciones{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.lienzo-caja{display:flex;flex-direction:column;align-items:center;gap:10px}
+canvas#lienzo{width:min(100%,560px);aspect-ratio:14/9;background:#fff;border:4px solid var(--tinta);border-radius:16px;touch-action:none}
+.colores{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.color-btn{width:48px;height:48px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px var(--linea)}
+.color-btn[aria-pressed="true"]{box-shadow:0 0 0 4px var(--tinta)}
+.turno{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.punto{display:inline-block;width:18px;height:18px;border-radius:50%;border:2px solid var(--tinta)}
+.punto.amarillo{background:var(--amarillo)} .punto.azul{background:var(--azul)}
+
+/* Lumi señala: el botón del que está hablando se ilumina */
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite}
+
+/* ---------- Final ---------- */
+.museo{display:flex;flex-direction:column;gap:12px;margin:10px 0;text-align:left}
+.sala{background:var(--blanco);border:4px solid var(--oro);border-radius:18px;padding:10px 14px}
+.sala h3{margin:0 0 6px;display:flex;align-items:center;gap:8px}
+.sala h3 .grande{font-size:1.8em}
+.sala ul{margin:0;padding-left:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.sala li{display:flex;align-items:center;gap:6px;background:var(--papel);border-radius:12px;padding:4px 10px;font-weight:600}
+.sala li img{width:80px;height:52px;object-fit:contain;background:#fff;border:1px solid var(--linea);border-radius:8px}
+.reto-real{background:var(--oro-claro);border:3px solid var(--oro);border-radius:18px;padding:12px 16px;max-width:60ch;margin:16px auto;font-weight:600}
+.lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto;mix-blend-mode:multiply}
+.creditos{font-size:.78em;color:var(--tinta-suave);text-align:center;margin-top:26px}
+.creditos a{color:var(--acento)}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:50;animation:caer 2s linear forwards;pointer-events:none}
+
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes aparece{0%{transform:scale(.4)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation:none !important;transition:none !important} }
+@media print{.barra,.consejo,.acciones{display:none}}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" href="./"><span aria-hidden="true">◀</span> <span data-es="Mentes curiosas" data-en="Curious Minds">Curious Minds</span></a>
+    <h1 data-es="¿Para qué más sirve?" data-en="What else could it be?">What else could it be?</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span>🥄</span><span>📦</span><span>🧦</span><span>🪣</span></div>
+    <h2 data-es="¿Para qué más sirve?" data-en="What else could it be?">What else could it be?</h2>
+    <p class="intro" data-es="Una cuchara sirve para comer… ¿y para qué más? Aquí no hay respuestas equivocadas: ¡cuantas más ideas, mejor! Explora, inventa y llena el frasco de ideas."
+       data-en="A spoon is for eating… but what else could it be? There are no wrong answers here: the more ideas, the better! Explore, invent and fill the idea jar.">A spoon is for eating… but what else could it be? There are no wrong answers here: the more ideas, the better! Explore, invent and fill the idea jar.</p>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta" id="preg-quien" data-es="¿Quién juega?" data-en="Who is playing?">Who is playing?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span data-es="Yo solo" data-en="Just me">Just me</span></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span data-es="Con un adulto" data-en="With a grown-up">With a grown-up</span>
+        <small data-es="con consejos para el adulto" data-en="with tips for the grown-up">with tips for the grown-up</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span data-es="Con un amigo" data-en="With a friend">With a friend</span>
+        <small data-es="dos en la misma pantalla" data-en="two on one screen">two on one screen</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta" id="preg-nivel" data-es="¿En qué grado estás?" data-en="What grade are you in?">What grade are you in?</p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="prek" aria-pressed="true"><span class="ico" aria-hidden="true">🧸</span><span data-es="Prekínder" data-en="Pre-K">Pre-K</span></button>
+        <button class="opcion" data-nivel="k" aria-pressed="false"><span class="ico" aria-hidden="true">🎒</span><span data-es="Kínder" data-en="Kindergarten">Kindergarten</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar"><span aria-hidden="true">▶</span> <span data-es="¡A jugar!" data-en="Let's play!">Let's play!</span></button>
+  </section>
+
+  <!-- ESCOGER OBJETO -->
+  <section id="p-objetos" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83">
+      <p id="msg-obj" aria-live="polite"></p>
+      <button class="bocina" id="bocina-obj" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo-obj"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+    <div class="objetos" id="lista-objetos"></div>
+    <div class="frasco" id="frasco-obj" aria-live="polite"></div>
+    <div class="acciones"><button class="boton fuerte oculto" id="btn-terminar"><span aria-hidden="true">🏁</span> <span data-es="Terminar y ver mis ideas" data-en="Finish and see my ideas">Finish and see my ideas</span></button></div>
+  </section>
+
+  <!-- JUGAR CON UN OBJETO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83" class="lumi-msg">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+
+    <div class="escena" id="escena">
+      <div class="combinado" id="combinado" aria-hidden="true"></div>
+      <div class="burbuja" id="burbuja" aria-live="polite"></div>
+    </div>
+
+    <p class="subtitulo"><span aria-hidden="true">👀</span> <span data-es="Las ideas de Lumi: toca un dibujo" data-en="Lumi's ideas: tap a picture">Lumi's ideas: tap a picture</span></p>
+    <div class="cosas" id="cosas"></div>
+
+    <p class="subtitulo"><span aria-hidden="true">🌟</span> <span data-es="Tu idea: ¡inventa una nueva!" data-en="Your idea: invent a new one!">Your idea: invent a new one!</span></p>
+    <div class="formas">
+      <button class="forma" id="f-voz"><span class="ico" aria-hidden="true">🎤</span><span data-es="Dilo" data-en="Say it">Say it</span></button>
+      <button class="forma" id="f-dibujo"><span class="ico" aria-hidden="true">✏️</span><span data-es="Dibújalo" data-en="Draw it">Draw it</span></button>
+      <button class="forma chispa" id="f-chispa"><span class="ico" aria-hidden="true">💡</span><span data-es="Una chispa" data-en="A spark">A spark</span></button>
+    </div>
+
+    <div class="cuadro oculto" id="cuadro-voz">
+      <h3 data-es="Di tu idea en voz alta" data-en="Say your idea out loud">Say your idea out loud</h3>
+      <div class="acciones">
+        <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar"></span></button>
+        <button class="boton oculto" id="btn-escuchar"><span aria-hidden="true">▶️</span> <span data-es="Escuchar" data-en="Listen">Listen</span></button>
+        <button class="boton fuerte oculto" id="btn-usar-voz"><span aria-hidden="true">✅</span> <span data-es="Esta es mi idea" data-en="That's my idea">That's my idea</span></button>
+      </div>
+      <div class="acciones"><button class="boton" id="btn-dicho"><span aria-hidden="true">🗣️</span> <span data-es="Ya lo dije en voz alta (sin grabar)" data-en="I said it out loud (no recording)">I said it out loud (no recording)</span></button></div>
+      <p class="nota-priv" id="nota-voz" data-es="La grabación se queda en este aparato y se borra al cerrar la página." data-en="The recording stays on this device and is erased when you close the page.">The recording stays on this device and is erased when you close the page.</p>
+    </div>
+
+    <div class="cuadro oculto" id="cuadro-dibujo">
+      <h3 data-es="Dibuja tu idea" data-en="Draw your idea">Draw your idea</h3>
+      <div class="lienzo-caja">
+        <canvas id="lienzo" width="700" height="450" aria-label="Drawing space"></canvas>
+        <div class="colores" id="colores" role="group" aria-label="Colors"></div>
+        <div class="acciones">
+          <button class="boton" id="btn-borrar"><span aria-hidden="true">🧽</span> <span data-es="Borrar todo" data-en="Erase all">Erase all</span></button>
+          <button class="boton fuerte" id="btn-usar-dibujo"><span aria-hidden="true">✅</span> <span data-es="Esta es mi idea" data-en="That's my idea">That's my idea</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="frasco" id="frasco" aria-live="polite"></div>
+
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otro-objeto"><span aria-hidden="true">🔄</span> <span data-es="Otro objeto" data-en="Another object">Another object</span></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto portada">
+    <img class="lumi-grande" src="../lumi-saluda.jpg" alt="" width="360" height="469">
+    <h2 id="tit-final"></h2>
+    <div class="museo" id="museo"></div>
+    <p class="reto-real" data-es="🏠 Ahora, con objetos de verdad: escoge algo de tu casa o del salón (una cuchara, una caja, una media…). ¿Cuántos usos nuevos pueden inventar entre todos? ¡Prueben algunos de verdad!"
+       data-en="🏠 Now with real objects: pick something at home or in the classroom (a spoon, a box, a sock…). How many new uses can you invent together? Try some for real!">🏠 Now with real objects: pick something at home or in the classroom (a spoon, a box, a sock…). How many new uses can you invent together? Try some for real!</p>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> <span data-es="Jugar otra vez" data-en="Play again">Play again</span></button>
+      <a class="boton volver-hub" href="./"><span aria-hidden="true">🧠</span> <span data-es="Otros juegos" data-en="Other games">Other games</span></a>
+    </div>
+  </section>
+
+  <p class="creditos"><span data-es="Inspirado en las investigaciones sobre el pensamiento divergente y el potencial creativo (Jonathan Plucker, Roger Beaty)." data-en="Inspired by research on divergent thinking and creative potential (Jonathan Plucker, Roger Beaty).">Inspired by research on divergent thinking and creative potential (Jonathan Plucker, Roger Beaty).</span>
+    · <a class="enlace-adultos" href="para-adultos.html" data-es="Para adultos: por qué este juego" data-en="For grown-ups: why this game">For grown-ups: why this game</a>
+    · José M. Fernández · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a></p>
+</div>
+
+<script>
+"use strict";
+/* ============ Los objetos y las ideas de Lumi ============
+   a: con artículo; uso: para qué sirve normalmente;
+   ideas: cosa (emoji y nombre) + lo que el objeto se vuelve al juntarse con ella */
+const OBJETOS = [
+  {id:"cuchara", e:"🥄", n:{en:"spoon",es:"cuchara"}, a:{en:"the spoon",es:"la cuchara"}, un:{en:"a spoon",es:"una cuchara"},
+   uso:{en:"A spoon is for eating soup.",es:"Una cuchara sirve para tomar sopa."},
+   ideas:[
+    {e:"🏖️", n:{en:"sand",es:"arena"}, v:{en:"A shovel to build sandcastles!",es:"¡Una pala para hacer castillos de arena!"}},
+    {e:"🍲", n:{en:"pot",es:"olla"},  v:{en:"A drumstick: boom, boom!",es:"¡Un palito de tambor: pum, pum!"}},
+    {e:"⛵", n:{en:"boat",es:"barquito"}, v:{en:"An oar to row the little boat!",es:"¡Un remo para el barquito!"}},
+    {e:"😀", n:{en:"face",es:"cara"}, v:{en:"A mirror to see your funny face!",es:"¡Un espejo para ver tu cara chistosa!"}},
+    {e:"🎵", n:{en:"song",es:"canción"}, v:{en:"A microphone to sing!",es:"¡Un micrófono para cantar!"}}]},
+  {id:"caja", e:"📦", n:{en:"box",es:"caja"}, a:{en:"the box",es:"la caja"}, un:{en:"a box",es:"una caja"},
+   uso:{en:"A box is for keeping things.",es:"Una caja sirve para guardar cosas."},
+   ideas:[
+    {e:"🛞", n:{en:"wheels",es:"ruedas"}, v:{en:"A race car: vroom, vroom!",es:"¡Un carro de carreras: rum, rum!"}},
+    {e:"🐱", n:{en:"cat",es:"gato"}, v:{en:"A little house for the cat!",es:"¡Una casita para el gato!"}},
+    {e:"🌧️", n:{en:"rain",es:"lluvia"}, v:{en:"A roof so you don't get wet!",es:"¡Un techo para no mojarte!"}},
+    {e:"🥁", n:{en:"music",es:"música"}, v:{en:"A drum to play music!",es:"¡Un tambor para hacer música!"}},
+    {e:"⭐", n:{en:"stars",es:"estrellas"}, v:{en:"A rocket to fly to the stars!",es:"¡Un cohete para volar a las estrellas!"}}]},
+  {id:"media", e:"🧦", n:{en:"sock",es:"media"}, a:{en:"the sock",es:"la media"}, un:{en:"a sock",es:"una media"},
+   uso:{en:"A sock is for keeping your feet warm.",es:"Una media sirve para tener los pies calientitos."},
+   ideas:[
+    {e:"✋", n:{en:"hand",es:"mano"}, v:{en:"A puppet that talks!",es:"¡Un títere que habla!"}},
+    {e:"🧸", n:{en:"teddy bear",es:"osito"}, v:{en:"A sleeping bag for the teddy bear!",es:"¡Un saco de dormir para el osito!"}},
+    {e:"🧹", n:{en:"dust",es:"polvo"}, v:{en:"A cloth to wipe the dust!",es:"¡Un trapito para limpiar el polvo!"}},
+    {e:"⚽", n:{en:"ball",es:"pelota"}, v:{en:"A soft ball to play catch!",es:"¡Una pelota suave para jugar!"}},
+    {e:"💎", n:{en:"treasure",es:"tesoro"}, v:{en:"A little bag for your treasures!",es:"¡Una bolsita para guardar tesoros!"}}]},
+  {id:"cubeta", e:"🪣", n:{en:"bucket",es:"cubeta"}, a:{en:"the bucket",es:"la cubeta"}, un:{en:"a bucket",es:"una cubeta"},
+   uso:{en:"A bucket is for carrying water.",es:"Una cubeta sirve para cargar agua."},
+   ideas:[
+    {e:"👒", n:{en:"head",es:"cabeza"}, v:{en:"A funny hat!",es:"¡Un sombrero chistoso!"}},
+    {e:"🥁", n:{en:"music",es:"música"}, v:{en:"A giant drum!",es:"¡Un tambor gigante!"}},
+    {e:"🌱", n:{en:"seed",es:"semilla"}, v:{en:"A pot to grow a plant!",es:"¡Una maceta para sembrar una planta!"}},
+    {e:"🏰", n:{en:"castle",es:"castillo"}, v:{en:"A mold for sand towers!",es:"¡Un molde para torres de arena!"}},
+    {e:"🪑", n:{en:"seat",es:"asiento"}, v:{en:"A little stool to sit on!",es:"¡Un banquito para sentarte!"}}]},
+  {id:"tubo", e:"🧻", n:{en:"cardboard tube",es:"tubito de cartón"}, a:{en:"the cardboard tube",es:"el tubito de cartón"}, un:{en:"a cardboard tube",es:"un tubito de cartón"},
+   uso:{en:"A cardboard tube holds the paper roll.",es:"El tubito de cartón sostiene el rollo de papel."},
+   ideas:[
+    {e:"🔭", n:{en:"far away",es:"a lo lejos"}, v:{en:"A telescope to look far away!",es:"¡Un telescopio para mirar lejos!"}},
+    {e:"📢", n:{en:"voice",es:"voz"}, v:{en:"A megaphone to talk really loud!",es:"¡Un megáfono para hablar fuerte!"}},
+    {e:"🚀", n:{en:"space",es:"espacio"}, v:{en:"A toy rocket!",es:"¡Un cohete de juguete!"}},
+    {e:"🐰", n:{en:"bunny",es:"conejo"}, v:{en:"A bunny puppet!",es:"¡Un títere de conejo!"}},
+    {e:"🎺", n:{en:"band",es:"banda"}, v:{en:"A trumpet: toot, toot!",es:"¡Una trompeta: tu, tu, tuuu!"}}]},
+  {id:"bufanda", e:"🧣", n:{en:"scarf",es:"bufanda"}, a:{en:"the scarf",es:"la bufanda"}, un:{en:"a scarf",es:"una bufanda"},
+   uso:{en:"A scarf is for keeping your neck warm.",es:"Una bufanda sirve para abrigar el cuello."},
+   ideas:[
+    {e:"🦸", n:{en:"hero",es:"héroe"}, v:{en:"A superhero cape!",es:"¡Una capa de superhéroe!"}},
+    {e:"🐍", n:{en:"snake",es:"serpiente"}, v:{en:"A wiggly toy snake!",es:"¡Una serpiente de juguete que se mueve!"}},
+    {e:"🎁", n:{en:"present",es:"regalo"}, v:{en:"Wrapping for a present!",es:"¡Un papel para envolver un regalo!"}},
+    {e:"🚩", n:{en:"flag",es:"bandera"}, v:{en:"A flag that waves in the wind!",es:"¡Una bandera que ondea con el viento!"}},
+    {e:"🛷", n:{en:"sled",es:"trineo"}, v:{en:"A rope to pull a sled!",es:"¡Una cuerda para jalar un trineo!"}}]}
+];
+/* Chispas: preguntas que ayudan a imaginar cuando se acaban las ideas */
+const CHISPAS = [
+  {en:o=>`What if ${o.a.en} were GIANT?`, es:o=>`¿Y si ${o.a.es} fuera GIGANTE?`},
+  {en:o=>`What if ${o.a.en} were tiny, like an ant?`, es:o=>`¿Y si ${o.a.es} fuera chiquitito, como una hormiga?`},
+  {en:o=>`What if you were on the moon with ${o.a.en}?`, es:o=>`¿Y si estuvieras en la luna con ${o.a.es}?`},
+  {en:o=>`What if a dinosaur found ${o.a.en}?`, es:o=>`¿Y si un dinosaurio encontrara ${o.a.es}?`},
+  {en:o=>`What if ${o.a.en} were a toy?`, es:o=>`¿Y si ${o.a.es} fuera un juguete?`},
+  {en:o=>`What if ${o.a.en} could talk? What would it say?`, es:o=>`¿Y si ${o.a.es} pudiera hablar? ¿Qué diría?`},
+  {en:o=>`What if you used ${o.a.en} at the beach?`, es:o=>`¿Y si usaras ${o.a.es} en la playa?`},
+  {en:o=>`What if you had ten of them?`, es:o=>`¿Y si tuvieras diez iguales?`}
+];
+/* La chispa en español concuerda con el objeto (chiquitito / chiquitita) */
+function chispaTexto(c,o){ let t=tx(c,o); if(S.idioma==="es" && /^la /.test(o.a.es)) t=t.replace("chiquitito","chiquitita"); return t; }
+const NIVEL = { prek:{ideas:4}, k:{ideas:5} };
+const COLORES = ["#1E1A3A","#D32F2F","#1F6FD1","#2E7D32","#F28C00","#8E24AA","#8D5524"];
+
+/* ============ Textos de Lumi ============ */
+const T = {
+  escoger:{en:"Pick an object. Let's find out what else it could be!",es:"Escoge un objeto. ¡Vamos a descubrir para qué más sirve!"},
+  escogerOtro:{en:"Great ideas! Pick another object, or finish to see all your ideas.",es:"¡Qué buenas ideas! Escoge otro objeto, o termina para ver todas tus ideas."},
+  presentar:{en:(o)=>`This is ${o.un.en}. ${o.uso.en} But what ELSE could it be? Tap a picture, or invent your own idea!`,
+             es:(o)=>`Esto es ${o.un.es}. ${o.uso.es} Pero, ¿para qué MÁS podría servir? ¡Toca un dibujo, o inventa tu propia idea!`},
+  turno:{en:c=>`${c} turn: what else could it be?`,es:c=>`Turno ${c}: ¿para qué más podría servir?`},
+  amarillo:{en:"Yellow",es:"amarillo"}, azul:{en:"Blue",es:"azul"},
+  tocaCosa:{en:o=>`Tap a picture and see what ${o.a.en} turns into.`,es:o=>`Toca un dibujo y mira en qué se convierte ${o.a.es}.`},
+  otraIdea:{en:"Into the idea jar! What else could it be?",es:"¡Al frasco de ideas! ¿Para qué más podría servir?"},
+  alFrasco:{en:"Into the idea jar!",es:"¡Al frasco de ideas!"},
+  ideaPropia:{en:"What an original idea! Into the jar it goes. Can you think of another one?",es:"¡Qué idea tan original! Va al frasco. ¿Se te ocurre otra?"},
+  ideaPropiaAmigos:{en:c=>`What an original idea! ${c} turn: can you add something to your friend's idea, or think of a new one?`,
+                    es:c=>`¡Qué idea tan original! Turno ${c}: ¿puedes agregarle algo a la idea de tu amigo, o inventar otra?`},
+  todasVistas:{en:"You found all of Lumi's ideas! Can you think of one that Lumi did not think of?",es:"¡Encontraste todas las ideas de Lumi! ¿Se te ocurre una que Lumi no pensó?"},
+  chispa:{en:"Here is a spark to help you imagine:",es:"Aquí tienes una chispa para imaginar:"},
+  chispaDespues:{en:"Say it or draw it!",es:"¡Dilo o dibújalo!"},
+  frasco:{en:n=>n===1?"1 idea in the jar":`${n} ideas in the jar`,es:n=>n===1?"1 idea en el frasco":`${n} ideas en el frasco`},
+  frascoAmigos:{en:n=>`Together: ${n===1?"1 idea":n+" ideas"}`,es:n=>`Entre los dos: ${n===1?"1 idea":n+" ideas"}`},
+  finalTit:{en:n=>`You found ${n} ${n===1?"use":"uses"}!`,es:n=>`¡Encontraste ${n} ${n===1?"uso":"usos"}!`},
+  finalTitAmigos:{en:n=>`Together you found ${n} ${n===1?"use":"uses"}!`,es:n=>`¡Entre los dos encontraron ${n} ${n===1?"uso":"usos"}!`},
+  ideaTuya:{en:"your idea",es:"tu idea"}, dicha:{en:"said out loud",es:"dicha en voz alta"}
+};
+const C = {
+  objetos:{en:"Let the child choose. Choosing is part of being creative.",es:"Deje que el niño escoja. Escoger también es parte de crear."},
+  juego:{en:"Accept every idea, even the silliest ones: there are no wrong answers. Ask: «How would that work?»",
+         es:"Acepte todas las ideas, incluso las más locas: no hay respuestas equivocadas. Pregunte: «¿Cómo funcionaría?»"},
+  propia:{en:"Celebrate ideas that are different from Lumi's. Count the ideas together out loud.",
+          es:"Celebre las ideas distintas a las de Lumi. Cuenten juntos las ideas en voz alta."},
+  chispa:{en:"If the child gets stuck, don't give an answer: ask a «What if…?» question like the spark.",
+          es:"Si el niño se queda sin ideas, no le dé la respuesta: hágale una pregunta «¿Y si…?» como la chispa."},
+  amigos:{en:"Encourage them to build on each other's ideas: «Can you make your friend's idea even better?»",
+          es:"Anímelos a construir sobre la idea del otro: «¿Puedes hacer todavía mejor la idea de tu amigo?»"}
+};
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", modo:"solo", nivel:"prek", obj:null, turno:0, frasco:[], hechos:{}, chispas:[], ultimo:null, ultimoConsejo:null,
+           vistos:{}, ultimaGuia:null, ultimaVista:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ if(typeof o==="function") return o(); const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = arr=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el,clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const colorJ = i=>i===0 ? "amarillo" : "azul";
+const nomColor = i=>{ const c=tx(T[colorJ(i)]); return c.charAt(0).toUpperCase()+c.slice(1); };
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+/* turnoVoz: cada lectura nueva cancela el recorrido guiado que estuviera en marcha */
+let turnoVoz = 0;
+function hablar(texto, despues, interno){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma==="es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs,dur,tipo){
+  try{ const a=ctx(); let t=a.currentTime;
+    frecs.forEach(f=>{ const o=a.createOscillator(), g=a.createGain(); o.type=tipo||"sine"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.15,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonMagia = ()=>tono([784,988,1175,1568],0.1);
+const sonIdea  = ()=>tono([523,659,784],0.12);
+const sonTada  = ()=>tono([523,659,784,1047],0.16);
+const sonChispa= ()=>tono([1320,1760,2093],0.08);
+
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas=["💡","⭐","✨","🌟","🎉"];
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=elegir(piezas); p.style.left=azar(2,94)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+/* La escena sube a la vista cuando el objeto se transforma */
+function verEscena(){ const r=$("escena").getBoundingClientRect();
+  if(r.top<0 || r.bottom>window.innerHeight) $("escena").scrollIntoView({block:"start", behavior: sinMovimiento()?"auto":"smooth"}); }
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>animar(im,"feliz")); }
+
+/* Lumi dice algo: se escribe en la pantalla y se habla, presentando los botones visibles */
+function decir(cual, clave, ...p){
+  const objeto = typeof clave==="string" ? T[clave] : clave;
+  S.ultimo = {cual, objeto, p};
+  $(cual).textContent = tx(objeto,...p);
+  guiar($(cual).textContent);
+}
+function consejo(cual, clave){
+  const caja=$(cual), ver=S.modo!=="solo" && clave;
+  caja.classList.toggle("oculto", !ver);
+  if(!ver) return;
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo={cual, clave};
+  caja.querySelector("p").textContent = tx(C[clave]);
+}
+
+/* ============ Lumi señala los botones (para quien todavía no lee) ============ */
+const DICE = {
+  "btn-empezar":   {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"},
+  "f-voz":         {en:"Tap the microphone to say your idea.",   es:"Toca el micrófono para decir tu idea."},
+  "f-dibujo":      {en:"Tap the pencil to draw your idea.",      es:"Toca el lápiz para dibujar tu idea."},
+  "f-chispa":      {en:"Tap the light bulb if you need a spark to imagine.", es:"Toca el foquito si necesitas una chispa para imaginar."},
+  "btn-otro-objeto":{en:"Tap here to pick another object.",      es:"Toca aquí para escoger otro objeto."},
+  "btn-terminar":  {en:"Tap the flag to finish and see all your ideas.", es:"Toca la bandera para terminar y ver todas tus ideas."},
+  "btn-grabar":    {en:"Tap the microphone and say your idea. Tap it again to stop.", es:"Toca el micrófono y di tu idea. Tócalo otra vez para parar."},
+  "btn-escuchar":  {en:"Tap the triangle to listen to yourself.", es:"Toca el triángulo para escucharte."},
+  "btn-usar-voz":  {en:"Tap the check if that is your idea.",     es:"Toca la palomita si esa es tu idea."},
+  "btn-dicho":     {en:"If you already said it out loud, tap here.", es:"Si ya lo dijiste en voz alta, toca aquí."},
+  "lienzo":        {en:"Draw with your finger here.",             es:"Dibuja aquí con tu dedo."},
+  "colores":       {en:"Tap a color to change it.",               es:"Toca un color para cambiarlo."},
+  "btn-borrar":    {en:"Tap the sponge to erase everything.",     es:"Toca la esponja para borrar todo."},
+  "btn-usar-dibujo":{en:"Tap the check when you finish.",         es:"Toca la palomita cuando termines."},
+  "btn-otra-vez":  {en:"Tap here to play again.",                 es:"Toca aquí para jugar otra vez."}
+};
+const ORDEN_GUIA = ["f-voz","f-dibujo","f-chispa","btn-otro-objeto","btn-terminar","btn-otra-vez"];
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasosDe(ids){ return ids.map(id=>typeof id==="string" ? $(id) : id).filter(visible)
+  .map(el=>({el, texto: el.dataset.dice || tx(DICE[el.id])})); }
+/* Recorrido: [{el?, texto}] — se dice cada paso con su botón iluminado */
+/* Si el niño toca la pantalla, Lumi deja de presentar y la página se queda donde está */
+document.addEventListener("pointerdown", e=>{
+  if(!document.querySelector(".senalado")) return;
+  turnoVoz++; limpiarSenal();
+}, true);
+function guia(pasos, volver){
+  if(volver===undefined) volver=true;
+  const mio=++turnoVoz; limpiarSenal();
+  let i=-1, yInicial=null;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=pasos.length){
+      if(volver && yInicial!==null && Math.abs(window.scrollY-yInicial)>4) window.scrollTo({top:yInicial, behavior: sinMovimiento()?"auto":"smooth"});
+      return;
+    }
+    const p=pasos[i];
+    if(p.el && visible(p.el)){
+      const r=p.el.getBoundingClientRect();
+      if(r.top<0 || r.bottom>window.innerHeight){
+        if(yInicial===null) yInicial=window.scrollY;
+        p.el.scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
+      }
+      p.el.classList.add("senalado");
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:600)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500 + p.texto.length*85);   // seguro, por si el aparato no avisa
+  }
+  siguiente();
+}
+/* El mensaje de Lumi y, las dos primeras veces, la presentación de los botones visibles.
+   En el juego, primero se presentan las cosas (los dibujos) y después las formas de inventar. */
+function guiar(msg){
+  let ids = ORDEN_GUIA.slice();
+  const cosas = [...document.querySelectorAll("#cosas .cosa")];
+  if(!$("p-juego").classList.contains("oculto") && cosas.length) ids = [cosas[0]].concat(ids);
+  const todos = pasosDe(ids);
+  /* el primer dibujo se presenta con una frase que explica qué hacer con todos */
+  if(todos.length && todos[0].el.classList.contains("cosa") && S.obj) todos[0].texto = tx(T.tocaCosa, S.obj);
+  const clave = todos.map(p=>p.el.id||"cosa").join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  S.ultimaGuia = ()=>{ const t=pasosDe(ids); if(t.length && t[0].el.classList.contains("cosa") && S.obj) t[0].texto=tx(T.tocaCosa,S.obj); return [{texto:msg}].concat(t); };
+  guia([{texto:msg}].concat(S.vistos[clave]<=2 ? todos : []));
+}
+function repetirGuia(){ if(S.ultimaGuia) guia(S.ultimaGuia()); }
+let relojDice=null;
+function decirBoton(el){ const t=el.dataset.dice || (DICE[el.id] && tx(DICE[el.id])); if(!t) return; clearTimeout(relojDice);
+  relojDice=setTimeout(()=>guia([{el, texto:t}]), 250); }
+document.addEventListener("pointerover", e=>{
+  if(e.pointerType!=="mouse") return;
+  const el=e.target.closest && e.target.closest("button,canvas,#colores");
+  if(el && !el.contains(e.relatedTarget)) decirBoton(el);
+});
+document.addEventListener("pointerout", e=>{ const el=e.target.closest && e.target.closest("button,canvas,#colores"); if(el && !el.contains(e.relatedTarget)) clearTimeout(relojDice); });
+document.addEventListener("pointerdown", ()=>clearTimeout(relojDice), true);
+document.addEventListener("focusin", e=>{ if(e.target.matches && e.target.matches("button:focus-visible")) decirBoton(e.target); });
+
+/* ============ Pantallas ============ */
+function mostrar(cual){
+  ["p-portada","p-objetos","p-juego","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+
+/* ============ Portada ============ */
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click",()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click",()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+$("btn-empezar").addEventListener("click", empezar);
+$("btn-otra-vez").addEventListener("click", ()=>mostrar("p-portada"));
+
+function empezar(){
+  S.frasco.forEach(f=>{ if(f.url) URL.revokeObjectURL(f.url); });
+  S.frasco=[]; S.hechos={}; S.turno=0; S.vistos={}; S.obj=null;
+  pantallaObjetos(true);
+}
+
+/* ============ Escoger objeto ============ */
+function pantallaObjetos(primera){
+  mostrar("p-objetos");
+  const cont=$("lista-objetos"); cont.innerHTML="";
+  OBJETOS.forEach(o=>{
+    const b=document.createElement("button"); b.className="objeto-btn";
+    const n=S.frasco.filter(f=>f.obj===o.id).length;
+    b.innerHTML='<span class="grande" aria-hidden="true">'+o.e+'</span><span>'+o.n[S.idioma]+'</span>'+
+      (n ? '<span class="hecho" aria-hidden="true">💡 '+n+'</span>' : '');
+    b.setAttribute("aria-label", o.n[S.idioma] + (n ? (S.idioma==="es" ? ", "+n+" ideas" : ", "+n+" ideas") : ""));
+    b.dataset.dice = o.n[S.idioma];
+    b.addEventListener("click", ()=>jugarCon(o));
+    cont.appendChild(b);
+  });
+  $("btn-terminar").classList.toggle("oculto", S.frasco.length===0);
+  pintarFrasco("frasco-obj");
+  /* Lumi dice el nombre de cada objeto mientras se ilumina (las dos primeras veces) */
+  const msg = tx(T[primera || !S.frasco.length ? "escoger" : "escogerOtro"]);
+  $("msg-obj").textContent = msg;
+  S.ultimo={cual:"msg-obj", objeto:T[primera || !S.frasco.length ? "escoger" : "escogerOtro"], p:[]};
+  const objetos=[...cont.children];
+  const pasos=()=>[{texto:msg}].concat(pasosDe(objetos)).concat(pasosDe(["btn-terminar"]));
+  S.ultimaGuia=pasos;
+  S.vistos.objetos=(S.vistos.objetos||0)+1;
+  guia(S.vistos.objetos<=2 ? pasos() : [{texto:msg}].concat(pasosDe(["btn-terminar"])));
+  consejo("consejo-obj","objetos");
+}
+$("btn-terminar").addEventListener("click", final);
+$("bocina-obj").addEventListener("click", repetirGuia);
+
+/* ============ Jugar con un objeto ============ */
+function jugarCon(o){
+  S.obj=o; S.chispas=mezclar(CHISPAS);
+  mostrar("p-juego");
+  const ideas=o.ideas.slice(0, NIVEL[S.nivel].ideas);
+  const cont=$("cosas"); cont.innerHTML="";
+  ideas.forEach(idea=>{
+    const b=document.createElement("button"); b.className="cosa";
+    b.innerHTML='<span class="grande" aria-hidden="true">'+idea.e+'</span><small>'+idea.n[S.idioma]+'</small>';
+    b.setAttribute("aria-label", idea.n[S.idioma]);
+    b.dataset.dice = idea.n[S.idioma];
+    if(S.hechos[o.id+idea.e]) b.classList.add("vista");
+    b.addEventListener("click", ()=>tocarCosa(idea, b));
+    cont.appendChild(b);
+  });
+  cerrarCuadros();
+  $("combinado").innerHTML='<span>'+o.e+'</span>'; animar($("combinado"),"salta");
+  $("burbuja").className="burbuja"; $("burbuja").textContent=tx(o.uso);
+  $("escena").setAttribute("aria-label", o.n[S.idioma]);
+  pintarFrasco("frasco");
+  /* Las cosas se presentan con su nombre la primera vez */
+  if(S.modo==="amigos") decir("msg", ()=>tx(T.presentar,o)+" "+tx(T.turno, tx(T[colorJ(S.turno)])));
+  else decir("msg","presentar",o);
+  consejo("consejo", S.modo==="amigos" ? "amigos" : "juego");
+}
+
+/* Toca una cosa: el objeto se transforma */
+function tocarCosa(idea, b){
+  const o=S.obj; cerrarCuadros();
+  const c=$("combinado"); c.innerHTML='<span>'+o.e+'</span><span class="mas">+</span><span>'+idea.e+'</span>'; animar(c,"salta");
+  verEscena();
+  $("burbuja").className="burbuja"; $("burbuja").textContent=tx(idea.v);
+  sonMagia();
+  const nueva=!S.hechos[o.id+idea.e];
+  if(nueva){
+    S.hechos[o.id+idea.e]=true; b.classList.add("vista");
+    agregarIdea({obj:o.id, tipo:"lumi", e:idea.e, v:idea.v});
+  }
+  const todas=[...document.querySelectorAll("#cosas .cosa")].every(x=>x.classList.contains("vista"));
+  const sig = S.modo==="amigos" ? " "+tx(T.turno, tx(T[colorJ(S.turno)])) : "";
+  const cola = todas ? T.todasVistas : (S.modo==="amigos" ? T.alFrasco : T.otraIdea);
+  hablar(tx(idea.v), ()=>decir("msg", ()=>tx(cola)+sig));
+}
+
+/* Guarda una idea en el frasco; con amigos, pasa el turno */
+function agregarIdea(idea){
+  idea.j = S.modo==="amigos" ? colorJ(S.turno) : null;
+  S.frasco.push(idea);
+  if(S.modo==="amigos") S.turno = 1-S.turno;
+  pintarFrasco("frasco"); animar($("frasco"),"lleno");
+}
+function pintarFrasco(cual){
+  const f=$(cual); if(!f) return;
+  const n=S.frasco.length;
+  f.innerHTML='<span class="tarro" aria-hidden="true">💡</span><span class="cuenta"></span><span class="dentro" aria-hidden="true"></span>';
+  f.querySelector(".cuenta").textContent = tx(S.modo==="amigos" ? T.frascoAmigos : T.frasco, n);
+  const d=f.querySelector(".dentro");
+  S.frasco.forEach(x=>{ const s=document.createElement("span"); s.textContent = x.tipo==="lumi" ? x.e : "🌟"; if(x.j) s.className=x.j; d.appendChild(s); });
+}
+
+/* Idea propia (dicha o dibujada) */
+function ideaPropia(idea){
+  const o=S.obj; cerrarCuadros();
+  idea.obj=o.id;
+  const quien=S.turno;
+  agregarIdea(idea);
+  const c=$("combinado");
+  if(idea.tipo==="dibujo") c.innerHTML='<span>'+o.e+'</span><span class="mas">+</span><img alt="">';
+  else c.innerHTML='<span>'+o.e+'</span><span class="mas">+</span><span>🌟</span>';
+  if(idea.tipo==="dibujo"){ const im=c.querySelector("img"); im.src=idea.src;
+    im.alt = S.idioma==="es" ? "Tu dibujo" : "Your drawing"; }
+  animar(c,"salta");
+  $("burbuja").className="burbuja"; $("burbuja").textContent = S.idioma==="es" ? "¡Una idea nueva!" : "A brand-new idea!";
+  verEscena();
+  sonTada(); confeti(); lumiFeliz();
+  if(S.modo==="amigos") decir("msg","ideaPropiaAmigos", tx(T[colorJ(S.turno)]));
+  else decir("msg","ideaPropia");
+  consejo("consejo", S.modo==="amigos" ? "amigos" : "propia");
+}
+
+/* Chispa: una pregunta «¿Y si…?» */
+$("f-chispa").addEventListener("click", ()=>{
+  const o=S.obj; cerrarCuadros();
+  if(!S.chispas.length) S.chispas=mezclar(CHISPAS);
+  const c=S.chispas.pop();
+  const texto=chispaTexto(c,o);
+  $("combinado").innerHTML='<span>'+o.e+'</span><span class="mas">+</span><span>💡</span>'; animar($("combinado"),"salta");
+  $("burbuja").className="burbuja chispa"; $("burbuja").textContent=texto;
+  verEscena();
+  sonChispa();
+  consejo("consejo","chispa");
+  S.ultimo={cual:"msg", objeto:()=>tx(T.chispa)+" "+chispaTexto(c,o)+" "+tx(T.chispaDespues), p:[]};
+  $("msg").textContent = tx(S.ultimo.objeto);
+  S.ultimaGuia=()=>[{texto:$("msg").textContent}].concat(pasosDe(["f-voz","f-dibujo"]));
+  guia(S.ultimaGuia());
+});
+$("btn-otro-objeto").addEventListener("click", ()=>pantallaObjetos(false));
+$("bocina").addEventListener("click", repetirGuia);
+
+/* ============ Decirlo y dibujarlo (DUA) ============ */
+function cerrarCuadros(){ ["cuadro-voz","cuadro-dibujo"].forEach(z=>$(z).classList.add("oculto")); pararGrabacion(); }
+$("f-voz").addEventListener("click", ()=>{
+  cerrarCuadros(); prepararVoz(); $("cuadro-voz").classList.remove("oculto");
+  guia([{texto:$("cuadro-voz").querySelector("h3").textContent}].concat(pasosDe(["btn-grabar","btn-dicho"])), false);
+});
+$("f-dibujo").addEventListener("click", ()=>{
+  cerrarCuadros(); limpiarLienzo(); $("cuadro-dibujo").classList.remove("oculto");
+  guia([{texto:$("cuadro-dibujo").querySelector("h3").textContent}].concat(pasosDe(["lienzo","colores","btn-usar-dibujo"])), false);
+});
+
+let grabadora=null, flujo=null, trozos=[], urlVoz=null, relojVoz=null;
+const puedeGrabar = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+function prepararVoz(){
+  urlVoz=null;
+  $("btn-escuchar").classList.add("oculto"); $("btn-usar-voz").classList.add("oculto");
+  $("btn-grabar").classList.toggle("oculto", !puedeGrabar);
+  $("nota-voz").classList.toggle("oculto", !puedeGrabar);
+  $("txt-grabar").textContent = S.idioma==="es" ? "Grabar" : "Record";
+}
+async function empezarGrabacion(){
+  try{
+    hablar("");
+    flujo = await navigator.mediaDevices.getUserMedia({audio:true});
+    trozos=[]; grabadora = new MediaRecorder(flujo);
+    grabadora.ondataavailable = e=>{ if(e.data && e.data.size) trozos.push(e.data); };
+    grabadora.onstop = ()=>{
+      if(flujo){ flujo.getTracks().forEach(t=>t.stop()); flujo=null; }
+      if(!trozos.length) return;
+      urlVoz = URL.createObjectURL(new Blob(trozos, {type: grabadora.mimeType || "audio/webm"}));
+      $("btn-escuchar").classList.remove("oculto"); $("btn-usar-voz").classList.remove("oculto");
+      $("txt-grabar").textContent = S.idioma==="es" ? "Grabar otra vez" : "Record again";
+      guia(pasosDe(["btn-escuchar","btn-usar-voz"]), false);
+    };
+    grabadora.start();
+    $("btn-grabar").classList.add("grabando");
+    $("txt-grabar").textContent = S.idioma==="es" ? "Parar" : "Stop";
+    relojVoz = setTimeout(pararGrabacion, 10000);
+  }catch(e){
+    $("btn-grabar").classList.add("oculto");
+    $("nota-voz").classList.remove("oculto");
+    $("nota-voz").textContent = S.idioma==="es"
+      ? "No se pudo usar el micrófono. Di tu idea en voz alta y toca «Ya lo dije en voz alta»."
+      : "The microphone could not be used. Say your idea out loud and tap «I said it out loud».";
+  }
+}
+function pararGrabacion(){
+  clearTimeout(relojVoz);
+  $("btn-grabar").classList.remove("grabando");
+  if(grabadora && grabadora.state==="recording") grabadora.stop();
+  else if(flujo){ flujo.getTracks().forEach(t=>t.stop()); flujo=null; }
+}
+$("btn-grabar").addEventListener("click", ()=>{ if(grabadora && grabadora.state==="recording") pararGrabacion(); else empezarGrabacion(); });
+$("btn-escuchar").addEventListener("click", ()=>{ if(urlVoz) new Audio(urlVoz).play(); });
+$("btn-usar-voz").addEventListener("click", ()=>{ const u=urlVoz; urlVoz=null; ideaPropia({tipo:"voz", url:u}); });
+$("btn-dicho").addEventListener("click", ()=>ideaPropia({tipo:"voz"}));
+
+const lienzo=$("lienzo"), pincel=lienzo.getContext("2d");
+let colorActual=COLORES[0], dibujando=false, dibujado=false;
+COLORES.forEach((c,i)=>{
+  const b=document.createElement("button"); b.className="color-btn"; b.style.background=c;
+  b.setAttribute("aria-label", "Color "+(i+1)); b.setAttribute("aria-pressed", i===0);
+  b.addEventListener("click", ()=>{ colorActual=c; document.querySelectorAll(".color-btn").forEach(x=>x.setAttribute("aria-pressed", x===b)); });
+  $("colores").appendChild(b);
+});
+function limpiarLienzo(){ pincel.fillStyle="#fff"; pincel.fillRect(0,0,lienzo.width,lienzo.height); dibujado=false; }
+function punto(e){ const r=lienzo.getBoundingClientRect(); return [(e.clientX-r.left)*lienzo.width/r.width, (e.clientY-r.top)*lienzo.height/r.height]; }
+lienzo.addEventListener("pointerdown", e=>{ dibujando=true; dibujado=true; lienzo.setPointerCapture(e.pointerId);
+  const [x,y]=punto(e); pincel.beginPath(); pincel.moveTo(x,y); pincel.lineTo(x+.1,y+.1);
+  pincel.strokeStyle=colorActual; pincel.lineWidth=12; pincel.lineCap="round"; pincel.lineJoin="round"; pincel.stroke(); });
+lienzo.addEventListener("pointermove", e=>{ if(!dibujando) return; const [x,y]=punto(e); pincel.lineTo(x,y); pincel.stroke(); });
+["pointerup","pointercancel","pointerleave"].forEach(ev=>lienzo.addEventListener(ev, ()=>{ dibujando=false; }));
+$("btn-borrar").addEventListener("click", limpiarLienzo);
+$("btn-usar-dibujo").addEventListener("click", ()=>{
+  if(!dibujado){ hablar(S.idioma==="es" ? "Primero dibuja tu idea con el dedo." : "First, draw your idea with your finger."); return; }
+  ideaPropia({tipo:"dibujo", src:lienzo.toDataURL("image/png")});
+});
+
+/* ============ Final: el museo de ideas ============ */
+function final(){
+  mostrar("p-final");
+  const n=S.frasco.length;
+  $("tit-final").textContent = tx(S.modo==="amigos" ? T.finalTitAmigos : T.finalTit, n);
+  const museo=$("museo"); museo.innerHTML="";
+  OBJETOS.forEach(o=>{
+    const suyas=S.frasco.filter(f=>f.obj===o.id); if(!suyas.length) return;
+    const sala=document.createElement("div"); sala.className="sala";
+    sala.innerHTML='<h3><span class="grande" aria-hidden="true">'+o.e+'</span><span></span></h3><ul></ul>';
+    sala.querySelector("h3 span:last-child").textContent = o.n[S.idioma].charAt(0).toUpperCase()+o.n[S.idioma].slice(1);
+    const ul=sala.querySelector("ul");
+    suyas.forEach(f=>{
+      const li=document.createElement("li");
+      if(f.j){ const p=document.createElement("span"); p.className="punto "+f.j; p.setAttribute("aria-hidden","true"); li.appendChild(p); }
+      if(f.tipo==="lumi"){ li.insertAdjacentHTML("beforeend",'<span aria-hidden="true">'+f.e+'</span>'); li.appendChild(document.createTextNode(tx(f.v))); }
+      else if(f.tipo==="dibujo"){ const im=document.createElement("img"); im.src=f.src; im.alt=tx(T.ideaTuya); li.appendChild(im);
+        li.appendChild(document.createTextNode("🌟 "+tx(T.ideaTuya))); }
+      else if(f.url){ const b=document.createElement("button"); b.className="boton"; b.style.minHeight="40px"; b.style.padding="2px 10px";
+        b.innerHTML='<span aria-hidden="true">▶️</span> 🌟 '+tx(T.ideaTuya); b.addEventListener("click",()=>new Audio(f.url).play()); li.appendChild(b); }
+      else li.appendChild(document.createTextNode("🌟 "+tx(T.ideaTuya)+" ("+tx(T.dicha)+")"));
+      ul.appendChild(li);
+    });
+    museo.appendChild(sala);
+  });
+  confeti(); sonTada();
+  S.ultimo=null;
+  const msg = $("tit-final").textContent + " " + $("p-final").querySelector(".reto-real").textContent.replace("🏠","");
+  S.ultimaGuia=()=>[{texto:msg}].concat(pasosDe(["btn-otra-vez"]));
+  guia(S.ultimaGuia());
+}
+
+/* ============ Idioma ============ */
+let gradoFijo=null;
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es"); $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  const es=S.idioma==="es";
+  document.title = es ? "¿Para qué más sirve? · Mentes curiosas" : "What else could it be? · Curious Minds";
+  $("btn-oir").setAttribute("aria-label", es ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  ["bocina","bocina-obj"].forEach(id=>$(id).setAttribute("aria-label", es ? "Escuchar otra vez" : "Hear it again"));
+  $("lienzo").setAttribute("aria-label", es ? "Espacio para dibujar" : "Drawing space");
+  $("colores").setAttribute("aria-label", es ? "Colores" : "Colors");
+  const q=[gradoFijo ? "grado="+gradoFijo : "", es ? "lang=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(x=>x.setAttribute("href","./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(x=>x.setAttribute("href","para-adultos.html"+(q?"?"+q:"")+"#"+(es?"es":"en")+"-juegos"));
+  /* Lo que está en pantalla se vuelve a pintar en el nuevo idioma */
+  if(!$("p-objetos").classList.contains("oculto")) pantallaObjetos(!S.frasco.length);
+  else if(!$("p-juego").classList.contains("oculto") && S.obj){
+    const o=S.obj; jugarCon(o);
+  }
+  else if(!$("p-final").classList.contains("oculto")) final();
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo.cual, S.ultimoConsejo.clave);
+  if(!(grabadora && grabadora.state==="recording")) $("txt-grabar").textContent = es ? "Grabar" : "Record";
+}
+try{
+  const q=new URLSearchParams(location.search);
+  if(q.get("lang")==="es") S.idioma="es";
+  if(q.get("grado")==="prek" || q.get("grado")==="k") gradoFijo=q.get("grado");
+}catch(e){}
+if(gradoFijo){
+  S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+  document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", x.dataset.nivel===gradoFijo));
+}
+aplicarIdioma();
+
+/* Presentación hablada (la voz se suelta con el primer toque) */
+let presentado=false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado=true;
+  guia([{texto: document.querySelector("#p-portada h2").textContent + " " + document.querySelector("#p-portada p.intro").textContent},
+        {el:$("btn-empezar"), texto:tx(DICE["btn-empezar"])}]);
+}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+  if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel]")) return;
+  presentar(); }, {once:true}));
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+presentar();
+setTimeout(()=>{ const s=window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>

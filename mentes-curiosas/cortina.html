@@ -622,7 +622,13 @@ const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().lengt
 function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
 function pasosDe(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id])})); }
 /* Recorrido: [{el?, texto}] — se dice cada paso con su botón iluminado */
-function guia(pasos){
+/* Si el niño toca la pantalla, Lumi deja de presentar y la página se queda donde está */
+document.addEventListener("pointerdown", e=>{
+  if(!document.querySelector(".senalado")) return;
+  turnoVoz++; limpiarSenal();
+}, true);
+function guia(pasos, volver){
+  if(volver===undefined) volver=true;
   const mio = ++turnoVoz; limpiarSenal();
   let i = -1;
   let yInicial=null;
@@ -630,7 +636,7 @@ function guia(pasos){
     if(mio!==turnoVoz) return;
     limpiarSenal(); i++;
     if(i>=pasos.length){
-      if(yInicial!==null && Math.abs(window.scrollY-yInicial)>4) window.scrollTo({top:yInicial, behavior: sinMovimiento()?"auto":"smooth"});
+      if(volver && yInicial!==null && Math.abs(window.scrollY-yInicial)>4) window.scrollTo({top:yInicial, behavior: sinMovimiento()?"auto":"smooth"});
       return;
     }
     const p=pasos[i];
@@ -951,10 +957,10 @@ $("f-nose").addEventListener("click", ()=>guardarIdea({tipo:"nose"}));
 $("f-igual").addEventListener("click", ()=>guardarIdea(null));
 $("f-dibujo").addEventListener("click", ()=>{ cerrarCuadros(); limpiarLienzo(); $("cuadro-dibujo").classList.remove("oculto");
   $("cuadro-dibujo").scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
-$("f-dibujo").addEventListener("click", ()=>guia([{texto:$("cuadro-dibujo").querySelector("h3").textContent}].concat(pasosDe(["lienzo","colores","btn-usar-dibujo"])))); });
+$("f-dibujo").addEventListener("click", ()=>guia([{texto:$("cuadro-dibujo").querySelector("h3").textContent}].concat(pasosDe(["lienzo","colores","btn-usar-dibujo"])), false)); });
 $("f-voz").addEventListener("click", ()=>{ cerrarCuadros(); prepararVoz(); $("cuadro-voz").classList.remove("oculto");
   $("cuadro-voz").scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
-$("f-voz").addEventListener("click", ()=>guia([{texto:$("cuadro-voz").querySelector("h3").textContent}].concat(pasosDe(["btn-grabar","btn-dicho"])))); });
+$("f-voz").addEventListener("click", ()=>guia([{texto:$("cuadro-voz").querySelector("h3").textContent}].concat(pasosDe(["btn-grabar","btn-dicho"])), false)); });
 
 /* ---- Grabar la voz (se queda en el aparato) ---- */
 let grabadora=null, flujo=null, trozos=[], urlVoz=null, relojVoz=null;
@@ -978,7 +984,7 @@ async function empezarGrabacion(){
       urlVoz = URL.createObjectURL(new Blob(trozos, {type: grabadora.mimeType || "audio/webm"}));
       $("btn-escuchar").classList.remove("oculto"); $("btn-usar-voz").classList.remove("oculto");
       $("txt-grabar").textContent = S.idioma==="es" ? "Grabar otra vez" : "Record again";
-      guia(pasosDe(["btn-escuchar","btn-usar-voz"]));
+      guia(pasosDe(["btn-escuchar","btn-usar-voz"]), false);
     };
     grabadora.start();
     $("btn-grabar").classList.add("grabando");
