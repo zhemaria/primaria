@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — Lumi's Curtain / La cortina de Lumi (Pre-K and Kindergarten)
+  Something is hiding behind the curtain. Children guess, ask for clues (a riddle, a shadow, a peek),
+  change their minds, and open the curtain when they decide. Not knowing is part of the game.
+  Ideas can be shown three ways (UDL): pick a picture, say it (recording stays on this device), or draw it.
+  Play alone, with a grown-up, or with a friend on the same tablet.
+  Inspired by Kelsey Lucca's research on children's curiosity (Arizona State University).
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-es="La cortina de Lumi · Mentes curiosas" data-en="Lumi's Curtain · Curious Minds">Lumi's Curtain · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A curiosity game for Pre-K and Kindergarten: something is hiding behind the curtain. Guess, ask for clues, change your mind and open the curtain when you decide. Play alone, with a grown-up or with a friend. English and Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4;
+  --amarillo:#F2B705; --azul:#1F6FD1;
+  --telon:#B3263A; --telon-oscuro:#7E1526;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.llama{animation:llamar 1.4s ease-in-out infinite}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.estrellas{font-weight:700}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto;mix-blend-mode:multiply}
+.portada .bocina{margin:0 auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0 6px}
+.portada p.intro{color:var(--tinta-suave);max-width:52ch;margin:0 auto 14px}
+.pregunta{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+
+/* ---------- Lumi y su mensaje ---------- */
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:64px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,23px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.instruccion img.pensando{animation:ladeo .8s ease-in-out}
+
+/* ---------- Consejos para el adulto ---------- */
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+
+/* ---------- Luciérnagas ---------- */
+.cielo{position:relative;height:clamp(300px,52vh,440px);border-radius:22px;overflow:hidden;
+  background:radial-gradient(circle at 80% 15%,#3A3C7A 0,#1C1B44 45%,#100F2B 100%);box-shadow:var(--sombra);border:4px solid #2B2960}
+.cielo::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22%;
+  background:radial-gradient(ellipse at 30% 100%,#1F4D2E 0,#163A23 60%,transparent 61%),
+             radial-gradient(ellipse at 80% 100%,#225A35 0,#163A23 55%,transparent 56%);pointer-events:none}
+.luciernaga{position:absolute;width:76px;height:76px;border:none;background:transparent;padding:0;border-radius:50%;
+  animation:flotar 3.4s ease-in-out infinite}
+.luciernaga svg{width:100%;height:100%;filter:drop-shadow(0 0 10px #FFE873) drop-shadow(0 0 22px #FFD23F)}
+.luciernaga.atrapada{animation:atrapar .5s ease-in forwards;pointer-events:none}
+.frasco{position:absolute;right:14px;bottom:12px;z-index:2;background:rgba(255,255,255,.92);border-radius:16px;
+  padding:6px 12px;font-weight:700;font-size:1.05em}
+
+/* ---------- El escenario y la cortina ---------- */
+.escenario{position:relative;height:clamp(250px,40vh,340px);border-radius:22px;overflow:hidden;box-shadow:var(--sombra);
+  border:4px solid #5B1220;background:radial-gradient(ellipse at 50% 35%,#FFF6DD 0,#F7DFA8 45%,#C99A55 100%)}
+.piso{position:absolute;left:0;right:0;bottom:0;height:18%;background:linear-gradient(#8A5A2B,#6B431E)}
+.objeto{position:absolute;left:50%;top:42%;white-space:nowrap;transform:translate(-50%,-50%);font-size:clamp(96px,17vw,150px);line-height:1;
+  visibility:hidden;transition:filter .5s}
+.objeto.en-sombra{visibility:visible;filter:brightness(0) opacity(.8)}
+.objeto.a-color{visibility:visible;filter:none}
+.objeto.salta{animation:aparece .7s ease-out}
+.panel{position:absolute;top:0;bottom:0;width:51%;z-index:2;transition:transform .9s cubic-bezier(.6,.1,.3,1),opacity .6s;
+  background:repeating-linear-gradient(90deg,var(--telon-oscuro) 0,var(--telon) 9%,#D2384F 13%,var(--telon) 17%,var(--telon-oscuro) 24%);
+  box-shadow:inset 0 -20px 30px rgba(0,0,0,.25)}
+.panel.izq{left:0;transform-origin:left center;border-radius:0 0 30px 0}
+.panel.der{right:0;transform-origin:right center;border-radius:0 0 0 30px}
+.escenario.mueve .panel{animation:temblor .45s ease-in-out 3}
+.escenario.fina .panel{opacity:.5}
+.escenario.asomo .panel.der{transform:translateX(26%)}
+.escenario.abierta .panel.izq{transform:translateX(-78%) scaleX(.45)}
+.escenario.abierta .panel.der{transform:translateX(78%) scaleX(.45)}
+.cenefa{position:absolute;top:0;left:0;right:0;height:38px;z-index:3;
+  background:radial-gradient(circle at 25px -6px,var(--oro) 0 22px,transparent 23px) 0 0/50px 38px repeat-x,
+             linear-gradient(var(--telon-oscuro),var(--telon-oscuro)) 0 0/100% 16px no-repeat}
+.adivinanza{position:absolute;left:50%;top:48px;transform:translateX(-50%);z-index:4;max-width:88%;background:var(--blanco);
+  border:3px solid var(--tinta);border-radius:18px;padding:8px 14px;font-weight:700;text-align:center;box-shadow:var(--sombra)}
+.nombre-objeto{position:absolute;left:50%;bottom:3%;transform:translateX(-50%);z-index:4;background:var(--blanco);
+  border-radius:999px;padding:4px 18px;font-weight:700;font-size:1.15em;border:3px solid var(--tinta)}
+
+/* Pistas encontradas */
+.pistas{display:flex;justify-content:center;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+.pista{display:inline-flex;align-items:center;gap:6px;border:3px dashed var(--linea);border-radius:999px;padding:4px 12px;
+  font-weight:700;font-size:.82em;color:var(--tinta-suave);background:var(--blanco)}
+.pista.lista{border-style:solid;border-color:var(--oro);background:var(--oro-claro);color:var(--tinta)}
+
+/* Ideas de los jugadores */
+.ideas{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:10px 0}
+.idea{display:flex;align-items:center;gap:8px;background:var(--blanco);border:4px solid var(--linea);border-radius:18px;
+  padding:6px 12px;font-weight:700;min-height:62px}
+.idea.amarillo{border-color:var(--amarillo)} .idea.azul{border-color:var(--azul)}
+.idea .grande{font-size:1.9em;line-height:1}
+.idea img{width:70px;height:50px;object-fit:contain;background:#fff;border:1px solid var(--linea);border-radius:8px}
+.idea .vacia{color:var(--tinta-suave);font-weight:600}
+.punto{display:inline-block;width:18px;height:18px;border-radius:50%;border:2px solid var(--tinta)}
+.punto.amarillo{background:var(--amarillo)} .punto.azul{background:var(--azul)}
+
+/* Acciones */
+.acciones{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.formas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:10px;min-height:86px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.9em;line-height:1.1}
+.forma:hover{border-color:var(--tinta)}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:14px;margin-top:12px;box-shadow:var(--sombra)}
+.cuadro h3{margin:0 0 10px;font-size:1em}
+.fotos{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.foto{width:clamp(96px,20vw,128px);height:clamp(110px,22vw,140px);border:4px solid var(--linea);border-radius:20px;background:var(--blanco);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--sombra)}
+.foto .grande{font-size:clamp(44px,8vw,62px);line-height:1.1}
+.foto small{font-weight:700;font-size:.8em}
+.foto:hover{border-color:var(--tinta)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+
+/* Dibujo */
+.lienzo-caja{display:flex;flex-direction:column;align-items:center;gap:10px}
+canvas#lienzo{width:min(100%,560px);aspect-ratio:14/9;background:#fff;border:4px solid var(--tinta);border-radius:16px;touch-action:none}
+.colores{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.color{width:48px;height:48px;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 3px var(--linea)}
+.color[aria-pressed="true"]{box-shadow:0 0 0 4px var(--tinta)}
+
+/* ---------- Cofre ---------- */
+.cofre-caja{text-align:center}
+.cofre{width:min(240px,60vw);height:auto;display:block;margin:0 auto;overflow:visible}
+.cofre-caja .instruccion{text-align:left}
+.cofre .tapa{transform-origin:40px 78px;transition:transform .9s ease}
+.cofre.abierto .tapa{transform:rotate(-28deg) translateY(-14px)}
+.sorpresa{font-size:clamp(70px,14vw,110px);line-height:1;height:1.1em}
+.cielo-chico{display:flex;justify-content:center;gap:10px;font-size:2.2em;min-height:1.3em}
+.cielo-chico span{animation:brillo 1.6s ease-in-out infinite}
+.cielo-chico span:nth-child(2n){animation-delay:.5s}
+
+/* ---------- Final ---------- */
+.museo{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:10px 0}
+.vitrina{background:var(--blanco);border:4px solid var(--oro);border-radius:18px;padding:8px 12px;text-align:center;min-width:110px}
+.vitrina .grande{font-size:3em;line-height:1.1;display:block}
+.vitrina img{width:120px;height:80px;object-fit:contain}
+.reto-real{background:var(--oro-claro);border:3px solid var(--oro);border-radius:18px;padding:12px 16px;max-width:60ch;margin:16px auto;font-weight:600}
+.creditos{font-size:.78em;color:var(--tinta-suave);text-align:center;margin-top:26px}
+.creditos a{color:var(--acento)}
+
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:50;animation:caer 2s linear forwards;pointer-events:none}
+
+@keyframes flotar{0%,100%{transform:translate(0,0)}25%{transform:translate(10px,-14px)}50%{transform:translate(-6px,-24px)}75%{transform:translate(-12px,-8px)}}
+@keyframes atrapar{to{transform:translate(0,40px) scale(.1);opacity:0}}
+@keyframes temblor{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes aparece{0%{transform:translate(-50%,-30%) scale(.4)}70%{transform:translate(-50%,-55%) scale(1.12)}100%{transform:translate(-50%,-50%) scale(1)}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}70%{transform:rotate(8deg)}}
+@keyframes llamar{0%,100%{box-shadow:var(--sombra)}50%{box-shadow:0 0 0 6px rgba(75,46,154,.3)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes brillo{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.85)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+@media print{.barra,.consejo,.acciones{display:none}}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" href="./" data-es="◀ Mentes curiosas" data-en="◀ Curious Minds">◀ Curious Minds</a>
+    <h1 data-es="La cortina de Lumi" data-en="Lumi's Curtain">Lumi's Curtain</h1>
+    <span class="crece"></span>
+    <span class="chip estrellas oculto" id="marcador" role="status"><span aria-hidden="true">⭐</span> <span id="num-estrellas">0</span></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../lumi-saluda.jpg" alt="" width="360" height="469">
+    <h2 data-es="¿Qué hay detrás de la cortina?" data-en="What is behind the curtain?">What is behind the curtain?</h2>
+    <p class="intro" data-es="Algo se esconde detrás de la cortina. Piensa, pide pistas, cambia de idea si quieres y abre la cortina cuando tú decidas. ¡No saber todavía es parte del juego!"
+       data-en="Something is hiding behind the curtain. Think, ask for clues, change your mind if you want, and open the curtain when you decide. Not knowing yet is part of the game!">Something is hiding behind the curtain. Think, ask for clues, change your mind if you want, and open the curtain when you decide. Not knowing yet is part of the game!</p>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta" id="preg-quien" data-es="¿Quién juega?" data-en="Who is playing?">Who is playing?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span data-es="Yo solo" data-en="Just me">Just me</span></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span data-es="Con un adulto" data-en="With a grown-up">With a grown-up</span>
+        <small data-es="con consejos para el adulto" data-en="with tips for the grown-up">with tips for the grown-up</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span data-es="Con un amigo" data-en="With a friend">With a friend</span>
+        <small data-es="dos en la misma pantalla" data-en="two on one screen">two on one screen</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+    <p class="pregunta" id="preg-nivel" data-es="¿En qué grado estás?" data-en="What grade are you in?">What grade are you in?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+      <button class="opcion" data-nivel="prek" aria-pressed="true"><span class="ico" aria-hidden="true">🧸</span>
+        <span data-es="Prekínder" data-en="Pre-K">Pre-K</span></button>
+      <button class="opcion" data-nivel="k" aria-pressed="false"><span class="ico" aria-hidden="true">🎒</span>
+        <span data-es="Kínder" data-en="Kindergarten">Kindergarten</span></button>
+    </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- LUCIÉRNAGAS: se ganan estrellas para el final -->
+  <section id="p-luciernagas" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83" id="lumi-1">
+      <p id="msg-luc" aria-live="polite"></p>
+      <button class="bocina" id="bocina-luc" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo-luc"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+    <div class="cielo" id="cielo">
+      <div class="frasco" aria-hidden="true">⭐ <span id="frasco-num">0</span></div>
+    </div>
+    <div class="acciones"><button class="boton fuerte oculto" id="btn-a-misterios" data-es="¡Vamos a los misterios! ▶" data-en="On to the mysteries! ▶">On to the mysteries! ▶</button></div>
+  </section>
+
+  <!-- MISTERIO -->
+  <section id="p-misterio" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83" id="lumi-2">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+
+    <div class="escenario" id="escenario" role="img" aria-label="">
+      <div class="piso"></div>
+      <div class="objeto" id="objeto" aria-hidden="true"></div>
+      <div class="panel izq"></div><div class="panel der"></div>
+      <div class="cenefa"></div>
+      <div class="adivinanza oculto" id="adivinanza"></div>
+      <div class="nombre-objeto oculto" id="nombre-objeto"></div>
+    </div>
+
+    <div class="pistas" aria-label="Clues">
+      <span class="pista" id="pista-1"><span aria-hidden="true">🗣️</span> <span data-es="Adivinanza" data-en="Riddle">Riddle</span></span>
+      <span class="pista" id="pista-2"><span aria-hidden="true">👤</span> <span data-es="Sombra" data-en="Shadow">Shadow</span></span>
+      <span class="pista" id="pista-3"><span aria-hidden="true">👀</span> <span data-es="Asomarse" data-en="Peek">Peek</span></span>
+    </div>
+
+    <div class="ideas" id="ideas"></div>
+
+    <!-- Las tres formas de dar una idea -->
+    <div id="zona-idea" class="oculto">
+      <div class="formas">
+        <button class="forma" id="f-foto"><span class="ico" aria-hidden="true">👆</span><span data-es="Elige un dibujo" data-en="Pick a picture">Pick a picture</span></button>
+        <button class="forma" id="f-voz"><span class="ico" aria-hidden="true">🎤</span><span data-es="Dilo" data-en="Say it">Say it</span></button>
+        <button class="forma" id="f-dibujo"><span class="ico" aria-hidden="true">✏️</span><span data-es="Dibújalo" data-en="Draw it">Draw it</span></button>
+        <button class="forma" id="f-nose"><span class="ico" aria-hidden="true">🤔</span><span data-es="Todavía no sé" data-en="I don't know yet">I don't know yet</span></button>
+        <button class="forma oculto" id="f-igual"><span class="ico" aria-hidden="true">✅</span><span data-es="Me quedo con mi idea" data-en="Keep my idea">Keep my idea</span></button>
+      </div>
+
+      <div class="cuadro oculto" id="cuadro-foto">
+        <h3 data-es="¿Cuál crees que es?" data-en="Which one do you think it is?">Which one do you think it is?</h3>
+        <div class="fotos" id="fotos"></div>
+      </div>
+
+      <div class="cuadro oculto" id="cuadro-voz">
+        <h3 data-es="Di tu idea en voz alta" data-en="Say your idea out loud">Say your idea out loud</h3>
+        <div class="acciones">
+          <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar"></span></button>
+          <button class="boton oculto" id="btn-escuchar"><span aria-hidden="true">▶️</span> <span data-es="Escuchar" data-en="Listen">Listen</span></button>
+          <button class="boton fuerte oculto" id="btn-usar-voz"><span aria-hidden="true">✅</span> <span data-es="Esta es mi idea" data-en="That's my idea">That's my idea</span></button>
+        </div>
+        <div class="acciones"><button class="boton" id="btn-dicho"><span aria-hidden="true">🗣️</span> <span data-es="Ya lo dije en voz alta (sin grabar)" data-en="I said it out loud (no recording)">I said it out loud (no recording)</span></button></div>
+        <p class="nota-priv" id="nota-voz" data-es="La grabación se queda en este aparato y se borra al cerrar la página." data-en="The recording stays on this device and is erased when you close the page.">The recording stays on this device and is erased when you close the page.</p>
+      </div>
+
+      <div class="cuadro oculto" id="cuadro-dibujo">
+        <h3 data-es="Dibuja lo que crees que hay detrás" data-en="Draw what you think is behind it">Draw what you think is behind it</h3>
+        <div class="lienzo-caja">
+          <canvas id="lienzo" width="700" height="450" aria-label="Drawing space"></canvas>
+          <div class="colores" id="colores" role="group" aria-label="Colors"></div>
+          <div class="acciones">
+            <button class="boton" id="btn-borrar"><span aria-hidden="true">🧽</span> <span data-es="Borrar todo" data-en="Erase all">Erase all</span></button>
+            <button class="boton fuerte" id="btn-usar-dibujo"><span aria-hidden="true">✅</span> <span data-es="Esta es mi idea" data-en="That's my idea">That's my idea</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Después de dar la idea -->
+    <div class="acciones oculto" id="zona-decidir">
+      <button class="boton" id="btn-pista"><span aria-hidden="true">🔍</span> <span data-es="Otra pista" data-en="Another clue">Another clue</span></button>
+      <button class="boton fuerte" id="btn-abrir"><span aria-hidden="true">🎭</span> <span data-es="¡Abrir la cortina!" data-en="Open the curtain!">Open the curtain!</span></button>
+    </div>
+
+    <!-- Al abrir: ¿era lo que pensabas? (para ideas dichas o dibujadas) -->
+    <div class="acciones oculto" id="zona-autoeval">
+      <button class="boton" id="btn-si-era"><span aria-hidden="true">👍</span> <span data-es="¡Sí, era eso!" data-en="Yes, it was!">Yes, it was!</span></button>
+      <button class="boton" id="btn-no-era"><span aria-hidden="true">😮</span> <span data-es="Era otra cosa" data-en="It was something else">It was something else</span></button>
+    </div>
+
+    <div class="acciones oculto" id="zona-siguiente">
+      <button class="boton fuerte" id="btn-siguiente"><span data-es="Siguiente misterio ▶" data-en="Next mystery ▶">Next mystery ▶</span></button>
+    </div>
+  </section>
+
+  <!-- COFRE DORADO -->
+  <section id="p-cofre" class="oculto cofre-caja">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83" id="lumi-3">
+      <p id="msg-cofre" aria-live="polite"></p>
+      <button class="bocina" id="bocina-cofre" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo-cofre"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+    <svg class="cofre" id="cofre" viewBox="0 -45 200 195" role="img" aria-label="Golden chest">
+      <ellipse cx="100" cy="142" rx="88" ry="7" fill="rgba(0,0,0,.15)"/>
+      <rect x="22" y="72" width="156" height="66" rx="8" fill="#8A5A2B" stroke="#4A2C10" stroke-width="4"/>
+      <rect x="22" y="92" width="156" height="10" fill="#E8A317" stroke="#9A6A00" stroke-width="2"/>
+      <rect x="40" y="72" width="12" height="66" fill="#E8A317" stroke="#9A6A00" stroke-width="2"/>
+      <rect x="148" y="72" width="12" height="66" fill="#E8A317" stroke="#9A6A00" stroke-width="2"/>
+      <g class="tapa">
+        <path d="M22 78 Q22 26 100 26 Q178 26 178 78 Z" fill="#A86E35" stroke="#4A2C10" stroke-width="4"/>
+        <path d="M40 78 Q40 36 46 32 L54 31 Q52 40 52 78 Z" fill="#E8A317" stroke="#9A6A00" stroke-width="2"/>
+        <path d="M148 78 Q148 40 146 31 L154 32 Q160 36 160 78 Z" fill="#E8A317" stroke="#9A6A00" stroke-width="2"/>
+      </g>
+      <rect x="88" y="84" width="24" height="26" rx="5" fill="#FFD54A" stroke="#9A6A00" stroke-width="3"/>
+      <circle cx="100" cy="95" r="4" fill="#4A2C10"/><rect x="98" y="97" width="4" height="8" fill="#4A2C10"/>
+    </svg>
+    <div class="sorpresa" id="sorpresa" aria-hidden="true"></div>
+    <div class="cielo-chico" id="cielo-chico" aria-hidden="true"></div>
+    <div class="acciones" id="zona-cofre">
+      <button class="boton oro" id="btn-cofre-abrir"><span aria-hidden="true">🗝️</span> <span data-es="Usar 3 ⭐ y abrirlo" data-en="Use 3 ⭐ and open it">Use 3 ⭐ and open it</span></button>
+      <button class="boton" id="btn-cofre-guardar"><span aria-hidden="true">✨</span> <span data-es="Guardar mis estrellas" data-en="Keep my stars">Keep my stars</span></button>
+    </div>
+    <div class="acciones oculto" id="zona-al-final"><button class="boton fuerte" id="btn-al-final" data-es="Ver mis descubrimientos ▶" data-en="See my discoveries ▶">See my discoveries ▶</button></div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto portada">
+    <img class="lumi-grande" src="../lumi-saluda.jpg" alt="" width="360" height="469">
+    <h2 data-es="¡Mi museo de descubrimientos!" data-en="My museum of discoveries!">My museum of discoveries!</h2>
+    <div class="museo" id="museo"></div>
+    <h3 id="tit-ideas" data-es="Mis ideas" data-en="My ideas">My ideas</h3>
+    <div class="museo" id="galeria"></div>
+    <p class="reto-real" id="reto-real"
+       data-es="🧺 Ahora, un misterio de verdad: pide a un adulto que esconda algo en una bolsa. Tócalo, muévelo, haz preguntas… ¿qué será? ¡Y después mira!"
+       data-en="🧺 Now a real mystery: ask a grown-up to hide something in a bag. Feel it, shake it, ask questions… what could it be? Then take a look!">🧺 Now a real mystery: ask a grown-up to hide something in a bag. Feel it, shake it, ask questions… what could it be? Then take a look!</p>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez" data-es="Jugar otra vez" data-en="Play again">Play again</button>
+      <a class="boton volver-hub" href="./" data-es="Otros juegos" data-en="Other games">Other games</a>
+    </div>
+  </section>
+
+  <p class="creditos"><span data-es="Inspirado en las investigaciones sobre la curiosidad infantil de Kelsey Lucca (Universidad Estatal de Arizona)." data-en="Inspired by Kelsey Lucca's research on children's curiosity (Arizona State University).">Inspired by Kelsey Lucca's research on children's curiosity (Arizona State University).</span>
+    · <a class="enlace-adultos" href="para-adultos.html" data-es="Para adultos: por qué este juego" data-en="For grown-ups: why this game">For grown-ups: why this game</a>
+    · José M. Fernández · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license">CC BY-NC-SA 4.0</a></p>
+</div>
+
+<script>
+"use strict";
+/* ============ Los misterios ============
+   n: nombre; a: con artículo; pk / k: adivinanza (prekínder más corta) */
+const MISTERIOS = [
+  {e:"🐶", n:{en:"dog",es:"perro"}, a:{en:"a dog",es:"un perro"},
+   pk:{en:"I say woof, woof!",es:"Yo hago guau, guau."},
+   k:{en:"I say woof, woof! I wag my tail and I love to fetch a ball.",es:"Yo hago guau, guau. Muevo la cola y me encanta buscar la pelota."}},
+  {e:"🐱", n:{en:"cat",es:"gato"}, a:{en:"a cat",es:"un gato"},
+   pk:{en:"I say meow!",es:"Yo hago miau."},
+   k:{en:"I say meow! I have whiskers and I love to nap in the sun.",es:"Yo hago miau. Tengo bigotes y me encanta dormir al sol."}},
+  {e:"🦆", n:{en:"duck",es:"pato"}, a:{en:"a duck",es:"un pato"},
+   pk:{en:"I say quack, quack!",es:"Yo hago cuac, cuac."},
+   k:{en:"I say quack, quack! I swim in the pond and I have feathers.",es:"Yo hago cuac, cuac. Nado en el estanque y tengo plumas."}},
+  {e:"🐄", n:{en:"cow",es:"vaca"}, a:{en:"a cow",es:"una vaca"},
+   pk:{en:"I say moo!",es:"Yo hago muuu."},
+   k:{en:"I say moo! I live on a farm and I give milk.",es:"Yo hago muuu. Vivo en la granja y doy leche."}},
+  {e:"🐸", n:{en:"frog",es:"rana"}, a:{en:"a frog",es:"una rana"},
+   pk:{en:"I say ribbit and I jump!",es:"Yo hago croac y salto."},
+   k:{en:"I say ribbit! I am green and I jump from lily pad to lily pad.",es:"Yo hago croac. Soy verde y salto de hoja en hoja en el agua."}},
+  {e:"🐘", n:{en:"elephant",es:"elefante"}, a:{en:"an elephant",es:"un elefante"},
+   pk:{en:"I am very big. I have a long nose!",es:"Soy muy grande. ¡Tengo la nariz muy larga!"},
+   k:{en:"I am very big and gray. I drink water with my long trunk.",es:"Soy muy grande y gris. Tomo agua con mi trompa larga."}},
+  {e:"🍎", n:{en:"apple",es:"manzana"}, a:{en:"an apple",es:"una manzana"},
+   pk:{en:"You can eat me. Crunch!",es:"Me puedes comer. ¡Cronch!"},
+   k:{en:"I am a fruit. I am round, red, and I go crunch when you bite me.",es:"Soy una fruta. Soy redonda, roja y hago cronch cuando me muerdes."}},
+  {e:"🍌", n:{en:"banana",es:"plátano"}, a:{en:"a banana",es:"un plátano"},
+   pk:{en:"I am yellow. Monkeys love me!",es:"Soy amarillo. ¡A los monos les encanto!"},
+   k:{en:"I am a yellow fruit. You peel me before you eat me.",es:"Soy una fruta amarilla. Me pelas antes de comerme."}},
+  {e:"⚽", n:{en:"ball",es:"pelota"}, a:{en:"a ball",es:"una pelota"},
+   pk:{en:"You can kick me!",es:"¡Me puedes patear!"},
+   k:{en:"I am round. You can kick me, and I roll and bounce.",es:"Soy redonda. Me puedes patear, y ruedo y reboto."}},
+  {e:"🚗", n:{en:"car",es:"carro"}, a:{en:"a car",es:"un carro"},
+   pk:{en:"Beep, beep! I go on the road.",es:"¡Pip, pip! Ando por la calle."},
+   k:{en:"Beep, beep! I have four wheels and I take people places.",es:"¡Pip, pip! Tengo cuatro ruedas y llevo a la gente a muchos lugares."}},
+  {e:"🥁", n:{en:"drum",es:"tambor"}, a:{en:"a drum",es:"un tambor"},
+   pk:{en:"Boom, boom! Tap me!",es:"¡Pum, pum! ¡Tócame!"},
+   k:{en:"Boom, boom! I make music when you tap me with two sticks.",es:"¡Pum, pum! Hago música cuando me tocas con dos palitos."}},
+  {e:"☂️", n:{en:"umbrella",es:"paraguas"}, a:{en:"an umbrella",es:"un paraguas"},
+   pk:{en:"Open me when it rains!",es:"¡Ábreme cuando llueve!"},
+   k:{en:"When it rains, you open me and I keep you dry.",es:"Cuando llueve, me abres y no te mojas."}},
+  {e:"🚀", n:{en:"rocket",es:"cohete"}, a:{en:"a rocket",es:"un cohete"},
+   pk:{en:"Whoosh! I fly up to the stars!",es:"¡Fiuuu! ¡Vuelo hasta las estrellas!"},
+   k:{en:"Whoosh! I fly very fast up into space, to the moon and the stars.",es:"¡Fiuuu! Vuelo muy rápido hasta el espacio, a la luna y las estrellas."}},
+  {e:"🐟", n:{en:"fish",es:"pez"}, a:{en:"a fish",es:"un pez"},
+   pk:{en:"I swim in the water!",es:"¡Nado en el agua!"},
+   k:{en:"I live in the water. I swim with my fins and my tail.",es:"Vivo en el agua. Nado con mis aletas y mi cola."}}
+];
+const SORPRESAS = ["🌈","🦕","🪐","🐳","🎈","🦋"];
+const NIVEL = { prek:{rondas:3, fotos:3}, k:{rondas:4, fotos:4} };
+const COLORES = ["#1E1A3A","#D32F2F","#1F6FD1","#2E7D32","#F28C00","#8E24AA","#8D5524"];
+
+/* ============ Textos de Lumi ============ */
+const T = {
+  lucInicio:{en:"Let's catch the fireflies! Each one gives you a star. Tap them!",es:"¡Atrapemos las luciérnagas! Cada una te da una estrella. ¡Tócalas!"},
+  lucFin:{en:"You have 5 stars! Keep them. You will need them later.",es:"¡Tienes 5 estrellas! Guárdalas. Las vas a necesitar más tarde."},
+  inicio:{en:"Something is hiding behind the curtain! What do you think it is?",es:"¡Algo se esconde detrás de la cortina! ¿Qué crees que es?"},
+  turno:{en:c=>`${c} turn: what do you think it is?`,es:c=>`Turno ${c}: ¿qué crees que es?`},
+  amarillo:{en:"Yellow",es:"amarillo"}, azul:{en:"Blue",es:"azul"},
+  nose:{en:"That's OK! Not knowing yet is how discovering starts. Let's look for a clue!",es:"¡Está bien! No saber todavía es el primer paso para descubrir. ¡Busquemos una pista!"},
+  ideaFoto:{en:"Interesting idea! Do you want another clue, or open the curtain to check?",es:"¡Qué idea tan interesante! ¿Quieres otra pista o abrimos la cortina para comprobarlo?"},
+  ideaVoz:{en:"I like your idea! Do you want another clue, or open the curtain to check?",es:"¡Me gusta tu idea! ¿Quieres otra pista o abrimos la cortina para comprobarlo?"},
+  ideaDibujo:{en:"What a great drawing! Do you want another clue, or open the curtain to check?",es:"¡Qué buen dibujo! ¿Quieres otra pista o abrimos la cortina para comprobarlo?"},
+  distintas:{en:"You have different ideas! How can we find out? A clue can help!",es:"¡Tienen ideas diferentes! ¿Cómo podemos averiguarlo? ¡Una pista puede ayudar!"},
+  iguales:{en:"You both think the same! Do you want to check with a clue, or open the curtain?",es:"¡Los dos piensan igual! ¿Comprobamos con una pista o abrimos la cortina?"},
+  mirense:{en:"Show each other your ideas. Are they the same or different? Then choose: a clue, or open the curtain?",es:"Muéstrense sus ideas. ¿Son iguales o diferentes? Después decidan: ¿una pista o abrir la cortina?"},
+  nadieSabe:{en:"Nobody knows yet. That's how scientists start! Let's look for a clue.",es:"Nadie lo sabe todavía. ¡Así empiezan los científicos! Busquemos una pista."},
+  pista1:{en:"Clue: listen to the riddle!",es:"Pista: ¡escucha la adivinanza!"},
+  pista2:{en:"Clue: look at the shadow! What shape do you see?",es:"Pista: ¡mira la sombra! ¿Qué forma ves?"},
+  pista3:{en:"Clue: let's peek a little bit!",es:"Pista: ¡vamos a asomarnos un poquito!"},
+  despuesPista:{en:"Does the clue fit your idea? You can keep it or change it.",es:"¿La pista va con tu idea? Puedes quedarte con ella o cambiarla."},
+  despuesPistaAmigos:{en:"Does the clue fit your ideas? Each of you can keep your idea or change it.",es:"¿La pista va con sus ideas? Cada uno puede quedarse con su idea o cambiarla."},
+  sinPistas:{en:"No more clues! Now you decide: open the curtain.",es:"¡Ya no hay más pistas! Ahora tú decides: abre la cortina."},
+  era:{en:a=>`It was ${a}!`,es:a=>`¡Era ${a}!`},
+  acerto:{en:"You figured it out with your thinking!",es:"¡Lo descubriste pensando!"},
+  acertoAmigos:{en:"You found out together!",es:"¡Lo descubrieron juntos!"},
+  sorpresa:{en:"Surprise! Your idea was a good one to try. Which clue helped you the most?",es:"¡Sorpresa! Tu idea valía la pena. ¿Qué pista te ayudó más?"},
+  preguntaEra:{en:"Was it what you thought?",es:"¿Era lo que pensabas?"},
+  siEra:{en:"Great thinking!",es:"¡Muy bien pensado!"},
+  noEra:{en:"Surprises are fun! Now you know something new.",es:"¡Las sorpresas son divertidas! Ahora sabes algo nuevo."},
+  cofre:{en:"This golden chest has a surprise inside. To open it, you use 3 stars. Do you want to open it, or keep your stars shining in the sky?",
+         es:"Este cofre dorado guarda una sorpresa. Para abrirlo, usas 3 estrellas. ¿Quieres abrirlo o guardar tus estrellas para que brillen en el cielo?"},
+  cofreAmigos:{en:"This golden chest has a surprise inside. To open it, you use 3 stars. Decide together: open it, or keep your stars?",
+         es:"Este cofre dorado guarda una sorpresa. Para abrirlo, usan 3 estrellas. Decidan juntos: ¿lo abren o guardan sus estrellas?"},
+  cofreAbierto:{en:"You wanted to find out, and you did! Look at the surprise.",es:"¡Quisiste descubrirlo y lo descubriste! Mira la sorpresa."},
+  cofreGuardado:{en:"Your stars are shining in Lumi's sky. Keeping them was a good choice too!",es:"Tus estrellas brillan en el cielo de Lumi. ¡Guardarlas también fue una buena decisión!"},
+  sinGaleria:{en:"",es:""}
+};
+/* Consejos para el adulto */
+const C = {
+  luc:{en:"A warm-up: the child earns stars to use (or keep) at the end. There is no wrong way to play.",
+       es:"Un calentamiento: el niño gana estrellas para usarlas (o guardarlas) al final. No hay forma equivocada de jugar."},
+  inicio:{en:"Ask: «What do you think is behind the curtain? Why do you think that?» Accept every idea.",
+          es:"Pregunte: «¿Qué crees que hay detrás? ¿Por qué lo piensas?» Acepte todas las ideas."},
+  nose:{en:"Model it: «I don't know either. Let's find out together!»",es:"Dé el ejemplo: «Yo tampoco lo sé. ¡Vamos a averiguarlo juntos!»"},
+  distintas:{en:"When they disagree, don't settle it for them. Ask: «How can we find out?»",es:"Cuando no estén de acuerdo, no decida usted. Pregunte: «¿Cómo podemos averiguarlo?»"},
+  pista:{en:"Ask: «Does this clue fit your idea? What else could it be?» Changing your mind is good thinking.",
+         es:"Pregunte: «¿La pista va con tu idea? ¿Qué otra cosa podría ser?» Cambiar de idea también es pensar bien."},
+  abrir:{en:"Ask: «Which clue helped you the most?» Celebrate the search, not only the answer.",
+         es:"Pregunte: «¿Qué pista te ayudó más?» Celebre la búsqueda, no solo la respuesta."},
+  cofre:{en:"There is no right choice here. Afterwards, ask: «Why did you decide that?»",
+         es:"Aquí no hay una decisión correcta. Después pregunte: «¿Por qué decidiste eso?»"}
+};
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", modo:"solo", nivel:"prek", estrellas:0, lista:[], idx:0, pista:0,
+           ideas:[], turno:0, museo:[], galeria:[], usados:[], cofre:null, ultimo:null, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ if(typeof o==="function") return o(); const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = arr=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el,clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const jugadores = ()=>S.modo==="amigos" ? 2 : 1;
+const misterio = ()=>S.lista[S.idx];
+const colorJ = i=>i===0 ? "amarillo" : "azul";
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+function hablar(texto, despues){
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma==="es" ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma));
+    if(v) u.voice = v;
+    u.rate = 0.88; u.pitch = 1.1;
+    if(despues) u.onend = despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs,dur,tipo){
+  try{ const a=ctx(); let t=a.currentTime;
+    frecs.forEach(f=>{ const o=a.createOscillator(), g=a.createGain(); o.type=tipo||"sine"; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.15,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+function barrido(d,h,dur,tipo){
+  try{ const a=ctx(), t=a.currentTime, o=a.createOscillator(), g=a.createGain(); o.type=tipo||"sine";
+    o.frequency.setValueAtTime(d,t); o.frequency.exponentialRampToValueAtTime(h,t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBrillo = ()=>tono([880,1320],0.12);
+const sonTelon  = ()=>barrido(300,140,0.5,"triangle");
+const sonPista  = ()=>tono([523,659],0.14);
+const sonTada   = ()=>tono([523,659,784,1047],0.16);
+const sonMagia  = ()=>tono([784,988,1175,1568,1976],0.11);
+
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas=["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=elegir(piezas); p.style.left=azar(2,94)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumi(estado){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz","pensando"); if(estado) animar(im,estado); }); }
+
+/* Lumi dice algo: se escribe en la pantalla (para que se resalte al leer) y se habla */
+function decir(cual, clave, ...p){
+  const objeto = typeof clave==="string" ? T[clave] : clave;
+  S.ultimo = {cual, objeto, p};
+  $(cual).textContent = tx(objeto,...p);
+  hablar($(cual).textContent);
+}
+function consejo(cual, clave){
+  const caja = $(cual);
+  const ver = S.modo!=="solo" && clave;
+  caja.classList.toggle("oculto", !ver);
+  if(!ver) return;
+  if(S.modo==="adulto") caja.open = true;
+  S.ultimoConsejo = {cual, clave};
+  caja.querySelector("p").textContent = tx(C[clave]);
+}
+
+/* ============ Pantallas ============ */
+function mostrar(cual){
+  ["p-portada","p-luciernagas","p-misterio","p-cofre","p-final"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+  $("marcador").classList.toggle("oculto", cual==="p-portada");
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+function pintarEstrellas(){ $("num-estrellas").textContent = S.estrellas; $("frasco-num").textContent = S.estrellas;
+  $("marcador").setAttribute("aria-label", (S.idioma==="es"?"Estrellas: ":"Stars: ")+S.estrellas); }
+
+/* ============ Portada ============ */
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click",()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click",()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", x===b)); }));
+$("btn-empezar").addEventListener("click", empezar);
+$("btn-otra-vez").addEventListener("click", ()=>mostrar("p-portada"));
+
+function empezar(){
+  S.galeria.forEach(g=>{ if(g.url) URL.revokeObjectURL(g.url); });
+  S.estrellas=0; S.museo=[]; S.galeria=[]; S.idx=0; S.cofre=null;
+  /* Se prefieren misterios que todavía no han salido en esta visita */
+  let nuevos = MISTERIOS.filter(m=>!S.usados.includes(m.e));
+  if(nuevos.length < NIVEL[S.nivel].rondas){ S.usados=[]; nuevos=MISTERIOS.slice(); }
+  S.lista = mezclar(nuevos).slice(0, NIVEL[S.nivel].rondas);
+  S.lista.forEach(m=>S.usados.push(m.e));
+  pintarEstrellas();
+  luciernagas();
+}
+
+/* ============ Luciérnagas ============ */
+const SVG_LUC = '<svg viewBox="0 0 60 60" aria-hidden="true"><ellipse cx="22" cy="20" rx="13" ry="8" fill="#E6F4FF" opacity=".85" transform="rotate(-30 22 20)"/>'+
+  '<ellipse cx="38" cy="20" rx="13" ry="8" fill="#E6F4FF" opacity=".85" transform="rotate(30 38 20)"/>'+
+  '<ellipse cx="30" cy="38" rx="11" ry="14" fill="#FFE45C"/><circle cx="30" cy="20" r="9" fill="#2F8F83"/>'+
+  '<circle cx="27" cy="19" r="2" fill="#1E1A3A"/><circle cx="33" cy="19" r="2" fill="#1E1A3A"/>'+
+  '<path d="M26 12 Q24 5 20 4 M34 12 Q36 5 40 4" stroke="#2F8F83" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>';
+function luciernagas(){
+  mostrar("p-luciernagas");
+  const cielo=$("cielo"); cielo.querySelectorAll(".luciernaga").forEach(l=>l.remove());
+  $("btn-a-misterios").classList.add("oculto");
+  const total=5, rapida = S.nivel==="k";
+  for(let i=0;i<total;i++){
+    const b=document.createElement("button"); b.className="luciernaga";
+    b.innerHTML=SVG_LUC; b.setAttribute("aria-label", S.idioma==="es" ? "Luciérnaga" : "Firefly");
+    b.style.left = (6 + i*(80/total) + azar(0,8)) + "%";
+    b.style.top = azar(10,52) + "%";
+    b.style.animationDuration = (rapida ? azar(20,28) : azar(30,40))/10 + "s";
+    b.style.animationDelay = (Math.random()*1.5).toFixed(2)+"s";
+    b.addEventListener("click", ()=>{
+      if(b.classList.contains("atrapada")) return;
+      b.classList.add("atrapada"); sonBrillo();
+      S.estrellas++; pintarEstrellas();
+      setTimeout(()=>b.remove(), 520);
+      if(S.estrellas===total){ lumi("feliz"); decir("msg-luc","lucFin"); $("btn-a-misterios").classList.remove("oculto"); $("btn-a-misterios").focus(); }
+    });
+    cielo.appendChild(b);
+  }
+  decir("msg-luc","lucInicio"); consejo("consejo-luc","luc");
+}
+$("btn-a-misterios").addEventListener("click", ()=>{ S.idx=0; nuevoMisterio(); });
+
+/* ============ Misterio ============ */
+function nuevoMisterio(){
+  mostrar("p-misterio");
+  S.pista=0; S.turno=0; S.ideas=new Array(jugadores()).fill(null);
+  const esc=$("escenario"); esc.className="escenario";
+  const ob=$("objeto"); ob.className="objeto"; ob.textContent=misterio().e;
+  $("adivinanza").classList.add("oculto"); $("nombre-objeto").classList.add("oculto");
+  [1,2,3].forEach(n=>$("pista-"+n).classList.remove("lista"));
+  ocultarZonas();
+  pintarEscenarioLabel();
+  setTimeout(()=>{ animar(esc,"mueve"); sonTelon(); }, 250);
+  pintarIdeas();
+  pedirIdea(true);
+}
+function ocultarZonas(){ ["zona-idea","zona-decidir","zona-autoeval","zona-siguiente"].forEach(z=>$(z).classList.add("oculto")); cerrarCuadros(); }
+function cerrarCuadros(){ ["cuadro-foto","cuadro-voz","cuadro-dibujo"].forEach(z=>$(z).classList.add("oculto")); pararGrabacion(); }
+function pintarEscenarioLabel(){
+  const es=S.idioma==="es"; let t;
+  if($("escenario").classList.contains("abierta")) t = (es?"La cortina está abierta: ":"The curtain is open: ")+misterio().a[S.idioma];
+  else if(S.pista>=3) t = es?"La cortina está un poco abierta.":"The curtain is a little bit open.";
+  else if(S.pista>=2) t = es?"Detrás de la cortina se ve una sombra.":"A shadow shows behind the curtain.";
+  else t = es?"Una cortina roja cerrada. Algo se esconde detrás.":"A closed red curtain. Something is hiding behind it.";
+  $("escenario").setAttribute("aria-label", t);
+}
+
+/* Pide la idea al jugador de turno */
+function pedirIdea(primera){
+  ocultarZonas();
+  $("zona-idea").classList.remove("oculto");
+  $("f-igual").classList.toggle("oculto", !S.ideas[S.turno]);
+  if(S.modo==="amigos"){
+    const j=S.turno;
+    decir("msg", ()=>(primera && j===0 ? tx(T.inicio)+" " : "") + tx(T.turno, tx(T[colorJ(j)])));
+  }
+  else if(primera) decir("msg","inicio");
+  else decir("msg", "despuesPista");
+  consejo("consejo", primera ? "inicio" : "pista");
+  pintarIdeas();
+  lumi("pensando");
+}
+
+/* Pinta las ideas de los jugadores */
+function pintarIdeas(){
+  const cont=$("ideas"); cont.innerHTML="";
+  for(let i=0;i<jugadores();i++){
+    const d=document.createElement("div"); d.className="idea"+(S.modo==="amigos"?" "+colorJ(i):"");
+    if(S.modo==="amigos"){ const p=document.createElement("span"); p.className="punto "+colorJ(i); p.setAttribute("aria-hidden","true"); d.appendChild(p); }
+    const nomColor = tx(T[colorJ(i)]); const quien = S.modo==="amigos" ? nomColor.charAt(0).toUpperCase()+nomColor.slice(1)+": " : "";
+    const idea=S.ideas[i];
+    const lab=document.createElement("span");
+    if(!idea){ lab.className="vacia"; lab.textContent = quien + (S.idioma==="es"?"tu idea va aquí":"your idea goes here"); d.appendChild(lab); }
+    else if(idea.tipo==="foto"){ const g=document.createElement("span"); g.className="grande"; g.setAttribute("aria-hidden","true"); g.textContent=idea.m.e;
+      lab.textContent = quien + idea.m.n[S.idioma]; d.appendChild(g); d.appendChild(lab); }
+    else if(idea.tipo==="dibujo"){ const im=document.createElement("img"); im.src=idea.src; im.alt=S.idioma==="es"?"Dibujo de la idea":"Drawing of the idea";
+      lab.textContent = quien; d.appendChild(lab); d.appendChild(im); }
+    else if(idea.tipo==="voz"){ const g=document.createElement("span"); g.className="grande"; g.setAttribute("aria-hidden","true"); g.textContent="🗣️";
+      lab.textContent = quien + (S.idioma==="es"?"lo dijo en voz alta":"said it out loud"); d.appendChild(g); d.appendChild(lab);
+      if(idea.url){ const b=document.createElement("button"); b.className="boton"; b.style.minHeight="44px"; b.style.padding="4px 10px";
+        b.innerHTML='<span aria-hidden="true">▶️</span>'; b.setAttribute("aria-label", S.idioma==="es"?"Escuchar la idea":"Listen to the idea");
+        b.addEventListener("click",()=>new Audio(idea.url).play()); d.appendChild(b); } }
+    else { const g=document.createElement("span"); g.className="grande"; g.setAttribute("aria-hidden","true"); g.textContent="🤔";
+      lab.textContent = quien + (S.idioma==="es"?"todavía no sé":"I don't know yet"); d.appendChild(g); d.appendChild(lab); }
+    cont.appendChild(d);
+  }
+}
+
+/* Se guarda la idea del jugador de turno y se pasa al siguiente (o a decidir) */
+function guardarIdea(idea){
+  if(idea) S.ideas[S.turno]=idea;
+  if(idea && (idea.tipo==="dibujo" || idea.tipo==="voz") && (idea.src||idea.url))
+    S.galeria.push({tipo:idea.tipo, src:idea.src, url:idea.url, e:misterio().e, j:S.modo==="amigos"?colorJ(S.turno):null});
+  cerrarCuadros();
+  sonPista();
+  if(S.turno < jugadores()-1){ S.turno++; pedirIdea(S.pista===0); return; }
+  S.turno=0;
+  decidir();
+}
+
+/* Todos dieron su idea: ¿otra pista o abrir? */
+function decidir(){
+  ocultarZonas(); pintarIdeas();
+  $("zona-decidir").classList.remove("oculto");
+  const hayPistas = S.pista<3;
+  $("btn-pista").classList.toggle("oculto", !hayPistas);
+  $("btn-pista").classList.remove("llama"); $("btn-abrir").classList.remove("llama");
+  const ideas=S.ideas;
+  let clave, cons=S.pista===0?"inicio":"pista";
+  if(!hayPistas){ clave="sinPistas"; $("btn-abrir").classList.add("llama"); cons="abrir"; }
+  else if(ideas.every(i=>i && i.tipo==="nose")){ clave = S.modo==="amigos" ? "nadieSabe" : "nose"; $("btn-pista").classList.add("llama"); cons="nose"; }
+  else if(S.modo==="amigos"){
+    const fotos=ideas.filter(i=>i && i.tipo==="foto");
+    if(fotos.length===2) clave = fotos[0].m===fotos[1].m ? "iguales" : "distintas";
+    else clave = "mirense";
+    if(clave==="distintas"){ cons="distintas"; $("btn-pista").classList.add("llama"); }
+  } else {
+    const i=ideas[0];
+    clave = i.tipo==="foto" ? "ideaFoto" : i.tipo==="voz" ? "ideaVoz" : i.tipo==="dibujo" ? "ideaDibujo" : "nose";
+    if(i.tipo==="nose") $("btn-pista").classList.add("llama");
+  }
+  decir("msg", clave); consejo("consejo", cons);
+  lumi(null);
+}
+
+/* Las pistas: 1 adivinanza, 2 sombra, 3 asomarse */
+$("btn-pista").addEventListener("click", ()=>{
+  if(S.pista>=3) return;
+  S.pista++;
+  $("pista-"+S.pista).classList.add("lista");
+  const esc=$("escenario"), ob=$("objeto");
+  sonPista();
+  if(S.pista===1){
+    const adv=$("adivinanza"); adv.textContent="🗣️ «"+misterio()[S.nivel==="k"?"k":"pk"][S.idioma]+"»"; adv.classList.remove("oculto");
+    ocultarZonas();
+    $("msg").textContent = tx(T.pista1); S.ultimo={cual:"msg",objeto:T.pista1,p:[]};
+    hablar(tx(T.pista1)+" "+misterio()[S.nivel==="k"?"k":"pk"][S.idioma], ()=>setTimeout(()=>trasPista(),300));
+    return trasPistaVisual();
+  }
+  $("adivinanza").classList.add("oculto");
+  if(S.pista===2){ esc.classList.add("fina"); ob.className="objeto en-sombra"; }
+  if(S.pista===3){ esc.classList.remove("fina"); esc.classList.add("asomo"); ob.className="objeto a-color"; }
+  pintarEscenarioLabel();
+  ocultarZonas();
+  decir("msg", S.pista===2 ? "pista2" : "pista3");
+  setTimeout(trasPista, 2600);
+});
+/* La adivinanza queda a la vista; los botones vuelven después de oírla */
+function trasPistaVisual(){ setTimeout(()=>{ if($("zona-idea").classList.contains("oculto") && $("zona-decidir").classList.contains("oculto")) trasPista(); }, 6500); }
+function trasPista(){
+  if(!$("zona-idea").classList.contains("oculto") || !$("zona-decidir").classList.contains("oculto")) return;
+  if($("escenario").classList.contains("abierta")) return;
+  S.turno=0;
+  ocultarZonas();
+  $("zona-idea").classList.remove("oculto");
+  $("f-igual").classList.toggle("oculto", !S.ideas[0]);
+  if(S.modo==="amigos") decir("msg", ()=>tx(T.despuesPistaAmigos)+" "+tx(T.turno, tx(T.amarillo)));
+  else decir("msg","despuesPista");
+  consejo("consejo","pista");
+  pintarIdeas();
+}
+
+/* Abrir la cortina */
+$("btn-abrir").addEventListener("click", ()=>{
+  const esc=$("escenario"), ob=$("objeto"), m=misterio();
+  ocultarZonas();
+  esc.classList.remove("fina","asomo"); esc.classList.add("abierta");
+  ob.className="objeto a-color salta";
+  $("adivinanza").classList.add("oculto");
+  const nom=$("nombre-objeto"); nom.textContent=m.n[S.idioma]; nom.classList.remove("oculto");
+  pintarEscenarioLabel();
+  sonTelon(); setTimeout(sonTada, 500);
+  S.museo.push(m);
+  const fotos=S.ideas.filter(i=>i && i.tipo==="foto");
+  const otras=S.ideas.filter(i=>i && (i.tipo==="voz"||i.tipo==="dibujo"));
+  const acierto = fotos.some(i=>i.m===m);
+  consejo("consejo","abrir");
+  let cola;
+  if(acierto){ cola = S.modo==="amigos" ? T.acertoAmigos : T.acerto; lumi("feliz"); confeti(); }
+  else if(otras.length && !fotos.length) cola = T.preguntaEra;
+  else cola = T.sorpresa;
+  const fraseFinal = ()=>tx(T.era, m.a[S.idioma]) + " " + tx(cola);
+  if(otras.length && !acierto && fotos.length===0){ $("zona-autoeval").classList.remove("oculto"); }
+  else mostrarSiguiente();
+  S.ultimo={cual:"msg", objeto:fraseFinal, p:[]};
+  $("msg").textContent = fraseFinal();
+  setTimeout(()=>hablar($("msg").textContent), 450);
+});
+$("btn-si-era").addEventListener("click", ()=>{ $("zona-autoeval").classList.add("oculto"); lumi("feliz"); confeti(); sonTada(); decir("msg","siEra"); mostrarSiguiente(); });
+$("btn-no-era").addEventListener("click", ()=>{ $("zona-autoeval").classList.add("oculto"); lumi("feliz"); decir("msg","noEra"); mostrarSiguiente(); });
+function mostrarSiguiente(){
+  $("zona-siguiente").classList.remove("oculto");
+  const ultimo = S.idx >= S.lista.length-1;
+  $("btn-siguiente").querySelector("span").textContent = ultimo
+    ? (S.idioma==="es" ? "Ir al cofre dorado ▶" : "Go to the golden chest ▶")
+    : (S.idioma==="es" ? "Siguiente misterio ▶" : "Next mystery ▶");
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  if(S.idx < S.lista.length-1){ S.idx++; nuevoMisterio(); } else irCofre();
+});
+
+/* ============ Formas de dar la idea (DUA) ============ */
+$("f-foto").addEventListener("click", ()=>{
+  cerrarCuadros();
+  const m=misterio(), n=NIVEL[S.nivel].fotos;
+  const opciones = mezclar([m, ...mezclar(MISTERIOS.filter(x=>x!==m)).slice(0,n-1)]);
+  const cont=$("fotos"); cont.innerHTML="";
+  opciones.forEach(o=>{
+    const b=document.createElement("button"); b.className="foto";
+    b.innerHTML='<span class="grande" aria-hidden="true">'+o.e+'</span><small>'+o.n[S.idioma]+'</small>';
+    b.setAttribute("aria-label", o.n[S.idioma]);
+    b.addEventListener("click", ()=>{ hablar(o.n[S.idioma]); guardarIdea({tipo:"foto", m:o}); });
+    cont.appendChild(b);
+  });
+  $("cuadro-foto").classList.remove("oculto");
+  $("cuadro-foto").scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
+});
+$("f-nose").addEventListener("click", ()=>guardarIdea({tipo:"nose"}));
+$("f-igual").addEventListener("click", ()=>guardarIdea(null));
+$("f-dibujo").addEventListener("click", ()=>{ cerrarCuadros(); limpiarLienzo(); $("cuadro-dibujo").classList.remove("oculto");
+  $("cuadro-dibujo").scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"}); });
+$("f-voz").addEventListener("click", ()=>{ cerrarCuadros(); prepararVoz(); $("cuadro-voz").classList.remove("oculto");
+  $("cuadro-voz").scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"}); });
+
+/* ---- Grabar la voz (se queda en el aparato) ---- */
+let grabadora=null, flujo=null, trozos=[], urlVoz=null, relojVoz=null;
+const puedeGrabar = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+function prepararVoz(){
+  urlVoz=null;
+  $("btn-escuchar").classList.add("oculto"); $("btn-usar-voz").classList.add("oculto");
+  $("btn-grabar").classList.toggle("oculto", !puedeGrabar);
+  $("nota-voz").classList.toggle("oculto", !puedeGrabar);
+  $("txt-grabar").textContent = S.idioma==="es" ? "Grabar" : "Record";
+}
+async function empezarGrabacion(){
+  try{
+    speechSynthesis && speechSynthesis.cancel();
+    flujo = await navigator.mediaDevices.getUserMedia({audio:true});
+    trozos=[]; grabadora = new MediaRecorder(flujo);
+    grabadora.ondataavailable = e=>{ if(e.data && e.data.size) trozos.push(e.data); };
+    grabadora.onstop = ()=>{
+      if(flujo){ flujo.getTracks().forEach(t=>t.stop()); flujo=null; }
+      if(!trozos.length) return;
+      urlVoz = URL.createObjectURL(new Blob(trozos, {type: grabadora.mimeType || "audio/webm"}));
+      $("btn-escuchar").classList.remove("oculto"); $("btn-usar-voz").classList.remove("oculto");
+      $("txt-grabar").textContent = S.idioma==="es" ? "Grabar otra vez" : "Record again";
+      $("btn-usar-voz").focus();
+    };
+    grabadora.start();
+    $("btn-grabar").classList.add("grabando");
+    $("txt-grabar").textContent = S.idioma==="es" ? "Parar" : "Stop";
+    relojVoz = setTimeout(pararGrabacion, 8000);
+  }catch(e){
+    $("btn-grabar").classList.add("oculto");
+    $("nota-voz").classList.remove("oculto");
+    $("nota-voz").textContent = S.idioma==="es"
+      ? "No se pudo usar el micrófono. Di tu idea en voz alta y toca «Ya lo dije en voz alta»."
+      : "The microphone could not be used. Say your idea out loud and tap «I said it out loud».";
+  }
+}
+function pararGrabacion(){
+  clearTimeout(relojVoz);
+  $("btn-grabar").classList.remove("grabando");
+  if(grabadora && grabadora.state==="recording"){ grabadora.stop(); }
+  else if(flujo){ flujo.getTracks().forEach(t=>t.stop()); flujo=null; }
+}
+$("btn-grabar").addEventListener("click", ()=>{ if(grabadora && grabadora.state==="recording") pararGrabacion(); else empezarGrabacion(); });
+$("btn-escuchar").addEventListener("click", ()=>{ if(urlVoz) new Audio(urlVoz).play(); });
+$("btn-usar-voz").addEventListener("click", ()=>{ const u=urlVoz; urlVoz=null; guardarIdea({tipo:"voz", url:u}); });
+$("btn-dicho").addEventListener("click", ()=>guardarIdea({tipo:"voz"}));
+
+/* ---- Dibujar ---- */
+const lienzo=$("lienzo"), pincel=lienzo.getContext("2d");
+let colorActual=COLORES[0], dibujando=false, dibujado=false;
+COLORES.forEach((c,i)=>{
+  const b=document.createElement("button"); b.className="color"; b.style.background=c;
+  b.setAttribute("aria-label", (S.idioma==="es"?"Color ":"Color ")+(i+1)); b.setAttribute("aria-pressed", i===0);
+  b.addEventListener("click", ()=>{ colorActual=c; document.querySelectorAll(".color").forEach(x=>x.setAttribute("aria-pressed", x===b)); });
+  $("colores").appendChild(b);
+});
+function limpiarLienzo(){ pincel.fillStyle="#fff"; pincel.fillRect(0,0,lienzo.width,lienzo.height); dibujado=false; }
+function punto(e){ const r=lienzo.getBoundingClientRect(); return [(e.clientX-r.left)*lienzo.width/r.width, (e.clientY-r.top)*lienzo.height/r.height]; }
+lienzo.addEventListener("pointerdown", e=>{ dibujando=true; dibujado=true; lienzo.setPointerCapture(e.pointerId);
+  const [x,y]=punto(e); pincel.beginPath(); pincel.moveTo(x,y); pincel.lineTo(x+.1,y+.1);
+  pincel.strokeStyle=colorActual; pincel.lineWidth=12; pincel.lineCap="round"; pincel.lineJoin="round"; pincel.stroke(); });
+lienzo.addEventListener("pointermove", e=>{ if(!dibujando) return; const [x,y]=punto(e); pincel.lineTo(x,y); pincel.stroke(); });
+["pointerup","pointercancel","pointerleave"].forEach(ev=>lienzo.addEventListener(ev, ()=>{ dibujando=false; }));
+$("btn-borrar").addEventListener("click", limpiarLienzo);
+$("btn-usar-dibujo").addEventListener("click", ()=>{
+  if(!dibujado){ hablar(S.idioma==="es" ? "Primero dibuja tu idea con el dedo." : "First, draw your idea with your finger."); return; }
+  guardarIdea({tipo:"dibujo", src:lienzo.toDataURL("image/png")});
+});
+
+/* ============ Cofre dorado ============ */
+function irCofre(){
+  mostrar("p-cofre");
+  $("cofre").classList.remove("abierto"); $("sorpresa").textContent=""; $("cielo-chico").textContent="";
+  $("zona-cofre").classList.remove("oculto"); $("zona-al-final").classList.add("oculto");
+  decir("msg-cofre", S.modo==="amigos" ? "cofreAmigos" : "cofre");
+  consejo("consejo-cofre","cofre");
+}
+$("btn-cofre-abrir").addEventListener("click", ()=>{
+  S.estrellas-=3; pintarEstrellas(); S.cofre="abierto";
+  $("cofre").classList.add("abierto"); sonMagia();
+  const s=elegir(SORPRESAS); S.museo.push({e:s, n:{en:"surprise",es:"sorpresa"}});
+  setTimeout(()=>{ $("sorpresa").textContent=s; confeti(); }, 600);
+  $("cielo-chico").textContent="";
+  finCofre("cofreAbierto");
+});
+$("btn-cofre-guardar").addEventListener("click", ()=>{
+  S.cofre="guardado"; sonBrillo();
+  const cielo=$("cielo-chico"); cielo.innerHTML="";
+  for(let i=0;i<S.estrellas;i++){ const s=document.createElement("span"); s.textContent="⭐"; cielo.appendChild(s); }
+  finCofre("cofreGuardado");
+});
+function finCofre(clave){
+  $("zona-cofre").classList.add("oculto"); $("zona-al-final").classList.remove("oculto");
+  lumi("feliz"); decir("msg-cofre", clave); $("btn-al-final").focus();
+}
+$("btn-al-final").addEventListener("click", final);
+
+/* ============ Final ============ */
+function final(){
+  mostrar("p-final");
+  const museo=$("museo"); museo.innerHTML="";
+  S.museo.forEach(m=>{ const v=document.createElement("div"); v.className="vitrina";
+    v.innerHTML='<span class="grande" aria-hidden="true">'+m.e+'</span><span>'+m.n[S.idioma]+'</span>'; museo.appendChild(v); });
+  const gal=$("galeria"); gal.innerHTML="";
+  $("tit-ideas").classList.toggle("oculto", !S.galeria.length);
+  S.galeria.forEach((g,i)=>{
+    const v=document.createElement("div"); v.className="vitrina";
+    if(g.tipo==="dibujo"){ const im=document.createElement("img"); im.src=g.src;
+      im.alt=(S.idioma==="es"?"Mi dibujo para el misterio ":"My drawing for mystery ")+(i+1); v.appendChild(im); }
+    else { const b=document.createElement("button"); b.className="boton"; b.innerHTML='<span aria-hidden="true">▶️</span> '+(S.idioma==="es"?"Mi voz":"My voice");
+      b.addEventListener("click", ()=>new Audio(g.url).play()); v.appendChild(b); }
+    const e=document.createElement("span"); e.className="grande"; e.style.fontSize="1.6em"; e.textContent=g.e; e.setAttribute("aria-hidden","true"); v.appendChild(e);
+    gal.appendChild(v);
+  });
+  confeti(); sonTada();
+  hablar($("p-final").querySelector("h2").textContent + ". " + $("reto-real").textContent.replace("🧺",""));
+}
+
+/* ============ Idioma ============ */
+function aplicarIdioma(){
+  document.documentElement.lang = S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent = el.getAttribute("data-"+S.idioma); });
+  $("btn-es").setAttribute("aria-pressed", S.idioma==="es");
+  $("btn-en").setAttribute("aria-pressed", S.idioma==="en");
+  const es=S.idioma==="es";
+  $("btn-oir").setAttribute("aria-label", es ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  ["bocina","bocina-luc","bocina-cofre"].forEach(id=>$(id).setAttribute("aria-label", es ? "Escuchar otra vez" : "Hear it again"));
+  $("lienzo").setAttribute("aria-label", es ? "Espacio para dibujar" : "Drawing space");
+  $("colores").setAttribute("aria-label", es ? "Colores" : "Colors");
+  document.querySelector(".pistas").setAttribute("aria-label", es ? "Pistas" : "Clues");
+  $("cofre").setAttribute("aria-label", es ? "Cofre dorado" : "Golden chest");
+  const gq = (typeof gradoFijo!=="undefined" && gradoFijo) ? "grado="+gradoFijo : "";
+  document.querySelectorAll("a.enlace-adultos").forEach(x=>x.setAttribute("href", "para-adultos.html?" + [gq, es ? "lang=es" : ""].filter(Boolean).join("&")));
+  document.querySelectorAll("a.volver-hub").forEach(x=>x.setAttribute("href", "./?" + [gq, es ? "lang=es" : ""].filter(Boolean).join("&")));
+  document.querySelectorAll(".luciernaga").forEach(b=>b.setAttribute("aria-label", es ? "Luciérnaga" : "Firefly"));
+  pintarEstrellas();
+  /* Lo que está en pantalla se vuelve a escribir en el nuevo idioma */
+  if(S.ultimo) $(S.ultimo.cual).textContent = tx(S.ultimo.objeto, ...S.ultimo.p);
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo.cual, S.ultimoConsejo.clave);
+  if(!$("p-misterio").classList.contains("oculto") && misterio()){
+    pintarIdeas(); pintarEscenarioLabel();
+    if(!$("adivinanza").classList.contains("oculto")) $("adivinanza").textContent="🗣️ «"+misterio()[S.nivel==="k"?"k":"pk"][S.idioma]+"»";
+    if(!$("nombre-objeto").classList.contains("oculto")) $("nombre-objeto").textContent=misterio().n[S.idioma];
+    if(!$("cuadro-foto").classList.contains("oculto")) $("f-foto").click();
+    if(!$("zona-siguiente").classList.contains("oculto")) mostrarSiguiente();
+  }
+  if(!$("p-final").classList.contains("oculto")) final();
+  prepararTextoGrabar();
+}
+function prepararTextoGrabar(){ if(!(grabadora && grabadora.state==="recording")) $("txt-grabar").textContent = S.idioma==="es" ? "Grabar" : "Record"; }
+
+/* Idioma inicial: inglés, salvo que la dirección traiga ?lang=es.
+   El grado viene en la dirección (?grado=prek o ?grado=k), porque se entra desde el grado. */
+let gradoFijo = null;
+try{
+  const q = new URLSearchParams(location.search);
+  if(q.get("lang")==="es") S.idioma="es";
+  if(q.get("grado")==="prek" || q.get("grado")==="k") gradoFijo = q.get("grado");
+}catch(e){}
+if(gradoFijo){
+  S.nivel = gradoFijo;
+  $("elegir-nivel").classList.add("oculto");
+  document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", x.dataset.nivel===gradoFijo));
+}
+aplicarIdioma();
+
+$("bocina").addEventListener("click", ()=>hablar($("msg").textContent + ($("adivinanza").classList.contains("oculto") ? "" : " " + $("adivinanza").textContent.replace("🗣️",""))));
+$("bocina-luc").addEventListener("click", ()=>hablar($("msg-luc").textContent));
+$("bocina-cofre").addEventListener("click", ()=>hablar($("msg-cofre").textContent));
+
+/* Presentación hablada (la voz se suelta con el primer toque) */
+let presentado=false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado=true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + document.querySelector("#p-portada p.intro").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+  if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel]")) return;
+  presentar(); }, {once:true}));
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+presentar();
+setTimeout(()=>{ const s=window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+</body>
+</html>

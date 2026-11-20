@@ -37,12 +37,14 @@
             read:  { en: P + "letters/",            es: P + "letters/" },
             lect:  { en: P + "letras/",             es: P + "letras/" },
             cien:  { en: C + "book-prek-science.html", es: C + "libro-prek-ciencias.html" },
-            soci:  { en: C + "book-prek-social-studies.html", es: C + "libro-prek-sociales.html" } },
+            soci:  { en: C + "book-prek-social-studies.html", es: C + "libro-prek-sociales.html" },
+            mente: { en: P + "mentes-curiosas/?grado=prek", es: P + "mentes-curiosas/?grado=prek&lang=es" } },
     k:    { mate:  { en: P + "kindergarten/",              es: P + "kindergarten/?lang=es" },
             read:  { en: P + "kindergarten/reading.html",  es: P + "kindergarten/reading.html" },
             lect:  { en: P + "kindergarten/lectura.html",  es: P + "kindergarten/lectura.html" },
             cien:  { en: C + "book-kindergarten-science.html",        es: C + "libro-kinder-ciencias.html" },
-            soci:  { en: C + "book-kindergarten-social-studies.html", es: C + "libro-kinder-sociales.html" } },
+            soci:  { en: C + "book-kindergarten-social-studies.html", es: C + "libro-kinder-sociales.html" },
+            mente: { en: P + "mentes-curiosas/?grado=k", es: P + "mentes-curiosas/?grado=k&lang=es" } },
     "1":  { mate:  { en: P + "1er_grado/",             es: P + "1er_grado/?lang=es" },
             read:  { en: P + "1er_grado/reading.html", es: P + "1er_grado/reading.html?lang=es" },
             lect:  { en: P + "1er_grado/lectura.html", es: P + "1er_grado/lectura.html" },
@@ -71,10 +73,10 @@
             cien:  { en: C + "book-grade6-science.html",        es: C + "book-grade6-science.html" },
             soci:  { en: C + "book-grade6-social-studies.html", es: C + "book-grade6-social-studies.html" } }
   };
-  var ORDEN = ["mate", "read", "lect", "cien", "soci"];
+  var ORDEN = ["mate", "read", "lect", "cien", "soci", "mente"];
   var NOMBRES = {
-    en: { mate: "🔢 Math", read: "📖 Reading", lect: "📚 Lectura (español)", cien: "🔬 Science", soci: "🌎 Social studies" },
-    es: { mate: "🔢 Matemáticas", read: "📖 Reading (inglés)", lect: "📚 Lectura", cien: "🔬 Ciencias", soci: "🌎 Estudios sociales" }
+    en: { mate: "🔢 Math", read: "📖 Reading", lect: "📚 Lectura (español)", cien: "🔬 Science", soci: "🌎 Social studies", mente: "🧠 Curious Minds" },
+    es: { mate: "🔢 Matemáticas", read: "📖 Reading (inglés)", lect: "📚 Lectura", cien: "🔬 Ciencias", soci: "🌎 Estudios sociales", mente: "🧠 Mentes curiosas" }
   };
   var ESP = { lect: true };  /* lectura en español: siempre se marca con lang="es" */
 
@@ -111,6 +113,7 @@
   /* Qué materia es esta página (para resaltarla) */
   function miMateria() {
     var r = location.pathname.toLowerCase();
+    if (/mentes-curiosas/.test(r)) return "mente";
     if (/science|ciencias|ecosystem/.test(r)) return "cien";
     if (/social|sociales/.test(r)) return "soci";
     if (/lectura|letras/.test(r)) return "lect";
