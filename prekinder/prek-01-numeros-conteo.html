@@ -316,18 +316,23 @@ const PALETA = {
 
 /* ============ Objetos contables ============ */
 const OBJETOS = [
-  {e:"🍎", es:["manzana","manzanas"], en:["apple","apples"]},
-  {e:"⭐", es:["estrella","estrellas"], en:["star","stars"]},
+  {e:"🍎", es:["manzana","manzanas"], f:1, en:["apple","apples"]},
+  {e:"⭐", es:["estrella","estrellas"], f:1, en:["star","stars"]},
   {e:"🐥", es:["pollito","pollitos"], en:["chick","chicks"]},
   {e:"🐠", es:["pez","peces"], en:["fish","fish"]},
-  {e:"🌸", es:["flor","flores"], en:["flower","flowers"]},
+  {e:"🌸", es:["flor","flores"], f:1, en:["flower","flowers"]},
   {e:"🎈", es:["globo","globos"], en:["balloon","balloons"]},
-  {e:"🦋", es:["mariposa","mariposas"], en:["butterfly","butterflies"]},
-  {e:"🐢", es:["tortuga","tortugas"], en:["turtle","turtles"]},
+  {e:"🦋", es:["mariposa","mariposas"], f:1, en:["butterfly","butterflies"]},
+  {e:"🐢", es:["tortuga","tortugas"], f:1, en:["turtle","turtles"]},
   {e:"🚗", es:["carrito","carritos"], en:["car","cars"]},
   {e:"🍌", es:["plátano","plátanos"], en:["banana","bananas"]}
 ];
 
+/* «Cuántos» bien dicho: con 1 va «un/una» y el nombre en singular */
+function cantidad(n, o, idioma){
+  if(idioma==="en") return NUMERO.en[n]+" "+(n===1?o.en[0]:o.en[1]);
+  return (n===1 ? (o.f?"una":"un") : NUMERO.es[n])+" "+(n===1?o.es[0]:o.es[1]);
+}
 const NUMERO = {
   es:["cero","uno","dos","tres","cuatro","cinco","seis","siete","ocho","nueve","diez"],
   en:["zero","one","two","three","four","five","six","seven","eight","nine","ten"]
@@ -342,11 +347,11 @@ const T = {
     volverAOir:"🔁 Verlo otra vez",
     volverAEscuchar:"🔁 Escuchar otra vez",
     listo:"✓ Listo",
-    hay:(n,o)=>`Hay ${NUMERO.es[n]} ${n===1?o.es[0]:o.es[1]}.`,
+    hay:(n,o)=>`Hay ${cantidad(n,o,"es")}.`,
     tocaCada:(o)=>`Toca cada ${o.es[0]} y cuenta.`,
     cuantos:(o)=>`¿Cuántos hay?`,
     rapido:"Mira rápido. ¿Cuántos puntos viste?",
-    haz:(n,o)=>`Toca ${NUMERO.es[n]} ${n===1?o.es[0]:o.es[1]}.`,
+    haz:(n,o)=>`Toca ${cantidad(n,o,"es")}.`,
     sigue:"Escucha y di qué número sigue.",
     vacio:"Toca el plato que no tiene nada.",
     vacioBien:"Ese plato tiene cero. No tiene nada.",
@@ -359,7 +364,7 @@ const T = {
     volverAOir:"🔁 See it again",
     volverAEscuchar:"🔁 Listen again",
     listo:"✓ Done",
-    hay:(n,o)=>`There are ${NUMERO.en[n]} ${n===1?o.en[0]:o.en[1]}.`,
+    hay:(n,o)=>`There ${n===1?"is":"are"} ${cantidad(n,o,"en")}.`,
     tocaCada:(o)=>`Touch each ${o.en[0]} and count.`,
     cuantos:(o)=>`How many are there?`,
     rapido:"Look fast. How many dots did you see?",
@@ -523,8 +528,8 @@ function avanzar(){
   if(S.ronda >= RONDAS){
     pintarMarcador($("marcador-final"), S.estrellas);
     mostrar("p-final");
-    hablar(S.idioma==="es" ? "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas."
-                           : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars.");
+    hablar(S.idioma==="es" ? (S.estrellas===1 ? "¡Terminaste! Ganaste una estrella." : "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas.")
+                           : (S.estrellas===1 ? "You finished! You earned one star." : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars."));
   } else {
     nuevaRonda();
   }
@@ -667,7 +672,8 @@ function nuevaRonda(){
     opcionesNumericas(n, 1, 4, (ok,_v,f)=>{
       if(ok){
         mostrarPuntos(false);
-        acertar(S.idioma==="es" ? "Eran "+NUMERO.es[n]+" puntos." : "There were "+NUMERO.en[n]+" dots.");
+        acertar(S.idioma==="es" ? (n===1 ? "Era un punto." : "Eran "+NUMERO.es[n]+" puntos.")
+                                   : (n===1 ? "There was one dot." : "There were "+NUMERO.en[n]+" dots."));
       } else fallar(f);
     });
     return;

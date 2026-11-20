@@ -601,8 +601,8 @@ function avanzar(){
   if(S.ronda >= RONDAS){
     pintarMarcador($("marcador-final"), S.estrellas);
     mostrar("p-final");
-    hablar(S.idioma==="es" ? "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas."
-                           : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars.");
+    hablar(S.idioma==="es" ? (S.estrellas===1 ? "¡Terminaste! Ganaste una estrella." : "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas.")
+                           : (S.estrellas===1 ? "You finished! You earned one star." : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars."));
   } else nuevaRonda();
 }
 
@@ -636,11 +636,11 @@ function conectarEventos(){
 
 Object.assign(T.es, {
   haz:"Toca cada animalito para ponerlo en su fila.",
-  hazListo:(a,na,b,nb)=>"Hay "+NUMERO.es[na]+" "+a+" y "+NUMERO.es[nb]+" "+b+".",
+  hazListo:(a,na,b,nb)=>"Hay "+cantidad(na,a,"es")+" y "+cantidad(nb,b,"es")+".",
   deCualMas:"Mira el gráfico. ¿De cuál hay más?",
   cuantosHay:(x)=>"Mira el gráfico. ¿Cuántos "+x+" hay?",
   hayMas:(x,n)=>"Hay más "+x+". Hay "+NUMERO.es[n]+".",
-  hayN:(n,x)=>"Hay "+NUMERO.es[n]+" "+x+".",
+  hayN:(n,x)=>"Hay "+cantidad(n,x,"es")+".",
   saca:"En la bolsa hay estas pelotas. Si sacas una sin mirar, ¿de qué color saldrá más fácil?",
   masFacil:(c,n,m)=>"Hay "+NUMERO.es[n]+" pelotas "+c+" y solo "+NUMERO.es[m]+" de otro color. Es más fácil que salga una "+c+".",
   posibleO:"¿Esto es posible o imposible?",
@@ -652,11 +652,11 @@ Object.assign(T.es, {
 });
 Object.assign(T.en, {
   haz:"Touch each animal to put it in its row.",
-  hazListo:(a,na,b,nb)=>"There are "+NUMERO.en[na]+" "+a+" and "+NUMERO.en[nb]+" "+b+".",
+  hazListo:(a,na,b,nb)=>"There "+(na===1?"is":"are")+" "+cantidad(na,a,"en")+" and "+cantidad(nb,b,"en")+".",
   deCualMas:"Look at the graph. Which one has more?",
   cuantosHay:(x)=>"Look at the graph. How many "+x+" are there?",
   hayMas:(x,n)=>"There are more "+x+". There are "+NUMERO.en[n]+".",
-  hayN:(n,x)=>"There are "+NUMERO.en[n]+" "+x+".",
+  hayN:(n,x)=>"There "+(n===1?"is":"are")+" "+cantidad(n,x,"en")+".",
   saca:"The bag has these balls. If you take one without looking, which color will come out more easily?",
   masFacil:(c,n,m)=>"There are "+NUMERO.en[n]+" "+c+" balls and only "+NUMERO.en[m]+" of another color. A "+c+" one is more likely.",
   posibleO:"Is this possible or impossible?",
@@ -676,12 +676,17 @@ const JUEGOS = [
   {id:"siempre",    emoji:"🔁", es:"Siempre o nunca",   en:"Always or never",  metaEs:"Probabilidad",         metaEn:"Likelihood"}
 ];
 
+/* «Cuántos» bien dicho: con 1 va «un/una» y el nombre en singular */
+function cantidad(n, o, idioma){
+  if(idioma==="en") return NUMERO.en[n]+" "+(n===1?o.en[0]:o.en[1]);
+  return (n===1 ? (o.f?"una":"un") : NUMERO.es[n])+" "+(n===1?o.es[0]:o.es[1]);
+}
 const ANIMALES = [
   {e:"🐥", es:["pollito","pollitos"], en:["chick","chicks"]},
-  {e:"🦋", es:["mariposa","mariposas"], en:["butterfly","butterflies"]},
-  {e:"🐢", es:["tortuga","tortugas"], en:["turtle","turtles"]},
+  {e:"🦋", es:["mariposa","mariposas"], f:1, en:["butterfly","butterflies"]},
+  {e:"🐢", es:["tortuga","tortugas"], f:1, en:["turtle","turtles"]},
   {e:"🐠", es:["pez","peces"], en:["fish","fish"]},
-  {e:"🐞", es:["mariquita","mariquitas"], en:["ladybug","ladybugs"]}
+  {e:"🐞", es:["mariquita","mariquitas"], f:1, en:["ladybug","ladybugs"]}
 ];
 
 const POSIBLES = [
@@ -781,7 +786,7 @@ function nuevaRonda(){
         tono([520 + puestos[i]*50], 0.1);
         faltan--;
         if(faltan === 0){
-          acertar(t.hazListo(cats[0][S.idioma][1], cuentas[0], cats[1][S.idioma][1], cuentas[1]));
+          acertar(t.hazListo(cats[0], cuentas[0], cats[1], cuentas[1]));
         }
       });
       pila.appendChild(b);
@@ -828,7 +833,7 @@ function nuevaRonda(){
     cats.forEach((animal,i)=>grafico.appendChild(crearRenglon(animal, valores[i], false)));
     esc.appendChild(grafico);
     opcionesNumericas(valores[cual], 1, 5, (ok,_v,f)=>{
-      ok ? acertar(t.hayN(valores[cual], cats[cual][S.idioma][1])) : fallar(f);
+      ok ? acertar(t.hayN(valores[cual], cats[cual])) : fallar(f);
     });
     return;
   }

@@ -163,6 +163,11 @@ canvas#lienzo{width:min(100%,560px);aspect-ratio:14/9;background:#fff;border:4px
 @keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
 @keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.senalado{scroll-margin:90px}
+/* una manita que rebota encima del botón: se ve sobre cualquier color */
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
 @keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
 @media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation:none !important;transition:none !important} }
 @media print{.barra,.consejo,.acciones{display:none}}
@@ -523,12 +528,12 @@ function guia(pasos, volver){
     }
     const p=pasos[i];
     if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");            // primero la clase: trae el margen para bajar
       const r=p.el.getBoundingClientRect();
-      if(r.top<0 || r.bottom>window.innerHeight){
+      if(r.top<70 || r.bottom>window.innerHeight-40){
         if(yInicial===null) yInicial=window.scrollY;
         p.el.scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
       }
-      p.el.classList.add("senalado");
     }
     const t0=Date.now(); let hecho=false;
     const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:600)-(Date.now()-t0))+200); };

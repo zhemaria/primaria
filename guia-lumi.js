@@ -67,11 +67,19 @@
     "@keyframes lumiSenal{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}" +
     "@media (prefers-reduced-motion: reduce){.lumi-senalado{animation:none}}" +
     "@media (forced-colors: active){.lumi-senalado{outline:4px solid Highlight!important}}" +
+    ".lumi-senalado{scroll-margin:90px}" +
+    /* una manita que rebota encima del botón: se ve sobre cualquier color */
+    ".lumi-senalado::before{content:'👇';position:absolute;left:50%;bottom:100%;transform:translateX(-50%);" +
+      "font-size:34px;line-height:1;pointer-events:none;z-index:7;animation:lumiMano .8s ease-in-out infinite;" +
+      "filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}" +
+    "@keyframes lumiMano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}" +
+    "@media (prefers-reduced-motion: reduce){.lumi-senalado::before{animation:none}}" +
     ".lumi-ico{margin-right:.35em}";
   document.head.appendChild(st);
 
   /* ---------- Voz: Lumi no habla encima de la actividad ---------- */
   var ajenas = 0;                // cuántas veces habló la actividad
+  var volverArriba = false;      // solo en los trazos: la página vuelve a su lugar al terminar
   var turno = 0;                 // cada recorrido nuevo invalida el anterior
   if (ss && ss.speak) {
     var hablarAntes = ss.speak.bind(ss);
@@ -100,8 +108,9 @@
   /* Si el botón está fuera de la pantalla, se baja hasta él; al terminar,
      la página vuelve a donde estaba (para no perder, p. ej., el punto de inicio del trazo) */
   function mostrarEl(el) {
+    /* con margen: el brillo y la manita también tienen que verse */
     var r = el.getBoundingClientRect();
-    if (r.top >= 0 && r.bottom <= window.innerHeight) return false;
+    if (r.top >= 70 && r.bottom <= window.innerHeight - 40) return false;
     el.scrollIntoView({ block: "nearest", behavior: sinMovimiento() ? "auto" : "smooth" });
     return true;
   }
@@ -112,16 +121,16 @@
   function guia(pasos) {
     var mio = ++turno, ajenasAlEmpezar = ajenas, i = -1, yInicial = null;
     limpiar();
-    function terminar() { limpiar(); if (mio === turno) volverA(yInicial); }
+    function terminar() { limpiar(); if (mio === turno && volverArriba) volverA(yInicial); }
     function siguiente() {
       if (mio !== turno || ajenas !== ajenasAlEmpezar) { limpiar(); return; }
       limpiar(); i++;
       if (i >= pasos.length) return terminar();
       var p = pasos[i];
       if (!visible(p.el)) return siguiente();
+      p.el.classList.add("lumi-senalado");          // primero la clase: trae el margen para bajar
       var y = window.scrollY;
       if (mostrarEl(p.el) && yInicial === null) yInicial = y;
-      p.el.classList.add("lumi-senalado");
       var t0 = Date.now();
       decir(p.texto, function () {
         /* cada botón queda iluminado al menos un momento, aunque la voz esté apagada */
@@ -220,6 +229,7 @@
 
   /* ---------- Plantilla de trazos (letras) ---------- */
   function plantillaTrazos() {
+    volverArriba = true;
     Object.keys(ICONOS).forEach(function (id) {
       var b = $(id);
       if (!b || b.querySelector(".lumi-ico")) return;

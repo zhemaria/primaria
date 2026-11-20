@@ -584,8 +584,8 @@ function avanzar(){
   if(S.ronda >= RONDAS){
     pintarMarcador($("marcador-final"), S.estrellas);
     mostrar("p-final");
-    hablar(S.idioma==="es" ? "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas."
-                           : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars.");
+    hablar(S.idioma==="es" ? (S.estrellas===1 ? "¡Terminaste! Ganaste una estrella." : "¡Terminaste! Ganaste "+NUMERO.es[S.estrellas]+" estrellas.")
+                           : (S.estrellas===1 ? "You finished! You earned one star." : "You finished! You earned "+NUMERO.en[S.estrellas]+" stars."));
   } else nuevaRonda();
 }
 
@@ -632,12 +632,12 @@ Object.assign(T.es, {
   sonIguales:"Son iguales.",
   noIguales:"No son iguales.",
   siAlcanzan:"Alcanzan. Hay una silla para cada niño.",
-  noAlcanzan:(faltan)=>"No alcanzan. Faltan "+NUMERO.es[faltan]+".",
+  noAlcanzan:(faltan)=>faltan===1 ? "No alcanzan. Falta una." : "No alcanzan. Faltan "+NUMERO.es[faltan]+".",
   esMayor:(a,b)=>NUMERO.es[a]+" es mayor que "+NUMERO.es[b]+".",
   esMenor:(a,b)=>NUMERO.es[a]+" es menor que "+NUMERO.es[b]+".",
-  quedanIguales:(n)=>"Cada plato tiene "+NUMERO.es[n]+". Quedaron iguales.",
+  quedanIguales:(n)=>"Cada plato tiene "+(n===1?"una":NUMERO.es[n])+". Quedaron iguales.",
   noQuedanIguales:"Los platos no quedaron iguales. Vamos a repartir otra vez.",
-  quedan:(n)=>"Quedan "+NUMERO.es[n]+"."
+  quedan:(n)=>n===1 ? "Queda una." : "Quedan "+NUMERO.es[n]+"."
 });
 Object.assign(T.en, {
   cualMas:"Touch the group that has more.",
@@ -654,12 +654,12 @@ Object.assign(T.en, {
   sonIguales:"They are equal.",
   noIguales:"They are not equal.",
   siAlcanzan:"There are enough. One chair for each child.",
-  noAlcanzan:(faltan)=>"Not enough. "+NUMERO.en[faltan]+" missing.",
+  noAlcanzan:(faltan)=>"Not enough. "+NUMERO.en[faltan].charAt(0).toUpperCase()+NUMERO.en[faltan].slice(1)+" missing.",
   esMayor:(a,b)=>NUMERO.en[a]+" is larger than "+NUMERO.en[b]+".",
   esMenor:(a,b)=>NUMERO.en[a]+" is smaller than "+NUMERO.en[b]+".",
   quedanIguales:(n)=>"Each plate has "+NUMERO.en[n]+". They are equal.",
   noQuedanIguales:"The plates are not equal. Let's share again.",
-  quedan:(n)=>NUMERO.en[n]+" left."
+  quedan:(n)=>NUMERO.en[n].charAt(0).toUpperCase()+NUMERO.en[n].slice(1)+" left."
 });
 
 const JUEGOS = [
