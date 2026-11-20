@@ -625,12 +625,23 @@ function pasosDe(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, t
 function guia(pasos){
   const mio = ++turnoVoz; limpiarSenal();
   let i = -1;
+  let yInicial=null;
   function siguiente(){
     if(mio!==turnoVoz) return;
     limpiarSenal(); i++;
-    if(i>=pasos.length) return;
+    if(i>=pasos.length){
+      if(yInicial!==null && Math.abs(window.scrollY-yInicial)>4) window.scrollTo({top:yInicial, behavior: sinMovimiento()?"auto":"smooth"});
+      return;
+    }
     const p=pasos[i];
-    if(p.el && visible(p.el)) p.el.classList.add("senalado");
+    if(p.el && visible(p.el)){
+      const r=p.el.getBoundingClientRect();
+      if(r.top<0 || r.bottom>window.innerHeight){
+        if(yInicial===null) yInicial=window.scrollY;
+        p.el.scrollIntoView({block:"nearest", behavior: sinMovimiento()?"auto":"smooth"});
+      }
+      p.el.classList.add("senalado");
+    }
     const t0=Date.now();
     /* cada botón queda iluminado al menos un momento, aunque la voz esté apagada */
     let hecho=false;
