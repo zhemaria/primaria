@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — New Ideas / Ideas nuevas (Grades 1 and 2)
+  Lumi shows a scribble. Children turn it into something by drawing on top of it (with a
+  pencil or with picture stamps), then into something else, and something else.
+  There is no right answer: the more ideas, and the more different, the better
+  (divergent thinking: fluency and flexibility). Lumi never draws for the child: when the
+  child is stuck, «A spark» asks a "What if…?" question or turns the scribble around.
+  The idea can be named three ways (UDL): say it, write it, or pick what kind of thing it is.
+  Play alone, with a grown-up, or with a friend (turns; you can add on to your friend's idea).
+  Nothing is saved or sent: the drawings stay on this device and disappear when the page closes.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New Ideas · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A creativity game for Grades 1 and 2: turn Lumi's scribble into something, then into something else. No wrong answers. Play alone, with a grown-up or with a friend. English and Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(190px,46vw);height:auto;display:block;margin:0 auto;mix-blend-mode:multiply;border-radius:50%}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:54ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+
+/* ---------- Lumi y su mensaje ---------- */
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:64px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,23px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+
+/* ---------- Lienzo ---------- */
+.mesa{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:12px;align-items:start}
+@media (max-width:760px){.mesa{grid-template-columns:1fr}}
+.capas{position:relative;width:100%;max-width:700px;aspect-ratio:14/9;margin:0 auto;border:4px solid var(--tinta);border-radius:18px;overflow:hidden;background:#fff}
+.capas canvas{position:absolute;inset:0;width:100%;height:100%}
+#dibujo{touch-action:none;cursor:crosshair}
+.herramientas{display:flex;flex-direction:column;gap:8px}
+@media (max-width:760px){.herramientas{flex-direction:row;flex-wrap:wrap;justify-content:center}}
+.grupo-h{background:var(--blanco);border:3px solid var(--linea);border-radius:16px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.grupo-h .tit{width:100%;text-align:center;font-weight:700;font-size:.78em;color:var(--tinta-suave)}
+.color{width:40px;height:40px;border-radius:50%;border:3px solid var(--tinta)}
+.sello{width:46px;height:46px;border-radius:12px;border:3px solid var(--linea);background:#fff;font-size:1.45em;display:grid;place-items:center;padding:0}
+.color[aria-pressed="true"],.sello[aria-pressed="true"]{box-shadow:0 0 0 4px var(--foco);border-color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+
+/* ---------- Ponerle nombre ---------- */
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.1em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,360px)}
+.tipos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tipo{border:3px solid var(--linea);background:#fff;border-radius:999px;padding:6px 14px;min-height:46px;font-weight:700}
+.tipo[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0}
+
+/* ---------- Museo de ideas ---------- */
+.museo{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin:6px 0 14px}
+.cuadrito{background:#fff;border:4px solid var(--oro);border-radius:14px;padding:6px;margin:0;text-align:center;box-shadow:var(--sombra)}
+.cuadrito img{width:100%;height:auto;border-radius:8px;display:block;background:#fff}
+.cuadrito figcaption{font-weight:700;font-size:.85em;margin-top:4px}
+.cuadrito .autor{display:block;font-weight:600;font-size:.8em;color:var(--tinta-suave)}
+.titulo-museo{text-align:center;margin:10px 0 6px}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+
+/* Lumi señala: el botón del que está hablando se ilumina */
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+/* Imprimir el museo (para el refrigerador): solo los dibujos */
+@media print{
+  body *{visibility:hidden}
+  #p-final .museo, #p-final .museo *, #p-final .titulo-museo{visibility:visible}
+  #p-final .titulo-museo{position:absolute;top:0;left:0;right:0}
+  #p-final .museo{position:absolute;top:40px;left:0;right:0}
+  .cuadrito{box-shadow:none;break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./" data-es="◀ Mentes curiosas" data-en="◀ Curious Minds">◀ Curious Minds</a>
+    <h1 data-es="Ideas nuevas" data-en="New Ideas">New Ideas</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../lumi-saluda.jpg" alt="" width="300" height="300">
+    <h2 data-es="¿Qué ves en el garabato?" data-en="What do you see in the scribble?">What do you see in the scribble?</h2>
+    <p class="intro" data-es="Lumi hace un garabato. Tú lo conviertes en algo… ¡y luego en otra cosa, y en otra más! Aquí no hay respuestas equivocadas: cuantas más ideas, y más distintas, mejor."
+       data-en="Lumi makes a scribble. You turn it into something… and then into something else, and something else! There are no wrong answers here: the more ideas, and the more different, the better.">Lumi makes a scribble. You turn it into something… and then into something else, and something else! There are no wrong answers here: the more ideas, and the more different, the better.</p>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien" data-es="¿Quién juega?" data-en="Who is playing?">Who is playing?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span data-es="Yo solo" data-en="Just me">Just me</span></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span data-es="Con un adulto" data-en="With a grown-up">With a grown-up</span>
+        <small data-es="con consejos para el adulto" data-en="with tips for the grown-up">with tips for the grown-up</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span data-es="Con un amigo" data-en="With a friend">With a friend</span>
+        <small data-es="por turnos, en la misma pantalla" data-en="taking turns on one screen">taking turns on one screen</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel" data-es="¿En qué grado estás?" data-en="What grade are you in?">What grade are you in?</p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="1" aria-pressed="true"><span class="ico" aria-hidden="true">✏️</span>
+          <span data-es="1.er grado" data-en="Grade 1">Grade 1</span></button>
+        <button class="opcion" data-nivel="2" aria-pressed="false"><span class="ico" aria-hidden="true">🎒</span>
+          <span data-es="2.º grado" data-en="Grade 2">Grade 2</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+    <p class="contador" id="contador" aria-live="polite"></p>
+
+    <!-- Dibujar -->
+    <div id="zona-dibujar">
+      <div class="mesa">
+        <div class="capas" id="capas">
+          <canvas id="base" width="700" height="450" aria-hidden="true"></canvas>
+          <canvas id="dibujo" width="700" height="450" tabindex="0"></canvas>
+        </div>
+        <div class="herramientas">
+          <div class="grupo-h" role="group" aria-labelledby="t-colores" id="colores"><span class="tit" id="t-colores" data-es="✏️ Lápiz" data-en="✏️ Pencil">✏️ Pencil</span></div>
+          <div class="grupo-h" role="group" aria-labelledby="t-sellos" id="sellos"><span class="tit" id="t-sellos" data-es="⭐ Sellos" data-en="⭐ Stamps">⭐ Stamps</span></div>
+          <div class="grupo-h">
+            <button class="boton chico" id="btn-deshacer"><span aria-hidden="true">↩️</span> <span data-es="Deshacer" data-en="Undo">Undo</span></button>
+            <button class="boton chico" id="btn-borrar"><span aria-hidden="true">🧽</span> <span data-es="Borrar todo" data-en="Erase all">Erase all</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="acciones">
+        <button class="boton" id="btn-chispa"><span aria-hidden="true">✨</span> <span data-es="Una chispa" data-en="A spark">A spark</span></button>
+        <button class="boton fuerte" id="btn-ya"><span aria-hidden="true">✅</span> <span data-es="¡Ya está mi idea!" data-en="My idea is ready!">My idea is ready!</span></button>
+      </div>
+    </div>
+
+    <!-- Ponerle nombre: tres formas -->
+    <div id="zona-nombre" class="oculto">
+      <div class="cuadro">
+        <h3 id="t-nombre" data-es="¿Qué es? Cuéntaselo a Lumi como quieras:" data-en="What is it? Tell Lumi any way you like:">What is it? Tell Lumi any way you like:</h3>
+        <div class="formas" role="group" aria-labelledby="t-nombre">
+          <button class="forma" id="f-voz"><span class="ico" aria-hidden="true">🎤</span><span data-es="Dilo" data-en="Say it">Say it</span></button>
+          <button class="forma" id="f-escribir"><span class="ico" aria-hidden="true">⌨️</span><span data-es="Escríbelo" data-en="Write it">Write it</span></button>
+          <button class="forma" id="f-tipo"><span class="ico" aria-hidden="true">👆</span><span data-es="Elige qué es" data-en="Pick what it is">Pick what it is</span></button>
+        </div>
+        <div id="caja-voz" class="oculto">
+          <div class="acciones">
+            <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar">Record</span></button>
+            <button class="boton oculto" id="btn-escuchar"><span aria-hidden="true">▶️</span> <span data-es="Escuchar" data-en="Listen">Listen</span></button>
+            <button class="boton" id="btn-dicho"><span aria-hidden="true">🗣️</span> <span data-es="Ya lo dije (sin grabar)" data-en="I said it (no recording)">I said it (no recording)</span></button>
+          </div>
+          <p class="nota-priv" data-es="La grabación se queda en este aparato y se borra al cerrar la página." data-en="The recording stays on this device and is erased when you close the page.">The recording stays on this device and is erased when you close the page.</p>
+        </div>
+        <div id="caja-escribir" class="oculto">
+          <p><input class="campo" id="campo-nombre" type="text" maxlength="40" autocomplete="off" spellcheck="false"></p>
+        </div>
+        <div id="caja-tipo" class="oculto">
+          <div class="tipos" id="tipos" role="group"></div>
+        </div>
+        <div class="acciones">
+          <button class="boton" id="btn-seguir-dibujando"><span aria-hidden="true">✏️</span> <span data-es="Seguir dibujando" data-en="Keep drawing">Keep drawing</span></button>
+          <button class="boton fuerte oculto" id="btn-guardar"><span aria-hidden="true">🖼️</span> <span data-es="Al museo de ideas" data-en="To the idea museum">To the idea museum</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Después de cada idea -->
+    <div id="zona-despues" class="oculto">
+      <div class="acciones">
+        <button class="boton fuerte" id="btn-otra-idea"><span aria-hidden="true">💡</span> <span data-es="Otra idea con este garabato" data-en="Another idea with this scribble">Another idea with this scribble</span></button>
+        <button class="boton oculto" id="btn-agregar"><span aria-hidden="true">➕</span> <span data-es="Agregarle algo a esta idea" data-en="Add something to this idea">Add something to this idea</span></button>
+        <button class="boton" id="btn-otro-garabato"></button>
+      </div>
+    </div>
+
+    <h2 class="titulo-museo oculto" id="t-museo-juego" data-es="🖼️ Museo de ideas" data-en="🖼️ Idea museum">🖼️ Idea museum</h2>
+    <div class="museo" id="museo-juego" aria-labelledby="t-museo-juego"></div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <h2 class="titulo-museo" id="t-museo" data-es="🖼️ Museo de ideas" data-en="🖼️ Idea museum">🖼️ Idea museum</h2>
+    <div class="museo" id="museo-final" aria-labelledby="t-museo"></div>
+    <div class="reto">
+      <h3 data-es="🏠 Reto con cosas de verdad" data-en="🏠 Challenge with real things">🏠 Challenge with real things</h3>
+      <p id="txt-reto"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton" id="btn-imprimir"><span aria-hidden="true">🖨️</span> <span data-es="Imprimir mi museo" data-en="Print my museum">Print my museum</span></button>
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> <span data-es="Jugar otra vez" data-en="Play again">Play again</span></button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> <span data-es="Otro juego" data-en="Another game">Another game</span></a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html" data-es="🍎 Para maestros, padres y tutores: por qué estos juegos" data-en="🍎 For teachers, parents and caregivers: why these games">🍎 For teachers, parents and caregivers: why these games</a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ==================================================================
+   Garabatos (trazos en un lienzo de 700 × 450).
+   En 2.º grado, el último garabato junta dos garabatos.
+   ================================================================== */
+const GARABATOS = [
+  "M250 320 C 250 140, 450 140, 450 320",                                    /* arco */
+  "M190 240 L270 170 L350 250 L430 170 L510 240",                             /* zigzag */
+  "M330 130 C 220 140, 220 320, 350 320 C 470 320, 480 190, 400 165",         /* óvalo abierto */
+  "M200 260 C 290 140, 410 380, 500 250",                                     /* ola en S */
+  "M300 160 L300 300 M400 160 L400 300",                                      /* dos líneas */
+  "M350 225 C 362 200, 395 214, 388 244 C 380 276, 326 280, 316 240 C 302 192, 362 164, 412 188", /* espiral */
+  "M250 310 L350 150 L450 310",                                               /* pico */
+  "M170 250 Q 220 190 270 250 T 370 250 T 470 250 T 560 250"                  /* ondas */
+];
+const SELLOS = ["👀","👄","⭐","🌸","⚫","🍃","🔥","💧","🎀","❤️"];
+const COLORES = ["#1E1A3A","#B3261E","#1F6FD1","#1D6B4F","#E8A317","#7B3FA0"];
+const TIPOS = [
+  {id:"animal", ico:"🐾", es:"Un animal", en:"An animal"},
+  {id:"persona", ico:"🧑", es:"Una persona", en:"A person"},
+  {id:"comida", ico:"🍎", es:"Una comida", en:"A food"},
+  {id:"cosa", ico:"🧸", es:"Una cosa", en:"A thing"},
+  {id:"vehiculo", ico:"🚀", es:"Algo que se mueve", en:"Something that moves"},
+  {id:"naturaleza", ico:"🌳", es:"Algo de la naturaleza", en:"Something in nature"},
+  {id:"fantasia", ico:"🐉", es:"Algo inventado", en:"Something made-up"}
+];
+const T = {
+  nuevo:{en:"Here is a scribble. What could it become? Draw on top of it to turn it into something!",
+         es:"Aquí hay un garabato. ¿En qué se puede convertir? ¡Dibuja encima para transformarlo en algo!"},
+  nuevoDoble:{en:"Now a double challenge: two scribbles together! What can you make with both?",
+              es:"Ahora un reto doble: ¡dos garabatos juntos! ¿Qué puedes hacer con los dos?"},
+  otra:{en:"Same scribble, a new idea! What else could it be?", es:"¡El mismo garabato, una idea nueva! ¿Qué más podría ser?"},
+  agregar:{en:"Add something to your friend's idea. What would make it even better?",
+           es:"Agrégale algo a la idea de tu amigo. ¿Qué la haría todavía mejor?"},
+  turno:{en:c=>c+", it's your turn.", es:c=>c+", te toca a ti."},
+  amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"},
+  vacio:{en:"Draw something first: even a small line can change everything!", es:"Primero dibuja algo: ¡hasta una rayita puede cambiarlo todo!"},
+  nombre:{en:"What is it? Say it, write it, or pick what kind of thing it is.", es:"¿Qué es? Dilo, escríbelo o elige qué tipo de cosa es."},
+  escribe:{en:"Write its name.", es:"Escribe su nombre."},
+  elige:{en:"Pick what kind of thing it is.", es:"Elige qué tipo de cosa es."},
+  di:{en:"Tap the microphone and tell me what it is.", es:"Toca el micrófono y dime qué es."},
+  guardado:{en:n=>n ? Mayus(n)+"! What a great idea! It's in the museum now." : "What a great idea! It's in the museum now.",
+            es:n=>n ? "¡"+Mayus(n)+"! ¡Qué buena idea! Ya está en el museo." : "¡Qué buena idea! Ya está en el museo."},
+  despues:{en:"Do you want to make another idea with this same scribble?", es:"¿Quieres hacer otra idea con este mismo garabato?"},
+  flex:{en:t=>"Here's a challenge: you made "+t+". Can the next idea be something completely different?",
+        es:t=>"Un reto: hiciste "+t+". ¿Puede la próxima idea ser algo completamente distinto?"},
+  variedad:{en:n=>"Wow, your ideas are "+n+" different kinds of things! That's flexible thinking.",
+            es:n=>"¡Qué bien! Tus ideas son de "+n+" tipos distintos. Eso es pensar con flexibilidad."},
+  otroG:{en:"Next scribble ▶", es:"Otro garabato ▶"}, fin:{en:"See my museum ▶", es:"Ver mi museo ▶"},
+  contador:{en:(g,t,n)=>"Scribble "+g+" of "+t+" · 💡 "+n+(n===1?" idea":" ideas"),
+            es:(g,t,n)=>"Garabato "+g+" de "+t+" · 💡 "+n+(n===1?" idea":" ideas")},
+  final:{en:n=>"You had "+n+(n===1?" idea":" ideas")+"! Every scribble can become many things. Your imagination is a superpower.",
+         es:n=>"¡Tuviste "+n+(n===1?" idea":" ideas")+"! Cada garabato puede ser muchas cosas. Tu imaginación es un superpoder."},
+  reto:{en:"Look at the clouds, a stain on the sidewalk or the shape of a leaf. What do you see in it? Then ask someone else: what do they see?",
+        es:"Mira las nubes, una mancha en la acera o la forma de una hoja. ¿Qué ves en ella? Luego pregúntale a otra persona: ¿qué ve ella?"},
+  grabar:{en:"Record", es:"Grabar"}, parar:{en:"Stop", es:"Parar"},
+  sinNombre:{en:"My idea", es:"Mi idea"},
+  portada:{en:"What do you see in the scribble? Lumi makes a scribble. You turn it into something, and then into something else. There are no wrong answers.",
+           es:"¿Qué ves en el garabato? Lumi hace un garabato. Tú lo conviertes en algo, y luego en otra cosa. Aquí no hay respuestas equivocadas."}
+};
+/* La chispa: nunca dibuja por el niño; le hace una pregunta «¿Y si…?» o gira el garabato */
+const CHISPAS = [
+  {en:"What if it were an animal? Where would its eyes go?", es:"¿Y si fuera un animal? ¿Dónde irían sus ojos?"},
+  {en:"What if it were something you can eat?", es:"¿Y si fuera algo que se come?"},
+  {en:"What if it were very, very big… or tiny?", es:"¿Y si fuera muy, muy grande… o chiquitito?"},
+  {en:"What if it could fly or roll?", es:"¿Y si pudiera volar o rodar?"},
+  {en:"What if it were part of something? Only a piece of it…", es:"¿Y si fuera solo un pedacito de algo más grande?"},
+  {en:"What if it were in the sky, in the sea or in a forest?", es:"¿Y si estuviera en el cielo, en el mar o en un bosque?"}
+];
+const GIRO = {en:"I turned the scribble around. Does it look like something else now?", es:"Giré el garabato. ¿Ahora parece otra cosa?"};
+const C = {
+  inicio:{en:"Don't suggest what to draw. Ask: «What do you see? What else could it be?» Every idea counts, even silly ones.",
+          es:"No le diga qué dibujar. Pregunte: «¿Qué ves? ¿Qué más podría ser?» Todas las ideas cuentan, también las chistosas."},
+  otra:{en:"The second and third ideas are usually the most original. Celebrate trying again with the same scribble.",
+        es:"La segunda y la tercera idea suelen ser las más originales. Celebre que lo intente otra vez con el mismo garabato."},
+  amigos:{en:"Encourage «Yes, and…»: add to your friend's idea instead of replacing it.",
+          es:"Anime el «Sí, y además…»: agregar algo a la idea del amigo en vez de cambiarla."},
+  flex:{en:"Flexible thinking means jumping to a different kind of idea (from animal to food, from food to a rocket).",
+        es:"Pensar con flexibilidad es saltar a otro tipo de idea (de animal a comida, de comida a cohete)."},
+  final:{en:"Ask: «Which idea surprised you? Which was the hardest to think of?» Praise the effort of imagining, not the drawing skill.",
+         es:"Pregunte: «¿Qué idea te sorprendió? ¿Cuál te costó más pensar?» Elogie el esfuerzo de imaginar, no lo bonito del dibujo."}
+};
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", modo:"solo", nivel:"1", ronda:0, rondas:3, garabato:null, giro:0,
+           ideas:[], ideasRonda:[], turno:0, chispa:0, tipo:null, nombre:"", vistos:{}, ultimoConsejo:null, orden:[]};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const colorTurno = ()=>S.turno===0 ? "amarillo" : "azul";
+
+/* ============ Voz ============ */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+function hablar(texto, despues, interno){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(texto);
+    u.lang = S.idioma==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma)); if(v) u.voice=v;
+    u.rate=0.9; u.pitch=1.1;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos y celebración ============ */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSello=()=>tono([784],0.07), sonChispa=()=>tono([880,1175],0.1), sonTada=()=>tono([523,659,784,1047],0.16);
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=["🎉","💡","✨","🌟","🖍️"][i%5]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* ============ Lumi señala los botones (para quien todavía no lee) ============ */
+const DICE = {
+  "capas":       {en:"Draw on top of the scribble with your finger or the mouse.", es:"Dibuja encima del garabato con el dedo o con el ratón."},
+  "colores":     {en:"Here you choose the pencil color.", es:"Aquí eliges el color del lápiz."},
+  "sellos":      {en:"With the stamps you can add eyes, a mouth, flowers and more.", es:"Con los sellos puedes poner ojos, boca, flores y más."},
+  "btn-chispa":  {en:"If you run out of ideas, tap the spark.", es:"Si te quedas sin ideas, toca la chispa."},
+  "btn-ya":      {en:"When your idea is ready, tap the purple button.", es:"Cuando tu idea esté lista, toca el botón morado."},
+  "f-voz":       {en:"Tap the microphone to say what it is.", es:"Toca el micrófono para decir qué es."},
+  "f-escribir":  {en:"Tap the keyboard to write its name.", es:"Toca el teclado para escribir su nombre."},
+  "f-tipo":      {en:"Tap the finger to pick what kind of thing it is.", es:"Toca el dedito para elegir qué tipo de cosa es."},
+  "btn-guardar": {en:"Tap the purple button to put it in the museum.", es:"Toca el botón morado para ponerla en el museo."},
+  "btn-otra-idea":{en:"Tap the light bulb to make another idea with the same scribble.", es:"Toca el foquito para hacer otra idea con el mismo garabato."},
+  "btn-agregar": {en:"Or add something to this idea.", es:"O agrégale algo a esta idea."},
+  "btn-otro-garabato":{en:"Or go on to the next scribble.", es:"O sigue con otro garabato."},
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+const ORDEN = ["capas","colores","sellos","btn-chispa","btn-ya","f-voz","f-escribir","f-tipo","btn-guardar","btn-otra-idea","btn-agregar","btn-otro-garabato","btn-otra-vez","btn-al-menu"];
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:sinMovimiento()?"auto":"smooth"});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* El mensaje de Lumi se escribe (para que se resalte al leerlo) y se dice.
+   Lumi presenta solo los botones de ese momento, y solo las dos primeras veces. */
+let ultimaGuia=null;
+function decir(cual, texto, botones){
+  $(cual).textContent = texto;
+  const lista = pasos(botones||[]);
+  const clave = (botones||[]).join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  ultimaGuia=()=>[{texto}].concat(pasos(botones||[]));
+  guia([{texto}].concat(S.vistos[clave]<=2 ? lista : []));
+}
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave;
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  caja.querySelector("p").textContent=tx(C[clave]);
+}
+
+/* ============ Lienzo: el garabato abajo, el dibujo del niño encima ============ */
+const base=$("base"), cb=base.getContext("2d"), dib=$("dibujo"), cd=dib.getContext("2d");
+let color=COLORES[0], sello=null, trazando=false, historia=[];
+function pintarGarabato(){
+  cb.fillStyle="#fff"; cb.fillRect(0,0,base.width,base.height);
+  cb.save();
+  cb.translate(350,225); cb.rotate(S.giro*Math.PI/2); cb.translate(-350,-225);
+  cb.strokeStyle="#1E1A3A"; cb.lineWidth=11; cb.lineCap="round"; cb.lineJoin="round";
+  S.garabato.forEach(g=>{
+    cb.save(); cb.translate(g.dx,0); cb.stroke(new Path2D(g.d)); cb.restore();
+  });
+  cb.restore();
+}
+function lienzoVacio(){ return historia.length===0; }
+function guardarPaso(){ historia.push(cd.getImageData(0,0,dib.width,dib.height)); if(historia.length>40) historia.shift(); }
+function borrarDibujo(){ cd.clearRect(0,0,dib.width,dib.height); historia=[]; }
+function punto(e){ const r=dib.getBoundingClientRect(); return [(e.clientX-r.left)*dib.width/r.width, (e.clientY-r.top)*dib.height/r.height]; }
+dib.addEventListener("pointerdown", e=>{
+  e.preventDefault(); guardarPaso();
+  const [x,y]=punto(e);
+  if(sello){
+    cd.font="70px 'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif";
+    cd.textAlign="center"; cd.textBaseline="middle"; cd.fillText(sello,x,y); sonSello();
+    return;
+  }
+  trazando=true; dib.setPointerCapture(e.pointerId);
+  cd.strokeStyle=color; cd.lineWidth=9; cd.lineCap="round"; cd.lineJoin="round";
+  cd.beginPath(); cd.moveTo(x,y); cd.lineTo(x+.1,y); cd.stroke();
+});
+dib.addEventListener("pointermove", e=>{ if(!trazando) return; const [x,y]=punto(e); cd.lineTo(x,y); cd.stroke(); });
+["pointerup","pointercancel"].forEach(ev=>dib.addEventListener(ev, ()=>{ trazando=false; }));
+$("btn-deshacer").addEventListener("click", ()=>{
+  if(!historia.length) return;
+  cd.putImageData(historia.pop(),0,0);
+});
+$("btn-borrar").addEventListener("click", borrarDibujo);
+COLORES.forEach((col,i)=>{
+  const b=document.createElement("button"); b.className="color"; b.style.background=col; b.dataset.i=i;
+  b.setAttribute("aria-pressed", String(i===0));
+  b.addEventListener("click", ()=>{ color=col; sello=null; marcarHerramienta(b); });
+  $("colores").appendChild(b);
+});
+SELLOS.forEach(s=>{
+  const b=document.createElement("button"); b.className="sello"; b.textContent=s; b.setAttribute("aria-pressed","false");
+  b.addEventListener("click", ()=>{ sello=s; marcarHerramienta(b); });
+  $("sellos").appendChild(b);
+});
+function marcarHerramienta(b){ document.querySelectorAll(".color,.sello").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }
+function foto(){
+  const c=document.createElement("canvas"); c.width=350; c.height=225;
+  const x=c.getContext("2d"); x.drawImage(base,0,0,350,225); x.drawImage(dib,0,0,350,225);
+  return c.toDataURL("image/png");
+}
+
+/* ============ Pantallas ============ */
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function zonas(...ver){ ["zona-dibujar","zona-nombre","zona-despues"].forEach(id=>$(id).classList.toggle("oculto", ver.indexOf(id)<0)); }
+function pintarContador(){ $("contador").textContent=tx(T.contador, S.ronda+1, S.rondas, S.ideas.length); }
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  const doble = S.nivel==="2" && S.ronda===S.rondas-1;
+  const g1=S.orden[S.ronda];
+  if(doble){
+    const g2=S.orden[S.rondas];
+    S.garabato=[{d:GARABATOS[g1], dx:-150}, {d:GARABATOS[g2], dx:150}];
+  } else S.garabato=[{d:GARABATOS[g1], dx:0}];
+  S.giro=0; S.ideasRonda=[]; S.chispa=Math.floor(Math.random()*CHISPAS.length);
+  pintarGarabato(); borrarDibujo();
+  marcarHerramienta(document.querySelector(".color")); color=COLORES[0]; sello=null;
+  pintarContador();
+  consejo(S.modo==="amigos" ? "amigos" : "inicio");
+  empezarDibujo(tx(doble ? T.nuevoDoble : T.nuevo));
+}
+function empezarDibujo(msg){
+  zonas("zona-dibujar");
+  const turno = S.modo==="amigos" ? tx(T.turno, tx(T[colorTurno()]))+" " : "";
+  decir("msg", turno+msg, ["capas","colores","sellos","btn-chispa","btn-ya"]);
+}
+$("btn-chispa").addEventListener("click", ()=>{
+  sonChispa();
+  /* Si todavía no dibujó, la primera chispa gira el garabato */
+  if(lienzoVacio() && S.giro===0){
+    S.giro=1; pintarGarabato();
+    decir("msg", tx(GIRO));
+    return;
+  }
+  const c=CHISPAS[S.chispa % CHISPAS.length]; S.chispa++;
+  decir("msg", tx(c));
+});
+$("btn-ya").addEventListener("click", ()=>{
+  if(lienzoVacio()){ decir("msg", tx(T.vacio)); return; }
+  S.tipo=null; S.nombre=""; $("campo-nombre").value="";
+  ["caja-voz","caja-escribir","caja-tipo"].forEach(id=>$(id).classList.add("oculto"));
+  ["f-voz","f-escribir","f-tipo"].forEach(id=>$(id).setAttribute("aria-pressed","false"));
+  document.querySelectorAll(".tipo").forEach(b=>b.setAttribute("aria-pressed","false"));
+  $("btn-escuchar").classList.add("oculto");
+  $("btn-guardar").classList.add("oculto");
+  zonas("zona-dibujar","zona-nombre");
+  $("zona-dibujar").querySelector(".acciones").classList.add("oculto");
+  $("zona-nombre").scrollIntoView({block:"nearest", behavior:sinMovimiento()?"auto":"smooth"});
+  decir("msg", tx(T.nombre), ["f-voz","f-escribir","f-tipo"]);
+});
+$("btn-seguir-dibujando").addEventListener("click", ()=>{
+  $("zona-dibujar").querySelector(".acciones").classList.remove("oculto");
+  zonas("zona-dibujar");
+  decir("msg", tx(S.ideasRonda.length ? T.otra : T.nuevo));
+});
+
+/* Tres formas de decir qué es (basta con una) */
+function marcarForma(id){
+  ["f-voz","f-escribir","f-tipo"].forEach(x=>$(x).setAttribute("aria-pressed", String(x===id)));
+  $("caja-voz").classList.toggle("oculto", id!=="f-voz");
+  $("caja-escribir").classList.toggle("oculto", id!=="f-escribir");
+  $("caja-tipo").classList.toggle("oculto", id!=="f-tipo");
+}
+function listoParaGuardar(){
+  const b=$("btn-guardar");
+  const nueva=b.classList.contains("oculto");
+  b.classList.remove("oculto");
+  if(nueva){ S.vistos.guardar=(S.vistos.guardar||0)+1; if(S.vistos.guardar<=2) guia(pasos(["btn-guardar"])); }
+}
+$("f-voz").addEventListener("click", ()=>{ marcarForma("f-voz"); $("txt-grabar").textContent=tx(T.grabar); decir("msg", tx(T.di)); });
+$("f-escribir").addEventListener("click", ()=>{ marcarForma("f-escribir"); decir("msg", tx(T.escribe)); setTimeout(()=>$("campo-nombre").focus(),50); });
+$("f-tipo").addEventListener("click", ()=>{ marcarForma("f-tipo"); decir("msg", tx(T.elige)); });
+$("campo-nombre").addEventListener("input", e=>{
+  S.nombre=e.target.value.trim();
+  if(S.nombre) listoParaGuardar(); else $("btn-guardar").classList.add("oculto");
+});
+$("campo-nombre").addEventListener("keydown", e=>{ if(e.key==="Enter" && S.nombre) $("btn-guardar").click(); });
+function pintarTipos(){
+  const cont=$("tipos"); cont.innerHTML="";
+  cont.setAttribute("aria-label", S.idioma==="es" ? "Tipos de cosas" : "Kinds of things");
+  TIPOS.forEach(t=>{
+    const b=document.createElement("button"); b.className="tipo"; b.dataset.id=t.id;
+    b.setAttribute("aria-pressed", String(S.tipo===t.id));
+    b.innerHTML='<span aria-hidden="true">'+t.ico+'</span> <span></span>'; b.lastChild.textContent=t[S.idioma];
+    b.addEventListener("click", ()=>{
+      S.tipo=t.id; document.querySelectorAll(".tipo").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+      hablar(t[S.idioma]); listoParaGuardar();
+    });
+    cont.appendChild(b);
+  });
+}
+
+/* Grabación local */
+let grabadora=null, trozos=[], urlAudio=null;
+$("btn-grabar").addEventListener("click", async ()=>{
+  if(grabadora && grabadora.state==="recording"){ grabadora.stop(); return; }
+  try{
+    const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+    trozos=[]; grabadora=new MediaRecorder(flujo);
+    grabadora.ondataavailable=e=>trozos.push(e.data);
+    grabadora.onstop=()=>{
+      flujo.getTracks().forEach(t=>t.stop());
+      if(urlAudio) URL.revokeObjectURL(urlAudio);
+      urlAudio=URL.createObjectURL(new Blob(trozos));
+      $("btn-grabar").classList.remove("grabando"); $("txt-grabar").textContent=tx(T.grabar);
+      $("btn-escuchar").classList.remove("oculto");
+      listoParaGuardar();
+    };
+    grabadora.start(); $("btn-grabar").classList.add("grabando"); $("txt-grabar").textContent=tx(T.parar);
+  }catch(e){ listoParaGuardar(); }
+});
+$("btn-escuchar").addEventListener("click", ()=>{ if(urlAudio) new Audio(urlAudio).play(); });
+$("btn-dicho").addEventListener("click", listoParaGuardar);
+
+/* Guardar en el museo (solo en esta página) */
+$("btn-guardar").addEventListener("click", ()=>{
+  const idea={img:foto(), nombre:S.nombre, tipo:S.tipo, audio:urlAudio, jugador:S.modo==="amigos"?S.turno:null};
+  urlAudio=null;
+  S.ideas.push(idea); S.ideasRonda.push(idea);
+  sonTada(); confeti(); lumiFeliz();
+  pintarMuseo($("museo-juego")); $("t-museo-juego").classList.remove("oculto");
+  pintarContador();
+  $("zona-dibujar").querySelector(".acciones").classList.remove("oculto");
+  zonas("zona-despues");
+  const ultima = S.ronda>=S.rondas-1;
+  $("btn-otro-garabato").textContent=tx(ultima?T.fin:T.otroG);
+  $("btn-agregar").classList.toggle("oculto", S.modo!=="amigos");
+  const tipoElegido=TIPOS.find(x=>x.id===S.tipo);
+  let msg=tx(T.guardado, S.nombre || (tipoElegido ? tipoElegido[S.idioma].toLowerCase() : ""));
+  /* 2.º grado: reto de flexibilidad o celebración de la variedad */
+  const tipos=S.ideasRonda.map(i=>i.tipo).filter(Boolean);
+  const distintos=[...new Set(S.ideas.map(i=>i.tipo).filter(Boolean))].length;
+  if(S.nivel==="2" && S.ideasRonda.length>=2 && tipos.length===S.ideasRonda.length && new Set(tipos).size===1){
+    const t=TIPOS.find(x=>x.id===tipos[0]);
+    msg += " " + tx(T.flex, t[S.idioma].toLowerCase());
+    consejo("flex");
+  } else if(S.nivel==="2" && distintos>=3 && !S.vistos.variedad){
+    S.vistos.variedad=1; msg += " " + tx(T.variedad, distintos);
+  } else {
+    msg += " " + tx(T.despues);
+    consejo(S.modo==="amigos" ? "amigos" : "otra");
+  }
+  decir("msg", msg, ["btn-otra-idea","btn-agregar","btn-otro-garabato"]);
+});
+$("btn-otra-idea").addEventListener("click", ()=>{
+  if(S.modo==="amigos") S.turno=1-S.turno;
+  borrarDibujo(); S.giro=0; pintarGarabato();
+  consejo(S.modo==="amigos" ? "amigos" : "otra");
+  empezarDibujo(tx(T.otra));
+});
+/* Con un amigo: «Sí, y además…» se dibuja encima de la idea anterior */
+$("btn-agregar").addEventListener("click", ()=>{
+  S.turno=1-S.turno;
+  historia=[];
+  consejo("amigos");
+  empezarDibujo(tx(T.agregar));
+});
+$("btn-otro-garabato").addEventListener("click", ()=>{
+  S.ronda++;
+  if(S.ronda>=S.rondas){ final(); return; }
+  if(S.modo==="amigos") S.turno=1-S.turno;
+  nuevaRonda();
+});
+
+function pintarMuseo(cont){
+  cont.innerHTML="";
+  S.ideas.forEach((idea,i)=>{
+    const f=document.createElement("figure"); f.className="cuadrito";
+    const im=document.createElement("img"); im.src=idea.img;
+    const t=TIPOS.find(x=>x.id===idea.tipo);
+    const titulo=idea.nombre || (t ? t[S.idioma] : tx(T.sinNombre)+" "+(i+1));
+    im.alt=titulo;
+    const cap=document.createElement("figcaption");
+    cap.textContent=(t?t.ico+" ":"💡 ")+Mayus(titulo);
+    if(idea.jugador!==null){ const a=document.createElement("span"); a.className="autor"; a.textContent=tx(T[idea.jugador===0?"amarillo":"azul"]); cap.appendChild(a); }
+    f.appendChild(im); f.appendChild(cap);
+    if(idea.audio){
+      const b=document.createElement("button"); b.className="boton chico"; b.style.marginTop="4px";
+      b.innerHTML='<span aria-hidden="true">▶️</span> <span></span>'; b.lastChild.textContent=S.idioma==="es"?"Escuchar":"Listen";
+      b.addEventListener("click", ()=>new Audio(idea.audio).play());
+      f.appendChild(b);
+    }
+    cont.appendChild(f);
+  });
+}
+function final(){
+  mostrar("p-final");
+  pintarMuseo($("museo-final"));
+  $("txt-reto").textContent=tx(T.reto);
+  decir("msg-final", tx(T.final, S.ideas.length), ["btn-otra-vez","btn-al-menu"]);
+}
+function empezar(){
+  S.ronda=0; S.ideas=[]; S.turno=0; S.vistos={};
+  S.orden=mezclar(GARABATOS.map((_,i)=>i));
+  $("museo-juego").innerHTML=""; $("t-museo-juego").classList.add("oculto");
+  mostrar("p-juego"); nuevaRonda();
+}
+$("btn-otra-vez").addEventListener("click", empezar);
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+
+/* ============ Portada, idioma y grado ============ */
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+$("btn-empezar").addEventListener("click", empezar);
+
+let gradoFijo=null;
+function aplicarIdioma(){
+  const es=S.idioma==="es";
+  document.documentElement.lang=S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent=el.getAttribute("data-"+S.idioma); });
+  document.title = es ? "Ideas nuevas · Mentes curiosas" : "New Ideas · Curious Minds";
+  $("btn-es").setAttribute("aria-pressed", String(es)); $("btn-en").setAttribute("aria-pressed", String(!es));
+  $("btn-oir").setAttribute("aria-label", es ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  ["bocina","bocina-final"].forEach(id=>$(id).setAttribute("aria-label", es ? "Escuchar otra vez" : "Hear it again"));
+  $("dibujo").setAttribute("aria-label", es ? "Espacio para dibujar encima del garabato" : "Space to draw on top of the scribble");
+  $("campo-nombre").setAttribute("aria-label", es ? "Nombre de tu idea" : "Name of your idea");
+  $("campo-nombre").setAttribute("placeholder", es ? "Por ejemplo: un cohete" : "For example: a rocket");
+  document.querySelectorAll(".color").forEach((b,i)=>b.setAttribute("aria-label", (es?["Lápiz negro","Lápiz rojo","Lápiz azul","Lápiz verde","Lápiz amarillo","Lápiz morado"]:["Black pencil","Red pencil","Blue pencil","Green pencil","Yellow pencil","Purple pencil"])[i]));
+  const NS={es:["ojos","boca","estrella","flor","rueda","hoja","fuego","gota","moño","corazón"],en:["eyes","mouth","star","flower","wheel","leaf","fire","drop","bow","heart"]};
+  document.querySelectorAll(".sello").forEach((b,i)=>b.setAttribute("aria-label", (es?"Sello: ":"Stamp: ")+NS[S.idioma][i]));
+  pintarTipos();
+  const q=[gradoFijo ? "grado="+gradoFijo : "", es ? "lang=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(!$("btn-grabar").classList.contains("grabando")) $("txt-grabar").textContent=tx(T.grabar);
+  if(!$("p-juego").classList.contains("oculto")){
+    pintarContador();
+    if(S.ideas.length) pintarMuseo($("museo-juego"));
+    if(!$("zona-despues").classList.contains("oculto")) $("btn-otro-garabato").textContent=tx(S.ronda>=S.rondas-1?T.fin:T.otroG);
+    if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  }
+  if(!$("p-final").classList.contains("oculto")){
+    pintarMuseo($("museo-final")); $("txt-reto").textContent=tx(T.reto); $("msg-final").textContent=tx(T.final, S.ideas.length);
+  }
+}
+try{
+  const q=new URLSearchParams(location.search);
+  if(q.get("lang")==="es") S.idioma="es";
+  if(q.get("grado")==="1" || q.get("grado")==="2") gradoFijo=q.get("grado");
+}catch(e){}
+if(gradoFijo){
+  S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+  document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+}
+aplicarIdioma();
+
+$("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+$("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+let presentado=false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado=true;
+  guia([{texto:tx(T.portada)}, {el:$("btn-empezar"), texto:tx(DICE["btn-empezar"])}]);
+}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+  if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-en, #btn-es, #btn-oir")) return;
+  presentar(); }, {once:true}));
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+presentar();
+
+/* Barra de Lumi del grado */
+if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+</script>
+</body>
+</html>
