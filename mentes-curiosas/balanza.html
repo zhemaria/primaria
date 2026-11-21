@@ -4,7 +4,7 @@
   Thinking together: before testing, the child predicts which way the balance will tip
   and says why. A story friend (Israel or Alejandro) thinks differently. Lumi asks:
   «How can we find out who is right?» The answer comes from testing, not from who says it.
-  Grade 1: more things are not always heavier. Grade 2: each friend found a different clue
+  Grade 1: more things are not always heavier. Grade 2: each friend gives a different clue
   (🍉 = 🍎🍎🍎 and 🍎 = 🍓🍓); the challenges are solved by putting both clues together
   (early algebraic reasoning). With a friend, each player gets a secret clue and they must
   share them. Mistakes get a hint, never the answer: the balance shows what happens.
@@ -87,6 +87,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var
 .pista{background:var(--oro-claro);border:3px solid var(--oro);border-radius:16px;padding:8px 14px;font-weight:700;display:flex;align-items:center;gap:8px}
 .pista .quien{font-size:.8em;color:var(--tinta-suave);display:block}
 .pista .eq{font-size:1.35em;letter-spacing:.04em}
+.pista .cara-pista{line-height:0}
 .pista.secreta{background:#EEE8FB;border-color:var(--acento)}
 .pista.brilla{box-shadow:0 0 0 5px #FFC94D}
 
@@ -109,7 +110,8 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var
 .razon .ico{font-size:1.5em}
 .razon[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
 .amigo{display:flex;align-items:center;gap:12px;max-width:680px;margin:0 auto 12px;background:#EAF2FD;border:4px solid var(--azul);border-radius:20px;padding:10px 14px}
-.amigo .cara{font-size:2.4em;line-height:1}
+.amigo .cara{flex:0 0 auto;line-height:0}
+.amigo .cara svg{width:68px;height:68px}
 .amigo p{margin:0;font-weight:600}
 .amigo strong{display:block}
 .grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
@@ -241,7 +243,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var
     </div>
 
     <!-- El amigo del cuento -->
-    <div class="amigo oculto" id="amigo" role="status"><span class="cara" aria-hidden="true">🧒🏻</span><p><strong id="amigo-nombre"></strong><span id="amigo-dice"></span></p></div>
+    <div class="amigo oculto" id="amigo" role="status"><span class="cara" aria-hidden="true"></span><p><strong id="amigo-nombre"></strong><span id="amigo-dice"></span></p></div>
 
     <!-- ¿Cómo lo averiguamos? -->
     <div id="zona-averiguar" class="oculto">
@@ -294,7 +296,30 @@ const PESO = {"🍓":1, "🍎":2, "🍉":6};
 const NOMBRE_FRUTA = {es:{"🍓":"fresa","🍎":"manzana","🍉":"sandía"}, en:{"🍓":"strawberry","🍎":"apple","🍉":"watermelon"}};
 const PLURAL_FRUTA = {es:{"🍓":"fresas","🍎":"manzanas","🍉":"sandías"}, en:{"🍓":"strawberries","🍎":"apples","🍉":"watermelons"}};
 const cita = t=>S.idioma==="es" ? "«"+t+"»" : "\u201C"+t+"\u201D";
-const CARA = {"Israel":"👦🏽", "Alejandro":"👦🏼"};
+/* Caritas de los amigos del cuento (SVG, sin depender de los emojis) */
+function caraSVG(quien){
+  const D={
+    Israel:   {piel:"#F1C7A1", sombra:"#DDA97F", pelo:"#1E1B1A", ojos:"#3B2416", camisa:"#1F6FD1"},
+    Alejandro:{piel:"#FBE0C8", sombra:"#EBC3A2", pelo:"#A8743F", ojos:"#3E7CC9", camisa:"#2E8B57"}
+  }[quien];
+  if(!D) return "";
+  /* Israel: pelo negro, corto; Alejandro: castaño claro, con fleco de lado */
+  const peloIsrael='<path d="M11.8 23 C10.5 13 16 7.5 24 7.5 C32 7.5 37.5 13 36.2 23 C35 19.5 33.5 17.5 31 16.8 C27 15.6 21 15.6 17 16.8 C14.5 17.5 13 19.5 11.8 23 Z" fill="'+D.pelo+'"/>';
+  const peloAlejandro='<path d="M11.5 25 C9.5 13 16 6.8 24.5 7 C33 7.2 38.5 13 36.5 25 C35.5 20.5 34 18 31.5 17 C28 19.5 22 20 17.5 18.5 C14.5 19.5 12.8 21.8 11.5 25 Z" fill="'+D.pelo+'"/>'+
+    '<path d="M17.5 18.5 C21 15 26 13.5 31.5 17" stroke="#8C5E30" stroke-width="1.2" fill="none" stroke-linecap="round"/>';
+  return '<svg viewBox="0 0 48 48" width="56" height="56" aria-hidden="true" focusable="false">'+
+    '<path d="M8 48 C9 38 16 35 24 35 C32 35 39 38 40 48 Z" fill="'+D.camisa+'"/>'+
+    '<rect x="20" y="30" width="8" height="7" rx="3" fill="'+D.sombra+'"/>'+
+    '<circle cx="12.5" cy="24" r="3" fill="'+D.sombra+'"/><circle cx="35.5" cy="24" r="3" fill="'+D.sombra+'"/>'+
+    '<ellipse cx="24" cy="23" rx="11.5" ry="12" fill="'+D.piel+'"/>'+
+    (quien==="Israel"?peloIsrael:peloAlejandro)+
+    '<circle cx="19.5" cy="24" r="2.1" fill="#fff"/><circle cx="28.5" cy="24" r="2.1" fill="#fff"/>'+
+    '<circle cx="19.8" cy="24.3" r="1.4" fill="'+D.ojos+'"/><circle cx="28.8" cy="24.3" r="1.4" fill="'+D.ojos+'"/>'+
+    '<path d="M17.5 20.5 Q19.5 19.3 21.5 20.5 M26.5 20.5 Q28.5 19.3 30.5 20.5" stroke="'+D.pelo+'" stroke-width="1.1" fill="none" stroke-linecap="round"/>'+
+    '<circle cx="16.8" cy="28" r="1.8" fill="#F4A6A0" opacity=".55"/><circle cx="31.2" cy="28" r="1.8" fill="#F4A6A0" opacity=".55"/>'+
+    '<path d="M20.5 29.5 Q24 32.5 27.5 29.5" stroke="#8A4B3A" stroke-width="1.5" fill="none" stroke-linecap="round"/>'+
+    '</svg>';
+}
 const PISTAS = [
   {quien:"Israel",    izq:"🍉", der:"🍎🍎🍎"},
   {quien:"Alejandro", izq:"🍎", der:"🍓🍓"}
@@ -363,9 +388,9 @@ const T = {
   amigosBien:{en:"You were both right!", es:"¡Los dos tenían razón!"},
   amigosUno:{en:c=>c+" was right this time. Here is why:", es:c=>c+" acertó esta vez. Miren por qué:"},
   amigosNinguno:{en:"Surprise for both of you! Here is why:", es:"¡Sorpresa para los dos! Miren por qué:"},
-  pistasSolo:{en:"My friends found two clues by testing. Look at them: they will help you!",
-              es:"Mis amigos descubrieron dos pistas probando. Míralas: ¡te van a ayudar!"},
-  pistaUno:{en:"Israel and Alejandro found this clue by testing. Look at it!", es:"Israel y Alejandro descubrieron esta pista probando. ¡Mírala!"},
+  pistasSolo:{en:"My friends each gave you a clue. Look at them: they will help you!",
+              es:"Mis amigos te dan una pista cada uno. Míralas: ¡te van a ayudar!"},
+  pistaUno:{en:"Israel and Alejandro give you this clue. Look at it!", es:"Israel y Alejandro te dan esta pista. ¡Mírala!"},
   secretoAm:{en:"Each of you will see a secret clue. Blue player, cover your eyes! Yellow player, tap the button to see your clue.",
              es:"Cada uno verá una pista secreta. Jugador azul, ¡tápate los ojos! Jugador amarillo, toca el botón para ver tu pista."},
   secretoAz:{en:"Now yellow player, cover your eyes! Blue player, tap the button to see your clue.",
@@ -374,7 +399,7 @@ const T = {
                 es:"Cada uno tiene una pista. ¡Van a tener que contarse sus pistas para resolver los retos!"},
   verPista:{en:c=>"👀 "+c+": see my clue", es:c=>"👀 "+c+": ver mi pista"},
   pistaDe:{en:c=>"Clue of the "+c.toLowerCase(), es:c=>"Pista del "+c.toLowerCase()},
-  pistaTit:{en:n=>n+" found:", es:n=>n+" descubrió:"},
+  pistaTit:{en:n=>n+" says:", es:n=>n+" dice que:"},
   sig:{en:"Next challenge ▶", es:"Siguiente reto ▶"}, fin:{en:"Finish ▶", es:"Terminar ▶"},
   contador:{en:(a,b)=>"Challenge "+a+" of "+b, es:(a,b)=>"Reto "+a+" de "+b},
   grabar:{en:"Say it", es:"Dilo"}, parar:{en:"Stop", es:"Parar"},
@@ -584,7 +609,7 @@ function cajaPista(i, abierta, brilla){
     d.lastChild.textContent=tx(T.pistaDe, tx(T[color(i)]));
     return d;
   }
-  d.innerHTML='<span aria-hidden="true">🔑</span><span><span class="quien"></span><span class="eq"></span></span>';
+  d.innerHTML='<span class="cara-pista" aria-hidden="true">'+(S.modo==="amigos" ? "🔑" : caraSVG(p.quien).replace(/width="56" height="56"/,'width="40" height="40"'))+'</span><span><span class="quien"></span><span class="eq"></span></span>';
   d.querySelector(".quien").textContent = S.modo==="amigos" ? tx(T.pistaDe, tx(T[color(i)]))+":" : tx(T.pistaTit, p.quien);
   d.querySelector(".eq").textContent = p.izq+" = "+p.der;
   d.setAttribute("aria-label", d.querySelector(".quien").textContent+" "+nombrar(p.izq)+(S.idioma==="es"?" pesa lo mismo que ":" weighs the same as ")+nombrar(p.der));
@@ -685,7 +710,7 @@ function mostrarAmigo(){
   if(S.fase!=="razon") return;
   const r=S.reto;
   $("amigo-nombre").textContent=r.amigo+":";
-  $("amigo").querySelector(".cara").textContent=CARA[r.amigo]||"🧒";
+  $("amigo").querySelector(".cara").innerHTML=caraSVG(r.amigo);
   $("amigo-dice").textContent=" "+cita(r[S.idioma]);
   $("amigo").classList.remove("oculto");
   consejo("amigo");
