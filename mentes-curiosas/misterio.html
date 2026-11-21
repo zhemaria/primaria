@@ -129,6 +129,14 @@ table.grilla{border-collapse:separate;border-spacing:6px;margin:0 auto}
 .celda[data-v="no"]{background:var(--rojo-claro);border-color:var(--rojo);color:var(--rojo)}
 .celda.mira{box-shadow:0 0 0 5px #FFC94D}
 .leyenda{text-align:center;color:var(--tinta-suave);font-size:.85em;margin:0 0 8px}
+.regla-oro{max-width:640px;margin:0 auto 10px;background:var(--oro-claro);border:3px solid var(--oro);border-radius:14px;padding:8px 14px;font-weight:700;text-align:center}
+.lapices{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:0 0 4px}
+.t-lapiz{font-weight:700}
+.lapiz{font:inherit;font-weight:700;border:3px solid var(--linea);background:#fff;border-radius:14px;padding:6px 16px;min-height:48px;font-size:1.05em}
+#lapiz-no[aria-pressed="true"]{border-color:var(--rojo);background:var(--rojo-claro);color:var(--rojo);box-shadow:0 0 0 3px var(--rojo)}
+#lapiz-si[aria-pressed="true"]{border-color:#2F7D63;background:var(--verde-claro);color:var(--verde);box-shadow:0 0 0 3px #2F7D63}
+.celda.auto{opacity:.75}
+.grilla tbody tr.mira th,.grilla tbody tr.mira .celda{box-shadow:0 0 0 4px #FFC94D}
 .solucion{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:18px;padding:10px 16px;max-width:640px;margin:0 auto 12px;font-weight:700;text-align:center}
 
 </style>
@@ -196,7 +204,13 @@ table.grilla{border-collapse:separate;border-spacing:6px;margin:0 auto}
       <button class="boton oculto" id="btn-ya-vi"><span aria-hidden="true">🙈</span> <span data-es="Ya las vi: las escondo" data-en="I saw them: hide them">I saw them: hide them</span></button>
     </div>
     <div id="zona-grilla">
-      <p class="leyenda" id="leyenda" data-es="Toca una casilla: una vez ✖ (no), dos veces ✔ (sí), tres veces se borra." data-en="Tap a box: once ✖ (no), twice ✔ (yes), three times to clear it.">Tap a box: once ✖ (no), twice ✔ (yes), three times to clear it.</p>
+      <p class="regla-oro" id="regla-oro"></p>
+      <div class="lapices" role="group" aria-labelledby="t-lapiz">
+        <span id="t-lapiz" class="t-lapiz" data-es="Elige qué marcar y toca una casilla:" data-en="Choose a mark, then tap a box:">Choose a mark, then tap a box:</span>
+        <button class="lapiz" id="lapiz-no" aria-pressed="true"><span aria-hidden="true">✖</span> <span data-es="NO" data-en="NO">NO</span></button>
+        <button class="lapiz" id="lapiz-si" aria-pressed="false"><span aria-hidden="true">✔</span> <span data-es="SÍ" data-en="YES">YES</span></button>
+      </div>
+      <p class="leyenda" id="leyenda" data-es="Si tocas una casilla que ya tiene esa marca, se borra." data-en="Tap a box that already has that mark to clear it.">Tap a box that already has that mark to clear it.</p>
       <div class="tabla-cont"><table class="grilla" id="grilla"></table></div>
       <div class="acciones">
         <button class="boton" id="btn-regla"><span aria-hidden="true">💡</span> <span data-es="Un truco de detective" data-en="A detective trick">A detective trick</span></button>
@@ -433,13 +447,17 @@ const TEMAS=[
     si:{es:(n,c)=>n+" tiene "+c+".", en:(n,c)=>n+" has "+c+"."},
     no:{es:(n,c)=>n+" no tiene "+c+".", en:(n,c)=>n+" doesn't have "+c+"."},
     ni:{es:(a,b,c)=>"Ni "+a+" ni "+b+" tienen "+c+".", en:(a,b,c)=>"Neither "+a+" nor "+b+" has "+c+"."},
-    sol:{es:(n,c)=>n+" tiene "+c, en:(n,c)=>n+" has "+c} },
+    sol:{es:(n,c)=>n+" tiene "+c, en:(n,c)=>n+" has "+c},
+    verbo:{es:"tener", en:"have"},
+    oro:{es:"📌 Cada niño tiene UNA sola mascota, y cada mascota es de UN solo niño.", en:"📌 Each child has only ONE pet, and each pet belongs to only ONE child."} },
   { id:"musica", tit:{es:"¿Quién toca cada instrumento?", en:"Who plays each instrument?"},
     cosas:[{e:"🎸",es:"la guitarra",en:"the guitar"},{e:"🥁",es:"el tambor",en:"the drum"},{e:"🎺",es:"la trompeta",en:"the trumpet"},{e:"🎻",es:"el violín",en:"the violin"}],
     si:{es:(n,c)=>n+" toca "+c+".", en:(n,c)=>n+" plays "+c+"."},
     no:{es:(n,c)=>n+" no toca "+c+".", en:(n,c)=>n+" doesn't play "+c+"."},
     ni:{es:(a,b,c)=>"Ni "+a+" ni "+b+" tocan "+c+".", en:(a,b,c)=>"Neither "+a+" nor "+b+" plays "+c+"."},
-    sol:{es:(n,c)=>n+" toca "+c, en:(n,c)=>n+" plays "+c} }
+    sol:{es:(n,c)=>n+" toca "+c, en:(n,c)=>n+" plays "+c},
+    verbo:{es:"tocar", en:"play"},
+    oro:{es:"📌 Cada niño toca UN solo instrumento, y cada instrumento lo toca UN solo niño.", en:"📌 Each child plays only ONE instrument, and each instrument is played by only ONE child."} }
 ];
 const AMIGOS=[{n:"Israel"},{n:"Alejandro"}];
 /* Caritas de los amigos del cuento (SVG, sin depender de los emojis) */
@@ -467,8 +485,8 @@ function caraSVG(quien){
     '</svg>';
 }
 const T={
-  nuevo:{en:"A mystery! Each child has a different one, and nobody has two. Israel and Alejandro each give you some clues. Put both together and mark the grid.",
-         es:"¡Un misterio! Cada niño tiene uno distinto y nadie tiene dos. Israel y Alejandro te dan pistas cada uno. Junta las de los dos y marca la cuadrícula."},
+  nuevo:{en:"A mystery! Israel and Alejandro each give you clues. Read one clue at a time and mark it: ✖ where it says NO, ✔ where it says YES. Use the clues of both!",
+         es:"¡Un misterio! Israel y Alejandro te dan pistas cada uno. Lee una pista a la vez y márcala: ✖ donde dice que NO, ✔ donde dice que SÍ. ¡Usa las pistas de los dos!"},
   nuevoAm:{en:"A mystery! Each of you has secret clues. Neither can solve it alone: tell each other your clues and mark the grid together.",
            es:"¡Un misterio! Cada uno tiene pistas secretas. Ninguno puede resolverlo solo: cuéntense sus pistas y marquen la cuadrícula juntos."},
   secretoAm:{en:"Blue player, cover your eyes! Yellow player, tap the button to see your clues.", es:"Jugador azul, ¡tápate los ojos! Jugador amarillo, toca el botón para ver tus pistas."},
@@ -479,11 +497,24 @@ const T={
   cerrada:{en:"🔒 Secret clues. Tell your friend what they say!", es:"🔒 Pistas secretas. ¡Cuéntale a tu amigo lo que dicen!"},
   bien:{en:"You solved the mystery! Every clue fits. That's real detective thinking.", es:"¡Resolviste el misterio! Todas las pistas encajan. Eso es pensar como un detective."},
   vasBien:{en:"Everything you marked is right so far. What else can the clues tell you?", es:"Todo lo que marcaste va bien. ¿Qué más te dicen las pistas?"},
-  contraPista:{en:q=>"Look at this clue: "+q+" Does it agree with what you marked?", es:q=>"Mira esta pista: "+q+" ¿Va con lo que marcaste?"},
-  contraFila:{en:n=>"Look again at "+n+"'s row. With all the clues, which one can it be?", es:n=>"Mira otra vez la fila de "+n+". Con todas las pistas, ¿cuál le puede tocar?"},
+  sinMarcar:{en:q=>"Everything is right so far! This clue is not on the grid yet: "+q+" Where do you mark it?", es:q=>"¡Todo va bien! Esta pista todavía no está en la cuadrícula: "+q+" ¿Dónde la marcas?"},
+  quedaUna:{en:n=>"Everything is right so far! Look at "+n+"'s row: only one box has no ✖. What does that mean?", es:n=>"¡Todo va bien! Mira la fila de "+n+": solo queda una casilla sin ✖. ¿Qué quiere decir?"},
+  quedaUnaCol:{en:c=>"Everything is right so far! Look at the column for "+c+": only one box has no ✖. What does that mean?", es:c=>"¡Todo va bien! Mira la columna de "+c+": solo queda una casilla sin ✖. ¿Qué quiere decir?"},
+  dosFila:{en:(n,k)=>n+" has "+k+" ✔, but each child has only ONE. Which one would you keep?", es:(n,k)=>n+" tiene "+k+" ✔, pero cada niño tiene UNO solo. ¿Cuál dejarías?"},
+  dosCol:{en:(c,k)=>Mayus(c)+" has "+k+" ✔, but only ONE child has it. Which one would you keep?", es:(c,k)=>Mayus(c)+" tiene "+k+" ✔, pero solo UN niño lo tiene. ¿Cuál dejarías?"},
+  pistaNo:{en:(q)=>"The clue says "+q+" So, can that box have ✔?", es:(q)=>"La pista dice "+q+" Entonces, ¿puede haber ✔ en esa casilla?"},
+  pistaOtro:{en:(q,n,c)=>"The clue says "+q+" If that's true, can "+n+" "+P.tema.verbo.en+" "+c+" too?", es:(q,n,c)=>"La pista dice "+q+" Si eso es verdad, ¿puede "+n+" "+P.tema.verbo.es+" también "+c+"?"},
+  pistaSi:{en:(q)=>"The clue says "+q+" So why is there a ✖ in that box?", es:(q)=>"La pista dice "+q+" Entonces, ¿por qué hay una ✖ en esa casilla?"},
+  contraFila:{en:n=>"Look again at "+n+"'s row. Mark ✖ where the clues say NO, then see what is left.", es:n=>"Mira otra vez la fila de "+n+". Pon ✖ donde las pistas dicen que NO, y mira qué queda."},
+  yaTieneFila:{en:(n,c)=>n+" already has ✔ on "+c+". Each child has only ONE. Tap that ✔ to clear it first if you changed your mind.",
+               es:(n,c)=>n+" ya tiene ✔ en "+c+". Cada niño tiene UNO solo. Si cambiaste de idea, primero toca ese ✔ para borrarlo."},
+  yaTieneCol:{en:(c,n)=>Mayus(c)+" already has ✔ with "+n+". Only ONE child has it. Tap that ✔ to clear it first if you changed your mind.",
+              es:(c,n)=>Mayus(c)+" ya tiene ✔ con "+n+". Solo UN niño lo tiene. Si cambiaste de idea, primero toca ese ✔ para borrarlo."},
+  pistaOculta:{en:"One of your secret clues talks about the glowing box. Read your clues to each other again!", es:"Una de sus pistas secretas habla de la casilla que brilla. ¡Léanse otra vez sus pistas!"},
+  auto:{en:"When you mark ✔, Lumi crosses out the rest of that row and column, because each one has only one.", es:"Cuando marcas ✔, Lumi tacha el resto de esa fila y esa columna, porque cada uno tiene uno solo."},
   vacio:{en:"Mark at least one box first, using a clue.", es:"Primero marca al menos una casilla usando una pista."},
   trucos:[
-    {en:"Detective trick: if a child has ✔ in one box, all the other boxes in that row and column are ✖.", es:"Truco de detective: si un niño tiene ✔ en una casilla, todas las demás de su fila y de su columna son ✖."},
+    {en:"Detective trick: start with the clues that say YES. Then mark the NO clues.", es:"Truco de detective: empieza por las pistas que dicen SÍ. Luego marca las que dicen NO."},
     {en:"Detective trick: if a row has ✖ everywhere except one box, that box is ✔!", es:"Truco de detective: si una fila tiene ✖ en todas las casillas menos una, ¡esa es ✔!"},
     {en:"Detective trick: read the clues again, one by one, and mark each one on the grid.", es:"Truco de detective: lee otra vez las pistas, una por una, y marca cada una en la cuadrícula."}
   ],
@@ -605,16 +636,53 @@ function refrescar(){
   document.querySelectorAll(".celda").forEach(b=>{
     const a=+b.dataset.a, c=+b.dataset.c, v=P.marcas[a][c];
     b.dataset.v=v||""; b.textContent=v==="si"?"✔":v==="no"?"✖":"";
+    b.classList.toggle("auto", !!(P.auto && P.auto[a][c]));
     b.setAttribute("aria-label", ns[a]+", "+tm.cosas[c][S.idioma]+": "+tx(v==="si"?T.siCelda:v==="no"?T.noCelda:T.vacioCelda));
   });
+}
+/* Marcar con el lápiz elegido; un ✔ tacha automáticamente el resto de su fila y su columna */
+let lapiz="no";
+function ponerLapiz(v){ lapiz=v; $("lapiz-no").setAttribute("aria-pressed", String(v==="no")); $("lapiz-si").setAttribute("aria-pressed", String(v==="si")); }
+$("lapiz-no").addEventListener("click", ()=>ponerLapiz("no"));
+$("lapiz-si").addEventListener("click", ()=>ponerLapiz("si"));
+function recalcularAuto(){
+  /* se quitan las ✖ automáticas y se vuelven a poner según los ✔ actuales */
+  for(let a=0;a<P.n;a++) for(let c=0;c<P.n;c++) if(P.auto[a][c]){ P.marcas[a][c]=""; P.auto[a][c]=false; }
+  for(let a=0;a<P.n;a++) for(let c=0;c<P.n;c++) if(P.marcas[a][c]==="si"){
+    for(let k=0;k<P.n;k++){
+      if(k!==c && P.marcas[a][k]===""){ P.marcas[a][k]="no"; P.auto[a][k]=true; }
+      if(k!==a && P.marcas[k][c]===""){ P.marcas[k][c]="no"; P.auto[k][c]=true; }
+    }
+  }
 }
 function tocar(a,c){
   if(P.fase!=="resolver") return;
   const v=P.marcas[a][c];
-  P.marcas[a][c] = v===""?"no" : v==="no"?"si" : "";
+  /* La regla de oro: no se puede poner un segundo ✔ en la misma fila o columna */
+  if(lapiz==="si" && v!=="si"){
+    const cOtra=P.marcas[a].findIndex((x,k)=>k!==c && x==="si");
+    const aOtra=P.marcas.findIndex((f,k)=>k!==a && f[c]==="si");
+    if(cOtra>=0 || aOtra>=0){
+      sonPista(); quitarMiras();
+      const ca = cOtra>=0 ? [a,cOtra] : [aOtra,c];
+      const el=document.querySelector('.celda[data-a="'+ca[0]+'"][data-c="'+ca[1]+'"]'); if(el) el.classList.add("mira");
+      const ns=nombres(), cosa=k=>P.tema.cosas[k][S.idioma];
+      decir("msg", cOtra>=0 ? tx(T.yaTieneFila, ns[a], cosa(cOtra)) : tx(T.yaTieneCol, cosa(c), ns[aOtra]));
+      return;
+    }
+  }
+  P.auto[a][c]=false;
+  P.marcas[a][c] = v===lapiz ? "" : lapiz;
+  recalcularAuto();
   sonElige(); quitarMiras(); refrescar();
+  if(lapiz==="si" && P.marcas[a][c]==="si" && !P.autoExplicado){ P.autoExplicado=true; decir("msg", tx(T.auto)); }
 }
 function quitarMiras(){ document.querySelectorAll(".mira").forEach(x=>x.classList.remove("mira")); }
+function mirarPista(idx){
+  const li=document.querySelector('#pistas li[data-i="'+idx+'"]');
+  if(li){ li.classList.add("mira"); li.scrollIntoView({block:"center", behavior:suave()}); }
+}
+function mirarFila(a){ const tr=document.querySelector('#grilla tbody th[data-a="'+a+'"]'); if(tr) tr.parentElement.classList.add("mira"); }
 
 function zonas(...ver){ ["zona-secreta","zona-grilla","zona-siguiente"].forEach(id=>$(id).classList.toggle("oculto", ver.indexOf(id)<0)); }
 function nuevaRonda(){
@@ -622,6 +690,9 @@ function nuevaRonda(){
   P.tema = TEMAS[(P.temaIni+P.ronda)%TEMAS.length];
   const ac=armarAcertijo(P.n); P.sol=ac.sol; P.pistas=ac.pistas;
   P.marcas=[...Array(P.n)].map(()=>Array(P.n).fill(""));
+  P.auto=[...Array(P.n)].map(()=>Array(P.n).fill(false));
+  ponerLapiz("no");
+  $("regla-oro").textContent=P.tema.oro[S.idioma];
   P.fase="resolver"; P.truco=0;
   $("solucion").classList.add("oculto");
   $("contador").textContent=tx(T.contador, P.ronda+1, P.rondas);
@@ -661,35 +732,50 @@ $("btn-ya-vi").addEventListener("click", ()=>{
 });
 $("btn-regla").addEventListener("click", ()=>{ sonPista(); decir("msg", tx(T.trucos[P.truco++ % T.trucos.length])); });
 
-/* Comprobar: pista, nunca la respuesta */
+/* Comprobar: pista que explica el razonamiento, nunca la respuesta */
 $("btn-comprobar").addEventListener("click", ()=>{
   quitarMiras();
+  const tm=P.tema, ns=nombres(), cosa=c=>tm.cosas[c][S.idioma];
   const marcadas=[]; P.marcas.forEach((f,a)=>f.forEach((v,c)=>{ if(v) marcadas.push({a,c,v}); }));
   if(!marcadas.length){ decir("msg", tx(T.vacio)); return; }
-  const malas=marcadas.filter(m=>(m.v==="si") !== (P.sol[m.a]===m.c));
+  /* 1. La regla de oro: nadie puede tener dos ✔, ni una cosa dos dueños */
+  for(let a=0;a<P.n;a++){ const k=P.marcas[a].filter(v=>v==="si").length; if(k>1){ sonPista(); mirarFila(a); decir("msg", tx(T.dosFila, ns[a], k)); return; } }
+  for(let c=0;c<P.n;c++){ const k=P.marcas.filter(f=>f[c]==="si").length; if(k>1){ sonPista(); document.querySelectorAll('.celda[data-c="'+c+'"]').forEach(x=>x.classList.add("mira")); decir("msg", tx(T.dosCol, cosa(c), k)); return; } }
+  /* primero los ✔ equivocados y las marcas puestas a mano (las ✖ automáticas se arreglan solas) */
+  const malas=marcadas.filter(m=>(m.v==="si") !== (P.sol[m.a]===m.c))
+    .sort((x,y)=>(y.v==="si")-(x.v==="si") || (P.auto[x.a][x.c]?1:0)-(P.auto[y.a][y.c]?1:0));
   if(!malas.length){
     const completas=P.marcas.every((f,a)=>f[P.sol[a]]==="si");
     if(completas){ resuelto(); return; }
-    sonElige(); decir("msg", tx(T.vasBien)); return;
+    sonElige();
+    /* siguiente paso: una pista que todavía no está marcada, o una fila/columna con una sola casilla libre */
+    if(S.modo!=="amigos" || P.abiertas){
+      const sin=P.pistas.findIndex(p=> p.t==="si" ? P.marcas[p.a][p.c]!=="si" : p.t==="no" ? P.marcas[p.a][p.c]!=="no" : (P.marcas[p.a][p.c]!=="no" || P.marcas[p.b][p.c]!=="no"));
+      if(sin>=0){ mirarPista(sin); decir("msg", tx(T.sinMarcar, cita(textoPista(P.pistas[sin])))); return; }
+    }
+    for(let a=0;a<P.n;a++){ const libres=P.marcas[a].filter(v=>v!=="no").length; if(libres===1 && P.marcas[a].indexOf("si")<0){ mirarFila(a); decir("msg", tx(T.quedaUna, ns[a])); return; } }
+    for(let c=0;c<P.n;c++){ const libres=P.marcas.filter(f=>f[c]!=="no").length; if(libres===1 && !P.marcas.some(f=>f[c]==="si")){ document.querySelectorAll('.celda[data-c="'+c+'"]').forEach(x=>x.classList.add("mira")); decir("msg", tx(T.quedaUnaCol, cosa(c))); return; } }
+    decir("msg", tx(T.vasBien)); return;
   }
   sonPista(); consejo("error");
   const m=malas[0];
   const celda=document.querySelector('.celda[data-a="'+m.a+'"][data-c="'+m.c+'"]');
-  /* ¿Hay una pista que diga justo lo contrario de esta marca? */
-  const idx=P.pistas.findIndex(p=>{
-    if(m.v==="si") return (p.t==="no" && p.a===m.a && p.c===m.c) || (p.t==="ni" && (p.a===m.a||p.b===m.a) && p.c===m.c) || (p.t==="si" && ((p.a===m.a)!==(p.c===m.c)) && (p.a===m.a||p.c===m.c));
-    return p.t==="si" && p.a===m.a && p.c===m.c;
-  });
-  if(idx>=0 && (S.modo!=="amigos" || P.abiertas)){
-    const li=document.querySelector('#pistas li[data-i="'+idx+'"]');
-    if(li){ li.classList.add("mira"); li.scrollIntoView({block:"center", behavior:suave()}); }
-    if(celda) celda.classList.add("mira");
-    decir("msg", tx(T.contraPista, cita(textoPista(P.pistas[idx]))));
-    return;
+  if(celda) celda.classList.add("mira");
+  const ver = S.modo!=="amigos" || P.abiertas;
+  /* 2. Una pista que contradice esta marca, explicando el razonamiento */
+  for(let i=0;i<P.pistas.length && ver;i++){
+    const p=P.pistas[i], q=cita(textoPista(p));
+    if(m.v==="si"){
+      if((p.t==="no" && p.a===m.a && p.c===m.c) || (p.t==="ni" && (p.a===m.a||p.b===m.a) && p.c===m.c)){ mirarPista(i); decir("msg", tx(T.pistaNo, q)); return; }
+      if(p.t==="si" && p.c===m.c && p.a!==m.a){ mirarPista(i); decir("msg", tx(T.pistaOtro, q, ns[m.a], cosa(m.c))); return; }
+      if(p.t==="si" && p.a===m.a && p.c!==m.c){ mirarPista(i); decir("msg", tx(T.pistaOtro, q, ns[m.a], cosa(m.c))); return; }
+    } else if(p.t==="si" && p.a===m.a && p.c===m.c){ mirarPista(i); decir("msg", tx(T.pistaSi, q)); return; }
   }
-  /* Si no hay una pista directa, Lumi señala la fila para revisarla */
-  const th=document.querySelector('#grilla tbody th[data-a="'+m.a+'"]'); if(th) th.classList.add("mira");
-  decir("msg", tx(T.contraFila, nombres()[m.a]));
+  /* Con un amigo, si las pistas están escondidas: una de ellas habla de esta casilla */
+  if(!ver && P.pistas.some(p=>(p.a===m.a||p.b===m.a) && (p.c===m.c || p.t==="si"))){ decir("msg", tx(T.pistaOculta)); return; }
+  /* 3. Error de deducción: Lumi señala la fila para revisarla */
+  mirarFila(m.a);
+  decir("msg", tx(T.contraFila, ns[m.a]));
 });
 function textoSolucion(){
   const tm=P.tema, ns=nombres();
@@ -726,7 +812,7 @@ function empezar(){
 alCambiarIdioma=()=>{
   if(!$("p-juego").classList.contains("oculto") && P.tema){
     $("contador").textContent=tx(T.contador, P.ronda+1, P.rondas);
-    pintarGrilla(); pintarPistas();
+    pintarGrilla(); pintarPistas(); $("regla-oro").textContent=P.tema.oro[S.idioma];
     if(!$("btn-ver-pistas").classList.contains("oculto")) $("btn-ver-pistas").textContent=tx(T.verPistas, tx(COLOR_JUG[P.secreto?"azul":"amarillo"]));
     if(!$("solucion").classList.contains("oculto")) $("solucion").textContent=textoSolucion();
     if(!$("zona-siguiente").classList.contains("oculto")) $("btn-siguiente").textContent=tx(P.ronda>=P.rondas-1?T.fin:T.sig);
