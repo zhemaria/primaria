@@ -106,6 +106,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,c
   display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
 .forma .ico{font-size:1.8em;line-height:1.1}
 .forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
 .campo{font-size:1.1em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,360px)}
 .tipos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .tipo{border:3px solid var(--linea);background:#fff;border-radius:999px;padding:6px 14px;min-height:46px;font-weight:700}
@@ -236,6 +237,7 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,c
           <button class="forma" id="f-tipo"><span class="ico" aria-hidden="true">👆</span><span data-es="Elige qué es" data-en="Pick what it is">Pick what it is</span></button>
         </div>
         <div id="caja-voz" class="oculto">
+          <p class="indicacion" id="ind-voz"></p>
           <div class="acciones">
             <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar">Record</span></button>
             <button class="boton oculto" id="btn-escuchar"><span aria-hidden="true">▶️</span> <span data-es="Escuchar" data-en="Listen">Listen</span></button>
@@ -244,9 +246,11 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,c
           <p class="nota-priv" data-es="La grabación se queda en este aparato y se borra al cerrar la página." data-en="The recording stays on this device and is erased when you close the page.">The recording stays on this device and is erased when you close the page.</p>
         </div>
         <div id="caja-escribir" class="oculto">
+          <p class="indicacion" id="ind-escribir"></p>
           <p><input class="campo" id="campo-nombre" type="text" maxlength="40" autocomplete="off" spellcheck="false"></p>
         </div>
         <div id="caja-tipo" class="oculto">
+          <p class="indicacion" id="ind-tipo"></p>
           <div class="tipos" id="tipos" role="group"></div>
         </div>
         <div class="acciones">
@@ -610,9 +614,17 @@ function listoParaGuardar(){
   b.classList.remove("oculto");
   if(nueva){ S.vistos.guardar=(S.vistos.guardar||0)+1; if(S.vistos.guardar<=2) guia(pasos(["btn-guardar"])); }
 }
-$("f-voz").addEventListener("click", ()=>{ marcarForma("f-voz"); $("txt-grabar").textContent=tx(T.grabar); decir("msg", tx(T.di)); });
-$("f-escribir").addEventListener("click", ()=>{ marcarForma("f-escribir"); decir("msg", tx(T.escribe)); setTimeout(()=>$("campo-nombre").focus(),50); });
-$("f-tipo").addEventListener("click", ()=>{ marcarForma("f-tipo"); decir("msg", tx(T.elige)); });
+/* La indicación se escribe y se lee dentro del bloque de las opciones, para que la página
+   no suba hasta el mensaje de arriba (al leer en voz alta, se muestra lo que se lee). */
+function indicar(caja, ind, texto, foco){
+  $(ind).textContent=texto;
+  $(caja).scrollIntoView({block:"center", behavior:sinMovimiento()?"auto":"smooth"});
+  hablar(texto);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+$("f-voz").addEventListener("click", ()=>{ marcarForma("f-voz"); $("txt-grabar").textContent=tx(T.grabar); indicar("caja-voz","ind-voz",tx(T.di),$("btn-grabar")); });
+$("f-escribir").addEventListener("click", ()=>{ marcarForma("f-escribir"); indicar("caja-escribir","ind-escribir",tx(T.escribe),$("campo-nombre")); });
+$("f-tipo").addEventListener("click", ()=>{ marcarForma("f-tipo"); indicar("caja-tipo","ind-tipo",tx(T.elige),document.querySelector(".tipo")); });
 $("campo-nombre").addEventListener("input", e=>{
   S.nombre=e.target.value.trim();
   if(S.nombre) listoParaGuardar(); else $("btn-guardar").classList.add("oculto");
@@ -764,6 +776,9 @@ function aplicarIdioma(){
   const NS={es:["ojos","boca","estrella","flor","rueda","hoja","fuego","gota","moño","corazón"],en:["eyes","mouth","star","flower","wheel","leaf","fire","drop","bow","heart"]};
   document.querySelectorAll(".sello").forEach((b,i)=>b.setAttribute("aria-label", (es?"Sello: ":"Stamp: ")+NS[S.idioma][i]));
   pintarTipos();
+  if($("ind-voz").textContent) $("ind-voz").textContent=tx(T.di);
+  if($("ind-escribir").textContent) $("ind-escribir").textContent=tx(T.escribe);
+  if($("ind-tipo").textContent) $("ind-tipo").textContent=tx(T.elige);
   const q=[gradoFijo ? "grado="+gradoFijo : "", es ? "lang=es" : ""].filter(Boolean).join("&");
   document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
   document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")));
