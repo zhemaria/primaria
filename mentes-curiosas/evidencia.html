@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — Evidence Detectives / Detectives de la evidencia (Grades 5 and 6)
+  Thinking together with arguments: a class question with two sides (a fish or a hamster? books or
+  tablets?). Two friends (Sofía and Mateo) each bring different cards. Children sort every card: does it
+  help one side, the other side, or is it NOT evidence (an opinion, or something off topic)? A wrong
+  sort gets a hint, never the answer. Then they choose a side (there is no right side) and build an
+  argument with their two best pieces of evidence; in Grade 6 they also answer the other side
+  ("Some people say…, but…"). The argument can be read, said aloud or rewritten in their own words.
+  From Grade 5 on, Lumi's games are in English; the «Ayuda en español» button shows the
+  instructions and questions in Spanish (the game content and answers stay in English).
+  Nothing is saved or sent: no scores, no records.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence Detectives · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A thinking-together game for Grades 5 and 6: sort evidence from opinions, choose a side and build an argument. In English with optional help in Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --rojo:#A3262A; --rojo-claro:#FDE7E7; --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:56ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:56px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.3vw,22px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.05em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,420px)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+.btn-ayuda{border:3px solid #2A9D8F;background:#fff;color:var(--acento);border-radius:999px;padding:8px 16px;min-height:44px;font-weight:700;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:#E6F4F1;border-color:var(--acento)}
+.ayuda-es{display:none !important}
+body.con-ayuda .ayuda-es{display:block !important}
+body.con-ayuda span.ayuda-es,body.con-ayuda small.ayuda-es{display:inline !important}
+body.con-ayuda .opcion small.ayuda-es{display:block !important}
+body.con-ayuda .es-bajo.ayuda-es{display:block !important}
+.caja-ayuda{background:#E6F4F1;border-left:6px solid #2A9D8F;border-radius:12px;padding:8px 12px;margin:-6px 0 14px;font-size:.92em;text-align:left}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.1em;border-width:3px}
+.portada .caja-ayuda{max-width:56ch;margin:0 auto 14px}
+.es-bajo{display:block;font-weight:600;font-size:.78em;color:var(--tinta-suave)}
+.indicacion-es{font-weight:600;color:#1D5A46;margin:-4px 0 8px;font-size:.9em}
+
+/* ---------- Propio de este juego ---------- */
+
+.pregunta{background:#fff;border:4px solid var(--oro);border-radius:20px;padding:12px 18px;max-width:760px;margin:0 auto 12px;text-align:center}
+.pregunta h2{margin:0;font-size:1.25em}
+.lados{display:flex;gap:14px;justify-content:center;margin-top:6px;font-weight:700;font-size:1.05em}
+.bandeja{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 12px}
+@media (max-width:700px){.bandeja{grid-template-columns:1fr}}
+.mano{background:#fff;border:4px solid var(--linea);border-radius:18px;padding:8px 10px}
+.mano h3{margin:0 0 6px;font-size:.95em;display:flex;align-items:center;gap:6px}
+.tarjeta{background:#FFFDF5;border:3px solid var(--oro);border-radius:14px;padding:8px 10px;margin:0 0 8px;box-shadow:var(--sombra)}
+.tarjeta p{margin:0 0 6px;font-weight:600}
+.tarjeta .tres{display:flex;gap:6px;flex-wrap:wrap}
+.tarjeta .tres button{font:inherit;font-size:.82em;font-weight:700;border:2px solid var(--tinta);border-radius:10px;background:#fff;padding:4px 8px;min-height:40px}
+.tarjeta.mira{box-shadow:0 0 0 5px #FFC94D}
+.tarjeta .de{font-size:.75em;color:var(--tinta-suave);font-weight:700}
+.columnas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 12px}
+@media (max-width:760px){.columnas{grid-template-columns:1fr}}
+.col{border:4px solid var(--linea);border-radius:18px;padding:8px;min-height:110px;background:#fff}
+.col h3{margin:0 0 6px;font-size:.95em;text-align:center}
+.col.a{border-color:var(--azul);background:#EAF2FD}
+.col.b{border-color:#2F7D63;background:var(--verde-claro)}
+.col.no{border-color:#9E9E9E;background:#F2F2F2}
+.col .tarjeta{background:#fff}
+.col .tarjeta .tres button{min-height:34px}
+.elegido{outline:4px solid var(--acento);outline-offset:2px}
+.decidir{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:0 0 12px}
+.decidir .opcion{min-width:200px}
+.argumento{background:#fff;border:4px solid var(--acento);border-radius:18px;padding:12px 16px;max-width:760px;margin:0 auto 12px;font-size:1.05em;line-height:1.55}
+.argumento .hueco{display:inline-block;min-width:120px;border-bottom:3px dashed var(--acento);color:var(--tinta-suave)}
+textarea.propio{font:inherit;width:min(100%,720px);min-height:110px;padding:10px 12px;border:3px solid var(--tinta);border-radius:14px}
+
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./">◀ Curious Minds</a>
+    <h1>Evidence Detectives<span class="es-bajo ayuda-es" lang="es">Detectives de la evidencia</span></h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../6to_grado/lumi6-ciencias.png" alt="" width="240" height="320">
+    <h2>Facts or opinions? Build your case!</h2>
+    <p class="intro">A class has a big question with two sides. Sort the evidence cards: which side does each one help, and which ones are not evidence at all? Then choose a side and build your argument.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="intro-es" aria-label="Escuchar en español">🔊</button><p id="intro-es">Una clase tiene una pregunta con dos lados. Ordena las tarjetas de evidencia: ¿a qué lado ayuda cada una, y cuáles ni siquiera son evidencia? Luego elige un lado y arma tu argumento.</p></div></div>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien">Who is playing?<span class="es-bajo ayuda-es" lang="es">¿Quién juega?</span></p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span>Just me</span><small>with Sofía and Mateo's cards</small><small class="ayuda-es" lang="es">Yo solo · con las tarjetas de Sofía y Mateo</small></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span>With a grown-up</span><small>with tips for the grown-up</small><small class="ayuda-es" lang="es">Con un adulto · con consejos</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span>With a friend</span><small>each one sorts their cards</small><small class="ayuda-es" lang="es">Con un amigo · cada uno ordena sus tarjetas</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel">What grade are you in?<span class="es-bajo ayuda-es" lang="es">¿En qué grado estás?</span></p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="5" aria-pressed="true"><span class="ico" aria-hidden="true">💻</span><span>Grade 5</span></button>
+        <button class="opcion" data-nivel="6" aria-pressed="false"><span class="ico" aria-hidden="true">🔬</span><span>Grade 6</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../5to_grado/lumi5-saluda.jpg" alt="Lumi" width="56" height="74">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-es" aria-label="Escuchar en español">🔊</button><p id="msg-es"></p></div></div>
+    <details class="consejo oculto" id="consejo"><summary>💡 For the grown-up</summary><p></p></details>
+
+    <p class="contador" id="contador"></p>
+    <div class="pregunta"><h2 id="preg-tit"></h2><p class="ayuda-es" lang="es" id="preg-tit-es" style="margin:4px 0 0;color:#1D5A46;font-weight:600"></p>
+      <div class="lados" id="lados"></div></div>
+
+    <div id="zona-ordenar">
+      <div class="bandeja" id="bandeja"></div>
+      <div class="columnas" id="columnas"></div>
+      <div class="acciones">
+        <button class="boton" id="btn-truco"><span aria-hidden="true">💡</span> A detective tip</button>
+        <button class="boton oro" id="btn-revisar"><span aria-hidden="true">🔎</span> Check my sorting</button>
+      </div>
+    </div>
+
+    <div id="zona-decidir" class="oculto">
+      <p class="titulo-zona" id="t-decidir">Now decide: which side do you choose?<span class="es-bajo ayuda-es" lang="es">Ahora decide: ¿qué lado eliges?</span></p>
+      <div class="decidir" id="decidir" role="group" aria-labelledby="t-decidir"></div>
+    </div>
+
+    <div id="zona-argumento" class="oculto">
+      <p class="indicacion" id="ind-arg" style="text-align:center"></p>
+      <p class="indicacion-es ayuda-es" lang="es" id="ind-arg-es" style="text-align:center"></p>
+      <div class="argumento" id="argumento" aria-live="polite"></div>
+      <div class="acciones oculto" id="zona-decirlo">
+        <button class="boton" id="btn-leer"><span aria-hidden="true">🔊</span> Read it to me</button>
+        <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar">Record</span></button>
+        <button class="boton" id="btn-propio"><span aria-hidden="true">✍️</span> Write it my way</button>
+        <button class="boton fuerte" id="btn-listo"><span aria-hidden="true">✅</span> Done</button>
+      </div>
+      <p class="oculto" style="text-align:center" id="caja-propio"><textarea class="propio" id="campo-propio" aria-label="Write your argument in your own words"></textarea></p>
+    </div>
+    <div class="acciones oculto" id="zona-siguiente"><button class="boton fuerte" id="btn-siguiente"></button></div>
+
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../5to_grado/lumi5-saluda.jpg" alt="Lumi" width="56" height="74">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-final-es" aria-label="Escuchar en español">🔊</button><p id="msg-final-es"></p></div></div>
+
+    <div style="font-size:60px;line-height:1.1" aria-hidden="true">🕵️📋⚖️</div>
+
+    <div class="reto">
+      <h3>🏠 Real-world challenge<span class="es-bajo ayuda-es" lang="es">Reto con cosas de verdad</span></h3>
+      <p id="txt-reto"></p>
+      <p class="ayuda-es" lang="es" id="txt-reto-es" style="color:#1D5A46"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> Play again</button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> Another game</a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html">🍎 For teachers, parents and caregivers: why these games<span class="es-bajo ayuda-es" lang="es">Para maestros, padres y tutores: por qué estos juegos</span></a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ============ Lo común a los juegos de 5.º y 6.º (inglés con ayuda en español) ============ */
+const S = {idioma:"en", ayuda:false, modo:"solo", nivel:"5", vistos:{}, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "“"+t+"”";
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const azar = arr=>arr[Math.floor(Math.random()*arr.length)];
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const suave = ()=>sinMovimiento()?"auto":"smooth";
+const COLOR_JUG = {amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"}};
+/* Construye un texto en los dos idiomas: f se evalúa una vez en inglés y otra en español */
+function dos(f){ const antes=S.idioma; S.idioma="en"; const en=f(); S.idioma="es"; const es=f(); S.idioma=antes; return {en, es}; }
+
+/* Voz */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+let limpiarParaVoz = t=>t;
+function hablar(texto, despues, interno, lengua){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const L=lengua||"en";
+    const antes=S.idioma; S.idioma=L; const limpio=limpiarParaVoz(texto); S.idioma=antes;
+    const u=new SpeechSynthesisUtterance(limpio);
+    u.lang = L==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(L)); if(v) u.voice=v;
+    u.rate=0.93; u.pitch=1.05;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* Sonidos y celebración */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSi=()=>tono([659,880],0.12), sonNo=()=>tono([440,349],0.14), sonElige=()=>tono([659],0.08),
+      sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16);
+let CONFETI=["🎉","⭐","✨","🌟","💡"];
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=CONFETI[i%CONFETI.length]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* Lumi señala los botones de los que habla (en inglés) */
+const DICE_COMUN = {
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+let DICE = {};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id]||DICE_COMUN[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:suave()});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi escribe el mensaje en inglés (y la ayuda en español debajo), lo dice en inglés
+   y presenta los botones de ese momento solo las dos primeras veces.
+   «f» es una función que arma el texto: se arma una vez en cada idioma. */
+let ultimaGuia=null;
+const ULTIMO_ES={};
+function decir(cual, f, botones, extra){
+  const t = typeof f==="function" ? dos(f) : {en:f, es:f};
+  $(cual).textContent = t.en;
+  ponerAyudaDe(cual, t.es);
+  const b=botones||[], clave=cual+":"+b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  const ex=extra||[];
+  ultimaGuia=()=>[{texto:t.en}].concat(ex, pasos(b));
+  guia([{texto:t.en}].concat(ex, S.vistos[clave]<=2 ? pasos(b) : []));
+}
+function ponerAyudaDe(cual, es){
+  ULTIMO_ES[cual]=es;
+  const p=$(cual+"-es"); if(p) p.textContent=es;
+}
+/* Una indicación junto a sus opciones (la página no sube); con su ayuda en español */
+function indicar(caja, ind, f, foco){
+  const t=dos(f);
+  $(ind).textContent=t.en;
+  const pe=$(ind+"-es"); if(pe) pe.textContent=t.es;
+  $(caja).scrollIntoView({block:"center", behavior:suave()});
+  hablar(t.en);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+let C = {};
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave && C[clave];
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  /* el consejo es para el adulto: va en español si la ayuda está activada */
+  caja.querySelector("p").textContent=C[clave][S.ayuda?"es":"en"];
+  caja.querySelector("summary").textContent=S.ayuda?"💡 Para el adulto":"💡 For the grown-up";
+}
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function grabadoraEn(boton, etiqueta, alTerminar){
+  let grab=null, trozos=[], url=null;
+  boton.addEventListener("click", async ()=>{
+    if(grab && grab.state==="recording"){ grab.stop(); return; }
+    try{
+      const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+      trozos=[]; grab=new MediaRecorder(flujo);
+      grab.ondataavailable=e=>trozos.push(e.data);
+      grab.onstop=()=>{
+        flujo.getTracks().forEach(t=>t.stop());
+        url=URL.createObjectURL(new Blob(trozos));
+        boton.classList.remove("grabando"); etiqueta.textContent="Record";
+        alTerminar(url);
+      };
+      grab.start(); boton.classList.add("grabando"); etiqueta.textContent="Stop";
+    }catch(e){ alTerminar(null); }
+  });
+}
+
+/* Portada, grado y ayuda en español */
+let gradoFijo=null, alCambiarAyuda=()=>{}, TEXTO_PORTADA={en:"",es:""};
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+function ponerAyuda(on){
+  S.ayuda=on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", String(on));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", on ? "ayuda=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")+(on?"":"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  alCambiarAyuda();
+}
+function iniciarPagina(empezar){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get("ayuda")==="es" || q.get("lang")==="es") S.ayuda=true;
+    if(q.get("grado")==="5" || q.get("grado")==="6") gradoFijo=q.get("grado");
+  }catch(e){}
+  if(gradoFijo){
+    S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+    document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+  }
+  ponerAyuda(S.ayuda);
+  $("btn-ayuda").addEventListener("click", ()=>ponerAyuda(!S.ayuda));
+  /* bocinas en español de cada recuadro de ayuda */
+  document.querySelectorAll("[data-lee-es]").forEach(b=>b.addEventListener("click", ()=>{
+    const p=$(b.dataset.leeEs); if(p) hablar(p.textContent, null, false, "es"); }));
+  $("btn-empezar").addEventListener("click", empezar);
+  $("btn-otra-vez").addEventListener("click", empezar);
+  $("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  $("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  let presentado=false;
+  function presentar(){
+    if(presentado || $("p-portada").classList.contains("oculto")) return;
+    presentado=true;
+    guia([{texto:TEXTO_PORTADA.en}, {el:$("btn-empezar"), texto:DICE_COMUN["btn-empezar"].en}]);
+  }
+  ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-ayuda, #btn-oir, [data-lee-es]")) return;
+    presentar(); }, {once:true}));
+  $("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+  presentar();
+  if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+}
+
+/* ==================================================================
+   El juego
+   ================================================================== */
+
+/* Cada tarjeta: t = "a" (ayuda al lado A), "b" (ayuda al lado B) o "no" (no es evidencia).
+   Para «no»: por = "opinion" (opinión) u "off" (no habla de la pregunta). */
+const TEMAS=[
+  {id:"mascota", g:["5"], en:"Should our class get a fish or a hamster?", es:"¿La clase debe tener un pez o un hámster?",
+   a:{ico:"🐟", en:"Fish", es:"el pez", arg:"our class should get a fish"}, b:{ico:"🐹", en:"Hamster", es:"el hámster", arg:"our class should get a hamster"},
+   cartas:[
+     {t:"a", en:"Fish don't make noise, so they won't distract us during tests.", es:"Los peces no hacen ruido, así que no nos distraerán en los exámenes."},
+     {t:"a", en:"Hamsters sleep during the day, so they would be asleep during class.", es:"Los hámsteres duermen de día, así que estarían dormidos en clase."},
+     {t:"a", en:"Feeding a fish takes one student less than a minute a day.", es:"Darle de comer a un pez le toma a un alumno menos de un minuto al día."},
+     {t:"b", en:"A hamster can be held, so we can learn to handle animals gently.", es:"A un hámster se le puede cargar, así aprendemos a tratar a los animales con cuidado."},
+     {t:"b", en:"A fish tank needs some of its water changed every week.", es:"A la pecera hay que cambiarle parte del agua cada semana."},
+     {t:"b", en:"With enough food and water, a hamster can stay alone over a weekend.", es:"Con suficiente comida y agua, un hámster puede quedarse solo un fin de semana."},
+     {t:"no", por:"opinion", en:"Hamsters are the cutest animals ever!", es:"¡Los hámsteres son los animales más lindos del mundo!"},
+     {t:"no", por:"opinion", en:"Everybody knows fish are boring.", es:"Todo el mundo sabe que los peces son aburridos."},
+     {t:"no", por:"off", en:"My cousin has a red bicycle.", es:"Mi primo tiene una bicicleta roja."}
+   ]},
+  {id:"recreo", g:["5"], en:"Should recess be before lunch or after lunch?", es:"¿El recreo debe ser antes o después del almuerzo?",
+   a:{ico:"⚽", en:"Before lunch", es:"antes del almuerzo", arg:"recess should be before lunch"}, b:{ico:"🍎", en:"After lunch", es:"después del almuerzo", arg:"recess should be after lunch"},
+   cartas:[
+     {t:"a", en:"Some schools that moved recess before lunch threw away less food.", es:"Algunas escuelas que pasaron el recreo antes del almuerzo tiraron menos comida."},
+     {t:"a", en:"When recess comes first, students don't rush through lunch to go play.", es:"Cuando el recreo es primero, los alumnos no comen a toda prisa para salir a jugar."},
+     {t:"a", en:"After playing, students come to lunch hungry and ready to eat.", es:"Después de jugar, los alumnos llegan al almuerzo con hambre y listos para comer."},
+     {t:"b", en:"Eating first gives students energy to run and play.", es:"Comer primero les da a los alumnos energía para correr y jugar."},
+     {t:"b", en:"Running with an empty stomach makes some students feel tired.", es:"Correr con el estómago vacío hace que algunos alumnos se sientan cansados."},
+     {t:"b", en:"After lunch, students can use recess to calm down before class.", es:"Después del almuerzo, los alumnos pueden usar el recreo para calmarse antes de clase."},
+     {t:"no", por:"opinion", en:"Recess is the best part of the whole day!", es:"¡El recreo es la mejor parte de todo el día!"},
+     {t:"no", por:"opinion", en:"Lunch should be pizza every single day.", es:"El almuerzo debería ser pizza todos los días."},
+     {t:"no", por:"off", en:"The school bus is painted yellow.", es:"El autobús escolar está pintado de amarillo."}
+   ]},
+  {id:"libros", g:["6"], en:"Should our school spend its money on new library books or on tablets?", es:"¿La escuela debe gastar su dinero en libros nuevos para la biblioteca o en tabletas?",
+   a:{ico:"📚", en:"Library books", es:"los libros", arg:"our school should spend the money on library books"}, b:{ico:"📱", en:"Tablets", es:"las tabletas", arg:"our school should spend the money on tablets"},
+   cartas:[
+     {t:"a", en:"Library books can be shared for many years without chargers or internet.", es:"Los libros de la biblioteca se pueden compartir muchos años sin cargadores ni internet."},
+     {t:"a", en:"Several studies found that students understand long texts better on paper than on screens.", es:"Varios estudios encontraron que los alumnos entienden mejor los textos largos en papel que en pantalla."},
+     {t:"a", en:"Tablets break more easily than books when they fall.", es:"Las tabletas se rompen más fácilmente que los libros cuando se caen."},
+     {t:"b", en:"One tablet can hold hundreds of books.", es:"Una sola tableta puede guardar cientos de libros."},
+     {t:"b", en:"Tablets can read a text aloud for students who need it.", es:"Las tabletas pueden leer un texto en voz alta para los alumnos que lo necesitan."},
+     {t:"b", en:"Our library shelves are already full, with no room for more books.", es:"Los estantes de nuestra biblioteca ya están llenos y no caben más libros."},
+     {t:"no", por:"opinion", en:"Tablets are just way cooler.", es:"Las tabletas son mucho más divertidas, y ya."},
+     {t:"no", por:"opinion", en:"Nobody likes reading anyway.", es:"A nadie le gusta leer, de todos modos."},
+     {t:"no", por:"off", en:"My favorite color is green.", es:"Mi color favorito es el verde."}
+   ]},
+  {id:"bicis", g:["6"], en:"Should Chicago build more protected bike lanes?", es:"¿Chicago debe construir más carriles protegidos para bicicletas?",
+   a:{ico:"🚲", en:"Yes, more bike lanes", es:"sí, más carriles", arg:"Chicago should build more protected bike lanes"}, b:{ico:"🚗", en:"No, not now", es:"no, por ahora no", arg:"Chicago should not build more bike lanes right now"},
+   cartas:[
+     {t:"a", en:"Protected lanes separate bikes from cars, which makes riding safer.", es:"Los carriles protegidos separan a las bicis de los carros, y eso hace más seguro andar en bici."},
+     {t:"a", en:"Riding a bike makes no air pollution.", es:"Andar en bicicleta no contamina el aire."},
+     {t:"a", en:"More bike lanes let people get to school or work without a car.", es:"Más carriles permiten ir a la escuela o al trabajo sin carro."},
+     {t:"b", en:"Building bike lanes can remove parking spaces on busy streets.", es:"Construir carriles para bicis puede quitar lugares de estacionamiento en calles muy transitadas."},
+     {t:"b", en:"In the winter, fewer people ride bikes because of snow and ice.", es:"En invierno, menos personas andan en bici por la nieve y el hielo."},
+     {t:"b", en:"The money for bike lanes could be used to fix potholes instead.", es:"El dinero de los carriles podría usarse para arreglar baches."},
+     {t:"no", por:"opinion", en:"Bikes are awesome!", es:"¡Las bicis son lo máximo!"},
+     {t:"no", por:"opinion", en:"Driving is boring.", es:"Manejar es aburrido."},
+     {t:"no", por:"off", en:"Lake Michigan is very big.", es:"El lago Míchigan es muy grande."}
+   ]}
+];
+const AMIGOS=[{n:"Sofía", ico:"📘"},{n:"Mateo", ico:"📗"}];
+const T={
+  nuevo:{en:"A class question! Sofía and Mateo found evidence cards. Sort every card: does it help one side, the other side, or is it NOT evidence?",
+         es:"¡Una pregunta de la clase! Sofía y Mateo encontraron tarjetas de evidencia. Ordena cada tarjeta: ¿ayuda a un lado, al otro, o NO es evidencia?"},
+  nuevoAm:{en:"A class question! Each of you has evidence cards. Yellow player sorts first, then blue. Explain your choices to each other!",
+           es:"¡Una pregunta de la clase! Cada uno tiene tarjetas de evidencia. Primero ordena el jugador amarillo y luego el azul. ¡Explíquense sus decisiones!"},
+  nuevoCorto:{en:"A new question! Sort the evidence cards.", es:"¡Una pregunta nueva! Ordena las tarjetas de evidencia."},
+  turnoAz:{en:"Blue player, now sort your cards.", es:"Jugador azul, ahora ordena tus tarjetas."},
+  faltan:{en:"Sort all the cards first.", es:"Primero ordena todas las tarjetas."},
+  opinion:{en:"Look at the glowing card. Can you check it with facts, or is it an opinion? Words like “best,” “cutest,” or “everybody knows” are clues.",
+           es:"Mira la tarjeta que brilla. ¿Se puede comprobar con datos, o es una opinión? Palabras como «mejor», «más lindo» o «todo el mundo sabe» son pistas."},
+  off:{en:"Look at the glowing card. Does it talk about the question at all?", es:"Mira la tarjeta que brilla. ¿Habla de la pregunta, aunque sea un poco?"},
+  lado:{en:"Look at the glowing card again. Read it slowly: which side does it really help?", es:"Vuelve a mirar la tarjeta que brilla. Léela despacio: ¿a qué lado ayuda de verdad?"},
+  noEsLado:{en:"Look at the glowing card. It is a fact about the question. Which side does it help?", es:"Mira la tarjeta que brilla. Es un dato sobre la pregunta. ¿A qué lado ayuda?"},
+  bienOrden:{en:"Great sorting! Every card is in the right place. Now decide: which side do YOU choose? There is no wrong side, but you need evidence.",
+             es:"¡Muy bien ordenado! Cada tarjeta está en su lugar. Ahora decide: ¿qué lado eliges TÚ? No hay un lado equivocado, pero necesitas evidencia."},
+  elige2:{en:"Tap your two best pieces of evidence for your side.", es:"Toca tus dos mejores evidencias para tu lado."},
+  eligeContra:{en:"Now tap one card from the OTHER side. You will answer it.", es:"Ahora toca una tarjeta del OTRO lado. Vas a responderle."},
+  otroLado:{en:"That card helps the other side. Pick one from your side.", es:"Esa tarjeta ayuda al otro lado. Elige una de tu lado."},
+  mismoLado:{en:"That card is from your side. Now pick one from the other side.", es:"Esa tarjeta es de tu lado. Ahora elige una del otro lado."},
+  listo:{en:"Here is your argument! Read it aloud, record it, or write it your way.", es:"¡Aquí está tu argumento! Léelo en voz alta, grábalo o escríbelo a tu manera."},
+  bien:{en:"You built an argument with evidence. That's how good thinkers convince others!", es:"Armaste un argumento con evidencia. ¡Así convencen a los demás los buenos pensadores!"},
+  contador:{en:(a,b)=>"Question "+a+" of "+b, es:(a,b)=>"Pregunta "+a+" de "+b},
+  final:{en:"Detective work done! You separated facts from opinions and built arguments with evidence. Thinking together means listening to every side.",
+         es:"¡Trabajo de detective terminado! Separaste los datos de las opiniones y armaste argumentos con evidencia. Pensar juntos es escuchar a todos los lados."},
+  reto:{en:"Pick a family question (What should we cook on Sunday? Where should we go this summer?). Each person brings two facts. Sort them together: facts or opinions? Then decide.",
+        es:"Elijan una pregunta de familia (¿Qué cocinamos el domingo? ¿A dónde vamos este verano?). Cada uno trae dos datos. Ordénenlos juntos: ¿datos u opiniones? Luego decidan."},
+  portada:{en:"Evidence Detectives. Sort the evidence cards, tell facts from opinions, and build an argument with your best evidence.",
+           es:"Detectives de la evidencia. Ordena las tarjetas de evidencia, distingue los datos de las opiniones y arma un argumento con tu mejor evidencia."}
+};
+const TRUCOS=[
+  {en:"Detective tip: evidence is something you can check. An opinion is how someone feels.", es:"Consejo de detective: la evidencia es algo que se puede comprobar. Una opinión es lo que alguien siente."},
+  {en:"Detective tip: careful with tricky cards! A fact about hamsters can help the fish side.", es:"Consejo de detective: ¡cuidado con las tarjetas engañosas! Un dato sobre los hámsteres puede ayudar al lado del pez."},
+  {en:"Detective tip: if a card doesn't talk about the question, it's not evidence, even if it's true.", es:"Consejo de detective: si una tarjeta no habla de la pregunta, no es evidencia, aunque sea verdad."}
+];
+C={
+  inicio:{en:"Ask for each card: “Can we check it? Does it talk about the question? Who does it help?” Let the child explain before moving it.",
+          es:"Pregunte en cada tarjeta: «¿Se puede comprobar? ¿Habla de la pregunta? ¿A quién ayuda?». Deje que el niño explique antes de moverla."},
+  amigos:{en:"Each friend sorts their own cards and explains them aloud. The other friend can disagree, kindly, with a reason.",
+          es:"Cada amigo ordena sus propias tarjetas y las explica en voz alta. El otro puede no estar de acuerdo, con amabilidad y con una razón."},
+  decidir:{en:"There is no right side. What matters is choosing with evidence and being able to answer the other side.",
+           es:"No hay un lado correcto. Lo importante es decidir con evidencia y poder responderle al otro lado."},
+  final:{en:"Ask: “Which card was the trickiest? Did anything make you change your mind?”",
+         es:"Pregunte: «¿Qué tarjeta fue la más engañosa? ¿Algo te hizo cambiar de opinión?»"}
+};
+DICE={
+  "bandeja":{en:"These are the evidence cards. Sort each one with its buttons.", es:"Estas son las tarjetas de evidencia. Ordena cada una con sus botones."},
+  "columnas":{en:"The sorted cards go into these three groups.", es:"Las tarjetas ordenadas van a estos tres grupos."},
+  "btn-truco":{en:"Tap here for a detective tip.", es:"Toca aquí para un consejo de detective."},
+  "btn-revisar":{en:"When every card is sorted, tap the yellow button.", es:"Cuando todas estén ordenadas, toca el botón amarillo."},
+  "decidir":{en:"Choose your side.", es:"Elige tu lado."},
+  "btn-leer":{en:"Lumi can read your argument to you.", es:"Lumi puede leerte tu argumento."},
+  "btn-grabar":{en:"You can record yourself saying it.", es:"Puedes grabarte diciéndolo."},
+  "btn-propio":{en:"Or write it in your own words.", es:"O escribirlo con tus palabras."},
+  "btn-listo":{en:"Tap the purple button when you're done.", es:"Toca el botón morado cuando termines."},
+  "btn-siguiente":{en:"Tap the purple button to go on.", es:"Toca el botón morado para seguir."}
+};
+TEXTO_PORTADA=T.portada;
+CONFETI=["🎉","🕵️","✨","📋","⭐"];
+limpiarParaVoz = t=>t.replace(/[«»“”]/g,"");
+
+/* ---------- Estado ---------- */
+const P={ronda:0, rondas:2, tema:null, cartas:[], lugar:[], fase:"", lado:null, elegidas:[], contra:null, truco:0, turnoOrden:0};
+const lado = k=>P.tema[k];
+const grupoDe = i=>i%2;   /* las tarjetas se reparten entre los dos amigos */
+function nuevaRonda(){
+  const usados=P.usados||[];
+  P.tema=azar(TEMAS.filter(t=>t.g.indexOf(S.nivel)>=0 && usados.indexOf(t.id)<0)); P.usados=usados.concat(P.tema.id);
+  P.cartas=mezclar(P.tema.cartas); P.lugar=P.cartas.map(()=>null);
+  P.fase="ordenar"; P.lado=null; P.elegidas=[]; P.contra=null; P.turnoOrden=0;
+  $("preg-tit").textContent=P.tema.en; $("preg-tit-es").textContent=P.tema.es;
+  $("lados").innerHTML='<span>'+P.tema.a.ico+' '+P.tema.a.en+'</span><span aria-hidden="true">or</span><span>'+P.tema.b.ico+' '+P.tema.b.en+'</span>';
+  $("contador").textContent="Question "+(P.ronda+1)+" of "+P.rondas;
+  zonas("zona-ordenar");
+  pintarOrden();
+  consejo(S.modo==="amigos"?"amigos":"inicio");
+  decir("msg", ()=>tx(P.ronda===0 ? (S.modo==="amigos"?T.nuevoAm:T.nuevo) : T.nuevoCorto), ["bandeja","columnas","btn-truco","btn-revisar"]);
+}
+function zonas(...ver){ ["zona-ordenar","zona-decidir","zona-argumento","zona-siguiente"].forEach(id=>$(id).classList.toggle("oculto", ver.indexOf(id)<0)); }
+const ETQ={a:()=>P.tema.a.ico+" "+P.tema.a.en, b:()=>P.tema.b.ico+" "+P.tema.b.en, no:()=>"🚫 Not evidence"};
+function tarjetaEl(i, enCol){
+  const c=P.cartas[i], d=document.createElement("div"); d.className="tarjeta"; d.dataset.i=i;
+  const de=document.createElement("div"); de.className="de";
+  de.textContent = S.modo==="amigos" ? (grupoDe(i)?"🔵 Blue player":"🟡 Yellow player") : AMIGOS[grupoDe(i)].ico+" "+AMIGOS[grupoDe(i)].n;
+  d.appendChild(de);
+  const p=document.createElement("p"); p.textContent=c.en; d.appendChild(p);
+  const tres=document.createElement("div"); tres.className="tres";
+  if(enCol){
+    const b=document.createElement("button"); b.textContent="↩ Move back"; b.addEventListener("click", ()=>{ P.lugar[i]=null; pintarOrden(); }); tres.appendChild(b);
+  } else {
+    ["a","b","no"].forEach(k=>{ const b=document.createElement("button"); b.textContent=ETQ[k](); b.addEventListener("click", ()=>{ P.lugar[i]=k; sonElige(); pintarOrden(); }); tres.appendChild(b); });
+  }
+  d.appendChild(tres);
+  return d;
+}
+function pintarOrden(){
+  const band=$("bandeja"); band.innerHTML="";
+  [0,1].forEach(g=>{
+    const m=document.createElement("section"); m.className="mano";
+    const h=document.createElement("h3");
+    if(S.modo==="amigos") h.textContent=(g?"🔵 Blue player's cards":"🟡 Yellow player's cards");
+    else h.textContent=AMIGOS[g].ico+" "+AMIGOS[g].n+"'s cards";
+    m.appendChild(h);
+    let hay=0;
+    P.cartas.forEach((c,i)=>{ if(grupoDe(i)===g && P.lugar[i]===null){ m.appendChild(tarjetaEl(i,false)); hay++; } });
+    if(!hay){ const p=document.createElement("p"); p.style.margin="0"; p.style.color="var(--tinta-suave)"; p.textContent="✔ All sorted"; m.appendChild(p); }
+    band.appendChild(m);
+  });
+  const cols=$("columnas"); cols.innerHTML="";
+  ["a","b","no"].forEach(k=>{
+    const col=document.createElement("section"); col.className="col "+k;
+    const h=document.createElement("h3"); h.textContent = k==="no" ? "🚫 Not evidence" : "Helps: "+ETQ[k](); col.appendChild(h);
+    P.cartas.forEach((c,i)=>{ if(P.lugar[i]===k) col.appendChild(tarjetaEl(i,true)); });
+    cols.appendChild(col);
+  });
+  /* con un amigo, cuando el amarillo termina, le toca al azul */
+  if(S.modo==="amigos" && P.fase==="ordenar" && P.turnoOrden===0 && P.cartas.every((c,i)=>grupoDe(i)!==0 || P.lugar[i]!==null)){
+    P.turnoOrden=1; decir("msg", ()=>tx(T.turnoAz));
+  }
+}
+$("btn-truco").addEventListener("click", ()=>{ sonPista(); const t=TRUCOS[P.truco++ % TRUCOS.length]; decir("msg", ()=>tx(t)); });
+$("btn-revisar").addEventListener("click", ()=>{
+  document.querySelectorAll(".tarjeta.mira").forEach(x=>x.classList.remove("mira"));
+  if(P.lugar.some(v=>v===null)){ decir("msg", ()=>tx(T.faltan)); return; }
+  const malo=P.cartas.findIndex((c,i)=>P.lugar[i]!==c.t);
+  if(malo<0){ ordenBien(); return; }
+  sonPista();
+  const c=P.cartas[malo], el=document.querySelector('.col .tarjeta[data-i="'+malo+'"]');
+  if(el){ el.classList.add("mira"); el.scrollIntoView({block:"center", behavior:suave()}); }
+  let f;
+  if(c.t==="no") f=()=>tx(c.por==="opinion"?T.opinion:T.off);
+  else if(P.lugar[malo]==="no") f=()=>tx(T.noEsLado);
+  else f=()=>tx(T.lado);
+  decir("msg", f);
+});
+function ordenBien(){
+  sonTada(); confeti(); lumiFeliz();
+  P.fase="decidir";
+  document.querySelectorAll(".col .tres").forEach(x=>x.remove());
+  zonas("zona-ordenar","zona-decidir");
+  $("zona-ordenar").querySelector(".acciones").classList.add("oculto");
+  $("bandeja").classList.add("oculto");
+  const d=$("decidir"); d.innerHTML="";
+  ["a","b"].forEach(k=>{
+    const b=document.createElement("button"); b.className="opcion"; b.setAttribute("aria-pressed","false");
+    b.innerHTML='<span class="ico" aria-hidden="true">'+lado(k).ico+'</span><span></span><small class="ayuda-es" lang="es"></small>';
+    b.children[1].textContent=lado(k).en; b.lastChild.textContent=lado(k).es;
+    b.addEventListener("click", ()=>elegirLado(k));
+    d.appendChild(b);
+  });
+  consejo("decidir");
+  $("zona-decidir").scrollIntoView({block:"nearest", behavior:suave()});
+  decir("msg", ()=>tx(T.bienOrden), ["decidir"]);
+}
+function elegirLado(k){
+  P.lado=k; P.elegidas=[]; P.contra=null; P.fase="elegir";
+  document.querySelectorAll("#decidir .opcion").forEach((b,i)=>b.setAttribute("aria-pressed", String(["a","b"][i]===k)));
+  zonas("zona-ordenar","zona-decidir","zona-argumento");
+  $("zona-decirlo").classList.add("oculto"); $("caja-propio").classList.add("oculto");
+  /* las tarjetas de las columnas se vuelven seleccionables */
+  document.querySelectorAll(".col .tarjeta").forEach(el=>{
+    el.classList.remove("elegido"); el.setAttribute("role","button"); el.tabIndex=0;
+    el.onclick=()=>elegirCarta(+el.dataset.i); el.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); elegirCarta(+el.dataset.i); } };
+  });
+  pintarArgumento();
+  indicar("zona-argumento","ind-arg", ()=>tx(T.elige2));
+}
+function elegirCarta(i){
+  if(P.fase!=="elegir" && P.fase!=="contra") return;
+  const c=P.cartas[i];
+  if(P.fase==="elegir"){
+    if(c.t!==P.lado){ sonPista(); decir("msg", ()=>tx(c.t==="no"?T.opinion:T.otroLado)); return; }
+    if(P.elegidas.indexOf(i)>=0) return;
+    P.elegidas.push(i); sonElige();
+    document.querySelector('.col .tarjeta[data-i="'+i+'"]').classList.add("elegido");
+    if(P.elegidas.length===2){
+      if(S.nivel==="6"){ P.fase="contra"; pintarArgumento(); indicar("zona-argumento","ind-arg", ()=>tx(T.eligeContra)); return; }
+      terminarArgumento(); return;
+    }
+    pintarArgumento(); return;
+  }
+  /* 6.º: una tarjeta del otro lado para responderle */
+  const otro=P.lado==="a"?"b":"a";
+  if(c.t!==otro){ sonPista(); decir("msg", ()=>tx(c.t===P.lado?T.mismoLado:T.off)); return; }
+  P.contra=i; sonElige();
+  document.querySelector('.col .tarjeta[data-i="'+i+'"]').classList.add("elegido");
+  terminarArgumento();
+}
+function textoArgumento(){
+  const L=lado(P.lado), q=x=>x===undefined||x===null ? '<span class="hueco">…</span>' : esc(lcFirst(P.cartas[x].en.replace(/\.$/,"")));
+  let h="I think <strong>"+esc(L.arg)+"</strong>. First, "+q(P.elegidas[0])+". Also, "+q(P.elegidas[1])+".";
+  if(S.nivel==="6") h+=" Some people say that "+q(P.contra)+", but I still think "+esc(L.arg)+", because the evidence on my side is stronger.";
+  return h;
+}
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const lcFirst=s=>/^[A-Z][a-z]/.test(s) && !/^(Chicago|Lake|Sofía|Mateo)/.test(s) ? s.charAt(0).toLowerCase()+s.slice(1) : s;
+function pintarArgumento(){ $("argumento").innerHTML=textoArgumento(); }
+function terminarArgumento(){
+  P.fase="decirlo"; pintarArgumento(); sonTada(); lumiFeliz();
+  document.querySelectorAll(".col .tarjeta").forEach(el=>{ el.onclick=null; el.onkeydown=null; el.removeAttribute("role"); el.removeAttribute("tabindex"); });
+  $("zona-decirlo").classList.remove("oculto");
+  $("ind-arg").textContent=""; $("ind-arg-es").textContent="";
+  $("argumento").scrollIntoView({block:"center", behavior:suave()});
+  decir("msg", ()=>tx(T.listo), ["btn-leer","btn-grabar","btn-propio","btn-listo"]);
+}
+$("btn-leer").addEventListener("click", ()=>hablar($("argumento").textContent));
+$("btn-propio").addEventListener("click", ()=>{ $("caja-propio").classList.remove("oculto"); $("campo-propio").value=$("argumento").textContent; $("campo-propio").focus(); });
+$("btn-listo").addEventListener("click", ()=>{
+  P.fase="fin"; confeti();
+  zonas("zona-ordenar","zona-argumento","zona-siguiente"); $("zona-decirlo").classList.add("oculto");
+  $("btn-siguiente").textContent = P.ronda>=P.rondas-1 ? "Finish ▶" : "Next question ▶";
+  consejo("final");
+  decir("msg", ()=>tx(T.bien), ["btn-siguiente"]);
+});
+$("btn-siguiente").addEventListener("click", ()=>{
+  P.ronda++;
+  $("bandeja").classList.remove("oculto"); $("zona-ordenar").querySelector(".acciones").classList.remove("oculto");
+  if(P.ronda>=P.rondas){ final(); return; }
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final");
+  const r=dos(()=>tx(T.reto)); $("txt-reto").textContent=r.en; $("txt-reto-es").textContent=r.es;
+  decir("msg-final", ()=>tx(T.final), ["btn-otra-vez","btn-al-menu"]);
+}
+function empezar(){
+  P.ronda=0; P.usados=[]; S.vistos={};
+  $("bandeja").classList.remove("oculto"); $("zona-ordenar").querySelector(".acciones").classList.remove("oculto");
+  mostrar("p-juego"); nuevaRonda();
+}
+grabadoraEn($("btn-grabar"), $("txt-grabar"), url=>{ if(url){ const b=document.createElement("button"); b.className="boton"; b.textContent="▶️ Listen"; b.onclick=()=>new Audio(url).play(); $("zona-decirlo").insertBefore(b, $("btn-propio")); } });
+alCambiarAyuda=()=>{};
+iniciarPagina(empezar);
+
+</script>
+</body>
+</html>

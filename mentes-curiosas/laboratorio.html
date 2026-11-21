@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — The Fair Test Lab / El laboratorio de la prueba justa (Grades 5 and 6)
+  Curiosity through experiments: what makes a paper airplane fly farther? what makes a plant grow?
+  Each experiment has three things you can change. Children set up tests, run them and read the
+  results. Lumi comments on each test: a fair test changes only ONE thing; if two things changed,
+  Lumi asks which one caused the difference (control of variables, a Grade 5–6 science practice).
+  To finish, children say which things matter. A wrong conclusion gets a hint, never the answer:
+  Lumi points to the two tests that show it, or says which thing still needs a fair test.
+  Grade 5: one thing matters. Grade 6: one or two things matter.
+  From Grade 5 on, Lumi's games are in English; the «Ayuda en español» button shows the
+  instructions and questions in Spanish (the game content and answers stay in English).
+  Nothing is saved or sent: no scores, no records.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Fair Test Lab · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A curiosity game for Grades 5 and 6: run fair tests (change one thing at a time) to find out what really matters. In English with optional help in Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --rojo:#A3262A; --rojo-claro:#FDE7E7; --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:56ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:56px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.3vw,22px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.05em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,420px)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+.btn-ayuda{border:3px solid #2A9D8F;background:#fff;color:var(--acento);border-radius:999px;padding:8px 16px;min-height:44px;font-weight:700;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:#E6F4F1;border-color:var(--acento)}
+.ayuda-es{display:none !important}
+body.con-ayuda .ayuda-es{display:block !important}
+body.con-ayuda span.ayuda-es,body.con-ayuda small.ayuda-es{display:inline !important}
+body.con-ayuda .opcion small.ayuda-es{display:block !important}
+body.con-ayuda .es-bajo.ayuda-es{display:block !important}
+.caja-ayuda{background:#E6F4F1;border-left:6px solid #2A9D8F;border-radius:12px;padding:8px 12px;margin:-6px 0 14px;font-size:.92em;text-align:left}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.1em;border-width:3px}
+.portada .caja-ayuda{max-width:56ch;margin:0 auto 14px}
+.es-bajo{display:block;font-weight:600;font-size:.78em;color:var(--tinta-suave)}
+.indicacion-es{font-weight:600;color:#1D5A46;margin:-4px 0 8px;font-size:.9em}
+
+/* ---------- Propio de este juego ---------- */
+
+.experimento{display:flex;align-items:center;gap:12px;justify-content:center;background:#fff;border:4px solid var(--oro);border-radius:18px;padding:8px 16px;max-width:720px;margin:0 auto 12px}
+.experimento .ico{font-size:2.6em;line-height:1}
+.experimento h2{margin:0;font-size:1.15em}
+.factores{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 10px}
+@media (max-width:700px){.factores{grid-template-columns:1fr}}
+.factor{background:#fff;border:4px solid var(--linea);border-radius:18px;padding:8px 10px;text-align:center}
+.factor h3{margin:0 0 6px;font-size:.95em}
+.dos{display:flex;gap:6px;justify-content:center}
+.op{flex:1 1 0;border:3px solid var(--linea);background:#fff;border-radius:14px;padding:6px 4px;min-height:64px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px}
+.op .ico{font-size:1.5em;line-height:1.1}
+.op[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.factor.cambio{border-color:var(--oro);box-shadow:0 0 0 4px #FFD56A}
+.resultados{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;margin:0 0 12px}
+.resultados caption{font-weight:700;text-align:left;padding:4px 2px}
+.resultados th,.resultados td{border:2px solid var(--linea);padding:6px 8px;text-align:center}
+.resultados thead th{background:#EEE8FB}
+.resultados td.res{text-align:left;min-width:180px}
+.barra-res{display:inline-block;height:18px;background:var(--acento);border-radius:6px;vertical-align:middle;margin-right:6px;transition:width .6s}
+.resultados tr.mira td,.resultados tr.mira th{background:var(--oro-claro)}
+.resultados .dif{outline:3px solid var(--oro);outline-offset:-3px;border-radius:6px}
+.conclusion{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:700px){.conclusion{grid-template-columns:1fr}}
+.conc{background:#fff;border:4px solid var(--linea);border-radius:18px;padding:8px;text-align:center}
+.conc h3{margin:0 0 6px;font-size:.95em}
+.conc .dos .op{min-height:52px}
+.sin-datos{color:var(--tinta-suave);text-align:center;margin:0 0 12px}
+.hallazgo{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:18px;padding:10px 16px;max-width:720px;margin:0 auto 12px;font-weight:700;text-align:center}
+
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./">◀ Curious Minds</a>
+    <h1>The Fair Test Lab<span class="es-bajo ayuda-es" lang="es">El laboratorio de la prueba justa</span></h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../6to_grado/lumi6-ciencias.png" alt="" width="240" height="320">
+    <h2>What really makes the difference?</h2>
+    <p class="intro">Run experiments like a scientist: change the settings, test, and compare the results. The secret is a fair test: change only one thing at a time!</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="intro-es" aria-label="Escuchar en español">🔊</button><p id="intro-es">Haz experimentos como un científico: cambia los ajustes, prueba y compara los resultados. El secreto es la prueba justa: ¡cambia una sola cosa a la vez!</p></div></div>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien">Who is playing?<span class="es-bajo ayuda-es" lang="es">¿Quién juega?</span></p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span>Just me</span><small>run your own experiments</small><small class="ayuda-es" lang="es">Yo solo · haz tus propios experimentos</small></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span>With a grown-up</span><small>with tips for the grown-up</small><small class="ayuda-es" lang="es">Con un adulto · con consejos</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span>With a friend</span><small>take turns running tests</small><small class="ayuda-es" lang="es">Con un amigo · se turnan para hacer pruebas</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel">What grade are you in?<span class="es-bajo ayuda-es" lang="es">¿En qué grado estás?</span></p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="5" aria-pressed="true"><span class="ico" aria-hidden="true">💻</span><span>Grade 5</span></button>
+        <button class="opcion" data-nivel="6" aria-pressed="false"><span class="ico" aria-hidden="true">🔬</span><span>Grade 6</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../5to_grado/lumi5-saluda.jpg" alt="Lumi" width="56" height="74">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-es" aria-label="Escuchar en español">🔊</button><p id="msg-es"></p></div></div>
+    <details class="consejo oculto" id="consejo"><summary>💡 For the grown-up</summary><p></p></details>
+
+    <p class="contador" id="contador"></p>
+    <div class="experimento" id="experimento"><span class="ico" id="exp-ico" aria-hidden="true"></span><h2 id="exp-tit"></h2></div>
+    <div id="zona-probar">
+      <p class="titulo-zona" id="t-armar">Set up your test:<span class="es-bajo ayuda-es" lang="es">Prepara tu prueba:</span></p>
+      <div class="factores" id="factores"></div>
+      <div class="acciones">
+        <button class="boton fuerte" id="btn-correr"><span aria-hidden="true">▶</span> Run the test</button>
+      </div>
+    </div>
+    <table class="resultados" id="resultados"><caption>Results<span class="es-bajo ayuda-es" lang="es">Resultados</span></caption><thead></thead><tbody></tbody></table>
+    <p class="sin-datos" id="sin-datos">No tests yet.<span class="es-bajo ayuda-es" lang="es">Todavía no hay pruebas.</span></p>
+    <div class="acciones" id="zona-botones">
+      <button class="boton" id="btn-chispa"><span aria-hidden="true">✨</span> A scientist's tip</button>
+      <button class="boton oro" id="btn-ya"><span aria-hidden="true">💡</span> I know what matters!</button>
+    </div>
+    <div id="zona-concluir" class="oculto">
+      <div class="cuadro">
+        <p class="indicacion" id="ind-concluir"></p>
+        <p class="indicacion-es ayuda-es" lang="es" id="ind-concluir-es"></p>
+        <div class="conclusion" id="conclusion"></div>
+        <div class="acciones">
+          <button class="boton" id="btn-mas"><span aria-hidden="true">🧪</span> Run more tests</button>
+          <button class="boton fuerte" id="btn-comprobar"><span aria-hidden="true">🔎</span> Check my conclusion</button>
+        </div>
+      </div>
+    </div>
+    <div class="hallazgo oculto" id="hallazgo" role="status"></div>
+    <div class="acciones oculto" id="zona-siguiente"><button class="boton fuerte" id="btn-siguiente"></button></div>
+
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../5to_grado/lumi5-saluda.jpg" alt="Lumi" width="56" height="74">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-final-es" aria-label="Escuchar en español">🔊</button><p id="msg-final-es"></p></div></div>
+
+    <div style="font-size:60px;line-height:1.1" aria-hidden="true">🧪✈️🌱</div>
+
+    <div class="reto">
+      <h3>🏠 Real-world challenge<span class="es-bajo ayuda-es" lang="es">Reto con cosas de verdad</span></h3>
+      <p id="txt-reto"></p>
+      <p class="ayuda-es" lang="es" id="txt-reto-es" style="color:#1D5A46"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> Play again</button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> Another game</a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html">🍎 For teachers, parents and caregivers: why these games<span class="es-bajo ayuda-es" lang="es">Para maestros, padres y tutores: por qué estos juegos</span></a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ============ Lo común a los juegos de 5.º y 6.º (inglés con ayuda en español) ============ */
+const S = {idioma:"en", ayuda:false, modo:"solo", nivel:"5", vistos:{}, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "“"+t+"”";
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const azar = arr=>arr[Math.floor(Math.random()*arr.length)];
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const suave = ()=>sinMovimiento()?"auto":"smooth";
+const COLOR_JUG = {amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"}};
+/* Construye un texto en los dos idiomas: f se evalúa una vez en inglés y otra en español */
+function dos(f){ const antes=S.idioma; S.idioma="en"; const en=f(); S.idioma="es"; const es=f(); S.idioma=antes; return {en, es}; }
+
+/* Voz */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+let limpiarParaVoz = t=>t;
+function hablar(texto, despues, interno, lengua){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const L=lengua||"en";
+    const antes=S.idioma; S.idioma=L; const limpio=limpiarParaVoz(texto); S.idioma=antes;
+    const u=new SpeechSynthesisUtterance(limpio);
+    u.lang = L==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(L)); if(v) u.voice=v;
+    u.rate=0.93; u.pitch=1.05;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* Sonidos y celebración */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSi=()=>tono([659,880],0.12), sonNo=()=>tono([440,349],0.14), sonElige=()=>tono([659],0.08),
+      sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16);
+let CONFETI=["🎉","⭐","✨","🌟","💡"];
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=CONFETI[i%CONFETI.length]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* Lumi señala los botones de los que habla (en inglés) */
+const DICE_COMUN = {
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+let DICE = {};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id]||DICE_COMUN[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:suave()});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi escribe el mensaje en inglés (y la ayuda en español debajo), lo dice en inglés
+   y presenta los botones de ese momento solo las dos primeras veces.
+   «f» es una función que arma el texto: se arma una vez en cada idioma. */
+let ultimaGuia=null;
+const ULTIMO_ES={};
+function decir(cual, f, botones, extra){
+  const t = typeof f==="function" ? dos(f) : {en:f, es:f};
+  $(cual).textContent = t.en;
+  ponerAyudaDe(cual, t.es);
+  const b=botones||[], clave=cual+":"+b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  const ex=extra||[];
+  ultimaGuia=()=>[{texto:t.en}].concat(ex, pasos(b));
+  guia([{texto:t.en}].concat(ex, S.vistos[clave]<=2 ? pasos(b) : []));
+}
+function ponerAyudaDe(cual, es){
+  ULTIMO_ES[cual]=es;
+  const p=$(cual+"-es"); if(p) p.textContent=es;
+}
+/* Una indicación junto a sus opciones (la página no sube); con su ayuda en español */
+function indicar(caja, ind, f, foco){
+  const t=dos(f);
+  $(ind).textContent=t.en;
+  const pe=$(ind+"-es"); if(pe) pe.textContent=t.es;
+  $(caja).scrollIntoView({block:"center", behavior:suave()});
+  hablar(t.en);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+let C = {};
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave && C[clave];
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  /* el consejo es para el adulto: va en español si la ayuda está activada */
+  caja.querySelector("p").textContent=C[clave][S.ayuda?"es":"en"];
+  caja.querySelector("summary").textContent=S.ayuda?"💡 Para el adulto":"💡 For the grown-up";
+}
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function grabadoraEn(boton, etiqueta, alTerminar){
+  let grab=null, trozos=[], url=null;
+  boton.addEventListener("click", async ()=>{
+    if(grab && grab.state==="recording"){ grab.stop(); return; }
+    try{
+      const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+      trozos=[]; grab=new MediaRecorder(flujo);
+      grab.ondataavailable=e=>trozos.push(e.data);
+      grab.onstop=()=>{
+        flujo.getTracks().forEach(t=>t.stop());
+        url=URL.createObjectURL(new Blob(trozos));
+        boton.classList.remove("grabando"); etiqueta.textContent="Record";
+        alTerminar(url);
+      };
+      grab.start(); boton.classList.add("grabando"); etiqueta.textContent="Stop";
+    }catch(e){ alTerminar(null); }
+  });
+}
+
+/* Portada, grado y ayuda en español */
+let gradoFijo=null, alCambiarAyuda=()=>{}, TEXTO_PORTADA={en:"",es:""};
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+function ponerAyuda(on){
+  S.ayuda=on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", String(on));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", on ? "ayuda=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")+(on?"":"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  alCambiarAyuda();
+}
+function iniciarPagina(empezar){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get("ayuda")==="es" || q.get("lang")==="es") S.ayuda=true;
+    if(q.get("grado")==="5" || q.get("grado")==="6") gradoFijo=q.get("grado");
+  }catch(e){}
+  if(gradoFijo){
+    S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+    document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+  }
+  ponerAyuda(S.ayuda);
+  $("btn-ayuda").addEventListener("click", ()=>ponerAyuda(!S.ayuda));
+  /* bocinas en español de cada recuadro de ayuda */
+  document.querySelectorAll("[data-lee-es]").forEach(b=>b.addEventListener("click", ()=>{
+    const p=$(b.dataset.leeEs); if(p) hablar(p.textContent, null, false, "es"); }));
+  $("btn-empezar").addEventListener("click", empezar);
+  $("btn-otra-vez").addEventListener("click", empezar);
+  $("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  $("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  let presentado=false;
+  function presentar(){
+    if(presentado || $("p-portada").classList.contains("oculto")) return;
+    presentado=true;
+    guia([{texto:TEXTO_PORTADA.en}, {el:$("btn-empezar"), texto:DICE_COMUN["btn-empezar"].en}]);
+  }
+  ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-ayuda, #btn-oir, [data-lee-es]")) return;
+    presentar(); }, {once:true}));
+  $("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+  presentar();
+  if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+}
+
+/* ==================================================================
+   El juego
+   ================================================================== */
+
+/* Cada experimento: tres cosas que se pueden cambiar, cada una con dos opciones.
+   «efecto» = cuánto cambia el resultado la opción B respecto de la A (0 = no importa). */
+/* Resultados realistas y fijos: «tam» = cuánto cambia el resultado la opción B respecto de la A
+   (0 = no importa). «g» = grados en que aparece. Algunos desmienten creencias comunes
+   (la música no hace crecer las plantas; el peso no cambia el ritmo de un péndulo). */
+const EXPERIMENTOS=[
+  {id:"planta5", g:["5"], ico:"🌱", tit:{en:"What makes a bean plant grow taller in two weeks?", es:"¿Qué hace que una planta de frijol crezca más en dos semanas?"},
+   medida:{en:"Height", es:"altura"}, unidad:"cm", base:6,
+   factores:[
+     {lab:"Light", nom:{en:"the light", es:"la luz"}, op:[{ico:"🌑",en:"Dark closet"},{ico:"☀️",en:"Sunny window"}], tam:8},
+     {lab:"Music", nom:{en:"the music", es:"la música"}, op:[{ico:"🔇",en:"No music"},{ico:"🎵",en:"Music all day"}], tam:0},
+     {lab:"Pot color", nom:{en:"the pot color", es:"el color de la maceta"}, op:[{ico:"🟥",en:"Red pot"},{ico:"🟦",en:"Blue pot"}], tam:0}
+   ]},
+  {id:"rampa5", g:["5"], ico:"🚗", tit:{en:"What makes a toy car roll farther after a ramp?", es:"¿Qué hace que un carrito ruede más lejos después de una rampa?"},
+   medida:{en:"Distance", es:"distancia"}, unidad:"cm", base:80,
+   factores:[
+     {lab:"Ramp height", nom:{en:"the ramp height", es:"la altura de la rampa"}, op:[{ico:"📏",en:"Low"},{ico:"⛰️",en:"High"}], tam:60},
+     {lab:"Car color", nom:{en:"the car color", es:"el color del carrito"}, op:[{ico:"🔴",en:"Red"},{ico:"🔵",en:"Blue"}], tam:0},
+     {lab:"Sticker", nom:{en:"the sticker number", es:"el número de la calcomanía"}, op:[{ico:"1️⃣",en:"Number 1"},{ico:"7️⃣",en:"Number 7"}], tam:0}
+   ]},
+  {id:"avion5", g:["5"], ico:"✈️", tit:{en:"What makes a paper airplane fly farther?", es:"¿Qué hace que un avión de papel vuele más lejos?"},
+   medida:{en:"Distance", es:"distancia"}, unidad:"m", base:4,
+   factores:[
+     {lab:"Paper color", nom:{en:"the paper color", es:"el color del papel"}, op:[{ico:"⬜",en:"White"},{ico:"🟨",en:"Yellow"}], tam:0},
+     {lab:"Throw", nom:{en:"the throw", es:"el lanzamiento"}, op:[{ico:"🤏",en:"Soft"},{ico:"💪",en:"Strong"}], tam:4},
+     {lab:"Name on wing", nom:{en:"the name on the wing", es:"el nombre en el ala"}, op:[{ico:"✖️",en:"No name"},{ico:"✍️",en:"With a name"}], tam:0}
+   ]},
+  {id:"hielo5", g:["5"], ico:"🧊", tit:{en:"What makes an ice cube melt faster?", es:"¿Qué hace que un cubito de hielo se derrita más rápido?"},
+   medida:{en:"Time to melt", es:"tiempo en derretirse"}, unidad:"min", base:40,
+   factores:[
+     {lab:"Cup shape", nom:{en:"the cup shape", es:"la forma del vaso"}, op:[{ico:"🥛",en:"Tall cup"},{ico:"🍵",en:"Short cup"}], tam:0},
+     {lab:"Music", nom:{en:"the music", es:"la música"}, op:[{ico:"🔇",en:"No music"},{ico:"🎵",en:"Loud music"}], tam:0},
+     {lab:"Place", nom:{en:"the place", es:"el lugar"}, op:[{ico:"🌳",en:"Shade"},{ico:"☀️",en:"Sun"}], tam:-25}
+   ]},
+  {id:"rampa6", g:["6"], ico:"🚗", tit:{en:"What makes a toy car roll farther after a ramp?", es:"¿Qué hace que un carrito ruede más lejos después de una rampa?"},
+   medida:{en:"Distance", es:"distancia"}, unidad:"cm", base:80,
+   factores:[
+     {lab:"Ramp height", nom:{en:"the ramp height", es:"la altura de la rampa"}, op:[{ico:"📏",en:"Low"},{ico:"⛰️",en:"High"}], tam:60},
+     {lab:"Floor", nom:{en:"the floor", es:"el piso"}, op:[{ico:"🧶",en:"Carpet"},{ico:"🪵",en:"Wood"}], tam:50},
+     {lab:"Car color", nom:{en:"the car color", es:"el color del carrito"}, op:[{ico:"🔴",en:"Red"},{ico:"🔵",en:"Blue"}], tam:0}
+   ]},
+  {id:"planta6", g:["6"], ico:"🌱", tit:{en:"What makes a bean plant grow taller in two weeks?", es:"¿Qué hace que una planta de frijol crezca más en dos semanas?"},
+   medida:{en:"Height", es:"altura"}, unidad:"cm", base:4,
+   factores:[
+     {lab:"Light", nom:{en:"the light", es:"la luz"}, op:[{ico:"🌑",en:"Dark closet"},{ico:"☀️",en:"Sunny window"}], tam:8},
+     {lab:"Soil", nom:{en:"the soil", es:"la tierra"}, op:[{ico:"🏖️",en:"Sand"},{ico:"🪴",en:"Garden soil"}], tam:5},
+     {lab:"Pot color", nom:{en:"the pot color", es:"el color de la maceta"}, op:[{ico:"🟥",en:"Red pot"},{ico:"🟦",en:"Blue pot"}], tam:0}
+   ]},
+  {id:"pendulo6", g:["6"], ico:"🕰️", tit:{en:"What changes how long a pendulum takes to swing 10 times?", es:"¿Qué cambia el tiempo que tarda un péndulo en hacer 10 oscilaciones?"},
+   medida:{en:"Time for 10 swings", es:"tiempo de 10 oscilaciones"}, unidad:"s", base:14,
+   factores:[
+     {lab:"Weight", nom:{en:"the weight", es:"el peso"}, op:[{ico:"🪶",en:"Light"},{ico:"🏋️",en:"Heavy"}], tam:0},
+     {lab:"String length", nom:{en:"the string length", es:"el largo del hilo"}, op:[{ico:"↕️",en:"Short"},{ico:"📏",en:"Long"}], tam:6},
+     {lab:"Start angle", nom:{en:"the start angle", es:"el ángulo de salida"}, op:[{ico:"↘️",en:"Small"},{ico:"➡️",en:"A bit bigger"}], tam:0}
+   ]}
+];
+const T={
+  nuevo:{en:"Welcome to the lab! Change the settings, run tests and find out what really matters. Remember: a fair test changes only one thing.",
+         es:"¡Bienvenido al laboratorio! Cambia los ajustes, haz pruebas y descubre qué es lo que de verdad importa. Recuerda: una prueba justa cambia una sola cosa."},
+  nuevoCorto:{en:"A new experiment! Run tests to find out what matters.", es:"¡Un experimento nuevo! Haz pruebas para descubrir qué importa."},
+  turno:{en:c=>c+", you run the next test.", es:c=>c+", tú haces la siguiente prueba."},
+  primera:{en:(m,v,u)=>"First test: "+m.toLowerCase()+", "+v+" "+u+". Now change ONE thing and run another test to compare.",
+           es:(m,v,u)=>"Primera prueba: "+m+", "+v+" "+u+". Ahora cambia UNA sola cosa y haz otra prueba para comparar."},
+  igual:{en:"You ran the same test again, so you got the same result. To learn something new, change one thing.",
+         es:"Repetiste la misma prueba, así que salió lo mismo. Para aprender algo nuevo, cambia una cosa."},
+  justa:{en:(f,a,b,u,n)=>"Fair test! You changed only "+f+". The result went from "+a+" "+u+" to "+b+" "+u+" (test "+n+"). What does that tell you?",
+         es:(f,a,b,u,n)=>"¡Prueba justa! Solo cambiaste "+f+". El resultado pasó de "+a+" "+u+" a "+b+" "+u+" (prueba "+n+"). ¿Qué te dice eso?"},
+  injusta:{en:(fs)=>"Careful: you changed "+fs+" at the same time. If the result changed, which one caused it? Try changing only one thing.",
+           es:(fs)=>"Cuidado: cambiaste "+fs+" al mismo tiempo. Si el resultado cambió, ¿cuál fue la causa? Prueba cambiando una sola cosa."},
+  concluir5:{en:"Which ONE thing changes the result? Mark each one.", es:"¿Qué cosa, UNA sola, cambia el resultado? Marca cada una."},
+  concluir6:{en:"Which things change the result? It can be one or more. Mark each one.", es:"¿Qué cosas cambian el resultado? Puede ser una o varias. Marca cada una."},
+  sinMarcar:{en:"Mark every thing: does it matter or not?", es:"Marca cada cosa: ¿importa o no?"},
+  bien:{en:"Your conclusion fits the evidence! That's how scientists work.", es:"¡Tu conclusión encaja con la evidencia! Así trabajan los científicos."},
+  sinPrueba:{en:f=>"You haven't done a fair test for "+f+" yet. Run two tests where ONLY "+f+" changes.",
+             es:f=>"Todavía no hiciste una prueba justa para "+f+". Haz dos pruebas en las que SOLO cambie "+f+"."},
+  mira:{en:(f,a,b)=>"Look at tests "+a+" and "+b+": only "+f+" changed. Did the result change?",
+        es:(f,a,b)=>"Mira las pruebas "+a+" y "+b+": solo cambió "+f+". ¿Cambió el resultado?"},
+  hallazgo:{en:(l)=>"What matters: "+l+".", es:(l)=>"Lo que importa: "+l+"."},
+  importa:{en:"Matters", es:"Importa"}, noImporta:{en:"Doesn't matter", es:"No importa"},
+  sig:{en:"Next experiment ▶", es:"Siguiente experimento ▶"}, fin:{en:"Finish ▶", es:"Terminar ▶"},
+  contador:{en:(a,b)=>"Experiment "+a+" of "+b, es:(a,b)=>"Experimento "+a+" de "+b},
+  final:{en:"You ran fair tests and drew conclusions from evidence. That's the heart of science!",
+         es:"Hiciste pruebas justas y sacaste conclusiones de la evidencia. ¡Ese es el corazón de la ciencia!"},
+  reto:{en:"Do a real fair test at home: fold two paper airplanes that are the same except for ONE thing. Throw each one three times and compare.",
+        es:"Haz una prueba justa de verdad en casa: dobla dos aviones de papel iguales salvo en UNA cosa. Lanza cada uno tres veces y compara."},
+  portada:{en:"The Fair Test Lab. Run experiments and find out what really matters, changing only one thing at a time.",
+           es:"El laboratorio de la prueba justa. Haz experimentos y descubre qué importa de verdad, cambiando una sola cosa a la vez."}
+};
+const CHISPAS=[
+  {en:"Scientist's tip: keep everything the same except ONE thing. Then you'll know what caused the change.", es:"Consejo de científico: deja todo igual menos UNA cosa. Así sabrás qué causó el cambio."},
+  {en:"Scientist's tip: test every thing, even the ones you think don't matter. Sometimes the answer is a surprise.", es:"Consejo de científico: prueba cada cosa, incluso las que crees que no importan. A veces la respuesta es una sorpresa."},
+  {en:"Scientist's tip: compare two tests that are the same except for one thing.", es:"Consejo de científico: compara dos pruebas que sean iguales salvo en una cosa."}
+];
+C={
+  inicio:{en:"Ask before each test: “What are you changing? What stays the same? What do you predict?”",
+          es:"Pregunte antes de cada prueba: «¿Qué vas a cambiar? ¿Qué se queda igual? ¿Qué crees que pasará?»"},
+  injusta:{en:"Don't fix it for them. Ask: “If two things changed, how can we know which one made the difference?”",
+           es:"No lo corrija. Pregunte: «Si cambiaron dos cosas, ¿cómo sabemos cuál hizo la diferencia?»"},
+  amigos:{en:"The friends take turns running tests. Before concluding, each one must point to the tests that prove it.",
+          es:"Los amigos se turnan para hacer pruebas. Antes de concluir, cada uno debe señalar las pruebas que lo demuestran."},
+  final:{en:"Ask: “Which test was the most useful? How sure are you? Would you test it again in real life?”",
+         es:"Pregunte: «¿Qué prueba fue la más útil? ¿Qué tan seguro estás? ¿Lo probarías otra vez en la vida real?»"}
+};
+DICE={
+  "factores":{en:"Choose an option for each thing.", es:"Elige una opción para cada cosa."},
+  "btn-correr":{en:"Then tap the purple button to run the test.", es:"Luego toca el botón morado para hacer la prueba."},
+  "resultados":{en:"Your results appear in this table.", es:"Tus resultados aparecen en esta tabla."},
+  "btn-chispa":{en:"Tap here for a scientist's tip.", es:"Toca aquí para un consejo de científico."},
+  "btn-ya":{en:"When you know what matters, tap the yellow button.", es:"Cuando sepas qué importa, toca el botón amarillo."},
+  "conclusion":{en:"Mark each thing: matters or doesn't matter.", es:"Marca cada cosa: importa o no importa."},
+  "btn-comprobar":{en:"Then tap the purple button to check.", es:"Luego toca el botón morado para comprobar."},
+  "btn-siguiente":{en:"Tap the purple button to go on.", es:"Toca el botón morado para seguir."}
+};
+TEXTO_PORTADA=T.portada;
+CONFETI=["🎉","🧪","✨","🔬","⭐"];
+
+/* ---------- Estado ---------- */
+const P={ronda:0, rondas:2, exp:null, importa:[], ajuste:[0,0,0], pruebas:[], turno:0, chispa:0, conc:[null,null,null], fase:""};
+function resultado(aj){
+  const e=P.exp; let r=e.base;
+  aj.forEach((v,i)=>{ if(v===1 && P.importa[i]) r+=e.factores[i].tam; });
+  return r;
+}
+const nomF = i=>P.exp.factores[i].nom[S.idioma];
+const lista = arr=>S.idioma==="es" ? (arr.length>1 ? arr.slice(0,-1).join(", ")+" y "+arr[arr.length-1] : arr[0]) : (arr.length>1 ? arr.slice(0,-1).join(", ")+" and "+arr[arr.length-1] : arr[0]);
+function nuevaRonda(){
+  const usados=P.usados||[];
+  P.exp=azar(EXPERIMENTOS.filter(e=>e.g.indexOf(S.nivel)>=0 && usados.indexOf(e.id)<0)); P.usados=usados.concat(P.exp.id);
+  P.importa=P.exp.factores.map(f=>f.tam!==0);
+  P.ajuste=[0,0,0]; P.pruebas=[]; P.conc=[null,null,null]; P.fase="probar";
+  $("exp-ico").textContent=P.exp.ico; $("exp-tit").textContent=P.exp.tit.en;
+  $("contador").textContent="Experiment "+(P.ronda+1)+" of "+P.rondas;
+  $("hallazgo").classList.add("oculto");
+  zonas("zona-probar","zona-botones");
+  pintarFactores(); pintarTabla();
+  consejo(S.modo==="amigos" ? "amigos" : "inicio");
+  decir("msg", ()=>tx(P.ronda===0?T.nuevo:T.nuevoCorto)+(S.modo==="amigos"?" "+tx(T.turno, tx(COLOR_JUG.amarillo)):""), ["factores","btn-correr","resultados","btn-chispa","btn-ya"]);
+}
+function zonas(...ver){ ["zona-probar","zona-botones","zona-concluir","zona-siguiente"].forEach(id=>$(id).classList.toggle("oculto", ver.indexOf(id)<0)); }
+function pintarFactores(){
+  const cont=$("factores"); cont.innerHTML="";
+  const ultima=P.pruebas[P.pruebas.length-1];
+  P.exp.factores.forEach((f,i)=>{
+    const d=document.createElement("div"); d.className="factor"+(ultima && ultima.aj[i]!==P.ajuste[i]?" cambio":"");
+    d.setAttribute("role","group"); d.setAttribute("aria-label", f.lab);
+    d.innerHTML='<h3></h3><div class="dos"></div>'; d.querySelector("h3").textContent=f.lab;
+    f.op.forEach((o,k)=>{
+      const b=document.createElement("button"); b.className="op"; b.setAttribute("aria-pressed", String(P.ajuste[i]===k));
+      b.innerHTML='<span class="ico" aria-hidden="true">'+o.ico+'</span><span></span>'; b.lastChild.textContent=o.en;
+      b.addEventListener("click", ()=>{ if(P.fase!=="probar") return; P.ajuste[i]=k; sonElige(); pintarFactores(); });
+      d.querySelector(".dos").appendChild(b);
+    });
+    cont.appendChild(d);
+  });
+}
+function pintarTabla(){
+  const t=$("resultados"), e=P.exp;
+  t.querySelector("thead").innerHTML='<tr><th scope="col">#</th>'+e.factores.map(f=>'<th scope="col"></th>').join("")+'<th scope="col"></th></tr>';
+  const ths=t.querySelectorAll("thead th"); e.factores.forEach((f,i)=>ths[i+1].textContent=f.lab); ths[4].textContent=e.medida.en;
+  const max=Math.max(...[0,1,2,3,4,5,6,7].map(m=>resultado([m&1?1:0,m&2?1:0,m&4?1:0])), 1);
+  const tb=t.querySelector("tbody"); tb.innerHTML="";
+  P.pruebas.forEach((p,n)=>{
+    const tr=document.createElement("tr"); tr.dataset.n=n;
+    tr.innerHTML='<th scope="row">'+(n+1)+'</th>'+e.factores.map((f,i)=>'<td data-i="'+i+'"><span aria-hidden="true">'+f.op[p.aj[i]].ico+'</span> '+f.op[p.aj[i]].en+'</td>').join("")+
+      '<td class="res"><span class="barra-res" style="width:'+Math.round(140*p.r/max)+'px" aria-hidden="true"></span><strong>'+p.r+' '+e.unidad+'</strong></td>';
+    tb.appendChild(tr);
+  });
+  $("sin-datos").classList.toggle("oculto", P.pruebas.length>0);
+  t.classList.toggle("oculto", P.pruebas.length===0);
+}
+function quitarMiras(){ document.querySelectorAll("#resultados .mira, #resultados .dif").forEach(x=>{ x.classList.remove("mira"); x.classList.remove("dif"); }); }
+$("btn-correr").addEventListener("click", ()=>{
+  if(P.fase!=="probar") return;
+  quitarMiras();
+  const aj=P.ajuste.slice(), r=resultado(aj), ant=P.pruebas[P.pruebas.length-1];
+  P.pruebas.push({aj, r});
+  tono([392,523,659],0.1);
+  pintarTabla(); pintarFactores();
+  const n=P.pruebas.length, u=P.exp.unidad;
+  const fila=document.querySelector('#resultados tr[data-n="'+(n-1)+'"]');
+  let f;
+  if(!ant) f=()=>tx(T.primera, tx(P.exp.medida), r, u);
+  else{
+    const cambios=[0,1,2].filter(i=>ant.aj[i]!==aj[i]);
+    if(fila) cambios.forEach(i=>{ const td=fila.querySelector('td[data-i="'+i+'"]'); if(td) td.classList.add("dif"); });
+    if(!cambios.length) f=()=>tx(T.igual);
+    else if(cambios.length===1) f=()=>tx(T.justa, nomF(cambios[0]), ant.r, r, u, n);
+    else { f=()=>tx(T.injusta, lista(cambios.map(nomF))); consejo("injusta"); }
+  }
+  if(S.modo==="amigos"){ P.turno=1-P.turno; const g=f; f=()=>g()+" "+tx(T.turno, tx(COLOR_JUG[P.turno?"azul":"amarillo"])); }
+  if(fila) fila.scrollIntoView({block:"nearest", behavior:suave()});
+  decir("msg", f);
+});
+$("btn-chispa").addEventListener("click", ()=>{ sonPista(); const c=CHISPAS[P.chispa++ % CHISPAS.length]; decir("msg", ()=>tx(c)); });
+$("btn-ya").addEventListener("click", ()=>{
+  P.fase="concluir"; zonas("zona-concluir");
+  pintarConclusion();
+  $("zona-concluir").scrollIntoView({block:"nearest", behavior:suave()});
+  const t=dos(()=>tx(S.nivel==="6"?T.concluir6:T.concluir5));
+  $("ind-concluir").textContent=t.en; $("ind-concluir-es").textContent=t.es;
+  decir("msg", ()=>tx(S.nivel==="6"?T.concluir6:T.concluir5), ["conclusion","btn-comprobar"]);
+});
+$("btn-mas").addEventListener("click", ()=>{ P.fase="probar"; zonas("zona-probar","zona-botones"); quitarMiras(); decir("msg", ()=>tx(DICE.factores)); });
+function pintarConclusion(){
+  const cont=$("conclusion"); cont.innerHTML="";
+  P.exp.factores.forEach((f,i)=>{
+    const d=document.createElement("div"); d.className="conc"; d.setAttribute("role","group"); d.setAttribute("aria-label", f.lab);
+    d.innerHTML='<h3></h3><div class="dos"></div>'; d.querySelector("h3").textContent=f.lab;
+    [[true,"✅",T.importa],[false,"➖",T.noImporta]].forEach(([v,ico,txt])=>{
+      const b=document.createElement("button"); b.className="op"; b.setAttribute("aria-pressed", String(P.conc[i]===v));
+      b.innerHTML='<span class="ico" aria-hidden="true">'+ico+'</span><span></span>'; b.lastChild.textContent=txt.en;
+      b.addEventListener("click", ()=>{ P.conc[i]=v; sonElige(); pintarConclusion(); });
+      d.querySelector(".dos").appendChild(b);
+    });
+    cont.appendChild(d);
+  });
+}
+/* Pares de pruebas que solo difieren en el factor i */
+function pruebaJusta(i){
+  for(let a=0;a<P.pruebas.length;a++) for(let b=a+1;b<P.pruebas.length;b++){
+    const x=P.pruebas[a].aj, y=P.pruebas[b].aj;
+    if(x[i]!==y[i] && [0,1,2].every(k=>k===i || x[k]===y[k])) return [a,b];
+  }
+  return null;
+}
+$("btn-comprobar").addEventListener("click", ()=>{
+  quitarMiras();
+  if(P.conc.some(v=>v===null)){ decir("msg", ()=>tx(T.sinMarcar)); return; }
+  /* en 5.º, exactamente una cosa importa */
+  const malos=[0,1,2].filter(i=>P.conc[i]!==P.importa[i]);
+  /* además, cada conclusión debe tener una prueba justa que la respalde */
+  const sinApoyo=[0,1,2].filter(i=>!pruebaJusta(i));
+  if(!malos.length && !sinApoyo.length){ acierto(); return; }
+  sonPista();
+  const i = malos.find(k=>pruebaJusta(k)) ?? (malos.length ? malos[0] : sinApoyo[0]);
+  const par=pruebaJusta(i);
+  if(!par){ decir("msg", ()=>tx(T.sinPrueba, nomF(i))); return; }
+  [par[0],par[1]].forEach(n=>{ const tr=document.querySelector('#resultados tr[data-n="'+n+'"]'); if(tr){ tr.classList.add("mira"); const td=tr.querySelector('td[data-i="'+i+'"]'); if(td) td.classList.add("dif"); } });
+  const tr=document.querySelector('#resultados tr[data-n="'+par[0]+'"]'); if(tr) tr.scrollIntoView({block:"center", behavior:suave()});
+  decir("msg", ()=>tx(T.mira, nomF(i), par[0]+1, par[1]+1));
+});
+function textoHallazgo(){ return dos(()=>tx(T.hallazgo, lista([0,1,2].filter(i=>P.importa[i]).map(nomF)))); }
+function acierto(){
+  P.fase="fin"; sonTada(); confeti(); lumiFeliz();
+  const h=$("hallazgo"), t=textoHallazgo(); h.textContent="🔬 "+t.en; h.classList.remove("oculto");
+  zonas("zona-siguiente");
+  $("btn-siguiente").textContent = P.ronda>=P.rondas-1 ? "Finish ▶" : "Next experiment ▶";
+  consejo("final");
+  decir("msg", ()=>tx(T.bien)+" "+tx(T.hallazgo, lista([0,1,2].filter(i=>P.importa[i]).map(nomF))), ["btn-siguiente"]);
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  P.ronda++;
+  if(P.ronda>=P.rondas){ final(); return; }
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final");
+  const r=dos(()=>tx(T.reto)); $("txt-reto").textContent=r.en; $("txt-reto-es").textContent=r.es;
+  decir("msg-final", ()=>tx(T.final), ["btn-otra-vez","btn-al-menu"]);
+}
+function empezar(){
+  P.ronda=0; P.usados=[]; P.turno=0; S.vistos={};
+  mostrar("p-juego"); nuevaRonda();
+}
+alCambiarAyuda=()=>{};
+iniciarPagina(empezar);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — What If? Worlds / Mundos de «¿y si…?» (Grades 5 and 6)
+  Creative thinking with "What if…?" scenarios: what if gravity were half as strong? what if animals
+  could talk? Children add as many consequences as they can (fluency) in different areas of life:
+  school, sports, animals, food, the city… (flexibility). Lumi celebrates every idea and, when all the
+  ideas fall in the same area, challenges the child to think about a different one. In Grade 6 an idea
+  can be followed with "…and then what?" (chains of consequences). With a friend: "Yes, and…".
+  Ideas can be written or said (the recording stays on this device). There are no wrong ideas.
+  From Grade 5 on, Lumi's games are in English; the «Ayuda en español» button shows the
+  instructions and questions in Spanish (the game content and answers stay in English).
+  Nothing is saved or sent: no scores, no records.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What If? Worlds · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A creativity game for Grades 5 and 6: imagine What if…? worlds and think of every consequence, in many areas of life. In English with optional help in Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --rojo:#A3262A; --rojo-claro:#FDE7E7; --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:56ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:56px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.3vw,22px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.05em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,420px)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+.btn-ayuda{border:3px solid #2A9D8F;background:#fff;color:var(--acento);border-radius:999px;padding:8px 16px;min-height:44px;font-weight:700;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:#E6F4F1;border-color:var(--acento)}
+.ayuda-es{display:none !important}
+body.con-ayuda .ayuda-es{display:block !important}
+body.con-ayuda span.ayuda-es,body.con-ayuda small.ayuda-es{display:inline !important}
+body.con-ayuda .opcion small.ayuda-es{display:block !important}
+body.con-ayuda .es-bajo.ayuda-es{display:block !important}
+.caja-ayuda{background:#E6F4F1;border-left:6px solid #2A9D8F;border-radius:12px;padding:8px 12px;margin:-6px 0 14px;font-size:.92em;text-align:left}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.1em;border-width:3px}
+.portada .caja-ayuda{max-width:56ch;margin:0 auto 14px}
+.es-bajo{display:block;font-weight:600;font-size:.78em;color:var(--tinta-suave)}
+.indicacion-es{font-weight:600;color:#1D5A46;margin:-4px 0 8px;font-size:.9em}
+
+/* ---------- Propio de este juego ---------- */
+
+.escenario{background:#fff;border:4px solid var(--oro);border-radius:20px;padding:12px 18px;max-width:760px;margin:0 auto 12px;text-align:center}
+.escenario .ico{font-size:2.8em;line-height:1.1;display:block}
+.escenario h2{margin:4px 0 0;font-size:1.3em}
+.progreso{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.agregar{background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:0 0 12px}
+.agregar h3{margin:0 0 8px;font-size:1em;text-align:center}
+.agregar .fila{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.agregar textarea{font:inherit;font-size:1em;width:min(100%,640px);min-height:72px;padding:10px 12px;border:3px solid var(--tinta);border-radius:14px;resize:vertical}
+.areas{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.area{border:3px solid var(--linea);background:#fff;border-radius:999px;padding:6px 12px;min-height:44px;font-weight:700;font-size:.9em}
+.area[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.area.nueva{border-style:dashed;border-color:var(--oro)}
+.vinculo{background:var(--oro-claro);border:3px solid var(--oro);border-radius:12px;padding:6px 12px;margin:0 auto 8px;max-width:640px;font-weight:600;text-align:center}
+.muro{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin:0 0 14px}
+.idea{background:#fff;border:3px solid var(--linea);border-left-width:10px;border-radius:14px;padding:8px 10px;margin:0;box-shadow:var(--sombra)}
+.idea .cab{font-size:.78em;font-weight:700;color:var(--tinta-suave);display:flex;justify-content:space-between;gap:6px}
+.idea p{margin:4px 0;font-weight:600}
+.idea .sigue{font-size:.8em;color:var(--tinta-suave);margin:0 0 4px}
+.idea .acc{display:flex;gap:6px;flex-wrap:wrap}
+.idea .acc button{font:inherit;font-size:.8em;border:2px solid var(--tinta);border-radius:10px;background:#fff;padding:4px 8px;min-height:36px;font-weight:700}
+.titulo-muro{text-align:center;margin:8px 0 6px;font-size:1.15em}
+@media print{
+  body *{visibility:hidden}
+  #p-final .muro, #p-final .muro *, #p-final .titulo-muro{visibility:visible}
+  #p-final .titulo-muro{position:absolute;top:0;left:0;right:0}
+  #p-final .muro{position:absolute;top:40px;left:0;right:0}
+  .idea{box-shadow:none;break-inside:avoid}
+  .idea .acc{display:none}
+}
+
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./">◀ Curious Minds</a>
+    <h1>What If? Worlds<span class="es-bajo ayuda-es" lang="es">Mundos de «¿y si…?»</span></h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../6to_grado/lumi6-ciencias.png" alt="" width="240" height="320">
+    <h2>What would change if…?</h2>
+    <p class="intro">Imagine a world where one thing is different. Think of everything that would change, at school, in sports, for animals, in the city… The more ideas, and the more different, the better!</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="intro-es" aria-label="Escuchar en español">🔊</button><p id="intro-es">Imagina un mundo donde una sola cosa es distinta. Piensa en todo lo que cambiaría: en la escuela, en los deportes, para los animales, en la ciudad… ¡Cuantas más ideas, y más distintas, mejor!</p></div></div>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien">Who is playing?<span class="es-bajo ayuda-es" lang="es">¿Quién juega?</span></p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span>Just me</span><small>build your own idea wall</small><small class="ayuda-es" lang="es">Yo solo · arma tu propio muro de ideas</small></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span>With a grown-up</span><small>with tips for the grown-up</small><small class="ayuda-es" lang="es">Con un adulto · con consejos</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span>With a friend</span><small>take turns: Yes, and…</small><small class="ayuda-es" lang="es">Con un amigo · por turnos: Sí, y además…</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel">What grade are you in?<span class="es-bajo ayuda-es" lang="es">¿En qué grado estás?</span></p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="5" aria-pressed="true"><span class="ico" aria-hidden="true">💻</span><span>Grade 5</span></button>
+        <button class="opcion" data-nivel="6" aria-pressed="false"><span class="ico" aria-hidden="true">🔬</span><span>Grade 6</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../5to_grado/lumi5-saluda.jpg" alt="Lumi" width="56" height="74">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-es" aria-label="Escuchar en español">🔊</button><p id="msg-es"></p></div></div>
+    <details class="consejo oculto" id="consejo"><summary>💡 For the grown-up</summary><p></p></details>
+
+    <p class="contador" id="contador"></p>
+    <div class="escenario"><span class="ico" id="esc-ico" aria-hidden="true"></span><h2 id="esc-tit"></h2>
+      <p class="ayuda-es" lang="es" id="esc-tit-es" style="margin:4px 0 0;color:#1D5A46;font-weight:600"></p></div>
+    <p class="progreso" id="progreso" aria-live="polite"></p>
+
+    <div class="agregar" id="zona-agregar">
+      <div class="vinculo oculto" id="vinculo"></div>
+      <h3 id="t-idea">What would change? Write your idea (or say it):<span class="es-bajo ayuda-es" lang="es">¿Qué cambiaría? Escribe tu idea (o dila):</span></h3>
+      <div class="fila"><textarea id="campo-idea" maxlength="160" aria-labelledby="t-idea"></textarea></div>
+      <div class="fila">
+        <button class="boton chico" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar">Record</span></button>
+        <span class="nota-priv" style="margin:0">The recording stays on this device.<span class="es-bajo ayuda-es" lang="es">La grabación se queda en este aparato.</span></span>
+      </div>
+      <p class="titulo-zona" id="t-area" style="margin:10px 0 4px">Where would it change things?<span class="es-bajo ayuda-es" lang="es">¿En qué parte de la vida cambiaría algo?</span></p>
+      <div class="areas" id="areas" role="group" aria-labelledby="t-area"></div>
+      <div class="acciones" style="margin:8px 0 0">
+        <button class="boton" id="btn-chispa"><span aria-hidden="true">✨</span> A spark</button>
+        <button class="boton fuerte" id="btn-agregar"><span aria-hidden="true">➕</span> Add my idea</button>
+        <button class="boton oro" id="btn-terminar"><span aria-hidden="true">🌍</span> I'm done with this world</button>
+      </div>
+    </div>
+
+    <h2 class="titulo-muro" id="t-muro">💡 Idea wall<span class="es-bajo ayuda-es" lang="es">Muro de ideas</span></h2>
+    <div class="muro" id="muro" aria-labelledby="t-muro"></div>
+    <div class="acciones oculto" id="zona-siguiente"><button class="boton fuerte" id="btn-siguiente"></button></div>
+
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../5to_grado/lumi5-saluda.jpg" alt="Lumi" width="56" height="74">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-final-es" aria-label="Escuchar en español">🔊</button><p id="msg-final-es"></p></div></div>
+
+    <h2 class="titulo-muro" id="t-muro-final">💡 My idea walls<span class="es-bajo ayuda-es" lang="es">Mis muros de ideas</span></h2>
+    <div class="muro" id="muro-final" aria-labelledby="t-muro-final"></div>
+    <div class="acciones"><button class="boton" id="btn-imprimir"><span aria-hidden="true">🖨️</span> Print my ideas</button></div>
+
+    <div class="reto">
+      <h3>🏠 Real-world challenge<span class="es-bajo ayuda-es" lang="es">Reto con cosas de verdad</span></h3>
+      <p id="txt-reto"></p>
+      <p class="ayuda-es" lang="es" id="txt-reto-es" style="color:#1D5A46"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> Play again</button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> Another game</a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html">🍎 For teachers, parents and caregivers: why these games<span class="es-bajo ayuda-es" lang="es">Para maestros, padres y tutores: por qué estos juegos</span></a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ============ Lo común a los juegos de 5.º y 6.º (inglés con ayuda en español) ============ */
+const S = {idioma:"en", ayuda:false, modo:"solo", nivel:"5", vistos:{}, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "“"+t+"”";
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const azar = arr=>arr[Math.floor(Math.random()*arr.length)];
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const suave = ()=>sinMovimiento()?"auto":"smooth";
+const COLOR_JUG = {amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"}};
+/* Construye un texto en los dos idiomas: f se evalúa una vez en inglés y otra en español */
+function dos(f){ const antes=S.idioma; S.idioma="en"; const en=f(); S.idioma="es"; const es=f(); S.idioma=antes; return {en, es}; }
+
+/* Voz */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+let limpiarParaVoz = t=>t;
+function hablar(texto, despues, interno, lengua){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const L=lengua||"en";
+    const antes=S.idioma; S.idioma=L; const limpio=limpiarParaVoz(texto); S.idioma=antes;
+    const u=new SpeechSynthesisUtterance(limpio);
+    u.lang = L==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(L)); if(v) u.voice=v;
+    u.rate=0.93; u.pitch=1.05;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* Sonidos y celebración */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSi=()=>tono([659,880],0.12), sonNo=()=>tono([440,349],0.14), sonElige=()=>tono([659],0.08),
+      sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16);
+let CONFETI=["🎉","⭐","✨","🌟","💡"];
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=CONFETI[i%CONFETI.length]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* Lumi señala los botones de los que habla (en inglés) */
+const DICE_COMUN = {
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+let DICE = {};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id]||DICE_COMUN[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:suave()});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi escribe el mensaje en inglés (y la ayuda en español debajo), lo dice en inglés
+   y presenta los botones de ese momento solo las dos primeras veces.
+   «f» es una función que arma el texto: se arma una vez en cada idioma. */
+let ultimaGuia=null;
+const ULTIMO_ES={};
+function decir(cual, f, botones, extra){
+  const t = typeof f==="function" ? dos(f) : {en:f, es:f};
+  $(cual).textContent = t.en;
+  ponerAyudaDe(cual, t.es);
+  const b=botones||[], clave=cual+":"+b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  const ex=extra||[];
+  ultimaGuia=()=>[{texto:t.en}].concat(ex, pasos(b));
+  guia([{texto:t.en}].concat(ex, S.vistos[clave]<=2 ? pasos(b) : []));
+}
+function ponerAyudaDe(cual, es){
+  ULTIMO_ES[cual]=es;
+  const p=$(cual+"-es"); if(p) p.textContent=es;
+}
+/* Una indicación junto a sus opciones (la página no sube); con su ayuda en español */
+function indicar(caja, ind, f, foco){
+  const t=dos(f);
+  $(ind).textContent=t.en;
+  const pe=$(ind+"-es"); if(pe) pe.textContent=t.es;
+  $(caja).scrollIntoView({block:"center", behavior:suave()});
+  hablar(t.en);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+let C = {};
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave && C[clave];
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  /* el consejo es para el adulto: va en español si la ayuda está activada */
+  caja.querySelector("p").textContent=C[clave][S.ayuda?"es":"en"];
+  caja.querySelector("summary").textContent=S.ayuda?"💡 Para el adulto":"💡 For the grown-up";
+}
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function grabadoraEn(boton, etiqueta, alTerminar){
+  let grab=null, trozos=[], url=null;
+  boton.addEventListener("click", async ()=>{
+    if(grab && grab.state==="recording"){ grab.stop(); return; }
+    try{
+      const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+      trozos=[]; grab=new MediaRecorder(flujo);
+      grab.ondataavailable=e=>trozos.push(e.data);
+      grab.onstop=()=>{
+        flujo.getTracks().forEach(t=>t.stop());
+        url=URL.createObjectURL(new Blob(trozos));
+        boton.classList.remove("grabando"); etiqueta.textContent="Record";
+        alTerminar(url);
+      };
+      grab.start(); boton.classList.add("grabando"); etiqueta.textContent="Stop";
+    }catch(e){ alTerminar(null); }
+  });
+}
+
+/* Portada, grado y ayuda en español */
+let gradoFijo=null, alCambiarAyuda=()=>{}, TEXTO_PORTADA={en:"",es:""};
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+function ponerAyuda(on){
+  S.ayuda=on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", String(on));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", on ? "ayuda=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")+(on?"":"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  alCambiarAyuda();
+}
+function iniciarPagina(empezar){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get("ayuda")==="es" || q.get("lang")==="es") S.ayuda=true;
+    if(q.get("grado")==="5" || q.get("grado")==="6") gradoFijo=q.get("grado");
+  }catch(e){}
+  if(gradoFijo){
+    S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+    document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+  }
+  ponerAyuda(S.ayuda);
+  $("btn-ayuda").addEventListener("click", ()=>ponerAyuda(!S.ayuda));
+  /* bocinas en español de cada recuadro de ayuda */
+  document.querySelectorAll("[data-lee-es]").forEach(b=>b.addEventListener("click", ()=>{
+    const p=$(b.dataset.leeEs); if(p) hablar(p.textContent, null, false, "es"); }));
+  $("btn-empezar").addEventListener("click", empezar);
+  $("btn-otra-vez").addEventListener("click", empezar);
+  $("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  $("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  let presentado=false;
+  function presentar(){
+    if(presentado || $("p-portada").classList.contains("oculto")) return;
+    presentado=true;
+    guia([{texto:TEXTO_PORTADA.en}, {el:$("btn-empezar"), texto:DICE_COMUN["btn-empezar"].en}]);
+  }
+  ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-ayuda, #btn-oir, [data-lee-es]")) return;
+    presentar(); }, {once:true}));
+  $("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+  presentar();
+  if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+}
+
+/* ==================================================================
+   El juego
+   ================================================================== */
+
+const MUNDOS=[
+  {id:"gravedad", g:["5","6"], ico:"🪐", en:"What if gravity were only half as strong?", es:"¿Y si la gravedad fuera solo la mitad de fuerte?"},
+  {id:"animales", g:["5","6"], ico:"🦜", en:"What if animals could talk to people?", es:"¿Y si los animales pudieran hablar con las personas?"},
+  {id:"noche", g:["5","6"], ico:"☀️", en:"What if it never got dark at night?", es:"¿Y si nunca se hiciera de noche?"},
+  {id:"miel", g:["5"], ico:"🍯", en:"What if water were as sticky as honey?", es:"¿Y si el agua fuera pegajosa como la miel?"},
+  {id:"luna", g:["5"], ico:"🌕", en:"What if your school were on the Moon?", es:"¿Y si tu escuela estuviera en la Luna?"},
+  {id:"papel", g:["5","6"], ico:"📄", en:"What if there were no more paper in the world?", es:"¿Y si ya no hubiera papel en el mundo?"},
+  {id:"dos-lunas", g:["6"], ico:"🌗", en:"What if Earth had two moons?", es:"¿Y si la Tierra tuviera dos lunas?"},
+  {id:"plantas", g:["6"], ico:"🌿", en:"What if people could make food from sunlight, like plants?", es:"¿Y si las personas pudiéramos fabricar alimento con la luz del sol, como las plantas?"},
+  {id:"internet", g:["6"], ico:"📡", en:"What if the internet disappeared for a whole year?", es:"¿Y si internet desapareciera durante un año entero?"}
+];
+const AREAS=[
+  {id:"escuela", ico:"🏫", en:"School", es:"la escuela", c:"#1F6FD1", p:{en:"What would change at school?", es:"¿Qué cambiaría en la escuela?"}},
+  {id:"deporte", ico:"⚽", en:"Sports & play", es:"los deportes y el juego", c:"#E8A317", p:{en:"How would sports or games change?", es:"¿Cómo cambiarían los deportes o los juegos?"}},
+  {id:"naturaleza", ico:"🌳", en:"Animals & nature", es:"los animales y la naturaleza", c:"#2E8B57", p:{en:"What would happen to animals, plants or the weather?", es:"¿Qué pasaría con los animales, las plantas o el clima?"}},
+  {id:"casa", ico:"🏠", en:"Home & family", es:"la casa y la familia", c:"#B3261E", p:{en:"What would change at home, with your family?", es:"¿Qué cambiaría en casa, con tu familia?"}},
+  {id:"ciudad", ico:"🏙️", en:"City & buildings", es:"la ciudad y los edificios", c:"#6B6585", p:{en:"How would cities, streets or buildings change?", es:"¿Cómo cambiarían las ciudades, las calles o los edificios?"}},
+  {id:"comida", ico:"🍽️", en:"Food", es:"la comida", c:"#D2691E", p:{en:"What would happen to food and cooking?", es:"¿Qué pasaría con la comida y la cocina?"}},
+  {id:"viajes", ico:"🚗", en:"Travel", es:"los viajes", c:"#008B8B", p:{en:"How would people travel or move around?", es:"¿Cómo viajaría o se movería la gente?"}},
+  {id:"ciencia", ico:"🧪", en:"Science & jobs", es:"la ciencia y los trabajos", c:"#7B3FA0", p:{en:"Which jobs or inventions would change or appear?", es:"¿Qué trabajos o inventos cambiarían o aparecerían?"}},
+  {id:"sentimientos", ico:"💗", en:"Feelings", es:"los sentimientos", c:"#C2185B", p:{en:"How would people feel? What would be fun, or hard?", es:"¿Cómo se sentiría la gente? ¿Qué sería divertido o difícil?"}}
+];
+const META={ "5":{ideas:6, areas:3}, "6":{ideas:8, areas:4} };
+const T={
+  nuevo:{en:"Welcome to What If? Worlds! Imagine this world and add as many changes as you can. There are no wrong ideas, and different kinds of ideas are the best.",
+         es:"¡Bienvenido a los mundos de «¿y si…?»! Imagina este mundo y agrega todos los cambios que se te ocurran. No hay ideas equivocadas, y las ideas de distintos tipos son las mejores."},
+  nuevoCorto:{en:"A new world! What would change?", es:"¡Un mundo nuevo! ¿Qué cambiaría?"},
+  turno:{en:c=>c+", your turn to add an idea.", es:c=>c+", te toca agregar una idea."},
+  falta:{en:"Write or say your idea first.", es:"Primero escribe o di tu idea."},
+  faltaArea:{en:"Now pick where it would change things.", es:"Ahora elige en qué parte de la vida cambiaría algo."},
+  bien:[{en:"Great idea!", es:"¡Gran idea!"},{en:"Interesting!", es:"¡Qué interesante!"},{en:"I never thought of that!", es:"¡Nunca lo había pensado!"},{en:"Love it!", es:"¡Me encanta!"}],
+  flex:{en:(a,b)=>"Your last ideas are all about "+a+". What would change for "+b+"?", es:(a,b)=>"Tus últimas ideas son sobre "+a+". ¿Qué cambiaría en "+b+"?"},
+  meta:{en:"Wow, you reached the goal! Keep going if you want, or tap “I'm done with this world”.",
+        es:"¡Qué bien, llegaste a la meta! Sigue si quieres, o toca «I'm done with this world» (Terminé con este mundo)."},
+  luego:{en:"…and then what? What would happen because of that?", es:"…¿y luego qué? ¿Qué pasaría por eso?"},
+  siY:{en:"Yes, and… add something to your friend's idea!", es:"Sí, y además… ¡agrégale algo a la idea de tu amigo!"},
+  vinculo:{en:t=>"Building on: "+cita(t), es:t=>"Siguiendo la idea: "+cita(t)},
+  hablada:{en:n=>"Idea "+n+" (spoken)", es:n=>"Idea "+n+" (dicha)"},
+  progreso:{en:(n,a,m,ma)=>"💡 "+n+(n===1?" idea":" ideas")+" · 🧭 "+a+(a===1?" kind":" kinds")+"   (goal: "+m+" ideas, "+ma+" kinds)",
+            es:(n,a,m,ma)=>"💡 "+n+(n===1?" idea":" ideas")+" · 🧭 "+a+(a===1?" tipo":" tipos")+"   (meta: "+m+" ideas, "+ma+" tipos)"},
+  pocos:{en:"Add at least one idea before you leave this world.", es:"Agrega al menos una idea antes de dejar este mundo."},
+  cierre:{en:(n,a)=>"You imagined "+n+(n===1?" change":" changes")+" in "+a+(a===1?" area":" different areas")+" of life. That's flexible, creative thinking!",
+          es:(n,a)=>"Imaginaste "+n+(n===1?" cambio":" cambios")+" en "+a+(a===1?" parte":" partes distintas")+" de la vida. ¡Eso es pensar con creatividad y flexibilidad!"},
+  contador:{en:(a,b)=>"World "+a+" of "+b, es:(a,b)=>"Mundo "+a+" de "+b},
+  final:{en:"Your imagination built whole new worlds! Asking “What if…?” is how inventors, writers and scientists find new ideas.",
+         es:"¡Tu imaginación construyó mundos completos! Preguntarse «¿Y si…?» es como los inventores, los escritores y los científicos encuentran ideas nuevas."},
+  reto:{en:"At dinner, ask your family a “What if…?” question (What if we had no cars? What if pets went to school?). Take turns adding consequences: who can think of the most different ones?",
+        es:"En la cena, hazle a tu familia una pregunta «¿Y si…?» (¿Y si no hubiera carros? ¿Y si las mascotas fueran a la escuela?). Túrnense para agregar consecuencias: ¿quién piensa en las más distintas?"},
+  portada:{en:"What If? Worlds. Imagine a world where something is different, and think of everything that would change.",
+           es:"Mundos de «¿y si…?». Imagina un mundo donde algo es distinto y piensa en todo lo que cambiaría."}
+};
+C={
+  inicio:{en:"Don't judge the ideas. Ask “What else?” and “Who else would notice the change?” Silly ideas often lead to the best ones.",
+          es:"No juzgue las ideas. Pregunte «¿Qué más?» y «¿Quién más notaría el cambio?». Las ideas chistosas suelen llevar a las mejores."},
+  flex:{en:"Flexible thinking means jumping to a different area of life. Help the child look at the world from someone else's place: a farmer, a pilot, a pet.",
+        es:"Pensar con flexibilidad es saltar a otra parte de la vida. Ayúdele a mirar ese mundo desde el lugar de otra persona: un granjero, una piloto, una mascota."},
+  amigos:{en:"Take turns and practice “Yes, and…”: build on your friend's idea instead of replacing it.",
+          es:"Túrnense y practiquen el «Sí, y además…»: construyan sobre la idea del amigo en vez de cambiarla."},
+  luego:{en:"Chains of consequences (“…and then what?”) are a great way to think about cause and effect in science and history.",
+         es:"Las cadenas de consecuencias («…¿y luego qué?») son una gran forma de pensar en causa y efecto, en ciencias y en historia."}
+};
+DICE={
+  "campo-idea":{en:"Write your idea here.", es:"Escribe tu idea aquí."},
+  "btn-grabar":{en:"Or record it with the microphone.", es:"O grábala con el micrófono."},
+  "areas":{en:"Then pick where it would change things.", es:"Luego elige en qué parte de la vida cambiaría algo."},
+  "btn-agregar":{en:"Tap the purple button to add it to the wall.", es:"Toca el botón morado para agregarla al muro."},
+  "btn-chispa":{en:"If you get stuck, tap the spark.", es:"Si te atoras, toca la chispa."},
+  "btn-terminar":{en:"When you are done, tap the yellow button.", es:"Cuando termines, toca el botón amarillo."},
+  "btn-siguiente":{en:"Tap the purple button to go on.", es:"Toca el botón morado para seguir."}
+};
+TEXTO_PORTADA=T.portada;
+CONFETI=["🎉","🌍","✨","💡","🪐"];
+
+/* ---------- Estado ---------- */
+const P={ronda:0, rondas:2, mundo:null, ideas:[], todas:[], area:null, padre:null, turno:0, chispa:0, audio:null, n:0};
+const area = id=>AREAS.find(a=>a.id===id);
+function pintarAreas(){
+  const g=$("areas"); g.innerHTML="";
+  const usadas=new Set(P.ideas.map(i=>i.area));
+  AREAS.forEach(a=>{
+    const b=document.createElement("button"); b.className="area"+(P.ideas.length && !usadas.has(a.id)?" nueva":""); b.setAttribute("aria-pressed", String(P.area===a.id));
+    b.innerHTML='<span aria-hidden="true">'+a.ico+'</span> <span></span><span class="es-bajo ayuda-es" lang="es"></span>';
+    b.children[1].textContent=a.en; b.lastChild.textContent=a.es;
+    b.addEventListener("click", ()=>{ P.area=a.id; sonElige(); pintarAreas(); });
+    g.appendChild(b);
+  });
+}
+function pintarProgreso(){
+  const m=META[S.nivel], a=new Set(P.ideas.map(i=>i.area)).size;
+  $("progreso").textContent=tx(T.progreso, P.ideas.length, a, m.ideas, m.areas);
+}
+function tarjeta(idea, conAcciones){
+  const f=document.createElement("figure"); f.className="idea"; f.style.borderLeftColor=area(idea.area).c;
+  const cab=document.createElement("div"); cab.className="cab";
+  const ar=document.createElement("span"); ar.textContent=area(idea.area).ico+" "+area(idea.area).en; cab.appendChild(ar);
+  if(idea.jugador!==null){ const j=document.createElement("span"); j.textContent=idea.jugador?"🔵":"🟡"; cab.appendChild(j); }
+  f.appendChild(cab);
+  if(idea.padre){ const s=document.createElement("p"); s.className="sigue"; s.textContent="↳ "+(idea.padre.texto||tx(T.hablada, idea.padre.n)); f.appendChild(s); }
+  const p=document.createElement("p"); p.textContent=idea.texto || tx(T.hablada, idea.n); f.appendChild(p);
+  const acc=document.createElement("div"); acc.className="acc";
+  if(idea.audio){ const b=document.createElement("button"); b.textContent="▶️ Listen"; b.addEventListener("click", ()=>new Audio(idea.audio).play()); acc.appendChild(b); }
+  if(conAcciones){
+    if(S.nivel==="6"){ const b=document.createElement("button"); b.textContent="➡️ And then?"; b.title="…¿y luego qué?"; b.addEventListener("click", ()=>seguir(idea,"luego")); acc.appendChild(b); }
+    if(S.modo==="amigos" && idea.jugador!==null && idea.jugador!==P.turno){ const b=document.createElement("button"); b.textContent="➕ Yes, and…"; b.title="Sí, y además…"; b.addEventListener("click", ()=>seguir(idea,"siY")); acc.appendChild(b); }
+  }
+  if(acc.children.length) f.appendChild(acc);
+  return f;
+}
+function pintarMuro(){
+  const m=$("muro"); m.innerHTML="";
+  P.ideas.slice().reverse().forEach(i=>m.appendChild(tarjeta(i, P.fase==="ideas")));
+}
+function seguir(idea, tipo){
+  P.padre=idea;
+  const v=$("vinculo"); v.textContent=tx(T.vinculo, idea.texto||tx(T.hablada, idea.n)); v.classList.remove("oculto");
+  P.area=idea.area; pintarAreas();
+  $("zona-agregar").scrollIntoView({block:"start", behavior:suave()});
+  setTimeout(()=>$("campo-idea").focus({preventScroll:true}),80);
+  consejo(tipo==="luego"?"luego":"amigos");
+  decir("msg", ()=>tx(tipo==="luego"?T.luego:T.siY));
+}
+function nuevaRonda(){
+  const usados=P.usados||[];
+  P.mundo=azar(MUNDOS.filter(m=>m.g.indexOf(S.nivel)>=0 && usados.indexOf(m.id)<0)); P.usados=usados.concat(P.mundo.id);
+  P.ideas=[]; P.area=null; P.padre=null; P.audio=null; P.chispa=Math.floor(Math.random()*AREAS.length); P.fase="ideas"; P.metaDicha=false;
+  $("esc-ico").textContent=P.mundo.ico; $("esc-tit").textContent=P.mundo.en; $("esc-tit-es").textContent=P.mundo.es;
+  $("contador").textContent="World "+(P.ronda+1)+" of "+P.rondas;
+  $("campo-idea").value=""; $("vinculo").classList.add("oculto");
+  $("zona-agregar").classList.remove("oculto"); $("zona-siguiente").classList.add("oculto");
+  pintarAreas(); pintarProgreso(); pintarMuro();
+  consejo(S.modo==="amigos"?"amigos":"inicio");
+  decir("msg", ()=>tx(P.ronda===0?T.nuevo:T.nuevoCorto)+(S.modo==="amigos"?" "+tx(T.turno, tx(COLOR_JUG[P.turno?"azul":"amarillo"])):""),
+    ["campo-idea","btn-grabar","areas","btn-agregar","btn-chispa","btn-terminar"]);
+}
+$("btn-chispa").addEventListener("click", ()=>{
+  sonPista();
+  /* la chispa propone un área que todavía no se usó */
+  const usadas=new Set(P.ideas.map(i=>i.area));
+  const libres=AREAS.filter(a=>!usadas.has(a.id)); const a=(libres.length?libres:AREAS)[P.chispa++ % (libres.length||AREAS.length)];
+  P.area=a.id; pintarAreas();
+  decir("msg", ()=>tx(a.p));
+});
+$("btn-agregar").addEventListener("click", ()=>{
+  const texto=$("campo-idea").value.trim();
+  if(!texto && !P.audio){ decir("msg", ()=>tx(T.falta)); $("campo-idea").focus(); return; }
+  if(!P.area){ decir("msg", ()=>tx(T.faltaArea)); $("areas").scrollIntoView({block:"center", behavior:suave()}); return; }
+  P.n++;
+  const idea={texto, audio:P.audio, area:P.area, padre:P.padre, jugador:S.modo==="amigos"?P.turno:null, n:P.n, mundo:P.mundo};
+  P.ideas.push(idea); P.todas.push(idea);
+  P.audio=null; P.padre=null; $("vinculo").classList.add("oculto"); $("campo-idea").value="";
+  tono([659,784,988],0.09); lumiFeliz();
+  const prevArea=P.area; P.area=null;
+  if(S.modo==="amigos") P.turno=1-P.turno;
+  pintarAreas(); pintarProgreso(); pintarMuro();
+  /* ¿Las últimas tres ideas son del mismo tipo? Reto de flexibilidad */
+  const u=P.ideas.slice(-3);
+  const m=META[S.nivel], nAreas=new Set(P.ideas.map(i=>i.area)).size;
+  const elogio=T.bien[P.n % T.bien.length];
+  let f;
+  if(u.length===3 && u.every(i=>i.area===prevArea)){
+    const usadas=new Set(P.ideas.map(i=>i.area));
+    const otra=AREAS.find(a=>!usadas.has(a.id)) || AREAS.find(a=>a.id!==prevArea);
+    const nom=x=>S.idioma==="en" ? x.en.toLowerCase() : x.es;
+    f=()=>tx(elogio)+" "+tx(T.flex, nom(area(prevArea)), nom(otra));
+    consejo("flex");
+  } else if(!P.metaDicha && P.ideas.length>=m.ideas && nAreas>=m.areas){
+    P.metaDicha=true; sonTada(); confeti();
+    f=()=>tx(elogio)+" "+tx(T.meta);
+  } else {
+    f=()=>tx(elogio)+(S.modo==="amigos"?" "+tx(T.turno, tx(COLOR_JUG[P.turno?"azul":"amarillo"])):"");
+  }
+  decir("msg", f);
+});
+$("btn-terminar").addEventListener("click", ()=>{
+  if(!P.ideas.length){ decir("msg", ()=>tx(T.pocos)); return; }
+  P.fase="fin"; sonTada(); lumiFeliz();
+  $("zona-agregar").classList.add("oculto"); pintarMuro();
+  $("zona-siguiente").classList.remove("oculto");
+  $("btn-siguiente").textContent = P.ronda>=P.rondas-1 ? "Finish ▶" : "Next world ▶";
+  const n=P.ideas.length, a=new Set(P.ideas.map(i=>i.area)).size;
+  decir("msg", ()=>tx(T.cierre, n, a), ["btn-siguiente"]);
+});
+$("btn-siguiente").addEventListener("click", ()=>{
+  P.ronda++;
+  if(P.ronda>=P.rondas){ final(); return; }
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final");
+  const m=$("muro-final"); m.innerHTML="";
+  let ultimo=null;
+  P.todas.forEach(i=>{
+    if(i.mundo!==ultimo){ ultimo=i.mundo; const h=document.createElement("h3"); h.style.gridColumn="1/-1"; h.style.margin="8px 0 0"; h.textContent=i.mundo.ico+" "+i.mundo.en; m.appendChild(h); }
+    m.appendChild(tarjeta(i,false));
+  });
+  const r=dos(()=>tx(T.reto)); $("txt-reto").textContent=r.en; $("txt-reto-es").textContent=r.es;
+  decir("msg-final", ()=>tx(T.final), ["btn-otra-vez","btn-al-menu"]);
+}
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function empezar(){
+  P.ronda=0; P.usados=[]; P.todas=[]; P.turno=0; P.n=0; S.vistos={};
+  mostrar("p-juego"); nuevaRonda();
+}
+grabadoraEn($("btn-grabar"), $("txt-grabar"), url=>{ P.audio=url; if(url) decir("msg", ()=>tx(P.area?T.bien[0]:T.faltaArea)); });
+alCambiarAyuda=()=>{};
+iniciarPagina(empezar);
+
+</script>
+</body>
+</html>
