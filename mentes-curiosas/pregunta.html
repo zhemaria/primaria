@@ -538,7 +538,7 @@ const DICE = {
   "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
   "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
 };
-const ORDEN = ["preguntas","btn-adivinar","tablero","btn-listo","f-tocar","f-voz","f-dibujo","f-volver","btn-si-era","btn-no-era","btn-siguiente","btn-otra-vez","btn-al-menu"];
+const ORDEN = ["preguntas","btn-adivinar","btn-listo","f-tocar","f-voz","f-dibujo","f-volver","btn-si-era","btn-no-era","btn-siguiente","btn-otra-vez","btn-al-menu"];
 const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
 function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
 function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id])})); }
@@ -565,14 +565,14 @@ function guia(lista){
 /* El mensaje de Lumi: se escribe (para que se resalte al leerlo) y se dice.
    Los botones nuevos se presentan las dos primeras veces que aparecen. */
 let ultimaGuia=null;
-function decir(cual, texto){
+function decir(cual, texto, sinBotones){
   S.ultimo={cual, texto};
   $(cual).textContent = typeof texto==="function" ? texto() : texto;
   const todos=pasos(ORDEN), clave=todos.map(p=>p.el.id).join(",");
   S.vistos[clave]=(S.vistos[clave]||0)+1;
   const msg=$(cual).textContent;
   ultimaGuia=()=>[{texto:msg}].concat(pasos(ORDEN));
-  guia([{texto:msg}].concat(S.vistos[clave]<=2 ? todos : []));
+  guia([{texto:msg}].concat(S.vistos[clave]<=2 && !sinBotones ? todos : []));
 }
 function consejo(clave){
   const caja=$("consejo"), ver=S.modo!=="solo" && clave;
@@ -680,8 +680,8 @@ function preguntar(p){
   /* Lumi lee la pregunta, contesta y explica qué hacer (los botones, solo las dos primeras veces) */
   S.ultimo={cual:"msg", texto:tx(T.tapa)}; $("msg").textContent=tx(T.tapa);
   S.vistos.tapar=(S.vistos.tapar||0)+1;
-  const botones = S.vistos.tapar<=2 ? pasos(["tablero","btn-listo"]) : [];
-  ultimaGuia=()=>[{texto:p[S.idioma]+" "+tx(si?T.si:T.no)}, {texto:tx(T.tapa)}].concat(pasos(["tablero","btn-listo"]));
+  const botones = S.vistos.tapar<=2 ? pasos(["btn-listo"]) : [];
+  ultimaGuia=()=>[{texto:p[S.idioma]+" "+tx(si?T.si:T.no)}, {texto:tx(T.tapa)}].concat(pasos(["btn-listo"]));
   guia([{texto:p[S.idioma]+" "+tx(si?T.si:T.no)}, {texto:tx(T.tapa)}].concat(botones));
 }
 function pintarRespuesta(){
@@ -764,7 +764,7 @@ $("f-volver").addEventListener("click", ()=>seguirPreguntando(""));
 $("f-tocar").addEventListener("click", ()=>{
   marcarForma("f-tocar"); $("cuadro-voz").classList.add("oculto"); $("cuadro-dibujo").classList.add("oculto");
   S.fase="tocar"; refrescarCartas();
-  decir("msg", tx(T.tocalo));
+  decir("msg", tx(T.tocalo), true);
   $("tablero").scrollIntoView({block:"nearest", behavior:sinMovimiento()?"auto":"smooth"});
 });
 function adivinarCon(id, b){
