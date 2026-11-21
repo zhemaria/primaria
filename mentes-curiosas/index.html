@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Curious Minds · Mentes curiosas — Pre-K to Grade 2
+  Curious Minds · Mentes curiosas — Pre-K to Grade 4
   Games that awaken curiosity, creative thinking and thinking together.
   José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
   License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title data-es="Mentes curiosas · Lumi" data-en="Curious Minds · Lumi">Curious Minds · Lumi</title>
 <meta name="author" content="José M. Fernández">
-<meta name="description" content="Curious Minds: games for Pre-K to Grade 2 that awaken curiosity, creative thinking and thinking together. English and Spanish.">
+<meta name="description" content="Curious Minds: games for Pre-K to Grade 4 that awaken curiosity, creative thinking and thinking together. English and Spanish.">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
 <style>
 :root{--papel:#F5F3FB;--tinta:#1E1A3A;--tinta-suave:#4C4766;--linea:#D6D0EA;--blanco:#fff;--acento:#4B2E9A;--foco:#0B62D6;--sombra:0 4px 0 rgba(30,26,58,.18)}
@@ -63,7 +63,7 @@ a.ficha:hover{border-color:var(--tinta)}
   </div>
 
   <section class="portada">
-    <img src="lumi-cortina.png" alt="" width="600" height="600">
+    <img id="img-portada" src="lumi-cortina.png" alt="" width="600" height="600">
     <h2 data-es="¡Pregunta, imagina y descubre!" data-en="Wonder, imagine and find out!">Wonder, imagine and find out!</h2>
     <p data-es="Aquí no hay respuestas equivocadas: lo importante es tener curiosidad, inventar ideas y pensar con otros."
        data-en="There are no wrong answers here: what matters is being curious, inventing ideas and thinking with others.">There are no wrong answers here: what matters is being curious, inventing ideas and thinking with others.</p>
@@ -89,6 +89,15 @@ a.ficha:hover{border-color:var(--tinta)}
     <a class="ficha juego-12" id="enlace-balanza" href="balanza.html"><span class="emoji" aria-hidden="true">⚖️</span>
       <span><span class="nombre" data-es="La balanza de Lumi" data-en="Lumi's Balance">Lumi's Balance</span>
       <span class="meta" data-es="Pensar juntos: ¡a probar!" data-en="Thinking together: let's test!">Thinking together: let's test!</span></span></a>
+    <a class="ficha juego-34" id="enlace-regla" href="regla.html"><span class="emoji" aria-hidden="true">🧪</span>
+      <span><span class="nombre" data-es="La regla secreta" data-en="The Secret Rule">The Secret Rule</span>
+      <span class="meta" data-es="Curiosidad: prueba como un científico" data-en="Curiosity: test like a scientist">Curiosity: test like a scientist</span></span></a>
+    <a class="ficha juego-34" id="enlace-inventos" href="inventos.html"><span class="emoji" aria-hidden="true">🛠️</span>
+      <span><span class="nombre" data-es="El taller de inventos" data-en="The Invention Workshop">The Invention Workshop</span>
+      <span class="meta" data-es="Creatividad: inventa y mejora" data-en="Creativity: invent and improve">Creativity: invent and improve</span></span></a>
+    <a class="ficha juego-34" id="enlace-misterio" href="misterio.html"><span class="emoji" aria-hidden="true">🕵️</span>
+      <span><span class="nombre" data-es="El misterio de Lumi" data-en="Lumi's Mystery">Lumi's Mystery</span>
+      <span class="meta" data-es="Pensar juntos: junten sus pistas" data-en="Thinking together: share your clues">Thinking together: share your clues</span></span></a>
   </div>
 
   <p style="text-align:center;margin:22px 0 0"><a class="boton" id="enlace-adultos" href="para-adultos.html"><span aria-hidden="true">🍎</span> <span data-es="Para maestros, padres y tutores: por qué estos juegos" data-en="For teachers, parents and caregivers: why these games">For teachers, parents and caregivers: why these games</span></a></p>
@@ -114,8 +123,9 @@ a.ficha:hover{border-color:var(--tinta)}
 "use strict";
 let idioma="en", grado="prek";
 const $=id=>document.getElementById(id);
-const NOMBRE_GRADO = { prek:{en:"Pre-K", es:"Prekínder"}, k:{en:"Kindergarten", es:"Kínder"}, "1":{en:"Grade 1", es:"1.er grado"}, "2":{en:"Grade 2", es:"2.º grado"} };
-const MAYORES = ()=>grado==="1" || grado==="2";
+const NOMBRE_GRADO = { prek:{en:"Pre-K", es:"Prekínder"}, k:{en:"Kindergarten", es:"Kínder"}, "1":{en:"Grade 1", es:"1.er grado"}, "2":{en:"Grade 2", es:"2.º grado"}, "3":{en:"Grade 3", es:"3.er grado"}, "4":{en:"Grade 4", es:"4.º grado"} };
+/* Cada grupo de grados tiene sus juegos: prekínder y kínder, 1.º y 2.º, 3.º y 4.º */
+const GRUPO = ()=>({prek:"pk", k:"pk", "1":"12", "2":"12", "3":"34", "4":"34"})[grado];
 function aplicar(){
   document.documentElement.lang=idioma;
   document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent=el.getAttribute("data-"+idioma); });
@@ -132,8 +142,13 @@ function aplicar(){
   $("enlace-ideas").href = "ideas.html" + q;
   $("enlace-balanza").href = "balanza.html" + q;
   /* Cada grado ve sus juegos: prekínder y kínder, o 1.º y 2.º */
-  document.querySelectorAll(".juego-pk").forEach(x=>x.classList.toggle("oculto", MAYORES()));
-  document.querySelectorAll(".juego-12").forEach(x=>x.classList.toggle("oculto", !MAYORES()));
+  ["pk","12","34"].forEach(g=>document.querySelectorAll(".juego-"+g).forEach(x=>x.classList.toggle("oculto", GRUPO()!==g)));
+  /* Desde 3.º, Lumi «creció»: la portada usa la Lumi de la lupa (sin lápiz) */
+  $("img-portada").src = GRUPO()==="34" ? "../4to_grado/lumi-lupa.png" : "lumi-cortina.png";
+  $("img-portada").style.mixBlendMode = GRUPO()==="34" ? "normal" : "";
+  $("enlace-regla").href = "regla.html" + q;
+  $("enlace-inventos").href = "inventos.html" + q;
+  $("enlace-misterio").href = "misterio.html" + q;
   try{ history.replaceState(null,"", q); }catch(e){}
 }
 function hablar(t){
@@ -148,7 +163,7 @@ $("btn-en").addEventListener("click", ()=>{ idioma="en"; aplicar(); });
 $("btn-es").addEventListener("click", ()=>{ idioma="es"; aplicar(); });
 try{ const q=new URLSearchParams(location.search);
   if(q.get("lang")==="es") idioma="es";
-  if(["k","1","2"].indexOf(q.get("grado"))>=0) grado=q.get("grado"); }catch(e){}
+  if(["k","1","2","3","4"].indexOf(q.get("grado"))>=0) grado=q.get("grado"); }catch(e){}
 aplicar();
 /* Barra de Lumi del grado (inicio, grados y materias del grado) */
 const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", grado);

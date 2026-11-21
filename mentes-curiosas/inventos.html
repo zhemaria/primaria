@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — Lumi's Invention Workshop / El taller de inventos (Grades 3 and 4)
+  Lumi hands out two everyday things at random (an umbrella and a bicycle…). Children invent
+  something that combines them: they draw it (with a pencil or stamps, including the two things),
+  name it and say what it is for. Then Lumi asks a "What if…?" question to improve the invention
+  (creativity grows by improving ideas). In Grade 4 the invention must also solve a problem.
+  There is no right answer, and Lumi never draws for the child. Inventions are told three ways
+  (UDL): say it, write it, or pick what it is for. With a friend, one invents and the other improves.
+  The drawings stay on this device and disappear when the page closes.
+  Nothing is saved or sent: no scores, no records.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumi's Invention Workshop · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A creativity game for Grades 3 and 4: combine two everyday things into an invention, draw it and improve it. Play alone, with a grown-up or with a friend. English and Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --rojo:#A3262A; --rojo-claro:#FDE7E7; --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:56ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:56px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.3vw,22px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.05em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,420px)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+/* ---------- Propio de este juego ---------- */
+
+.ingredientes{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin:0 0 12px}
+.ingrediente{background:#fff;border:4px solid var(--oro);border-radius:18px;padding:8px 14px;display:flex;flex-direction:column;align-items:center;min-width:120px;box-shadow:var(--sombra)}
+.ingrediente .ico{font-size:2.6em;line-height:1.1}
+.ingrediente .nom{font-weight:700}
+.mas{font-size:2em;font-weight:700;color:var(--tinta-suave)}
+.problema{background:#EAF2FD;border:4px solid var(--azul);border-radius:18px;padding:8px 16px;max-width:680px;margin:0 auto 12px;font-weight:700;text-align:center}
+.mesa{display:grid;grid-template-columns:minmax(0,1fr) 210px;gap:12px;align-items:start}
+@media (max-width:760px){.mesa{grid-template-columns:1fr}}
+.capas{position:relative;width:100%;max-width:700px;aspect-ratio:14/9;margin:0 auto;border:4px solid var(--tinta);border-radius:18px;overflow:hidden;background:#fff}
+.capas canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.herramientas{display:flex;flex-direction:column;gap:8px}
+@media (max-width:760px){.herramientas{flex-direction:row;flex-wrap:wrap;justify-content:center}}
+.grupo-h{background:#fff;border:3px solid var(--linea);border-radius:16px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.grupo-h .tit{width:100%;text-align:center;font-weight:700;font-size:.78em;color:var(--tinta-suave)}
+.color{width:40px;height:40px;border-radius:50%;border:3px solid var(--tinta)}
+.sello{width:46px;height:46px;border-radius:12px;border:3px solid var(--linea);background:#fff;font-size:1.45em;display:grid;place-items:center;padding:0}
+.sello.del-invento{border-color:var(--oro)}
+.color[aria-pressed="true"],.sello[aria-pressed="true"]{box-shadow:0 0 0 4px var(--foco);border-color:var(--tinta)}
+.usos{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.uso{border:3px solid var(--linea);background:#fff;border-radius:999px;padding:6px 14px;min-height:46px;font-weight:700}
+.uso[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.campos{display:grid;gap:8px;justify-items:center}
+.campos label{font-weight:700}
+.mejora{background:var(--oro-claro);border:4px solid var(--oro);border-radius:18px;padding:10px 16px;max-width:680px;margin:0 auto 12px;font-weight:700;text-align:center;font-size:1.05em}
+.museo{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:6px 0 14px}
+.cuadrito{background:#fff;border:4px solid var(--oro);border-radius:14px;padding:6px;margin:0;text-align:center;box-shadow:var(--sombra)}
+.cuadrito img{width:100%;height:auto;border-radius:8px;display:block;background:#fff}
+.cuadrito figcaption{font-weight:700;font-size:.85em;margin-top:4px}
+.cuadrito .det{display:block;font-weight:600;font-size:.8em;color:var(--tinta-suave)}
+.titulo-museo{text-align:center;margin:10px 0 6px}
+@media print{
+  body *{visibility:hidden}
+  #p-final .museo, #p-final .museo *, #p-final .titulo-museo{visibility:visible}
+  #p-final .titulo-museo{position:absolute;top:0;left:0;right:0}
+  #p-final .museo{position:absolute;top:40px;left:0;right:0}
+  .cuadrito{box-shadow:none;break-inside:avoid}
+}
+
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./" data-es="◀ Mentes curiosas" data-en="◀ Curious Minds">◀ Curious Minds</a>
+    <h1 data-es="El taller de inventos" data-en="Lumi's Invention Workshop">Lumi's Invention Workshop</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../4to_grado/lumi-lupa.png" alt="" width="240" height="300">
+    <h2 data-es="¿Qué vas a inventar?" data-en="What will you invent?">What will you invent?</h2>
+    <p class="intro" data-es="Lumi te da dos cosas de todos los días. Inventa algo que use las dos, dibújalo y luego hazlo todavía mejor. ¡No hay inventos equivocados!" data-en="Lumi gives you two everyday things. Invent something that uses both, draw it, and then make it even better. There are no wrong inventions!">Lumi gives you two everyday things. Invent something that uses both, draw it, and then make it even better. There are no wrong inventions!</p>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien" data-es="¿Quién juega?" data-en="Who is playing?">Who is playing?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span data-es="Yo solo" data-en="Just me">Just me</span></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span data-es="Con un adulto" data-en="With a grown-up">With a grown-up</span>
+        <small data-es="con consejos para el adulto" data-en="with tips for the grown-up">with tips for the grown-up</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span data-es="Con un amigo" data-en="With a friend">With a friend</span>
+        <small data-es="uno inventa y el otro mejora" data-en="one invents, the other improves">one invents, the other improves</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel" data-es="¿En qué grado estás?" data-en="What grade are you in?">What grade are you in?</p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="3" aria-pressed="true"><span class="ico" aria-hidden="true">📒</span>
+          <span data-es="3.er grado" data-en="Grade 3">Grade 3</span></button>
+        <button class="opcion" data-nivel="4" aria-pressed="false"><span class="ico" aria-hidden="true">🔬</span>
+          <span data-es="4.º grado" data-en="Grade 4">Grade 4</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../3er_grado/lumi-explora.jpg" alt="Lumi" width="56" height="84">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+
+    <p class="contador" id="contador"></p>
+    <div class="ingredientes" id="ingredientes" aria-live="polite"></div>
+    <div class="problema oculto" id="problema"></div>
+    <div class="acciones" id="zona-cambiar">
+      <button class="boton chico" id="btn-cambiar"><span aria-hidden="true">🎲</span> <span data-es="Cambiar una cosa" data-en="Swap one thing">Swap one thing</span></button>
+    </div>
+    <div class="mejora oculto" id="mejora" role="status"></div>
+
+    <div id="zona-dibujar">
+      <div class="mesa">
+        <div class="capas" id="capas"><canvas id="lienzo" width="700" height="450" tabindex="0"></canvas></div>
+        <div class="herramientas">
+          <div class="grupo-h" role="group" aria-labelledby="t-colores" id="colores"><span class="tit" id="t-colores" data-es="✏️ Lápiz" data-en="✏️ Pencil">✏️ Pencil</span></div>
+          <div class="grupo-h" role="group" aria-labelledby="t-sellos" id="sellos"><span class="tit" id="t-sellos" data-es="⭐ Sellos" data-en="⭐ Stamps">⭐ Stamps</span></div>
+          <div class="grupo-h">
+            <button class="boton chico" id="btn-deshacer"><span aria-hidden="true">↩️</span> <span data-es="Deshacer" data-en="Undo">Undo</span></button>
+            <button class="boton chico" id="btn-borrar"><span aria-hidden="true">🧽</span> <span data-es="Borrar todo" data-en="Erase all">Erase all</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="acciones">
+        <button class="boton" id="btn-chispa"><span aria-hidden="true">✨</span> <span data-es="Una chispa" data-en="A spark">A spark</span></button>
+        <button class="boton fuerte" id="btn-ya"><span aria-hidden="true">✅</span> <span id="txt-ya" data-es="¡Ya está mi invento!" data-en="My invention is ready!">My invention is ready!</span></button>
+      </div>
+    </div>
+
+    <div id="zona-contar" class="oculto">
+      <div class="cuadro">
+        <h3 id="t-contar" data-es="¿Qué inventaste? Cuéntaselo a Lumi como quieras:" data-en="What did you invent? Tell Lumi any way you like:">What did you invent? Tell Lumi any way you like:</h3>
+        <div class="formas" role="group" aria-labelledby="t-contar">
+          <button class="forma" id="f-voz"><span class="ico" aria-hidden="true">🎤</span><span data-es="Dilo" data-en="Say it">Say it</span></button>
+          <button class="forma" id="f-escribir"><span class="ico" aria-hidden="true">⌨️</span><span data-es="Escríbelo" data-en="Write it">Write it</span></button>
+          <button class="forma" id="f-uso"><span class="ico" aria-hidden="true">👆</span><span data-es="Elige para qué sirve" data-en="Pick what it's for">Pick what it's for</span></button>
+        </div>
+        <div id="caja-voz" class="oculto">
+          <p class="indicacion" id="ind-voz"></p>
+          <div class="acciones">
+            <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar">Record</span></button>
+            <button class="boton" id="btn-dicho"><span aria-hidden="true">🗣️</span> <span data-es="Ya lo dije (sin grabar)" data-en="I said it (no recording)">I said it (no recording)</span></button>
+          </div>
+          <p class="nota-priv" data-es="La grabación se queda en este aparato y se borra al cerrar la página." data-en="The recording stays on this device and is erased when you close the page.">The recording stays on this device and is erased when you close the page.</p>
+        </div>
+        <div id="caja-escribir" class="oculto">
+          <p class="indicacion" id="ind-escribir"></p>
+          <div class="campos">
+            <label for="campo-nombre" data-es="Nombre del invento" data-en="Name of the invention">Name of the invention</label>
+            <input class="campo" id="campo-nombre" type="text" maxlength="40" autocomplete="off" spellcheck="false">
+            <label for="campo-uso" data-es="¿Para qué sirve?" data-en="What is it for?">What is it for?</label>
+            <input class="campo" id="campo-uso" type="text" maxlength="80" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div id="caja-uso" class="oculto">
+          <p class="indicacion" id="ind-uso"></p>
+          <div class="usos" id="usos" role="group"></div>
+        </div>
+        <div class="acciones">
+          <button class="boton" id="btn-seguir"><span aria-hidden="true">✏️</span> <span data-es="Seguir dibujando" data-en="Keep drawing">Keep drawing</span></button>
+          <button class="boton fuerte oculto" id="btn-listo"><span aria-hidden="true">🛠️</span> <span data-es="Listo" data-en="Done">Done</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="acciones oculto" id="zona-mejorar">
+      <button class="boton fuerte" id="btn-mejorar"><span aria-hidden="true">🔧</span> <span data-es="Mejorar mi invento" data-en="Improve my invention">Improve my invention</span></button>
+      <button class="boton" id="btn-perfecto"><span aria-hidden="true">🖼️</span> <span data-es="Así está perfecto: al museo" data-en="It's perfect: to the museum">It's perfect: to the museum</span></button>
+    </div>
+    <div class="acciones oculto" id="zona-siguiente"><button class="boton fuerte" id="btn-siguiente"></button></div>
+
+    <h2 class="titulo-museo oculto" id="t-museo-juego" data-es="🖼️ Museo de inventos" data-en="🖼️ Invention museum">🖼️ Invention museum</h2>
+    <div class="museo" id="museo-juego" aria-labelledby="t-museo-juego"></div>
+
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../3er_grado/lumi-explora.jpg" alt="Lumi" width="56" height="84">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+
+    <h2 class="titulo-museo" id="t-museo" data-es="🖼️ Museo de inventos" data-en="🖼️ Invention museum">🖼️ Invention museum</h2>
+    <div class="museo" id="museo-final" aria-labelledby="t-museo"></div>
+    <div class="acciones"><button class="boton" id="btn-imprimir"><span aria-hidden="true">🖨️</span> <span data-es="Imprimir mi museo" data-en="Print my museum">Print my museum</span></button></div>
+
+    <div class="reto">
+      <h3 data-es="🏠 Reto con cosas de verdad" data-en="🏠 Challenge with real things">🏠 Challenge with real things</h3>
+      <p id="txt-reto"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> <span data-es="Jugar otra vez" data-en="Play again">Play again</span></button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> <span data-es="Otro juego" data-en="Another game">Another game</span></a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html" data-es="🍎 Para maestros, padres y tutores: por qué estos juegos" data-en="🍎 For teachers, parents and caregivers: why these games">🍎 For teachers, parents and caregivers: why these games</a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ============ Lo común a los juegos de 3.º y 4.º ============ */
+const S = {idioma:"en", modo:"solo", nivel:"3", vistos:{}, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "“"+t+"”";
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const azar = arr=>arr[Math.floor(Math.random()*arr.length)];
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const suave = ()=>sinMovimiento()?"auto":"smooth";
+const COLOR_JUG = {amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"}};
+
+/* Voz (voz-lumi.js resalta lo que se lee y respeta «Voz: no») */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+let limpiarParaVoz = t=>t;
+function hablar(texto, despues, interno){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(limpiarParaVoz(texto));
+    u.lang = S.idioma==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma)); if(v) u.voice=v;
+    u.rate=0.92; u.pitch=1.08;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* Sonidos y celebración */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSi=()=>tono([659,880],0.12), sonNo=()=>tono([440,349],0.14), sonElige=()=>tono([659],0.08),
+      sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16);
+let CONFETI=["🎉","⭐","✨","🌟","💡"];
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=CONFETI[i%CONFETI.length]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* Lumi señala los botones de los que habla */
+const DICE_COMUN = {
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+let DICE = {};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id]||DICE_COMUN[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:suave()});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi escribe el mensaje (se resalta al leerlo), lo dice y presenta los botones de
+   ese momento solo las dos primeras veces. «extra» son pasos que se leen después. */
+let ultimaGuia=null;
+function decir(cual, texto, botones, extra){
+  $(cual).textContent = texto;
+  const b=botones||[], clave=cual+":"+b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  const ex=extra||[];
+  ultimaGuia=()=>[{texto}].concat(ex, pasos(b));
+  guia([{texto}].concat(ex, S.vistos[clave]<=2 ? pasos(b) : []));
+}
+/* Una indicación que se escribe y se lee junto a sus opciones (la página no sube) */
+function indicar(caja, ind, texto, foco){
+  $(ind).textContent=texto;
+  $(caja).scrollIntoView({block:"center", behavior:suave()});
+  hablar(texto);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+let C = {};
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave && C[clave];
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  caja.querySelector("p").textContent=tx(C[clave]);
+}
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+
+/* Grabación local (se queda en el aparato) */
+function grabadoraEn(boton, etiqueta, alTerminar){
+  let grab=null, trozos=[], url=null;
+  const r={ url:()=>url, soltar:()=>{ const u=url; url=null; return u; } };
+  boton.addEventListener("click", async ()=>{
+    if(grab && grab.state==="recording"){ grab.stop(); return; }
+    try{
+      const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+      trozos=[]; grab=new MediaRecorder(flujo);
+      grab.ondataavailable=e=>trozos.push(e.data);
+      grab.onstop=()=>{
+        flujo.getTracks().forEach(t=>t.stop());
+        url=URL.createObjectURL(new Blob(trozos));
+        boton.classList.remove("grabando"); etiqueta.textContent=tx(TXT_GRABAR.grabar);
+        alTerminar(url);
+      };
+      grab.start(); boton.classList.add("grabando"); etiqueta.textContent=tx(TXT_GRABAR.parar);
+    }catch(e){ alTerminar(null); }
+  });
+  return r;
+}
+const TXT_GRABAR = {grabar:{en:"Record", es:"Grabar"}, parar:{en:"Stop", es:"Parar"}};
+
+/* Portada: quién juega y grado */
+let gradoFijo=null, alCambiarIdioma=()=>{}, TITULO={en:"",es:""}, TEXTO_PORTADA={en:"",es:""};
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+function aplicarIdioma(){
+  const es=S.idioma==="es";
+  document.documentElement.lang=S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent=el.getAttribute("data-"+S.idioma); });
+  document.title = TITULO[S.idioma];
+  $("btn-es").setAttribute("aria-pressed", String(es)); $("btn-en").setAttribute("aria-pressed", String(!es));
+  $("btn-oir").setAttribute("aria-label", es ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  ["bocina","bocina-final"].forEach(id=>$(id) && $(id).setAttribute("aria-label", es ? "Escuchar otra vez" : "Hear it again"));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", es ? "lang=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  alCambiarIdioma();
+}
+function iniciarPagina(empezar){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get("lang")==="es") S.idioma="es";
+    if(q.get("grado")==="3" || q.get("grado")==="4") gradoFijo=q.get("grado");
+  }catch(e){}
+  if(gradoFijo){
+    S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+    document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+  }
+  aplicarIdioma();
+  $("btn-empezar").addEventListener("click", empezar);
+  $("btn-otra-vez").addEventListener("click", empezar);
+  $("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  $("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  let presentado=false;
+  function presentar(){
+    if(presentado || $("p-portada").classList.contains("oculto")) return;
+    presentado=true;
+    guia([{texto:tx(TEXTO_PORTADA)}, {el:$("btn-empezar"), texto:tx(DICE_COMUN["btn-empezar"])}]);
+  }
+  ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-en, #btn-es, #btn-oir")) return;
+    presentar(); }, {once:true}));
+  $("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+  $("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+  $("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+  presentar();
+  if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+}
+
+/* ==================================================================
+   El juego
+   ================================================================== */
+
+const COSAS=[
+  {e:"☂️", es:"un paraguas", en:"an umbrella"}, {e:"🚲", es:"una bicicleta", en:"a bicycle"},
+  {e:"🥄", es:"una cuchara", en:"a spoon"}, {e:"🎈", es:"un globo", en:"a balloon"},
+  {e:"👟", es:"un zapato", en:"a shoe"}, {e:"💡", es:"un foco", en:"a light bulb"},
+  {e:"⏰", es:"un despertador", en:"an alarm clock"}, {e:"🧹", es:"una escoba", en:"a broom"},
+  {e:"📦", es:"una caja", en:"a box"}, {e:"🧲", es:"un imán", en:"a magnet"},
+  {e:"⚽", es:"una pelota", en:"a ball"}, {e:"🎩", es:"un sombrero", en:"a hat"},
+  {e:"📚", es:"unos libros", en:"some books"}, {e:"🧦", es:"un calcetín", en:"a sock"},
+  {e:"🔦", es:"una linterna", en:"a flashlight"}, {e:"🪁", es:"un papalote", en:"a kite"},
+  {e:"🧺", es:"una canasta", en:"a basket"}, {e:"🎒", es:"una mochila", en:"a backpack"}
+];
+const PROBLEMAS=[
+  {es:"Los niños pequeños no alcanzan el estante de los libros.", en:"Little kids can't reach the bookshelf."},
+  {es:"Siempre se pierden las llaves de la casa.", en:"The house keys always get lost."},
+  {es:"El perro se aburre cuando la familia no está.", en:"The dog gets bored when the family is out."},
+  {es:"Nadie se acuerda de regar las plantas.", en:"Nobody remembers to water the plants."},
+  {es:"Las mochilas pesan demasiado.", en:"Backpacks are too heavy."},
+  {es:"En el recreo, la pelota siempre cae al techo.", en:"At recess, the ball always lands on the roof."},
+  {es:"Hay basura en el parque del barrio.", en:"There is trash in the neighborhood park."}
+];
+const MEJORAS=[
+  {es:"¿Y si tu invento tuviera que funcionar en la lluvia?", en:"What if your invention had to work in the rain?"},
+  {es:"¿Y si lo usara un astronauta en el espacio?", en:"What if an astronaut used it in space?"},
+  {es:"¿Cómo lo harías más seguro?", en:"How would you make it safer?"},
+  {es:"¿Y si fuera diez veces más grande… o más pequeño?", en:"What if it were ten times bigger… or smaller?"},
+  {es:"¿Qué le agregarías para que lo pueda usar una persona que no ve?", en:"What would you add so a person who can't see could use it?"},
+  {es:"¿Y si pudiera hacer una cosa más? ¿Cuál sería?", en:"What if it could do one more thing? What would it be?"}
+];
+const USOS=[
+  {id:"jugar", ico:"🎲", es:"Para jugar", en:"For playing"},
+  {id:"casa", ico:"🏠", es:"Para ayudar en casa", en:"For helping at home"},
+  {id:"escuela", ico:"🏫", es:"Para la escuela", en:"For school"},
+  {id:"viajar", ico:"🚀", es:"Para viajar o moverse", en:"For traveling or getting around"},
+  {id:"planeta", ico:"🌎", es:"Para cuidar el planeta", en:"For caring for the planet"},
+  {id:"animales", ico:"🐾", es:"Para los animales", en:"For animals"},
+  {id:"personas", ico:"🤝", es:"Para ayudar a las personas", en:"For helping people"}
+];
+const SELLOS=["⚙️","🔩","🛞","⭐","❤️","🔥","💧","🌸","👀","➡️"];
+const COLORES=["#1E1A3A","#B3261E","#1F6FD1","#1D6B4F","#E8A317","#7B3FA0"];
+const T={
+  nuevo:{en:(a,b)=>"Welcome to the workshop! Today's things are "+a+" and "+b+". Invent something that uses both! Draw your invention.",
+         es:(a,b)=>"¡Bienvenido al taller! Las cosas de hoy son "+a+" y "+b+". ¡Inventa algo que use las dos! Dibuja tu invento."},
+  nuevoProb:{en:(a,b)=>"Welcome to the workshop! You have "+a+" and "+b+". Use them to invent something that solves the problem in the blue box. Draw your invention.",
+             es:(a,b)=>"¡Bienvenido al taller! Tienes "+a+" y "+b+". Usa las dos cosas para inventar algo que resuelva el problema del recuadro azul. Dibuja tu invento."},
+  turno:{en:c=>c+", you invent this one.", es:c=>c+", tú inventas este."},
+  cambio:{en:(a,b)=>"Okay, now you have "+a+" and "+b+".", es:(a,b)=>"Muy bien, ahora tienes "+a+" y "+b+"."},
+  vacio:{en:"Draw your invention first: even a simple sketch works!", es:"Primero dibuja tu invento: ¡hasta un dibujo sencillo sirve!"},
+  contar:{en:"What did you invent? Say it, write it, or pick what it's for.", es:"¿Qué inventaste? Dilo, escríbelo o elige para qué sirve."},
+  di:{en:"Tap the microphone and tell me its name and what it's for.", es:"Toca el micrófono y dime cómo se llama y para qué sirve."},
+  escribe:{en:"Write its name and what it's for.", es:"Escribe su nombre y para qué sirve."},
+  eligeUso:{en:"Pick what your invention is for.", es:"Elige para qué sirve tu invento."},
+  mejora:{en:"Great invention! Inventors always improve their ideas. Here is a question:", es:"¡Gran invento! Los inventores siempre mejoran sus ideas. Aquí va una pregunta:"},
+  mejoraAm:{en:c=>c+", now you improve your friend's invention. Here is a question:", es:c=>c+", ahora tú mejoras el invento de tu amigo. Aquí va una pregunta:"},
+  mejorando:{en:"Add your improvement to the drawing. When you finish, tap “My invention is ready!”", es:"Agrega tu mejora al dibujo. Cuando termines, toca «¡Ya está mi invento!»"},
+  guardado:{en:n=>n ? Mayus(n)+" is in the invention museum!" : "Your invention is in the museum!", es:n=>n ? "¡"+Mayus(n)+" ya está en el museo de inventos!" : "¡Tu invento ya está en el museo!"},
+  sig:{en:"Next invention ▶", es:"Siguiente invento ▶"}, fin:{en:"See my museum ▶", es:"Ver mi museo ▶"},
+  contador:{en:(a,b)=>"Invention "+a+" of "+b, es:(a,b)=>"Invento "+a+" de "+b},
+  sinNombre:{en:"My invention", es:"Mi invento"},
+  final:{en:n=>"You made "+n+(n===1?" invention":" inventions")+"! Every great invention started as a funny idea that someone kept improving.",
+         es:n=>"¡Hiciste "+n+(n===1?" invento":" inventos")+"! Todo gran invento empezó como una idea curiosa que alguien siguió mejorando."},
+  reto:{en:"Look in the recycling bin with a grown-up: a box, a bottle, some caps… Build a real invention with two of those things. What problem does it solve?",
+        es:"Busca en el reciclaje con un adulto: una caja, una botella, unas tapitas… Construye un invento de verdad con dos de esas cosas. ¿Qué problema resuelve?"},
+  portada:{en:"Lumi's invention workshop. Lumi gives you two things. Invent something that uses both, draw it, and then make it even better.",
+           es:"El taller de inventos de Lumi. Lumi te da dos cosas. Inventa algo que use las dos, dibújalo y luego hazlo todavía mejor."}
+};
+const CHISPAS=[
+  {en:"What could each thing do? Write down (or think of) one job for each, then join them.", es:"¿Qué sabe hacer cada cosa? Piensa en un trabajo para cada una y luego júntalas."},
+  {en:"What if one thing were inside the other?", es:"¿Y si una cosa estuviera dentro de la otra?"},
+  {en:"Who would use your invention: a kid, a grandma, a pet, an astronaut?", es:"¿Quién usaría tu invento: un niño, una abuela, una mascota, un astronauta?"},
+  {en:"What if it could move, light up or make a sound?", es:"¿Y si pudiera moverse, prender una luz o hacer un sonido?"}
+];
+C={
+  inicio:{en:"Don't suggest the invention. Ask: “What can each thing do? How could they work together?” Silly ideas are welcome.",
+          es:"No le sugiera el invento. Pregunte: «¿Qué sabe hacer cada cosa? ¿Cómo podrían trabajar juntas?» Las ideas chistosas son bienvenidas."},
+  mejorar:{en:"Improving an idea is as creative as having it. Ask: “What would change? What would stay the same?”",
+           es:"Mejorar una idea es tan creativo como tenerla. Pregunte: «¿Qué cambiaría? ¿Qué se queda igual?»"},
+  amigos:{en:"One friend invents, the other improves: practice “Yes, and…” instead of “No, but…”.",
+          es:"Un amigo inventa y el otro lo mejora: practiquen el «Sí, y además…» en vez del «No, pero…»."},
+  final:{en:"Ask the child to present one invention as if to a real audience: name, what it does, who it helps.",
+         es:"Pídale que presente un invento como si fuera a un público de verdad: nombre, qué hace y a quién ayuda."}
+};
+DICE={
+  "ingredientes":{en:"These are your two things.", es:"Estas son tus dos cosas."},
+  "problema":{en:"This is the problem to solve.", es:"Este es el problema que hay que resolver."},
+  "btn-cambiar":{en:"If you want, swap one thing, only once.", es:"Si quieres, cambia una cosa, solo una vez."},
+  "capas":{en:"Draw your invention here.", es:"Dibuja tu invento aquí."},
+  "sellos":{en:"The stamps include your two things.", es:"Los sellos incluyen tus dos cosas."},
+  "btn-chispa":{en:"If you get stuck, tap the spark.", es:"Si te quedas sin ideas, toca la chispa."},
+  "btn-ya":{en:"When it's ready, tap the purple button.", es:"Cuando esté listo, toca el botón morado."},
+  "f-voz":{en:"Tap the microphone to say it.", es:"Toca el micrófono para decirlo."},
+  "f-escribir":{en:"Tap the keyboard to write it.", es:"Toca el teclado para escribirlo."},
+  "f-uso":{en:"Tap the finger to pick what it's for.", es:"Toca el dedito para elegir para qué sirve."},
+  "btn-listo":{en:"Tap the purple button when you're done.", es:"Toca el botón morado cuando termines."},
+  "btn-mejorar":{en:"Tap here to improve your invention.", es:"Toca aquí para mejorar tu invento."},
+  "btn-perfecto":{en:"Or send it to the museum as it is.", es:"O mándalo al museo así como está."},
+  "btn-siguiente":{en:"Tap the purple button to go on.", es:"Toca el botón morado para seguir."}
+};
+TITULO={en:"Lumi's Invention Workshop · Curious Minds", es:"El taller de inventos de Lumi · Mentes curiosas"};
+TEXTO_PORTADA=T.portada;
+CONFETI=["🎉","⚙️","✨","💡","🛠️"];
+
+/* ---------- Estado ---------- */
+const P={ronda:0, rondas:3, cosas:[], problema:null, cambiado:false, turno:0, inventos:[], fase:"", uso:null, nombre:"", para:"", mejorado:false, chispa:0, audio:null};
+
+/* ---------- Lienzo ---------- */
+const lienzo=$("lienzo"), cx=lienzo.getContext("2d");
+let color=COLORES[0], sello=null, trazando=false, historia=[];
+function limpiar(){ cx.fillStyle="#fff"; cx.fillRect(0,0,lienzo.width,lienzo.height); historia=[]; }
+function vacio(){ return historia.length===0; }
+function punto(e){ const r=lienzo.getBoundingClientRect(); return [(e.clientX-r.left)*lienzo.width/r.width, (e.clientY-r.top)*lienzo.height/r.height]; }
+lienzo.addEventListener("pointerdown", e=>{
+  e.preventDefault(); historia.push(cx.getImageData(0,0,lienzo.width,lienzo.height)); if(historia.length>40) historia.shift();
+  const [x,y]=punto(e);
+  if(sello){ cx.font="64px 'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif"; cx.textAlign="center"; cx.textBaseline="middle"; cx.fillText(sello,x,y); tono([784],0.07); return; }
+  trazando=true; lienzo.setPointerCapture(e.pointerId);
+  cx.strokeStyle=color; cx.lineWidth=8; cx.lineCap="round"; cx.lineJoin="round";
+  cx.beginPath(); cx.moveTo(x,y); cx.lineTo(x+.1,y); cx.stroke();
+});
+lienzo.addEventListener("pointermove", e=>{ if(!trazando) return; const [x,y]=punto(e); cx.lineTo(x,y); cx.stroke(); });
+["pointerup","pointercancel"].forEach(ev=>lienzo.addEventListener(ev, ()=>{ trazando=false; }));
+$("btn-deshacer").addEventListener("click", ()=>{ if(historia.length) cx.putImageData(historia.pop(),0,0); });
+$("btn-borrar").addEventListener("click", limpiar);
+COLORES.forEach((col,i)=>{
+  const b=document.createElement("button"); b.className="color"; b.style.background=col; b.setAttribute("aria-pressed", String(i===0));
+  b.addEventListener("click", ()=>{ color=col; sello=null; marcar(b); }); $("colores").appendChild(b);
+});
+function marcar(b){ document.querySelectorAll(".color,.sello").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }
+function pintarSellos(){
+  const g=$("sellos"); g.querySelectorAll(".sello").forEach(x=>x.remove());
+  P.cosas.map(c=>c.e).concat(SELLOS).forEach((s,i)=>{
+    const b=document.createElement("button"); b.className="sello"+(i<2?" del-invento":""); b.textContent=s; b.setAttribute("aria-pressed","false");
+    b.setAttribute("aria-label", (S.idioma==="es"?"Sello: ":"Stamp: ")+(i<2?P.cosas[i][S.idioma]:s));
+    b.addEventListener("click", ()=>{ sello=s; marcar(b); }); g.appendChild(b);
+  });
+}
+function foto(){ const c=document.createElement("canvas"); c.width=350; c.height=225; c.getContext("2d").drawImage(lienzo,0,0,350,225); return c.toDataURL("image/png"); }
+
+/* ---------- Rondas ---------- */
+function zonas(...ver){ ["zona-dibujar","zona-contar","zona-mejorar","zona-siguiente","zona-cambiar"].forEach(id=>$(id).classList.toggle("oculto", ver.indexOf(id)<0)); }
+function pintarCosas(){
+  const g=$("ingredientes"); g.innerHTML="";
+  P.cosas.forEach((c,i)=>{
+    if(i) { const m=document.createElement("span"); m.className="mas"; m.textContent="+"; m.setAttribute("aria-hidden","true"); g.appendChild(m); }
+    const d=document.createElement("div"); d.className="ingrediente";
+    d.innerHTML='<span class="ico" aria-hidden="true">'+c.e+'</span><span class="nom"></span>'; d.lastChild.textContent=Mayus(c[S.idioma].replace(/^(un|una|unos|a|an|some) /,""));
+    g.appendChild(d);
+  });
+  const p=$("problema");
+  p.classList.toggle("oculto", !P.problema);
+  if(P.problema) p.textContent="🧩 "+P.problema[S.idioma];
+}
+function nuevaRonda(){
+  const usadas=P.usadas||[];
+  P.cosas=mezclar(COSAS.filter(c=>usadas.indexOf(c.e)<0)).slice(0,2);
+  P.usadas=usadas.concat(P.cosas.map(c=>c.e));
+  P.problema = S.nivel==="4" ? mezclar(PROBLEMAS.filter(p=>(P.probUsados||[]).indexOf(p)<0))[0] : null;
+  if(P.problema) P.probUsados=(P.probUsados||[]).concat(P.problema);
+  P.cambiado=false; P.mejorado=false; P.chispa=Math.floor(Math.random()*CHISPAS.length);
+  limpiar(); pintarCosas(); pintarSellos(); marcar(document.querySelector(".color")); color=COLORES[0]; sello=null;
+  $("mejora").classList.add("oculto"); $("btn-cambiar").disabled=false;
+  $("contador").textContent=tx(T.contador, P.ronda+1, P.rondas);
+  P.fase="dibujar"; zonas("zona-dibujar","zona-cambiar");
+  consejo(S.modo==="amigos" ? "amigos" : "inicio");
+  const a=P.cosas[0][S.idioma], b=P.cosas[1][S.idioma];
+  const msg=tx(P.problema?T.nuevoProb:T.nuevo, a, b)+(S.modo==="amigos" ? " "+tx(T.turno, tx(COLOR_JUG[P.turno?"azul":"amarillo"])) : "");
+  decir("msg", msg, ["ingredientes"].concat(P.problema?["problema"]:[]).concat(["btn-cambiar","capas","sellos","btn-chispa","btn-ya"]));
+}
+$("btn-cambiar").addEventListener("click", ()=>{
+  if(P.cambiado) return;
+  P.cambiado=true; $("btn-cambiar").disabled=true;
+  const nueva=mezclar(COSAS.filter(c=>P.usadas.indexOf(c.e)<0))[0];
+  P.usadas.push(nueva.e); P.cosas[1]=nueva;
+  tono([523,784],0.1); pintarCosas(); pintarSellos();
+  decir("msg", tx(T.cambio, P.cosas[0][S.idioma], P.cosas[1][S.idioma]));
+});
+$("btn-chispa").addEventListener("click", ()=>{ sonPista(); decir("msg", tx(CHISPAS[P.chispa++ % CHISPAS.length])); });
+$("btn-ya").addEventListener("click", ()=>{
+  if(vacio() && !P.mejorando){ decir("msg", tx(T.vacio)); return; }
+  if(P.mejorando){ P.mejorando=false; guardar(); return; }
+  P.fase="contar"; P.uso=null; P.audio=null;
+  $("campo-nombre").value=""; $("campo-uso").value="";
+  ["caja-voz","caja-escribir","caja-uso"].forEach(id=>$(id).classList.add("oculto"));
+  ["f-voz","f-escribir","f-uso"].forEach(id=>$(id).setAttribute("aria-pressed","false"));
+  $("btn-listo").classList.add("oculto");
+  zonas("zona-dibujar","zona-contar");
+  $("zona-dibujar").querySelector(".acciones").classList.add("oculto");
+  $("zona-contar").scrollIntoView({block:"nearest", behavior:suave()});
+  decir("msg", tx(T.contar), ["f-voz","f-escribir","f-uso"]);
+});
+$("btn-seguir").addEventListener("click", ()=>{
+  $("zona-dibujar").querySelector(".acciones").classList.remove("oculto");
+  zonas("zona-dibujar"); P.fase="dibujar";
+  $("capas").scrollIntoView({block:"center", behavior:suave()});
+});
+function marcarForma(id){
+  ["f-voz","f-escribir","f-uso"].forEach(x=>$(x).setAttribute("aria-pressed", String(x===id)));
+  $("caja-voz").classList.toggle("oculto", id!=="f-voz");
+  $("caja-escribir").classList.toggle("oculto", id!=="f-escribir");
+  $("caja-uso").classList.toggle("oculto", id!=="f-uso");
+}
+function listo(){ const b=$("btn-listo"); if(b.classList.contains("oculto")){ b.classList.remove("oculto"); S.vistos.listo=(S.vistos.listo||0)+1; if(S.vistos.listo<=2) guia(pasos(["btn-listo"])); } }
+$("f-voz").addEventListener("click", ()=>{ marcarForma("f-voz"); $("txt-grabar").textContent=tx(TXT_GRABAR.grabar); indicar("caja-voz","ind-voz",tx(T.di),$("btn-grabar")); });
+$("f-escribir").addEventListener("click", ()=>{ marcarForma("f-escribir"); indicar("caja-escribir","ind-escribir",tx(T.escribe),$("campo-nombre")); });
+$("f-uso").addEventListener("click", ()=>{ marcarForma("f-uso"); pintarUsos(); indicar("caja-uso","ind-uso",tx(T.eligeUso),document.querySelector(".uso")); });
+["campo-nombre","campo-uso"].forEach(id=>$(id).addEventListener("input", ()=>{ if($("campo-nombre").value.trim()||$("campo-uso").value.trim()) listo(); }));
+$("btn-dicho").addEventListener("click", listo);
+function pintarUsos(){
+  const g=$("usos"); g.innerHTML=""; g.setAttribute("aria-label", S.idioma==="es"?"Para qué sirve":"What it is for");
+  USOS.forEach(u=>{
+    const b=document.createElement("button"); b.className="uso"; b.setAttribute("aria-pressed", String(P.uso===u.id));
+    b.innerHTML='<span aria-hidden="true">'+u.ico+'</span> <span></span>'; b.lastChild.textContent=u[S.idioma];
+    b.addEventListener("click", ()=>{ P.uso=u.id; document.querySelectorAll(".uso").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); hablar(u[S.idioma]); listo(); });
+    g.appendChild(b);
+  });
+}
+/* Después de contarlo: una pregunta para mejorarlo */
+$("btn-listo").addEventListener("click", ()=>{
+  P.nombre=$("campo-nombre").value.trim(); P.para=$("campo-uso").value.trim();
+  $("zona-dibujar").querySelector(".acciones").classList.remove("oculto");
+  P.fase="mejorar"; zonas("zona-mejorar");
+  const m=MEJORAS[(P.ronda*2+Math.floor(Math.random()*2))%MEJORAS.length];
+  P.preguntaMejora=m;
+  const caja=$("mejora"); caja.textContent="🔧 "+m[S.idioma]; caja.classList.remove("oculto");
+  consejo(S.modo==="amigos" ? "amigos" : "mejorar");
+  const quien = S.modo==="amigos" ? tx(T.mejoraAm, tx(COLOR_JUG[P.turno?"amarillo":"azul"])) : tx(T.mejora);
+  decir("msg", quien, ["btn-mejorar","btn-perfecto"], [{el:caja, texto:m[S.idioma]}]);
+});
+$("btn-mejorar").addEventListener("click", ()=>{
+  P.mejorando=true; P.mejorado=true; P.fase="dibujar";
+  zonas("zona-dibujar");
+  $("capas").scrollIntoView({block:"center", behavior:suave()});
+  decir("msg", tx(T.mejorando));
+});
+$("btn-perfecto").addEventListener("click", guardar);
+function guardar(){
+  const usado=USOS.find(u=>u.id===P.uso);
+  P.inventos.push({img:foto(), nombre:P.nombre, para:P.para || (usado?usado[S.idioma]:""), usoId:P.uso, cosas:P.cosas.map(c=>c.e).join(" + "), problema:P.problema, mejorado:P.mejorado, jugador:S.modo==="amigos"?P.turno:null});
+  sonTada(); confeti(); lumiFeliz();
+  $("mejora").classList.add("oculto");
+  pintarMuseo($("museo-juego")); $("t-museo-juego").classList.remove("oculto");
+  zonas("zona-siguiente");
+  const ultima=P.ronda>=P.rondas-1;
+  $("btn-siguiente").textContent=tx(ultima?T.fin:T.sig);
+  consejo("final");
+  decir("msg", tx(T.guardado, P.nombre), ["btn-siguiente"]);
+}
+function pintarMuseo(cont){
+  cont.innerHTML="";
+  P.inventos.forEach((v,i)=>{
+    const f=document.createElement("figure"); f.className="cuadrito";
+    const im=document.createElement("img"); im.src=v.img;
+    const uso=USOS.find(u=>u.id===v.usoId);
+    const para=v.para && !uso ? v.para : (uso ? uso[S.idioma] : v.para);
+    const titulo=v.nombre || tx(T.sinNombre)+" "+(i+1);
+    im.alt=titulo+(para?" — "+para:"");
+    const cap=document.createElement("figcaption"); cap.textContent="🛠️ "+Mayus(titulo);
+    const d1=document.createElement("span"); d1.className="det"; d1.textContent=v.cosas+(v.mejorado?" · 🔧":""); cap.appendChild(d1);
+    if(para){ const d2=document.createElement("span"); d2.className="det"; d2.textContent=para; cap.appendChild(d2); }
+    if(v.problema){ const d4=document.createElement("span"); d4.className="det"; d4.textContent="🧩 "+v.problema[S.idioma]; cap.appendChild(d4); }
+    if(v.jugador!==null){ const d3=document.createElement("span"); d3.className="det"; d3.textContent=tx(COLOR_JUG[v.jugador?"azul":"amarillo"]); cap.appendChild(d3); }
+    f.appendChild(im); f.appendChild(cap); cont.appendChild(f);
+  });
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  P.ronda++;
+  if(P.ronda>=P.rondas){ final(); return; }
+  if(S.modo==="amigos") P.turno=1-P.turno;
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final"); pintarMuseo($("museo-final"));
+  $("txt-reto").textContent=tx(T.reto);
+  decir("msg-final", tx(T.final, P.inventos.length), ["btn-otra-vez","btn-al-menu"]);
+}
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function empezar(){
+  P.ronda=0; P.inventos=[]; P.usadas=[]; P.probUsados=[]; P.turno=0; P.mejorando=false; S.vistos={};
+  $("museo-juego").innerHTML=""; $("t-museo-juego").classList.add("oculto");
+  mostrar("p-juego"); nuevaRonda();
+}
+grabadoraEn($("btn-grabar"), $("txt-grabar"), ()=>listo());
+alCambiarIdioma=()=>{
+  const es=S.idioma==="es";
+  $("lienzo").setAttribute("aria-label", es?"Espacio para dibujar tu invento":"Space to draw your invention");
+  document.querySelectorAll(".color").forEach((b,i)=>b.setAttribute("aria-label", (es?["Lápiz negro","Lápiz rojo","Lápiz azul","Lápiz verde","Lápiz amarillo","Lápiz morado"]:["Black pencil","Red pencil","Blue pencil","Green pencil","Yellow pencil","Purple pencil"])[i]));
+  $("campo-nombre").setAttribute("placeholder", es?"Por ejemplo: la bici-paraguas":"For example: the umbrella-bike");
+  $("campo-uso").setAttribute("placeholder", es?"Por ejemplo: para no mojarse en la bici":"For example: to stay dry on a bike");
+  if(!$("btn-grabar").classList.contains("grabando")) $("txt-grabar").textContent=tx(TXT_GRABAR.grabar);
+  if(!$("p-juego").classList.contains("oculto") && P.cosas.length){
+    pintarCosas(); pintarSellos(); $("contador").textContent=tx(T.contador, P.ronda+1, P.rondas);
+    if(!$("caja-uso").classList.contains("oculto")) pintarUsos();
+    if($("ind-voz").textContent) $("ind-voz").textContent=tx(T.di);
+    if($("ind-escribir").textContent) $("ind-escribir").textContent=tx(T.escribe);
+    if($("ind-uso").textContent) $("ind-uso").textContent=tx(T.eligeUso);
+    if(!$("mejora").classList.contains("oculto")) $("mejora").textContent="🔧 "+P.preguntaMejora[S.idioma];
+    if(P.inventos.length) pintarMuseo($("museo-juego"));
+    if(!$("zona-siguiente").classList.contains("oculto")) $("btn-siguiente").textContent=tx(P.ronda>=P.rondas-1?T.fin:T.sig);
+  }
+  if(!$("p-final").classList.contains("oculto")){ pintarMuseo($("museo-final")); $("txt-reto").textContent=tx(T.reto); $("msg-final").textContent=tx(T.final, P.inventos.length); }
+};
+limpiar();
+iniciarPagina(empezar);
+
+</script>
+</body>
+</html>
