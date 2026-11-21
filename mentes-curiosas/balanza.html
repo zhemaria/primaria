@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — Lumi's Balance / La balanza de Lumi (Grades 1 and 2)
+  Thinking together: before testing, the child predicts which way the balance will tip
+  and says why. A story friend (Israel or Alejandro) thinks differently. Lumi asks:
+  «How can we find out who is right?» The answer comes from testing, not from who says it.
+  Grade 1: more things are not always heavier. Grade 2: each friend found a different clue
+  (🍉 = 🍎🍎🍎 and 🍎 = 🍓🍓); the challenges are solved by putting both clues together
+  (early algebraic reasoning). With a friend, each player gets a secret clue and they must
+  share them. Mistakes get a hint, never the answer: the balance shows what happens.
+  Nothing is saved or sent: no scores, no records.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumi's Balance · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A thinking-together game for Grades 1 and 2: predict which way the balance tips, compare ideas with a friend, and test to find out. English and Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(190px,46vw);height:auto;display:block;margin:0 auto;mix-blend-mode:multiply;border-radius:50%}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:54ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+
+/* ---------- Lumi y su mensaje ---------- */
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:64px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,23px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+
+/* ---------- Pistas (2.º grado) ---------- */
+.pistas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:0 0 12px}
+.pista{background:var(--oro-claro);border:3px solid var(--oro);border-radius:16px;padding:8px 14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.pista .quien{font-size:.8em;color:var(--tinta-suave);display:block}
+.pista .eq{font-size:1.35em;letter-spacing:.04em}
+.pista.secreta{background:#EEE8FB;border-color:var(--acento)}
+.pista.brilla{box-shadow:0 0 0 5px #FFC94D}
+
+/* ---------- Balanza ---------- */
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:6px;margin:0 auto 12px;max-width:680px}
+.escena svg{display:block;width:100%;height:auto}
+.etq{font:700 20px "Trebuchet MS",system-ui,sans-serif;fill:var(--tinta-suave)}
+
+/* ---------- Opciones de predicción, razones, amigo ---------- */
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.prediccion{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:680px;margin:0 auto 12px}
+.pred{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:10px 8px;min-height:84px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.pred .ico{font-size:1.9em;line-height:1}
+.pred[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.pred .marcas{font-size:.8em;min-height:1.2em}
+.razones{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;max-width:680px;margin:0 auto 12px}
+.razon{display:flex;align-items:center;gap:10px;text-align:left;background:var(--blanco);border:4px solid var(--linea);border-radius:18px;
+  padding:10px 12px;min-height:60px;box-shadow:var(--sombra);font-weight:700}
+.razon .ico{font-size:1.5em}
+.razon[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.amigo{display:flex;align-items:center;gap:12px;max-width:680px;margin:0 auto 12px;background:#EAF2FD;border:4px solid var(--azul);border-radius:20px;padding:10px 14px}
+.amigo .cara{font-size:2.4em;line-height:1}
+.amigo p{margin:0;font-weight:600}
+.amigo strong{display:block}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:6px 0 0;text-align:center}
+.leccion{max-width:680px;margin:0 auto 12px;background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:10px 16px;font-weight:600}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+
+/* Lumi señala */
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (max-width:520px){.prediccion{gap:6px}.pred{font-size:.85em}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./" data-es="◀ Mentes curiosas" data-en="◀ Curious Minds">◀ Curious Minds</a>
+    <h1 data-es="La balanza de Lumi" data-en="Lumi's Balance">Lumi's Balance</h1>
+    <span class="crece"></span>
+    <span class="chip">
+      <span aria-hidden="true">🌐</span>
+      <button id="btn-en" aria-pressed="true" lang="en">English</button>
+      <button id="btn-es" aria-pressed="false" lang="es">Español</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../lumi-saluda.jpg" alt="" width="300" height="300">
+    <h2 data-es="¿Hacia dónde se inclina?" data-en="Which way will it tip?">Which way will it tip?</h2>
+    <p class="intro" data-es="Lumi pone frutas en una balanza. Tú piensas qué va a pasar, un amigo piensa otra cosa… ¿Quién tiene razón? ¡Hay que probarlo para saberlo!"
+       data-en="Lumi puts fruit on a balance. You think about what will happen, a friend thinks something else… Who is right? You have to test it to find out!">Lumi puts fruit on a balance. You think about what will happen, a friend thinks something else… Who is right? You have to test it to find out!</p>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien" data-es="¿Quién juega?" data-en="Who is playing?">Who is playing?</p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span data-es="Yo solo" data-en="Just me">Just me</span>
+        <small data-es="con un amigo del cuento" data-en="with a story friend">with a story friend</small></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span data-es="Con un adulto" data-en="With a grown-up">With a grown-up</span>
+        <small data-es="con consejos para el adulto" data-en="with tips for the grown-up">with tips for the grown-up</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span data-es="Con un amigo" data-en="With a friend">With a friend</span>
+        <small data-es="los dos piensan, en la misma pantalla" data-en="both think, on one screen">both think, on one screen</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel" data-es="¿En qué grado estás?" data-en="What grade are you in?">What grade are you in?</p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="1" aria-pressed="true"><span class="ico" aria-hidden="true">✏️</span>
+          <span data-es="1.er grado" data-en="Grade 1">Grade 1</span></button>
+        <button class="opcion" data-nivel="2" aria-pressed="false"><span class="ico" aria-hidden="true">🎒</span>
+          <span data-es="2.º grado" data-en="Grade 2">Grade 2</span></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar" data-es="¡A jugar!" data-en="Let's play!">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <details class="consejo oculto" id="consejo"><summary data-es="💡 Para el adulto" data-en="💡 For the grown-up">💡 For the grown-up</summary><p></p></details>
+    <p class="contador" id="contador"></p>
+
+    <div class="pistas oculto" id="pistas" aria-live="polite"></div>
+
+    <!-- Pistas secretas (2.º grado con un amigo) -->
+    <div class="acciones oculto" id="zona-secreta">
+      <button class="boton fuerte" id="btn-ver-pista"></button>
+      <button class="boton oculto" id="btn-ya-vi"><span aria-hidden="true">🙈</span> <span data-es="Ya la vi: la escondo" data-en="I saw it: hide it">I saw it: hide it</span></button>
+    </div>
+
+    <div class="escena" id="escena">
+      <svg viewBox="0 0 600 300" id="svg-balanza" role="img" aria-labelledby="desc-balanza">
+        <title id="desc-balanza"></title>
+        <rect x="270" y="268" width="60" height="16" rx="6" fill="#4C4766"/>
+        <polygon points="300,112 276,270 324,270" fill="#6B6585"/>
+        <g id="g-viga">
+          <rect x="90" y="104" width="420" height="14" rx="7" fill="#4B2E9A"/>
+        </g>
+        <g id="g-izq"><line id="cuerda-izq" stroke="#4C4766" stroke-width="3"/><line id="cuerda-izq2" stroke="#4C4766" stroke-width="3"/>
+          <path id="plato-izq" fill="#E8A317" stroke="#9A6A00" stroke-width="3"/><g id="frutas-izq"></g></g>
+        <g id="g-der"><line id="cuerda-der" stroke="#4C4766" stroke-width="3"/><line id="cuerda-der2" stroke="#4C4766" stroke-width="3"/>
+          <path id="plato-der" fill="#E8A317" stroke="#9A6A00" stroke-width="3"/><g id="frutas-der"></g></g>
+        <circle cx="300" cy="111" r="10" fill="#E8A317" stroke="#1E1A3A" stroke-width="3"/>
+        <text id="mano-lumi" x="300" y="80" text-anchor="middle" font-size="34">✋</text>
+      </svg>
+    </div>
+
+    <!-- Predecir -->
+    <div id="zona-predecir" class="oculto">
+      <p class="titulo-zona" id="t-predecir"></p>
+      <div class="prediccion" role="group" aria-labelledby="t-predecir">
+        <button class="pred" data-p="-1" id="p-izq"><span class="ico" aria-hidden="true">↙️</span><span data-es="Baja la izquierda" data-en="Left goes down">Left goes down</span><span class="marcas"></span></button>
+        <button class="pred" data-p="0" id="p-igual"><span class="ico" aria-hidden="true">⚖️</span><span data-es="Quedan iguales" data-en="They stay level">They stay level</span><span class="marcas"></span></button>
+        <button class="pred" data-p="1" id="p-der"><span class="ico" aria-hidden="true">↘️</span><span data-es="Baja la derecha" data-en="Right goes down">Right goes down</span><span class="marcas"></span></button>
+      </div>
+    </div>
+
+    <!-- ¿Por qué? (elegir una razón o decirla) -->
+    <div id="zona-razon" class="oculto">
+      <p class="titulo-zona" id="t-razon" data-es="¿Por qué lo piensas? Elige una razón o dila en voz alta:" data-en="Why do you think so? Pick a reason or say it out loud:">Why do you think so? Pick a reason or say it out loud:</p>
+      <div class="razones" id="razones" role="group" aria-labelledby="t-razon"></div>
+      <div class="acciones">
+        <button class="boton" id="btn-grabar"><span aria-hidden="true">🎤</span> <span id="txt-grabar">Say it</span></button>
+        <button class="boton oculto" id="btn-escuchar"><span aria-hidden="true">▶️</span> <span data-es="Escuchar" data-en="Listen">Listen</span></button>
+        <button class="boton" id="btn-dicho"><span aria-hidden="true">🗣️</span> <span data-es="Ya lo dije (sin grabar)" data-en="I said it (no recording)">I said it (no recording)</span></button>
+      </div>
+      <p class="nota-priv" data-es="La grabación se queda en este aparato y se borra al cerrar la página." data-en="The recording stays on this device and is erased when you close the page.">The recording stays on this device and is erased when you close the page.</p>
+    </div>
+
+    <!-- El amigo del cuento -->
+    <div class="amigo oculto" id="amigo" role="status"><span class="cara" aria-hidden="true">🧒🏻</span><p><strong id="amigo-nombre"></strong><span id="amigo-dice"></span></p></div>
+
+    <!-- ¿Cómo lo averiguamos? -->
+    <div id="zona-averiguar" class="oculto">
+      <p class="titulo-zona" id="t-averiguar" data-es="¿Cómo podemos averiguar quién tiene razón?" data-en="How can we find out who is right?">How can we find out who is right?</p>
+      <div class="razones" role="group" aria-labelledby="t-averiguar" id="formas-averiguar">
+        <button class="razon" data-a="fuerte"><span class="ico" aria-hidden="true">📢</span><span data-es="Tiene razón el que hable más fuerte" data-en="Whoever talks loudest is right">Whoever talks loudest is right</span></button>
+        <button class="razon" data-a="mayor"><span class="ico" aria-hidden="true">🧓</span><span data-es="Tiene razón el que sea mayor" data-en="Whoever is older is right">Whoever is older is right</span></button>
+        <button class="razon" data-a="probar" id="btn-a-probar"><span class="ico" aria-hidden="true">⚖️</span><span data-es="¡Probándolo con la balanza!" data-en="By testing it on the balance!">By testing it on the balance!</span></button>
+      </div>
+    </div>
+    <div class="acciones oculto" id="zona-probar">
+      <button class="boton oro" id="btn-probar"><span aria-hidden="true">✋</span> <span data-es="¡Suelta la balanza, Lumi!" data-en="Let go of the balance, Lumi!">Let go of the balance, Lumi!</span></button>
+    </div>
+
+    <div class="leccion oculto" id="leccion" role="status"></div>
+    <div class="acciones oculto" id="zona-siguiente">
+      <button class="boton fuerte" id="btn-siguiente"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../lumi-saluda.jpg" alt="Lumi" width="64" height="83">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div style="font-size:64px;line-height:1.1" aria-hidden="true">⚖️🍉🍎🍓</div>
+    <div class="reto">
+      <h3 data-es="🏠 Reto con cosas de verdad" data-en="🏠 Challenge with real things">🏠 Challenge with real things</h3>
+      <p id="txt-reto"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> <span data-es="Jugar otra vez" data-en="Play again">Play again</span></button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> <span data-es="Otro juego" data-en="Another game">Another game</span></a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html" data-es="🍎 Para maestros, padres y tutores: por qué estos juegos" data-en="🍎 For teachers, parents and caregivers: why these games">🍎 For teachers, parents and caregivers: why these games</a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ==================================================================
+   Pesos escondidos: 🍓 = 1, 🍎 = 2, 🍉 = 6.
+   Así: 🍎 = 🍓🍓 y 🍉 = 🍎🍎🍎 (y, juntando las dos pistas, 🍉 = seis 🍓).
+   Cada reto: frutas a la izquierda y a la derecha, la opinión del amigo
+   del cuento (a veces acierta, a veces no) y lo que enseña la prueba.
+   ================================================================== */
+const PESO = {"🍓":1, "🍎":2, "🍉":6};
+const NOMBRE_FRUTA = {es:{"🍓":"fresa","🍎":"manzana","🍉":"sandía"}, en:{"🍓":"strawberry","🍎":"apple","🍉":"watermelon"}};
+const PLURAL_FRUTA = {es:{"🍓":"fresas","🍎":"manzanas","🍉":"sandías"}, en:{"🍓":"strawberries","🍎":"apples","🍉":"watermelons"}};
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "\u201C"+t+"\u201D";
+const CARA = {"Israel":"👦🏽", "Alejandro":"👦🏼"};
+const PISTAS = [
+  {quien:"Israel",    izq:"🍉", der:"🍎🍎🍎"},
+  {quien:"Alejandro", izq:"🍎", der:"🍓🍓"}
+];
+const RETOS = {
+  "1": [
+    {izq:"🍎", der:"🍎🍎", amigo:"Israel", dice:0,
+     es:"Quedan iguales: los dos lados tienen manzanas.", en:"They stay level: both sides have apples.",
+     lecEs:"Si las frutas son iguales, más frutas pesan más.", lecEn:"When the fruits are the same, more fruit is heavier."},
+    {izq:"🍉", der:"🍓🍓🍓", amigo:"Alejandro", dice:1,
+     es:"Baja la derecha: ¡tiene más frutas!", en:"Right goes down: it has more fruit!",
+     lecEs:"Tener más cosas no siempre pesa más: una sola sandía pesa más que tres fresas.", lecEn:"More things are not always heavier: one watermelon weighs more than three strawberries."},
+    {izq:"🍎🍎", der:"🍎🍎", amigo:"Israel", dice:0,
+     es:"Quedan iguales: hay dos manzanas en cada lado.", en:"They stay level: there are two apples on each side.",
+     lecEs:"Lo mismo en los dos lados deja la balanza derechita.", lecEn:"The same on both sides keeps the balance level."},
+    {izq:"🍓🍓", der:"🍎", amigo:"Alejandro", dice:1, pista:1,
+     es:"Baja la derecha: la manzana es más grande.", en:"Right goes down: the apple is bigger.",
+     lecEs:"La pista ya lo decía: una manzana pesa lo mismo que dos fresas.", lecEn:"The clue already said it: one apple weighs the same as two strawberries."}
+  ],
+  "2": [
+    {izq:"🍉", der:"🍎🍎", amigo:"Israel", dice:-1, pistas:[0],
+     es:"Baja la izquierda: la sandía pesa como tres manzanas y aquí solo hay dos.", en:"Left goes down: the watermelon weighs as much as three apples, and there are only two here.",
+     lecEs:"La pista lo dice: 🍉 = 🍎🍎🍎. Con solo dos manzanas, la sandía pesa más.", lecEn:"The clue says it: 🍉 = 🍎🍎🍎. With only two apples, the watermelon is heavier."},
+    {izq:"🍎🍎", der:"🍓🍓🍓🍓", amigo:"Israel", dice:1, pistas:[1],
+     es:"Baja la derecha: ¡tiene más frutas!", en:"Right goes down: it has more fruit!",
+     lecEs:"Cada manzana pesa como dos fresas, así que dos manzanas pesan como cuatro fresas.", lecEn:"Each apple weighs as much as two strawberries, so two apples weigh as much as four strawberries."},
+    {izq:"🍉", der:"🍓🍓🍓🍓🍓🍓", amigo:"Alejandro", dice:1, pistas:[0,1],
+     es:"Baja la derecha: ¡seis fresas son un montón!", en:"Right goes down: six strawberries are a lot!",
+     lecEs:"Juntando las dos pistas: 🍉 = 🍎🍎🍎, y cada 🍎 = 🍓🍓. Entonces una sandía pesa lo mismo que seis fresas.", lecEn:"Putting both clues together: 🍉 = 🍎🍎🍎, and each 🍎 = 🍓🍓. So one watermelon weighs the same as six strawberries."},
+    {izq:"🍉🍓", der:"🍎🍎🍎🍎", amigo:"Israel", dice:-1, pistas:[0,1],
+     es:"Baja la izquierda: ¡la sandía es la más pesada!", en:"Left goes down: the watermelon is the heaviest!",
+     lecEs:"La sandía pesa como tres manzanas, y la fresa como media manzana: la izquierda pesa como tres manzanas y media. La derecha tiene cuatro.", lecEn:"The watermelon weighs as much as three apples, and the strawberry as half an apple: the left is like three and a half apples. The right has four."}
+  ]
+};
+const RAZONES = [
+  {id:"mas", ico:"🔢", es:"Tiene más frutas", en:"It has more fruit"},
+  {id:"grande", ico:"🐘", es:"Las frutas grandes pesan más", en:"Big fruits are heavier"},
+  {id:"pista", ico:"🔑", es:"Lo dice la pista", en:"The clue says so"},
+  {id:"mismo", ico:"🟰", es:"Hay lo mismo en los dos lados", en:"Both sides have the same"}
+];
+const T = {
+  nuevo:{en:"Look at the balance. I'm holding it still with my hand. Which way will it tip when I let go?",
+         es:"Mira la balanza. La estoy sosteniendo con la mano. ¿Hacia dónde se inclinará cuando la suelte?"},
+  predecir:{en:"What will happen?", es:"¿Qué va a pasar?"},
+  nuevoCorto:{en:"New fruit on the balance! Which way will it tip?", es:"¡Frutas nuevas en la balanza! ¿Hacia dónde se inclinará?"},
+  turno:{en:c=>c+", what do you think?", es:c=>c+", ¿tú qué piensas?"},
+  amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"},
+  porque:{en:"Why do you think so?", es:"¿Por qué lo piensas?"},
+  amigoDice:{en:n=>n+" thinks something different:", es:n=>n+" piensa otra cosa:"},
+  amigoIgual:{en:n=>n+" thinks the same as you:", es:n=>n+" piensa lo mismo que tú:"},
+  difieren:{en:"You don't agree. Tell each other why you think so. How can we find out who is right?",
+            es:"No piensan igual. Cuéntense por qué lo piensan. ¿Cómo podemos averiguar quién tiene razón?"},
+  coinciden:{en:"You both think the same. How can we be sure?", es:"Los dos piensan lo mismo. ¿Cómo podemos estar seguros?"},
+  comoSaber:{en:"How can we find out who is right?", es:"¿Cómo podemos averiguar quién tiene razón?"},
+  comoSaber2:{en:"Agreeing is nice, but how can we be sure?", es:"Estar de acuerdo es bonito, pero ¿cómo podemos estar seguros?"},
+  noFuerte:{en:"Hmm… does talking loudly change how much fruit weighs?", es:"Mmm… ¿hablar fuerte cambia lo que pesan las frutas?"},
+  noMayor:{en:"Hmm… does being older change how much fruit weighs?", es:"Mmm… ¿ser mayor cambia lo que pesan las frutas?"},
+  siProbar:{en:"Yes! The balance will tell us. Ready?", es:"¡Sí! La balanza nos lo dirá. ¿Listos?"},
+  listos:{en:"Let's test it! Tap the yellow button so I let go of the balance.", es:"¡Vamos a probarlo! Toca el botón amarillo para que suelte la balanza."},
+  res:{en:{"-1":"The left side went down!","0":"It stayed level!","1":"The right side went down!"},
+       es:{"-1":"¡Bajó la izquierda!","0":"¡Quedó derechita!","1":"¡Bajó la derecha!"}},
+  bien:{en:"Your idea checked out!", es:"¡Tu idea se comprobó!"},
+  nuevoAprendi:{en:"The balance taught us something new.", es:"La balanza nos enseñó algo nuevo."},
+  amigoTenia:{en:n=>n+" was right too.", es:n=>n+" también tenía razón."},
+  amigoNo:{en:n=>"This time "+n+" wasn't right, and that's okay: testing helps everyone learn.", es:n=>"Esta vez "+n+" no acertó, y no pasa nada: probar nos ayuda a aprender a todos."},
+  amigosBien:{en:"You were both right!", es:"¡Los dos tenían razón!"},
+  amigosUno:{en:c=>c+" was right this time. Here is why:", es:c=>c+" acertó esta vez. Miren por qué:"},
+  amigosNinguno:{en:"Surprise for both of you! Here is why:", es:"¡Sorpresa para los dos! Miren por qué:"},
+  pistasSolo:{en:"My friends found two clues by testing. Look at them: they will help you!",
+              es:"Mis amigos descubrieron dos pistas probando. Míralas: ¡te van a ayudar!"},
+  pistaUno:{en:"Israel and Alejandro found this clue by testing. Look at it!", es:"Israel y Alejandro descubrieron esta pista probando. ¡Mírala!"},
+  secretoAm:{en:"Each of you will see a secret clue. Blue player, cover your eyes! Yellow player, tap the button to see your clue.",
+             es:"Cada uno verá una pista secreta. Jugador azul, ¡tápate los ojos! Jugador amarillo, toca el botón para ver tu pista."},
+  secretoAz:{en:"Now yellow player, cover your eyes! Blue player, tap the button to see your clue.",
+             es:"Ahora, jugador amarillo, ¡tápate los ojos! Jugador azul, toca el botón para ver tu pista."},
+  secretoListo:{en:"You each have a clue. You'll need to tell each other your clues to solve the challenges!",
+                es:"Cada uno tiene una pista. ¡Van a tener que contarse sus pistas para resolver los retos!"},
+  verPista:{en:c=>"👀 "+c+": see my clue", es:c=>"👀 "+c+": ver mi pista"},
+  pistaDe:{en:c=>"Clue of the "+c.toLowerCase(), es:c=>"Pista del "+c.toLowerCase()},
+  pistaTit:{en:n=>n+" found:", es:n=>n+" descubrió:"},
+  sig:{en:"Next challenge ▶", es:"Siguiente reto ▶"}, fin:{en:"Finish ▶", es:"Terminar ▶"},
+  contador:{en:(a,b)=>"Challenge "+a+" of "+b, es:(a,b)=>"Reto "+a+" de "+b},
+  grabar:{en:"Say it", es:"Dilo"}, parar:{en:"Stop", es:"Parar"},
+  final:{en:"You thought, you explained your ideas and you tested them. That's how scientists think together!",
+         es:"Pensaste, explicaste tus ideas y las probaste. ¡Así piensan juntos los científicos!"},
+  reto:{en:"Make a balance at home: a clothes hanger, two strings and two paper cups. Before you put things in the cups, ask your family: which side will go down? Then test it!",
+        es:"Haz una balanza en casa: un gancho de ropa, dos hilos y dos vasitos de papel. Antes de poner cosas en los vasitos, pregúntale a tu familia: ¿qué lado bajará? ¡Luego pruébenlo!"},
+  portada:{en:"Which way will it tip? Lumi puts fruit on a balance. You think about what will happen, a friend thinks something else. Who is right? You have to test it to find out!",
+           es:"¿Hacia dónde se inclina? Lumi pone frutas en una balanza. Tú piensas qué va a pasar, un amigo piensa otra cosa. ¿Quién tiene razón? ¡Hay que probarlo para saberlo!"},
+  desc:{en:(a,b)=>"Balance. Left: "+a+". Right: "+b+".", es:(a,b)=>"Balanza. Izquierda: "+a+". Derecha: "+b+"."}
+};
+const C = {
+  predecir:{en:"Ask: “What do you think will happen? Why?” Don't say if it's right: the balance will tell.",
+            es:"Pregunte: «¿Qué crees que pasará? ¿Por qué?» No le diga si es correcto: lo dirá la balanza."},
+  amigo:{en:"When the friend disagrees, ask: “What does your friend notice that you don't? How can we check?”",
+         es:"Cuando el amigo no está de acuerdo, pregunte: «¿Qué ve tu amigo que tú no? ¿Cómo lo comprobamos?»"},
+  amigos:{en:"Before testing, each friend explains their idea. Listening to a different idea is part of thinking together.",
+          es:"Antes de probar, cada amigo explica su idea. Escuchar una idea distinta también es pensar juntos."},
+  prueba:{en:"Celebrate both outcomes: “Your idea checked out!” or “The balance taught us something new.” Ask: “Why did it happen?”",
+          es:"Celebre los dos resultados: «¡Tu idea se comprobó!» o «La balanza nos enseñó algo nuevo». Pregunte: «¿Por qué pasó?»"},
+  pistas:{en:"In Grade 2 the clues are the key: help the child put the two clues together, step by step, without giving the answer.",
+          es:"En 2.º grado las pistas son la clave: ayúdele a juntar las dos pistas, paso a paso, sin darle la respuesta."}
+};
+
+/* ============ Estado y utilidades ============ */
+const S = {idioma:"en", modo:"solo", nivel:"1", ronda:0, retos:[], reto:null, pred:[null,null], jugador:0,
+           razon:null, fase:"", vistos:{}, ultimoConsejo:null, pistasVistas:false, secretoPaso:0, angulo:0};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const peso = s=>[...s].reduce((a,c)=>a+(PESO[c]||0),0);
+const frutas = s=>Array.from(s).filter(c=>PESO[c]);
+const resultado = r=>Math.sign(peso(r.der)-peso(r.izq));
+const color = j=>j===0 ? "amarillo" : "azul";
+function nombrar(s){
+  const n={}; frutas(s).forEach(f=>n[f]=(n[f]||0)+1);
+  return Object.keys(n).map(f=>{ const k=n[f];
+    return k+" "+(k>1 ? PLURAL_FRUTA[S.idioma][f] : NOMBRE_FRUTA[S.idioma][f]); }).join(S.idioma==="es"?" y ":" and ");
+}
+
+/* ============ Voz ============ */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+function hablar(texto, despues, interno){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    /* Los dibujos de frutas se leen con su nombre */
+    const limpio=texto.replace(/[🍓🍎🍉]/gu, m=>" "+NOMBRE_FRUTA[S.idioma][m]+" ").replace(/=/g, S.idioma==="es"?" pesa lo mismo que ":" weighs the same as ");
+    const u=new SpeechSynthesisUtterance(limpio);
+    u.lang = S.idioma==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(S.idioma)); if(v) u.voice=v;
+    u.rate=0.9; u.pitch=1.1;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonElige=()=>tono([659],0.08), sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16), sonCae=()=>tono([392,330],0.18);
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=["🎉","⭐","✨","🍎","⚖️"][i%5]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* ============ Lumi señala los botones ============ */
+const DICE = {
+  "zona-predecir":{en:"Tap what you think will happen.", es:"Toca lo que crees que va a pasar."},
+  "razones":      {en:"Pick a reason…", es:"Elige una razón…"},
+  "btn-grabar":   {en:"…or tap the microphone and say it.", es:"…o toca el micrófono y dilo."},
+  "formas-averiguar":{en:"Pick how we can find out.", es:"Elige cómo podemos averiguarlo."},
+  "btn-probar":   {en:"Tap the yellow button to test it.", es:"Toca el botón amarillo para probarlo."},
+  "btn-siguiente":{en:"Tap the purple button to go on.", es:"Toca el botón morado para seguir."},
+  "btn-ver-pista":{en:"Tap the purple button to see your clue.", es:"Toca el botón morado para ver tu pista."},
+  "btn-otra-vez": {en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu":  {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar":  {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:sinMovimiento()?"auto":"smooth"});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi dice el mensaje y presenta solo los botones de ese momento (las dos primeras veces) */
+let ultimaGuia=null;
+function decir(cual, texto, botones){
+  $(cual).textContent = texto;
+  const b=botones||[], clave=b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  ultimaGuia=()=>[{texto}].concat(pasos(b));
+  guia([{texto}].concat(S.vistos[clave]<=2 ? pasos(b) : []));
+}
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave;
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  caja.querySelector("p").textContent=tx(C[clave]);
+}
+
+/* ============ La balanza ============ */
+const CX=300, CY=111, BRAZO=190;
+function dibujarFrutas(g, s){
+  g.innerHTML="";
+  const fs=frutas(s), n=fs.length, porFila=Math.min(n,3);
+  fs.forEach((f,i)=>{
+    const fila=Math.floor(i/3), col=i%3, enFila=Math.min(3, n-fila*3);
+    const t=document.createElementNS("http://www.w3.org/2000/svg","text");
+    t.setAttribute("x", (col-(enFila-1)/2)*40);
+    t.setAttribute("y", 58 - fila*36);
+    t.setAttribute("text-anchor","middle"); t.setAttribute("font-size", f==="🍉"?"46":"34");
+    t.textContent=f; g.appendChild(t);
+  });
+}
+function colocar(angulo){
+  S.angulo=angulo;
+  const rad=angulo*Math.PI/180;
+  $("g-viga").setAttribute("transform","rotate("+angulo+" "+CX+" "+CY+")");
+  [["izq",-1],["der",1]].forEach(([lado,s])=>{
+    const x=CX+s*BRAZO*Math.cos(rad), y=CY+s*BRAZO*Math.sin(rad);
+    const py=y+70;
+    $("cuerda-"+lado).setAttribute("x1",x); $("cuerda-"+lado).setAttribute("y1",y);
+    $("cuerda-"+lado).setAttribute("x2",x-55); $("cuerda-"+lado).setAttribute("y2",py);
+    $("cuerda-"+lado+"2").setAttribute("x1",x); $("cuerda-"+lado+"2").setAttribute("y1",y);
+    $("cuerda-"+lado+"2").setAttribute("x2",x+55); $("cuerda-"+lado+"2").setAttribute("y2",py);
+    $("plato-"+lado).setAttribute("d","M"+(x-65)+" "+py+" Q "+x+" "+(py+34)+" "+(x+65)+" "+py+" Z");
+    $("frutas-"+lado).setAttribute("transform","translate("+x+" "+(py-58)+")");
+  });
+}
+function animar(destino, listo){
+  if(sinMovimiento()){ colocar(destino); if(listo) listo(); return; }
+  const ini=S.angulo, t0=performance.now(), dur=900;
+  function paso(t){
+    const k=Math.min(1,(t-t0)/dur);
+    /* rebote suave al final */
+    const e=1-Math.pow(1-k,3) + Math.sin(k*Math.PI*3)*(1-k)*0.12;
+    colocar(ini+(destino-ini)*e);
+    if(k<1) requestAnimationFrame(paso); else { colocar(destino); if(listo) listo(); }
+  }
+  requestAnimationFrame(paso);
+}
+function pintarBalanza(){
+  const r=S.reto;
+  dibujarFrutas($("frutas-izq"), r.izq); dibujarFrutas($("frutas-der"), r.der);
+  $("desc-balanza").textContent=tx(T.desc, nombrar(r.izq), nombrar(r.der));
+}
+
+/* ============ Pistas (2.º grado) ============ */
+function pistasDelReto(){
+  if(S.nivel==="2") return S.reto.pistas||[];
+  return S.reto.pista!==undefined ? [S.reto.pista] : [];
+}
+function pintarPistas(){
+  const cont=$("pistas"), idx=pistasDelReto();
+  cont.innerHTML="";
+  if(S.nivel==="1"){
+    cont.classList.toggle("oculto", !idx.length);
+    idx.forEach(i=>cont.appendChild(cajaPista(i, true)));
+    return;
+  }
+  cont.classList.remove("oculto");
+  [0,1].forEach(i=>{
+    const abierta = S.modo!=="amigos" || S.pistasAbiertas;
+    cont.appendChild(cajaPista(i, abierta, idx.indexOf(i)>=0));
+  });
+}
+function cajaPista(i, abierta, brilla){
+  const p=PISTAS[i], d=document.createElement("div");
+  d.className="pista"+(brilla?" brilla":"");
+  if(!abierta){
+    d.classList.add("secreta");
+    d.innerHTML='<span aria-hidden="true">🔒</span><span></span>';
+    d.lastChild.textContent=tx(T.pistaDe, tx(T[color(i)]));
+    return d;
+  }
+  d.innerHTML='<span aria-hidden="true">🔑</span><span><span class="quien"></span><span class="eq"></span></span>';
+  d.querySelector(".quien").textContent = S.modo==="amigos" ? tx(T.pistaDe, tx(T[color(i)]))+":" : tx(T.pistaTit, p.quien);
+  d.querySelector(".eq").textContent = p.izq+" = "+p.der;
+  d.setAttribute("aria-label", d.querySelector(".quien").textContent+" "+nombrar(p.izq)+(S.idioma==="es"?" pesa lo mismo que ":" weighs the same as ")+nombrar(p.der));
+  return d;
+}
+/* Con un amigo en 2.º: cada uno ve su pista en secreto, por turnos */
+function pistasSecretas(){
+  S.secretoPaso=0; S.pistasAbiertas=false;
+  zonas("zona-secreta"); $("escena").classList.add("oculto");
+  $("btn-ver-pista").textContent=tx(T.verPista, tx(T.amarillo)); $("btn-ver-pista").classList.remove("oculto");
+  $("btn-ya-vi").classList.add("oculto");
+  pintarPistas();
+  decir("msg", tx(T.secretoAm), ["btn-ver-pista"]);
+}
+$("btn-ver-pista").addEventListener("click", ()=>{
+  const i=S.secretoPaso;
+  const cont=$("pistas"); cont.innerHTML=""; cont.appendChild(cajaPista(i, true, true)); cont.classList.remove("oculto");
+  $("btn-ver-pista").classList.add("oculto"); $("btn-ya-vi").classList.remove("oculto");
+  hablar(PISTAS[i].izq+" = "+PISTAS[i].der);
+});
+$("btn-ya-vi").addEventListener("click", ()=>{
+  S.secretoPaso++;
+  if(S.secretoPaso===1){
+    pintarPistas(); $("btn-ya-vi").classList.add("oculto");
+    $("btn-ver-pista").textContent=tx(T.verPista, tx(T.azul)); $("btn-ver-pista").classList.remove("oculto");
+    decir("msg", tx(T.secretoAz), ["btn-ver-pista"]);
+    return;
+  }
+  /* Las dos pistas vistas: se juegan los retos contándoselas */
+  S.pistasVistas=true;
+  zonas(); $("escena").classList.remove("oculto");
+  empezarReto(tx(T.secretoListo)+" ");
+});
+
+/* ============ Rondas ============ */
+function zonas(...ver){
+  ["zona-secreta","zona-predecir","zona-razon","zona-averiguar","zona-probar","zona-siguiente"].forEach(id=>$(id).classList.toggle("oculto", ver.indexOf(id)<0));
+}
+function nuevaRonda(){
+  S.reto=S.retos[S.ronda];
+  S.pred=[null,null]; S.jugador=0; S.razon=null;
+  $("amigo").classList.add("oculto"); $("leccion").classList.add("oculto");
+  $("contador").textContent=tx(T.contador, S.ronda+1, S.retos.length);
+  $("mano-lumi").classList.remove("oculto");
+  colocar(0); pintarBalanza();
+  if(S.nivel==="2" && S.modo==="amigos" && !S.pistasVistas){ pintarBalanza(); pistasSecretas(); return; }
+  empezarReto("");
+}
+function empezarReto(antes){
+  pintarPistas();
+  marcarPred();
+  S.fase="predecir"; zonas("zona-predecir");
+  $("t-predecir").textContent = S.modo==="amigos" ? tx(T.turno, tx(T[color(0)])) : tx(T.predecir);
+  consejo(S.nivel==="2" && S.ronda===0 ? "pistas" : "predecir");
+  let intro=tx(S.ronda===0 ? T.nuevo : T.nuevoCorto);
+  if(S.ronda===0 && S.nivel==="2" && S.modo!=="amigos") intro=tx(T.pistasSolo)+" "+intro;
+  if(S.nivel==="1" && S.reto.pista!==undefined) intro=tx(T.pistaUno)+" "+intro;
+  if(S.modo==="amigos") intro+=" "+tx(T.turno, tx(T[color(0)]));
+  decir("msg", antes+intro, ["zona-predecir"]);
+}
+function marcarPred(){
+  document.querySelectorAll(".pred").forEach(b=>{
+    const v=+b.dataset.p, m=[];
+    if(S.pred[0]===v) m.push(S.modo==="amigos" ? "🟡" : "🧒");
+    if(S.pred[1]===v) m.push("🔵");
+    b.querySelector(".marcas").textContent=m.join(" ");
+    b.setAttribute("aria-pressed", String(S.pred[S.jugador]===v));
+  });
+}
+document.querySelectorAll(".pred").forEach(b=>b.addEventListener("click", ()=>{
+  if(S.fase!=="predecir") return;
+  sonElige();
+  S.pred[S.jugador]=+b.dataset.p; marcarPred();
+  if(S.modo==="amigos" && S.jugador===0){
+    S.jugador=1; marcarPred();
+    $("t-predecir").textContent=tx(T.turno, tx(T.azul));
+    decir("msg", tx(T.turno, tx(T.azul)));
+    return;
+  }
+  if(S.modo==="amigos"){ irAveriguar(S.pred[0]===S.pred[1] ? tx(T.coinciden) : tx(T.difieren)); return; }
+  /* Solo o con un adulto: ¿por qué? */
+  S.fase="razon"; zonas("zona-predecir","zona-razon");
+  pintarRazones();
+  $("txt-grabar").textContent=tx(T.grabar); $("btn-escuchar").classList.add("oculto");
+  decir("msg", tx(T.porque), ["razones","btn-grabar"]);
+}));
+function pintarRazones(){
+  const cont=$("razones"); cont.innerHTML="";
+  RAZONES.filter(r=>r.id!=="pista" || pistasDelReto().length).forEach(r=>{
+    const b=document.createElement("button"); b.className="razon"; b.setAttribute("aria-pressed","false");
+    b.innerHTML='<span class="ico" aria-hidden="true">'+r.ico+'</span><span></span>'; b.lastChild.textContent=r[S.idioma];
+    b.addEventListener("click", ()=>{ S.razon=r.id; document.querySelectorAll("#razones .razon").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); sonElige(); mostrarAmigo(); });
+    cont.appendChild(b);
+  });
+}
+/* El amigo del cuento dice lo que piensa (a veces acierta, a veces no) */
+function mostrarAmigo(){
+  if(S.fase!=="razon") return;
+  const r=S.reto;
+  $("amigo-nombre").textContent=r.amigo+":";
+  $("amigo").querySelector(".cara").textContent=CARA[r.amigo]||"🧒";
+  $("amigo-dice").textContent=" "+cita(r[S.idioma]);
+  $("amigo").classList.remove("oculto");
+  consejo("amigo");
+  const igual = r.dice===S.pred[0];
+  irAveriguar(tx(igual ? T.amigoIgual : T.amigoDice, r.amigo)+" "+cita(r[S.idioma])+" "+tx(igual ? T.comoSaber2 : T.comoSaber));
+}
+/* ¿Cómo lo averiguamos? (la primera vez se pregunta; luego se va directo a probar) */
+function irAveriguar(msg){
+  S.fase="averiguar";
+  if(S.modo==="amigos") consejo("amigos");
+  if(S.ronda===0){
+    zonas("zona-averiguar");
+    document.querySelectorAll("#formas-averiguar .razon").forEach(x=>x.setAttribute("aria-pressed","false"));
+    decir("msg", msg, ["formas-averiguar"]);
+  } else {
+    zonas("zona-probar");
+    decir("msg", msg+" "+tx(T.listos), ["btn-probar"]);
+  }
+}
+document.querySelectorAll("#formas-averiguar .razon").forEach(b=>b.addEventListener("click", ()=>{
+  const a=b.dataset.a;
+  document.querySelectorAll("#formas-averiguar .razon").forEach(x=>x.setAttribute("aria-pressed", String(x===b)));
+  if(a!=="probar"){ sonPista(); decir("msg", tx(a==="fuerte" ? T.noFuerte : T.noMayor)); return; }
+  sonElige(); zonas("zona-probar");
+  decir("msg", tx(T.siProbar)+" "+tx(T.listos), ["btn-probar"]);
+}));
+
+/* ============ Probar: la balanza da la respuesta ============ */
+$("btn-probar").addEventListener("click", ()=>{
+  if(S.fase!=="averiguar") return;
+  S.fase="probando"; zonas();
+  $("mano-lumi").classList.add("oculto");
+  const res=resultado(S.reto);
+  sonCae();
+  animar(res*14, ()=>mostrarResultado(res));
+});
+function mostrarResultado(res){
+  S.fase="resultado";
+  const r=S.reto;
+  let msg=tx(T.res)[String(res)]+" ";
+  if(S.modo==="amigos"){
+    const a=S.pred[0]===res, z=S.pred[1]===res;
+    if(a && z){ msg+=tx(T.amigosBien); sonTada(); confeti(); lumiFeliz(); }
+    else if(a || z){ msg+=tx(T.amigosUno, tx(T[a?"amarillo":"azul"])); sonTada(); lumiFeliz(); }
+    else msg+=tx(T.amigosNinguno);
+  } else {
+    if(S.pred[0]===res){ msg+=tx(T.bien); sonTada(); confeti(); lumiFeliz(); }
+    else msg+=tx(T.nuevoAprendi);
+    msg+=" "+tx(r.dice===res ? T.amigoTenia : T.amigoNo, r.amigo);
+  }
+  /* Con un amigo en 2.º: después de la primera prueba, las dos pistas quedan a la vista */
+  if(S.modo==="amigos" && S.nivel==="2"){ S.pistasAbiertas=true; pintarPistas(); }
+  const lec=$("leccion"); lec.textContent="💡 "+(S.idioma==="es" ? r.lecEs : r.lecEn); lec.classList.remove("oculto");
+  /* Las pistas que explican el resultado se iluminan */
+  document.querySelectorAll(".pista").forEach((p,i)=>p.classList.toggle("brilla", pistasDelReto().indexOf(S.nivel==="2"?i:r.pista)>=0));
+  consejo("prueba");
+  zonas("zona-siguiente");
+  $("btn-siguiente").textContent=tx(S.ronda>=S.retos.length-1 ? T.fin : T.sig);
+  /* La lección se lee señalando su recuadro (no se repite escrita en el mensaje) */
+  const lecTexto=lec.textContent.replace("💡 ","");
+  $("msg").textContent=msg;
+  S.vistos.sig=(S.vistos.sig||0)+1;
+  ultimaGuia=()=>[{texto:msg},{el:lec, texto:lecTexto}].concat(pasos(["btn-siguiente"]));
+  guia([{texto:msg},{el:lec, texto:lecTexto}].concat(S.vistos.sig<=2 ? pasos(["btn-siguiente"]) : []));
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  S.ronda++;
+  if(S.ronda>=S.retos.length){ final(); return; }
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final");
+  $("txt-reto").textContent=tx(T.reto);
+  decir("msg-final", tx(T.final), ["btn-otra-vez","btn-al-menu"]);
+}
+
+/* ============ Decir la razón (grabación local) ============ */
+let grabadora=null, trozos=[], urlAudio=null;
+$("btn-grabar").addEventListener("click", async ()=>{
+  if(grabadora && grabadora.state==="recording"){ grabadora.stop(); return; }
+  try{
+    const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+    trozos=[]; grabadora=new MediaRecorder(flujo);
+    grabadora.ondataavailable=e=>trozos.push(e.data);
+    grabadora.onstop=()=>{
+      flujo.getTracks().forEach(t=>t.stop());
+      if(urlAudio) URL.revokeObjectURL(urlAudio);
+      urlAudio=URL.createObjectURL(new Blob(trozos));
+      $("btn-grabar").classList.remove("grabando"); $("txt-grabar").textContent=tx(T.grabar);
+      $("btn-escuchar").classList.remove("oculto");
+      mostrarAmigo();
+    };
+    grabadora.start(); $("btn-grabar").classList.add("grabando"); $("txt-grabar").textContent=tx(T.parar);
+  }catch(e){ mostrarAmigo(); }
+});
+$("btn-escuchar").addEventListener("click", ()=>{ if(urlAudio) new Audio(urlAudio).play(); });
+$("btn-dicho").addEventListener("click", mostrarAmigo);
+
+/* ============ Pantallas, portada e idioma ============ */
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function empezar(){
+  S.ronda=0; S.vistos={}; S.pistasVistas=false; S.pistasAbiertas=false;
+  S.retos=RETOS[S.nivel];
+  $("escena").classList.remove("oculto");
+  mostrar("p-juego"); nuevaRonda();
+}
+
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+$("btn-empezar").addEventListener("click", empezar);
+$("btn-otra-vez").addEventListener("click", empezar);
+
+let gradoFijo=null;
+function aplicarIdioma(){
+  const es=S.idioma==="es";
+  document.documentElement.lang=S.idioma;
+  document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent=el.getAttribute("data-"+S.idioma); });
+  document.title = es ? "La balanza de Lumi · Mentes curiosas" : "Lumi's Balance · Curious Minds";
+  $("btn-es").setAttribute("aria-pressed", String(es)); $("btn-en").setAttribute("aria-pressed", String(!es));
+  $("btn-oir").setAttribute("aria-label", es ? "Escuchar de qué se trata este juego" : "Hear what this game is about");
+  ["bocina","bocina-final"].forEach(id=>$(id).setAttribute("aria-label", es ? "Escuchar otra vez" : "Hear it again"));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", es ? "lang=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(!$("btn-grabar").classList.contains("grabando")) $("txt-grabar").textContent=tx(T.grabar);
+  if(!$("p-juego").classList.contains("oculto") && S.reto){
+    pintarBalanza(); pintarPistas();
+    $("contador").textContent=tx(T.contador, S.ronda+1, S.retos.length);
+    if(S.fase==="predecir") $("t-predecir").textContent = S.modo==="amigos" ? tx(T.turno, tx(T[color(S.jugador)])) : tx(T.predecir);
+    if(S.fase==="razon") pintarRazones();
+    if(!$("amigo").classList.contains("oculto")) $("amigo-dice").textContent=" "+cita(S.reto[S.idioma]);
+    if(!$("leccion").classList.contains("oculto")) $("leccion").textContent="💡 "+(es ? S.reto.lecEs : S.reto.lecEn);
+    if(!$("zona-siguiente").classList.contains("oculto")) $("btn-siguiente").textContent=tx(S.ronda>=S.retos.length-1?T.fin:T.sig);
+    if(!$("zona-secreta").classList.contains("oculto") && !$("btn-ver-pista").classList.contains("oculto")) $("btn-ver-pista").textContent=tx(T.verPista, tx(T[color(S.secretoPaso)]));
+    if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  }
+  if(!$("p-final").classList.contains("oculto")){ $("txt-reto").textContent=tx(T.reto); $("msg-final").textContent=tx(T.final); }
+}
+try{
+  const q=new URLSearchParams(location.search);
+  if(q.get("lang")==="es") S.idioma="es";
+  if(q.get("grado")==="1" || q.get("grado")==="2") gradoFijo=q.get("grado");
+}catch(e){}
+if(gradoFijo){
+  S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+  document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+}
+colocar(0);
+aplicarIdioma();
+
+$("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+$("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+let presentado=false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado=true;
+  guia([{texto:tx(T.portada)}, {el:$("btn-empezar"), texto:tx(DICE["btn-empezar"])}]);
+}
+["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+  if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-en, #btn-es, #btn-oir")) return;
+  presentar(); }, {once:true}));
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+$("btn-es").addEventListener("click", ()=>{ S.idioma="es"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+$("btn-en").addEventListener("click", ()=>{ S.idioma="en"; aplicarIdioma(); if(!$("p-portada").classList.contains("oculto")){ presentado=false; presentar(); } });
+presentar();
+
+/* Barra de Lumi del grado */
+if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+</script>
+</body>
+</html>
