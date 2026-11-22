@@ -26,8 +26,8 @@
     { id: "3",    ancla: "g3",   es: "3.º",       en: "3rd",   es2: "3.er grado", en2: "Grade 3" },
     { id: "4",    ancla: "g4",   es: "4.º",       en: "4th",   es2: "4.º grado",  en2: "Grade 4" },
     { id: "5",    ancla: "g5",   es: "5.º",       en: "5th",   es2: "5.º grado",  en2: "Grade 5" },
-    /* en preparación: solo se ve en las páginas de sexto hasta que entre en el catálogo de Lumi */
-    { id: "6",    ancla: "g6",   es: "6.º",       en: "6th",   es2: "6.º grado",  en2: "Grade 6" }
+    { id: "6",    ancla: "g6",   es: "6.º",       en: "6th",   es2: "6.º grado",  en2: "Grade 6" },
+    { id: "7",    ancla: "g7",   es: "7.º",       en: "7th",   es2: "7.º grado",  en2: "Grade 7" }
   ];
 
   /* Materias de cada grado: dirección en inglés y en español
@@ -77,7 +77,11 @@
             read:  { en: P + "6to_grado/reading.html", es: P + "6to_grado/reading.html?ayuda=es" },
             cien:  { en: C + "book-grade6-science.html",        es: C + "book-grade6-science.html" },
             soci:  { en: C + "book-grade6-social-studies.html", es: C + "book-grade6-social-studies.html" },
-            mente: { en: P + "mentes-curiosas/?grado=6", es: P + "mentes-curiosas/?grado=6&ayuda=es" } }
+            mente: { en: P + "mentes-curiosas/?grado=6", es: P + "mentes-curiosas/?grado=6&ayuda=es" } },
+    "7":  { mate:  { en: P + "7mo_grado/", es: P + "7mo_grado/?ayuda=es" },
+            read:  { en: P + "7mo_grado/reading.html", es: P + "7mo_grado/reading.html?ayuda=es" },
+            cien:  { en: C + "book-grade7-science.html",        es: C + "book-grade7-science.html" },
+            soci:  { en: C + "book-grade7-social-studies.html", es: C + "book-grade7-social-studies.html" } }
   };
   var ORDEN = ["mate", "read", "lect", "cien", "soci", "mente"];
   var NOMBRES = {

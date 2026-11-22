@@ -341,3 +341,41 @@
     document.addEventListener("DOMContentLoaded", function () { setTimeout(iniciar, 0); });
   } else { setTimeout(iniciar, 0); }
 })();
+
+/* ==================================================================
+   Sin ayuda en español: el maestro decide
+   ------------------------------------------------------------------
+   Si la dirección trae ?sinayuda (por ejemplo, 7mo_grado/?sinayuda),
+   el botón «Ayuda en español» no aparece y la ayuda queda apagada,
+   aunque la dirección traiga también ?ayuda=es. La elección pasa a
+   las demás páginas de Lumi en el enlace; no se guarda en el aparato.
+   ================================================================== */
+(function () {
+  "use strict";
+  var sin = false;
+  try { sin = new URLSearchParams(location.search).has("sinayuda"); } catch (e) {}
+  if (!sin) return;
+  window.LumiSinAyuda = true;
+  var st = document.createElement("style");
+  st.textContent = "#btn-ayuda,.btn-ayuda,.chip:has(> #btn-ayuda),.caja-ayuda,.ayuda-es,.nombre-es{display:none!important}";
+  (document.head || document.documentElement).appendChild(st);
+  /* Algunos juegos recuerdan la ayuda en el aparato: con ?sinayuda se lee siempre como apagada */
+  try {
+    var leer = Storage.prototype.getItem;
+    Storage.prototype.getItem = function (k) { return k === "lumi-ayuda-es" ? "0" : leer.call(this, k); };
+  } catch (e) {}
+  document.addEventListener("DOMContentLoaded", function () { if (document.body) document.body.classList.remove("con-ayuda"); });
+  /* Al pasar a otra página de Lumi, el enlace se lleva ?sinayuda */
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    try {
+      var u = new URL(a.getAttribute("href"), location.href);
+      if (u.origin !== location.origin && !/(^|\.)zhemaria\.github\.io$|(^|\.)lumi-educa\.com$/.test(u.hostname)) return;
+      if (u.hash && u.pathname === location.pathname && u.search === location.search) return;
+      u.searchParams.delete("ayuda");
+      u.searchParams.set("sinayuda", "1");
+      a.href = u.toString();
+    } catch (err) {}
+  }, true);
+})();

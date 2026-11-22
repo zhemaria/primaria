@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<!--
+  Seventh Grade Math — Geometry: circles, angles, scale, triangles, cross sections, area and volume
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 7: 7.G.1, 7.G.2, 7.G.3, 7.G.4, 7.G.5, 7.G.6
+  Opens with two true stories about π: Ahmes’ round field (Rhind Papyrus, problem 50) and the Indiana Pi Bill of 1897 (House Bill 246).
+  Uses π ≈ 3.14.
+  Ante un error, siempre una pista, nunca la respuesta.
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Geometry · Seventh grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Seventh grade geometry games with Lumi and Nova: Ahmes’ round field and the Indiana Pi Bill, circles, angle relationships, scale drawings, building triangles, slicing solids, area, surface area and volume.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+/* Escena sin dibujo: Lumi señala las opciones, para que no parezca que falta algo */
+.escena:empty{background:#fff url(lumi7-presenta.png) no-repeat center / auto 88%}
+.escena-lumi{height:clamp(150px,26vw,210px);width:auto;display:block}
+/* ---------- Séptimo grado: historia, papiro, fracciones y gráficas ---------- */
+.ficha-historia{border-color:#B5892B;background:#FFF8E6}
+.historia{max-width:760px;margin:0 auto}
+.historia h2{margin:0 0 8px;font-size:clamp(24px,3.8vw,34px)}
+.historia .papiro{display:block;width:100%;max-width:560px;height:auto;margin:6px auto 14px}
+.historia .relato{background:var(--blanco);border:4px solid #E2C98F;border-radius:20px;padding:12px 18px;box-shadow:var(--sombra)}
+.historia .relato p{margin:0 0 10px}
+.historia .relato p:last-child{margin:0}
+.historia .dialogo{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:12px 0}
+.historia .dialogo p{margin:0 0 6px}
+.historia .dialogo p:last-child{margin:0}
+.historia .dato{font-size:.85em;color:var(--tinta-suave);margin:12px 0 0}
+.historia .acciones{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.tablilla{background:#FFF3D6;border:3px solid #B5892B;border-radius:16px;padding:10px 16px;max-width:560px;text-align:center;font-weight:600}
+.tablilla .t-tit{display:block;font-size:.8em;color:#5C3900;letter-spacing:.04em}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin:0 .08em;font-size:.82em}
+.frac .n{border-bottom:3px solid currentColor;padding:0 .12em}
+.frac .d{padding:0 .12em}
+.cociente{font-size:clamp(14px,2vw,17px);color:var(--acento)}
+/* ---------- Geometría ---------- */
+.figura{width:100%;max-width:540px;height:auto;display:block}
+.lados{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.lado-v{display:inline-block;height:14px;border-radius:7px;background:#45A6AD;border:2px solid #194F5A}
+.lista-lados{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-weight:700}
+.lista-lados li{display:flex;align-items:center;gap:10px}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Geometry</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi7-nova.png" alt="" class="lumi-d" width="367" height="668"></span><span>⭕</span><span>📐</span><span>🗺️</span><span>🧊</span></div>
+    <h2>Can a law change π?</h2>
+    <p id="txt-portada">3,500 years ago, Ahmes found the area of a round field with a clever rule. In 1897, the lawmakers of Indiana, the state next to Illinois, almost passed a law with a wrong value of π. Lumi and Nova will tell you both stories. Then you will work with circles, angles, scale drawings, triangles, slices of solids, area and volume. In these games, use π ≈ 3.14, unless the problem asks for the answer in terms of π or tells you to use the π key on a calculator.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Hace 3500 años, Ahmes halló el área de un campo redondo con una regla ingeniosa. En 1897, los legisladores de Indiana, el estado vecino de Illinois, casi aprobaron una ley con un valor equivocado de π. Lumi y Nova te contarán las dos historias. Después trabajarás con círculos, ángulos, dibujos a escala, triángulos, cortes de cuerpos sólidos, área y volumen. En estos juegos usa π ≈ 3.14, salvo cuando el problema pida la respuesta en términos de π o te diga que uses la tecla π de la calculadora.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <div class="menu-tarea" style="margin:0 0 18px">
+      <p>Start with the story</p>
+      <button class="ficha-juego ficha-historia" id="juego-historia" type="button"><span class="emoji" aria-hidden="true">📜</span>
+        <span><span class="nombre">Ahmes’ round field and the Indiana Pi Bill</span><span class="nombre-es ayuda-es" lang="es">El campo redondo de Ahmes y la ley de π de Indiana</span><span class="meta">Two true stories about π</span></span></button>
+    </div>
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Can you vote for π?</span></span></button>
+    </div>
+  </section>
+
+  <!-- HISTORIA -->
+  <section id="p-historia" class="oculto historia" aria-labelledby="tit-historia">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-historia" type="button">◀ Back</button>
+      <span class="crece"></span>
+      <button class="bocina" id="btn-bocina-historia" type="button" aria-label="Hear the story">🔊</button>
+    </div>
+    <h2 id="tit-historia">Ahmes’ round field and the Indiana Pi Bill</h2>
+    <svg class="papiro" viewBox="0 0 560 190" role="img" aria-label="Left: a round field with diameter 9 and, on top of it, a square with side 8. Their areas are almost the same. Right: three values of pi: Ahmes about 3.16, the Indiana bill 3.2, and the value we use, 3.14.">
+      <rect x="10" y="6" width="540" height="178" rx="14" fill="#F3E2B3" stroke="#B5892B" stroke-width="3"/>
+      <circle cx="120" cy="95" r="72" fill="#A8D5A2" stroke="#1B5E20" stroke-width="3"/>
+      <rect x="56" y="31" width="128" height="128" fill="none" stroke="#5C3900" stroke-width="3" stroke-dasharray="7 5"/>
+      <line x1="48" y1="95" x2="192" y2="95" stroke="#1B5E20" stroke-width="2.5"/>
+      <text x="120" y="88" font-size="15" font-weight="700" text-anchor="middle" fill="#14313A">d = 9</text>
+      <text x="120" y="176" font-size="14" font-weight="700" text-anchor="middle" fill="#5C3900">square side 8</text>
+      <text x="380" y="52" font-size="18" font-weight="700" text-anchor="middle" fill="#5C3900">Three values of π</text>
+      <text x="380" y="86" font-size="16" text-anchor="middle" fill="#14313A">Ahmes (about 1550 BCE): ≈ 3.16</text>
+      <text x="380" y="116" font-size="16" text-anchor="middle" fill="#B71C1C">Indiana bill (1897): 3.2 (wrong)</text>
+      <text x="380" y="146" font-size="16" font-weight="700" text-anchor="middle" fill="#1B5E20">We use: π ≈ 3.14</text>
+    </svg>
+    <div class="relato" id="relato">
+      <p><b>Ahmes’ round field.</b> Problem 50 of the Rhind Papyrus asks for the area of a round field with a diameter of 9 khet. Ahmes’ rule: take away 1/9 of the diameter, which leaves 8, and multiply 8 × 8. The field has 64 setat of land. Ahmes replaced the circle with a square of side 8, and the two areas are almost the same. Today we can see that his rule works as if π were 256/81, about 3.16: less than one percent away from the true value, 3,500 years ago.</p>
+      <p><b>The Indiana Pi Bill.</b> In 1897, Edward J. Goodwin, a country doctor and amateur mathematician, believed he had found how to “square the circle,” a problem that mathematicians already knew was impossible. A representative, Taylor I. Record, presented his idea to the Indiana House of Representatives as House Bill 246. The bill was so confusing that few lawmakers understood it, but on February 6, 1897, the House passed it 67 to 0. One of its claims would have made π equal to 3.2.</p>
+      <p>By chance, Professor C. A. Waldo, a mathematician from Purdue University, was at the Statehouse that week to ask for money for the Indiana Academy of Science. He was amazed to hear lawmakers debating mathematics, and he explained the errors. The Senate laughed at the bill and postponed it indefinitely. It never became law.</p>
+      <div class="dialogo">
+        <p><b>Nova:</b> Wait. Ahmes was closer to the true π than the Indiana bill, more than 3,000 years earlier?</p>
+        <p><b>Lumi:</b> Yes! 3.16 is much closer to 3.14159… than 3.2 is. And here is the big lesson: a vote can’t change mathematics. π is the same in Egypt, in Indiana and on the Moon.</p>
+        <p><b>Nova:</b> So we can’t vote for π. We have to measure and prove.</p>
+      </div>
+      <p>π is the number of times the diameter fits around a circle. It never ends and never repeats, so we use an approximation, like 3.14 or the π key on a calculator. Sometimes we leave π as a symbol and write the exact answer “in terms of π,” like 25π. In these games, use π ≈ 3.14, unless the problem asks for something else.</p>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es" id="relato-es"><div class="fila-ayuda">
+      <p><b>El campo redondo de Ahmes.</b> El problema 50 del papiro de Rhind pide el área de un campo redondo de 9 khet de diámetro. La regla de Ahmes: quitar 1/9 del diámetro, lo que deja 8, y multiplicar 8 × 8. El campo tiene 64 setat de tierra: Ahmes cambió el círculo por un cuadrado de lado 8, casi de la misma área. Su regla funciona como si π fuera 256/81, unos 3.16, a menos de un uno por ciento del valor verdadero. <b>La ley de π de Indiana.</b> En 1897, Edward J. Goodwin, un médico rural y matemático aficionado, creyó haber hallado cómo «cuadrar el círculo», algo que los matemáticos ya sabían que era imposible. El representante Taylor I. Record presentó su idea a la Cámara de Representantes de Indiana como el proyecto de ley 246, tan confuso que pocos lo entendieron; aun así, el 6 de febrero de 1897 la Cámara lo aprobó 67 a 0. Una de sus afirmaciones haría que π valiera 3.2. Por casualidad, el profesor C. A. Waldo, matemático de la Universidad Purdue, estaba esa semana en el Capitolio pidiendo fondos para la Academia de Ciencias de Indiana; se asombró al oír debatir matemáticas y explicó los errores. El Senado se burló del proyecto y lo aplazó indefinidamente: nunca fue ley. Nova se da cuenta de que Ahmes estuvo más cerca del π verdadero, y Lumi concluye: una votación no puede cambiar las matemáticas. Usamos aproximaciones de π, como 3.14 o la tecla π de la calculadora, o lo dejamos como símbolo para dar la respuesta exacta «en términos de π», como 25π. En estos juegos usa π ≈ 3.14, salvo que el problema pida otra cosa.</p>
+      <button class="bocina chica" type="button" id="btn-bocina-historia-es" aria-label="Escuchar la historia en español">🔊</button>
+    </div></div>
+    <p class="dato">Both stories are told in the book <i>Geometría Plana: Lo que debes saber</i>, by José M. Fernández. A khet was an Egyptian unit of length, and a setat a unit of land area.</p>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-historia-juego" type="button">Play: circles ▶</button>
+      <button class="boton" id="btn-historia-menu" type="button">All games</button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi7-nova.png" alt="" class="lumi-m" width="367" height="668"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it. Show your calculations, write an equation when it helps, and say how your work proves your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala. Muestra tus cálculos, escribe una ecuación cuando ayude y di cómo tu trabajo demuestra tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">The school garden is a circle with a diameter of 10 feet. Elías says: “Its area is 80 square feet, because π = 3.2. The Indiana House voted for it.” Is Elías right? Find the area with π ≈ 3.14 and with Ahmes’ rule (take away 1/9 of the diameter and square what is left). Which one is closer to the true area?</p>
+      <p class="ayuda-es" lang="es">El huerto escolar es un círculo de 10 pies de diámetro. Elías dice: «Su área es 80 pies cuadrados, porque π = 3.2. La Cámara de Indiana lo votó». ¿Tiene razón Elías? Halla el área con π ≈ 3.14 y con la regla de Ahmes (quitar 1/9 del diámetro y elevar al cuadrado lo que queda). ¿Cuál se acerca más al área verdadera?</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Elías is ___ because ___. The radius is ___ feet, so the area is 3.14 × ___ × ___ = ___. With Ahmes’ rule: 10 − 10/9 = ___, and ___ × ___ = ___.</p>
+        <p><b>Useful words:</b> radius, diameter, area, π, approximation, closer, prove.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: the garden needs a fence around it. How many feet of fence are needed with π ≈ 3.14? And how many more feet would Elías buy with π = 3.2?</p><p class="ayuda-es" lang="es">Reto: el huerto necesita una cerca alrededor. ¿Cuántos pies de cerca se necesitan con π ≈ 3.14? ¿Y cuántos pies de más compraría Elías con π = 3.2?</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Two angles are supplementary. One of them is 20° more than three times the other. Athena says the angles are 40° and 140°. Is Athena right? Write an equation, solve it and check. Then write your own angle problem like this one.</p>
+      <p class="ayuda-es" lang="es">Dos ángulos son suplementarios. Uno de ellos mide 20° más que el triple del otro. Athena dice que los ángulos miden 40° y 140°. ¿Tiene razón Athena? Escribe una ecuación, resuélvela y comprueba. Después escribe tu propio problema de ángulos parecido.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Supplementary angles add up to ___°. If the smaller angle is x, the other is ___. My equation is x + ___ = 180. Then x = ___. Check: ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: on a map, 1 inch stands for 25 miles. Two towns are 4.5 inches apart on the map. How far apart are they really? If you redraw the map so that 1 inch stands for 50 miles, how far apart are they on the new map?</p><p class="ayuda-es" lang="es">Reto: en un mapa, 1 pulgada representa 25 millas. Dos pueblos están a 4.5 pulgadas en el mapa. ¿A qué distancia están en realidad? Si vuelves a dibujar el mapa de modo que 1 pulgada represente 50 millas, ¿a qué distancia quedan en el mapa nuevo?</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I showed my calculations with the right units.<span class="es" lang="es">Mostré mis cálculos con las unidades correctas.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained why my answer is correct, not only what it is.<span class="es" lang="es">Expliqué por qué mi respuesta es correcta, no solo cuál es.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Elías is not right. A vote cannot change π, and the Indiana bill never became law. The radius is 10 ÷ 2 = 5 feet, so the area is 3.14 × 5 × 5 = 78.5 square feet. With Ahmes’ rule: 10 − 10/9 = 8 8/9, and 8 8/9 × 8 8/9 ≈ 79.0 square feet. With 3.2: 3.2 × 25 = 80 square feet. The true area is about 78.54 square feet, so 3.14 is the closest, then Ahmes’ rule, and 3.2 is the farthest.</p>
+        <p class="solo-reto"><b>Challenge.</b> Circumference = π × d = 3.14 × 10 = 31.4 feet of fence. With 3.2: 3.2 × 10 = 32 feet, so Elías would buy 0.6 feet more than he needs.</p>
+        <p><b>Part 2.</b> Athena is right. If the smaller angle is x, the other is 3x + 20. Supplementary angles add up to 180°: x + 3x + 20 = 180, so 4x = 160 and x = 40. The other angle is 3(40) + 20 = 140°. Check: 40 + 140 = 180 ✓.</p>
+        <p class="solo-reto"><b>Challenge.</b> 4.5 × 25 = 112.5 miles. On the new map, 112.5 ÷ 50 = 2.25 inches (half of 4.5, because each inch now stands for twice as many miles).</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: geometry</button></p>
+    <p>Aligned to the Illinois seventh grade mathematics standards 7.G.1 (solve problems involving scale drawings, including computing actual lengths and areas and reproducing a drawing at a different scale), 7.G.2 (draw geometric shapes with given conditions, focusing on triangles from three measures of angles or sides, noticing when the conditions determine a unique triangle, more than one triangle or no triangle), 7.G.3 (describe the two-dimensional figures that result from slicing three-dimensional figures, as in plane sections of right rectangular prisms and right rectangular pyramids), 7.G.4 (know the formulas for the area and circumference of a circle and use them to solve problems; give an informal derivation of the relationship between them), 7.G.5 (use facts about supplementary, complementary, vertical and adjacent angles in a multistep problem to write and solve simple equations for an unknown angle) and 7.G.6 (solve real-world and mathematical problems involving area, volume and surface area of two- and three-dimensional objects composed of triangles, quadrilaterals, polygons, cubes and right prisms). The module opens with two true stories about π told in the book <i>Geometría Plana: Lo que debes saber</i>: Ahmes’ round field (Rhind Papyrus, problem 50), whose rule is equivalent to π ≈ 256/81 ≈ 3.16, and the Indiana Pi Bill (House Bill 246, 1897), which passed the Indiana House 67–0 and was postponed indefinitely by the Senate after Professor C. A. Waldo of Purdue University explained its errors. The games use π ≈ 3.14 by default; at the Challenge level some rounds ask for the exact answer in terms of π, or for the π key of a calculator and rounding to the nearest tenth, as the items of the Illinois Assessment of Readiness do. At the Easy level the numbers are friendly and the drawings show every measure; at the Challenge level the child uses Ahmes’ rule, works backward from a circumference or an area, writes and solves angle equations, scales areas, decides how many triangles fit the conditions, slices solids in less familiar ways and works with composite figures, triangular prisms and missing dimensions. A wrong answer always brings a hint, never the answer. The optional “Ayuda en español” button translates only the instruction or the question. Each game has its own direct link: #historia, #circulo, #angulos, #escala, #triangulos, #cortes and #volumen, and the final task is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para séptimo grado: 7.G.1 (dibujos a escala), 7.G.2 (construir triángulos y decidir si hay uno, más de uno o ninguno), 7.G.3 (cortes de prismas y pirámides), 7.G.4 (área y circunferencia del círculo), 7.G.5 (ángulos suplementarios, complementarios, opuestos por el vértice y adyacentes, con ecuaciones) y 7.G.6 (área, área total y volumen). El módulo empieza con dos historias reales sobre π contadas en el libro <i>Geometría Plana: Lo que debes saber</i>: el campo redondo de Ahmes y la ley de π de Indiana de 1897. Se usa π ≈ 3.14; en el nivel Reto también hay respuestas en términos de π y con la tecla π de la calculadora, redondeando a la décima, como en el examen estatal IAR. Ante un error, siempre se da una pista, nunca la respuesta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Geometry</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________     Use π ≈ 3.14 unless the problem says otherwise.</p>
+  <h3>1. Circles</h3>
+  <div class="caja-h">
+    <div>a) r = 6 cm. Circumference = <i class="linea"></i></div>
+    <div>b) r = 6 cm. Area = <i class="linea"></i></div>
+    <div>c) C = 31.4 in. Diameter = <i class="linea"></i></div>
+    <div>d) Ahmes’ rule, d = 18: area = <i class="linea"></i></div>
+    <div>e) r = 5 cm. Area in terms of π = <i class="linea"></i></div>
+    <div>f) r = 7 cm. Area with the π key, to the nearest tenth = <i class="linea"></i></div>
+  </div>
+  <h3>2. Angles</h3>
+  <div class="caja-h">
+    <div>a) The complement of 35° is <i class="linea"></i></div>
+    <div>b) The supplement of 35° is <i class="linea"></i></div>
+    <div>c) Vertical angles: one is 72°, the other is <i class="linea"></i></div>
+    <div>d) x + (2x + 30) = 180. x = <i class="linea"></i></div>
+  </div>
+  <h3>3. Scale drawings. On a map, 1 inch = 20 miles.</h3>
+  <div class="caja-h una">
+    <div>a) 3.5 inches on the map = <i class="linea"></i> miles</div>
+    <div>b) 90 miles = <i class="linea"></i> inches on the map</div>
+    <div>c) A room is 4 cm by 3 cm on a plan where 1 cm = 2 m. Its real area is <i class="linea"></i> m²</div>
+  </div>
+  <h3>4. Triangles. Can these be the sides of a triangle? Write yes or no.</h3>
+  <div class="caja-h">
+    <div>a) 3, 4, 5 <i class="linea"></i></div>
+    <div>b) 2, 3, 6 <i class="linea"></i></div>
+    <div>c) Two angles are 50° and 65°. The third is <i class="linea"></i></div>
+    <div>d) Angles 60°, 60°, 60°: one triangle or many? <i class="linea"></i></div>
+  </div>
+  <h3>5. Slices. Name the shape of each cross section.</h3>
+  <div class="caja-h una">
+    <div>a) A rectangular prism cut parallel to its base: <i class="linea"></i></div>
+    <div>b) A square pyramid cut parallel to its base: <i class="linea"></i></div>
+    <div>c) A square pyramid cut straight down through its top point: <i class="linea"></i></div>
+  </div>
+  <h3>6. Area, surface area and volume</h3>
+  <div class="caja-h">
+    <div>a) Triangle, base 10, height 6: area = <i class="linea"></i></div>
+    <div>b) Prism 5 × 4 × 3: volume = <i class="linea"></i></div>
+    <div>c) Prism 5 × 4 × 3: surface area = <i class="linea"></i></div>
+    <div>d) Trapezoid, bases 6 and 10, height 4: area = <i class="linea"></i></div>
+  </div>
+  <h3>7. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) A circular garden has a diameter of 10 feet. Elías says its area is 80 square feet because π = 3.2. Is he right? Compare with π ≈ 3.14 and with Ahmes’ rule.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Two angles are supplementary, and one is 20° more than three times the other. Athena says they are 40° and 140°. Is she right? Write and solve an equation.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+try{ if("scrollRestoration" in history) history.scrollRestoration = "manual"; }catch(e){}
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español». Ante un error siempre hay una pista, nunca la respuesta.
+   π ≈ 3.14 en todos los cálculos. */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+const PI = 3.14;
+
+const T = {
+  bien:["Great reasoning!","Nice strategy!","Your thinking paid off!","Ahmes would approve!","Lumi and Nova are glowing!","Professor Waldo would approve!"],
+  otra:["So close! Try again!","Not yet. Look at it one more time.","Hmm… try again. You can work it out."],
+  escuchar:"🔁 Listen again",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game, or start with the story.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  estrategias:[
+    ["I drew or imagined the figure","Great strategy! A picture shows which measures go together."],
+    ["I wrote an equation for the unknown angle","Excellent! An equation turns the angle facts into something you can solve."],
+    ["I checked if I needed the radius or the diameter","Nice habit! Many circle mistakes come from mixing up r and d."],
+    ["I kept track of the units","Good thinking! Length, square units and cubic units tell you what you are measuring."]]
+};
+
+const JUEGOS = [
+  {id:"circulo",    emoji:"⭕", en:"Circles",                     es:"Círculos",                           meta:"C = πd · A = πr²"},
+  {id:"angulos",    emoji:"📐", en:"Angle relationships",         es:"Relaciones entre ángulos",           meta:"Complementary, supplementary, vertical"},
+  {id:"escala",     emoji:"🗺️", en:"Scale drawings",              es:"Dibujos a escala",                   meta:"1 inch = 20 miles"},
+  {id:"triangulos", emoji:"🔺", en:"Can you build the triangle?", es:"¿Se puede construir el triángulo?",  meta:"One, many or none"},
+  {id:"cortes",     emoji:"🔪", en:"Slicing solids",              es:"Cortes de cuerpos sólidos",          meta:"What shape is the cut?"},
+  {id:"volumen",    emoji:"🧊", en:"Area, surface area, volume",  es:"Área, área total y volumen",         meta:"Triangles, prisms, composite figures"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(String(texto).replace(/(^|[\s(=:])−(?=\d)/g, es ? "$1menos " : "$1negative ").replace(/\b(\d+) (\d+)\/(\d+)\b/g, es ? "$1 y $2/$3" : "$1 and $2/$3"), es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi7-nova.png" alt="" class="lumi-m" width="367" height="668">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-historia","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+  /* Cada pantalla nueva empieza arriba (si no, se queda donde estaba el menú) */
+  try{ window.scrollTo(0, 0); }catch(e){}
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g7-04-geometry.html#circulo */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  /* Si el juego no dibuja nada en la escena, Lumi la acompaña para que no parezca que falta algo */
+  setTimeout(()=>{ const e = $("escena"); if(e && !e.children.length) e.innerHTML = '<img class="escena-lumi" src="lumi7-presenta.png" alt="" width="807" height="679">'; }, 0);
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+
+/* ============ Séptimo grado: fracciones y gráficas ============ */
+const fr = (n, d)=>{ const g = mcd(Math.abs(n), Math.abs(d)) || 1; return {n:n / g, d:d / g}; };
+const frDiv = (a, b)=> fr(a.n * b.d, a.d * b.n);
+const frMul = (a, b)=> fr(a.n * b.n, a.d * b.d);
+const frSum = (a, b)=> fr(a.n * b.d + b.n * a.d, a.d * b.d);
+/* 3/2 → "1 1/2"; 4/1 → "4"; 3/4 → "3/4" */
+function fmtFr(f){
+  if(f.d === 1) return String(f.n);
+  if(f.n > f.d) return `${Math.floor(f.n / f.d)} ${f.n % f.d}/${f.d}`;
+  return `${f.n}/${f.d}`;
+}
+const txtFr = (f)=> `${f.n}/${f.d}`;
+/* Números con decimales cortos: 2.5 → "2.5"; 3 → "3" */
+const D = (x)=> String(Math.round(x * 100) / 100);
+
+/* Gráfica del primer cuadrante.
+   f: función y = f(x) (o null), puntos: [[x, y]...], marca: [x, y] resaltado con su rótulo */
+function graf7(o){
+  const W = o.chica ? 200 : 300, H = W, x0 = o.chica ? 30 : 46, y0 = H - (o.chica ? 28 : 40), L = W - x0 - (o.chica ? 12 : 20);
+  const kx = L / o.maxX, ky = L / o.maxY, fs = o.chica ? 10 : 13;
+  const px = (x)=> x0 + x * kx, py = (y)=> y0 - y * ky;
+  let s = o.chica ? `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">`
+                  : `<svg class="modelo" style="max-width:340px" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(o.etiqueta || "Graph")}">`;
+  s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
+  for(let i=0;i<=5;i++){
+    const vx = o.maxX * i / 5, vy = o.maxY * i / 5;
+    s += `<line x1="${px(vx)}" y1="${y0}" x2="${px(vx)}" y2="${y0 - L}" stroke="#C9E3E5"/><line x1="${x0}" y1="${py(vy)}" x2="${x0 + L}" y2="${py(vy)}" stroke="#C9E3E5"/>`;
+    s += `<text x="${px(vx)}" y="${y0 + fs + 3}" font-size="${fs}" text-anchor="middle" fill="#14313A">${D(vx)}</text>`;
+    if(i) s += `<text x="${x0 - 4}" y="${py(vy) + fs / 3}" font-size="${fs}" text-anchor="end" fill="#14313A">${D(vy)}</text>`;
+  }
+  s += `<line x1="${x0}" y1="${y0}" x2="${x0 + L + 6}" y2="${y0}" stroke="#14313A" stroke-width="2"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0 - L - 6}" stroke="#14313A" stroke-width="2"/>`;
+  if(!o.chica && o.xLab) s += `<text x="${x0 + L}" y="${H - 4}" font-size="13" font-weight="700" text-anchor="end" fill="#3F5F66">${escaparHTML(o.xLab)}</text>`;
+  if(!o.chica && o.yLab) s += `<text x="${x0 + 4}" y="14" font-size="13" font-weight="700" fill="#3F5F66">${escaparHTML(o.yLab)}</text>`;
+  if(o.f){
+    const pts = [];
+    for(let i=0;i<=40;i++){ const x = o.maxX * i / 40, y = o.f(x); if(y >= 0 && y <= o.maxY) pts.push(`${px(x).toFixed(1)},${py(y).toFixed(1)}`); }
+    s += `<polyline points="${pts.join(" ")}" fill="none" stroke="#45A6AD" stroke-width="${o.chica ? 3 : 4}" stroke-linecap="round"/>`;
+  }
+  (o.puntos || []).forEach(([x, y])=>{ if(x <= o.maxX && y <= o.maxY) s += `<circle cx="${px(x)}" cy="${py(y)}" r="${o.chica ? 4.5 : 5.5}" fill="#194F5A" stroke="#fff" stroke-width="1.5"/>`; });
+  if(o.marca){
+    const [x, y] = o.marca, cx = px(x), cy = py(y), izq = cx > x0 + L * 0.6;
+    s += `<circle cx="${cx}" cy="${cy}" r="9" fill="#F8C85F" stroke="#5C3900" stroke-width="3"/>`;
+    s += `<rect x="${izq ? cx - 92 : cx + 10}" y="${cy - 34}" width="82" height="26" rx="8" fill="#FFF3D6" stroke="#5C3900" stroke-width="2"/>`;
+    s += `<text x="${izq ? cx - 51 : cx + 51}" y="${cy - 15}" font-size="15" font-weight="700" text-anchor="middle" fill="#5C3900">(${D(x)}, ${D(y)})</text>`;
+  }
+  return s + "</svg>";
+}
+/* Tabla x / y (con la fila y ÷ x en el nivel Fácil) */
+function tablaXY(xs, ys, nomX, nomY, conCociente){
+  let h = `<table class="tabla-razon"><caption>${escaparHTML(nomX)} and ${escaparHTML(nomY)}</caption><tbody>`;
+  h += `<tr><th scope="row">x · ${escaparHTML(nomX)}</th>${xs.map(v=>`<td>${D(v)}</td>`).join("")}</tr>`;
+  h += `<tr><th scope="row">y · ${escaparHTML(nomY)}</th>${ys.map(v=>`<td>${D(v)}</td>`).join("")}</tr>`;
+  if(conCociente) h += `<tr><th scope="row" class="cociente">y ÷ x</th>${xs.map((v, i)=>`<td class="cociente">${D(ys[i] / v)}</td>`).join("")}</tr>`;
+  return h + "</tbody></table>";
+}
+/* Botones grandes de sí / no */
+function botonesSiNo(verdad, siTxt, noTxt, pista, expl){
+  const cont = $("opciones");
+  [[true, siTxt, "opcion-vf v"], [false, noTxt, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+      if(v !== verdad){ fallar(bt, pista); return; }
+      sonBoing(); acertar(expl);
+    }));
+  });
+  S.resolver = resolverTexto(verdad ? siTxt : noTxt);
+}
+/* Opciones que son gráficas: [[svg, etiqueta, correcta, pista], ...] */
+function opcionesGraf(lista, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(([svg, etiqueta, ok, pista], i)=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-graf";
+    b.setAttribute("aria-label", etiqueta);
+    b.innerHTML = svg + `<span aria-hidden="true">${"ABCD"[i]}</span>`;
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(ok){ sonBoing(); alAcertar(b); } else fallar(b, pista); });
+    cont.appendChild(b);
+  });
+}
+
+/* ============ Números con signo ============ */
+const N = (x)=>{ const v = Math.round(x * 100) / 100; return (v < 0 ? "−" : "") + String(Math.abs(v)); };
+const P = (x)=> x < 0 ? `(${N(x)})` : N(x);                       /* negativo entre paréntesis dentro de una expresión */
+const frN = (n, d)=> d < 0 ? fr(-n, -d) : fr(n, d);
+const NF = (f)=> f.n < 0 ? "−" + fmtFr({n:-f.n, d:f.d}) : fmtFr(f);
+const PF = (f)=> f.n < 0 ? `(${NF(f)})` : NF(f);
+const frRes = (a, b)=> frSum(a, {n:-b.n, d:b.d});
+const frDivS = (a, b)=> frN(a.n * b.d, a.d * b.n);
+const frMulS = (a, b)=> frN(a.n * b.n, a.d * b.d);
+const mon = (c)=> (c < 0 ? "−" : "") + dinero(Math.abs(c));          /* centavos con signo: −1250 → "−$12.50" */
+const noCero = (a, b)=>{ let v; do{ v = azar(a, b); }while(v === 0); return v; };
+const varTxt = (n, color)=> `${n} ${color} rod${n === 1 ? "" : "s"}`;
+
+/* ============ Dibujos: varillas y recta numérica ============ */
+/* Varillas: rojas de pie (+1, ganancia) y negras inclinadas (−1, pérdida), como las describió Liu Hui */
+function varillasSVG(r, b, mezcla, titulo){
+  const orden = mezcla ? mezclar([...Array(r).fill(1), ...Array(b).fill(-1)]) : [...Array(r).fill(1), ...Array(b).fill(-1)];
+  const W = Math.max(140, orden.length * 30 + 40);
+  let s = `<svg viewBox="0 0 ${W} 110" style="width:min(${Math.round(W * 1.15)}px,92vw)" role="img" aria-label="${r} red upright ${r === 1 ? "rod" : "rods"} (positive) and ${b} black slanted ${b === 1 ? "rod" : "rods"} (negative)">`;
+  s += `<rect x="2" y="2" width="${W - 4}" height="106" rx="12" fill="#F3E2B3" stroke="#B5892B" stroke-width="3"/>`;
+  orden.forEach((v, i)=>{
+    const x = 28 + i * 30;
+    s += v > 0 ? `<rect x="${x}" y="20" width="11" height="70" rx="4" fill="#C62828" stroke="#7F0000" stroke-width="2"/>`
+               : `<rect x="${x}" y="20" width="11" height="70" rx="4" fill="#212121" stroke="#000" stroke-width="2" transform="rotate(25 ${x + 5.5} 55)"/>`;
+  });
+  return `<figure>${s}</svg>${titulo ? `<figcaption>${escaparHTML(titulo)}</figcaption>` : ""}</figure>`;
+}
+const LEYENDA_V = `<p class="leyenda-v"><span><svg viewBox="0 0 18 30" aria-hidden="true"><rect x="4" y="2" width="9" height="26" rx="3" fill="#C62828" stroke="#7F0000" stroke-width="1.5"/></svg>red, upright: +1 (gain)</span><span><svg viewBox="0 0 18 30" aria-hidden="true"><rect x="4" y="2" width="9" height="26" rx="3" fill="#212121" transform="rotate(25 9 15)"/></svg>black, slanted: −1 (loss)</span></p>`;
+function tablero(...figs){ escenaTexto(`<div class="tablero">${figs.join("")}</div>`); }
+
+/* Recta numérica de min a max. salto: {desde, mueve} dibuja la flecha; puntos: [[valor, rótulo]] */
+function rectaSVG(min, max, o){
+  const W = 640, x0 = 30, x1 = 610, y = 92, px = (v)=> x0 + (x1 - x0) * (v - min) / (max - min);
+  const etq = (max - min) > 24 ? 5 : (max - min) > 12 ? 2 : 1;
+  let s = `<svg class="modelo" style="max-width:640px" viewBox="0 0 ${W} 130" role="img" aria-label="${escaparHTML(o.etiqueta)}">`;
+  s += `<line x1="${x0 - 12}" y1="${y}" x2="${x1 + 12}" y2="${y}" stroke="#14313A" stroke-width="3"/>`;
+  s += `<path d="M${x0 - 12} ${y - 6} L${x0 - 22} ${y} L${x0 - 12} ${y + 6}Z M${x1 + 12} ${y - 6} L${x1 + 22} ${y} L${x1 + 12} ${y + 6}Z" fill="#14313A"/>`;
+  for(let v = min; v <= max; v++){
+    const lab = v % etq === 0, x = px(v);
+    s += `<line x1="${x}" y1="${y - (lab ? 9 : 5)}" x2="${x}" y2="${y + (lab ? 9 : 5)}" stroke="#14313A" stroke-width="${v === 0 ? 3.5 : 2}"/>`;
+    if(lab) s += `<text x="${x}" y="${y + 28}" font-size="15" font-weight="${v === 0 ? 700 : 400}" text-anchor="middle" fill="#14313A">${N(v)}</text>`;
+  }
+  if(o.salto){
+    const {desde, mueve, oculto} = o.salto, a = px(desde), b = px(desde + mueve), alto = 46, med = (a + b) / 2;
+    s += `<path d="M${a} ${y - 12} Q${med} ${y - 12 - alto * 1.6} ${b} ${y - 12}" fill="none" stroke="${mueve > 0 ? "#C62828" : "#212121"}" stroke-width="3.5"/>`;
+    s += `<path d="M${b} ${y - 10} l${mueve > 0 ? -11 : 11} -7 l${mueve > 0 ? 3 : -3} 11z" fill="${mueve > 0 ? "#C62828" : "#212121"}"/>`;
+    s += `<text x="${med}" y="${y - 12 - alto * 0.85}" font-size="17" font-weight="700" text-anchor="middle" fill="#14313A">${mueve > 0 ? "+" : ""}${N(mueve)}</text>`;
+    s += `<circle cx="${a}" cy="${y}" r="7" fill="#194F5A" stroke="#fff" stroke-width="2"/>`;
+    if(oculto) s += `<rect x="${b - 14}" y="${y + 12}" width="28" height="24" rx="6" fill="#E8F5F6" stroke="#194F5A" stroke-width="2" stroke-dasharray="4 3"/><text x="${b}" y="${y + 30}" font-size="16" font-weight="700" text-anchor="middle" fill="#194F5A">?</text>`;
+  }
+  (o.puntos || []).forEach(([v, lab])=>{
+    s += `<circle cx="${px(v)}" cy="${y}" r="8" fill="#F8C85F" stroke="#5C3900" stroke-width="2.5"/>`;
+    if(lab) s += `<text x="${px(v)}" y="${y - 18}" font-size="16" font-weight="700" text-anchor="middle" fill="#5C3900">${escaparHTML(lab)}</text>`;
+  });
+  return s + "</svg>";
+}
+/* Decimal de una fracción por división larga: "0.375" o "0.8333…" */
+function decimalTxt(n, d){
+  const neg = n < 0; n = Math.abs(n);
+  let ent = Math.floor(n / d), r = n % d, dig = "", vistos = {}, repite = false;
+  while(r !== 0 && dig.length < 12){
+    if(vistos[r] !== undefined){ repite = true; break; }
+    vistos[r] = dig.length; r *= 10; dig += Math.floor(r / d); r %= d;
+  }
+  if(r !== 0) repite = true;
+  let txt;
+  if(!repite) txt = dig ? `${ent}.${dig}` : String(ent);
+  else { let ext = dig; while(ext.length < 6) ext += dig.slice(vistos[r] !== undefined ? vistos[r] : 0); txt = `${ent}.${ext.slice(0, Math.max(6, dig.length))}…`; }
+  return {txt:(neg ? "−" : "") + txt, repite};
+}
+const soloDosCinco = (d)=>{ while(d % 2 === 0) d /= 2; while(d % 5 === 0) d /= 5; return d === 1; };
+
+/* ============ Geometría: dibujos ============ */
+const coefTxt = (a, v)=> a === 1 ? v : a === -1 ? "−" + v : N(a) + v;
+function lin(a, b, v){ v = v || "x"; if(a === 0) return N(b); let s = coefTxt(a, v); if(b > 0) s += " + " + N(b); else if(b < 0) s += " − " + N(-b); return s; }
+const R2 = (x)=> Math.round(x * 100) / 100;
+const svgTxt = (x, y, t, o)=> `<text x="${x}" y="${y}" font-size="${(o && o.fs) || 16}" font-weight="${(o && o.w) || 700}" text-anchor="${(o && o.a) || "middle"}" fill="${(o && o.c) || "#14313A"}">${escaparHTML(t)}</text>`;
+
+/* Círculo con radio o diámetro rotulado */
+function circuloSVG(conDiam, rotulo, etiqueta){
+  let s = `<svg class="figura" style="max-width:260px" viewBox="0 0 260 240" role="img" aria-label="${escaparHTML(etiqueta)}">`;
+  s += `<circle cx="130" cy="120" r="100" fill="#E8F5F6" stroke="#194F5A" stroke-width="4"/><circle cx="130" cy="120" r="4" fill="#194F5A"/>`;
+  s += conDiam ? `<line x1="30" y1="120" x2="230" y2="120" stroke="#C62828" stroke-width="4"/>${svgTxt(130, 110, rotulo, {c:"#B71C1C"})}`
+               : `<line x1="130" y1="120" x2="230" y2="120" stroke="#C62828" stroke-width="4"/>${svgTxt(180, 110, rotulo, {c:"#B71C1C"})}`;
+  return s + "</svg>";
+}
+/* Ángulos: modo supl (recta + rayo), comp (ángulo recto partido), vert (dos rectas), tres (tres ángulos sobre una recta) */
+function anguloSVG(modo, a, labA, labB, labC, b){
+  const cx = 210, cy = 150, R = 150, W = 420, H = 190;
+  const pt = (g, r)=> [cx + r * Math.cos(g * Math.PI / 180), cy - r * Math.sin(g * Math.PI / 180)];
+  const linea = (g1, g2)=>{ const [x1, y1] = pt(g1, R), [x2, y2] = pt(g2, R); return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#14313A" stroke-width="3.5" stroke-linecap="round"/>`; };
+  const rayo = (g)=>{ const [x, y] = pt(g, R); return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#14313A" stroke-width="3.5" stroke-linecap="round"/>`; };
+  const arco = (g1, g2, r, color, lab, rl)=>{
+    const [x1, y1] = pt(g1, r), [x2, y2] = pt(g2, r), [lx, ly] = pt((g1 + g2) / 2, rl || r + 26);
+    return `<path d="M${x1} ${y1} A${r} ${r} 0 ${g2 - g1 > 180 ? 1 : 0} 0 ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="3"/>` + (lab ? svgTxt(lx, ly + 6, lab, {c:color, fs:17}) : "");
+  };
+  let s = `<svg class="figura" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(modo === "supl" ? `A straight line with a ray: two adjacent angles, ${labA} and ${labB}` : modo === "comp" ? `A right angle split by a ray into two angles, ${labA} and ${labB}` : modo === "vert" ? `Two lines crossing. Two vertical angles: ${labA} and ${labB}` : `A straight line split by two rays into three angles: ${labA}, ${labB} and ${labC}`)}">`;
+  if(modo === "supl"){ s += linea(0, 180) + rayo(a) + arco(0, a, 40, "#B71C1C", labA, 70) + arco(a, 180, 30, "#1B5E20", labB, 66); }
+  else if(modo === "comp"){
+    s = s.replace(`viewBox="0 0 ${W} ${H}"`, `viewBox="60 -10 ${W - 60} ${H + 10}"`);
+    s += rayo(0) + rayo(90) + rayo(a) + `<rect x="${cx}" y="${cy - 16}" width="16" height="16" fill="none" stroke="#14313A" stroke-width="2"/>` + arco(0, a, 48, "#B71C1C", labA, 82) + arco(a, 90, 38, "#1B5E20", labB, 76);
+  }
+  else if(modo === "vert"){ s = s.replace(`viewBox="0 0 ${W} ${H}"`, `viewBox="0 0 ${W} 300"`); s += linea(0, 180) + linea(a, a + 180) + arco(0, a, 40, "#B71C1C", labA, 72) + arco(180, 180 + a, 40, "#1B5E20", labB, 72) + (labC ? arco(a, 180, 30, "#3F5F66", labC, 62) : ""); }
+  else { s += linea(0, 180) + rayo(a) + rayo(a + b) + arco(0, a, 44, "#B71C1C", labA, 76) + arco(a, a + b, 34, "#1B5E20", labB, 70) + arco(a + b, 180, 26, "#0B62D6", labC, 66); }
+  return s + "</svg>";
+}
+/* Cuerpos en perspectiva caballera, con un corte sombreado */
+function solidoSVG(V, A, corte, etiqueta){
+  const S = 42, ox = 70, oy = 230;
+  const pr = ([x, y, z])=> [ox + x * S + y * S * 0.5, oy - z * S - y * S * 0.35];
+  let s = `<svg class="figura" style="max-width:360px" viewBox="0 0 360 260" role="img" aria-label="${escaparHTML(etiqueta)}">`;
+  if(corte) s += `<polygon points="${corte.map(p=>pr(p).map(v=>v.toFixed(1)).join(",")).join(" ")}" fill="rgba(248,200,95,.75)" stroke="#B5892B" stroke-width="3" stroke-linejoin="round"/>`;
+  A.forEach(([i, j])=>{ const [x1, y1] = pr(V[i]), [x2, y2] = pr(V[j]); s += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#194F5A" stroke-width="3" stroke-linecap="round"/>`; });
+  return s + "</svg>";
+}
+const CAJA = (w, d, h)=> ({V:[[0,0,0],[w,0,0],[w,d,0],[0,d,0],[0,0,h],[w,0,h],[w,d,h],[0,d,h]], A:[[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]]});
+const PIRAMIDE = {V:[[0,0,0],[4,0,0],[4,4,0],[0,4,0],[2,2,4]], A:[[0,1],[1,2],[2,3],[3,0],[0,4],[1,4],[2,4],[3,4]]};
+/* Figuras planas con medidas */
+function trianguloSVG(b, h){
+  return `<svg class="figura" style="max-width:340px" viewBox="0 0 340 220" role="img" aria-label="A triangle with base ${b} and height ${h}">
+    <polygon points="30,180 310,180 120,30" fill="#E8F5F6" stroke="#194F5A" stroke-width="4" stroke-linejoin="round"/>
+    <line x1="120" y1="30" x2="120" y2="180" stroke="#C62828" stroke-width="3" stroke-dasharray="7 5"/>
+    <rect x="120" y="166" width="14" height="14" fill="none" stroke="#C62828" stroke-width="2"/>
+    ${svgTxt(170, 208, `base ${b}`)}${svgTxt(108, 110, `h = ${h}`, {a:"end", c:"#B71C1C"})}</svg>`;
+}
+function trapecioSVG(b1, b2, h){
+  return `<svg class="figura" style="max-width:340px" viewBox="0 0 340 220" role="img" aria-label="A trapezoid with bases ${b1} and ${b2} and height ${h}">
+    <polygon points="30,180 310,180 250,50 90,50" fill="#E8F5F6" stroke="#194F5A" stroke-width="4" stroke-linejoin="round"/>
+    <line x1="170" y1="50" x2="170" y2="180" stroke="#C62828" stroke-width="3" stroke-dasharray="7 5"/>
+    ${svgTxt(170, 40, `${b1}`)}${svgTxt(170, 208, `${b2}`)}${svgTxt(180, 120, `h = ${h}`, {a:"start", c:"#B71C1C"})}</svg>`;
+}
+function casaSVG(W, H, t){
+  return `<svg class="figura" style="max-width:320px" viewBox="0 0 320 250" role="img" aria-label="A house shape: a rectangle ${W} wide and ${H} tall with a triangle on top that is ${t} tall">
+    <polygon points="50,230 270,230 270,120 160,40 50,120" fill="#E8F5F6" stroke="#194F5A" stroke-width="4" stroke-linejoin="round"/>
+    <line x1="50" y1="120" x2="270" y2="120" stroke="#194F5A" stroke-width="2" stroke-dasharray="6 5"/>
+    <line x1="160" y1="40" x2="160" y2="120" stroke="#C62828" stroke-width="3" stroke-dasharray="7 5"/>
+    ${svgTxt(160, 248, `${W}`)}${svgTxt(290, 180, `${H}`, {a:"start"})}${svgTxt(170, 90, `${t}`, {a:"start", c:"#B71C1C"})}</svg>`;
+}
+function prismaSVG(l, w, h){
+  const k = 5 / Math.max(l, w * 1.4, h * 1.6), C = CAJA(l * k, w * k, h * k);
+  const S = 42, pr = ([x, y, z])=> [70 + x * S + y * S * 0.5, 230 - z * S - y * S * 0.35];
+  let s = solidoSVG(C.V, C.A, null, `A rectangular prism ${l} long, ${w} wide and ${h} tall`).replace("</svg>", "");
+  const [ax, ay] = pr([l * k / 2, 0, 0]), [bx, by] = pr([l * k, w * k / 2, 0]), [cx2, cy2] = pr([l * k, 0, h * k / 2]);
+  return s + svgTxt(ax, ay + 22, `${l}`) + svgTxt(bx + 16, by + 14, `${w}`, {a:"start"}) + svgTxt(cx2 + 10, cy2, `${h}`, {a:"start"}) + "</svg>";
+}
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const t = T, reto = S.reto;
+  const u2 = (u)=> `square ${u}`, u3 = (u)=> `cubic ${u}`;
+
+  /* --- 1. Círculos (7.G.4), con Ahmes y la ley de Indiana --- */
+  if(S.juego === "circulo"){
+    const tipo = tipoRonda(reto ? ["ahmes","terminosPi","indiana","decima","desdeArea","semicirculo","terminosPi","diametro"] : ["circ","area","circ","area","diametro"]);
+    const u = elegir(["cm", "in", "ft", "m"]);
+    if(tipo === "circ" || tipo === "area"){
+      const r = azar(2, 10), dar = azar(0, 1) === 1, C = R2(2 * PI * r), A = R2(PI * r * r);
+      escenaTexto(circuloSVG(dar, dar ? `d = ${2 * r} ${u}` : `r = ${r} ${u}`, dar ? `A circle with diameter ${2 * r} ${u}` : `A circle with radius ${r} ${u}`));
+      if(tipo === "circ"){
+        const q = `Find the circumference. Use π ≈ 3.14.`;
+        ponerInstruccion(q, q, "Halla la circunferencia (el perímetro del círculo). Usa π ≈ 3.14.");
+        opciones(`${N(C)} ${u}`, [[`${N(R2(PI * r))} ${u}`, "The circumference is π times the diameter, or 2πr."], [`${N(A)} ${u}`, "That is the area. The circumference is the distance around: π × d."], [`${N(R2(PI * 4 * r))} ${u}`, dar ? "The diameter is already given. Multiply it by π." : "Check: the diameter is 2 times the radius."]],
+          ()=>acertar(`C = π × d = 3.14 × ${2 * r} = ${N(C)} ${u}.`));
+      } else {
+        const q = `Find the area. Use π ≈ 3.14.`;
+        ponerInstruccion(q, q, "Halla el área. Usa π ≈ 3.14.");
+        opciones(`${N(A)} ${u2(u)}`, [[`${N(R2(PI * 4 * r * r))} ${u2(u)}`, "The formula uses the radius. The radius is half of the diameter."], [`${N(C)} ${u2(u)}`, "That is 2πr, the circumference. Area is π × r × r."], [`${N(R2(PI * r * 2))} ${u2(u)}`, "r² means r × r, not r × 2."]],
+          ()=>acertar(`A = π × r² = 3.14 × ${r} × ${r} = ${N(A)} square ${u}.`));
+      }
+    } else if(tipo === "terminosPi"){
+      /* Respuesta exacta, con π como símbolo (como en el examen estatal IAR) */
+      const r = azar(2, 10), dar = azar(0, 1) === 1, area = azar(0, 1) === 1;
+      escenaTexto(circuloSVG(dar, dar ? `d = ${2 * r} ${u}` : `r = ${r} ${u}`, dar ? `A circle with diameter ${2 * r} ${u}` : `A circle with radius ${r} ${u}`));
+      const q = `Find the ${area ? "area" : "circumference"}. Give the answer in terms of π.`;
+      ponerInstruccion(q, q.replace("π", "pi"), `Halla ${area ? "el área" : "la circunferencia"}. Da la respuesta en términos de π.`);
+      const exacto = "In terms of π means leaving π as a symbol, like 25π, without multiplying by 3.14.";
+      if(area) opciones(`${r * r}π ${u2(u)}`, [[`${2 * r}π ${u2(u)}`, "That is the circumference, 2πr. Area = π × r × r."], [`${4 * r * r}π ${u2(u)}`, "The formula uses the radius, half of the diameter."], [`${N(R2(PI * r * r))} ${u2(u)}`, exacto]],
+        ()=>acertar(`A = π × ${r}² = ${r * r}π square ${u}. It is exact: about ${N(R2(PI * r * r))} with 3.14.`));
+      else opciones(`${2 * r}π ${u}`, [[`${r}π ${u}`, "C = π × d, and the diameter is 2 times the radius."], [`${r * r}π ${u}`, "That is the area, πr². The circumference is π × d."], [`${N(R2(PI * 2 * r))} ${u}`, exacto]],
+        ()=>acertar(`C = π × ${2 * r} = ${2 * r}π ${u}. It is exact: about ${N(R2(PI * 2 * r))} with 3.14.`));
+    } else if(tipo === "decima"){
+      /* Con la tecla π de la calculadora, redondeando a la décima */
+      const r = azar(3, 12), area = azar(0, 1) === 1, val = area ? Math.PI * r * r : 2 * Math.PI * r, v314 = area ? PI * r * r : 2 * PI * r;
+      const bien = (Math.round(val * 10) / 10).toFixed(1), malo = (Math.round(v314 * 10) / 10).toFixed(1);
+      escenaTexto(circuloSVG(false, `r = ${r} ${u}`, `A circle with radius ${r} ${u}`));
+      const q = `Find the ${area ? "area" : "circumference"}. Use the π key on a calculator and round to the nearest tenth.`;
+      ponerInstruccion(q, q.replace("π", "pi"), `Halla ${area ? "el área" : "la circunferencia"}. Usa la tecla π de la calculadora y redondea a la décima.`);
+      const uu = area ? u2(u) : u;
+      const malos = [[`${(Math.round((area ? 2 * Math.PI * r : Math.PI * r * r) * 10) / 10).toFixed(1)} ${area ? u2(u) : u}`, area ? "That is the circumference. Area = π × r × r." : "That is the area. The circumference is 2 × π × r."],
+                     [`${Math.round(val)}.0 ${uu}`, "Round to the nearest tenth: keep one digit after the decimal point."],
+                     [`${(Math.round(val * 10) / 10 + 0.1).toFixed(1)} ${uu}`, "Look at the hundredths digit to decide how to round the tenths."]];
+      if(malo !== bien) malos.unshift([`${malo} ${uu}`, "That uses 3.14. With the π key (3.14159…) the tenths digit changes: try again."]);
+      opciones(`${bien} ${uu}`, malos, ()=>acertar(`${area ? `π × ${r}²` : `2 × π × ${r}`} = ${val.toFixed(4)}…, which rounds to ${bien}.`));
+    } else if(tipo === "diametro"){
+      const d = azar(2, 20), C = R2(PI * d);
+      escenaTexto(`<p class="problema">The circumference of a circular table is ${N(C)} ${u}.</p>`);
+      const q = "What is the diameter of the table? Use π ≈ 3.14.";
+      ponerInstruccion(q, `The circumference of a circular table is ${N(C)} ${u}. ` + q, `La circunferencia de una mesa redonda mide ${N(C)} ${u}. ¿Cuál es el diámetro de la mesa? Usa π ≈ 3.14.`);
+      opciones(`${d} ${u}`, [[`${N(R2(C * PI))} ${u}`, "C = π × d, so to find d, divide by π."], [`${N(d / 2)} ${u}`, "That is the radius. The question asks for the diameter."], [`${2 * d} ${u}`, "Check: 3.14 × your answer should give the circumference."]],
+        ()=>acertar(`d = C ÷ π = ${N(C)} ÷ 3.14 = ${d} ${u}.`));
+    } else if(tipo === "ahmes"){
+      const k = azar(1, 4), d = 9 * k, lado = 8 * k, A = lado * lado;
+      escenaTexto(`<div class="tablilla"><span class="t-tit">AHMES’ RULE · PROBLEM 50</span>Take away 1/9 of the diameter. Multiply what is left by itself.</div>`);
+      escenaTexto(circuloSVG(true, `d = ${d} khet`, `A round field with a diameter of ${d} khet`));
+      const q = `Use Ahmes’ rule. What is the area of a round field with a diameter of ${d} khet?`;
+      ponerInstruccion(q, q, `Usa la regla de Ahmes. ¿Cuál es el área de un campo redondo de ${d} khet de diámetro?`);
+      opciones(`${A} setat`, [[`${d * d} setat`, `First take away 1/9 of the diameter: ${d} − ${k} = ${lado}.`], [`${lado * 2} setat`, `Multiply what is left by itself: ${lado} × ${lado}.`], [`${N(R2(PI * (d / 2) * (d / 2)))} setat`, "That is today’s formula. Use Ahmes’ rule this time."]],
+        ()=>acertar(`${d} − ${d}/9 = ${lado}, and ${lado} × ${lado} = ${A} setat. Today’s formula gives about ${N(R2(PI * d * d / 4))}: very close!`));
+    } else if(tipo === "indiana"){
+      const r = azar(2, 10), dif = R2(0.06 * r * r);
+      escenaTexto(`<div class="tablilla"><span class="t-tit">INDIANA, 1897</span>House Bill 246 would have made π = 3.2.</div>`);
+      escenaTexto(circuloSVG(false, `r = ${r} ${u}`, `A circle with radius ${r} ${u}`));
+      const q = `Find the area with π = 3.2 and with π ≈ 3.14. How much bigger is the area with 3.2?`;
+      ponerInstruccion(q, q, "Halla el área con π = 3.2 y con π ≈ 3.14. ¿Cuánto más grande es el área con 3.2?");
+      opciones(`${N(dif)} ${u2(u)}`, [[`${N(R2(0.06 * r))} ${u2(u)}`, "Square the radius first: r × r."], [`${N(R2(3.2 * r * r))} ${u2(u)}`, "That is only the area with 3.2. Subtract the area with 3.14."], [`${N(R2(0.6 * r * r))} ${u2(u)}`, "Check the subtraction: 3.2 − 3.14 = 0.06."]],
+        ()=>acertar(`3.2 × ${r * r} = ${N(R2(3.2 * r * r))} and 3.14 × ${r * r} = ${N(R2(PI * r * r))}. The difference is ${N(dif)}: a law can’t make that error disappear.`));
+    } else if(tipo === "desdeArea"){
+      const r = azar(2, 10), A = R2(PI * r * r);
+      escenaTexto(`<p class="problema">A circular rug has an area of ${N(A)} ${u2(u)}.</p>`);
+      const q = "What is its radius? Use π ≈ 3.14.";
+      ponerInstruccion(q, `A circular rug has an area of ${N(A)} square ${u}. ` + q, `Una alfombra redonda tiene un área de ${N(A)} ${u} cuadrados. ¿Cuál es su radio? Usa π ≈ 3.14.`);
+      opciones(`${r} ${u}`, [[`${r * r} ${u}`, `A ÷ π = ${r * r}. That is r × r. Which number times itself gives ${r * r}?`], [`${2 * r} ${u}`, "That would be the diameter. Check: 3.14 × r × r must give the area."], [`${N(R2(A / 2))} ${u}`, "Divide the area by π first."]],
+        ()=>acertar(`r² = ${N(A)} ÷ 3.14 = ${r * r}, so r = ${r} ${u}.`));
+    } else {
+      const r = azar(2, 10), A = R2(PI * r * r / 2);
+      escenaTexto(`<p class="problema">A window is a half circle with a radius of ${r} ${u}.</p>`);
+      const q = "What is the area of the window? Use π ≈ 3.14.";
+      ponerInstruccion(q, `A window is a half circle with a radius of ${r} ${u}. ` + q, `Una ventana tiene forma de medio círculo con un radio de ${r} ${u}. ¿Cuál es el área de la ventana? Usa π ≈ 3.14.`);
+      opciones(`${N(A)} ${u2(u)}`, [[`${N(R2(PI * r * r))} ${u2(u)}`, "That is the area of the whole circle. The window is half of it."], [`${N(R2(PI * r))} ${u2(u)}`, "Area uses r × r. Then take half."], [`${N(R2(PI * r * r / 4))} ${u2(u)}`, "A half circle is half, not a quarter, of the circle."]],
+        ()=>acertar(`Whole circle: 3.14 × ${r} × ${r} = ${N(R2(PI * r * r))}. Half: ${N(A)} square ${u}.`));
+    }
+    return;
+  }
+
+  /* --- 2. Relaciones entre ángulos (7.G.5) --- */
+  if(S.juego === "angulos"){
+    const tipo = tipoRonda(reto ? ["ecuSupl","ecuVert","ecuComp","tres","ecuSupl"] : ["comp","supl","vert","comp","supl"]);
+    if(tipo === "comp" || tipo === "supl" || tipo === "vert"){
+      const a = tipo === "comp" ? azar(15, 75) : azar(25, 155), r = tipo === "comp" ? 90 - a : tipo === "supl" ? 180 - a : a;
+      if(tipo === "vert" && a > 150) return nuevaRonda();
+      escenaTexto(anguloSVG(tipo, a, `${a}°`, "?"));
+      const nom = {comp:"complementary: together they make 90°", supl:"supplementary: together they make 180°", vert:"vertical angles"}[tipo];
+      const q = `The angles are ${nom}. What is the measure of the angle marked “?”`;
+      ponerInstruccion(q, q, `Los ángulos son ${{comp:"complementarios: juntos suman 90°", supl:"suplementarios: juntos suman 180°", vert:"opuestos por el vértice"}[tipo]}. ¿Cuánto mide el ángulo marcado con «?»?`);
+      const malos = tipo === "comp" ? [[`${180 - a}°`, "Complementary angles add up to 90°, not 180°."], [`${a}°`, "The two angles are not equal. Together they make a right angle."]]
+                  : tipo === "supl" ? [[`${Math.abs(90 - a)}°`, "Supplementary angles add up to 180°, not 90°."], [`${a}°`, "The two angles are not equal. Together they make a straight line."]]
+                  : [[`${180 - a}°`, "That is the angle next to it. Vertical angles are across from each other, and they are equal."], [`${Math.abs(90 - a)}°`, "Vertical angles are across from each other, and they are equal."]];
+      malos.push([`${r + 10}°`, "Check your subtraction again."]);
+      opciones(`${r}°`, malos, ()=>acertar(tipo === "vert" ? `Vertical angles are equal: ${r}°.` : `${a}° + ${r}° = ${tipo === "comp" ? 90 : 180}°.`));
+    } else if(tipo === "tres"){
+      const a = azar(25, 70), x = azar(15, 30), b = 2 * x, c = 180 - a - b;
+      if(c < 20) return nuevaRonda();
+      /* a + 2x + c... usamos: a, 2x, x + k */
+      const k = c - x;
+      if(k <= 0) return nuevaRonda();
+      escenaTexto(anguloSVG("tres", a, `${a}°`, "2x", `x + ${k}`, b));
+      const q = "The three angles make a straight line. Find x.";
+      ponerInstruccion(q, q, "Los tres ángulos forman una línea recta. Halla x.");
+      opciones(`${x}`, [[`${N(R2((90 - a - k) / 3))}`, "Angles on a straight line add up to 180°, not 90°."], [`${b}`, "That is the measure of 2x. The question asks for x."], [`${N(R2((180 - a + k) / 3))}`, `Check the sign: move the ${k} to the other side by subtracting it.`]],
+        ()=>acertar(`${a} + 2x + x + ${k} = 180, so 3x = ${180 - a - k} and x = ${x}. The angles are ${a}°, ${b}° and ${c}°.`));
+    } else {
+      const x = azar(10, 30);
+      let p, q2, c, d, eq, total, ang1, ang2, modo;
+      if(tipo === "ecuVert"){
+        p = azar(2, 4); c = p + azar(1, 2); q2 = azar(5, 40); d = q2 - (c - p) * x; ang1 = p * x + q2;
+        if(ang1 >= 170 || d === 0) return nuevaRonda();
+        eq = `${lin(p, q2)} = ${lin(c, d)}`; modo = "vert";
+        escenaTexto(anguloSVG("vert", Math.min(ang1, 150), `${lin(p, q2)}`, `${lin(c, d)}`));
+      } else {
+        total = tipo === "ecuSupl" ? 180 : 90; p = azar(2, 3); q2 = azar(-10, 20); ang1 = x; ang2 = p * x + q2;
+        if(ang1 + ang2 !== total){ /* ajustamos x para que cierre */ }
+        const xx = (total - q2) / (p + 1);
+        if(!Number.isInteger(xx) || xx < 8 || p * xx + q2 < 8) return nuevaRonda();
+        ang1 = xx; ang2 = p * xx + q2; eq = `x + ${lin(p, q2)} = ${total}`; modo = tipo === "ecuSupl" ? "supl" : "comp";
+        escenaTexto(anguloSVG(modo, modo === "comp" ? ang1 : ang1, "x", lin(p, q2)));
+        const q = `The angles are ${tipo === "ecuSupl" ? "supplementary" : "complementary"}. Find x.`;
+        ponerInstruccion(q, q, `Los ángulos son ${tipo === "ecuSupl" ? "suplementarios" : "complementarios"}. Halla x.`);
+        escenaTexto(`<p class="nota">Equation: x + (${lin(p, q2)}) = ${total}</p>`);
+        opciones(`${xx}`, [[`${N(R2(((tipo === "ecuSupl" ? 90 : 180) - q2) / (p + 1)))}`, tipo === "ecuSupl" ? "Supplementary angles add up to 180°." : "Complementary angles add up to 90°."],
+                            [`${ang2}`, "That is the other angle. The question asks for x."],
+                            [`${N(R2((total - q2) / p))}`, `Combine like terms first: x + ${p}x = ${p + 1}x.`]],
+          ()=>acertar(`${p + 1}x ${q2 < 0 ? "−" : "+"} ${Math.abs(q2)} = ${total}, so x = ${xx}. The angles are ${ang1}° and ${ang2}°.`));
+        return;
+      }
+      const q = "Vertical angles are equal. Find x.";
+      ponerInstruccion(q, q, "Los ángulos opuestos por el vértice son iguales. Halla x.");
+      escenaTexto(`<p class="nota">Equation: ${eq}</p>`);
+      opciones(`${x}`, [[`${ang1}`, "That is the measure of the angle. The question asks for x."], [`${N(R2((180 - q2 - d) / (p + c)))}`, "Vertical angles are equal; they don’t add up to 180°."], [`${N(R2((q2 + d) / (c - p)))}`, "Check the signs when you move terms to the other side."]],
+        ()=>acertar(`${eq}: ${c - p}x = ${q2 - d}, so x = ${x}. Each angle measures ${ang1}°.`));
+    }
+    return;
+  }
+
+  /* --- 3. Dibujos a escala (7.G.1) --- */
+  if(S.juego === "escala"){
+    const tipo = tipoRonda(reto ? ["area","reescalar","real","mapa","area"] : ["real","mapa","real","mapa","real"]);
+    const [n] = nombresAzar(1);
+    if(tipo === "real" || tipo === "mapa"){
+      const s = elegir([5, 10, 20, 25, 50]), m = azar(2, 16) / 2, real = R2(m * s);
+      escenaTexto(`<svg class="figura" style="max-width:420px" viewBox="0 0 420 150" role="img" aria-label="A map with two towns, ${tipo === "real" ? m + " inches apart" : "an unknown distance apart"}, and a scale bar: 1 inch = ${s} miles">
+        <rect x="4" y="4" width="412" height="142" rx="12" fill="#F4FAFA" stroke="#194F5A" stroke-width="3"/>
+        <circle cx="60" cy="60" r="9" fill="#C62828"/><circle cx="350" cy="60" r="9" fill="#194F5A"/>
+        <line x1="70" y1="60" x2="340" y2="60" stroke="#14313A" stroke-width="2.5" stroke-dasharray="8 6"/>
+        ${svgTxt(205, 48, tipo === "real" ? `${N(m)} in` : "? in")}
+        <rect x="30" y="108" width="80" height="12" fill="#14313A"/>${svgTxt(120, 120, `1 inch = ${s} miles`, {a:"start", fs:15})}</svg>`);
+      if(tipo === "real"){
+        const q = `On ${n}’s map, 1 inch stands for ${s} miles. The towns are ${N(m)} inches apart on the map. How far apart are they really?`;
+        ponerInstruccion(q, q, `En el mapa de ${n}, 1 pulgada representa ${s} millas. Los pueblos están a ${N(m)} pulgadas en el mapa. ¿A qué distancia están en realidad?`);
+        opciones(`${N(real)} miles`, [[`${N(R2(s / m))} miles`, `Each inch is ${s} miles, so multiply.`], [`${N(m + s)} miles`, `Each inch is ${s} miles: multiply, don’t add.`], [`${N(R2(m * s * 2))} miles`, "Check your multiplication again."]],
+          ()=>acertar(`${N(m)} × ${s} = ${N(real)} miles.`));
+      } else {
+        const q = `On ${n}’s map, 1 inch stands for ${s} miles. Two towns are really ${N(real)} miles apart. How far apart are they on the map?`;
+        ponerInstruccion(q, q, `En el mapa de ${n}, 1 pulgada representa ${s} millas. Dos pueblos están en realidad a ${N(real)} millas. ¿A qué distancia están en el mapa?`);
+        opciones(`${N(m)} inches`, [[`${N(R2(real * s))} inches`, `Each ${s} miles is 1 inch on the map. How many groups of ${s} are in ${N(real)}? Divide.`], [`${N(real - s)} inches`, "Divide, don’t subtract."], [`${N(m * 2)} inches`, `Check: your answer times ${s} should give ${N(real)}.`]],
+          ()=>acertar(`${N(real)} ÷ ${s} = ${N(m)} inches.`));
+      }
+    } else if(tipo === "area"){
+      const e = elegir([2, 3, 4, 5]), a = azar(2, 6), b = azar(2, 6), A = a * e * b * e;
+      escenaTexto(`<p class="problema">On a plan, 1 cm stands for ${e} m. A room on the plan is ${a} cm by ${b} cm.</p>`);
+      const q = "What is the real area of the room?";
+      ponerInstruccion(q, `On a plan, 1 cm stands for ${e} m. A room on the plan is ${a} cm by ${b} cm. ` + q, `En un plano, 1 cm representa ${e} m. Una habitación mide ${a} cm por ${b} cm en el plano. ¿Cuál es el área real de la habitación?`);
+      opciones(`${A} m²`, [[`${a * b * e} m²`, "Scale each length first, then multiply. Both the length and the width grow."], [`${a * b} m²`, "That is the area on the plan. Find the real lengths first."], [`${2 * (a + b) * e} m²`, "That is the perimeter. Area is length × width."]],
+        ()=>acertar(`Real room: ${a * e} m by ${b * e} m. Area: ${a * e} × ${b * e} = ${A} m². The area grows ${e} × ${e} = ${e * e} times.`));
+    } else {
+      const s1 = elegir([2, 4, 5]), f = elegir([2, 3]), s2 = s1 * f, m1 = azar(2, 8) * f, m2 = m1 / f;
+      escenaTexto(`<p class="problema">A drawing of a bus uses the scale 1 inch = ${s1} feet. The bus is ${m1} inches long in the drawing. Nova redraws it with the scale 1 inch = ${s2} feet.</p>`);
+      const q = "How long is the bus in Nova’s new drawing?";
+      ponerInstruccion(q, `A drawing of a bus uses the scale 1 inch = ${s1} feet. The bus is ${m1} inches long in the drawing. Nova redraws it with the scale 1 inch = ${s2} feet. ` + q, `Un dibujo de un autobús usa la escala 1 pulgada = ${s1} pies. El autobús mide ${m1} pulgadas en el dibujo. Nova lo vuelve a dibujar con la escala 1 pulgada = ${s2} pies. ¿Cuánto mide el autobús en el dibujo nuevo?`);
+      opciones(`${m2} inches`, [[`${m1 * f} inches`, "Each inch now stands for more feet, so the drawing gets smaller, not bigger."], [`${m1 * s1} inches`, `${m1 * s1} feet is the real length. Now change it to the new scale.`], [`${m1} inches`, "With a different scale, the drawing has a different length."]],
+        ()=>acertar(`Real length: ${m1} × ${s1} = ${m1 * s1} feet. New drawing: ${m1 * s1} ÷ ${s2} = ${m2} inches.`));
+    }
+    return;
+  }
+
+  /* --- 4. ¿Se puede construir el triángulo? (7.G.2) --- */
+  if(S.juego === "triangulos"){
+    const tipo = tipoRonda(reto ? ["cuantos","lado","cuantos","angulo","cuantos"] : ["lados","angulo","lados","angulo","lados"]);
+    if(tipo === "lados"){
+      let a, b, c; const si = azar(0, 1) === 1;
+      do{ a = azar(2, 10); b = azar(2, 10); c = azar(2, 14); }while((a + b > c && a + c > b && b + c > a) !== si || a + b === c || a + c === b || b + c === a);
+      escenaTexto(`<ul class="lista-lados" aria-label="Three sticks: ${a}, ${b} and ${c} inches">${[a, b, c].map(v=>`<li><span class="lado-v" style="width:${v * 22}px" aria-hidden="true"></span>${v} in</li>`).join("")}</ul>`);
+      const q = `Can three sticks of ${a}, ${b} and ${c} inches make a triangle?`;
+      ponerInstruccion(q, q, `¿Se puede formar un triángulo con tres palitos de ${a}, ${b} y ${c} pulgadas?`);
+      const M = Math.max(a, b, c), otros = a + b + c - M;
+      opciones(si ? "Yes" : "No", [[si ? "No" : "Yes", `Add the two shorter sticks. Is the sum greater than the longest stick?`]],
+        ()=>acertar(si ? `${otros} > ${M}: the two shorter sticks are longer than the longest one, so they can meet.` : `${otros} < ${M}: the two shorter sticks are too short to meet.`));
+    } else if(tipo === "angulo"){
+      const a = azar(20, 90), b = azar(20, 160 - a), c = 180 - a - b;
+      escenaTexto(`<p class="expr">${a}° + ${b}° + ? = 180°</p>`);
+      const q = `Two angles of a triangle measure ${a}° and ${b}°. What does the third angle measure?`;
+      ponerInstruccion(q, q, `Dos ángulos de un triángulo miden ${a}° y ${b}°. ¿Cuánto mide el tercer ángulo?`);
+      opciones(`${c}°`, [[`${360 - a - b}°`, "The angles of a triangle add up to 180°, not 360°."], [`${Math.abs(90 - a - b) || 5}°`, "The angles of a triangle add up to 180°."], [`${c + 10}°`, "Check your subtraction again."]],
+        ()=>acertar(`${a} + ${b} + ${c} = 180°.`));
+    } else if(tipo === "lado"){
+      const a = azar(3, 9), b = azar(3, 9), min = Math.abs(a - b), max = a + b, bien = azar(min + 1, max - 1);
+      const q = `A triangle has sides of ${a} cm and ${b} cm. Which length can the third side have?`;
+      ponerInstruccion(q, q, `Un triángulo tiene lados de ${a} cm y ${b} cm. ¿Qué medida puede tener el tercer lado?`);
+      opciones(`${bien} cm`, [[`${max} cm`, `With ${max} cm, the two sides would lie flat on top of it: the third side must be less than ${a} + ${b}.`], [`${max + azar(1, 4)} cm`, `The third side must be less than ${a} + ${b} = ${max}.`], [`${min === 0 ? 0 : min} cm`, `The third side must be more than ${Math.max(a, b)} − ${Math.min(a, b)} = ${min}.`]],
+        ()=>acertar(`The third side must be between ${min} and ${max} cm, so ${bien} cm works.`));
+    } else {
+      const casos = [
+        ()=>{ let a, b, c; do{ a = azar(3, 9); b = azar(3, 9); c = azar(3, 12); }while(!(a + b > c && a + c > b && b + c > a)); return [`Three sides: ${a} cm, ${b} cm and ${c} cm.`, "Exactly one", "Three sides that can meet fit together in only one way, so there is exactly one triangle."]; },
+        ()=>{ const a = azar(30, 80), b = azar(30, 80); return [`Three angles: ${a}°, ${b}° and ${180 - a - b}°.`, "More than one", "Three angles fix the shape but not the size: there are many triangles, big and small."]; },
+        ()=>{ const a = azar(40, 90), b = azar(40, 90), c = azar(40, 90); return a + b + c === 180 ? null : [`Three angles: ${a}°, ${b}° and ${c}°.`, "None", `${a} + ${b} + ${c} = ${a + b + c}, not 180°, so no triangle has these angles.`]; },
+        ()=>{ const a = azar(2, 5), b = azar(2, 5), c = a + b + azar(1, 4); return [`Three sides: ${a} cm, ${b} cm and ${c} cm.`, "None", `${a} + ${b} is less than ${c}: the two short sides can’t meet.`]; },
+        ()=>{ const a = azar(4, 9), b = azar(4, 9), g = azar(30, 120); return [`Two sides, ${a} cm and ${b} cm, with an angle of ${g}° between them.`, "Exactly one", "Two sides and the angle between them fix the triangle: there is exactly one."]; }
+      ];
+      let caso; do{ caso = elegir(casos)(); }while(!caso);
+      escenaTexto(`<p class="problema">${escaparHTML(caso[0])}</p>`);
+      const q = "How many different triangles have these measures?";
+      ponerInstruccion(q, caso[0] + " " + q, "¿Cuántos triángulos distintos tienen estas medidas?");
+      const pistas = {"Exactly one":"Imagine building it: can you build two different triangles with these measures?", "More than one":"Do these measures fix the size, or can you make the triangle bigger or smaller?", "None":"Check the rules: the two shorter sides must be longer than the longest one, and the angles must add up to 180°."};
+      opciones(caso[1], ["Exactly one", "More than one", "None"].filter(o=>o !== caso[1]).map(o=>[o, pistas[caso[1]]]), ()=>acertar(caso[2]), true);
+    }
+    return;
+  }
+
+  /* --- 5. Cortes de cuerpos sólidos (7.G.3) --- */
+  if(S.juego === "cortes"){
+    const caja = CAJA(4, 2.6, 2.6), cubo = CAJA(3, 3, 3);
+    const CORTES = [
+      {s:caja, c:[[0,0,1.2],[4,0,1.2],[4,2.6,1.2],[0,2.6,1.2]], d:"A rectangular prism is cut by a plane parallel to its base.", r:"Rectangle", es:"Un prisma rectangular se corta con un plano paralelo a su base."},
+      {s:caja, c:[[2,0,0],[2,2.6,0],[2,2.6,2.6],[2,0,2.6]], d:"A rectangular prism is cut straight down, parallel to its sides.", r:"Rectangle", es:"Un prisma rectangular se corta de arriba abajo, paralelo a sus caras laterales."},
+      {s:PIRAMIDE, c:[[1,1,2],[3,1,2],[3,3,2],[1,3,2]], d:"A square pyramid is cut by a plane parallel to its base.", r:"Square", es:"Una pirámide cuadrada se corta con un plano paralelo a su base."},
+      {s:PIRAMIDE, c:[[0,2,0],[4,2,0],[2,2,4]], d:"A square pyramid is cut straight down through its top point.", r:"Triangle", es:"Una pirámide cuadrada se corta de arriba abajo, pasando por su punta."},
+      {s:PIRAMIDE, c:[[0,1,0],[4,1,0],[3,1,2],[1,1,2]], d:"A square pyramid is cut straight down, but not through its top point.", r:"Trapezoid", es:"Una pirámide cuadrada se corta de arriba abajo, pero sin pasar por su punta."},
+      {s:cubo, c:[[1.5,0,3],[3,0,1.5],[3,1.5,3]], d:"A corner of a cube is sliced off.", r:"Triangle", es:"Se corta una esquina de un cubo."},
+      {s:caja, c:[[0,0,0],[4,2.6,0],[4,2.6,2.6],[0,0,2.6]], d:"A rectangular prism is cut straight down from one edge to the opposite edge.", r:"Rectangle", es:"Un prisma rectangular se corta de arriba abajo, de una arista a la arista opuesta."}
+    ];
+    const k = reto ? elegir([3, 4, 5, 6, 4, 6]) : elegir([0, 1, 2, 3]), C = CORTES[k];
+    escenaTexto(solidoSVG(C.s.V, C.s.A, C.c, C.d + " The cut is shaded."));
+    escenaTexto(`<p class="nota">${escaparHTML(C.d)}</p>`);
+    const q = "What shape is the cut (the shaded cross section)?";
+    ponerInstruccion(q, C.d + " " + q, C.es + " ¿Qué forma tiene el corte (la sección sombreada)?");
+    const pista = "Imagine cutting the solid with a knife along the shaded plane. Count the sides of the cut face and look at them.";
+    opciones(C.r, ["Rectangle", "Square", "Triangle", "Trapezoid"].filter(o=>o !== C.r).map(o=>[o, o === "Square" && C.r === "Rectangle" ? "Are all four sides of the cut the same length? Look at the prism’s edges." : pista]),
+      ()=>acertar(`The cross section is a ${C.r.toLowerCase()}.`));
+    return;
+  }
+
+  /* --- 6. Área, área total y volumen (7.G.6) --- */
+  if(S.juego === "volumen"){
+    const tipo = tipoRonda(reto ? ["compuesta","triprisma","faltante","sup","cubo"] : ["triangulo","prisma","trapecio","sup","prisma"]);
+    const u = elegir(["cm", "in", "ft", "m"]);
+    if(tipo === "triangulo"){
+      const b = azar(2, 9) * 2, h = azar(2, 12), A = b * h / 2;
+      escenaTexto(trianguloSVG(`${b} ${u}`, `${h} ${u}`));
+      ponerInstruccion("Find the area of the triangle.", `A triangle has base ${b} ${u} and height ${h} ${u}. Find its area.`, "Halla el área del triángulo.");
+      opciones(`${A} ${u2(u)}`, [[`${b * h} ${u2(u)}`, "A triangle is half of a parallelogram: multiply by 1/2."], [`${b + h} ${u2(u)}`, "Area multiplies the base by the height, then takes half."], [`${2 * (b + h)} ${u2(u)}`, "That looks like a perimeter. Area = 1/2 × base × height."]],
+        ()=>acertar(`A = 1/2 × ${b} × ${h} = ${A} square ${u}.`));
+    } else if(tipo === "trapecio"){
+      const b1 = azar(2, 8), b2 = b1 + azar(2, 8), h = azar(2, 6) * 2, A = (b1 + b2) * h / 2;
+      escenaTexto(trapecioSVG(`${b1} ${u}`, `${b2} ${u}`, `${h} ${u}`));
+      ponerInstruccion("Find the area of the trapezoid.", `A trapezoid has bases ${b1} and ${b2} ${u} and height ${h} ${u}. Find its area.`, "Halla el área del trapecio.");
+      opciones(`${A} ${u2(u)}`, [[`${(b1 + b2) * h} ${u2(u)}`, "Use the average of the two bases: (b₁ + b₂) ÷ 2, then multiply by the height."], [`${b1 * b2 * h / 2} ${u2(u)}`, "Add the two bases, don’t multiply them."], [`${b2 * h} ${u2(u)}`, "Both bases count, not only the longer one."]],
+        ()=>acertar(`A = (${b1} + ${b2}) ÷ 2 × ${h} = ${A} square ${u}.`));
+    } else if(tipo === "prisma" || tipo === "sup"){
+      const l = azar(2, 9), w = azar(2, 6), h = azar(2, 6), V = l * w * h, SA = 2 * (l * w + l * h + w * h);
+      escenaTexto(prismaSVG(l, w, h));
+      if(tipo === "prisma"){
+        ponerInstruccion("Find the volume of the prism.", `A rectangular prism is ${l} by ${w} by ${h} ${u}. Find its volume.`, "Halla el volumen del prisma.");
+        opciones(`${V} ${u3(u)}`, [[`${SA} ${u3(u)}`, "That is the surface area. Volume = length × width × height."], [`${l + w + h} ${u3(u)}`, "Multiply the three dimensions, don’t add them."], [`${l * w} ${u3(u)}`, "That is the area of the base. Multiply by the height too."]],
+          ()=>acertar(`V = ${l} × ${w} × ${h} = ${V} cubic ${u}.`));
+      } else {
+        ponerInstruccion("Find the surface area of the prism (the area of all 6 faces).", `A rectangular prism is ${l} by ${w} by ${h} ${u}. Find its surface area.`, "Halla el área total del prisma (el área de sus 6 caras).");
+        opciones(`${SA} ${u2(u)}`, [[`${V} ${u2(u)}`, "That is the volume. Surface area adds the areas of the 6 faces."], [`${SA / 2} ${u2(u)}`, "Each face has a twin on the opposite side: count all 6 faces."], [`${6 * l * w} ${u2(u)}`, "Not all the faces are the same. There are 3 different pairs."]],
+          ()=>acertar(`SA = 2(${l}×${w} + ${l}×${h} + ${w}×${h}) = 2(${l * w + l * h + w * h}) = ${SA} square ${u}.`));
+      }
+    } else if(tipo === "compuesta"){
+      const W = azar(3, 6) * 2, H = azar(3, 8), tt = azar(2, 6), A = W * H + W * tt / 2;
+      escenaTexto(casaSVG(`${W} ${u}`, `${H} ${u}`, `${tt} ${u}`));
+      const q = "Find the area of the house shape: a rectangle with a triangle on top.";
+      ponerInstruccion(q, `The rectangle is ${W} by ${H} ${u}, and the triangle on top is ${tt} ${u} tall. ` + q, "Halla el área de la figura de la casa: un rectángulo con un triángulo encima.");
+      opciones(`${A} ${u2(u)}`, [[`${W * H + W * tt} ${u2(u)}`, "The triangle’s area is half of base × height."], [`${W * H} ${u2(u)}`, "Add the area of the triangle on top too."], [`${W * (H + tt)} ${u2(u)}`, "The top part is a triangle, not a rectangle: take half of its base × height."]],
+        ()=>acertar(`Rectangle: ${W} × ${H} = ${W * H}. Triangle: 1/2 × ${W} × ${tt} = ${W * tt / 2}. Total: ${A} square ${u}.`));
+    } else if(tipo === "triprisma"){
+      const b = azar(2, 6) * 2, h = azar(2, 8), L = azar(3, 12), V = b * h / 2 * L;
+      escenaTexto(`<p class="problema">A tent is a triangular prism. Its triangle has base ${b} ${u} and height ${h} ${u}, and the tent is ${L} ${u} long.</p>`);
+      const q = "What is the volume of the tent?";
+      ponerInstruccion(q, `A tent is a triangular prism. Its triangle has base ${b} ${u} and height ${h} ${u}, and the tent is ${L} ${u} long. ` + q, `Una carpa es un prisma triangular. Su triángulo tiene base ${b} ${u} y altura ${h} ${u}, y la carpa mide ${L} ${u} de largo. ¿Cuál es el volumen de la carpa?`);
+      opciones(`${V} ${u3(u)}`, [[`${b * h * L} ${u3(u)}`, "The base of the prism is a triangle: its area is half of base × height."], [`${b * h / 2} ${u3(u)}`, "That is the area of the triangle. Multiply by the length of the tent."], [`${(b + h) * L} ${u3(u)}`, "Find the area of the triangle first: 1/2 × base × height."]],
+        ()=>acertar(`Triangle: 1/2 × ${b} × ${h} = ${b * h / 2}. Volume: ${b * h / 2} × ${L} = ${V} cubic ${u}.`));
+    } else if(tipo === "faltante"){
+      const l = azar(2, 9), w = azar(2, 6), h = azar(2, 8), V = l * w * h;
+      escenaTexto(`<p class="problema">A fish tank is ${l} ${u} long and ${w} ${u} wide. It holds ${V} cubic ${u} of water when full.</p>`);
+      const q = "How tall is the tank?";
+      ponerInstruccion(q, `A fish tank is ${l} ${u} long and ${w} ${u} wide. It holds ${V} cubic ${u} of water when full. ` + q, `Una pecera mide ${l} ${u} de largo y ${w} ${u} de ancho. Llena, contiene ${V} ${u} cúbicos de agua. ¿Qué altura tiene la pecera?`);
+      opciones(`${h} ${u}`, [[`${V - l - w} ${u}`, "Volume = length × width × height. Divide, don’t subtract."], [`${V * l * w} ${u}`, "To find the missing dimension, divide the volume by length × width."], [`${N(R2(V / l))} ${u}`, `Divide by the area of the base: ${l} × ${w} = ${l * w}.`]],
+        ()=>acertar(`h = ${V} ÷ (${l} × ${w}) = ${V} ÷ ${l * w} = ${h} ${u}.`));
+    } else {
+      const s = azar(2, 9), vol = azar(0, 1) === 1;
+      escenaTexto(prismaSVG(s, s, s));
+      const q = vol ? `A cube has edges of ${s} ${u}. What is its volume?` : `A cube has edges of ${s} ${u}. What is its surface area?`;
+      ponerInstruccion(q, q, vol ? `Un cubo tiene aristas de ${s} ${u}. ¿Cuál es su volumen?` : `Un cubo tiene aristas de ${s} ${u}. ¿Cuál es su área total?`);
+      if(vol) opciones(`${s ** 3} ${u3(u)}`, [[`${6 * s * s} ${u3(u)}`, "That is the surface area. Volume = s × s × s."], [`${3 * s} ${u3(u)}`, "s³ means s × s × s, not 3 × s."], [`${s * s} ${u3(u)}`, "That is the area of one face. Multiply by the height too."]],
+        ()=>acertar(`V = ${s} × ${s} × ${s} = ${s ** 3} cubic ${u}.`));
+      else opciones(`${6 * s * s} ${u2(u)}`, [[`${s ** 3} ${u2(u)}`, "That is the volume. Surface area adds the areas of the 6 faces."], [`${4 * s * s} ${u2(u)}`, "A cube has 6 faces, not 4."], [`${s * s} ${u2(u)}`, "That is one face. A cube has 6 equal faces."]],
+        ()=>acertar(`SA = 6 × ${s} × ${s} = ${6 * s * s} square ${u}.`));
+    }
+    return;
+  }
+}
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+
+/* ============ La historia ============ */
+function abrirHistoria(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#historia"); }catch(e){}
+  mostrar("p-historia");
+  hablar($("tit-historia").textContent + ". " + $("relato").innerText);
+}
+$("juego-historia").addEventListener("click", ()=>{ sonToque(); abrirHistoria(); });
+$("btn-volver-historia").addEventListener("click", ()=>alMenu());
+$("btn-historia-menu").addEventListener("click", ()=>alMenu());
+$("btn-historia-juego").addEventListener("click", ()=>{ sonToque(); iniciarJuego(JUEGOS[0].id); });
+$("btn-bocina-historia").addEventListener("click", ()=>hablar($("relato").innerText));
+$("btn-bocina-historia-es").addEventListener("click", ()=>hablar($("relato-es").innerText, null, "es"));
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  if((location.hash || "") === "#historia"){ abrirHistoria(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
+<script src="../nav-lumi.js" data-grado="7"></script>
+</body>
+</html>
+
