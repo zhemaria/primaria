@@ -16,12 +16,28 @@
   "use strict";
   if (window.LumiVoz) return;
   var ss = window.speechSynthesis;
-  var CLAVE = "lumi-voz", CLAVE_AVISO = "lumi-voz-aviso";
+  /* De prekínder a 1.º la voz empieza encendida: esos niños todavía no leen.
+     Desde 2.º empieza apagada y el alumno decide si la enciende (a esa edad
+     no quieren que la página «les hable como a niños pequeños»).
+     Cada grupo guarda su propia elección, para que la de un hermano menor
+     no cambie la del mayor en la misma tableta. */
+  var pequenos = (function () {
+    var ruta = location.pathname;
+    if (/\/(prekinder|kindergarten|1er_grado|1st_grade|letras|letters)\//i.test(ruta)) return true;
+    if (/\/mentes-curiosas\//i.test(ruta)) {
+      var g = null;
+      try { g = new URLSearchParams(location.search).get("grado"); } catch (e) {}
+      return !g || g === "prek" || g === "k" || g === "1";
+    }
+    return false;
+  })();
+  var CLAVE = pequenos ? "lumi-voz" : "lumi-voz-grandes",
+      CLAVE_AVISO = pequenos ? "lumi-voz-aviso" : "lumi-voz-aviso-grandes";
 
   function guardado(clave) { try { return localStorage.getItem(clave); } catch (e) { return null; } }
   function guardar(clave, v) { try { localStorage.setItem(clave, v); } catch (e) {} }
 
-  var activa = guardado(CLAVE) !== "no";
+  var activa = pequenos ? guardado(CLAVE) !== "no" : guardado(CLAVE) === "si";
 
   var T = {
     es: { si: "🔊 Voz: sí", no: "🔇 Voz: no",
@@ -29,12 +45,16 @@
           ayudaNo: "La voz está apagada. Toca para encenderla.",
           aviso: "Lumi lee las instrucciones en voz alta. Si prefieres silencio, toca el botón «🔊 Voz: sí». " +
                  "Con la voz apagada, Lumi solo lee cuando tocas una bocina 🔊. El botón recuerda tu elección en todas las páginas.",
+          avisoNo: "La voz de Lumi está apagada. Si quieres que Lumi lea las instrucciones en voz alta, toca el botón «🔇 Voz: no». " +
+                   "Las bocinas 🔊 funcionan siempre. El botón recuerda tu elección en todas las páginas.",
           ok: "Entendido" },
     en: { si: "🔊 Voice on", no: "🔇 Voice off",
           ayudaSi: "The voice is on. Tap to turn it off.",
           ayudaNo: "The voice is off. Tap to turn it on.",
           aviso: "Lumi reads the instructions out loud. If you want quiet, tap the «🔊 Voice on» button. " +
                  "With the voice off, Lumi only reads when you tap a speaker 🔊. Your choice is kept on every page.",
+          avisoNo: "Lumi's voice is off. If you want Lumi to read the instructions out loud, tap the «🔇 Voice off» button. " +
+                   "The speakers 🔊 always work. Your choice is kept on every page.",
           ok: "Got it" }
   };
   function idioma() { return (document.documentElement.lang || "es").slice(0, 2) === "en" ? "en" : "es"; }
@@ -309,7 +329,7 @@
     aviso.className = "lumi-voz-aviso";
     aviso.setAttribute("role", "status");
     aviso.setAttribute("lang", idioma());
-    var p = document.createElement("p"); p.textContent = t.aviso;
+    var p = document.createElement("p"); p.textContent = activa ? t.aviso : t.avisoNo;
     var ok = document.createElement("button"); ok.type = "button"; ok.textContent = t.ok;
     ok.addEventListener("click", function () { guardar(CLAVE_AVISO, "visto"); quitarAviso(); });
     aviso.appendChild(p); aviso.appendChild(ok);
