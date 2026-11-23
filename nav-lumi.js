@@ -27,7 +27,8 @@
     { id: "4",    ancla: "g4",   es: "4.º",       en: "4th",   es2: "4.º grado",  en2: "Grade 4" },
     { id: "5",    ancla: "g5",   es: "5.º",       en: "5th",   es2: "5.º grado",  en2: "Grade 5" },
     { id: "6",    ancla: "g6",   es: "6.º",       en: "6th",   es2: "6.º grado",  en2: "Grade 6" },
-    { id: "7",    ancla: "g7",   es: "7.º",       en: "7th",   es2: "7.º grado",  en2: "Grade 7" }
+    { id: "7",    ancla: "g7",   es: "7.º",       en: "7th",   es2: "7.º grado",  en2: "Grade 7" },
+    { id: "8",    ancla: "g8",   es: "8.º",       en: "8th",   es2: "8.º grado",  en2: "Grade 8" }
   ];
 
   /* Materias de cada grado: dirección en inglés y en español
@@ -81,7 +82,11 @@
     "7":  { mate:  { en: P + "7mo_grado/", es: P + "7mo_grado/?ayuda=es" },
             read:  { en: P + "7mo_grado/reading.html", es: P + "7mo_grado/reading.html?ayuda=es" },
             cien:  { en: C + "book-grade7-science.html",        es: C + "book-grade7-science.html" },
-            soci:  { en: C + "book-grade7-social-studies.html", es: C + "book-grade7-social-studies.html" } }
+            soci:  { en: C + "book-grade7-social-studies.html", es: C + "book-grade7-social-studies.html" } },
+    "8":  { mate:  { en: P + "8vo_grado/", es: P + "8vo_grado/?ayuda=es" },
+            read:  { en: P + "8vo_grado/reading.html", es: P + "8vo_grado/reading.html?ayuda=es" },
+            cien:  { en: C + "book-grade8-science.html",        es: C + "book-grade8-science.html" },
+            soci:  { en: C + "book-grade8-social-studies.html", es: C + "book-grade8-social-studies.html" } }
   };
   var ORDEN = ["mate", "read", "lect", "cien", "soci", "mente"];
   var NOMBRES = {
