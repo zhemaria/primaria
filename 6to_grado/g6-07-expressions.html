@@ -185,6 +185,10 @@ body.con-ayuda .ayuda-es{display:block}
 .expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
 .expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
 .expr .meta-v{color:var(--acierto)}
+/* Retos con emojis: tres pistas y la línea final */
+.emoji-reto{display:flex;flex-direction:column;gap:4px;align-items:center}
+.emoji-reto .emoji-linea{font-size:clamp(22px,4.8vw,34px)}
+.emoji-reto .emoji-final{font-size:clamp(24px,5.2vw,38px);border-top:3px dashed var(--borde,#c9e3e5);padding-top:6px;margin-top:4px}
 .nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
 .nota b{color:var(--tinta)}
 .tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
@@ -299,9 +303,9 @@ body.con-ayuda .tarea .criterio .es{display:block}
   <section id="p-portada" class="portada">
     <div class="desfile" aria-hidden="true"><span><img src="lumi6-laptop.png" alt="" class="lumi-d" width="450" height="594"></span><span>🔤</span><span>²</span><span>🧮</span><span>🟰</span></div>
     <h2>Letters that stand for numbers!</h2>
-    <p id="txt-portada">In algebra, a letter can stand for a number we don't know yet, or for any number. With Lumi you will read powers like 2⁵, turn words into expressions, name the parts of an expression, find the value of an expression when you know the variable, find expressions that are equivalent, and decide who is right. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <p id="txt-portada">In algebra, a letter can stand for a number we don't know yet, or for any number. With Lumi you will read powers like 2⁵, turn words into expressions, name the parts of an expression, find the value of an expression when you know the variable, find expressions that are equivalent, decide who is right and solve emoji puzzles where each picture stands for a number. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
     <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
-      <p id="txt-portada-es">En álgebra, una letra puede representar un número que todavía no conocemos, o cualquier número. Con Lumi vas a leer potencias como 2⁵, convertir palabras en expresiones, nombrar las partes de una expresión, hallar el valor de una expresión cuando conoces la variable, hallar expresiones equivalentes y decidir quién tiene razón.</p>
+      <p id="txt-portada-es">En álgebra, una letra puede representar un número que todavía no conocemos, o cualquier número. Con Lumi vas a leer potencias como 2⁵, convertir palabras en expresiones, nombrar las partes de una expresión, hallar el valor de una expresión cuando conoces la variable, hallar expresiones equivalentes, decidir quién tiene razón y resolver retos con emojis en los que cada dibujo vale un número.</p>
       <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
     </div></div>
     <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
@@ -513,7 +517,8 @@ const JUEGOS = [
   {id:"partes",       emoji:"🔍", en:"Parts of an expression",    es:"Partes de una expresión",        meta:"In 7x + 2, 7 is the coefficient"},
   {id:"evaluar",      emoji:"🧮", en:"Evaluate",                  es:"Evaluar",                        meta:"3x + 5 when x = 4 → 17"},
   {id:"equivalentes", emoji:"🟰", en:"Equivalent expressions",    es:"Expresiones equivalentes",       meta:"3(2 + x) = 6 + 3x"},
-  {id:"quien",        emoji:"💬", en:"Who is right?",             es:"¿Quién tiene razón?",            meta:"Decide and explain why"}
+  {id:"quien",        emoji:"💬", en:"Who is right?",             es:"¿Quién tiene razón?",            meta:"Decide and explain why"},
+  {id:"emojis",       emoji:"🍎", en:"Emoji puzzles",             es:"Retos con emojis",               meta:"🍎 + 🍎 = 10, so 🍎 = 5"}
 ];
 const RONDAS = 5;
 
@@ -1039,6 +1044,49 @@ function nuevaRonda(){
       }));
     });
     S.resolver = ()=>{ resolverTexto(verdad ? t.si : t.no)(); if(reto && S.resolver) setTimeout(()=>S.resolver && S.resolver(), 0); };
+    return;
+  }
+  /* --- 7. Retos con emojis (6.EE.1, 6.EE.2c, 6.EE.7): cada dibujo vale un número ---
+     Idea tomada del «Generador de retos matemáticos con emojis» de José M. Fernández.
+     Tres pistas para hallar el valor de cada dibujo y una última línea que se calcula
+     con el orden de las operaciones. Si el alumno se equivoca, recibe una pista, nunca la respuesta. */
+  if(S.juego === "emojis"){
+    const [A, B, C] = mezclar(["🍎","🍌","🍇","🍓","🥕","🌮","⚽","🎈","🐢","⭐","🍪","🚀"]).slice(0, 3);
+    let a, b, c, final, valor, malos, pasos;
+    if(!reto){
+      const tipo = tipoRonda(["mas-por", "por-mas", "menos-por", "mas-por", "por-mas"]);
+      a = azar(2, 9); b = azar(2, 9); c = azar(2, 6);
+      if(tipo === "mas-por"){ final = `${A} + ${B} × ${C}`; valor = a + b * c; malos = [[(a + b) * c, "Multiply before you add: do the × first."]]; pasos = `${b} × ${c} = ${b * c}, then ${a} + ${b * c} = ${valor}`; }
+      else if(tipo === "por-mas"){ final = `${A} × ${B} + ${C}`; valor = a * b + c; malos = [[a * (b + c), "Multiply first, then add."]]; pasos = `${a} × ${b} = ${a * b}, then ${a * b} + ${c} = ${valor}`; }
+      else { a = azar(3, 9); final = `${A} × ${B} − ${C}`; valor = a * b - c; malos = [[a * (b - c), "Multiply first, then subtract."]]; pasos = `${a} × ${b} = ${a * b}, then ${a * b} − ${c} = ${valor}`; }
+      malos.push([a + b + c, "Read the signs in the last line: there is a × in it."]);
+    } else {
+      const tipo = tipoRonda(["potencia", "parentesis", "division", "potencia", "parentesis"]);
+      a = azar(2, 6); b = azar(2, 9); c = azar(3, 5);
+      if(tipo === "parentesis" && b <= a) b = a + azar(1, 4);
+      if(tipo === "potencia"){ final = `${B} + ${A}${sup(2)} × ${C}`; valor = b + a * a * c; malos = [[(b + a * a) * c, "Exponents first, then multiply, then add."], [b + 2 * a * c, `${A}${sup(2)} means ${A} × ${A}, not 2 × ${A}.`]]; pasos = `${a}${sup(2)} = ${a * a}, ${a * a} × ${c} = ${a * a * c}, then ${b} + ${a * a * c} = ${valor}`; }
+      else if(tipo === "parentesis"){ final = `(${B} − ${A}) × ${C} + ${A}`; valor = (b - a) * c + a; malos = [[b - a * c + a, "Do what is inside the parentheses first."], [(b - a) * (c + a), "After the parentheses, multiply before you add."]]; pasos = `${b} − ${a} = ${b - a}, ${b - a} × ${c} = ${(b - a) * c}, then + ${a} = ${valor}`; }
+      else { final = `${A} × ${C} ÷ ${C} + ${B}`; valor = a + b; malos = [[a * c + b, "Multiplication and division go together, from left to right."], [a * (1 + b), "Multiply and divide before you add."]]; pasos = `${a} × ${c} = ${a * c}, ${a * c} ÷ ${c} = ${a}, then ${a} + ${b} = ${valor}`; }
+    }
+    /* Las tres pistas, cada una con su ayuda (sin dar el valor) */
+    const n = azar(2, 4);
+    const lineas = !reto ? [
+        [veces(A, n, " + "), n * a, `${n} ${A} make ${n * a}, so one ${A} is ${n * a} ÷ ${n}.`],
+        [`${A} + ${B}`, a + b, `You know ${A}. Take it away from ${a + b} to find ${B}.`],
+        [`${B} + ${C} + ${C}`, b + 2 * c, `You know ${B}. Take it away from ${b + 2 * c}, then split what is left between the two ${C}.`]]
+      : [
+        [`${A} × ${A}`, a * a, `What number times itself makes ${a * a}?`],
+        [`(${A} + ${B}) × 2`, 2 * (a + b), `Half of ${2 * (a + b)} is ${A} + ${B}. You know ${A}.`],
+        [`${C} × ${C} × ${C} − ${B}`, c ** 3 - b, `Add ${B} back: ${C} × ${C} × ${C} = ${c ** 3 - b} + ${B}. Which number cubed makes that?`]];
+    const filas = lineas.map(([e, r])=>`<p class="expr emoji-linea">${e} = ${r}</p>`).join("");
+    esc.insertAdjacentHTML("beforeend", `<div class="emoji-reto">${filas}<p class="expr emoji-final">${final} = <span class="signo-c">?</span></p></div>`);
+    const qq = "Each picture stands for a number. Find the value of the last line.";
+    ponerInstruccion(qq, qq, "Cada dibujo representa un número. Halla el valor de la última línea. Usa las tres pistas para saber cuánto vale cada dibujo y después el orden de las operaciones.");
+    /* Pista según el error: primero, ¿sabe cuánto vale cada dibujo? */
+    const pistaValores = "Find the value of each picture first. " + lineas[0][2];
+    opcionesNum(valor, malos.concat([[valor + 1, pistaValores], [Math.max(1, valor - 2), lineas[1][2] + " " + lineas[2][2]]]),
+      ()=>{ const sg = esc.querySelector(".signo-c"); sg.textContent = F(valor); sg.classList.add("lleno");
+            acertar(`${A} = ${a}, ${B} = ${b} and ${C} = ${c}. ${final}: ${pasos}.`); });
     return;
   }
 }
