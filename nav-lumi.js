@@ -82,11 +82,13 @@
     "7":  { mate:  { en: P + "7mo_grado/", es: P + "7mo_grado/?ayuda=es" },
             read:  { en: P + "7mo_grado/reading.html", es: P + "7mo_grado/reading.html?ayuda=es" },
             cien:  { en: C + "book-grade7-science.html",        es: C + "book-grade7-science.html" },
-            soci:  { en: C + "book-grade7-social-studies.html", es: C + "book-grade7-social-studies.html" } },
+            soci:  { en: C + "book-grade7-social-studies.html", es: C + "book-grade7-social-studies.html" },
+            mente: { en: P + "mentes-curiosas/?grado=7", es: P + "mentes-curiosas/?grado=7&ayuda=es" } },
     "8":  { mate:  { en: P + "8vo_grado/", es: P + "8vo_grado/?ayuda=es" },
             read:  { en: P + "8vo_grado/reading.html", es: P + "8vo_grado/reading.html?ayuda=es" },
             cien:  { en: C + "book-grade8-science.html",        es: C + "book-grade8-science.html" },
-            soci:  { en: C + "book-grade8-social-studies.html", es: C + "book-grade8-social-studies.html" } }
+            soci:  { en: C + "book-grade8-social-studies.html", es: C + "book-grade8-social-studies.html" },
+            mente: { en: P + "mentes-curiosas/?grado=8", es: P + "mentes-curiosas/?grado=8&ayuda=es" } }
   };
   var ORDEN = ["mate", "read", "lect", "cien", "soci", "mente"];
   var NOMBRES = {

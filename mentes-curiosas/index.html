@@ -108,6 +108,15 @@ a.ficha:hover{border-color:var(--tinta)}
     <a class="ficha juego-56" id="enlace-evidencia" href="evidencia.html"><span class="emoji" aria-hidden="true">📋</span>
       <span><span class="nombre" data-es="Evidence Detectives (evidencia)" data-en="Evidence Detectives">Evidence Detectives</span>
       <span class="meta" data-es="Pensar juntos: datos y argumentos" data-en="Thinking together: facts and arguments">Thinking together: facts and arguments</span></span></a>
+    <div class="ficha juego-78 pronto"><span class="emoji" aria-hidden="true">🔭</span>
+      <span><span class="nombre" data-es="Curiosidad (próximamente)" data-en="Curiosity (coming soon)">Curiosity (coming soon)</span>
+      <span class="meta" data-es="Datos que no encajan" data-en="Data that doesn't fit">Data that doesn't fit</span></span></div>
+    <div class="ficha juego-78 pronto"><span class="emoji" aria-hidden="true">🧩</span>
+      <span><span class="nombre" data-es="Creatividad (próximamente)" data-en="Creativity (coming soon)">Creativity (coming soon)</span>
+      <span class="meta" data-es="Diseñar con reglas" data-en="Design with rules">Design with rules</span></span></div>
+    <a class="ficha juego-78" id="enlace-loop" href="loop.html"><span class="emoji" aria-hidden="true">🚆</span>
+      <span><span class="nombre" data-es="Meet Me in the Loop (encuéntrame en el Loop)" data-en="Meet Me in the Loop">Meet Me in the Loop</span>
+      <span class="meta" data-es="Pensar juntos: cada uno tiene la mitad de las pistas" data-en="Thinking together: each one holds half the clues">Thinking together: each one holds half the clues</span></span></a>
   </div>
   <p class="aviso-56 oculto" id="aviso-56" data-es="Desde 5.º grado, estos juegos son en inglés. El botón «Ayuda en español» de cada juego traduce las instrucciones." data-en="From Grade 5 on, these games are in English. The “Ayuda en español” button in each game translates the instructions into Spanish.">From Grade 5 on, these games are in English.</p>
 
@@ -134,9 +143,9 @@ a.ficha:hover{border-color:var(--tinta)}
 "use strict";
 let idioma="en", grado="prek";
 const $=id=>document.getElementById(id);
-const NOMBRE_GRADO = { prek:{en:"Pre-K", es:"Prekínder"}, k:{en:"Kindergarten", es:"Kínder"}, "1":{en:"Grade 1", es:"1.er grado"}, "2":{en:"Grade 2", es:"2.º grado"}, "3":{en:"Grade 3", es:"3.er grado"}, "4":{en:"Grade 4", es:"4.º grado"}, "5":{en:"Grade 5", es:"5.º grado"}, "6":{en:"Grade 6", es:"6.º grado"} };
+const NOMBRE_GRADO = { prek:{en:"Pre-K", es:"Prekínder"}, k:{en:"Kindergarten", es:"Kínder"}, "1":{en:"Grade 1", es:"1.er grado"}, "2":{en:"Grade 2", es:"2.º grado"}, "3":{en:"Grade 3", es:"3.er grado"}, "4":{en:"Grade 4", es:"4.º grado"}, "5":{en:"Grade 5", es:"5.º grado"}, "6":{en:"Grade 6", es:"6.º grado"}, "7":{en:"Grade 7", es:"7.º grado"}, "8":{en:"Grade 8", es:"8.º grado"} };
 /* Cada grupo de grados tiene sus juegos: prekínder y kínder, 1.º y 2.º, 3.º y 4.º */
-const GRUPO = ()=>({prek:"pk", k:"pk", "1":"12", "2":"12", "3":"34", "4":"34", "5":"56", "6":"56"})[grado];
+const GRUPO = ()=>({prek:"pk", k:"pk", "1":"12", "2":"12", "3":"34", "4":"34", "5":"56", "6":"56", "7":"78", "8":"78"})[grado];
 function aplicar(){
   document.documentElement.lang=idioma;
   document.querySelectorAll("[data-es]").forEach(el=>{ el.textContent=el.getAttribute("data-"+idioma); });
@@ -153,16 +162,17 @@ function aplicar(){
   $("enlace-ideas").href = "ideas.html" + q;
   $("enlace-balanza").href = "balanza.html" + q;
   /* Cada grado ve sus juegos: prekínder y kínder, o 1.º y 2.º */
-  ["pk","12","34","56"].forEach(g=>document.querySelectorAll(".juego-"+g).forEach(x=>x.classList.toggle("oculto", GRUPO()!==g)));
+  ["pk","12","34","56","78"].forEach(g=>document.querySelectorAll(".juego-"+g).forEach(x=>x.classList.toggle("oculto", GRUPO()!==g)));
   /* Desde 3.º, Lumi «creció»: la portada usa la Lumi de la lupa (3.º–4.º) o la científica (5.º–6.º), sin lápiz */
-  $("img-portada").src = {"34":"../4to_grado/lumi-lupa.png", "56":"../6to_grado/lumi6-ciencias.png"}[GRUPO()] || "lumi-cortina.png";
-  $("img-portada").style.mixBlendMode = (GRUPO()==="34"||GRUPO()==="56") ? "normal" : "";
+  $("img-portada").src = {"34":"../4to_grado/lumi-lupa.png", "56":"../6to_grado/lumi6-ciencias.png", "78":"../7mo_grado/lumi7-presenta.png"}[GRUPO()] || "lumi-cortina.png";
+  $("img-portada").style.mixBlendMode = (GRUPO()==="34"||GRUPO()==="56"||GRUPO()==="78") ? "normal" : "";
   /* 5.º y 6.º: los juegos son en inglés; en español se abren con la ayuda activada */
   const q56 = "?grado=" + grado + (idioma==="es" ? "&ayuda=es" : "");
   $("enlace-laboratorio").href = "laboratorio.html" + q56;
   $("enlace-mundos").href = "mundos.html" + q56;
   $("enlace-evidencia").href = "evidencia.html" + q56;
-  $("aviso-56").classList.toggle("oculto", GRUPO()!=="56");
+  $("enlace-loop").href = "loop.html" + q56;
+  $("aviso-56").classList.toggle("oculto", GRUPO()!=="56" && GRUPO()!=="78");
   $("enlace-regla").href = "regla.html" + q;
   $("enlace-inventos").href = "inventos.html" + q;
   $("enlace-misterio").href = "misterio.html" + q;
@@ -181,7 +191,7 @@ $("btn-es").addEventListener("click", ()=>{ idioma="es"; aplicar(); });
 try{ const q=new URLSearchParams(location.search);
   if(q.get("lang")==="es") idioma="es";
   if(q.get("ayuda")==="es") idioma="es";
-  if(["k","1","2","3","4","5","6"].indexOf(q.get("grado"))>=0) grado=q.get("grado"); }catch(e){}
+  if(["k","1","2","3","4","5","6","7","8"].indexOf(q.get("grado"))>=0) grado=q.get("grado"); }catch(e){}
 aplicar();
 /* Barra de Lumi del grado (inicio, grados y materias del grado) */
 const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", grado);

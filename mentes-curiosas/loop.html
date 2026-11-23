@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — Meet Me in the Loop / Encuéntrame en el Loop (Grades 7 and 8)
+  Thinking together with split information: two friends want to meet at a CTA station in Chicago's Loop.
+  Each one sees only two of the four clues (they pass the screen and don't look at the other's clues).
+  Alone, each player's clues fit two or more stations; together, they fit only one. The clues use the
+  city's real address grid (State Street and Madison Street are 0; west and south are negative):
+  negative numbers and absolute value in Grade 7, and straight-line distance with the Pythagorean
+  theorem in Grade 8. A wrong pick gets a hint (which clue it breaks), never the answer.
+  Can also be played alone (with Lumi's and Nova's clues) or with a grown-up (with tips).
+  From Grade 5 on, Lumi's games are in English; «Ayuda en español» shows the instructions and clues in Spanish.
+  Nothing is saved or sent.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meet Me in the Loop · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A thinking-together game for Grades 7 and 8: two friends each hold half of the clues and must combine them to find a CTA station in Chicago's Loop, using coordinates and distances. In English with optional help in Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --rojo:#A3262A; --rojo-claro:#FDE7E7; --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:56ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:56px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.3vw,22px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.05em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,420px)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+.btn-ayuda{border:3px solid #2A9D8F;background:#fff;color:var(--acento);border-radius:999px;padding:8px 16px;min-height:44px;font-weight:700;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:#E6F4F1;border-color:var(--acento)}
+.ayuda-es{display:none !important}
+body.con-ayuda .ayuda-es{display:block !important}
+body.con-ayuda span.ayuda-es,body.con-ayuda small.ayuda-es{display:inline !important}
+body.con-ayuda .opcion small.ayuda-es{display:block !important}
+body.con-ayuda .es-bajo.ayuda-es{display:block !important}
+.caja-ayuda{background:#E6F4F1;border-left:6px solid #2A9D8F;border-radius:12px;padding:8px 12px;margin:-6px 0 14px;font-size:.92em;text-align:left}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.1em;border-width:3px}
+.portada .caja-ayuda{max-width:56ch;margin:0 auto 14px}
+.es-bajo{display:block;font-weight:600;font-size:.78em;color:var(--tinta-suave)}
+.indicacion-es{font-weight:600;color:#1D5A46;margin:-4px 0 8px;font-size:.9em}
+
+/* ---------- Propio de este juego ---------- */
+.juego-loop{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:14px;align-items:start}
+@media (max-width:820px){.juego-loop{grid-template-columns:1fr}}
+.mapa-caja{background:#fff;border:4px solid var(--linea);border-radius:20px;padding:8px;text-align:center}
+.mapa-caja svg{width:100%;height:auto;max-height:74vh;display:block;margin:0 auto}
+.mapa-nota{font-size:.78em;color:var(--tinta-suave);margin:4px 0 0}
+.calle{stroke:#C9C3DD;stroke-width:3}
+.calle-cero{stroke:#8A7FB8;stroke-width:4;stroke-dasharray:10 6}
+.via{fill:none;stroke:#62361B;stroke-width:9;stroke-linejoin:round;opacity:.85}
+.etq-calle{font:700 17px "Trebuchet MS",system-ui,sans-serif;fill:#4C4766}
+.etq-num{font:600 15px "Trebuchet MS",system-ui,sans-serif;fill:#6A6388}
+.estacion circle{fill:#fff;stroke:var(--tinta);stroke-width:4;transition:r .15s}
+.estacion text{font:700 18px "Trebuchet MS",system-ui,sans-serif;fill:var(--tinta);paint-order:stroke;stroke:#fff;stroke-width:5px}
+.estacion{cursor:pointer}
+.estacion:hover circle,.estacion:focus circle{r:14;fill:#FFF3C4}
+.estacion:focus{outline:none}
+.estacion:focus-visible circle{stroke:var(--foco);stroke-width:6}
+.estacion.descartada circle{fill:#E4E1EE;stroke:#9E99B6}
+.estacion.descartada text{fill:#9E99B6}
+.estacion.marca-a circle{fill:#FFD84D}
+.estacion.marca-b circle{fill:#7FB8FF}
+.estacion.marca-a.marca-b circle{fill:url(#dos)}
+.estacion.correcta circle,.estacion.correcta.marca-a circle,.estacion.correcta.marca-b circle{fill:#2E9E6B;stroke:#1D6B4F;r:15}
+.origen{fill:#8A7FB8}
+.panel{display:flex;flex-direction:column;gap:12px}
+.pistas{display:grid;gap:10px}
+.mano-pistas{background:#fff;border:4px solid var(--linea);border-radius:18px;padding:10px 12px}
+.mano-pistas h3{margin:0 0 6px;font-size:1em;display:flex;align-items:center;gap:4px 8px;flex-wrap:wrap}
+.mano-pistas h3 .es-bajo{flex-basis:100%}
+.mano-pistas.a{border-color:#E8A317;background:#FFFBEA}
+.mano-pistas.b{border-color:var(--azul);background:#EEF5FE}
+.mano-pistas ol{margin:0;padding-left:1.3em}
+.mano-pistas li{margin:4px 0;font-weight:600}
+.mano-pistas li .es-pista{display:none;font-weight:500;color:#1D5A46;font-size:.9em}
+body.con-ayuda .mano-pistas li .es-pista{display:block}
+.mano-pistas.tapada ol{display:none}
+.mano-pistas .tapa{display:none;color:var(--tinta-suave);font-style:italic;margin:0}
+.mano-pistas.tapada .tapa{display:block}
+.pantalla-pase{background:#fff;border:4px dashed var(--acento);border-radius:20px;padding:18px;text-align:center}
+.pantalla-pase .grande{font-size:52px;line-height:1.1;margin:0}
+.pantalla-pase h3{margin:6px 0}
+.lista-est{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.lista-est button{border:3px solid var(--tinta);background:#fff;border-radius:12px;padding:6px 10px;min-height:44px;font-weight:700;font-size:.85em}
+.lista-est button.descartada{border-color:#B9B4CC;color:#8C87A3;background:#F3F1F8}
+.lista-est button[aria-pressed="true"]{background:#EEE8FB;border-color:var(--acento)}
+.turno{font-weight:700;text-align:center;margin:0}
+.turno .ficha{display:inline-block;width:20px;height:20px;border-radius:50%;vertical-align:-3px;margin-right:6px;border:2px solid var(--tinta)}
+.ficha.a{background:#FFD84D}.ficha.b{background:#7FB8FF}
+.resumen{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:18px;padding:10px 14px}
+.resumen p{margin:4px 0}
+.resumen .cuenta{font-weight:700}
+.coord{font-family:"Trebuchet MS",system-ui,sans-serif;font-weight:700;white-space:nowrap}
+
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./">◀ Curious Minds</a>
+    <h1>Meet Me in the Loop<span class="es-bajo ayuda-es" lang="es">Encuéntrame en el Loop</span></h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" src="../7mo_grado/lumi7-presenta.png" alt="" width="807" height="679" style="width:min(240px,50vw)">
+    <h2>Half the clues each. One station together.</h2>
+    <p class="intro">Two friends want to meet at a train station in Chicago's Loop. Each one knows only half of the clues. Alone, neither of you can find it. Share what you know, use the street numbers of the city grid, and find the one station that fits every clue.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="intro-es" aria-label="Escuchar en español">🔊</button><p id="intro-es">Dos amigos quieren encontrarse en una estación de tren del Loop de Chicago. Cada uno conoce solo la mitad de las pistas. Solos, ninguno puede hallarla. Compartan lo que saben, usen los números de las calles de la ciudad y encuentren la única estación que cumple todas las pistas.</p></div></div>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien">Who is playing?<span class="es-bajo ayuda-es" lang="es">¿Quién juega?</span></p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="amigos" aria-pressed="true"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span>With a friend</span><small>each one sees only their own clues</small><small class="ayuda-es" lang="es">Con un amigo · cada uno ve solo sus pistas</small></button>
+      <button class="opcion" data-modo="solo" aria-pressed="false"><span class="ico" aria-hidden="true">🧒</span>
+        <span>Just me</span><small>with Lumi's and Nova's clues</small><small class="ayuda-es" lang="es">Yo solo · con las pistas de Lumi y de Nova</small></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span>With a grown-up</span><small>with tips for the grown-up</small><small class="ayuda-es" lang="es">Con un adulto · con consejos</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel">What grade are you in?<span class="es-bajo ayuda-es" lang="es">¿En qué grado estás?</span></p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="7" aria-pressed="true"><span class="ico" aria-hidden="true">➖</span><span>Grade 7</span><small>negative numbers and absolute value</small></button>
+        <button class="opcion" data-nivel="8" aria-pressed="false"><span class="ico" aria-hidden="true">📐</span><span>Grade 8</span><small>plus straight-line distance</small></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../7mo_grado/lumi7-nova.png" alt="Nova" width="56" height="102">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-es" aria-label="Escuchar en español">🔊</button><p id="msg-es"></p></div></div>
+    <details class="consejo oculto" id="consejo"><summary>💡 For the grown-up</summary><p></p></details>
+    <p class="contador" id="contador"></p>
+
+    <div class="juego-loop">
+      <div class="mapa-caja">
+        <svg id="mapa" role="group" aria-label="Map of the Loop: the elevated tracks and their eight stations"></svg>
+        <p class="mapa-nota">Numbers are Chicago street numbers, counted from State Street and Madison Street. On this map, <b>west and south are negative</b>. 800 numbers make one mile.</p>
+        <p class="mapa-nota ayuda-es" lang="es">Los números son los de las calles de Chicago, contados desde State Street y Madison Street. En este mapa, el oeste y el sur son negativos. 800 números son una milla.</p>
+      </div>
+      <div class="panel">
+        <div id="zona-pase" class="pantalla-pase oculto">
+          <p class="grande" id="pase-ico" aria-hidden="true">🙈</p>
+          <h3 id="pase-tit"></h3>
+          <p id="pase-txt"></p>
+          <p class="ayuda-es" lang="es" id="pase-txt-es" style="color:#1D5A46"></p>
+          <button class="boton fuerte" id="btn-ver"></button>
+        </div>
+        <div class="pistas" id="pistas"></div>
+        <div id="zona-elegir" class="oculto">
+          <p class="turno" id="turno"></p>
+          <p class="ayuda-es turno" lang="es" id="turno-es" style="color:#1D5A46;font-weight:600"></p>
+          <div class="lista-est" id="lista-est" role="group" aria-label="Stations"></div>
+          <div class="acciones">
+            <button class="boton" id="btn-mirar-a"><span aria-hidden="true">👀</span> <span id="txt-mirar-a">Peek at my clues</span></button>
+            <button class="boton" id="btn-mirar-b"><span aria-hidden="true">👀</span> <span id="txt-mirar-b">Peek at my clues</span></button>
+            <button class="boton" id="btn-truco"><span aria-hidden="true">💡</span> A tip</button>
+          </div>
+        </div>
+        <div id="zona-resumen" class="resumen oculto" aria-live="polite"></div>
+        <div class="acciones oculto" id="zona-siguiente"><button class="boton fuerte" id="btn-siguiente"></button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../7mo_grado/lumi7-nova.png" alt="Nova" width="56" height="102">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-final-es" aria-label="Escuchar en español">🔊</button><p id="msg-final-es"></p></div></div>
+
+    <img src="../7mo_grado/lumi7-presenta.png" alt="" width="807" height="679" style="width:min(220px,46vw);height:auto">
+
+    <div class="reto">
+      <h3>🏠 Real-world challenge<span class="es-bajo ayuda-es" lang="es">Reto con cosas de verdad</span></h3>
+      <p id="txt-reto"></p>
+      <p class="ayuda-es" lang="es" id="txt-reto-es" style="color:#1D5A46"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> Play again</button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> Another game</a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html">🍎 For teachers, parents and caregivers: why these games<span class="es-bajo ayuda-es" lang="es">Para maestros, padres y tutores: por qué estos juegos</span></a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ============ Lo común a los juegos de 5.º a 8.º (inglés con ayuda en español) ============ */
+const S = {idioma:"en", ayuda:false, modo:"solo", nivel:"7", vistos:{}, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "“"+t+"”";
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const azar = arr=>arr[Math.floor(Math.random()*arr.length)];
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const suave = ()=>sinMovimiento()?"auto":"smooth";
+const COLOR_JUG = {amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"}};
+/* Construye un texto en los dos idiomas: f se evalúa una vez en inglés y otra en español */
+function dos(f){ const antes=S.idioma; S.idioma="en"; const en=f(); S.idioma="es"; const es=f(); S.idioma=antes; return {en, es}; }
+
+/* Voz */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+let limpiarParaVoz = t=>t;
+function hablar(texto, despues, interno, lengua){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const L=lengua||"en";
+    const antes=S.idioma; S.idioma=L; const limpio=limpiarParaVoz(texto); S.idioma=antes;
+    const u=new SpeechSynthesisUtterance(limpio);
+    u.lang = L==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(L)); if(v) u.voice=v;
+    u.rate=0.93; u.pitch=1.05;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* Sonidos y celebración */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSi=()=>tono([659,880],0.12), sonNo=()=>tono([440,349],0.14), sonElige=()=>tono([659],0.08),
+      sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16);
+let CONFETI=["🎉","⭐","✨","🌟","💡"];
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=CONFETI[i%CONFETI.length]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* Lumi señala los botones de los que habla (en inglés) */
+const DICE_COMUN = {
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+let DICE = {};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id]||DICE_COMUN[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:suave()});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi escribe el mensaje en inglés (y la ayuda en español debajo), lo dice en inglés
+   y presenta los botones de ese momento solo las dos primeras veces.
+   «f» es una función que arma el texto: se arma una vez en cada idioma. */
+let ultimaGuia=null;
+const ULTIMO_ES={};
+function decir(cual, f, botones, extra){
+  const t = typeof f==="function" ? dos(f) : {en:f, es:f};
+  $(cual).textContent = t.en;
+  ponerAyudaDe(cual, t.es);
+  const b=botones||[], clave=cual+":"+b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  const ex=extra||[];
+  ultimaGuia=()=>[{texto:t.en}].concat(ex, pasos(b));
+  guia([{texto:t.en}].concat(ex, S.vistos[clave]<=2 ? pasos(b) : []));
+}
+function ponerAyudaDe(cual, es){
+  ULTIMO_ES[cual]=es;
+  const p=$(cual+"-es"); if(p) p.textContent=es;
+}
+/* Una indicación junto a sus opciones (la página no sube); con su ayuda en español */
+function indicar(caja, ind, f, foco){
+  const t=dos(f);
+  $(ind).textContent=t.en;
+  const pe=$(ind+"-es"); if(pe) pe.textContent=t.es;
+  $(caja).scrollIntoView({block:"center", behavior:suave()});
+  hablar(t.en);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+let C = {};
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave && C[clave];
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  /* el consejo es para el adulto: va en español si la ayuda está activada */
+  caja.querySelector("p").textContent=C[clave][S.ayuda?"es":"en"];
+  caja.querySelector("summary").textContent=S.ayuda?"💡 Para el adulto":"💡 For the grown-up";
+}
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function grabadoraEn(boton, etiqueta, alTerminar){
+  let grab=null, trozos=[], url=null;
+  boton.addEventListener("click", async ()=>{
+    if(grab && grab.state==="recording"){ grab.stop(); return; }
+    try{
+      const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+      trozos=[]; grab=new MediaRecorder(flujo);
+      grab.ondataavailable=e=>trozos.push(e.data);
+      grab.onstop=()=>{
+        flujo.getTracks().forEach(t=>t.stop());
+        url=URL.createObjectURL(new Blob(trozos));
+        boton.classList.remove("grabando"); etiqueta.textContent="Record";
+        alTerminar(url);
+      };
+      grab.start(); boton.classList.add("grabando"); etiqueta.textContent="Stop";
+    }catch(e){ alTerminar(null); }
+  });
+}
+
+/* Portada, grado y ayuda en español */
+let gradoFijo=null, alCambiarAyuda=()=>{}, TEXTO_PORTADA={en:"",es:""};
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+function ponerAyuda(on){
+  S.ayuda=on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", String(on));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", on ? "ayuda=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")+(on?"":"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  alCambiarAyuda();
+}
+function iniciarPagina(empezar){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get("ayuda")==="es" || q.get("lang")==="es") S.ayuda=true;
+    if(q.get("grado")==="7" || q.get("grado")==="8") gradoFijo=q.get("grado");
+  }catch(e){}
+  if(gradoFijo){
+    S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+    document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+  }
+  ponerAyuda(S.ayuda);
+  $("btn-ayuda").addEventListener("click", ()=>ponerAyuda(!S.ayuda));
+  /* bocinas en español de cada recuadro de ayuda */
+  document.querySelectorAll("[data-lee-es]").forEach(b=>b.addEventListener("click", ()=>{
+    const p=$(b.dataset.leeEs); if(p) hablar(p.textContent, null, false, "es"); }));
+  $("btn-empezar").addEventListener("click", empezar);
+  $("btn-otra-vez").addEventListener("click", empezar);
+  $("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  $("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  let presentado=false;
+  function presentar(){
+    if(presentado || $("p-portada").classList.contains("oculto")) return;
+    presentado=true;
+    guia([{texto:TEXTO_PORTADA.en}, {el:$("btn-empezar"), texto:DICE_COMUN["btn-empezar"].en}]);
+  }
+  ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-ayuda, #btn-oir, [data-lee-es]")) return;
+    presentar(); }, {once:true}));
+  $("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+  presentar();
+  if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+}
+
+/* ==================================================================
+   El juego: «Encuéntrame en el Loop»
+   Pensar juntos con información repartida: cada jugador tiene la mitad
+   de las pistas. Solas, las pistas de cada uno dejan varias estaciones
+   posibles; juntas, dejan una sola.
+   Coordenadas: los números de las calles de Chicago, contados desde
+   State Street (este-oeste) y Madison Street (norte-sur). En el juego,
+   el oeste y el sur son negativos. 800 números = 1 milla.
+   Calles verificadas: Wells 200 W, LaSalle 140 W, Clark 100 W, State 0,
+   Wabash 45 E; Lake 200 N, Washington 100 N, Madison 0, Monroe 100 S,
+   Adams 200 S, Quincy 220 S, Jackson 300 S, Van Buren 400 S.
+   Las vías del Loop corren sobre Lake, Wabash, Van Buren y Wells.
+   ================================================================== */
+const EST = [
+  {id:"clark-lake",   n:"Clark/Lake",        x:-100, y:200,  calles:["lake"]},
+  {id:"state-lake",   n:"State/Lake",        x:0,    y:200,  calles:["lake"]},
+  {id:"wash-wabash",  n:"Washington/Wabash", x:45,   y:100,  calles:["wabash"]},
+  {id:"adams-wabash", n:"Adams/Wabash",      x:45,   y:-200, calles:["wabash"]},
+  {id:"library",      n:"Library (State/Van Buren)", x:0, y:-400, calles:["vanburen"]},
+  {id:"lasalle-vb",   n:"LaSalle/Van Buren", x:-140, y:-400, calles:["vanburen"]},
+  {id:"quincy",       n:"Quincy",            x:-200, y:-220, calles:["wells"]},
+  {id:"wash-wells",   n:"Washington/Wells",  x:-200, y:100,  calles:["wells"]}
+];
+const porId = id=>EST.find(e=>e.id===id);
+const coordTxt = e=>`(${e.x < 0 ? "−" + (-e.x) : e.x}, ${e.y < 0 ? "−" + (-e.y) : e.y})`;
+const NOMBRE_CALLE = {lake:"Lake Street", wabash:"Wabash Avenue", vanburen:"Van Buren Street", wells:"Wells Street"};
+const recta = (e, o)=>Math.hypot(e.x - o.x, e.y - o.y);
+const ORIGEN = {x:0, y:0, n:"State and Madison"};
+const CLARK = porId("clark-lake"), WELLS = porId("wash-wells");
+
+/* Pistas: cada una sabe decir su texto (en y es), si una estación la cumple,
+   y una ayuda para revisarla (sin dar la respuesta). g = grados donde aparece. */
+const PISTAS = [
+  {id:"norte", g:["7","8"], f:e=>e.y > 0, en:"It is north of Madison Street: its north–south number is positive.", es:"Está al norte de Madison Street: su número norte-sur es positivo.",
+   ay:{en:"North of Madison means the second number is positive.", es:"Al norte de Madison, el segundo número es positivo."}},
+  {id:"sur", g:["7","8"], f:e=>e.y < 0, en:"It is south of Madison Street: its north–south number is negative.", es:"Está al sur de Madison Street: su número norte-sur es negativo.",
+   ay:{en:"South of Madison means the second number is negative.", es:"Al sur de Madison, el segundo número es negativo."}},
+  {id:"oeste", g:["7","8"], f:e=>e.x < 0, en:"It is west of State Street: its east–west number is negative.", es:"Está al oeste de State Street: su número este-oeste es negativo.",
+   ay:{en:"West of State means the first number is negative.", es:"Al oeste de State, el primer número es negativo."}},
+  {id:"no-oeste", g:["7","8"], f:e=>e.x >= 0, en:"Its east–west number is not negative.", es:"Su número este-oeste no es negativo.",
+   ay:{en:"Zero and positive numbers are not negative: State Street is 0.", es:"El cero y los positivos no son negativos: State Street es 0."}},
+  {id:"so", g:["7","8"], f:e=>e.x < 0 && e.y < 0, en:"Both of its numbers are negative.", es:"Sus dos números son negativos.",
+   ay:{en:"Both negative means west of State and south of Madison.", es:"Los dos negativos: al oeste de State y al sur de Madison."}},
+  {id:"lejos-madison", g:["7","8"], f:e=>Math.abs(e.y) >= 300, en:"The absolute value of its north–south number is at least 300.", es:"El valor absoluto de su número norte-sur es por lo menos 300.",
+   ay:{en:"Absolute value is the distance from 0, without the sign: |−400| = 400.", es:"El valor absoluto es la distancia al 0, sin el signo: |−400| = 400."}},
+  {id:"cerca-madison", g:["7","8"], f:e=>Math.abs(e.y) <= 100, en:"It is 100 numbers or less from Madison Street.", es:"Está a 100 números o menos de Madison Street.",
+   ay:{en:"Look at the north–south number: its distance from 0 must be 100 or less.", es:"Mira el número norte-sur: su distancia al 0 debe ser 100 o menos."}},
+  {id:"cerca-state", g:["7","8"], f:e=>Math.abs(e.x) <= 50, en:"The absolute value of its east–west number is 50 or less.", es:"El valor absoluto de su número este-oeste es 50 o menos.",
+   ay:{en:"|45| = 45 and |0| = 0. Which stations are that close to State Street?", es:"|45| = 45 y |0| = 0. ¿Qué estaciones están así de cerca de State Street?"}},
+  {id:"lejos-state", g:["7","8"], f:e=>Math.abs(e.x) >= 150, en:"It is at least 150 numbers from State Street, east or west.", es:"Está por lo menos a 150 números de State Street, al este o al oeste.",
+   ay:{en:"Use the absolute value of the first number: |−200| = 200.", es:"Usa el valor absoluto del primer número: |−200| = 200."}},
+  {id:"calle-lake", g:["7","8"], f:e=>e.calles.includes("lake"), en:"The train runs above Lake Street there.", es:"Ahí el tren pasa por encima de Lake Street.",
+   ay:{en:"Lake Street is the top side of the Loop, at +200.", es:"Lake Street es el lado de arriba del Loop, en +200."}},
+  {id:"calle-wabash", g:["7","8"], f:e=>e.calles.includes("wabash"), en:"The train runs above Wabash Avenue there.", es:"Ahí el tren pasa por encima de Wabash Avenue.",
+   ay:{en:"Wabash is the east side of the Loop, at +45.", es:"Wabash es el lado este del Loop, en +45."}},
+  {id:"calle-vb", g:["7","8"], f:e=>e.calles.includes("vanburen"), en:"The train runs above Van Buren Street there.", es:"Ahí el tren pasa por encima de Van Buren Street.",
+   ay:{en:"Van Buren is the bottom side of the Loop, at −400.", es:"Van Buren es el lado de abajo del Loop, en −400."}},
+  {id:"calle-wells", g:["7","8"], f:e=>e.calles.includes("wells"), en:"The train runs above Wells Street there.", es:"Ahí el tren pasa por encima de Wells Street.",
+   ay:{en:"Wells is the west side of the Loop, at −200.", es:"Wells es el lado oeste del Loop, en −200."}},
+  {id:"entre", g:["7","8"], f:e=>e.x > -200 && e.x < 0, en:"Its east–west number is between −200 and 0.", es:"Su número este-oeste está entre −200 y 0.",
+   ay:{en:"Between −200 and 0 means west of State Street but east of Wells Street.", es:"Entre −200 y 0 quiere decir al oeste de State Street pero al este de Wells Street."}},
+  {id:"caminar-cerca", g:["7","8"], f:e=>Math.abs(e.x) + Math.abs(e.y) < 280, en:"Walking only along the streets from State and Madison, it is less than 280 numbers away.", es:"Caminando solo por las calles desde State y Madison, está a menos de 280 números.",
+   ay:{en:"Walking along the streets, add the absolute values: |x| + |y|.", es:"Caminando por las calles, suma los valores absolutos: |x| + |y|."}},
+  {id:"caminar-lejos", g:["7","8"], f:e=>Math.abs(e.x) + Math.abs(e.y) > 350, en:"Walking only along the streets from State and Madison, it is more than 350 numbers away.", es:"Caminando solo por las calles desde State y Madison, está a más de 350 números.",
+   ay:{en:"Walking along the streets, add the absolute values: |x| + |y|.", es:"Caminando por las calles, suma los valores absolutos: |x| + |y|."}},
+  /* 8.º: distancia en línea recta con el teorema de Pitágoras (8.G.8) */
+  {id:"recta-cerca", g:["8"], pit:true, f:e=>recta(e, ORIGEN) < 250, en:"In a straight line, like a bird flies, it is less than 250 numbers from State and Madison.", es:"En línea recta, como vuela un pájaro, está a menos de 250 números de State y Madison.",
+   ay:{en:"Straight-line distance: √(x² + y²). For (−100, 200): √(10,000 + 40,000) ≈ 224.", es:"Distancia en línea recta: √(x² + y²). Para (−100, 200): √(10 000 + 40 000) ≈ 224."}},
+  {id:"recta-lejos", g:["8"], pit:true, f:e=>recta(e, ORIGEN) > 350, en:"In a straight line, it is more than 350 numbers from State and Madison.", es:"En línea recta, está a más de 350 números de State y Madison.",
+   ay:{en:"Use the Pythagorean theorem: c = √(a² + b²), where a and b are the two numbers.", es:"Usa el teorema de Pitágoras: c = √(a² + b²), donde a y b son los dos números."}},
+  {id:"clark-cerca", g:["8"], pit:true, f:e=>e.id !== "clark-lake" && recta(e, CLARK) < 200, en:"In a straight line, it is less than 200 numbers from Clark/Lake (and it is not Clark/Lake).", es:"En línea recta, está a menos de 200 números de Clark/Lake (y no es Clark/Lake).",
+   ay:{en:"Find how far east–west and how far north–south it is from Clark/Lake (−100, 200). Then a² + b² = c².", es:"Halla cuánto se aleja de Clark/Lake (−100, 200) de este a oeste y de norte a sur. Después, a² + b² = c²."}},
+  {id:"wells-cerca", g:["8"], pit:true, f:e=>e.id !== "wash-wells" && recta(e, WELLS) < 350, en:"In a straight line, it is less than 350 numbers from Washington/Wells (and it is not Washington/Wells).", es:"En línea recta, está a menos de 350 números de Washington/Wells (y no es Washington/Wells).",
+   ay:{en:"From Washington/Wells (−200, 100), find the two legs of the triangle, then c = √(a² + b²).", es:"Desde Washington/Wells (−200, 100), halla los dos catetos del triángulo y después c = √(a² + b²)."}},
+  {id:"clark-lejos", g:["8"], pit:true, f:e=>recta(e, CLARK) > 500, en:"In a straight line, it is more than 500 numbers from Clark/Lake.", es:"En línea recta, está a más de 500 números de Clark/Lake.",
+   ay:{en:"From Clark/Lake (−100, 200), find the two legs of the triangle, then c = √(a² + b²).", es:"Desde Clark/Lake (−100, 200), halla los dos catetos del triángulo y después c = √(a² + b²)."}}
+];
+const cumple = (pistas, e)=>pistas.every(p=>p.f(e));
+const quedan = pistas=>EST.filter(e=>cumple(pistas, e));
+
+/* Reparte 2 pistas a cada jugador: solas dejan 2 o más estaciones; juntas, solo la meta */
+function repartir(nivel, usadas){
+  const lista = PISTAS.filter(p=>p.g.includes(nivel));
+  /* La meta se elige al azar entre las estaciones posibles, para que todas salgan parecido */
+  for(const meta of mezclar(EST.filter(e=>!usadas.includes(e.id)))){
+    const ciertas = lista.filter(p=>p.f(meta));
+    if(ciertas.length < 4) continue;
+    for(let intento=0; intento<600; intento++){
+      const m = mezclar(ciertas), a = m.slice(0,2), b = m.slice(2,4);
+      if(quedan(a).length < 2 || quedan(b).length < 2) continue;
+      if(quedan(a.concat(b)).length !== 1) continue;
+      if(nivel === "8" && !a.concat(b).some(p=>p.pit)) continue;
+      const ids = a.concat(b).map(p=>p.id);
+      /* no dos pistas que digan casi lo mismo */
+      if(ids.includes("oeste") && ids.includes("so")) continue;
+      if(ids.includes("sur") && ids.includes("so")) continue;
+      return {meta, a, b};
+    }
+  }
+  return null;
+}
+
+/* ---------- Textos ---------- */
+const QUIEN = {
+  amigos:{a:{en:"Yellow player", es:"Jugador amarillo"}, b:{en:"Blue player", es:"Jugador azul"}},
+  solo:{a:{en:"Lumi", es:"Lumi"}, b:{en:"Nova", es:"Nova"}}
+};
+const nom = lado=>tx(QUIEN[S.modo==="amigos" ? "amigos" : "solo"][lado]);
+const T = {
+  pasar:{en:(q, otro)=>`${q}'s turn. ${otro}, look away from the screen!`, es:(q, otro)=>`Turno del ${q.toLowerCase()}. ${otro}, ¡no mires la pantalla!`},
+  pasarTxt:{en:"Read your two clues and remember them. Then hide them.", es:"Lee tus dos pistas y recuérdalas. Después escóndelas."},
+  ver:{en:"Show my clues", es:"Ver mis pistas"},
+  esconder:{en:"I've got them. Hide my clues", es:"Ya las tengo. Esconder mis pistas"},
+  hablen:{en:"Now tell each other your clues out loud, without looking at the other's. Then each of you picks the station where you will meet. Yellow picks first.",
+          es:"Ahora díganse sus pistas en voz alta, sin mirar las del otro. Después cada uno elige la estación donde se van a encontrar. Primero elige el amarillo."},
+  soloLee:{en:"Lumi and Nova each know two clues. Alone, their clues fit more than one station. Use all four clues to find the one station where they will meet.",
+           es:"Lumi y Nova saben dos pistas cada una. Solas, sus pistas sirven para más de una estación. Usa las cuatro pistas para hallar la única estación donde se van a encontrar."},
+  eligeA:{en:"Yellow player: tap the station you think it is.", es:"Jugador amarillo: toca la estación que crees que es."},
+  eligeB:{en:"Blue player: now you. Tap the station you think it is.", es:"Jugador azul: ahora tú. Toca la estación que crees que es."},
+  eligeSolo:{en:"Tap the station that fits all four clues.", es:"Toca la estación que cumple las cuatro pistas."},
+  eligeJuntos:{en:"Choose together: tap the station you both agree on.", es:"Elijan juntos: toquen la estación en la que los dos estén de acuerdo."},
+  distintos:{en:(x, y)=>`You picked different stations: ${x} and ${y}. Explain your clues to each other again. Which station fits all four clues? Then choose together.`,
+             es:(x, y)=>`Eligieron estaciones distintas: ${x} y ${y}. Vuelvan a explicarse sus pistas. ¿Qué estación cumple las cuatro pistas? Después elijan juntos.`},
+  noCumple:{en:(e, quien, pista)=>`${e} doesn't fit one of ${quien}'s clues: “${pista}” Check it again.`,
+            es:(e, quien, pista)=>`${e} no cumple una de las pistas de ${quien}: «${pista}» Revísala otra vez.`},
+  bien:{en:(e)=>`You found it together: ${e}!`, es:(e)=>`¡La encontraron juntos: ${e}!`},
+  bienSolo:{en:(e)=>`You found it: ${e}!`, es:(e)=>`¡La encontraste: ${e}!`},
+  siguiente:{en:"Next meeting ▶", es:"Siguiente encuentro ▶"},
+  terminar:{en:"Finish ▶", es:"Terminar ▶"},
+  ronda:{en:(i, n)=>`Meeting ${i} of ${n}`, es:(i, n)=>`Encuentro ${i} de ${n}`},
+  mirar:{en:(q)=>`${q}: peek at my clues`, es:(q)=>`${q}: mirar mis pistas`},
+  truco:{en:"Tip: tap a station on the list to cross it out when a clue rules it out. Crossed-out stations turn gray. Tap again to bring it back.",
+         es:"Consejo: toca una estación de la lista para tacharla cuando una pista la descarta. Las tachadas se ponen grises. Tócala otra vez para devolverla."},
+  final:{en:"You met four times in the Loop! Neither of you could do it alone: every meeting needed both halves of the clues. That's thinking together.",
+         es:"¡Se encontraron cuatro veces en el Loop! Ninguno podía hacerlo solo: cada encuentro necesitó las dos mitades de las pistas. Eso es pensar juntos."},
+  finalSolo:{en:"You found all four meeting places! Lumi's clues alone or Nova's clues alone were never enough. Putting different pieces of information together is how teams solve problems.",
+             es:"¡Encontraste los cuatro lugares de encuentro! Las pistas de Lumi solas o las de Nova solas nunca alcanzaban. Juntar información distinta es como los equipos resuelven problemas."},
+  reto:{en:"Find the address of your school or your home. How many numbers is it from State Street (east or west) and from Madison Street (north or south)? Write it as a pair of numbers, with west and south negative. Since 800 numbers make one mile, how many miles is it from State and Madison, walking along the streets?",
+        es:"Busca la dirección de tu escuela o de tu casa. ¿A cuántos números está de State Street (al este o al oeste) y de Madison Street (al norte o al sur)? Escríbela como un par de números, con el oeste y el sur negativos. Como 800 números son una milla, ¿a cuántas millas está de State y Madison, caminando por las calles?"},
+  reto8:{en:" Then use the Pythagorean theorem: how far is it in a straight line?", es:" Después usa el teorema de Pitágoras: ¿a qué distancia está en línea recta?"}
+};
+C = {
+  inicio:{en:"Before they share, ask each player: “With only your clues, which stations are still possible?” Then ask what changed when they put their clues together.",
+          es:"Antes de que compartan, pregúntele a cada jugador: «Solo con tus pistas, ¿qué estaciones siguen siendo posibles?». Después pregunte qué cambió al juntar las pistas."},
+  distintos:{en:"Don't tell them who is right. Ask each one to say which clue made them choose their station, and to check it against the other player's clues.",
+             es:"No les diga quién tiene razón. Pídale a cada uno que diga qué pista lo hizo elegir su estación y que la compare con las pistas del otro."},
+  pista:{en:"Ask: “What are the two numbers of that station? Does it fit this clue?” Let them check it themselves.",
+         es:"Pregunte: «¿Cuáles son los dos números de esa estación? ¿Cumple esta pista?». Deje que lo comprueben solos."},
+  final:{en:"Ask: “Which clue helped the most? Why couldn't one person solve it alone?” In real life, teams split information the same way.",
+         es:"Pregunte: «¿Qué pista ayudó más? ¿Por qué una sola persona no podía resolverlo?». En la vida real, los equipos se reparten la información de la misma manera."}
+};
+DICE = {
+  "btn-ver":{en:"Tap here to see your clues.", es:"Toca aquí para ver tus pistas."},
+  "btn-siguiente":{en:"Tap here to go on.", es:"Toca aquí para seguir."},
+  "btn-truco":{en:"Tap here for a tip.", es:"Toca aquí para un consejo."},
+  "btn-mirar-a":{en:"Tap here if Yellow needs to peek at their own clues.", es:"Toca aquí si el amarillo necesita mirar sus propias pistas."},
+  "btn-mirar-b":{en:"Tap here if Blue needs to peek at their own clues.", es:"Toca aquí si el azul necesita mirar sus propias pistas."}
+};
+TEXTO_PORTADA = {en:document.querySelector(".portada .intro").textContent, es:$("intro-es").textContent};
+limpiarParaVoz = t=>t.replace(/−(?=\d)/g, S.idioma==="es" ? "menos " : "negative ")
+  .replace(/√/g, S.idioma==="es" ? "la raíz cuadrada de " : "the square root of ")
+  .replace(/²/g, S.idioma==="es" ? " al cuadrado" : " squared").replace(/≈/g, S.idioma==="es" ? " aproximadamente " : " about ")
+  .replace(/\|([^|]+)\|/g, S.idioma==="es" ? " el valor absoluto de $1 " : " the absolute value of $1 ");
+
+/* ---------- El mapa ---------- */
+const NS = "http://www.w3.org/2000/svg";
+const CALLES_X = [["Wells",-200],["LaSalle",-140],["Clark",-100],["State",0],["Wabash",45]];
+const CALLES_Y = [["Lake",200],["Washington",100],["Madison",0],["Monroe",-100],["Adams",-200],["Jackson",-300],["Van Buren",-400]];
+const X0 = -380, X1 = 280, Y0 = -470, Y1 = 350;   /* ventana del mapa, en números de calle */
+const px = x=>x - X0, py = y=>Y1 - y;
+function nodo(tag, at, padre){ const n=document.createElementNS(NS, tag); for(const k in at) n.setAttribute(k, at[k]); if(padre) padre.appendChild(n); return n; }
+function dibujarMapa(){
+  const svg = $("mapa"); svg.innerHTML = "";
+  svg.setAttribute("viewBox", `0 0 ${X1 - X0} ${Y1 - Y0}`);
+  const defs = nodo("defs", {}, svg), g = nodo("linearGradient", {id:"dos"}, defs);
+  nodo("stop", {offset:"50%", "stop-color":"#FFD84D"}, g); nodo("stop", {offset:"50%", "stop-color":"#7FB8FF"}, g);
+  CALLES_X.forEach(([n, x])=>{
+    nodo("line", {x1:px(x), y1:py(236), x2:px(x), y2:py(Y0 + 10), class: x === 0 ? "calle-cero" : "calle"}, svg);
+  });
+  CALLES_Y.forEach(([n, y])=>{
+    nodo("line", {x1:px(X0 + 160), y1:py(y), x2:px(X1 - 10), y2:py(y), class: y === 0 ? "calle-cero" : "calle"}, svg);
+    const t = nodo("text", {x:px(X0 + 4), y:py(y) + 5, class:"etq-calle"}, svg); t.textContent = n;
+    const k = nodo("text", {x:px(X0 + 118), y:py(y) + 5, class:"etq-num"}, svg); k.textContent = y > 0 ? "+" + y : y < 0 ? "−" + (-y) : "0";
+  });
+  /* nombres de las calles norte-sur, de lado, para que no se encimen (LaSalle y Clark están cerca) */
+  CALLES_X.forEach(([n, x])=>{
+    const t = nodo("text", {x:px(x) + 5, y:py(242), class:"etq-calle", "text-anchor":"start", transform:`rotate(-90 ${px(x) + 5} ${py(242)})`}, svg);
+    t.textContent = n + " " + (x > 0 ? "+" + x : x < 0 ? "−" + (-x) : "0");
+  });
+  /* las vías del Loop: Lake, Wabash, Van Buren y Wells */
+  nodo("path", {class:"via", d:`M${px(-200)},${py(200)} L${px(45)},${py(200)} L${px(45)},${py(-400)} L${px(-200)},${py(-400)} Z`}, svg);
+  nodo("circle", {cx:px(0), cy:py(0), r:7, class:"origen"}, svg);
+  const o = nodo("text", {x:px(8), y:py(0) - 10, class:"etq-num"}, svg); o.textContent = "(0, 0)";
+  EST.forEach(e=>{
+    const gr = nodo("g", {class:"estacion", id:"m-" + e.id, tabindex:"0", role:"button", "aria-label":e.n + " " + coordTxt(e)}, svg);
+    nodo("circle", {cx:px(e.x), cy:py(e.y), r:11}, gr);
+    /* dónde va el nombre: arriba en Lake, abajo en Van Buren, a la derecha en Wells (dentro) y en Wabash (fuera) */
+    const lugar = e.id === "clark-lake" ? [-6, -18, "end"] : e.id === "state-lake" ? [6, -18, "start"] : e.calles[0] === "lake" ? [0, -18, "middle"] : e.calles[0] === "vanburen" ? [0, 30, "middle"] : [16, 5, "start"];
+    const t = nodo("text", {x:px(e.x) + lugar[0], y:py(e.y) + lugar[1], "text-anchor":lugar[2]}, gr);
+    t.textContent = e.id === "library" ? "Library" : e.n;
+    gr.addEventListener("click", ()=>tocar(e.id));
+    gr.addEventListener("keydown", ev=>{ if(ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); tocar(e.id); } });
+  });
+}
+
+/* ---------- Estado de la partida ---------- */
+const P = {ronda:0, rondas:4, usadas:[], r:null, fase:"", eleccion:{}, tachadas:new Set(), errores:0};
+
+function pintarPistas(){
+  const cont = $("pistas"); cont.innerHTML = "";
+  ["a","b"].forEach(lado=>{
+    const d = document.createElement("div");
+    d.className = "mano-pistas " + lado; d.id = "mano-" + lado;
+    const ico = S.modo === "amigos" ? `<span class="ficha ${lado}" aria-hidden="true" style="display:inline-block;width:20px;height:20px;border-radius:50%;border:2px solid var(--tinta)"></span>` : `<span aria-hidden="true">${lado === "a" ? "🟢" : "🟣"}</span>`;
+    const tit = dos(()=>S.modo === "amigos" ? tx({en:`${nom(lado)}'s clues`, es:`Pistas del ${nom(lado).toLowerCase()}`}) : tx({en:`${nom(lado)}'s clues`, es:`Pistas de ${nom(lado)}`}));
+    d.innerHTML = `<h3>${ico} ${tit.en}<span class="es-bajo ayuda-es" lang="es">${tit.es}</span></h3>
+      <ol>${P.r[lado].map(p=>`<li>${p.en}<span class="es-pista" lang="es">${p.es}</span></li>`).join("")}</ol>
+      <p class="tapa">${dos(()=>tx({en:"🙈 Hidden. Only this player may peek.", es:"🙈 Escondidas. Solo este jugador puede mirar."})).en}</p>`;
+    cont.appendChild(d);
+  });
+}
+function tapar(lado, si){ const m = $("mano-" + lado); if(m) m.classList.toggle("tapada", si); }
+function pintarLista(){
+  const cont = $("lista-est"); cont.innerHTML = "";
+  EST.forEach(e=>{
+    const b = document.createElement("button"); b.type = "button";
+    b.textContent = e.n + " " + coordTxt(e);
+    b.id = "l-" + e.id;
+    b.classList.toggle("descartada", P.tachadas.has(e.id));
+    b.addEventListener("click", ()=>tocar(e.id));
+    cont.appendChild(b);
+  });
+}
+function marcarMapa(){
+  EST.forEach(e=>{
+    const g = $("m-" + e.id); if(!g) return;
+    g.classList.toggle("descartada", P.tachadas.has(e.id));
+    g.classList.toggle("marca-a", P.eleccion.a === e.id);
+    g.classList.toggle("marca-b", P.eleccion.b === e.id);
+    g.classList.toggle("correcta", P.fase === "fin" && P.r.meta.id === e.id);
+  });
+  EST.forEach(e=>{ const b = $("l-" + e.id); if(b) b.classList.toggle("descartada", P.tachadas.has(e.id)); });
+}
+
+function nuevaRonda(){
+  P.r = repartir(S.nivel, P.usadas);
+  if(!P.r){ P.usadas = []; P.r = repartir(S.nivel, []); }
+  P.usadas.push(P.r.meta.id);
+  P.eleccion = {}; P.tachadas = new Set(); P.errores = 0; P.tacharModo = false;
+  $("contador").textContent = dos(()=>tx(T.ronda, P.ronda + 1, P.rondas)).en;
+  dibujarMapa(); pintarPistas(); pintarLista(); marcarMapa();
+  ["zona-resumen","zona-siguiente","zona-elegir","zona-pase"].forEach(id=>$(id).classList.add("oculto"));
+  consejo("inicio");
+  if(S.modo === "amigos"){ tapar("a", true); tapar("b", true); pase("a"); }
+  else {
+    tapar("a", false); tapar("b", false);
+    P.fase = "solo";
+    $("zona-elegir").classList.remove("oculto");
+    $("btn-mirar-a").classList.add("oculto"); $("btn-mirar-b").classList.add("oculto");
+    turno(T.eligeSolo);
+    decir("msg", ()=>tx(T.soloLee), ["btn-truco"]);
+  }
+}
+/* Pasar la pantalla: cada jugador ve sus pistas sin que el otro mire */
+function pase(lado){
+  P.fase = "pase-" + lado;
+  const otro = lado === "a" ? "b" : "a";
+  $("zona-pase").classList.remove("oculto"); $("zona-elegir").classList.add("oculto");
+  $("pase-ico").textContent = "🙈";
+  const t = dos(()=>tx(T.pasar, nom(lado), nom(otro)));
+  $("pase-tit").textContent = t.en;
+  $("pase-txt").textContent = T.pasarTxt.en; $("pase-txt-es").textContent = t.es + " " + T.pasarTxt.es;
+  $("btn-ver").textContent = T.ver.en;
+  $("btn-ver").onclick = ()=>{
+    if(P.fase === "pase-" + lado){
+      P.fase = "viendo-" + lado; tapar(lado, false);
+      $("pase-ico").textContent = "👀"; $("btn-ver").textContent = T.esconder.en;
+      $("mano-" + lado).scrollIntoView({block:"nearest", behavior:suave()});
+      decir("msg", ()=>tx(T.pasarTxt), ["btn-ver"]);
+    } else {
+      tapar(lado, true);
+      if(lado === "a") pase("b"); else hablen();
+    }
+  };
+  decir("msg", ()=>tx(T.pasar, nom(lado), nom(otro)) + " " + tx(T.pasarTxt), ["btn-ver"]);
+}
+function hablen(){
+  P.fase = "elige-a";
+  $("zona-pase").classList.add("oculto"); $("zona-elegir").classList.remove("oculto");
+  ["a","b"].forEach(l=>{ const b = $("btn-mirar-" + l); b.classList.remove("oculto"); $("txt-mirar-" + l).textContent = dos(()=>tx(T.mirar, nom(l))).en; });
+  turno(T.eligeA);
+  decir("msg", ()=>tx(T.hablen), ["btn-mirar-a","btn-mirar-b"]);
+}
+function turno(t){
+  const lado = P.fase === "elige-a" ? "a" : P.fase === "elige-b" ? "b" : null;
+  $("turno").innerHTML = (lado ? `<span class="ficha ${lado}" aria-hidden="true"></span>` : "") + t.en;
+  $("turno-es").textContent = t.es;
+}
+/* Mirar las propias pistas un momento (por honor: el otro no mira) */
+["a","b"].forEach(l=>$("btn-mirar-" + l).addEventListener("click", ()=>{
+  tapar(l, false); setTimeout(()=>{ if(P.fase !== "fin") tapar(l, true); }, 6000);
+}));
+$("btn-truco").addEventListener("click", ()=>{ P.tacharModo = !P.tacharModo; $("btn-truco").setAttribute("aria-pressed", String(P.tacharModo)); decir("msg", ()=>tx(T.truco)); });
+
+function tocar(id){
+  if(P.fase === "fin" || P.fase.startsWith("pase") || P.fase.startsWith("viendo")) return;
+  if(P.tacharModo){ P.tachadas.has(id) ? P.tachadas.delete(id) : P.tachadas.add(id); sonElige(); marcarMapa(); return; }
+  sonElige();
+  const e = porId(id);
+  if(P.fase === "elige-a"){ P.eleccion.a = id; marcarMapa(); P.fase = "elige-b"; turno(T.eligeB); decir("msg", ()=>tx(T.eligeB)); return; }
+  if(P.fase === "elige-b"){
+    P.eleccion.b = id; marcarMapa();
+    if(P.eleccion.a !== P.eleccion.b){
+      P.fase = "juntos"; consejo("distintos"); sonPista();
+      turno(T.eligeJuntos);
+      const x = porId(P.eleccion.a).n, y = porId(P.eleccion.b).n;
+      decir("msg", ()=>tx(T.distintos, x, y), ["btn-mirar-a","btn-mirar-b"]);
+      return;
+    }
+    revisar(id); return;
+  }
+  /* «solo» o «juntos»: una sola elección */
+  P.eleccion = S.modo === "amigos" ? {a:id, b:id} : {a:id};
+  marcarMapa(); revisar(id);
+}
+function revisar(id){
+  const e = porId(id), meta = P.r.meta;
+  if(id === meta.id){ acierto(); return; }
+  /* Pista: qué pista no cumple esa estación (nunca cuál es la correcta) */
+  P.errores++; sonNo(); consejo("pista");
+  const falla = ["a","b"].map(l=>({l, p:P.r[l].find(p=>!p.f(e))})).filter(x=>x.p);
+  const f = azar(falla);
+  P.tachadas.add(id); marcarMapa();
+  if(S.modo === "amigos"){ P.fase = "juntos"; P.eleccion = {}; marcarMapa(); turno(T.eligeJuntos); }
+  decir("msg", ()=>tx(T.noCumple, e.n, nom(f.l), tx(f.p)) + " " + tx(f.p.ay), ["btn-mirar-a","btn-mirar-b"].filter(()=>S.modo === "amigos"));
+}
+function acierto(){
+  P.fase = "fin"; sonTada(); confeti(); lumiFeliz();
+  tapar("a", false); tapar("b", false);
+  marcarMapa();
+  $("zona-elegir").classList.add("oculto");
+  const qa = quedan(P.r.a).map(e=>e.n), qb = quedan(P.r.b).map(e=>e.n), m = P.r.meta;
+  const t = dos(()=>[
+    tx({en:`${nom("a")}'s clues alone fit ${qa.length} stations: ${qa.join(", ")}.`, es:`Solas, las pistas ${S.modo === "amigos" ? "del " + nom("a").toLowerCase() : "de " + nom("a")} sirven para ${qa.length} estaciones: ${qa.join(", ")}.`}),
+    tx({en:`${nom("b")}'s clues alone fit ${qb.length} stations: ${qb.join(", ")}.`, es:`Solas, las pistas ${S.modo === "amigos" ? "del " + nom("b").toLowerCase() : "de " + nom("b")} sirven para ${qb.length} estaciones: ${qb.join(", ")}.`}),
+    tx({en:`Together, only one: ${m.n} ${coordTxt(m)}.`, es:`Juntas, solo una: ${m.n} ${coordTxt(m)}.`})
+  ]);
+  $("zona-resumen").innerHTML = t.en.map((x, i)=>`<p class="${i === 2 ? "cuenta" : ""}">${x}</p>`).join("") +
+    `<div class="ayuda-es" lang="es" style="color:#1D5A46">${t.es.map(x=>`<p>${x}</p>`).join("")}</div>`;
+  $("zona-resumen").classList.remove("oculto");
+  $("zona-siguiente").classList.remove("oculto");
+  $("btn-siguiente").textContent = P.ronda >= P.rondas - 1 ? T.terminar.en : T.siguiente.en;
+  consejo("final");
+  decir("msg", ()=>tx(S.modo === "amigos" ? T.bien : T.bienSolo, m.n), ["btn-siguiente"], [{texto:t.en.join(" ")}]);
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  P.ronda++;
+  if(P.ronda >= P.rondas){ final(); return; }
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final");
+  const r = dos(()=>tx(T.reto) + (S.nivel === "8" ? tx(T.reto8) : ""));
+  $("txt-reto").textContent = r.en; $("txt-reto-es").textContent = r.es;
+  decir("msg-final", ()=>tx(S.modo === "amigos" ? T.final : T.finalSolo), ["btn-otra-vez","btn-al-menu"]);
+}
+function empezar(){
+  P.ronda = 0; P.usadas = []; S.vistos = {};
+  mostrar("p-juego"); nuevaRonda();
+}
+/* Para las pruebas: resolver la ronda */
+window.S = S; window.P = P;
+S.modo = "amigos";
+alCambiarAyuda = ()=>{};
+CONFETI = ["🚆","⭐","✨","🌟","🏙️"];
+iniciarPagina(empezar);
+
+</script>
+</body>
+</html>
