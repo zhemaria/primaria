@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<!--
+  Eighth Grade Math — Transformations and similarity
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 8: 8.G.1, 8.G.2, 8.G.3, 8.G.4, 8.G.5
+  Opens with a story from the history of mathematics, as the ancient writers told it: Thales of Miletus
+  measuring the height of a pyramid in Egypt with its shadow and a stick (Hieronymus, Plutarch).
+  Ante un error, siempre una pista, nunca la respuesta.
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transformations and similarity · Eighth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Eighth grade games with Lumi and Nova: Thales and the shadow of the pyramid, translations, reflections, rotations and dilations on the coordinate plane, congruent and similar figures, angle facts and similar triangles.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+/* Escena sin dibujo: Lumi señala las opciones, para que no parezca que falta algo */
+.escena:empty{background:#fff url(lumi7-presenta.png) no-repeat center / auto 88%}
+.escena-lumi{height:clamp(150px,26vw,210px);width:auto;display:block}
+/* ---------- Séptimo grado: historia, papiro, fracciones y gráficas ---------- */
+.ficha-historia{border-color:#B5892B;background:#FFF8E6}
+.historia{max-width:760px;margin:0 auto}
+.historia h2{margin:0 0 8px;font-size:clamp(24px,3.8vw,34px)}
+.historia .papiro{display:block;width:100%;max-width:560px;height:auto;margin:6px auto 14px}
+.historia .relato{background:var(--blanco);border:4px solid #E2C98F;border-radius:20px;padding:12px 18px;box-shadow:var(--sombra)}
+.historia .relato p{margin:0 0 10px}
+.historia .relato p:last-child{margin:0}
+.historia .dialogo{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:12px 0}
+.historia .dialogo p{margin:0 0 6px}
+.historia .dialogo p:last-child{margin:0}
+.historia .dato{font-size:.85em;color:var(--tinta-suave);margin:12px 0 0}
+.historia .acciones{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.tablilla{background:#FFF3D6;border:3px solid #B5892B;border-radius:16px;padding:10px 16px;max-width:560px;text-align:center;font-weight:600}
+.tablilla .t-tit{display:block;font-size:.8em;color:#5C3900;letter-spacing:.04em}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin:0 .08em;font-size:.82em}
+.frac .n{border-bottom:3px solid currentColor;padding:0 .12em}
+.frac .d{padding:0 .12em}
+.cociente{font-size:clamp(14px,2vw,17px);color:var(--acento)}
+/* ---------- Octavo grado: transformaciones y semejanza ---------- */
+.tri{width:100%;max-width:560px;height:auto;display:block}
+.recordatorio{font-weight:700;color:var(--acento);background:var(--acento-claro);border-radius:999px;padding:4px 16px;margin:0;font-size:clamp(16px,2.4vw,21px);text-align:center}
+body.nivel-reto .recordatorio{display:none}
+.numero-grande{font-size:clamp(30px,6vw,52px);font-weight:700;color:var(--tinta);margin:4px 0;letter-spacing:.02em}
+.dato-real{font-size:clamp(15px,2.2vw,18px);color:var(--tinta-suave);margin:0;text-align:center}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Transformations and similarity</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi7-matematicas.png" alt="" class="lumi-d" width="365" height="664"></span><span>🔺</span><span>☀️</span><span>🔄</span><span>🪞</span></div>
+    <h2>Measuring a pyramid with a shadow</h2>
+    <p id="txt-portada">More than 2,500 years ago, the Greek thinker Thales visited Egypt and measured the height of a pyramid without climbing it, using only shadows. His secret: similar triangles. Lumi and Nova will help you move figures on the plane with translations, reflections, rotations and dilations, decide when figures are congruent or similar, and use angles and shadows to find what you cannot measure. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Hace más de 2500 años, el pensador griego Tales visitó Egipto y midió la altura de una pirámide sin subirse a ella, solo con sombras. Su secreto: los triángulos semejantes. Lumi y Nova te ayudarán a mover figuras en el plano con traslaciones, reflexiones, rotaciones y dilataciones, decidir cuándo las figuras son congruentes o semejantes, y usar ángulos y sombras para hallar lo que no puedes medir.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <div class="menu-tarea" style="margin:0 0 18px">
+      <p>Start with the story</p>
+      <button class="ficha-juego ficha-historia" id="juego-historia" type="button"><span class="emoji" aria-hidden="true">🔺</span>
+        <span><span class="nombre">Thales and the shadow of the pyramid</span><span class="nombre-es ayuda-es" lang="es">Tales y la sombra de la pirámide</span><span class="meta">A story told for 2,000 years</span></span></button>
+    </div>
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Measure like Thales</span></span></button>
+    </div>
+  </section>
+
+  <!-- HISTORIA -->
+  <section id="p-historia" class="oculto historia" aria-labelledby="tit-historia">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-historia" type="button">◀ Back</button>
+      <span class="crece"></span>
+      <button class="bocina" id="btn-bocina-historia" type="button" aria-label="Hear the story">🔊</button>
+    </div>
+    <h2 id="tit-historia">Thales and the shadow of the pyramid</h2>
+    <svg class="papiro" viewBox="0 0 560 230" role="img" aria-label="A pyramid and a stick standing in the sun. Each one casts a shadow. The sun's rays make two triangles with the same shape: the pyramid's height and shadow, and the stick's height and shadow. Pyramid height divided by stick height equals pyramid shadow divided by stick shadow.">
+      <rect x="4" y="4" width="552" height="222" rx="14" fill="#FFF8E6" stroke="#B5892B" stroke-width="3"/>
+      <circle cx="40" cy="40" r="18" fill="#F8C85F" stroke="#B5892B" stroke-width="2"/>
+      <line x1="20" y1="180" x2="540" y2="180" stroke="#8A5A2B" stroke-width="3"/>
+      <polygon points="60,180 140,70 220,180" fill="#E6CFA4" stroke="#8A5A2B" stroke-width="3" stroke-linejoin="round"/>
+      <line x1="140" y1="70" x2="140" y2="180" stroke="#B71C1C" stroke-width="2.5" stroke-dasharray="6 4"/>
+      <polygon points="220,180 360,180 220,152" fill="#5C3A17" fill-opacity=".25"/>
+      <line x1="140" y1="70" x2="360" y2="180" stroke="#B5892B" stroke-width="2" stroke-dasharray="5 4"/>
+      <line x1="400" y1="180" x2="400" y2="150" stroke="#14313A" stroke-width="5" stroke-linecap="round"/>
+      <line x1="400" y1="180" x2="460" y2="180" stroke="#5C3A17" stroke-width="6" stroke-opacity=".45"/>
+      <line x1="400" y1="150" x2="460" y2="180" stroke="#B5892B" stroke-width="2" stroke-dasharray="5 4"/>
+      <g font-size="13" font-weight="700" fill="#5C3900" text-anchor="middle">
+        <text x="172" y="128" text-anchor="start">height?</text><text x="290" y="200">shadow of the pyramid</text>
+        <text x="400" y="140">stick</text><text x="430" y="200">its shadow</text>
+      </g>
+      <text x="280" y="40" font-size="15" font-weight="700" fill="#1B5E20" text-anchor="middle">pyramid ÷ stick = shadow ÷ shadow</text>
+    </svg>
+    <div class="relato" id="relato">
+      <p>Thales of Miletus lived more than 2,500 years ago in what is now Turkey. The Greeks counted him among the Seven Sages. He traveled to Egypt, where the great pyramids were already about 2,000 years old, and, according to the ancient writers, he measured their height without climbing them.</p>
+      <p><b>Two versions of the story.</b> The oldest version comes from Hieronymus of Rhodes, a student of Aristotle, quoted by the biographer Diogenes Laertius: Thales waited for the moment of the day when our shadows are as long as we are tall. At that moment, the shadow of the pyramid was also as long as the pyramid was tall, so he only had to measure the shadow. A later version, told by Plutarch, is even cleverer: Thales put up a stick at the end of the pyramid’s shadow, and the sun’s rays made two triangles. The pyramid was to the stick as the shadow of the pyramid was to the shadow of the stick.</p>
+      <p><b>Why it works.</b> At the same moment, the sun’s rays hit the pyramid and the stick at the same angle. So the two triangles have the same angles, and triangles with the same angles are <b>similar</b>: one is a bigger copy of the other. In similar figures, all the lengths grow by the same scale factor.</p>
+      <div class="dialogo">
+        <p><b>Nova:</b> So if the stick’s shadow is twice as long as the stick, the pyramid’s shadow is twice as long as the pyramid?</p>
+        <p><b>Lumi:</b> Exactly. The same shape, a different size. That is a dilation.</p>
+        <p><b>Nova:</b> We could measure the Willis Tower that way!</p>
+        <p><b>Lumi:</b> Yes, if we could see the end of its shadow. Today we will move, flip, turn and grow figures, and see what stays the same.</p>
+      </div>
+      <p>We do not have any writing by Thales himself: all we know comes from writers who lived centuries later. But the idea in the story is exactly right, and it is one of the most useful ideas in geometry.</p>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es" id="relato-es"><div class="fila-ayuda">
+      <p>Tales de Mileto vivió hace más de 2500 años en lo que hoy es Turquía. Los griegos lo contaban entre los Siete Sabios. Viajó a Egipto, donde las grandes pirámides ya tenían unos 2000 años y, según los escritores antiguos, midió su altura sin subirse a ellas. La versión más antigua viene de Jerónimo de Rodas, alumno de Aristóteles, citado por el biógrafo Diógenes Laercio: Tales esperó el momento del día en que nuestras sombras miden lo mismo que nuestra estatura; en ese momento, la sombra de la pirámide también medía lo mismo que su altura, así que solo tuvo que medir la sombra. Una versión posterior, de Plutarco, es todavía más ingeniosa: Tales clavó un palo al final de la sombra de la pirámide, y los rayos del sol formaron dos triángulos; la pirámide era al palo como la sombra de la pirámide era a la sombra del palo. Funciona porque, en el mismo momento, los rayos del sol llegan con el mismo ángulo; los dos triángulos tienen los mismos ángulos y son semejantes: uno es una copia más grande del otro. No conservamos nada escrito por el propio Tales: todo lo que sabemos viene de autores que vivieron siglos después.</p>
+      <button class="bocina chica" type="button" id="btn-bocina-historia-es" aria-label="Escuchar la historia en español">🔊</button>
+    </div></div>
+    <p class="dato">Long before Thales, Egyptian scribes already described the slope of a pyramid with a number called the seked; Ahmes, the scribe of the Rhind papyrus, solved problems with it. The Great Pyramid of Giza was about 146 meters (481 feet) tall when it was built.</p>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-historia-juego" type="button">Play: Thales’s shadows ▶</button>
+      <button class="boton" id="btn-historia-menu" type="button">All games</button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi7-matematicas.png" alt="" class="lumi-m" width="365" height="664"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it. Use a drawing, coordinates or a proportion, and tell how it proves your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala. Usa un dibujo, coordenadas o una proporción, y di cómo demuestra tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Selena is 5 feet tall, and her shadow is 4 feet long. At the same moment, a tree’s shadow is 20 feet long. Israel says: “The tree is 21 feet tall, because Selena is 1 foot taller than her shadow.” Is Israel right? How tall is the tree? Explain like Thales.</p>
+      <p class="ayuda-es" lang="es">Selena mide 5 pies, y su sombra mide 4 pies. En el mismo momento, la sombra de un árbol mide 20 pies. Israel dice: «El árbol mide 21 pies, porque Selena mide 1 pie más que su sombra». ¿Tiene razón Israel? ¿Cuánto mide el árbol? Explícalo como Tales.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> The two triangles are ___ because the sun’s rays ___. The tree’s shadow is ___ times as long as Selena’s shadow, so the tree is ___ times as tall: ___ × ___ = ___.</p>
+        <p><b>Useful words:</b> similar, scale factor, proportional, angle, dilation.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: the Willis Tower is about 1,450 feet tall. At a moment when a 2-foot stick casts a 3-foot shadow, how long is the shadow of the tower?</p><p class="ayuda-es" lang="es">Reto: la Willis Tower mide unos 1450 pies. En un momento en que un palo de 2 pies da una sombra de 3 pies, ¿cuánto mide la sombra de la torre?</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">Triangle ABC has vertices A(1, 2), B(4, 2) and C(1, 5). Daniel reflects it over the x-axis and gets A′(−1, 2), B′(−4, 2) and C′(−1, 5). Is Daniel right? Find the correct image and say if the two triangles are congruent.</p>
+      <p class="ayuda-es" lang="es">El triángulo ABC tiene vértices A(1, 2), B(4, 2) y C(1, 5). Daniel lo refleja sobre el eje x y obtiene A′(−1, 2), B′(−4, 2) y C′(−1, 5). ¿Tiene razón Daniel? Halla la imagen correcta y di si los dos triángulos son congruentes.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> Reflecting over the x-axis keeps ___ and changes the sign of ___. Daniel’s points are a reflection over the ___. The correct image is ___. The triangles are ___ because ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: dilate the original triangle by a scale factor of 2 with center at the origin. Write the new vertices. Is the new triangle congruent, similar or both? How long is the image of AB?</p><p class="ayuda-es" lang="es">Reto: dilata el triángulo original con factor de escala 2 y centro en el origen. Escribe los nuevos vértices. ¿El nuevo triángulo es congruente, semejante o las dos cosas? ¿Cuánto mide la imagen de AB?</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: a drawing, coordinates or a proportion.<span class="es" lang="es">Usé evidencia: un dibujo, coordenadas o una proporción.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained what stays the same and what changes in the transformation.<span class="es" lang="es">Expliqué qué se mantiene igual y qué cambia en la transformación.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Israel is not right: in similar triangles the lengths are multiplied by the same scale factor, not increased by the same amount. The sun’s rays hit Selena and the tree at the same angle, so the two triangles are similar. The tree’s shadow is 20 ÷ 4 = 5 times as long as Selena’s shadow, so the tree is 5 times as tall as Selena: 5 × 5 = 25 feet. Check: 25 ÷ 20 = 5 ÷ 4 = 1.25.</p>
+        <p class="solo-reto"><b>Challenge.</b> Shadow ÷ height = 3 ÷ 2 = 1.5 for everything at that moment. The tower’s shadow is 1,450 × 1.5 = 2,175 feet.</p>
+        <p><b>Part 2.</b> Daniel is not right: he reflected over the y-axis, because he changed the sign of x. Reflecting over the x-axis keeps x and changes the sign of y: A′(1, −2), B′(4, −2), C′(1, −5). A reflection keeps all lengths and angles the same, so the two triangles are congruent.</p>
+        <p class="solo-reto"><b>Challenge.</b> Multiply every coordinate by 2: A″(2, 4), B″(8, 4), C″(2, 10). The new triangle has the same angles but sides twice as long, so it is similar but not congruent. AB measured 3, so its image measures 6.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: transformations and similarity</button></p>
+    <p>Aligned to the Illinois eighth grade mathematics standards 8.G.1 (verify experimentally the properties of rotations, reflections and translations), 8.G.2 (understand that a figure is congruent to another if one can be obtained from the other by a sequence of rotations, reflections and translations), 8.G.3 (describe the effect of dilations, translations, rotations and reflections using coordinates), 8.G.4 (understand that a figure is similar to another if one can be obtained from the other by a sequence of rotations, reflections, translations and dilations) and 8.G.5 (use informal arguments about the angle sum and exterior angle of triangles, the angles created when parallel lines are cut by a transversal, and the angle-angle criterion for similarity of triangles). The module opens with a story from the history of mathematics as the ancient writers told it: Thales of Miletus measuring a pyramid in Egypt with its shadow, in the versions of Hieronymus of Rhodes (quoted by Diogenes Laertius) and Plutarch. At the Easy level the transformations are translations and reflections over the axes; at the Challenge level there are rotations of 90° and 180° about the origin, dilations, sequences of transformations and harder angle relationships. The most common mistakes, reflecting over the wrong axis, rotating in the wrong direction, adding instead of multiplying in a dilation and confusing congruent with similar, get their own hints, and a wrong answer always brings a hint, never the answer. The optional “Ayuda en español” button translates only the instruction or the question. Each game has its own direct link: #historia, #sombras, #mover, #cual, #propiedades, #angulos and #semejantes, and the final task is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para octavo grado: 8.G.1 a 8.G.5 (traslaciones, reflexiones, rotaciones y dilataciones; figuras congruentes y semejantes; ángulos de triángulos y de rectas paralelas cortadas por una transversal; criterio ángulo-ángulo). El módulo empieza con una historia de la historia de las matemáticas, tal como la contaron los escritores antiguos: Tales de Mileto midiendo una pirámide con su sombra. Ante un error, siempre se da una pista, nunca la respuesta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Transformations and similarity</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. A 3-foot stick casts a 4-foot shadow. At the same time, a building casts a 60-foot shadow. Height of the building: <i class="linea"></i></h3>
+  <h3>2. Find the image of the point P(3, −2).</h3>
+  <div class="caja-h">
+    <div>a) Translation 4 left and 5 up: <i class="linea"></i></div>
+    <div>b) Reflection over the x-axis: <i class="linea"></i></div>
+    <div>c) Rotation 90° counterclockwise about the origin: <i class="linea"></i></div>
+    <div>d) Dilation by 3, center at the origin: <i class="linea"></i></div>
+  </div>
+  <h3>3. True or false? After a rotation, the lengths of the sides stay the same: <i class="linea"></i> After a dilation by 2, the angles double: <i class="linea"></i></h3>
+  <h3>4. Angles</h3>
+  <div class="caja-h">
+    <div>a) A triangle has angles 47° and 68°. The third angle: <i class="linea"></i></div>
+    <div>b) An exterior angle of a triangle when the two remote interior angles are 50° and 65°: <i class="linea"></i></div>
+    <div>c) Two parallel lines are cut by a transversal. One angle is 110°. Its corresponding angle: <i class="linea"></i> Its same-side interior angle: <i class="linea"></i></div>
+  </div>
+  <h3>5. Triangle 1 has angles 35° and 75°. Triangle 2 has angles 75° and 70°. Are they similar? <i class="linea"></i></h3>
+  <h3>6. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Selena (5 ft) casts a 4 ft shadow; a tree casts a 20 ft shadow. Israel says the tree is 21 ft. Is he right? Explain.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) Reflect A(1, 2), B(4, 2), C(1, 5) over the x-axis. Daniel got (−1, 2), (−4, 2), (−1, 5). Is he right? Explain.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+try{ if("scrollRestoration" in history) history.scrollRestoration = "manual"; }catch(e){}
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés).
+   Ante un error siempre hay una pista, nunca la respuesta. */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great reasoning!","Nice strategy!","Your thinking paid off!","Thales would be proud!","Lumi and Nova are glowing!","Well done, step by step!"],
+  otra:["So close! Try again!","Not yet. Look at it one more time.","Hmm… try again. You can work it out."],
+  escuchar:"🔁 Listen again",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game, or start with the story.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  estrategias:[
+    ["I moved one point at a time and checked the coordinates","Great strategy! A figure moves point by point."],
+    ["I asked what stays the same: lengths, angles or only the shape","Excellent! That is how to tell congruent from similar."],
+    ["I compared the ratios of matching sides","Nice work! In similar figures every ratio is the same scale factor."],
+    ["I used the angle facts: 180° in a triangle, equal angles on parallel lines","Good thinking! Angles let you find what you cannot measure."]]
+};
+const ES = { menu:"Escoge un juego o empieza con la historia." };
+
+const JUEGOS = [
+  {id:"sombras",     emoji:"☀️", en:"Thales’s shadows",            es:"Las sombras de Tales",               meta:"Similar triangles"},
+  {id:"mover",       emoji:"🔄", en:"Move the point",              es:"Mueve el punto",                     meta:"Translate, reflect, rotate, dilate"},
+  {id:"cual",        emoji:"🪞", en:"Which transformation?",       es:"¿Qué transformación?",               meta:"Congruent or similar?"},
+  {id:"propiedades", emoji:"📐", en:"What stays the same?",        es:"¿Qué se mantiene igual?",            meta:"Lengths, angles, parallel lines"},
+  {id:"angulos",     emoji:"📏", en:"Angle detectives",            es:"Detectives de ángulos",              meta:"Triangles and parallel lines"},
+  {id:"semejantes",  emoji:"🔺", en:"Similar triangles",           es:"Triángulos semejantes",              meta:"Scale factor and angles"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(String(texto)
+    .replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m)=>{ const d = m.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g, (c)=>"0123456789-"["⁰¹²³⁴⁵⁶⁷⁸⁹⁻".indexOf(c)]);
+      if(d === "2") return es ? " al cuadrado" : " squared"; if(d === "3") return es ? " al cubo" : " cubed";
+      return (es ? " elevado a " : " to the power of ") + d.replace("-", es ? "menos " : "negative "); })
+    .replace(/∛/g, es ? " raíz cúbica de " : " the cube root of ").replace(/√/g, es ? " raíz cuadrada de " : " the square root of ")
+    .replace(/±/g, es ? " más o menos " : " plus or minus ").replace(/π/g, es ? " pi " : " pi ").replace(/…/g, es ? " y así sigue" : " and so on")
+    .replace(/½/g, es ? " un medio por " : " one half times ").replace(/(^|[\s(=:])−(?=\d)/g, es ? "$1menos " : "$1negative ").replace(/\b(\d+) (\d+)\/(\d+)\b/g, es ? "$1 y $2/$3" : "$1 and $2/$3"), es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi7-matematicas.png" alt="" class="lumi-m" width="365" height="664">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-historia","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+  /* Cada pantalla nueva empieza arriba (si no, se queda donde estaba el menú) */
+  try{ window.scrollTo(0, 0); }catch(e){}
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g7-01-proportional-relationships.html#ahmes */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  /* Si el juego no dibuja nada en la escena, Lumi la acompaña para que no parezca que falta algo */
+  setTimeout(()=>{ const e = $("escena"); if(e && !e.children.length) e.innerHTML = '<img class="escena-lumi" src="lumi7-presenta.png" alt="" width="807" height="679">'; }, 0);
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+
+/* ============ Séptimo grado: fracciones y gráficas ============ */
+const fr = (n, d)=>{ const g = mcd(Math.abs(n), Math.abs(d)) || 1; return {n:n / g, d:d / g}; };
+const frDiv = (a, b)=> fr(a.n * b.d, a.d * b.n);
+const frMul = (a, b)=> fr(a.n * b.n, a.d * b.d);
+const frSum = (a, b)=> fr(a.n * b.d + b.n * a.d, a.d * b.d);
+/* 3/2 → "1 1/2"; 4/1 → "4"; 3/4 → "3/4" */
+function fmtFr(f){
+  if(f.d === 1) return String(f.n);
+  if(f.n > f.d) return `${Math.floor(f.n / f.d)} ${f.n % f.d}/${f.d}`;
+  return `${f.n}/${f.d}`;
+}
+const txtFr = (f)=> `${f.n}/${f.d}`;
+/* Números con decimales cortos: 2.5 → "2.5"; 3 → "3" */
+const D = (x)=> String(Math.round(x * 100) / 100);
+
+/* Gráfica del primer cuadrante.
+   f: función y = f(x) (o null), puntos: [[x, y]...], marca: [x, y] resaltado con su rótulo */
+function graf7(o){
+  const W = o.chica ? 200 : 300, H = W, x0 = o.chica ? 30 : 46, y0 = H - (o.chica ? 28 : 40), L = W - x0 - (o.chica ? 12 : 20);
+  const kx = L / o.maxX, ky = L / o.maxY, fs = o.chica ? 10 : 13;
+  const px = (x)=> x0 + x * kx, py = (y)=> y0 - y * ky;
+  let s = o.chica ? `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">`
+                  : `<svg class="modelo" style="max-width:340px" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(o.etiqueta || "Graph")}">`;
+  s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
+  for(let i=0;i<=5;i++){
+    const vx = o.maxX * i / 5, vy = o.maxY * i / 5;
+    s += `<line x1="${px(vx)}" y1="${y0}" x2="${px(vx)}" y2="${y0 - L}" stroke="#C9E3E5"/><line x1="${x0}" y1="${py(vy)}" x2="${x0 + L}" y2="${py(vy)}" stroke="#C9E3E5"/>`;
+    s += `<text x="${px(vx)}" y="${y0 + fs + 3}" font-size="${fs}" text-anchor="middle" fill="#14313A">${D(vx)}</text>`;
+    if(i) s += `<text x="${x0 - 4}" y="${py(vy) + fs / 3}" font-size="${fs}" text-anchor="end" fill="#14313A">${D(vy)}</text>`;
+  }
+  s += `<line x1="${x0}" y1="${y0}" x2="${x0 + L + 6}" y2="${y0}" stroke="#14313A" stroke-width="2"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0 - L - 6}" stroke="#14313A" stroke-width="2"/>`;
+  if(!o.chica && o.xLab) s += `<text x="${x0 + L}" y="${H - 4}" font-size="13" font-weight="700" text-anchor="end" fill="#3F5F66">${escaparHTML(o.xLab)}</text>`;
+  if(!o.chica && o.yLab) s += `<text x="${x0 + 4}" y="14" font-size="13" font-weight="700" fill="#3F5F66">${escaparHTML(o.yLab)}</text>`;
+  if(o.f){
+    const pts = [];
+    for(let i=0;i<=40;i++){ const x = o.maxX * i / 40, y = o.f(x); if(y >= 0 && y <= o.maxY) pts.push(`${px(x).toFixed(1)},${py(y).toFixed(1)}`); }
+    s += `<polyline points="${pts.join(" ")}" fill="none" stroke="#45A6AD" stroke-width="${o.chica ? 3 : 4}" stroke-linecap="round"/>`;
+  }
+  (o.puntos || []).forEach(([x, y])=>{ if(x <= o.maxX && y <= o.maxY) s += `<circle cx="${px(x)}" cy="${py(y)}" r="${o.chica ? 4.5 : 5.5}" fill="#194F5A" stroke="#fff" stroke-width="1.5"/>`; });
+  if(o.marca){
+    const [x, y] = o.marca, cx = px(x), cy = py(y), izq = cx > x0 + L * 0.6;
+    s += `<circle cx="${cx}" cy="${cy}" r="9" fill="#F8C85F" stroke="#5C3900" stroke-width="3"/>`;
+    s += `<rect x="${izq ? cx - 92 : cx + 10}" y="${cy - 34}" width="82" height="26" rx="8" fill="#FFF3D6" stroke="#5C3900" stroke-width="2"/>`;
+    s += `<text x="${izq ? cx - 51 : cx + 51}" y="${cy - 15}" font-size="15" font-weight="700" text-anchor="middle" fill="#5C3900">(${D(x)}, ${D(y)})</text>`;
+  }
+  return s + "</svg>";
+}
+/* Tabla x / y (con la fila y ÷ x en el nivel Fácil) */
+function tablaXY(xs, ys, nomX, nomY, conCociente){
+  let h = `<table class="tabla-razon"><caption>${escaparHTML(nomX)} and ${escaparHTML(nomY)}</caption><tbody>`;
+  h += `<tr><th scope="row">x · ${escaparHTML(nomX)}</th>${xs.map(v=>`<td>${D(v)}</td>`).join("")}</tr>`;
+  h += `<tr><th scope="row">y · ${escaparHTML(nomY)}</th>${ys.map(v=>`<td>${D(v)}</td>`).join("")}</tr>`;
+  if(conCociente) h += `<tr><th scope="row" class="cociente">y ÷ x</th>${xs.map((v, i)=>`<td class="cociente">${D(ys[i] / v)}</td>`).join("")}</tr>`;
+  return h + "</tbody></table>";
+}
+/* Botones grandes de sí / no */
+function botonesSiNo(verdad, siTxt, noTxt, pista, expl){
+  const cont = $("opciones");
+  [[true, siTxt, "opcion-vf v"], [false, noTxt, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+      if(v !== verdad){ fallar(bt, pista); return; }
+      sonBoing(); acertar(expl);
+    }));
+  });
+  S.resolver = resolverTexto(verdad ? siTxt : noTxt);
+}
+/* Opciones que son gráficas: [[svg, etiqueta, correcta, pista], ...] */
+function opcionesGraf(lista, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(([svg, etiqueta, ok, pista], i)=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-graf";
+    b.setAttribute("aria-label", etiqueta);
+    b.innerHTML = svg + `<span aria-hidden="true">${"ABCD"[i]}</span>`;
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(ok){ sonBoing(); alAcertar(b); } else fallar(b, pista); });
+    cont.appendChild(b);
+  });
+}
+
+/* ============ Octavo grado: funciones (ayudas compartidas con el módulo 2) ============ */
+const N = (n)=> n < 0 ? "−" + Math.abs(n) : String(n);
+/* Fracción simplificada como texto: "2", "−3/4" */
+function frac(n, d){
+  if(d < 0){ n = -n; d = -d; }
+  const g = mcd(Math.abs(n), d) || 1; n /= g; d /= g;
+  return d === 1 ? N(n) : (n < 0 ? "−" : "") + Math.abs(n) + "/" + d;
+}
+/* Término con x: 3x, −x, x, (2/3)x */
+function tx(m){ const t = typeof m === "string" ? m : N(m); return t === "1" ? "x" : t === "−1" ? "−x" : t.includes("/") ? `(${t})x` : `${t}x`; }
+/* Suma un número con su signo: " + 5", " − 3", "" */
+const mas = (b)=> b === 0 ? "" : b > 0 ? ` + ${b}` : ` − ${-b}`;
+const ecu = (m, b)=> m === 0 || m === "0" ? `y = ${N(b)}` : `y = ${tx(m)}${mas(b)}`;
+/* Lado de una ecuación ax + b */
+const lado = (a, b)=> a === 0 ? N(b) : `${tx(a)}${mas(b)}`;
+
+/* Plano con rectas y puntos.
+   o.min, o.max; o.lineas: [{m, b, color, nombre}]; o.puntos: [[x, y, rótulo]]; o.tri: [[x1, y1], [x2, y2]] triángulo de pendiente;
+   o.ex, o.ey: nombres de los ejes; o.paso: cada cuánto se rotulan los ejes */
+function planoSVG(o){
+  const W = 340, m = 36, n = o.max - o.min, cel = (W - 2 * m) / n;
+  const px = (x)=> m + (x - o.min) * cel, py = (y)=> m + (o.max - y) * cel;
+  const id = "c" + Math.random().toString(36).slice(2, 7), paso = o.paso || (n > 12 ? 2 : 1);
+  const extra = (o.ex ? 14 : 0) + (o.lineas || []).filter(l=>l.nombre).length * 20 + 4;
+  let s = `<svg class="tri" style="max-width:420px" viewBox="0 0 ${W} ${W + extra}" role="img" aria-label="${escaparHTML(o.etiqueta)}"><rect width="${W}" height="${W + extra}" fill="#fff"/>`;
+  s += `<defs><clipPath id="${id}"><rect x="${px(o.min)}" y="${py(o.max)}" width="${n * cel}" height="${n * cel}"/></clipPath></defs>`;
+  for(let i=o.min;i<=o.max;i++){
+    const eje = i === 0;
+    s += `<line x1="${px(i)}" y1="${py(o.min)}" x2="${px(i)}" y2="${py(o.max)}" stroke="${eje ? "#14313A" : "#C9E3E5"}" stroke-width="${eje ? 2.5 : 1}"/>`;
+    s += `<line x1="${px(o.min)}" y1="${py(i)}" x2="${px(o.max)}" y2="${py(i)}" stroke="${eje ? "#14313A" : "#C9E3E5"}" stroke-width="${eje ? 2.5 : 1}"/>`;
+    if(i % paso === 0){
+      const yr = o.min < 0 ? py(0) + 14 : py(o.min) + 15, xr = o.min < 0 ? px(0) - 5 : px(o.min) - 5;
+      if(i !== 0 || o.min === 0) s += `<text x="${px(i)}" y="${yr}" font-size="11" text-anchor="middle" fill="#3F5F66">${N(i)}</text>`;
+      if(i !== 0) s += `<text x="${xr}" y="${py(i) + 4}" font-size="11" text-anchor="end" fill="#3F5F66">${N(i)}</text>`;
+    }
+  }
+  if(o.ex) s += `<text x="${W / 2}" y="${W + 8}" font-size="12" font-weight="700" text-anchor="middle" fill="#14313A">${escaparHTML(o.ex)}</text>`;
+  if(o.ey) s += `<text x="12" y="${W / 2}" font-size="12" font-weight="700" text-anchor="middle" fill="#14313A" transform="rotate(-90 12 ${W / 2})">${escaparHTML(o.ey)}</text>`;
+  if(o.tri){
+    const [[x1, y1], [x2, y2]] = o.tri;
+    s += `<polyline points="${px(x1)},${py(y1)} ${px(x2)},${py(y1)} ${px(x2)},${py(y2)}" fill="none" stroke="#B5892B" stroke-width="3.5" stroke-dasharray="7 5"/>`;
+    s += `<text x="${(px(x1) + px(x2)) / 2}" y="${py(y1) + (y2 > y1 ? 18 : -8)}" font-size="14" font-weight="700" text-anchor="middle" fill="#5C3900" paint-order="stroke" stroke="#fff" stroke-width="4">run ${Math.abs(x2 - x1)}</text>`;
+    s += `<text x="${px(x2) + 6}" y="${(py(y1) + py(y2)) / 2 + 5}" font-size="14" font-weight="700" fill="#5C3900" paint-order="stroke" stroke="#fff" stroke-width="4">${y2 >= y1 ? "rise" : "fall"} ${Math.abs(y2 - y1)}</text>`;
+  }
+  (o.lineas || []).forEach(l=>{
+    const xa = o.min - 1, xb = o.max + 1;
+    s += `<line clip-path="url(#${id})" x1="${px(xa)}" y1="${py(l.m * xa + l.b)}" x2="${px(xb)}" y2="${py(l.m * xb + l.b)}" stroke="${l.color || "#194F5A"}" stroke-width="3.5" stroke-linecap="round"/>`;
+  });
+  const nombradas = (o.lineas || []).filter(l=>l.nombre);
+  nombradas.forEach((l, i)=>{
+    const y = W + 14 + i * 20, x0 = W / 2 - 70;
+    s += `<line x1="${x0}" y1="${y - 5}" x2="${x0 + 22}" y2="${y - 5}" stroke="${l.color}" stroke-width="4"/><text x="${x0 + 30}" y="${y}" font-size="15" font-weight="700" fill="${l.color}">${escaparHTML(l.nombre)}</text>`;
+  });
+  (o.puntos || []).forEach(([x, y, t])=>{
+    const der = x < o.max - (o.max - o.min) / 3;
+    s += `<circle cx="${px(x)}" cy="${py(y)}" r="6" fill="#194F5A" stroke="#fff" stroke-width="2"/>`;
+    if(t) s += `<text x="${px(x) + (der ? 9 : -9)}" y="${py(y) - 8}" font-size="14" font-weight="700" text-anchor="${der ? "start" : "end"}" fill="#14313A" paint-order="stroke" stroke="#fff" stroke-width="4">${escaparHTML(t)}</text>`;
+  });
+  return s + "</svg>";
+}
+
+const recordar = (txt)=> escenaTexto(`<p class="recordatorio">${txt}</p>`);
+const grande = (txt, dato)=> escenaTexto(`<p class="numero-grande">${txt}</p>${dato ? `<p class="dato-real">${escaparHTML(dato)}</p>` : ""}`);
+const P = (x, y)=> `(${N(x)}, ${N(y)})`;
+
+const r2 = (x)=> Math.round(x * 100) / 100;
+
+/* Plano con polígonos: figs = [{pts, color, nombre}] */
+function figurasSVG(min, max, figs, etiqueta){
+  const W = 340, m = 30, n = max - min, cel = (W - 2 * m) / n, px = (x)=> m + (x - min) * cel, py = (y)=> m + (max - y) * cel;
+  let s = `<svg class="tri" style="max-width:400px" viewBox="0 0 ${W} ${W}" role="img" aria-label="${escaparHTML(etiqueta)}"><rect width="${W}" height="${W}" fill="#fff"/>`;
+  for(let i=min;i<=max;i++){
+    const eje = i === 0;
+    s += `<line x1="${px(i)}" y1="${py(min)}" x2="${px(i)}" y2="${py(max)}" stroke="${eje ? "#14313A" : "#C9E3E5"}" stroke-width="${eje ? 2.5 : 1}"/><line x1="${px(min)}" y1="${py(i)}" x2="${px(max)}" y2="${py(i)}" stroke="${eje ? "#14313A" : "#C9E3E5"}" stroke-width="${eje ? 2.5 : 1}"/>`;
+    if(i % 2 === 0 && i !== 0) s += `<text x="${px(i)}" y="${py(0) + 13}" font-size="10" text-anchor="middle" fill="#3F5F66">${N(i)}</text><text x="${px(0) - 4}" y="${py(i) + 4}" font-size="10" text-anchor="end" fill="#3F5F66">${N(i)}</text>`;
+  }
+  figs.forEach(f=>{
+    if(f.pts.length === 1){
+      const [x, y] = f.pts[0];
+      s += `<circle cx="${px(x)}" cy="${py(y)}" r="7" fill="${f.color}" stroke="#fff" stroke-width="2"/><text x="${px(x) + 10}" y="${py(y) - 8}" font-size="15" font-weight="700" fill="#14313A" paint-order="stroke" stroke="#fff" stroke-width="4">${escaparHTML(f.nombre)}</text>`;
+      return;
+    }
+    s += `<polygon points="${f.pts.map(([x, y])=>px(x) + "," + py(y)).join(" ")}" fill="${f.color}" fill-opacity=".35" stroke="${f.color}" stroke-width="3" stroke-linejoin="round"/>`;
+    const cx = f.pts.reduce((a, p)=>a + p[0], 0) / f.pts.length, cy = f.pts.reduce((a, p)=>a + p[1], 0) / f.pts.length;
+    s += `<text x="${px(cx)}" y="${py(cy) + 6}" font-size="18" font-weight="700" text-anchor="middle" fill="#14313A" paint-order="stroke" stroke="#fff" stroke-width="4">${escaparHTML(f.nombre)}</text>`;
+  });
+  return s + "</svg>";
+}
+
+/* Triángulo con ángulos rotulados; ext: rótulo del ángulo exterior en B */
+function trianguloSVG(a, b, c, ext){
+  let s = `<svg class="tri" style="max-width:440px" viewBox="0 0 440 230" role="img" aria-label="A triangle with angles ${a}, ${b} and ${c}${ext ? ", and an exterior angle " + ext : ""}. Not drawn to scale."><rect width="440" height="230" fill="#fff"/>`;
+  s += `<polygon points="50,190 300,190 190,40" fill="#E8F5F6" stroke="#14313A" stroke-width="3.5" stroke-linejoin="round"/>`;
+  if(ext) s += `<line x1="300" y1="190" x2="420" y2="190" stroke="#14313A" stroke-width="3.5" stroke-dasharray="2 0"/><path d="M340 190 A40 40 0 0 0 324 158" fill="none" stroke="#B5892B" stroke-width="3"/>`;
+  const t = (x, y, txt)=> `<text x="${x}" y="${y}" font-size="20" font-weight="700" text-anchor="middle" fill="${txt.includes("?") || txt.includes("x") ? "#B71C1C" : "#14313A"}">${escaparHTML(txt)}</text>`;
+  s += t(95, 180, a) + t(262, 180, b) + t(190, 82, c);
+  if(ext) s += t(372, 160, ext);
+  s += `<text x="10" y="222" font-size="11" fill="#3F5F66">Not drawn to scale.</text>`;
+  return s + "</svg>";
+}
+
+/* Dos paralelas cortadas por una transversal. rot: {pos: texto}; pos = "s-tl", "s-tr", "s-bl", "s-br", "i-..." (superior, inferior) */
+function paralelasSVG(rot){
+  const I = {s:[150, 80], i:[214, 170]}, off = {tl:[-30, -10], tr:[28, -10], bl:[-30, 24], br:[30, 24]};
+  let s = `<svg class="tri" style="max-width:440px" viewBox="0 0 440 240" role="img" aria-label="Two parallel lines cut by a transversal, with angle labels: ${Object.entries(rot).map(([k, v])=>v).join(", ")}. Not drawn to scale."><rect width="440" height="240" fill="#fff"/>`;
+  s += `<line x1="30" y1="80" x2="410" y2="80" stroke="#14313A" stroke-width="3.5"/><line x1="30" y1="170" x2="410" y2="170" stroke="#14313A" stroke-width="3.5"/>`;
+  s += `<path d="M396 74 l8 6 l-8 6 M396 164 l8 6 l-8 6" fill="none" stroke="#14313A" stroke-width="2.5"/>`;
+  s += `<line x1="108" y1="20" x2="256" y2="230" stroke="#194F5A" stroke-width="3.5"/>`;
+  Object.entries(rot).forEach(([k, v])=>{
+    const [r, p] = k.split("-"), [x, y] = I[r], [dx, dy] = off[p];
+    s += `<text x="${x + dx}" y="${y + dy}" font-size="18" font-weight="700" text-anchor="middle" fill="${v === "?" ? "#B71C1C" : "#14313A"}">${escaparHTML(v)}</text>`;
+  });
+  return s + `<text x="10" y="232" font-size="11" fill="#3F5F66">Not drawn to scale.</text></svg>`;
+}
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const reto = S.reto;
+  const n = elegir(NOMBRES);
+
+  /* --- 1. Las sombras de Tales (8.G.4, 8.G.5) --- */
+  if(S.juego === "sombras"){
+    const tipo = tipoRonda(reto ? ["altura","sombra","torre","altura","sombra"] : ["igual","altura","altura","igual","altura"]);
+    if(tipo === "igual"){
+      const H = elegir([30, 45, 60, 80, 120]);
+      grande(`☀️ shadow = height`);
+      ponerInstruccion(`At this moment, ${n}’s shadow is exactly as long as ${n} is tall. A tree’s shadow is ${H} feet long. How tall is the tree?`, null, `En este momento, la sombra de ${n} mide exactamente lo mismo que su estatura. La sombra de un árbol mide ${H} pies. ¿Cuánto mide el árbol?`);
+      opciones(`${H} ft`, [[`${H / 2} ft`, `If ${n}’s shadow equals ${n}’s height, the same is true for everything at that moment.`], [`${H * 2} ft`, "The rays hit everything at the same angle: shadow and height are equal for the tree too."]],
+        ()=>acertar(`This is the oldest version of Thales’s method: when your shadow equals your height, every shadow equals its object’s height. The tree is ${H} ft tall.`));
+    } else if(tipo === "altura" || tipo === "sombra"){
+      const [h, sh] = elegir(reto ? [[2, 3], [4, 5], [3, 2], [5, 4], [6, 8]] : [[1, 2], [2, 1], [3, 6], [2, 4], [4, 2], [5, 10]]);
+      const k = elegir(reto ? [6, 10, 12, 15, 20] : [5, 8, 10, 12, 15]), H = h * k, SH = sh * k;
+      const obj = elegir(["flagpole", "tree", "lamppost", "building"]);
+      escenaTexto(`<div class="tablilla"><span class="t-tit">STICK</span>height ${h} ft · shadow ${sh} ft</div><div class="tablilla"><span class="t-tit">${obj.toUpperCase()}</span>height ${tipo === "altura" ? "?" : H + " ft"} · shadow ${tipo === "altura" ? SH + " ft" : "?"}</div>`);
+      if(!reto) recordar("height ÷ shadow is the same for everything at the same moment");
+      if(tipo === "altura"){
+        ponerInstruccion(`A ${h}-foot stick casts a ${sh}-foot shadow. At the same moment, the shadow of a ${obj} is ${SH} feet long. How tall is the ${obj}?`, null,
+          `Un palo de ${h} pies da una sombra de ${sh} pies. En el mismo momento, un objeto (${obj}) da una sombra de ${SH} pies. ¿Cuánto mide de alto?`);
+        const malos = [[`${SH * sh / h} ft`, `You multiplied by the wrong ratio. The ${obj} is to its shadow as the stick (${h}) is to its shadow (${sh}).`], [`${SH + h - sh} ft`, "Similar triangles are multiplied by a scale factor, not added to. How many times longer is the big shadow?"]];
+        if(SH !== H) malos.push([`${SH} ft`, `Only when shadow = height are they the same. Here the stick is ${h} ft and its shadow ${sh} ft.`]);
+        opciones(`${H} ft`, malos, ()=>acertar(`The ${obj}’s shadow is ${SH} ÷ ${sh} = ${k} times the stick’s shadow, so the ${obj} is ${k} × ${h} = ${H} ft tall.`));
+      } else {
+        ponerInstruccion(`A ${h}-foot stick casts a ${sh}-foot shadow. At the same moment, how long is the shadow of a ${obj} that is ${H} feet tall?`, null,
+          `Un palo de ${h} pies da una sombra de ${sh} pies. En el mismo momento, ¿cuánto mide la sombra de un objeto (${obj}) de ${H} pies?`);
+        opciones(`${SH} ft`, [[`${H * h / sh} ft`, `Shadow ÷ height must be ${sh} ÷ ${h} for both. Check which ratio you used.`], [`${H + sh - h} ft`, "Multiply by the scale factor; don’t add the difference."], [`${H} ft`, `The stick’s shadow is not equal to its height, so the ${obj}’s isn’t either.`]],
+          ()=>acertar(`The ${obj} is ${H} ÷ ${h} = ${k} times the stick, so its shadow is ${k} × ${sh} = ${SH} ft.`));
+      }
+    } else {
+      const [h, sh] = elegir([[2, 3], [4, 3], [2, 1]]), H = 1450, SH = H * sh / h;
+      grande("Willis Tower ≈ 1,450 ft");
+      ponerInstruccion(`The Willis Tower in Chicago is about 1,450 feet tall. At a moment when a ${h}-foot stick casts a ${sh}-foot shadow, about how long is the tower’s shadow?`, null,
+        `La Willis Tower de Chicago mide unos 1450 pies. En un momento en que un palo de ${h} pies da una sombra de ${sh} pies, ¿aproximadamente cuánto mide la sombra de la torre?`);
+      opciones(`${SH.toLocaleString("en-US")} ft`, [[`${(H * h / sh).toLocaleString("en-US", {maximumFractionDigits:0})} ft`, `Shadow ÷ height = ${sh} ÷ ${h}. Multiply the tower’s height by that ratio.`], [`${(H + sh - h).toLocaleString("en-US")} ft`, "Use the scale factor: multiply, don’t add."], [`${(H * sh).toLocaleString("en-US")} ft`, `Divide by the stick’s height too: ${H} × ${sh} ÷ ${h}.`]],
+        ()=>acertar(`Shadow ÷ height = ${sh} ÷ ${h} = ${sh / h}. The tower’s shadow is 1,450 × ${sh / h} = ${SH.toLocaleString("en-US")} ft.`));
+    }
+    return;
+  }
+
+  /* --- 2. Mueve el punto (8.G.3) --- */
+  if(S.juego === "mover"){
+    const x = azar(-6, 6) || 3, y = azar(-6, 6) || -2;
+    const tipo = tipoRonda(reto ? ["rot90","dil","rot180","secuencia","rot90h"] : ["tras","refx","refy","tras","refx"]);
+    let r, desc, descEs, malos, expl;
+    if(tipo === "tras"){
+      const a = elegir([-4, -3, -2, 2, 3, 4, 5]), b = elegir([-5, -3, -2, 2, 3, 4]);
+      r = [x + a, y + b]; desc = `${Math.abs(a)} units ${a > 0 ? "right" : "left"} and ${Math.abs(b)} units ${b > 0 ? "up" : "down"}`;
+      descEs = `${Math.abs(a)} unidades a la ${a > 0 ? "derecha" : "izquierda"} y ${Math.abs(b)} unidades hacia ${b > 0 ? "arriba" : "abajo"}`;
+      malos = [[P(x - a, y + b), "Right adds to x; left subtracts from x."], [P(x + b, y + a), "Left and right change x; up and down change y."], [P(x + a, y - b), "Up adds to y; down subtracts from y."]];
+      expl = `x: ${N(x)} ${a > 0 ? "+" : "−"} ${Math.abs(a)} = ${N(r[0])}. y: ${N(y)} ${b > 0 ? "+" : "−"} ${Math.abs(b)} = ${N(r[1])}.`;
+    } else if(tipo === "refx"){
+      r = [x, -y]; desc = "a reflection over the x-axis"; descEs = "una reflexión sobre el eje x";
+      malos = [[P(-x, y), "That is a reflection over the y-axis. Over the x-axis, x stays and y changes sign."], [P(-x, -y), "Only one coordinate changes. Which one goes to the other side of the x-axis?"], [P(y, x), "Reflecting does not swap the coordinates."]];
+      expl = `Over the x-axis, x stays the same and y changes sign: ${P(x, -y)}.`;
+    } else if(tipo === "refy"){
+      r = [-x, y]; desc = "a reflection over the y-axis"; descEs = "una reflexión sobre el eje y";
+      malos = [[P(x, -y), "That is a reflection over the x-axis. Over the y-axis, y stays and x changes sign."], [P(-x, -y), "Only one coordinate changes. Which one goes to the other side of the y-axis?"], [P(y, x), "Reflecting does not swap the coordinates."]];
+      expl = `Over the y-axis, y stays the same and x changes sign: ${P(-x, y)}.`;
+    } else if(tipo === "rot90" || tipo === "rot90h"){
+      const anti = tipo === "rot90";
+      r = anti ? [-y, x] : [y, -x];
+      desc = `a rotation of 90° ${anti ? "counterclockwise" : "clockwise"} about the origin`; descEs = `una rotación de 90° ${anti ? "en sentido contrario a las agujas del reloj" : "en el sentido de las agujas del reloj"} alrededor del origen`;
+      malos = [[P(anti ? y : -y, anti ? -x : x), `That is the rotation in the other direction. ${anti ? "Counterclockwise" : "Clockwise"}: (x, y) → ${anti ? "(−y, x)" : "(y, −x)"}.`], [P(-x, -y), "That is a 180° rotation. A 90° turn swaps the coordinates."], [P(-x, y), "That is a reflection. A rotation of 90° swaps x and y and changes one sign."]];
+      expl = `${anti ? "Counterclockwise 90°: (x, y) → (−y, x)" : "Clockwise 90°: (x, y) → (y, −x)"}. So ${P(x, y)} → ${P(r[0], r[1])}.`;
+    } else if(tipo === "rot180"){
+      r = [-x, -y]; desc = "a rotation of 180° about the origin"; descEs = "una rotación de 180° alrededor del origen";
+      malos = [[P(-y, x), "That is only a 90° turn. A half turn changes the sign of both coordinates."], [P(x, -y), "That is a reflection over the x-axis."], [P(-x, y), "That is a reflection over the y-axis."]];
+      expl = `A half turn changes both signs: ${P(x, y)} → ${P(-x, -y)}.`;
+    } else if(tipo === "dil"){
+      const k = elegir([2, 3]); r = [k * x, k * y]; desc = `a dilation with scale factor ${k} and center at the origin`; descEs = `una dilatación con factor de escala ${k} y centro en el origen`;
+      malos = [[P(x + k, y + k), `A dilation multiplies the coordinates by ${k}; it does not add.`], [P(k * x, y), "Multiply both coordinates by the scale factor."], [P(x / k === Math.round(x / k) ? x / k : x * k + 1, y / k === Math.round(y / k) ? y / k : y * k + 1), `A scale factor of ${k} makes the point ${k} times as far from the origin.`]];
+      expl = `Multiply each coordinate by ${k}: ${P(x, y)} → ${P(k * x, k * y)}.`;
+    } else {
+      const a = elegir([2, 3, -2, -3]);
+      r = [-x + a, y]; desc = `a reflection over the y-axis, followed by a translation of ${Math.abs(a)} units ${a > 0 ? "right" : "left"}`;
+      descEs = `una reflexión sobre el eje y, seguida de una traslación de ${Math.abs(a)} unidades a la ${a > 0 ? "derecha" : "izquierda"}`;
+      malos = [[P(-(x + a), y), "Do the steps in order: reflect first, then translate."], [P(x + a, -y), "Over the y-axis, the x-coordinate changes sign, not y."], [P(-x - a, y), `After reflecting, move ${a > 0 ? "right (add)" : "left (subtract)"}.`]];
+      expl = `Reflect: ${P(x, y)} → ${P(-x, y)}. Translate: ${P(-x, y)} → ${P(-x + a, y)}.`;
+    }
+    const lim = Math.max(8, ...r.map(Math.abs), Math.abs(x), Math.abs(y));
+    escenaTexto(figurasSVG(-lim, lim, [{pts:[[x, y]], color:"#194F5A", nombre:"P" + P(x, y)}], `The point P at ${P(x, y)} on a coordinate grid.`));
+    ponerInstruccion(`Point P is at ${P(x, y)}. Where is its image after ${desc}?`, null, `El punto P está en ${P(x, y)}. ¿Dónde queda su imagen después de ${descEs}?`);
+    const usados = new Set([P(r[0], r[1])]);
+    opciones(P(r[0], r[1]), malos.filter(m=>!usados.has(m[0]) && usados.add(m[0])), ()=>acertar(expl), true);
+    return;
+  }
+
+  /* --- 3. ¿Qué transformación? (8.G.1–8.G.4) --- */
+  if(S.juego === "cual"){
+    const base = [[1, 1], [3, 1], [3, 2], [2, 2], [2, 4], [1, 4]];
+    const dx = azar(0, 2), dy = azar(0, 2), A = base.map(([x, y])=>[x + dx, y + dy]);
+    const TR = {
+      "Translation":[(p)=>{ const a = elegir([-7, -6, -5]), b = elegir([-6, -5, 1]); return A.map(([x, y])=>[x + a, y + b]); }, "Every point moved the same way: same size, same direction."],
+      "Reflection":[(p)=>Math.random() < 0.5 ? A.map(([x, y])=>[-x, y]) : A.map(([x, y])=>[x, -y]), "The figure is flipped, like in a mirror: it faces the other way."],
+      "Rotation":[(p)=>Math.random() < 0.5 ? A.map(([x, y])=>[-x, -y]) : A.map(([x, y])=>[-y, x]), "The figure is turned around the origin."],
+      "Dilation":[(p)=>A.map(([x, y])=>[x * 2 - 8, y * 2 - 8]).map(([x, y])=>[x, y]), "The figure has the same shape but a different size."]};
+    const nombres = Object.keys(TR), t = elegir(nombres);
+    let B = TR[t][0]();
+    if(t === "Dilation") B = A.map(([x, y])=>[x * 2 - 10, y * 2 - 10]);
+    const lim = 8;
+    escenaTexto(figurasSVG(-lim, lim, [{pts:A, color:"#194F5A", nombre:"A"}, {pts:B, color:"#B5892B", nombre:"B"}], `Figure A, an L shape, and figure B, its image after one transformation.`));
+    if(reto && S.ronda % 2 === 1){
+      const congr = t !== "Dilation";
+      ponerInstruccion("Figure B is the image of figure A after one transformation. Are A and B congruent, or only similar?", null, "La figura B es la imagen de la figura A después de una transformación. ¿A y B son congruentes o solo semejantes?");
+      opciones(congr ? "Congruent (and also similar)" : "Similar but not congruent", [[congr ? "Similar but not congruent" : "Congruent (and also similar)", "Compare the sizes. Congruent figures have the same size and shape; similar figures only need the same shape."]],
+        ()=>acertar(congr ? `A ${t.toLowerCase()} keeps lengths and angles, so A and B are congruent. Congruent figures are also similar, with scale factor 1.` : "A dilation keeps the angles but changes the lengths, so A and B are similar but not congruent."), true);
+    } else {
+      ponerInstruccion("Figure B is the image of figure A. Which transformation was used?", null, "La figura B es la imagen de la figura A. ¿Qué transformación se usó?");
+      opciones(t, nombres.filter(o=>o !== t).map(o=>[o, "Look closely: is B the same size as A? Does it face the same way, or is it flipped? Is it turned?"]),
+        ()=>acertar(TR[t][1]));
+    }
+    return;
+  }
+
+  /* --- 4. ¿Qué se mantiene igual? (8.G.1) --- */
+  if(S.juego === "propiedades"){
+    const FACIL = [["After a translation, the side lengths stay the same.", true, "A translation slides the figure: nothing gets bigger or smaller."],
+      ["After a reflection, the image is congruent to the original.", true, "A mirror image has the same size and the same angles."],
+      ["After a rotation, the angles of the figure change.", false, "Turning a figure does not change its angles."],
+      ["After a dilation with scale factor 3, every side is 3 times as long.", true, "A dilation multiplies every length by the scale factor."],
+      ["After a dilation, the angles change.", false, "A dilation changes the size, but the angles stay the same. That is why the figures are similar."],
+      ["A translation can make a figure bigger.", false, "A translation only slides the figure."]];
+    const RETO = [["After a dilation, parallel lines stay parallel.", true, "Rotations, reflections, translations and dilations all keep parallel lines parallel."],
+      ["A reflection followed by a translation gives a congruent figure.", true, "Each step keeps lengths and angles, so the whole sequence does too."],
+      ["Two triangles with the same three angles are always congruent.", false, "They are similar, but one can be bigger than the other."],
+      ["Any two squares are similar.", true, "All squares have four right angles and sides in the same ratio."],
+      ["Any two rectangles are similar.", false, "A 1 × 2 rectangle and a 1 × 5 rectangle have different shapes."],
+      ["A dilation with scale factor 1/2 gives a congruent figure.", false, "The image is half the size: similar, not congruent."],
+      ["A rotation of 360° gives back exactly the same figure.", true, "A full turn returns every point to its place."]];
+    const clave = reto ? "listaReto" : "listaFacil";
+    if(!S[clave]) S[clave] = mezclar(reto ? RETO : FACIL);
+    const [txt, v, por] = S[clave][S.ronda % S[clave].length];
+    grande(txt);
+    ponerInstruccion(`True or false? ${txt}`, null, `¿Verdadero o falso? ${txt}`);
+    botonesSiNo(v, "True", "False", "Think of a real example: draw a small figure, move it in your mind and compare.", por);
+    return;
+  }
+
+  /* --- 5. Detectives de ángulos (8.G.5) --- */
+  if(S.juego === "angulos"){
+    const tipo = tipoRonda(reto ? ["paralelas","algebra","exterior","paralelas","algebra"] : ["triangulo","paralelas","exterior","triangulo","paralelas"]);
+    if(tipo === "triangulo"){
+      const a = azar(30, 80), b = azar(25, 85), c = 180 - a - b;
+      escenaTexto(trianguloSVG(`${a}°`, `${b}°`, "?"));
+      ponerInstruccion(`A triangle has angles of ${a}° and ${b}°. What is the third angle?`, null, `Un triángulo tiene ángulos de ${a}° y ${b}°. ¿Cuánto mide el tercer ángulo?`);
+      opciones(`${c}°`, [[`${360 - a - b}°`, "The angles of a triangle add up to 180°, not 360°."], [`${Math.abs(a - b)}°`, "Add the two angles you know, then subtract from 180°."], [`${c + 10}°`, `Check: ${a} + ${b} + ${c + 10} = ${a + b + c + 10}.`]],
+        ()=>acertar(`${a} + ${b} = ${a + b}, and 180 − ${a + b} = ${c}°.`));
+    } else if(tipo === "exterior"){
+      const a = azar(35, 70), c = azar(40, 75), b = 180 - a - c, e = a + c;
+      escenaTexto(trianguloSVG(`${a}°`, "", `${c}°`, "?"));
+      ponerInstruccion(`The interior angles of a triangle are ${a}° and ${c}°, as shown. What is the exterior angle marked with ?`, null, `Los ángulos interiores de un triángulo miden ${a}° y ${c}°, como se muestra. ¿Cuánto mide el ángulo exterior marcado con ?`);
+      opciones(`${e}°`, [[`${b}°`, `${b}° is the interior angle next to it. The exterior angle and that interior angle make a straight line: 180°.`], [`${180 - a}°`, "The exterior angle equals the sum of the two remote interior angles."], [`${360 - e}°`, "A straight line is 180°, not 360°."]],
+        ()=>acertar(`The interior angle at that corner is 180 − ${a} − ${c} = ${b}°, and the exterior angle is 180 − ${b} = ${e}°. Shortcut: ${a} + ${c} = ${e}°.`));
+    } else if(tipo === "paralelas"){
+      const v = azar(40, 140), pos = ["s-tl","s-tr","s-bl","s-br","i-tl","i-tr","i-bl","i-br"];
+      const agudo = (p)=> p.endsWith("tl") || p.endsWith("br");
+      const dado = elegir(pos.filter(p=>agudo(p) === v < 90 && (reto || p.startsWith("s"))));
+      const pide = elegir(pos.filter(p=>p !== dado && (reto || (p.startsWith("i") && (p.slice(2) === dado.slice(2) || true)))));
+      const igual = agudo(pide) === agudo(dado), resp = igual ? v : 180 - v;
+      const [r1, p1] = dado.split("-"), [r2, p2] = pide.split("-");
+      const op = {tl:"br", br:"tl", tr:"bl", bl:"tr"};
+      let rel;
+      if(r1 === r2) rel = op[p1] === p2 ? "vertical angles, which are equal" : "a linear pair, which adds up to 180°";
+      else if(p1 === p2) rel = "corresponding angles, which are equal";
+      else {
+        const inter = (r, p)=> r === "s" ? p.startsWith("b") : p.startsWith("t");
+        const ambosInt = inter(r1, p1) && inter(r2, p2), ambosExt = !inter(r1, p1) && !inter(r2, p2);
+        const alterno = op[p1] === p2;
+        rel = ambosInt ? (alterno ? "alternate interior angles, which are equal" : "same-side interior angles, which add up to 180°")
+            : ambosExt ? (alterno ? "alternate exterior angles, which are equal" : "same-side exterior angles, which add up to 180°")
+            : (igual ? "angles that are equal (follow the pairs: vertical, then corresponding)" : "angles that add up to 180° (follow the pairs: corresponding, then linear pair)");
+      }
+      escenaTexto(paralelasSVG({[dado]:`${v}°`, [pide]:"?"}));
+      ponerInstruccion(`The two horizontal lines are parallel. One angle measures ${v}°. What is the angle marked with ?`, null, `Las dos rectas horizontales son paralelas. Un ángulo mide ${v}°. ¿Cuánto mide el ángulo marcado con ?`);
+      opciones(`${resp}°`, [[`${igual ? 180 - v : v}°`, "Is the marked angle the same kind as the known one (both sharp or both wide)? Equal angles look alike; the others add up to 180°."], [`${360 - v}°`, "Angles on a straight line add up to 180°, not 360°."]],
+        ()=>acertar(`They are ${rel}: the answer is ${resp}°.`));
+    } else {
+      const k = elegir([[1, 2, 3], [2, 3, 4], [1, 1, 2], [2, 3, 5], [3, 4, 5]]), x = 180 / (k[0] + k[1] + k[2]);
+      const t = (c)=> c === 1 ? "x" : `${c}x`;
+      escenaTexto(trianguloSVG(t(k[0]), t(k[1]), t(k[2])));
+      ponerInstruccion(`The angles of a triangle measure ${t(k[0])}, ${t(k[1])} and ${t(k[2])}. What is the largest angle?`, null, `Los ángulos de un triángulo miden ${t(k[0])}, ${t(k[1])} y ${t(k[2])}. ¿Cuánto mide el ángulo mayor?`);
+      opciones(`${k[2] * x}°`, [[`${x}°`, `That is x. The largest angle is ${t(k[2])}.`], [`${k[2] * 360 / (k[0] + k[1] + k[2])}°`, "The angles add up to 180°, not 360°."], [`${k[2] * 180 / 3}°`, `Add the parts: ${k[0]} + ${k[1]} + ${k[2]} = ${k[0] + k[1] + k[2]} parts of x.`]],
+        ()=>acertar(`${t(k[0])} + ${t(k[1])} + ${t(k[2])} = ${k[0] + k[1] + k[2]}x = 180°, so x = ${x}° and ${t(k[2])} = ${k[2] * x}°.`));
+    }
+    return;
+  }
+
+  /* --- 6. Triángulos semejantes (8.G.4, 8.G.5) --- */
+  if(S.juego === "semejantes"){
+    const tipo = tipoRonda(reto ? ["aa","lado","aa","lado","aa"] : ["lado","factor","lado","factor","lado"]);
+    if(tipo === "lado" || tipo === "factor"){
+      const [a, b, c] = elegir([[3, 4, 5], [5, 12, 13], [6, 8, 10], [4, 6, 7], [2, 5, 6]]), k = reto ? elegir([1.5, 2.5, 3]) : elegir([2, 3, 4]);
+      const A2 = r2(a * k), B2 = r2(b * k);
+      escenaTexto(`<div class="tablilla"><span class="t-tit">SMALL TRIANGLE</span>${a}, ${b}, ${c}</div><div class="tablilla"><span class="t-tit">BIG TRIANGLE (SIMILAR)</span>${A2}, ?, …</div>`);
+      if(tipo === "factor"){
+        ponerInstruccion(`Two triangles are similar. The side of ${a} in the small triangle matches the side of ${A2} in the big one. What is the scale factor?`, null, `Dos triángulos son semejantes. El lado de ${a} del triángulo pequeño corresponde al lado de ${A2} del grande. ¿Cuál es el factor de escala?`);
+        opciones(String(k), [[String(A2 - a), "The scale factor multiplies. Divide the big side by the small side."], [frac(a, A2), "Divide big ÷ small, so the factor is greater than 1."]],
+          ()=>acertar(`${A2} ÷ ${a} = ${k}. Every side of the big triangle is ${k} times as long.`));
+      } else {
+        ponerInstruccion(`The small triangle has sides ${a}, ${b} and ${c}. A similar big triangle has a side of ${A2} that matches the side of ${a}. How long is the side that matches ${b}?`, null,
+          `El triángulo pequeño tiene lados de ${a}, ${b} y ${c}. Un triángulo grande semejante tiene un lado de ${A2} que corresponde al lado de ${a}. ¿Cuánto mide el lado que corresponde a ${b}?`);
+        opciones(String(B2), [[String(r2(b + A2 - a)), `Similar figures are not “${r2(A2 - a)} more”: they are “${k} times as long”. Multiply.`], [String(r2(b * a / A2)), "The big triangle has longer sides. Multiply by the scale factor, don’t divide."], [String(r2(b * k + 1)), `Find the scale factor first: ${A2} ÷ ${a}.`]],
+          ()=>acertar(`Scale factor: ${A2} ÷ ${a} = ${k}. ${b} × ${k} = ${B2}.`));
+      }
+    } else {
+      const a = azar(30, 70), b = azar(40, 80), c = 180 - a - b;
+      const sem = Math.random() < 0.5, d = sem ? c : c + elegir([-10, 10, 15]);
+      const otro = 180 - b - d;
+      escenaTexto(`<div class="tablilla"><span class="t-tit">TRIANGLE 1</span>angles ${a}° and ${b}°</div><div class="tablilla"><span class="t-tit">TRIANGLE 2</span>angles ${b}° and ${d}°</div>`);
+      ponerInstruccion(`Triangle 1 has angles of ${a}° and ${b}°. Triangle 2 has angles of ${b}° and ${d}°. Are the triangles similar?`, null, `El triángulo 1 tiene ángulos de ${a}° y ${b}°. El triángulo 2 tiene ángulos de ${b}° y ${d}°. ¿Son semejantes los triángulos?`);
+      botonesSiNo(sem, "Yes, similar", "No", "Find the third angle of each triangle (180° minus the other two), then compare all three.",
+        sem ? `Triangle 1: ${a}°, ${b}°, ${c}°. Triangle 2: ${b}°, ${d}°, ${otro}°. Two pairs of equal angles are enough (angle-angle): they are similar.`
+            : `Triangle 1: ${a}°, ${b}°, ${c}°. Triangle 2: ${b}°, ${d}°, ${otro}°. Only one angle matches, so they are not similar.`);
+    }
+    return;
+  }
+}
+
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+
+/* ============ La historia ============ */
+function abrirHistoria(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#historia"); }catch(e){}
+  mostrar("p-historia");
+  hablar($("tit-historia").textContent + ". " + $("relato").innerText);
+}
+$("juego-historia").addEventListener("click", ()=>{ sonToque(); abrirHistoria(); });
+$("btn-volver-historia").addEventListener("click", ()=>alMenu());
+$("btn-historia-menu").addEventListener("click", ()=>alMenu());
+$("btn-historia-juego").addEventListener("click", ()=>{ sonToque(); iniciarJuego(JUEGOS[0].id); });
+$("btn-bocina-historia").addEventListener("click", ()=>hablar($("relato").innerText));
+$("btn-bocina-historia-es").addEventListener("click", ()=>hablar($("relato-es").innerText, null, "es"));
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  if((location.hash || "") === "#historia"){ abrirHistoria(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
