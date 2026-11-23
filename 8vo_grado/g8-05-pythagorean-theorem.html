@@ -1037,9 +1037,9 @@ function mapaIL(c1, c2, conCatetos){
   let s = `<svg class="tri" style="max-width:380px" viewBox="0 0 ${W} ${H}" role="img" aria-label="Simplified map of Illinois on a grid where each square is 10 miles. ${c1.n} is at (${c1.x}, ${c1.y}) and ${c2.n} is at (${c2.x}, ${c2.y}).">`;
   s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
   s += `<polygon points="${IL_BORDE.map(([la, lo])=>`${px(IL_X(lo)).toFixed(1)},${py(IL_Y(la)).toFixed(1)}`).join(" ")}" fill="#FBEBB5" stroke="#8A6D1F" stroke-width="2.5" stroke-linejoin="round"/>`;
-  const orilla = [[42.49,-87.8],[42.2,-87.8],[41.88,-87.62],[41.7,-87.52]].map(([la, lo])=>[px(IL_X(lo)), py(IL_Y(la))]);
-  s += `<polygon points="${orilla.map(q=>q.map(v=>v.toFixed(1)).join(",")).join(" ")} ${W - 4},${orilla[3][1].toFixed(1)} ${W - 4},${orilla[0][1].toFixed(1)}" fill="#BFE3F5"/>`;
-  s += `<text x="${W - 6}" y="${py(IL_Y(42.1))}" font-size="11" text-anchor="end" fill="#1F5E7A">Lake</text><text x="${W - 6}" y="${py(IL_Y(42.1)) + 13}" font-size="11" text-anchor="end" fill="#1F5E7A">Michigan</text>`;
+  const orilla = [[42.49,-87.8],[42.2,-87.8],[41.88,-87.62],[41.7,-87.52],[41.62,-87.4],[41.66,-87.25]].map(([la, lo])=>[px(IL_X(lo)), py(IL_Y(la))]);
+  s += `<polygon points="${orilla.map(q=>q.map(v=>v.toFixed(1)).join(",")).join(" ")} ${px(maxX)},${orilla[5][1].toFixed(1)} ${px(maxX)},${orilla[0][1].toFixed(1)}" fill="#BFE3F5" stroke="#5FA9CC" stroke-width="1.5"/>`;
+  s += `<text x="${px(maxX) + 5}" y="${py(IL_Y(42.1))}" font-size="11" fill="#1F5E7A">Lake</text><text x="${px(maxX) + 5}" y="${py(IL_Y(42.1)) + 13}" font-size="11" fill="#1F5E7A">Michigan</text>`;
   for(let i=0;i<=maxX;i++) s += `<line x1="${px(i)}" y1="${py(0)}" x2="${px(i)}" y2="${py(maxY)}" stroke="#6E8F95" stroke-opacity=".28"/>`;
   for(let j=0;j<=maxY;j++) s += `<line x1="${px(0)}" y1="${py(j)}" x2="${px(maxX)}" y2="${py(j)}" stroke="#6E8F95" stroke-opacity=".28"/>`;
   for(let i=0;i<=maxX;i+=5) s += `<text x="${px(i)}" y="${py(0) + 16}" font-size="11" text-anchor="middle" fill="#3F5F66">${i}</text>`;
@@ -1050,9 +1050,9 @@ function mapaIL(c1, c2, conCatetos){
   [c1, c2].forEach(c=>{
     const der = c.x < 15;
     s += `<circle cx="${px(c.x)}" cy="${py(c.y)}" r="6.5" fill="${c.n === "Springfield" ? "#B71C1C" : "#194F5A"}" stroke="#fff" stroke-width="2"/>`;
-    s += `<text x="${px(c.x) + (der ? 9 : -9)}" y="${py(c.y) - 7}" font-size="13" font-weight="700" text-anchor="${der ? "start" : "end"}" fill="#14313A" paint-order="stroke" stroke="#fff" stroke-width="4">${escaparHTML(c.n)}${conCatetos ? ` (${c.x}, ${c.y})` : ""}</text>`;
+    s += `<text x="${px(c.x) + (der ? 9 : -9)}" y="${py(c.y) + (c.y >= 35 ? 20 : -7)}" font-size="13" font-weight="700" text-anchor="${der ? "start" : "end"}" fill="#14313A" paint-order="stroke" stroke="#fff" stroke-width="4">${escaparHTML(c.n)}${conCatetos ? ` (${c.x}, ${c.y})` : ""}</text>`;
   });
-  s += `<g transform="translate(${px(0)},${py(maxY) + 4})"><rect width="${k}" height="${k}" fill="none" stroke="#14313A" stroke-width="2"/><text x="${k + 5}" y="${k - 1}" font-size="11" fill="#14313A">= 10 mi × 10 mi</text></g>`;
+  s += `<g transform="translate(${px(17.6)},${py(2.4)})"><rect x="-4" y="-4" width="${k + 86}" height="${k + 8}" rx="4" fill="#fff" stroke="#C9E3E5"/><rect width="${k}" height="${k}" fill="none" stroke="#14313A" stroke-width="2"/><text x="${k + 5}" y="${k - 1}" font-size="11" fill="#14313A">= 10 mi × 10 mi</text></g>`;
   return s + "</svg>";
 }
 
@@ -1318,7 +1318,9 @@ function nuevaRonda(){
       `Cada cuadro del mapa mide 10 millas.${coordsEs} ¿Aproximadamente cuántas millas hay en línea recta entre ${c1.n} y ${c2.n}?${reto ? " Primero lee las coordenadas en la cuadrícula." : ""}`);
     opciones(`≈ ${mi} miles`, [[`≈ ${(dx + dy) * 10} miles`, "That is the trip along the grid lines, like a road with only right turns. The straight line is shorter: it is the hypotenuse."],
                               [`≈ ${r1(d)} miles`, `${r1(d)} is the distance in squares. Each square is 10 miles.`],
-                              [`≈ ${s2 * 10} miles`, "Find the square root before you change squares to miles."]],
+                              Math.floor(d) * 10 !== mi
+                                ? [`≈ ${Math.floor(d) * 10} miles`, `Close! Don’t drop the decimal: find √${s2} to the nearest tenth, then multiply by 10.`]
+                                : [`≈ ${mi + 10} miles`, `Check the square root again: which number times itself is about ${s2}?`]],
       ()=>acertar(`Across: ${dx} squares. Up or down: ${dy} squares. √(${dx}² + ${dy}²) = √${s2} ≈ ${r1(d)} squares, and ${r1(d)} × 10 ≈ ${mi} miles. The road is longer, because roads are not straight lines.`));
     return;
   }
