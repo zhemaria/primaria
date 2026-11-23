@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<!--
+  Eighth Grade Math — Functions
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+  Aligned to the Illinois Learning Standards for Mathematics, Grade 8: 8.F.1, 8.F.2, 8.F.3, 8.F.4, 8.F.5
+  Opens with a true story from the history of science: Galileo's balls rolling down a ramp,
+  timed with a water clock, and the law of falling bodies published in Two New Sciences (1638).
+  Ante un error, siempre una pista, nunca la respuesta.
+  From fifth grade on, the games are in English. An optional "Ayuda en español" button
+  translates only the instruction or the question.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Functions · Eighth grade games</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="Eighth grade games with Lumi and Nova: Galileo's rolling balls, what a function is, linear and nonlinear functions, rate of change and initial value, comparing functions in different forms, and telling the story of a graph.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="dcterms.license" content="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F4FAFA; --tinta:#14313A; --tinta-suave:#3F5F66; --linea:#C9E3E5; --blanco:#FFFFFF;
+  --acento:#194F5A; --acento-claro:#E8F5F6; --turquesa:#45A6AD; --amarillo:#F8C85F;
+  --acierto:#1B5E20; --acierto-fondo:#DFF3E0;
+  --reintento:#8A4B00; --reintento-fondo:#FFF1DF;
+  --falso:#B71C1C;
+  --foco:#0B62D6; --sombra:0 4px 0 rgba(20,49,58,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;
+  border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--acento);color:var(--blanco)}
+.boton{border:3px solid var(--acento);background:var(--blanco);border-radius:16px;padding:11px 20px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--acento);display:inline-flex;align-items:center;gap:6px;min-height:48px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.casa{font-size:.86em;padding:8px 14px}
+.oculto{display:none !important}
+
+/* ---------- Ayuda en español (solo traduce la consigna) ---------- */
+.btn-ayuda{border:3px solid var(--turquesa);background:var(--blanco);color:var(--acento);border-radius:999px;
+  padding:7px 14px;font-weight:700;font-size:.86em;min-height:44px;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:var(--acento-claro);border-color:var(--acento)}
+.ayuda-es{display:none}
+body.con-ayuda .ayuda-es{display:block}
+.caja-ayuda{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;
+  margin:10px 0 0;font-size:.9em;color:var(--tinta)}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.05em;border-width:3px}
+
+/* ---------- Portada ---------- */
+.portada{text-align:center;padding:18px 10px 10px}
+.desfile{font-size:clamp(42px,10vw,76px);line-height:1.2;display:flex;justify-content:center;align-items:flex-end;gap:.15em}
+.desfile span{display:inline-block;animation:saltito 1.6s ease-in-out infinite}
+.desfile span:nth-child(2){animation-delay:.2s}.desfile span:nth-child(3){animation-delay:.4s}
+.desfile span:nth-child(4){animation-delay:.6s}.desfile span:nth-child(5){animation-delay:.8s}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:10px 0 6px}
+.portada > p{color:var(--tinta-suave);max-width:54ch;margin:0 auto 18px}
+.portada .caja-ayuda{max-width:54ch;margin:0 auto 18px;text-align:left}
+.portada .boton{font-size:clamp(20px,3vw,26px);padding:16px 34px}
+.bocina{flex:0 0 auto;width:62px;height:62px;border-radius:50%;border:4px solid var(--acento);
+  background:var(--blanco);font-size:1.6em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.bocina.grande{width:64px;height:64px;font-size:1.5em;margin:0 auto 18px}
+
+/* ---------- Menú ---------- */
+.rejilla{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.ficha-juego{display:flex;align-items:center;gap:12px;text-align:left;background:var(--blanco);
+  border:4px solid var(--linea);border-radius:20px;padding:14px;box-shadow:var(--sombra)}
+.ficha-juego:hover{border-color:var(--acento)}
+.ficha-juego:hover .emoji{animation:saltito .6s ease-in-out}
+.ficha-juego .emoji{font-size:2.6em;line-height:1;display:inline-block}
+.ficha-juego .nombre{font-weight:700;display:block}
+.ficha-juego .meta{font-size:.76em;color:var(--tinta-suave);font-weight:600}
+.ficha-juego .nombre-es{font-size:.76em;color:var(--tinta-suave);font-weight:600;font-style:italic}
+
+/* ---------- Juego ---------- */
+.cabecera-juego{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.instruccion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--sombra)}
+.instruccion .fila-i{display:flex;align-items:center;gap:14px}
+.instruccion .fila-i > p{margin:0;font-weight:600;font-size:clamp(18px,2.4vw,24px);flex:1 1 auto}
+.mascota{font-size:clamp(44px,8vw,64px);line-height:1;display:inline-block;flex:0 0 auto;position:relative;user-select:none}
+.mascota.feliz{animation:brinco .7s ease-out 2}
+.mascota.pensando{animation:ladeo .8s ease-in-out}
+.mascota .lumi-m{height:1.4em;width:auto;display:block;mix-blend-mode:multiply}
+.desfile .lumi-d{height:1.3em;width:auto;vertical-align:bottom;mix-blend-mode:multiply}
+.globo{position:absolute;top:-16px;right:-20px;font-size:.45em;background:#fff;border:2px solid var(--linea);
+  border-radius:999px;padding:0 6px;line-height:1.5}
+.escena{background:var(--blanco);border:4px solid var(--linea);border-radius:22px;padding:18px;min-height:200px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-shadow:var(--sombra);
+  position:relative;overflow:hidden}
+@media (max-width:560px){ .escena{padding:12px 8px} }
+
+/* ---------- Opciones ---------- */
+.fila-fichas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:18px}
+.opcion-texto{border:5px solid var(--acento);background:var(--blanco);color:var(--tinta);border-radius:20px;padding:12px 22px;
+  font-weight:700;font-size:clamp(22px,4.8vw,34px);box-shadow:var(--sombra);min-height:72px;max-width:100%}
+.opcion-texto:active{transform:translateY(3px);box-shadow:none}
+.opcion-texto.larga{font-size:clamp(17px,3.4vw,24px);padding:10px 16px;text-align:left}
+.opcion-vf{border:6px solid;border-radius:22px;padding:14px 26px;font-weight:700;font-size:clamp(22px,4.6vw,32px);box-shadow:var(--sombra);min-height:76px;background:#fff}
+.opcion-vf.v{border-color:var(--acierto);color:var(--acierto)}
+.opcion-vf.f{border-color:var(--falso);color:var(--falso)}
+.mal{animation:temblor .38s}
+
+.numero-grande{font-weight:700;font-size:clamp(34px,8vw,58px);letter-spacing:.02em;text-align:center;margin:0}
+.numero-grande.chico{font-size:clamp(28px,6.4vw,46px)}
+.numero-grande .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .08em}
+.problema{font-weight:600;font-size:clamp(19px,2.6vw,24px);max-width:48ch;text-align:center;margin:0;line-height:1.5}
+.par-num{display:flex;align-items:center;gap:clamp(8px,2.4vw,20px);justify-content:center;flex-wrap:wrap;
+  font-weight:700;font-size:clamp(28px,6.6vw,48px);row-gap:6px}
+.signo-c{min-width:1.3em;text-align:center;border:4px dashed var(--acento);border-radius:14px;color:var(--acento);line-height:1.2;padding:0 .15em}
+.signo-c.lleno{border-style:solid;border-color:var(--acierto);color:var(--acierto);background:var(--acierto-fondo)}
+.pistas-l{margin:0;padding:12px 16px 12px 40px;background:var(--acento-claro);border-radius:16px;font-weight:600;font-size:clamp(16px,2.2vw,20px);max-width:560px;width:100%}
+.pistas-l li{margin:4px 0}
+.desglose{font-weight:700;color:var(--acento);font-size:clamp(20px,4vw,30px);text-align:center;margin:0}
+
+/* ---------- Tabla de valor posicional con decimales ---------- */
+.tabla-valor{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-valor th{font-size:clamp(10px,1.6vw,14px);color:var(--tinta-suave);padding:4px 5px;border-bottom:3px solid var(--linea);max-width:9ch;line-height:1.15;vertical-align:bottom}
+.tabla-valor th.dec,.tabla-valor td.dec{background:#FFF8E6}
+.tabla-valor td{font-size:clamp(24px,5.6vw,42px);text-align:center;padding:4px clamp(5px,1.4vw,12px);border-right:2px dashed var(--linea)}
+.tabla-valor td:last-child{border-right:none}
+.tabla-valor .punto{border-right:none;padding:4px 1px;color:var(--acento);background:#fff}
+.tabla-valor th.punto{border-bottom:3px solid var(--linea)}
+.tabla-valor td.marcado{background:var(--acento);color:#fff;border-radius:12px}
+.tabla-valor tr.nuevo td{color:var(--acierto)}
+.tabla-valor .rot{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave);text-align:right;padding-right:8px;border-right:none;white-space:nowrap}
+.flecha-mov{font-weight:700;color:var(--acento);text-align:center;margin:0;font-size:clamp(16px,2.4vw,20px)}
+.sup{font-size:.62em;vertical-align:super;line-height:0}
+
+/* ---------- Confeti ---------- */
+.confeti{position:fixed;top:-40px;font-size:28px;pointer-events:none;z-index:50;animation:cae 1.6s ease-in forwards}
+
+/* ---------- Aviso y marcador ---------- */
+.aviso{margin-top:16px;border-radius:18px;padding:14px 18px;font-weight:700;font-size:clamp(18px,2.4vw,23px);
+  text-align:center;border:4px solid transparent}
+.aviso.bien{background:var(--acierto-fondo);border-color:var(--acierto);color:var(--acierto)}
+.aviso.otra{background:var(--reintento-fondo);border-color:var(--reintento);color:var(--reintento)}
+.aviso:empty{display:none}
+.marcador{display:flex;gap:7px;align-items:center}
+.estrella{font-size:1.5em;filter:grayscale(1);opacity:.32;display:inline-block}
+.estrella.ganada{filter:none;opacity:1}
+.estrella.nueva{animation:giro .6s ease-out}
+.final{text-align:center;padding:30px 12px}
+.final .trofeo{font-size:clamp(64px,16vw,120px);display:inline-block;animation:rebote .8s ease-in-out 3}
+.final h2{font-size:clamp(25px,4.2vw,38px);margin:12px 0 4px}
+.final .marcador{justify-content:center;margin:14px 0 24px}
+.final .estrella{font-size:2.3em}
+.reflexion{max-width:640px;margin:6px auto 18px;background:#fff;border:4px solid var(--linea);border-radius:20px;padding:12px 16px;box-shadow:var(--sombra)}
+.pregunta-r{font-weight:700;margin:0 0 10px}
+.chips-r{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chip-r{border:3px solid var(--acento);background:#fff;color:var(--tinta);border-radius:999px;padding:8px 14px;font-weight:700;min-height:48px}
+.chip-r[aria-pressed="true"]{background:var(--acento);color:#fff}
+.respuesta-r{margin:10px 0 0;font-weight:600;color:var(--tinta-suave);min-height:1.4em}
+
+.pie{margin-top:30px;padding-top:16px;border-top:3px solid var(--linea);font-size:.79em;color:var(--tinta-suave);line-height:1.6}
+.pie a{color:var(--acento)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ---------- Animaciones ---------- */
+@keyframes saltito{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes brinco{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-26px) scale(1.12,0.92)}60%{transform:translateY(0) scale(.92,1.08)}100%{transform:translateY(0) scale(1)}}
+@keyframes ladeo{0%,100%{transform:rotate(0)}30%{transform:rotate(-14deg)}70%{transform:rotate(10deg)}}
+@keyframes temblor{0%,100%{transform:translateX(0)}22%{transform:translateX(-9px)}62%{transform:translateX(9px)}}
+@keyframes rebote{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes cae{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(110vh) rotate(540deg)}}
+@keyframes giro{0%{transform:scale(.3) rotate(-180deg)}100%{transform:scale(1) rotate(0)}}
+
+/* ---------- Expresiones, patrones y gráficas ---------- */
+.expr{font-weight:700;font-size:clamp(28px,6.4vw,46px);text-align:center;margin:0;letter-spacing:.01em;line-height:1.3}
+.expr .marcado{color:#fff;background:var(--acento);border-radius:10px;padding:0 .1em}
+.expr .meta-v{color:var(--acierto)}
+.nota{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0;max-width:52ch}
+.nota b{color:var(--tinta)}
+.tabla-pat{border-collapse:collapse;margin:0 auto;font-weight:700;max-width:100%}
+.tabla-pat th,.tabla-pat td{border:2px solid var(--linea);padding:6px clamp(6px,1.6vw,14px);text-align:center}
+.tabla-pat thead th{font-size:clamp(12px,1.8vw,15px);color:var(--tinta-suave)}
+.tabla-pat tbody th{text-align:left;font-size:clamp(13px,1.9vw,16px);white-space:nowrap}
+.tabla-pat td{font-size:clamp(20px,4.4vw,32px)}
+.tabla-pat td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-pat td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.lista-pat{margin:0;font-weight:700;font-size:clamp(18px,3.6vw,26px);text-align:left;line-height:1.6}
+.lista-pat .rot{color:var(--tinta-suave);font-size:.72em;display:block;line-height:1.2}
+.modelo{width:100%;max-width:560px;height:auto;display:block}
+.opcion-graf{border:5px solid var(--acento);background:var(--blanco);border-radius:18px;padding:6px;box-shadow:var(--sombra);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;font-size:.85em;color:var(--tinta)}
+.opcion-graf:active{transform:translateY(3px);box-shadow:none}
+.opcion-graf svg{width:min(170px,34vw);height:auto;display:block}
+/* ---------- Hoja impresa ---------- */
+.hoja{display:none}
+@media print{
+  body{background:#fff;font-size:12pt}
+  .marco{display:none !important}
+  .hoja{display:block}
+  .hoja h2{font-size:16pt;margin:0 0 2mm}
+  .hoja h3{font-size:12pt;margin:5mm 0 2mm}
+  .hoja .indicacion{font-size:11pt;margin:0 0 3mm;color:#333}
+  .hoja .caja-h{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:15pt;margin-top:2mm}
+  .hoja .caja-h.una{grid-template-columns:1fr}
+  .hoja .linea{display:inline-block;width:30mm;border-bottom:1.2pt solid #000;height:6mm;vertical-align:bottom}
+  .hoja .razon-h{font-size:13pt;margin:2mm 0}
+  .hoja .renglon{border-bottom:1pt solid #000;height:9mm}
+  .hoja .creditos{margin-top:5mm;font-size:8.5pt;color:#444}
+  .hoja .tabla-h{border-collapse:collapse;font-size:13pt;margin-top:2mm}
+  .hoja .tabla-h th,.hoja .tabla-h td{border:1pt solid #000;padding:2mm 4mm;text-align:center;min-width:12mm}
+  .hoja .tabla-h tbody th{text-align:left}
+}
+/* ---------- Tarea final: construir y explicar sin opciones ---------- */
+.menu-tarea{margin:24px 0 0;border:4px solid var(--amarillo);background:#FFF8E6;border-radius:20px;padding:14px 16px 16px;box-shadow:var(--sombra)}
+.menu-tarea p{font-weight:700;margin:0 0 10px;color:var(--tinta)}
+.ficha-juego.ficha-tarea{border-color:var(--acento);background:var(--acento-claro)}
+.tarea h2{margin:0 0 6px}
+.tarea .parte{background:var(--blanco);border:3px solid var(--linea);border-radius:18px;padding:14px 16px;margin:14px 0;box-shadow:var(--sombra)}
+.tarea .parte h3{margin:0 0 6px;font-size:1.05em}
+.tarea .consigna{margin:0 0 8px;font-weight:600}
+.tarea textarea{width:100%;min-height:7.5em;font-family:inherit;font-size:inherit;line-height:1.45;color:var(--tinta);
+  border:3px solid var(--turquesa);border-radius:12px;padding:10px 12px;background:var(--blanco);resize:vertical}
+.tarea textarea:focus-visible{outline:4px solid var(--foco);outline-offset:2px}
+.tarea .figuras{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:6px 0 10px}
+.tarea .figuras figure{margin:0;text-align:center;font-size:.85em;font-weight:600;color:var(--tinta-suave)}
+.tarea .andamio{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:0 0 8px;font-size:.9em}
+.tarea .andamio p{margin:0 0 4px}
+.tarea .andamio p:last-child{margin:0}
+body.nivel-reto .tarea .andamio{display:none}
+.tarea .solo-reto{display:none}
+body.nivel-reto .tarea .solo-reto{display:block}
+.tarea .rubrica{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:8px}
+.tarea .criterio{width:100%;text-align:left;display:flex;gap:10px;align-items:flex-start;background:var(--blanco);
+  border:3px solid var(--linea);border-radius:14px;padding:10px 12px;min-height:48px;font-weight:600}
+.tarea .criterio .marca{flex:0 0 auto;width:1.6em;height:1.6em;border:3px solid var(--acento);border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;font-weight:700;color:var(--acento)}
+.tarea .criterio[aria-pressed="true"]{border-color:var(--acierto);background:var(--acierto-fondo)}
+.tarea .criterio[aria-pressed="true"] .marca{border-color:var(--acierto);color:var(--acierto)}
+.tarea .criterio .es{display:none;font-weight:600;font-size:.85em;color:var(--tinta-suave);font-style:italic}
+body.con-ayuda .tarea .criterio .es{display:block}
+.tarea .modelo{background:var(--acierto-fondo);border:3px solid var(--acierto);border-radius:14px;padding:12px 14px;margin-top:10px}
+.tarea .modelo p{margin:0 0 8px}
+.tarea .modelo p:last-child{margin:0}
+.tarea .nota-privada{font-size:.82em;color:var(--tinta-suave);margin:10px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+  .confeti{display:none}
+}
+/* ---------- Sexto grado: razones ---------- */
+.grupos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.grupo{font-size:clamp(28px,6vw,42px);line-height:1.15;border:3px dashed var(--turquesa);border-radius:16px;padding:6px 10px;background:var(--acento-claro);letter-spacing:.04em}
+.mezcla{font-size:clamp(26px,5.4vw,38px);line-height:1.3;max-width:560px;text-align:center;letter-spacing:.05em}
+.conteo{font-weight:600;color:var(--tinta-suave);font-size:clamp(16px,2.2vw,20px);text-align:center;margin:0}
+.conteo b{color:var(--tinta)}
+.tabla-razon{border-collapse:collapse;margin:0 auto;font-weight:700}
+.tabla-razon caption{font-size:clamp(14px,2vw,17px);color:var(--tinta-suave);padding-bottom:6px;font-weight:600}
+.tabla-razon th,.tabla-razon td{border:2px solid var(--linea);padding:6px clamp(10px,2.4vw,22px);text-align:center}
+.tabla-razon tbody th{font-size:clamp(16px,2.4vw,22px);background:var(--acento-claro)}
+.tabla-razon thead th{font-size:clamp(13px,1.9vw,16px);color:var(--tinta);background:var(--acento-claro);max-width:14ch;line-height:1.2}
+.tabla-razon td{font-size:clamp(22px,4.6vw,34px)}
+.tabla-razon td.hueco{color:var(--acento);background:var(--acento-claro);border:3px dashed var(--acento)}
+.tabla-razon td.lleno{color:var(--acierto);background:var(--acierto-fondo)}
+.tabla-razon td.factor{border:none;font-size:clamp(14px,2vw,18px);color:var(--acento);text-align:left;padding-left:8px;white-space:nowrap}
+.leyenda{font-size:clamp(15px,2vw,18px);color:var(--tinta-suave);font-weight:600;text-align:center;margin:0}
+.tiendas{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.tienda{background:var(--acento-claro);border:3px solid var(--acento);border-radius:18px;padding:10px 18px;text-align:center;font-weight:700;min-width:190px}
+.tienda .tn{display:block;font-size:.85em;color:var(--tinta-suave)}
+.tienda .tp{display:block;font-size:clamp(20px,3.6vw,28px)}
+.tienda .tu{display:block;font-size:.85em;color:var(--acierto);margin-top:4px}
+/* Escena sin dibujo: Lumi señala las opciones, para que no parezca que falta algo */
+.escena:empty{background:#fff url(lumi7-presenta.png) no-repeat center / auto 88%}
+.escena-lumi{height:clamp(150px,26vw,210px);width:auto;display:block}
+/* ---------- Séptimo grado: historia, papiro, fracciones y gráficas ---------- */
+.ficha-historia{border-color:#B5892B;background:#FFF8E6}
+.historia{max-width:760px;margin:0 auto}
+.historia h2{margin:0 0 8px;font-size:clamp(24px,3.8vw,34px)}
+.historia .papiro{display:block;width:100%;max-width:560px;height:auto;margin:6px auto 14px}
+.historia .relato{background:var(--blanco);border:4px solid #E2C98F;border-radius:20px;padding:12px 18px;box-shadow:var(--sombra)}
+.historia .relato p{margin:0 0 10px}
+.historia .relato p:last-child{margin:0}
+.historia .dialogo{background:var(--acento-claro);border-left:6px solid var(--turquesa);border-radius:12px;padding:8px 12px;margin:12px 0}
+.historia .dialogo p{margin:0 0 6px}
+.historia .dialogo p:last-child{margin:0}
+.historia .dato{font-size:.85em;color:var(--tinta-suave);margin:12px 0 0}
+.historia .acciones{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.tablilla{background:#FFF3D6;border:3px solid #B5892B;border-radius:16px;padding:10px 16px;max-width:560px;text-align:center;font-weight:600}
+.tablilla .t-tit{display:block;font-size:.8em;color:#5C3900;letter-spacing:.04em}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin:0 .08em;font-size:.82em}
+.frac .n{border-bottom:3px solid currentColor;padding:0 .12em}
+.frac .d{padding:0 .12em}
+.cociente{font-size:clamp(14px,2vw,17px);color:var(--acento)}
+/* ---------- Octavo grado: funciones ---------- */
+.tri{width:100%;max-width:560px;height:auto;display:block}
+.recordatorio{font-weight:700;color:var(--acento);background:var(--acento-claro);border-radius:999px;padding:4px 16px;margin:0;font-size:clamp(16px,2.4vw,21px);text-align:center}
+body.nivel-reto .recordatorio{display:none}
+.numero-grande{font-size:clamp(30px,6vw,52px);font-weight:700;color:var(--tinta);margin:4px 0;letter-spacing:.02em}
+.dato-real{font-size:clamp(15px,2.2vw,18px);color:var(--tinta-suave);margin:0;text-align:center}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa" id="enlace-casa" href="./">◀ All games</a>
+    <h1>Functions</h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+    <span class="chip" id="chip-rango" aria-label="Difficulty">
+      <button id="btn-facil" aria-pressed="true">⭐ Easy</button>
+      <button id="btn-reto" aria-pressed="false">⭐⭐ Challenge</button>
+    </span>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <div class="desfile" aria-hidden="true"><span><img src="lumi7-matematicas.png" alt="" class="lumi-d" width="365" height="664"></span><span>⚙️</span><span>🎳</span><span>💧</span><span>📉</span></div>
+    <h2>Galileo and the rolling balls</h2>
+    <p id="txt-portada">About 400 years ago, Galileo Galilei rolled balls down a long ramp and measured the time with water. He discovered a rule that connects time and distance: a function. Lumi and Nova will help you decide what is a function, tell linear from nonlinear, find the rate of change and the initial value, compare functions and read the story a graph tells. With Israel, Daniel, Elías, Sophia, Athena, Salma and Selena.</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+      <p id="txt-portada-es">Hace unos 400 años, Galileo Galilei hizo rodar bolas por una rampa larga y midió el tiempo con agua. Descubrió una regla que relaciona el tiempo con la distancia: una función. Lumi y Nova te ayudarán a decidir qué es una función, distinguir lo lineal de lo no lineal, hallar la razón de cambio y el valor inicial, comparar funciones y leer la historia que cuenta una gráfica.</p>
+      <button class="bocina chica" type="button" id="btn-oir-es" aria-label="Escuchar en español">🔊</button>
+    </div></div>
+    <button class="bocina grande" id="btn-oir" aria-label="Hear what this game is about">🔊</button>
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- MENÚ -->
+  <section id="p-menu" class="oculto">
+    <div class="menu-tarea" style="margin:0 0 18px">
+      <p>Start with the story</p>
+      <button class="ficha-juego ficha-historia" id="juego-historia" type="button"><span class="emoji" aria-hidden="true">🎳</span>
+        <span><span class="nombre">Galileo and the rolling balls</span><span class="nombre-es ayuda-es" lang="es">Galileo y las bolas que ruedan</span><span class="meta">A true story from Italy</span></span></button>
+    </div>
+    <p style="font-weight:700;margin:0 0 12px">Pick a game</p>
+    <div class="rejilla" id="rejilla-juegos"></div>
+    <div class="menu-tarea">
+      <p>Then show what you know</p>
+      <button class="ficha-juego ficha-tarea" id="juego-tarea" type="button"><span class="emoji" aria-hidden="true">✍️</span>
+        <span><span class="nombre">Final task: explain it yourself</span><span class="nombre-es ayuda-es" lang="es">Tarea final: explícalo tú</span><span class="meta">Think like Galileo</span></span></button>
+    </div>
+  </section>
+
+  <!-- HISTORIA -->
+  <section id="p-historia" class="oculto historia" aria-labelledby="tit-historia">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-historia" type="button">◀ Back</button>
+      <span class="crece"></span>
+      <button class="bocina" id="btn-bocina-historia" type="button" aria-label="Hear the story">🔊</button>
+    </div>
+    <h2 id="tit-historia">Galileo and the rolling balls</h2>
+    <svg class="papiro" viewBox="0 0 560 230" role="img" aria-label="A ball rolling down a ramp. Marks on the ramp show the distance traveled after 1, 2, 3 and 4 equal times: 1, 4, 9 and 16 units. Next to it, a table: time 1, 2, 3, 4; distance 1, 4, 9, 16; distance in each time 1, 3, 5, 7.">
+      <rect x="4" y="4" width="552" height="222" rx="14" fill="#FFF8E6" stroke="#B5892B" stroke-width="3"/>
+      <polygon points="30,60 300,200 30,200" fill="#E6CFA4" stroke="#8A5A2B" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="42" cy="54" r="9" fill="#7A8C99" stroke="#14313A" stroke-width="2"/>
+      <g stroke="#B71C1C" stroke-width="3">
+        <line x1="47" y1="61" x2="44" y2="68"/><line x1="98" y1="88" x2="95" y2="95"/><line x1="182" y1="131" x2="179" y2="138"/><line x1="300" y1="193" x2="297" y2="200"/>
+      </g>
+      <g font-size="13" font-weight="700" fill="#5C3900" text-anchor="middle">
+        <text x="62" y="58">1</text><text x="112" y="85">4</text><text x="196" y="128">9</text><text x="292" y="184">16</text>
+      </g>
+      <text x="150" y="220" font-size="12" text-anchor="middle" fill="#5C3900">distance after 1, 2, 3 and 4 equal times</text>
+      <g font-size="15" fill="#5C3900">
+        <text x="330" y="44" font-weight="700">Time</text><text x="430" y="44" font-weight="700">Distance</text>
+        <text x="345" y="72">1</text><text x="455" y="72">1</text>
+        <text x="345" y="98">2</text><text x="455" y="98">4</text>
+        <text x="345" y="124">3</text><text x="455" y="124">9</text>
+        <text x="345" y="150">4</text><text x="450" y="150">16</text>
+        <text x="330" y="182" font-weight="700" fill="#1B5E20">Each time: 1, 3, 5, 7…</text>
+        <text x="330" y="206" font-weight="700" fill="#1B5E20">distance = time²</text>
+      </g>
+      <line x1="325" y1="52" x2="530" y2="52" stroke="#B5892B" stroke-width="2"/>
+    </svg>
+    <div class="relato" id="relato">
+      <p>Galileo Galilei was an Italian scientist who wanted to know how things fall. The problem was that a falling stone is too fast to measure with the clocks of the 1600s. So he had a clever idea: slow the fall down. He let bronze balls roll down a long, smooth groove cut in a wooden board, tilted like a ramp.</p>
+      <p><b>A clock made of water.</b> To measure the time, he let water run out of a big container through a thin pipe while the ball rolled, collected it in a cup and weighed it. More water meant more time. He repeated each run many times. Some historians think he also used musical beats, because he was a good lute player.</p>
+      <p><b>The rule.</b> Galileo found that in equal times the ball covered distances in the pattern 1, 3, 5, 7… The totals were 1, 4, 9, 16: the distance is proportional to the time squared. Each time has exactly one distance, so distance is a <b>function</b> of time. But it is not a straight line: it is a <b>nonlinear</b> function, because the ball keeps going faster.</p>
+      <div class="dialogo">
+        <p><b>Nova:</b> 1, 4, 9, 16… Those are perfect squares!</p>
+        <p><b>Lumi:</b> Yes. If the ball went at a steady speed, the distances would grow by the same amount each time, like 2, 4, 6, 8. That would be linear.</p>
+        <p><b>Nova:</b> So a table can tell me if a function is linear: I look at how much it changes each time.</p>
+        <p><b>Lumi:</b> Exactly. That is the rate of change. Let’s find it in tables, equations and graphs.</p>
+      </div>
+      <p>Galileo published these results in 1638 in his book <i>Two New Sciences</i>, when he was old and under house arrest; the book had to be printed in Leiden, in the Netherlands. In 1914, two professors of Northwestern University, in Evanston, Illinois, Henry Crew and Alfonso de Salvio, translated it into English, and their translation is still read today.</p>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es" id="relato-es"><div class="fila-ayuda">
+      <p>Galileo Galilei fue un científico italiano que quería saber cómo caen las cosas. El problema era que una piedra que cae es demasiado rápida para medirla con los relojes del siglo XVII. Así que tuvo una idea ingeniosa: hacer más lenta la caída. Dejó rodar bolas de bronce por una ranura larga y lisa tallada en una tabla de madera inclinada como una rampa. Para medir el tiempo, dejaba salir agua de un recipiente grande por un tubo delgado mientras la bola rodaba, la recogía en una taza y la pesaba: más agua significaba más tiempo. Algunos historiadores creen que también usó compases musicales, porque tocaba bien el laúd. Galileo descubrió que, en tiempos iguales, la bola recorría distancias que seguían el patrón 1, 3, 5, 7…, y que los totales eran 1, 4, 9, 16: la distancia es proporcional al cuadrado del tiempo. Cada tiempo tiene exactamente una distancia, así que la distancia es una función del tiempo, pero no es lineal, porque la bola va cada vez más rápido. Publicó estos resultados en 1638 en su libro Dos nuevas ciencias, ya anciano y bajo arresto domiciliario; el libro tuvo que imprimirse en Leiden, en los Países Bajos. En 1914, dos profesores de la Universidad Northwestern, en Evanston (Illinois), Henry Crew y Alfonso de Salvio, lo tradujeron al inglés.</p>
+      <button class="bocina chica" type="button" id="btn-bocina-historia-es" aria-label="Escuchar la historia en español">🔊</button>
+    </div></div>
+    <p class="dato">Galileo’s notes show that he was already working on these experiments in the early 1600s, more than thirty years before the book was published. You can try the experiment yourself with a long board, a marble, tape to mark the distances and a stopwatch.</p>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-historia-juego" type="button">Play: Galileo’s ramp ▶</button>
+      <button class="boton" id="btn-historia-menu" type="button">All games</button>
+    </div>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver">◀ Back</button>
+      <span class="crece"></span>
+      <div class="marcador" id="marcador" aria-label="Stars earned"></div>
+    </div>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-instruccion"></p>
+        <span class="mascota" id="mascota" aria-hidden="true"><img src="lumi7-matematicas.png" alt="" class="lumi-m" width="365" height="664"></span>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es" id="caja-ayuda-juego"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-ayuda"></p>
+      </div></div>
+    </div>
+    <div class="escena" id="escena"></div>
+    <div id="opciones" class="fila-fichas"></div>
+    <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:18px">
+      <button class="boton fuerte oculto" id="btn-siguiente">Next ▶</button>
+      <button class="boton oculto" id="btn-repetir"></button>
+    </div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="trofeo" aria-hidden="true">🏆</div>
+    <h2>You finished the game!</h2>
+    <div class="marcador" id="marcador-final"></div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <button class="boton fuerte" id="btn-otra-vez">Play again</button>
+      <button class="boton" id="btn-al-menu">Another game</button>
+    </div>
+  </section>
+
+  <!-- TAREA FINAL -->
+  <section id="p-tarea" class="oculto tarea" aria-labelledby="tit-tarea">
+    <div class="cabecera-juego">
+      <button class="boton" id="btn-volver-tarea" type="button">◀ Back</button>
+    </div>
+    <h2 id="tit-tarea">Final task: explain it yourself</h2>
+    <div class="instruccion">
+      <div class="fila-i">
+        <button class="bocina" id="btn-bocina-tarea" type="button" aria-label="Hear the instruction">🔊</button>
+        <p id="txt-tarea">There are no options to choose from this time. Build your own answer and explain it. Use a table, a graph or an equation, and tell how it proves your answer.</p>
+      </div>
+      <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda">
+        <button class="bocina chica" type="button" id="btn-bocina-tarea-es" aria-label="Escuchar la consigna en español">🔊</button>
+        <p id="txt-tarea-es">Esta vez no hay opciones para elegir. Construye tu propia respuesta y explícala. Usa una tabla, una gráfica o una ecuación, y di cómo demuestra tu respuesta.</p>
+      </div></div>
+    </div>
+
+    <div class="parte">
+      <h3>Part 1 · Explain</h3>
+      <p class="consigna" id="consigna-1">Daniel looks at Galileo’s table (time 1, 2, 3, 4 → distance 1, 4, 9, 16) and says: “It is a linear function, because the distance always goes up.” Is Daniel right? Explain the difference between a linear and a nonlinear function using the table.</p>
+      <p class="ayuda-es" lang="es">Daniel mira la tabla de Galileo (tiempo 1, 2, 3, 4 → distancia 1, 4, 9, 16) y dice: «Es una función lineal, porque la distancia siempre sube». ¿Tiene razón Daniel? Explica la diferencia entre una función lineal y una no lineal usando la tabla.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> From one time to the next, the distance grows by ___, ___ and ___. In a linear function the change is always ___. So Galileo’s function is ___.</p>
+        <p><b>Useful words:</b> function, linear, nonlinear, rate of change, constant, input, output.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: use the pattern to find the distance at time 6 and at time 10. How far does the ball go during the 6th time interval alone?</p><p class="ayuda-es" lang="es">Reto: usa el patrón para hallar la distancia en el tiempo 6 y en el tiempo 10. ¿Cuánto avanza la bola solo durante el sexto intervalo?</p></div>
+      <textarea id="resp-1" aria-labelledby="consigna-1" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3>Part 2 · Apply the idea to a new problem</h3>
+      <p class="consigna" id="consigna-2">A phone plan costs $40 to start plus $25 per month. Athena writes the function as y = 40x + 25. Is she right? Write the correct function, and say what the rate of change and the initial value mean in this situation.</p>
+      <p class="ayuda-es" lang="es">Un plan de teléfono cuesta $40 al empezar más $25 por mes. Athena escribe la función como y = 40x + 25. ¿Tiene razón? Escribe la función correcta y di qué significan la razón de cambio y el valor inicial en esta situación.</p>
+      <div class="andamio">
+        <p><b>Sentence starters:</b> The amount that repeats every month is ___, so it is the ___. The one-time amount is ___, so it is the ___. The function is y = ___.</p>
+      </div>
+      <div class="solo-reto"><p class="consigna">Challenge: Plan B is y = 30x + 10. After how many months do the two plans cost the same? Which plan costs more after 10 months?</p><p class="ayuda-es" lang="es">Reto: el plan B es y = 30x + 10. ¿Después de cuántos meses cuestan lo mismo los dos planes? ¿Qué plan cuesta más después de 10 meses?</p></div>
+      <textarea id="resp-2" aria-labelledby="consigna-2" spellcheck="true"></textarea>
+    </div>
+
+    <div class="parte">
+      <h3 id="tit-rubrica">Check your own work</h3>
+      <p class="consigna">Read your answers again. Press each sentence that is true about your work.</p>
+      <p class="ayuda-es" lang="es">Vuelve a leer tus respuestas. Pulsa cada oración que sea verdadera sobre tu trabajo.</p>
+      <ul class="rubrica" aria-labelledby="tit-rubrica">
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I answered the question.<span class="es" lang="es">Respondí la pregunta.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I used evidence: a table, a graph or an equation.<span class="es" lang="es">Usé evidencia: una tabla, una gráfica o una ecuación.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I explained what the rate of change and the initial value mean.<span class="es" lang="es">Expliqué qué significan la razón de cambio y el valor inicial.</span></span></button></li>
+        <li><button type="button" class="criterio" aria-pressed="false"><span class="marca" aria-hidden="true"></span><span>I applied the idea to the new problem in Part 2.<span class="es" lang="es">Apliqué la idea al problema nuevo de la Parte 2.</span></span></button></li>
+      </ul>
+      <p style="text-align:center;margin:14px 0 0"><button class="boton fuerte" id="btn-modelo" type="button">Compare with a model answer</button></p>
+      <div class="aviso" id="aviso-tarea" role="status" aria-live="polite"></div>
+      <div class="modelo oculto" id="modelo" tabindex="-1">
+        <p><b>Part 1.</b> Daniel is not right. Going up is not enough to be linear. From one time to the next, the distance grows by 3, then 5, then 7: the change is not constant. In a linear function the rate of change is always the same, and the graph is a straight line. Galileo’s function is a function (each time has one distance), but it is nonlinear: distance = time², and its graph is a curve.</p>
+        <p class="solo-reto"><b>Challenge.</b> At time 6 the distance is 6² = 36, and at time 10 it is 10² = 100. During the 6th interval alone the ball goes 36 − 25 = 11, the next odd number after 1, 3, 5, 7, 9.</p>
+        <p><b>Part 2.</b> Athena is not right: she swapped the two numbers. The $25 is paid every month, so it is the rate of change (the slope). The $40 is paid once, at the start, so it is the initial value (the y-intercept). The function is y = 25x + 40, where x is the number of months and y is the total cost.</p>
+        <p class="solo-reto"><b>Challenge.</b> 25x + 40 = 30x + 10 gives 30 = 5x, so x = 6 months: both plans cost $190. After 10 months, plan A costs 25(10) + 40 = $290 and plan B costs 30(10) + 10 = $310, so plan B costs more.</p>
+        <p>Your words can be different. What matters is that your answer shows the math and explains how it proves your answer.</p>
+      </div>
+      <p class="nota-privada">Your answers are not saved. Show them to your teacher or your family, or use the printed page.</p>
+      <p class="nota-privada ayuda-es" lang="es">Tus respuestas no se guardan. Muéstraselas a tu maestra o a tu familia, o usa la hoja impresa.</p>
+    </div>
+  </section>
+
+  <footer class="pie">
+    <p><button class="boton" id="btn-imprimir" style="font-size:.9em;padding:8px 16px">🖨 Print a page: functions</button></p>
+    <p>Aligned to the Illinois eighth grade mathematics standards 8.F.1 (a function is a rule that assigns to each input exactly one output), 8.F.2 (compare properties of two functions each represented in a different way), 8.F.3 (interpret y = mx + b as a linear function; give examples of functions that are not linear), 8.F.4 (construct a function to model a linear relationship; determine and interpret the rate of change and the initial value) and 8.F.5 (describe qualitatively the functional relationship between two quantities by analyzing a graph, and sketch a graph that shows a described situation). The module opens with a true story from the history of science: Galileo’s balls rolling down a ramp, timed with a water clock, and the law of falling bodies published in <i>Two New Sciences</i> in 1638, a book translated into English in 1914 by two professors of Northwestern University, in Evanston, Illinois. At the Easy level the tables start at 0 and the numbers are friendly; at the Challenge level the tables skip values, the functions are compared in different forms and the slopes can be negative. The most common mistakes, thinking that “going up” means linear, swapping the rate and the initial value, and reading the rate of change without dividing by the change in x, get their own hints, and a wrong answer always brings a hint, never the answer. The optional “Ayuda en español” button translates only the instruction or the question. Each game has its own direct link: #historia, #galileo, #funcion, #lineal, #razon, #comparar and #graficas, and the final task is #tarea.</p>
+    <p class="ayuda-es" lang="es">Alineado con los estándares de matemáticas de Illinois para octavo grado: 8.F.1 a 8.F.5 (qué es una función, comparar funciones en distintas formas, funciones lineales y no lineales, razón de cambio y valor inicial, y describir gráficas). El módulo empieza con una historia real: las bolas de Galileo rodando por una rampa, medidas con un reloj de agua, y la ley de la caída publicada en Dos nuevas ciencias (1638), libro que tradujeron al inglés en 1914 dos profesores de la Universidad Northwestern, en Evanston (Illinois). Ante un error, siempre se da una pista, nunca la respuesta.</p>
+    <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="license noopener noreferrer" target="_blank">CC BY-NC-SA 4.0</a></p>
+  </footer>
+</div>
+
+<!-- HOJA IMPRESA -->
+<div class="hoja">
+  <h2>Functions</h2>
+  <p class="indicacion">Name: ____________________________     Date: ____________</p>
+  <h3>1. Galileo’s ramp: time 1, 2, 3, 4, 5 → distance 1, 4, 9, 16, ___. Distance at time 7: <i class="linea"></i></h3>
+  <h3>2. Is it a function? Write yes or no.</h3>
+  <div class="caja-h">
+    <div>a) (1, 3), (2, 5), (3, 7), (4, 9): <i class="linea"></i></div>
+    <div>b) (2, 1), (2, 4), (3, 6), (5, 8): <i class="linea"></i></div>
+    <div>c) Each student → their birthday: <i class="linea"></i></div>
+    <div>d) A circle drawn on a graph: <i class="linea"></i></div>
+  </div>
+  <h3>3. Linear or nonlinear?</h3>
+  <div class="caja-h">
+    <div>a) y = 4x − 1: <i class="linea"></i></div>
+    <div>b) y = x²: <i class="linea"></i></div>
+    <div>c) x: 0, 1, 2, 3 → y: 5, 8, 11, 14: <i class="linea"></i></div>
+    <div>d) x: 0, 1, 2, 3 → y: 1, 2, 4, 8: <i class="linea"></i></div>
+  </div>
+  <h3>4. x: 2, 4, 6, 8 → y: 7, 11, 15, 19. Rate of change: <i class="linea"></i> Initial value: <i class="linea"></i> Function: y = <i class="linea"></i></h3>
+  <h3>5. Function A: y = 3x + 2. Function B: x: 0, 1, 2 → y: 4, 6, 8. Which has the greater rate of change? <i class="linea"></i> Which has the greater initial value? <i class="linea"></i></h3>
+  <h3>6. Sketch a graph: Salma walks to the park, rests 10 minutes, then runs home.</h3>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <h3>7. Final task: explain it yourself.</h3>
+  <p class="razon-h">a) Daniel says Galileo’s table is linear because the distance always goes up. Is he right? Explain.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="razon-h">b) A plan costs $40 to start plus $25 per month. Athena writes y = 40x + 25. Is she right? Explain.</p>
+  <div class="renglon"></div><div class="renglon"></div><div class="renglon"></div>
+  <p class="creditos">José M. Fernández, Harry S. Truman College — City Colleges of Chicago · CC BY-NC-SA 4.0</p>
+</div>
+
+<script>
+"use strict";
+try{ if("scrollRestoration" in history) history.scrollRestoration = "manual"; }catch(e){}
+
+/* ============ Textos ============
+   Los juegos están en inglés. ES solo guarda la traducción de las consignas y preguntas
+   para el botón «Ayuda en español» (la retroalimentación sigue en inglés).
+   Ante un error siempre hay una pista, nunca la respuesta. */
+const NOMBRES = ["Israel","Daniel","Elías","Sophia","Athena","Salma","Selena"];
+
+const T = {
+  bien:["Great reasoning!","Nice strategy!","Your thinking paid off!","Galileo would be proud!","Lumi and Nova are glowing!","Well done, step by step!"],
+  otra:["So close! Try again!","Not yet. Look at it one more time.","Hmm… try again. You can work it out."],
+  escuchar:"🔁 Listen again",
+  final:(n)=>`You finished! You earned ${n} ${n === 1 ? "star" : "stars"}.`, menu:"Pick a game, or start with the story.",
+  reflexion:"Which strategy did you use most? What would you change next time?",
+  estrategias:[
+    ["I looked at how much the output changes each time","Great strategy! A constant change means a linear function."],
+    ["I checked if any input had two outputs","Excellent! That is exactly the test for a function."],
+    ["I divided the change in y by the change in x","Nice work! That is the rate of change, the slope."],
+    ["I told the story of the graph piece by piece","Good thinking! Up, down or flat: each piece of a graph tells part of the story."]]
+};
+const ES = { menu:"Escoge un juego o empieza con la historia." };
+
+const JUEGOS = [
+  {id:"galileo",   emoji:"🎳", en:"Galileo’s ramp",              es:"La rampa de Galileo",               meta:"1, 4, 9, 16…"},
+  {id:"funcion",   emoji:"⚙️", en:"Is it a function?",           es:"¿Es una función?",                  meta:"One input, one output"},
+  {id:"lineal",    emoji:"📏", en:"Linear or nonlinear?",        es:"¿Lineal o no lineal?",              meta:"Straight line or curve"},
+  {id:"razon",     emoji:"📊", en:"Rate and initial value",      es:"Razón de cambio y valor inicial",   meta:"Build the function"},
+  {id:"comparar",  emoji:"⚖️", en:"Compare two functions",       es:"Compara dos funciones",             meta:"Table, equation, graph"},
+  {id:"graficas",  emoji:"📉", en:"The story of a graph",        es:"La historia de una gráfica",        meta:"Up, down or flat?"}
+];
+const RONDAS = 5;
+
+/* ============ Estado y utilidades ============ */
+const S = {reto:false, juego:null, ronda:0, estrellas:0, bloqueado:false, ayuda:false, resolver:null, giro:0};
+const $ = (id)=>document.getElementById(id);
+const azar = (a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const elegir = (arr)=>arr[Math.floor(Math.random()*arr.length)];
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const unicos = (l)=> l.filter((v,i)=> l.indexOf(v) === i);
+const sinMovimiento = ()=>window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function animar(el, clase){ if(!el) return; el.classList.remove(clase); void el.offsetWidth; el.classList.add(clase); }
+const escaparHTML = (s)=> String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nombresAzar = (n)=> mezclar(NOMBRES).slice(0, n);
+const F = (n)=> String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+const mcd = (a,b)=> b ? mcd(b, a % b) : a;
+const entero = (x)=> Number.isInteger(x) && x > 0;
+const rz = (a,b)=> `${F(a)} : ${F(b)}`;
+/* Dinero en centavos: 300 → "$3", 175 → "$1.75" */
+const dinero = (c)=> c % 100 === 0 ? "$" + F(c / 100) : "$" + (c / 100).toFixed(2);
+/* Elige la mitad de las veces un tipo nuevo, sin repetir el anterior */
+const tipoRonda = (lista)=> lista[(S.ronda + S.giro) % lista.length];
+
+
+/* ============ Voz ============ */
+let voces = [];
+function cargarVoces(){ voces = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); window.speechSynthesis.onvoiceschanged = cargarVoces; }
+/* Fracciones dichas con palabras: 1/2 → «one half» / «un medio»; 3/4 → «3 fourths» / «3 cuartos» */
+const DEN_EN = {2:["half","halves"],3:["third","thirds"],4:["fourth","fourths"],5:["fifth","fifths"],6:["sixth","sixths"],7:["seventh","sevenths"],8:["eighth","eighths"],9:["ninth","ninths"],10:["tenth","tenths"],12:["twelfth","twelfths"]};
+const DEN_ES = {2:["medio","medios"],3:["tercio","tercios"],4:["cuarto","cuartos"],5:["quinto","quintos"],6:["sexto","sextos"],7:["séptimo","séptimos"],8:["octavo","octavos"],9:["noveno","novenos"],10:["décimo","décimos"],12:["doceavo","doceavos"]};
+function fraccionEnVoz(txt, es){
+  return String(txt).replace(/\b(\d+)\/(\d+)\b/g, (s, a, b)=>{
+    const d = (es ? DEN_ES : DEN_EN)[Number(b)]; if(!d) return a + (es ? " entre " : " over ") + b;
+    const n = Number(a);
+    if(n === 1) return (es ? "un " : "one ") + d[0];
+    return a + " " + d[1];
+  });
+}
+function hablar(texto, despues, idioma){
+  const es = idioma === "es";
+  let t = fraccionEnVoz(String(texto)
+    .replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m)=>{ const d = m.replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹⁻]/g, (c)=>"0123456789-"["⁰¹²³⁴⁵⁶⁷⁸⁹⁻".indexOf(c)]);
+      if(d === "2") return es ? " al cuadrado" : " squared"; if(d === "3") return es ? " al cubo" : " cubed";
+      return (es ? " elevado a " : " to the power of ") + d.replace("-", es ? "menos " : "negative "); })
+    .replace(/∛/g, es ? " raíz cúbica de " : " the cube root of ").replace(/√/g, es ? " raíz cuadrada de " : " the square root of ")
+    .replace(/±/g, es ? " más o menos " : " plus or minus ").replace(/π/g, es ? " pi " : " pi ").replace(/…/g, es ? " y así sigue" : " and so on")
+    .replace(/½/g, es ? " un medio por " : " one half times ").replace(/(^|[\s(=:])−(?=\d)/g, es ? "$1menos " : "$1negative ").replace(/\b(\d+) (\d+)\/(\d+)\b/g, es ? "$1 y $2/$3" : "$1 and $2/$3"), es)
+    .replace(/(\d),(?=\d{3})/g, "$1")
+    .replace(/(\d+) : (\d+)/g, es ? "$1 a $2" : "$1 to $2")
+    .replace(/(\d)%/g, es ? "$1 por ciento" : "$1 percent")
+    .replace(/\((\d+), (\d+)\)/g, es ? " $1 coma $2 " : " $1 comma $2 ")
+    .replace(/×/g, es ? " por " : " times ").replace(/÷/g, es ? " entre " : " divided by ")
+    .replace(/ \+ /g, es ? " más " : " plus ").replace(/ − /g, es ? " menos " : " minus ")
+    .replace(/ = /g, es ? " es igual a " : " equals ").replace(/≈/g, es ? " aproximadamente " : " about ")
+    .replace(/_{3,}/g, es ? " en blanco " : " blank ");
+  if(!window.speechSynthesis){ if(despues) setTimeout(despues,400); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = es ? "es-US" : "en-US";
+    const v = voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(es ? "es" : "en"));
+    if(v) u.voice = v;
+    u.rate = 0.9; u.pitch = 1.05;
+    if(despues) u.onend = despues;
+    window.speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* ============ Sonidos ============ */
+let audioCtx = null;
+function ctx(){ if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function tono(frecs, dur, tipo){
+  try{
+    const a = ctx(); let t = a.currentTime;
+    frecs.forEach(f=>{
+      const o = a.createOscillator(), g = a.createGain();
+      o.type = tipo || "sine"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.16,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+      t += dur*0.72;
+    });
+  }catch(e){}
+}
+function barrido(desde, hasta, dur, tipo){
+  try{
+    const a = ctx(), t = a.currentTime, o = a.createOscillator(), g = a.createGain();
+    o.type = tipo || "sine";
+    o.frequency.setValueAtTime(desde, t); o.frequency.exponentialRampToValueAtTime(hasta, t+dur);
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.18,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+const sonBien  = ()=>tono([523,659,784,1047],0.15);
+const sonOtra  = ()=>barrido(420,180,0.35,"triangle");
+const sonToque = ()=>tono([660],0.08);
+const sonBoing = ()=>barrido(180,620,0.22,"triangle");
+
+/* ============ Lumi y confeti ============ */
+const LUMI = '<img src="lumi7-matematicas.png" alt="" class="lumi-m" width="365" height="664">';
+function mascotaFeliz(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🎉</span>"; animar(m,"feliz"); }
+function mascotaPiensa(){ const m = $("mascota"); m.innerHTML = LUMI + "<span class='globo'>🤔</span>"; animar(m,"pensando"); }
+function mascotaNormal(){ const m = $("mascota"); m.innerHTML = LUMI; m.className = "mascota"; }
+function confeti(){
+  if(sinMovimiento()) return;
+  const piezas = ["🎉","⭐","✨","🌟","🎊"];
+  for(let i=0;i<16;i++){
+    const p = document.createElement("span");
+    p.className = "confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent = elegir(piezas);
+    p.style.left = azar(2,94) + "vw";
+    p.style.animationDelay = (Math.random()*0.4).toFixed(2) + "s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 2200);
+  }
+}
+
+/* ============ Ayuda en español ============ */
+function ponerAyuda(on){
+  S.ayuda = on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", on);
+  $("enlace-casa").href = "./" + (on ? "?ayuda=es" : "");
+  pintarMenu();
+}
+
+/* ============ Navegación ============ */
+function mostrar(cual){
+  ["p-portada","p-menu","p-historia","p-juego","p-final","p-tarea"].forEach(id=>$(id).classList.add("oculto"));
+  $(cual).classList.remove("oculto");
+  /* Cada pantalla nueva empieza arriba (si no, se queda donde estaba el menú) */
+  try{ window.scrollTo(0, 0); }catch(e){}
+}
+function pintarMenu(){
+  const cont = $("rejilla-juegos"); cont.innerHTML = "";
+  JUEGOS.forEach(j=>{
+    const b = document.createElement("button");
+    b.className = "ficha-juego"; b.id = "juego-" + j.id;
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${j.emoji}</span>
+      <span><span class="nombre">${j.en}</span>${S.ayuda ? `<span class="nombre-es" lang="es">${j.es}</span><br>` : ""}<span class="meta">${escaparHTML(j.meta)}</span></span>`;
+    b.addEventListener("click", ()=>iniciarJuego(j.id));
+    cont.appendChild(b);
+  });
+}
+function pintarMarcador(cont, n, nueva){
+  cont.innerHTML = "";
+  for(let i=0;i<RONDAS;i++){
+    const s = document.createElement("span");
+    s.className = "estrella" + (i<n ? " ganada":"") + (nueva && i===n-1 ? " nueva":"");
+    s.textContent = "⭐"; s.setAttribute("aria-hidden","true");
+    cont.appendChild(s);
+  }
+}
+/* Enlace directo a cada juego con el ancla: g7-01-proportional-relationships.html#ahmes */
+function juegoDelAncla(){
+  const h = (location.hash || "").replace("#","");
+  return JUEGOS.some(j=>j.id===h) ? h : null;
+}
+function iniciarJuego(id){
+  S.juego = id; S.ronda = 0; S.estrellas = 0; S.giro = azar(0, 5);
+  try{ history.replaceState(null, "", location.pathname + location.search + "#" + id); }catch(e){}
+  mostrar("p-juego");
+  nuevaRonda();
+}
+function limpiar(){
+  S.bloqueado = false; S.resolver = null;
+  $("escena").innerHTML = ""; $("opciones").innerHTML = "";
+  $("aviso").className = "aviso"; $("aviso").textContent = "";
+  $("btn-siguiente").classList.add("oculto"); $("btn-repetir").classList.add("oculto");
+  mascotaNormal();
+  pintarMarcador($("marcador"), S.estrellas);
+}
+function acertar(extra){
+  if(S.bloqueado) return;
+  S.bloqueado = true; S.estrellas++;
+  sonBien(); confeti(); mascotaFeliz();
+  pintarMarcador($("marcador"), S.estrellas, true);
+  const frase = elegir(T.bien) + (extra ? " " + extra : "");
+  $("aviso").className = "aviso bien"; $("aviso").textContent = frase;
+  hablar(frase);
+  $("btn-siguiente").classList.remove("oculto"); $("btn-siguiente").focus();
+}
+function fallar(boton, texto){
+  sonOtra(); mascotaPiensa();
+  const t = texto || elegir(T.otra);
+  $("aviso").className = "aviso otra"; $("aviso").textContent = t;
+  hablar(t);
+  if(boton) animar(boton, "mal");
+}
+function avanzar(){
+  S.ronda++;
+  if(S.ronda >= RONDAS){
+    pintarMarcador($("marcador-final"), S.estrellas);
+    mostrar("p-final"); confeti(); setTimeout(confeti, 700);
+    pintarReflexion();
+    hablar(T.final(S.estrellas) + " " + T.reflexion);
+  } else nuevaRonda();
+}
+
+/* ============ Constructores ============ */
+function botonTexto(texto, clase, etiqueta, accion){
+  const b = document.createElement("button"); b.type = "button"; b.className = clase; b.textContent = texto;
+  if(etiqueta) b.setAttribute("aria-label", etiqueta);
+  b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); accion(b); });
+  return b;
+}
+const resolverTexto = (txt)=> ()=>{ const b = [...document.querySelectorAll("#opciones button")].find(x=>x.textContent.trim()===String(txt)); if(b) b.click(); };
+/* Consigna en inglés; la ayuda en español traduce solo la consigna o la pregunta */
+function ponerInstruccion(pantalla, voz, ayudaEs){
+  /* Si el juego no dibuja nada en la escena, Lumi la acompaña para que no parezca que falta algo */
+  setTimeout(()=>{ const e = $("escena"); if(e && !e.children.length) e.innerHTML = '<img class="escena-lumi" src="lumi7-presenta.png" alt="" width="807" height="679">'; }, 0);
+  $("txt-instruccion").textContent = pantalla;
+  hablar(voz || pantalla);
+  $("btn-bocina").onclick = ()=>hablar(voz || pantalla);
+  $("txt-ayuda").textContent = ayudaEs || "";
+  $("caja-ayuda-juego").classList.toggle("oculto", !ayudaEs);
+  $("btn-bocina-es").onclick = ()=>hablar(ayudaEs || "", null, "es");
+  const b = $("btn-repetir"); b.textContent = T.escuchar; b.classList.remove("oculto");
+  b.onclick = ()=>{ if(!S.bloqueado) hablar(voz || pantalla); };
+}
+/* Opciones de texto (una correcta). malos: [[texto, pista], ...] */
+function opciones(bien, malos, alAcertar, larga){
+  const cont = $("opciones");
+  const lista = [[bien, null], ...malos.filter(([x], i)=> x !== bien && malos.findIndex(([y])=>y === x) === i).slice(0, 3)];
+  mezclar(lista).forEach(([x, pista])=>{
+    const b = botonTexto(x, "opcion-texto" + (larga ? " larga" : ""), null, (bt)=>{
+      if(x === bien){ sonBoing(); alAcertar(bt); } else fallar(bt, pista);
+    });
+    cont.appendChild(b);
+  });
+  S.resolver = resolverTexto(bien);
+}
+/* Opciones de números: quita los repetidos, los que no son enteros positivos y el correcto */
+function opcionesNum(bien, malos, alAcertar, fmt){
+  const f = fmt || F;
+  const vistos = new Set([bien]);
+  const limpios = malos.filter(([v])=>{ if(!entero(v) || vistos.has(v)) return false; vistos.add(v); return true; });
+  opciones(f(bien), limpios.map(([v, p])=>[f(v), p]), alAcertar);
+}
+function escenaTexto(html){ $("escena").insertAdjacentHTML("beforeend", html); }
+
+
+/* ============ Séptimo grado: fracciones y gráficas ============ */
+const fr = (n, d)=>{ const g = mcd(Math.abs(n), Math.abs(d)) || 1; return {n:n / g, d:d / g}; };
+const frDiv = (a, b)=> fr(a.n * b.d, a.d * b.n);
+const frMul = (a, b)=> fr(a.n * b.n, a.d * b.d);
+const frSum = (a, b)=> fr(a.n * b.d + b.n * a.d, a.d * b.d);
+/* 3/2 → "1 1/2"; 4/1 → "4"; 3/4 → "3/4" */
+function fmtFr(f){
+  if(f.d === 1) return String(f.n);
+  if(f.n > f.d) return `${Math.floor(f.n / f.d)} ${f.n % f.d}/${f.d}`;
+  return `${f.n}/${f.d}`;
+}
+const txtFr = (f)=> `${f.n}/${f.d}`;
+/* Números con decimales cortos: 2.5 → "2.5"; 3 → "3" */
+const D = (x)=> String(Math.round(x * 100) / 100);
+
+/* Gráfica del primer cuadrante.
+   f: función y = f(x) (o null), puntos: [[x, y]...], marca: [x, y] resaltado con su rótulo */
+function graf7(o){
+  const W = o.chica ? 200 : 300, H = W, x0 = o.chica ? 30 : 46, y0 = H - (o.chica ? 28 : 40), L = W - x0 - (o.chica ? 12 : 20);
+  const kx = L / o.maxX, ky = L / o.maxY, fs = o.chica ? 10 : 13;
+  const px = (x)=> x0 + x * kx, py = (y)=> y0 - y * ky;
+  let s = o.chica ? `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true" focusable="false">`
+                  : `<svg class="modelo" style="max-width:340px" viewBox="0 0 ${W} ${H}" role="img" aria-label="${escaparHTML(o.etiqueta || "Graph")}">`;
+  s += `<rect width="${W}" height="${H}" fill="#fff"/>`;
+  for(let i=0;i<=5;i++){
+    const vx = o.maxX * i / 5, vy = o.maxY * i / 5;
+    s += `<line x1="${px(vx)}" y1="${y0}" x2="${px(vx)}" y2="${y0 - L}" stroke="#C9E3E5"/><line x1="${x0}" y1="${py(vy)}" x2="${x0 + L}" y2="${py(vy)}" stroke="#C9E3E5"/>`;
+    s += `<text x="${px(vx)}" y="${y0 + fs + 3}" font-size="${fs}" text-anchor="middle" fill="#14313A">${D(vx)}</text>`;
+    if(i) s += `<text x="${x0 - 4}" y="${py(vy) + fs / 3}" font-size="${fs}" text-anchor="end" fill="#14313A">${D(vy)}</text>`;
+  }
+  s += `<line x1="${x0}" y1="${y0}" x2="${x0 + L + 6}" y2="${y0}" stroke="#14313A" stroke-width="2"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${y0 - L - 6}" stroke="#14313A" stroke-width="2"/>`;
+  if(!o.chica && o.xLab) s += `<text x="${x0 + L}" y="${H - 4}" font-size="13" font-weight="700" text-anchor="end" fill="#3F5F66">${escaparHTML(o.xLab)}</text>`;
+  if(!o.chica && o.yLab) s += `<text x="${x0 + 4}" y="14" font-size="13" font-weight="700" fill="#3F5F66">${escaparHTML(o.yLab)}</text>`;
+  if(o.f){
+    const pts = [];
+    for(let i=0;i<=40;i++){ const x = o.maxX * i / 40, y = o.f(x); if(y >= 0 && y <= o.maxY) pts.push(`${px(x).toFixed(1)},${py(y).toFixed(1)}`); }
+    s += `<polyline points="${pts.join(" ")}" fill="none" stroke="#45A6AD" stroke-width="${o.chica ? 3 : 4}" stroke-linecap="round"/>`;
+  }
+  (o.puntos || []).forEach(([x, y])=>{ if(x <= o.maxX && y <= o.maxY) s += `<circle cx="${px(x)}" cy="${py(y)}" r="${o.chica ? 4.5 : 5.5}" fill="#194F5A" stroke="#fff" stroke-width="1.5"/>`; });
+  if(o.marca){
+    const [x, y] = o.marca, cx = px(x), cy = py(y), izq = cx > x0 + L * 0.6;
+    s += `<circle cx="${cx}" cy="${cy}" r="9" fill="#F8C85F" stroke="#5C3900" stroke-width="3"/>`;
+    s += `<rect x="${izq ? cx - 92 : cx + 10}" y="${cy - 34}" width="82" height="26" rx="8" fill="#FFF3D6" stroke="#5C3900" stroke-width="2"/>`;
+    s += `<text x="${izq ? cx - 51 : cx + 51}" y="${cy - 15}" font-size="15" font-weight="700" text-anchor="middle" fill="#5C3900">(${D(x)}, ${D(y)})</text>`;
+  }
+  return s + "</svg>";
+}
+/* Tabla x / y (con la fila y ÷ x en el nivel Fácil) */
+function tablaXY(xs, ys, nomX, nomY, conCociente){
+  let h = `<table class="tabla-razon"><caption>${escaparHTML(nomX)} and ${escaparHTML(nomY)}</caption><tbody>`;
+  h += `<tr><th scope="row">x · ${escaparHTML(nomX)}</th>${xs.map(v=>`<td>${D(v)}</td>`).join("")}</tr>`;
+  h += `<tr><th scope="row">y · ${escaparHTML(nomY)}</th>${ys.map(v=>`<td>${D(v)}</td>`).join("")}</tr>`;
+  if(conCociente) h += `<tr><th scope="row" class="cociente">y ÷ x</th>${xs.map((v, i)=>`<td class="cociente">${D(ys[i] / v)}</td>`).join("")}</tr>`;
+  return h + "</tbody></table>";
+}
+/* Botones grandes de sí / no */
+function botonesSiNo(verdad, siTxt, noTxt, pista, expl){
+  const cont = $("opciones");
+  [[true, siTxt, "opcion-vf v"], [false, noTxt, "opcion-vf f"]].forEach(([v, txt, cls])=>{
+    cont.appendChild(botonTexto(txt, cls, null, (bt)=>{
+      if(v !== verdad){ fallar(bt, pista); return; }
+      sonBoing(); acertar(expl);
+    }));
+  });
+  S.resolver = resolverTexto(verdad ? siTxt : noTxt);
+}
+/* Opciones que son gráficas: [[svg, etiqueta, correcta, pista], ...] */
+function opcionesGraf(lista, alAcertar){
+  const cont = $("opciones");
+  mezclar(lista).forEach(([svg, etiqueta, ok, pista], i)=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "opcion-graf";
+    b.setAttribute("aria-label", etiqueta);
+    b.innerHTML = svg + `<span aria-hidden="true">${"ABCD"[i]}</span>`;
+    b.addEventListener("click", ()=>{ if(S.bloqueado) return; sonToque(); if(ok){ sonBoing(); alAcertar(b); } else fallar(b, pista); });
+    cont.appendChild(b);
+  });
+}
+
+/* ============ Octavo grado: funciones (ayudas compartidas con el módulo 2) ============ */
+const N = (n)=> n < 0 ? "−" + Math.abs(n) : String(n);
+/* Fracción simplificada como texto: "2", "−3/4" */
+function frac(n, d){
+  if(d < 0){ n = -n; d = -d; }
+  const g = mcd(Math.abs(n), d) || 1; n /= g; d /= g;
+  return d === 1 ? N(n) : (n < 0 ? "−" : "") + Math.abs(n) + "/" + d;
+}
+/* Término con x: 3x, −x, x, (2/3)x */
+function tx(m){ const t = typeof m === "string" ? m : N(m); return t === "1" ? "x" : t === "−1" ? "−x" : t.includes("/") ? `(${t})x` : `${t}x`; }
+/* Suma un número con su signo: " + 5", " − 3", "" */
+const mas = (b)=> b === 0 ? "" : b > 0 ? ` + ${b}` : ` − ${-b}`;
+const ecu = (m, b)=> m === 0 || m === "0" ? `y = ${N(b)}` : `y = ${tx(m)}${mas(b)}`;
+/* Lado de una ecuación ax + b */
+const lado = (a, b)=> a === 0 ? N(b) : `${tx(a)}${mas(b)}`;
+
+/* Plano con rectas y puntos.
+   o.min, o.max; o.lineas: [{m, b, color, nombre}]; o.puntos: [[x, y, rótulo]]; o.tri: [[x1, y1], [x2, y2]] triángulo de pendiente;
+   o.ex, o.ey: nombres de los ejes; o.paso: cada cuánto se rotulan los ejes */
+function planoSVG(o){
+  const W = 340, m = 36, n = o.max - o.min, cel = (W - 2 * m) / n;
+  const px = (x)=> m + (x - o.min) * cel, py = (y)=> m + (o.max - y) * cel;
+  const id = "c" + Math.random().toString(36).slice(2, 7), paso = o.paso || (n > 12 ? 2 : 1);
+  const extra = (o.ex ? 14 : 0) + (o.lineas || []).filter(l=>l.nombre).length * 20 + 4;
+  let s = `<svg class="tri" style="max-width:420px" viewBox="0 0 ${W} ${W + extra}" role="img" aria-label="${escaparHTML(o.etiqueta)}"><rect width="${W}" height="${W + extra}" fill="#fff"/>`;
+  s += `<defs><clipPath id="${id}"><rect x="${px(o.min)}" y="${py(o.max)}" width="${n * cel}" height="${n * cel}"/></clipPath></defs>`;
+  for(let i=o.min;i<=o.max;i++){
+    const eje = i === 0;
+    s += `<line x1="${px(i)}" y1="${py(o.min)}" x2="${px(i)}" y2="${py(o.max)}" stroke="${eje ? "#14313A" : "#C9E3E5"}" stroke-width="${eje ? 2.5 : 1}"/>`;
+    s += `<line x1="${px(o.min)}" y1="${py(i)}" x2="${px(o.max)}" y2="${py(i)}" stroke="${eje ? "#14313A" : "#C9E3E5"}" stroke-width="${eje ? 2.5 : 1}"/>`;
+    if(i % paso === 0){
+      const yr = o.min < 0 ? py(0) + 14 : py(o.min) + 15, xr = o.min < 0 ? px(0) - 5 : px(o.min) - 5;
+      if(i !== 0 || o.min === 0) s += `<text x="${px(i)}" y="${yr}" font-size="11" text-anchor="middle" fill="#3F5F66">${N(i)}</text>`;
+      if(i !== 0) s += `<text x="${xr}" y="${py(i) + 4}" font-size="11" text-anchor="end" fill="#3F5F66">${N(i)}</text>`;
+    }
+  }
+  if(o.ex) s += `<text x="${W / 2}" y="${W + 8}" font-size="12" font-weight="700" text-anchor="middle" fill="#14313A">${escaparHTML(o.ex)}</text>`;
+  if(o.ey) s += `<text x="12" y="${W / 2}" font-size="12" font-weight="700" text-anchor="middle" fill="#14313A" transform="rotate(-90 12 ${W / 2})">${escaparHTML(o.ey)}</text>`;
+  if(o.tri){
+    const [[x1, y1], [x2, y2]] = o.tri;
+    s += `<polyline points="${px(x1)},${py(y1)} ${px(x2)},${py(y1)} ${px(x2)},${py(y2)}" fill="none" stroke="#B5892B" stroke-width="3.5" stroke-dasharray="7 5"/>`;
+    s += `<text x="${(px(x1) + px(x2)) / 2}" y="${py(y1) + (y2 > y1 ? 18 : -8)}" font-size="14" font-weight="700" text-anchor="middle" fill="#5C3900" paint-order="stroke" stroke="#fff" stroke-width="4">run ${Math.abs(x2 - x1)}</text>`;
+    s += `<text x="${px(x2) + 6}" y="${(py(y1) + py(y2)) / 2 + 5}" font-size="14" font-weight="700" fill="#5C3900" paint-order="stroke" stroke="#fff" stroke-width="4">${y2 >= y1 ? "rise" : "fall"} ${Math.abs(y2 - y1)}</text>`;
+  }
+  (o.lineas || []).forEach(l=>{
+    const xa = o.min - 1, xb = o.max + 1;
+    s += `<line clip-path="url(#${id})" x1="${px(xa)}" y1="${py(l.m * xa + l.b)}" x2="${px(xb)}" y2="${py(l.m * xb + l.b)}" stroke="${l.color || "#194F5A"}" stroke-width="3.5" stroke-linecap="round"/>`;
+  });
+  const nombradas = (o.lineas || []).filter(l=>l.nombre);
+  nombradas.forEach((l, i)=>{
+    const y = W + 14 + i * 20, x0 = W / 2 - 70;
+    s += `<line x1="${x0}" y1="${y - 5}" x2="${x0 + 22}" y2="${y - 5}" stroke="${l.color}" stroke-width="4"/><text x="${x0 + 30}" y="${y}" font-size="15" font-weight="700" fill="${l.color}">${escaparHTML(l.nombre)}</text>`;
+  });
+  (o.puntos || []).forEach(([x, y, t])=>{
+    const der = x < o.max - (o.max - o.min) / 3;
+    s += `<circle cx="${px(x)}" cy="${py(y)}" r="6" fill="#194F5A" stroke="#fff" stroke-width="2"/>`;
+    if(t) s += `<text x="${px(x) + (der ? 9 : -9)}" y="${py(y) - 8}" font-size="14" font-weight="700" text-anchor="${der ? "start" : "end"}" fill="#14313A" paint-order="stroke" stroke="#fff" stroke-width="4">${escaparHTML(t)}</text>`;
+  });
+  return s + "</svg>";
+}
+
+const recordar = (txt)=> escenaTexto(`<p class="recordatorio">${txt}</p>`);
+const grande = (txt, dato)=> escenaTexto(`<p class="numero-grande">${txt}</p>${dato ? `<p class="dato-real">${escaparHTML(dato)}</p>` : ""}`);
+const P = (x, y)=> `(${N(x)}, ${N(y)})`;
+
+const r2 = (x)=> Math.round(x * 100) / 100;
+
+/* Tabla de valores x → y */
+function tablaHTML(xs, ys, nx, ny){
+  return `<table class="tabla-xy" style="border-collapse:collapse;font-size:clamp(18px,3vw,24px);font-weight:700;margin:4px auto">
+    <tr><th scope="row" style="padding:8px 14px;border:2px solid #45A6AD;background:#E8F5F6;font-size:clamp(18px,3vw,24px)">${escaparHTML(nx || "x")}</th>${xs.map(v=>`<td style="padding:8px 16px;border:2px solid #45A6AD;text-align:center;font-size:clamp(20px,3.2vw,28px);font-weight:700">${N(v)}</td>`).join("")}</tr>
+    <tr><th scope="row" style="padding:8px 14px;border:2px solid #45A6AD;background:#E8F5F6;font-size:clamp(18px,3vw,24px)">${escaparHTML(ny || "y")}</th>${ys.map(v=>`<td style="padding:8px 16px;border:2px solid #45A6AD;text-align:center;font-size:clamp(20px,3.2vw,28px);font-weight:700">${N(v)}</td>`).join("")}</tr></table>`;
+}
+const tablaTxt = (xs, ys)=> xs.map((x, i)=>`${N(x)} → ${N(ys[i])}`).join(", ");
+
+/* Gráfica por tramos (distancia a la casa contra el tiempo) con letras en cada tramo */
+function tramosSVG(pts, etiqueta){
+  const W = 340, m = 36, cel = (W - 2 * m) / 10, px = (x)=> m + x * cel, py = (y)=> m + (10 - y) * cel;
+  let s = `<svg class="tri" style="max-width:420px" viewBox="0 0 ${W} ${W + 14}" role="img" aria-label="${escaparHTML(etiqueta)}"><rect width="${W}" height="${W + 14}" fill="#fff"/>`;
+  for(let i=0;i<=10;i++){
+    s += `<line x1="${px(i)}" y1="${py(0)}" x2="${px(i)}" y2="${py(10)}" stroke="#C9E3E5"/><line x1="${px(0)}" y1="${py(i)}" x2="${px(10)}" y2="${py(i)}" stroke="#C9E3E5"/>`;
+  }
+  s += `<line x1="${px(0)}" y1="${py(0)}" x2="${px(10)}" y2="${py(0)}" stroke="#14313A" stroke-width="2.5"/><line x1="${px(0)}" y1="${py(0)}" x2="${px(0)}" y2="${py(10)}" stroke="#14313A" stroke-width="2.5"/>`;
+  s += `<text x="${W / 2}" y="${W + 6}" font-size="12" font-weight="700" text-anchor="middle" fill="#14313A">time (minutes)</text>`;
+  s += `<text x="12" y="${W / 2}" font-size="12" font-weight="700" text-anchor="middle" fill="#14313A" transform="rotate(-90 12 ${W / 2})">distance from home</text>`;
+  s += `<polyline points="${pts.map(([x, y])=>px(x) + "," + py(y)).join(" ")}" fill="none" stroke="#194F5A" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>`;
+  for(let i=0;i<pts.length - 1;i++){
+    const [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+    s += `<text x="${(px(x1) + px(x2)) / 2 - 6}" y="${(py(y1) + py(y2)) / 2 - 10}" font-size="18" font-weight="700" fill="#B5892B" paint-order="stroke" stroke="#fff" stroke-width="4">${"ABCD"[i]}</text>`;
+  }
+  return s + "</svg>";
+}
+
+/* Gráficas para el criterio de la recta vertical */
+const GRAFS = {
+  circulo:{es:false, d:"M170 70 a80 80 0 1 0 0.1 0", txt:"a circle", por:"A vertical line through the middle crosses the circle twice: one input with two outputs."},
+  ladeada:{es:false, d:"M300 50 Q40 170 300 290", txt:"a curve that opens to the right", por:"A vertical line can cross it twice, so some inputs have two outputs."},
+  vertical:{es:false, d:"M200 40 L200 300", txt:"a vertical line", por:"Every point has the same x: one input with infinitely many outputs."},
+  parabola:{es:true, d:"M60 60 Q170 420 280 60", txt:"a U-shaped curve", por:"Any vertical line crosses it only once: each input has one output."},
+  recta:{es:true, d:"M50 280 L300 60", txt:"a slanted straight line", por:"Any vertical line crosses it only once."},
+  horizontal:{es:true, d:"M40 150 L300 150", txt:"a horizontal line", por:"Each input has the same output, but only one: it is a function (a constant one)."}
+};
+function curvaSVG(k){
+  const g = GRAFS[k];
+  return `<svg class="tri" style="max-width:300px" viewBox="0 0 340 340" role="img" aria-label="A graph of ${g.txt}."><rect width="340" height="340" fill="#fff"/>
+    <line x1="20" y1="170" x2="320" y2="170" stroke="#14313A" stroke-width="2"/><line x1="170" y1="20" x2="170" y2="320" stroke="#14313A" stroke-width="2"/>
+    <path d="${g.d}" fill="none" stroke="#194F5A" stroke-width="5" stroke-linecap="round"/></svg>`;
+}
+
+/* ============ Rondas ============ */
+function nuevaRonda(){
+  limpiar();
+  const reto = S.reto;
+  const n = elegir(NOMBRES);
+
+  /* --- 1. La rampa de Galileo (8.F.3, 8.F.5) --- */
+  if(S.juego === "galileo"){
+    const tipo = tipoRonda(reto ? ["escala","tiempo","comparar","escala","intervalo"] : ["siguiente","intervalo","regla","siguiente","intervalo"]);
+    const k = reto ? elegir([2, 3, 5]) : 1, u = reto ? "cm" : "units";
+    const xs = [1, 2, 3, 4], ys = xs.map(t=>k * t * t);
+    if(tipo !== "comparar") escenaTexto(tablaHTML(xs, ys, "time", "distance"));
+    if(tipo === "siguiente"){
+      ponerInstruccion(`Galileo’s ball: time 1, 2, 3, 4 → distance 1, 4, 9, 16. What is the distance at time 5?`, null, `La bola de Galileo: tiempo 1, 2, 3, 4 → distancia 1, 4, 9, 16. ¿Cuál es la distancia en el tiempo 5?`);
+      opcionesNum(25, [[23, "The distance does not grow by the same amount each time. Look at the changes: 3, 5, 7… What comes next?"], [20, "Look at the changes: +3, +5, +7. The next change is +9."], [10, "Is each distance the time times itself? 1×1, 2×2, 3×3…"]],
+        ()=>acertar("The changes are 3, 5, 7, so the next one is 9: 16 + 9 = 25. Also, 5² = 25."));
+    } else if(tipo === "intervalo"){
+      const t = reto ? azar(6, 9) : azar(5, 7);
+      ponerInstruccion(`During each equal time, the ball goes ${k === 1 ? "1, 3, 5, 7… units" : `${k}, ${3 * k}, ${5 * k}, ${7 * k}… ${u}`}. How far does it go during time number ${t} alone?`, null,
+        `En cada tiempo igual, la bola avanza ${k === 1 ? "1, 3, 5, 7… unidades" : `${k}, ${3 * k}, ${5 * k}, ${7 * k}… ${u}`}. ¿Cuánto avanza solo durante el tiempo número ${t}?`);
+      opcionesNum(k * (2 * t - 1), [[k * t * t, `That is the total distance after ${t} times. The question asks only for the part during time ${t}.`], [k * (2 * t + 1), "Count the odd numbers again: the 1st is 1, the 2nd is 3, the 3rd is 5…"], [k * 2 * t, "The pattern uses odd numbers: 1, 3, 5, 7…"]],
+        ()=>acertar(`The ${t}th odd number is ${2 * t - 1}${k > 1 ? `, times ${k}` : ""}: ${k * (2 * t - 1)} ${u}. Check: ${k * t * t} − ${k * (t - 1) * (t - 1)} = ${k * (2 * t - 1)}.`));
+    } else if(tipo === "regla"){
+      ponerInstruccion("Which rule gives the distance d for each time t in Galileo’s table?", null, "¿Qué regla da la distancia d para cada tiempo t en la tabla de Galileo?");
+      opciones("d = t²", [["d = 2t", "Try t = 3: 2 × 3 = 6, but the table says 9."], ["d = t + 3", "Try t = 1: 1 + 3 = 4, but the table says 1."], ["d = 4t", "Try t = 2: 4 × 2 = 8, but the table says 4."]],
+        ()=>acertar("1 = 1², 4 = 2², 9 = 3², 16 = 4²: d = t². It is a function, but not a linear one."));
+    } else if(tipo === "escala"){
+      const t = azar(5, 8);
+      ponerInstruccion(`In ${n}’s copy of Galileo’s experiment, the ball goes ${k} cm in the first second, and the distance follows d = ${k}t². How far has it gone after ${t} seconds?`, null,
+        `En la copia del experimento de Galileo que hizo ${n}, la bola avanza ${k} cm en el primer segundo y la distancia sigue d = ${k}t². ¿Cuánto ha avanzado después de ${t} segundos?`);
+      opcionesNum(k * t * t, [[k * t * 2, `t² means t × t, not t × 2.`], [(k * t) ** 2, `Square only the t: ${k} × ${t}², not (${k} × ${t})².`], [k * t, "The distance is not linear: square the time first."]],
+        ()=>acertar(`d = ${k} × ${t}² = ${k} × ${t * t} = ${k * t * t} cm.`));
+    } else if(tipo === "tiempo"){
+      const t = azar(5, 9), d = k * t * t;
+      ponerInstruccion(`The distance follows d = ${k}t² (in cm). At what time t has the ball gone ${d} cm?`, null, `La distancia sigue d = ${k}t² (en cm). ¿En qué tiempo t la bola ha avanzado ${d} cm?`);
+      opcionesNum(t, [[d / k, `${d} ÷ ${k} = ${d / k} is t². Now find the square root.`], [Math.round(d / (2 * k)), "Undo the steps in reverse: divide by the number, then take the square root."], [t + 1, `Check: ${k} × ${t + 1}² = ${k * (t + 1) ** 2}.`]],
+        ()=>acertar(`${k}t² = ${d} → t² = ${d / k} → t = ${t}.`));
+    } else {
+      const v = elegir([3, 4, 5]);
+      escenaTexto(tablaHTML([1, 2, 3, 4], [1, 4, 9, 16], "t", "Ball A") + tablaHTML([1, 2, 3, 4], [v, 2 * v, 3 * v, 4 * v], "t", "Ball B"));
+      ponerInstruccion(`Ball A rolls down Galileo’s ramp. Ball B rolls on a flat table at a steady speed. Which one is a linear function of time?`, null,
+        `La bola A rueda por la rampa de Galileo. La bola B rueda sobre una mesa plana a velocidad constante. ¿Cuál es una función lineal del tiempo?`);
+      opciones("Only Ball B", [["Only Ball A", "Look at how much each one changes per second. Ball A: +3, +5, +7. Is that constant?"], ["Both", "Both go up, but only one changes by the same amount each time."], ["Neither", `Ball B changes by ${v} every second. What does a constant change mean?`]],
+        ()=>acertar(`Ball B changes by ${v} each second: a constant rate, so it is linear (d = ${v}t). Ball A speeds up: nonlinear.`), true);
+    }
+    return;
+  }
+
+  /* --- 2. ¿Es una función? (8.F.1) --- */
+  if(S.juego === "funcion"){
+    const tipo = tipoRonda(reto ? ["grafica","pares","grafica","vida","grafica"] : ["pares","vida","pares","vida","pares"]);
+    const SI = "✔ Yes, a function", NO = "✘ No";
+    if(tipo === "pares"){
+      const esF = Math.random() < 0.5, xs = mezclar([1, 2, 3, 4, 5, 6, 7, 8]).slice(0, 4).sort((a, b)=>a - b);
+      let pares = xs.map(x=>[x, azar(1, 12)]);
+      if(!esF){ const i = azar(0, 2); pares[i + 1] = [pares[i][0], pares[i][1] + azar(1, 5)]; pares.sort((a, b)=>a[0] - b[0]); }
+      else if(Math.random() < 0.4){ pares[1][1] = pares[0][1]; }
+      const txt = pares.map(([x, y])=>P(x, y)).join(", ");
+      grande(txt);
+      ponerInstruccion(`Is this set of ordered pairs a function? ${txt}`, null, `¿Este conjunto de pares ordenados es una función? ${txt}`);
+      botonesSiNo(esF, SI, NO, "Look at the inputs (the x-values). Does any input appear twice with different outputs?",
+        esF ? "Each input has exactly one output, so it is a function. Two inputs may share the same output; that is allowed." : `The input ${pares.find((p, i)=>pares.some((q, j)=>j !== i && q[0] === p[0]))[0]} has two different outputs, so it is not a function.`);
+    } else if(tipo === "vida"){
+      const [txt, txtEs, esF, por] = elegir([
+        ["Each student in the class → their birthday", "Cada estudiante de la clase → su fecha de cumpleaños", true, "Each student has exactly one birthday."],
+        ["Each birthday → the students born that day", "Cada fecha de cumpleaños → los estudiantes nacidos ese día", false, "Two students can share a birthday: one input, two outputs."],
+        ["Each CTA train station → the number of letters in its name", "Cada estación de tren de la CTA → el número de letras de su nombre", true, "Each name has exactly one number of letters."],
+        ["Each age in years → the height of the students with that age", "Cada edad en años → la estatura de los estudiantes de esa edad", false, "Students of the same age can have different heights."],
+        ["The time on Galileo’s ramp → the distance of the ball", "El tiempo en la rampa de Galileo → la distancia de la bola", true, "At each time the ball is in exactly one place."],
+        ["Each person → their phone numbers", "Cada persona → sus números de teléfono", false, "Some people have two or more phone numbers."]]);
+      grande(txt);
+      ponerInstruccion(`Input → output: ${txt}. Is it a function?`, null, `Entrada → salida: ${txtEs}. ¿Es una función?`);
+      botonesSiNo(esF, SI, NO, "Ask yourself: can one input have two different outputs?", por);
+    } else {
+      const k = elegir(Object.keys(GRAFS)), g = GRAFS[k];
+      escenaTexto(curvaSVG(k));
+      ponerInstruccion(`Is this graph the graph of a function? Imagine a vertical line moving across it.`, null, `¿Es esta la gráfica de una función? Imagina una recta vertical que la recorre.`);
+      botonesSiNo(g.es, SI, NO, "Vertical line test: if a vertical line can touch the graph in two points, one input has two outputs.", g.por);
+    }
+    return;
+  }
+
+  /* --- 3. ¿Lineal o no lineal? (8.F.3) --- */
+  if(S.juego === "lineal"){
+    const FACIL = [
+      ["y = 3x + 1", null, true, "It has the form y = mx + b: m = 3, b = 1."],
+      ["y = x²", null, false, "x² makes a curve: the changes are 1, 3, 5… not constant."],
+      ["y = −2x + 5", null, true, "It has the form y = mx + b with a negative slope."],
+      ["y = 5", null, true, "y = 0x + 5: a horizontal line, with rate of change 0."],
+      ["A = s² (area of a square)", null, false, "Area of a square grows like Galileo’s distances: 1, 4, 9, 16…"],
+      [null, [[0, 1, 2, 3], [2, 4, 6, 8]], true, "y grows by 2 every time: constant rate of change."],
+      [null, [[0, 1, 2, 3], [1, 2, 4, 8]], false, "y grows by 1, 2, 4: the change is not constant (it doubles)."],
+      [null, [[0, 1, 2, 3], [0, 1, 4, 9]], false, "The changes are 1, 3, 5: not constant."],
+      [null, [[0, 1, 2, 3], [10, 7, 4, 1]], true, "y goes down by 3 every time: constant rate of change."]];
+    const RETO = [
+      ["y = 2/x", null, false, "x is in the denominator: the graph is a curve, not a line."],
+      ["y = (x + 1)/2", null, true, "y = (1/2)x + 1/2: it has the form y = mx + b."],
+      ["y = 3(x − 1)", null, true, "y = 3x − 3: it has the form y = mx + b."],
+      ["y = x(x + 1)", null, false, "y = x² + x: the x² makes it nonlinear."],
+      [null, [[1, 2, 4, 7], [3, 5, 9, 15]], true, "The x-steps are not equal, but y/x changes are: 2/1, 4/2, 6/3 = 2 every time."],
+      [null, [[0, 2, 3, 5], [1, 5, 7, 11]], true, "Rate: 4/2, 2/1, 4/2 = 2 every time. Constant rate."],
+      [null, [[1, 2, 4, 5], [2, 4, 16, 25]], false, "Rate: 2/1, 12/2 = 6, 9/1: not constant."],
+      [null, [[0, 1, 3, 6], [1, 3, 7, 16]], false, "Rate: 2/1, 4/2 = 2, 9/3 = 3: not constant."]];
+    const clave = reto ? "listaReto" : "listaFacil";
+    if(!S[clave]) S[clave] = mezclar(reto ? RETO : FACIL);
+    const [eq, tab, esL, por] = S[clave][S.ronda % S[clave].length];
+    if(eq) grande(eq); else escenaTexto(tablaHTML(tab[0], tab[1]));
+    const de = eq || `the table ${tablaTxt(tab[0], tab[1])}`;
+    ponerInstruccion(`Is ${eq ? "the function " + eq : "the function in the table"} linear or nonlinear?`, `Is ${eq ? "the function " + eq : "the function in this table: " + tablaTxt(tab[0], tab[1]) + ","} linear or nonlinear?`,
+      `¿La función ${eq ? eq : "de la tabla"} es lineal o no lineal?`);
+    botonesSiNo(esL, "Linear", "Nonlinear",
+      eq ? "Can you write it as y = mx + b, with no x², no x in a denominator, no x times x?" : (reto ? "Divide each change in y by the change in x. Is the result always the same?" : "Look at how much y changes each time x goes up by 1. Is it always the same?"), por);
+    return;
+  }
+
+  /* --- 4. Razón de cambio y valor inicial (8.F.4) --- */
+  if(S.juego === "razon"){
+    const tipo = tipoRonda(["razon","inicial","ecuacion","razon","ecuacion"]);
+    const m = reto ? elegir([-3, -2, 2, 3, 4, 5]) : elegir([2, 3, 4, 5]), b = reto ? azar(-5, 9) : azar(1, 10);
+    const paso = reto ? elegir([2, 3]) : 1, x0 = reto ? elegir([1, 2]) : 0;
+    const xs = [0, 1, 2, 3].map(i=>x0 + i * paso), ys = xs.map(x=>m * x + b);
+    escenaTexto(tablaHTML(xs, ys));
+    const t = tablaTxt(xs, ys);
+    if(tipo === "razon"){
+      ponerInstruccion(`The table shows a linear function: ${t}. What is the rate of change?`, null, `La tabla muestra una función lineal: ${t}. ¿Cuál es la razón de cambio?`);
+      const malos = [[N(-m), m > 0 ? "y goes up as x goes up: the rate is positive." : "y goes down as x goes up: the rate is negative."], [N(b), x0 === 0 ? "That is the initial value, the y when x = 0. The rate is the change in y for each 1 in x." : "Find the change in y and divide it by the change in x."]];
+      if(paso > 1) malos.push([N(m * paso), `y changes by ${N(m * paso)}, but x changes by ${paso}. Divide: ${N(m * paso)} ÷ ${paso}.`]);
+      opciones(N(m), malos, ()=>acertar(`Change in y ÷ change in x = ${N(m * paso)} ÷ ${paso} = ${N(m)}.`));
+    } else if(tipo === "inicial"){
+      ponerInstruccion(`The table shows a linear function: ${t}. What is the initial value, the value of y when x = 0?`, null, `La tabla muestra una función lineal: ${t}. ¿Cuál es el valor inicial, el valor de y cuando x = 0?`);
+      const malos = [[N(m), "That is the rate of change. The initial value is the y-value when x = 0."]];
+      if(x0 !== 0) malos.push([N(ys[0]), `${N(ys[0])} is y when x = ${x0}. Go back to x = 0: subtract the rate ${x0} time${x0 > 1 ? "s" : ""}.`]);
+      malos.push([N(b + m), x0 === 0 ? "Read the y-value right under x = 0." : "Work backward from the first column, one step of x at a time."]);
+      opciones(N(b), malos, ()=>acertar(x0 === 0 ? `When x = 0, y = ${N(b)}.` : `The rate is ${N(m)}. From x = ${x0} back to x = 0: ${N(ys[0])} − ${x0} × (${N(m)}) = ${N(b)}.`));
+    } else {
+      ponerInstruccion(`Which function matches the table? ${t}`, null, `¿Qué función corresponde a la tabla? ${t}`);
+      const cand = [[ecu(b, m), "The rate of change goes with x; the initial value is added at the end."],
+                    [ecu(m * paso, b), `Divide the change in y by the change in x (${paso}).`],
+                    [ecu(m, ys[0]), `${N(ys[0])} is y when x = ${x0}, not when x = 0.`],
+                    [ecu(m + 1, b), `Check the table: x = ${xs[1]} should give y = ${N(ys[1])}.`],
+                    [ecu(m, b + m), `Check the table: x = ${xs[0]} should give y = ${N(ys[0])}.`]];
+      const vistos = new Set([ecu(m, b)]), malos = [];
+      cand.forEach(c=>{ if(!vistos.has(c[0]) && malos.length < 3){ vistos.add(c[0]); malos.push(c); } });
+      opciones(ecu(m, b), malos,
+        ()=>acertar(`Rate ${N(m)}, initial value ${N(b)}: ${ecu(m, b)}. Check: x = ${xs[2]} → ${N(m)}(${xs[2]})${mas(b)} = ${N(ys[2])}.`));
+    }
+    return;
+  }
+
+  /* --- 5. Compara dos funciones (8.F.2) --- */
+  if(S.juego === "comparar"){
+    let m1, b1, m2, b2;
+    do{ m1 = azar(reto ? -3 : 1, 5) || 2; b1 = azar(0, 8); m2 = azar(reto ? -3 : 1, 5) || 3; b2 = azar(0, 8); } while(m1 === m2 || b1 === b2 || (reto && (m2 + b2 > 9 || m2 + b2 < -5)));
+    const pide = tipoRonda(reto ? ["razon","valor","inicial","valor","razon"] : ["razon","inicial","razon","inicial","razon"]);
+    const xs = [0, 1, 2, 3];
+    if(!reto) escenaTexto(`<div class="tablilla"><span class="t-tit">FUNCTION A</span>${ecu(m1, b1)}</div>` + `<div class="tablilla"><span class="t-tit">FUNCTION B</span></div>` + tablaHTML(xs, xs.map(x=>m2 * x + b2)));
+    else escenaTexto(`<div class="tablilla"><span class="t-tit">FUNCTION A</span>${ecu(m1, b1)}</div>` + planoSVG({min:-6, max:10, paso:2, lineas:[{m:m2, b:b2, color:"#B5892B", nombre:"Function B"}], puntos:[[0, b2, P(0, b2)], [1, m2 + b2, P(1, m2 + b2)]], etiqueta:`Function B: a line through ${P(0, b2)} and ${P(1, m2 + b2)}.`}));
+    const descB = reto ? `the line through ${P(0, b2)} and ${P(1, m2 + b2)}` : `the table ${tablaTxt(xs, xs.map(x=>m2 * x + b2))}`;
+    const descBEs = reto ? `la recta que pasa por ${P(0, b2)} y ${P(1, m2 + b2)}` : `la tabla ${tablaTxt(xs, xs.map(x=>m2 * x + b2))}`;
+    if(pide === "razon"){
+      const g = m1 > m2 ? "Function A" : "Function B";
+      ponerInstruccion(`Function A is ${ecu(m1, b1)}. Function B is ${descB}. Which function has the greater rate of change?`, null, `La función A es ${ecu(m1, b1)}. La función B es ${descBEs}. ¿Qué función tiene la mayor razón de cambio?`);
+      opciones(g, [[g === "Function A" ? "Function B" : "Function A", "Find the rate of each one: the number with x in A, and the change in y for each 1 in x in B."], ["They are equal", `A changes by ${N(m1)} per step. How much does B change?`]],
+        ()=>acertar(`Rate of A: ${N(m1)}. Rate of B: ${N(m2)}. ${g} grows faster.`));
+    } else if(pide === "inicial"){
+      const g = b1 > b2 ? "Function A" : "Function B";
+      ponerInstruccion(`Function A is ${ecu(m1, b1)}. Function B is ${descB}. Which function has the greater initial value?`, null, `La función A es ${ecu(m1, b1)}. La función B es ${descBEs}. ¿Qué función tiene el mayor valor inicial?`);
+      opciones(g, [[g === "Function A" ? "Function B" : "Function A", "The initial value is y when x = 0. In A it is b; in B look at x = 0."], ["They are equal", `A starts at ${N(b1)}. Where does B start?`]],
+        ()=>acertar(`Initial value of A: ${N(b1)}. Initial value of B: ${N(b2)}. ${g} starts higher.`));
+    } else {
+      const x = azar(4, 8), yA = m1 * x + b1, yB = m2 * x + b2;
+      const g = yA > yB ? "Function A" : yA < yB ? "Function B" : "They are equal";
+      ponerInstruccion(`Function A is ${ecu(m1, b1)}. Function B is ${descB}. Which one has the greater value when x = ${x}?`, null, `La función A es ${ecu(m1, b1)}. La función B es ${descBEs}. ¿Cuál tiene el mayor valor cuando x = ${x}?`);
+      opciones(g, ["Function A", "Function B", "They are equal"].filter(o=>o !== g).map(o=>[o, `Write B as an equation first, then put x = ${x} into both.`]),
+        ()=>acertar(`A: ${N(m1)}(${x})${mas(b1)} = ${N(yA)}. B: ${ecu(m2, b2)} → ${N(m2)}(${x})${mas(b2)} = ${N(yB)}.`));
+    }
+    return;
+  }
+
+  /* --- 6. La historia de una gráfica (8.F.5) --- */
+  if(S.juego === "graficas"){
+    const FORMAS = [
+      {p:[[0,0],[3,6],[5,6],[8,0]], cuento:"walks to the park, stops to rest, then walks back home", cuentoEs:"camina al parque, se detiene a descansar y luego regresa caminando a casa"},
+      {p:[[0,0],[2,2],[4,8],[6,8],[10,0]], cuento:"walks slowly, then runs, stops at a friend’s house, and walks back home", cuentoEs:"camina despacio, luego corre, se detiene en casa de una amiga y regresa caminando"},
+      {p:[[0,0],[4,4],[6,4],[7,8]], cuento:"walks to the bus stop, waits for the bus, then rides the bus away from home", cuentoEs:"camina a la parada, espera el autobús y luego se aleja de casa en autobús"},
+      {p:[[0,0],[1,5],[6,5],[10,0]], cuento:"runs to the library, stays there to read, then walks slowly back home", cuentoEs:"corre a la biblioteca, se queda leyendo y luego regresa despacio a casa"}];
+    const f = elegir(FORMAS), seg = [];
+    for(let i=0;i<f.p.length - 1;i++) seg.push({l:"ABCD"[i], m:(f.p[i + 1][1] - f.p[i][1]) / (f.p[i + 1][0] - f.p[i][0])});
+    escenaTexto(tramosSVG(f.p, `A graph of distance from home over time, in ${seg.length} parts labeled ${seg.map(s=>s.l).join(", ")}.`));
+    const planas = seg.filter(s=>s.m === 0), bajan = seg.filter(s=>s.m < 0), suben = seg.filter(s=>s.m > 0);
+    const maxSube = Math.max(...suben.map(s=>s.m)), rapida = suben.filter(s=>s.m === maxSube);
+    const preguntas = [];
+    if(planas.length === 1) preguntas.push(["parada", planas[0].l]);
+    if(bajan.length === 1) preguntas.push(["vuelta", bajan[0].l]);
+    if(rapida.length === 1 && suben.length > 1) preguntas.push(["rapido", rapida[0].l]);
+    if(reto) preguntas.push(["cuento", null]);
+    const [q, resp] = preguntas[S.ronda % preguntas.length];
+    if(q === "cuento"){
+      ponerInstruccion(`Which story matches the graph of ${n}’s distance from home?`, null, `¿Qué historia corresponde a la gráfica de la distancia de ${n} a su casa?`);
+      const otros = FORMAS.filter(o=>o !== f).map(o=>[`${n} ${o.cuento}.`, "Read the graph piece by piece: going up means moving away from home, flat means not moving, going down means coming back."]);
+      opciones(`${n} ${f.cuento}.`, otros, ()=>acertar(`Each piece of the graph is one part of the story: ${seg.map(s=>`${s.l} ${s.m > 0 ? "goes up (moving away)" : s.m < 0 ? "goes down (coming back)" : "is flat (not moving)"}`).join(", ")}.`), true);
+    } else {
+      const textos = {parada:[`During which part of the graph was ${n} not moving?`, `¿Durante qué parte de la gráfica ${n} no se movía?`, "When you don’t move, your distance from home doesn’t change. Look for the flat part."],
+                      vuelta:[`During which part was ${n} coming back home?`, `¿Durante qué parte ${n} regresaba a casa?`, "Coming back home means the distance from home gets smaller. Look for the part that goes down."],
+                      rapido:[`During which part was ${n} moving away from home the fastest?`, `¿Durante qué parte ${n} se alejaba de casa más rápido?`, "Faster means more distance in less time: look for the steepest part going up."]};
+      const [en, es, pista] = textos[q];
+      ponerInstruccion(en, null, es);
+      opciones(resp, seg.filter(s=>s.l !== resp).map(s=>[s.l, pista]),
+        ()=>acertar(q === "parada" ? `Part ${resp} is flat: the distance from home stays the same.` : q === "vuelta" ? `Part ${resp} goes down: the distance from home gets smaller.` : `Part ${resp} is the steepest going up: the greatest rate of change.`));
+    }
+    return;
+  }
+}
+
+
+
+/* ============ Cierre: ¿qué estrategia usaste? (sin calificar) ============ */
+function pintarReflexion(){
+  let caja = $("reflexion");
+  if(!caja){
+    caja = document.createElement("div"); caja.id = "reflexion"; caja.className = "reflexion";
+    const fin = $("p-final"); fin.insertBefore(caja, fin.lastElementChild);
+  }
+  caja.innerHTML = `<p class="pregunta-r">${T.reflexion}</p><p class="ayuda-es" lang="es" style="margin:-4px 0 10px;font-size:.9em">¿Qué estrategia usaste más? ¿Qué cambiarías la próxima vez?</p><div class="chips-r"></div><p class="respuesta-r" aria-live="polite"></p>`;
+  const chips = caja.querySelector(".chips-r"), resp = caja.querySelector(".respuesta-r");
+  T.estrategias.forEach(([txt, comentario])=>{
+    const b = document.createElement("button"); b.type = "button"; b.className = "chip-r"; b.textContent = txt; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", ()=>{
+      chips.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+      b.setAttribute("aria-pressed","true"); sonToque(); resp.textContent = comentario; hablar(comentario);
+    });
+    chips.appendChild(b);
+  });
+}
+
+/* ============ Tarea final (sin opciones: el alumno construye y explica) ============ */
+function abrirTarea(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#tarea"); }catch(e){}
+  mostrar("p-tarea");
+  hablar($("tit-tarea").textContent + ". " + $("txt-tarea").textContent);
+}
+$("juego-tarea").addEventListener("click", ()=>{ sonToque(); abrirTarea(); });
+$("btn-volver-tarea").addEventListener("click", alMenu);
+$("btn-bocina-tarea").addEventListener("click", ()=>hablar($("txt-tarea").textContent));
+$("btn-bocina-tarea-es").addEventListener("click", ()=>hablar($("txt-tarea-es").textContent, null, "es"));
+document.querySelectorAll("#p-tarea .criterio").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    const on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on);
+    b.querySelector(".marca").textContent = on ? "✓" : "";
+    sonToque();
+  });
+});
+$("btn-modelo").addEventListener("click", ()=>{
+  const r1 = $("resp-1").value.trim(), r2 = $("resp-2").value.trim();
+  const av = $("aviso-tarea");
+  if(r1.split(/\s+/).length < 8 || r2.split(/\s+/).length < 8){
+    const t = "Write both answers first, with at least one full sentence each. Then you can compare.";
+    av.className = "aviso otra"; av.textContent = t; hablar(t);
+    (r1.split(/\s+/).length < 8 ? $("resp-1") : $("resp-2")).focus();
+    return;
+  }
+  av.className = "aviso"; av.textContent = "";
+  $("modelo").classList.remove("oculto"); $("modelo").focus();
+  sonBien(); mascotaNormal();
+  hablar($("modelo").innerText);
+});
+
+
+/* ============ La historia ============ */
+function abrirHistoria(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search + "#historia"); }catch(e){}
+  mostrar("p-historia");
+  hablar($("tit-historia").textContent + ". " + $("relato").innerText);
+}
+$("juego-historia").addEventListener("click", ()=>{ sonToque(); abrirHistoria(); });
+$("btn-volver-historia").addEventListener("click", ()=>alMenu());
+$("btn-historia-menu").addEventListener("click", ()=>alMenu());
+$("btn-historia-juego").addEventListener("click", ()=>{ sonToque(); iniciarJuego(JUEGOS[0].id); });
+$("btn-bocina-historia").addEventListener("click", ()=>hablar($("relato").innerText));
+$("btn-bocina-historia-es").addEventListener("click", ()=>hablar($("relato-es").innerText, null, "es"));
+
+/* ============ Eventos ============ */
+$("btn-empezar").addEventListener("click", ()=>{
+  try{ ctx(); }catch(e){}
+  sonBoing();
+  if((location.hash || "") === "#tarea"){ abrirTarea(); return; }
+  if((location.hash || "") === "#historia"){ abrirHistoria(); return; }
+  const j = juegoDelAncla();
+  if(j){ iniciarJuego(j); return; }
+  hablar(T.menu); mostrar("p-menu");
+});
+function alMenu(){
+  S.juego = null;
+  try{ history.replaceState(null, "", location.pathname + location.search); }catch(e){}
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  mostrar("p-menu");
+}
+$("btn-volver").addEventListener("click", alMenu);
+$("btn-al-menu").addEventListener("click", alMenu);
+$("btn-siguiente").addEventListener("click", avanzar);
+$("btn-otra-vez").addEventListener("click", ()=>iniciarJuego(S.juego));
+$("btn-imprimir").addEventListener("click", ()=>window.print());
+function ponerReto(r){
+  S.reto = r;
+  document.body.classList.toggle("nivel-reto", r);
+  $("btn-facil").setAttribute("aria-pressed", !r); $("btn-reto").setAttribute("aria-pressed", r);
+  if(S.juego) nuevaRonda();
+}
+$("btn-facil").addEventListener("click", ()=>ponerReto(false));
+$("btn-reto").addEventListener("click", ()=>ponerReto(true));
+$("btn-ayuda").addEventListener("click", ()=>{ ponerAyuda(!S.ayuda); if(S.ayuda && !$("p-portada").classList.contains("oculto")) hablar($("txt-portada-es").textContent, null, "es"); });
+$("btn-oir-es").addEventListener("click", ()=>hablar($("txt-portada-es").textContent, null, "es"));
+
+/* La ayuda en español llega encendida si la dirección trae ?ayuda=es (desde la página del grado) */
+let ayudaInicial = false;
+try{ ayudaInicial = new URLSearchParams(location.search).get("ayuda") === "es"; }catch(e){}
+ponerAyuda(ayudaInicial);
+
+let presentado = false;
+function presentar(){
+  if(presentado || $("p-portada").classList.contains("oculto")) return;
+  presentado = true;
+  hablar(document.querySelector("#p-portada h2").textContent + ". " + $("txt-portada").textContent);
+}
+["pointerdown","keydown"].forEach(ev=>{
+  document.addEventListener(ev, (e)=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, #btn-ayuda, #btn-oir-es, #btn-oir, .lumi-voz")) return;
+    presentar();
+  }, {once:true});
+});
+$("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+presentar();
+setTimeout(()=>{ const s = window.speechSynthesis; if(s && !s.speaking && !s.pending) presentado=false; }, 400);
+</script>
