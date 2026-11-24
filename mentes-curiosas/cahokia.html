@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<!--
+  Curious Minds · Mentes curiosas — Plan the Dig at Cahokia / Planea la excavación en Cahokia (Grades 7 and 8)
+  Creative thinking with rules: in each of three seasons, children plan where a team will dig a field near
+  Monks Mound, following that season's rules (an exact area, an area the descendant Native Nations asked not to
+  disturb, magnetometer signals, one or two trenches, a predicted circle of posts). Then they must find a second,
+  very different plan (sharing at most one square), choose one and give a reason: there is no single right plan.
+  Grade 7: area and scale (each square is 2 m × 2 m). Grade 8: the circle of posts is given by its center and
+  radius, so children use the Pythagorean theorem. A broken rule gets a hint, never the answer.
+  Real facts are verified (Monks Mound, the mounds, UNESCO 1982, Woodhenge); the field itself is invented.
+  From Grade 5 on, Lumi's games are in English; «Ayuda en español» shows the instructions and rules in Spanish.
+  Nothing is saved or sent.
+  José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script src="../voz-lumi.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan the Dig at Cahokia · Curious Minds</title>
+<meta name="author" content="José M. Fernández">
+<meta name="description" content="A creative-thinking game for Grades 7 and 8: plan an archaeological dig near Monks Mound at Cahokia that follows the rules, then find a very different plan. Area, scale and the Pythagorean theorem. In English with optional help in Spanish.">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+<style>
+:root{
+  --papel:#F5F3FB; --tinta:#1E1A3A; --tinta-suave:#4C4766; --linea:#D6D0EA; --blanco:#FFFFFF;
+  --acento:#4B2E9A; --oro:#E8A317; --oro-claro:#FFF3C4; --verde:#1D6B4F; --verde-claro:#E3F5EC;
+  --rojo:#A3262A; --rojo-claro:#FDE7E7; --azul:#1F6FD1; --foco:#0B62D6; --sombra:0 4px 0 rgba(30,26,58,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--papel);color:var(--tinta);
+  font-family:"Fredoka","Nunito","Varela Round","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  font-size:clamp(17px,2.1vw,21px);line-height:1.45;min-height:100vh;-webkit-text-size-adjust:100%;overflow-x:hidden}
+button,input{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible,canvas:focus-visible{outline:4px solid var(--foco);outline-offset:3px}
+.oculto{display:none !important}
+.marco{max-width:1000px;margin:0 auto;padding:14px 16px 32px}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0 14px;border-bottom:3px solid var(--linea);margin-bottom:18px}
+.barra h1{font-size:clamp(20px,2.6vw,27px);margin:0;font-weight:700}
+.crece{flex:1 1 auto}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--blanco);border:3px solid var(--linea);
+  border-radius:999px;padding:7px 14px;font-weight:600;font-size:.86em;box-shadow:var(--sombra)}
+.chip button{border:none;background:transparent;padding:5px 9px;border-radius:999px;font-weight:700;min-height:36px}
+.chip button[aria-pressed="true"]{background:var(--tinta);color:var(--blanco)}
+.boton{border:3px solid var(--tinta);background:var(--blanco);border-radius:16px;padding:11px 20px;min-height:52px;
+  font-weight:700;box-shadow:var(--sombra);text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.boton:active{transform:translateY(2px);box-shadow:none}
+.boton.fuerte{background:var(--acento);border-color:var(--acento);color:var(--blanco)}
+.boton.oro{background:var(--oro);border-color:#9A6A00;color:var(--tinta)}
+.boton.chico{min-height:44px;padding:6px 12px;font-size:.85em}
+.casa{font-size:.86em;padding:8px 14px;min-height:44px}
+.bocina{flex:0 0 auto;width:58px;height:58px;border-radius:50%;border:4px solid var(--tinta);
+  background:var(--blanco);font-size:1.5em;display:grid;place-items:center;box-shadow:var(--sombra)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.portada{text-align:center;padding:8px 10px}
+.portada .lumi-grande{width:min(170px,40vw);height:auto;display:block;margin:0 auto}
+.portada .bocina{margin:6px auto 4px}
+.portada h2{font-size:clamp(26px,4.4vw,40px);margin:6px 0}
+.portada p.intro{color:var(--tinta-suave);max-width:56ch;margin:0 auto 14px}
+.pregunta-portada{font-weight:700;margin:16px 0 8px}
+.opciones-grandes{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.opcion{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 16px;min-width:150px;
+  box-shadow:var(--sombra);font-weight:700;display:flex;flex-direction:column;align-items:center;gap:4px}
+.opcion .ico{font-size:2.1em;line-height:1.1}
+.opcion small{font-weight:600;color:var(--tinta-suave);font-size:.75em}
+.opcion[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB;box-shadow:0 0 0 3px var(--acento)}
+.portada .boton.fuerte{font-size:clamp(20px,3vw,26px);padding:14px 34px;margin-top:18px}
+.instruccion{display:flex;align-items:center;gap:12px;background:var(--blanco);border:4px solid var(--linea);
+  border-radius:20px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--sombra)}
+.instruccion img{width:56px;height:auto;flex:0 0 auto}
+.instruccion p{margin:0;font-weight:600;font-size:clamp(18px,2.3vw,22px);flex:1 1 auto}
+.instruccion img.feliz{animation:brinco .7s ease-out 2}
+.consejo{background:#E9F6F1;border:3px dashed #2F7D63;border-radius:16px;padding:6px 14px;margin:0 0 14px;font-size:.86em}
+.consejo summary{font-weight:700;cursor:pointer;min-height:40px;display:flex;align-items:center;color:#1D5A46}
+.consejo p{margin:4px 0 8px}
+.contador{text-align:center;font-weight:700;color:var(--tinta-suave);margin:0 0 10px}
+.titulo-zona{text-align:center;font-weight:700;margin:6px 0 10px}
+.cuadro{background:var(--blanco);border:4px solid var(--linea);border-radius:20px;padding:12px 14px;margin:14px 0;text-align:center}
+.cuadro h3{margin:0 0 8px;font-size:1.05em}
+.indicacion{font-weight:700;margin:4px 0 8px;font-size:1.05em}
+.formas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:6px 0 10px}
+.forma{background:var(--blanco);border:4px solid var(--linea);border-radius:18px;padding:8px 14px;min-width:120px;
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:700;box-shadow:var(--sombra)}
+.forma .ico{font-size:1.8em;line-height:1.1}
+.forma[aria-pressed="true"]{border-color:var(--acento);background:#EEE8FB}
+.campo{font-size:1.05em;padding:10px 14px;border:3px solid var(--tinta);border-radius:14px;min-height:52px;width:min(100%,420px)}
+.grabando{animation:latido 1s ease-in-out infinite;background:#FFE3E3 !important;border-color:#B3261E !important}
+.nota-priv{font-size:.78em;color:var(--tinta-suave);margin:8px 0 0;text-align:center}
+.final{text-align:center}
+.reto{background:var(--verde-claro);border:4px solid #2F7D63;border-radius:20px;padding:12px 18px;max-width:640px;margin:14px auto;text-align:left}
+.reto h3{margin:0 0 6px}
+.enlace-adultos{display:inline-block;margin-top:10px;font-size:.85em;color:var(--acento);font-weight:700}
+.senalado{position:relative;z-index:6;border-color:var(--oro) !important;
+  box-shadow:0 0 0 6px #FFC94D,0 0 26px 6px rgba(255,201,77,.85) !important;animation:senal .9s ease-in-out infinite;scroll-margin:90px}
+.senalado::before{content:"👇";position:absolute;left:50%;bottom:100%;transform:translateX(-50%);font-size:34px;line-height:1;
+  pointer-events:none;z-index:7;animation:mano .8s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25))}
+.confeti{position:fixed;top:-40px;font-size:30px;z-index:20;pointer-events:none;animation:caer 2.2s ease-in forwards}
+@keyframes senal{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes mano{0%,100%{margin-bottom:2px}50%{margin-bottom:12px}}
+@keyframes brinco{0%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+@keyframes latido{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes caer{to{transform:translateY(110vh) rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none !important;transition:none !important}}
+
+.btn-ayuda{border:3px solid #2A9D8F;background:#fff;color:var(--acento);border-radius:999px;padding:8px 16px;min-height:44px;font-weight:700;box-shadow:var(--sombra)}
+.btn-ayuda[aria-pressed="true"]{background:#E6F4F1;border-color:var(--acento)}
+.ayuda-es{display:none !important}
+body.con-ayuda .ayuda-es{display:block !important}
+body.con-ayuda span.ayuda-es,body.con-ayuda small.ayuda-es{display:inline !important}
+body.con-ayuda .opcion small.ayuda-es{display:block !important}
+body.con-ayuda .es-bajo.ayuda-es{display:block !important}
+.caja-ayuda{background:#E6F4F1;border-left:6px solid #2A9D8F;border-radius:12px;padding:8px 12px;margin:-6px 0 14px;font-size:.92em;text-align:left}
+.caja-ayuda .fila-ayuda{display:flex;align-items:center;gap:10px}
+.caja-ayuda p{margin:0;flex:1 1 auto}
+.bocina.chica{width:44px;height:44px;font-size:1.1em;border-width:3px}
+.portada .caja-ayuda{max-width:56ch;margin:0 auto 14px}
+.es-bajo{display:block;font-weight:600;font-size:.78em;color:var(--tinta-suave)}
+.indicacion-es{font-weight:600;color:#1D5A46;margin:-4px 0 8px;font-size:.9em}
+
+/* ---------- Propio de este juego ---------- */
+.excavacion{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:860px){.excavacion{grid-template-columns:1fr}}
+.campo-caja{background:#fff;border:4px solid var(--linea);border-radius:20px;padding:8px}
+.campo-caja svg{width:100%;height:auto;display:block}
+.celda rect{fill:#E9D9BC;stroke:#B49A6E;stroke-width:1.5}
+.celda{cursor:pointer}
+.celda:hover rect,.celda:focus rect{fill:#F4E7CC}
+.celda:focus{outline:none}
+.celda:focus-visible rect{stroke:var(--foco);stroke-width:4}
+.celda.prot rect{fill:#CFE8C8;stroke:#7FB06F;cursor:not-allowed}
+.celda.senal .punto-mag{fill:#5B3A1E;opacity:.75}
+.celda.elegida rect{fill:#7C5CD6;stroke:#4B2E9A}
+.celda.elegida .punto-mag{fill:#fff;opacity:.9}
+.celda.antes rect{stroke:#E8A317;stroke-width:4;stroke-dasharray:5 4}
+.celda.mala rect{fill:#F4B4B0;stroke:#B3261E;stroke-width:3}
+.coord-et{font:700 15px "Trebuchet MS",system-ui,sans-serif;fill:#6A5A3E}
+.arco{fill:none;stroke:#B3261E;stroke-width:3;stroke-dasharray:8 6}
+.estaca{fill:#B3261E}
+.reglas{background:#fff;border:4px solid var(--oro);border-radius:18px;padding:10px 14px}
+.reglas h3{margin:0 0 6px;font-size:1.05em}
+.reglas ol{margin:0;padding-left:1.3em}
+.reglas li{margin:4px 0;font-weight:600}
+.reglas li.ok::marker{content:"✅ "}
+.reglas li .es-regla{display:none;font-weight:500;color:#1D5A46;font-size:.9em}
+body.con-ayuda .reglas li .es-regla{display:block}
+.medidor{font-weight:700;text-align:center;margin:8px 0 0}
+.leyenda-campo{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.8em;font-weight:700;margin:6px 4px 0}
+.leyenda-campo span{display:inline-flex;align-items:center;gap:5px}
+.leyenda-campo i{display:inline-block;width:16px;height:16px;border-radius:3px;border:2px solid #B49A6E}
+.galeria{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.galeria figure{margin:0;background:#fff;border:3px solid var(--linea);border-radius:14px;padding:6px;text-align:center;font-weight:700;font-size:.85em}
+.galeria svg{width:160px;height:auto;display:block}
+.razones{display:flex;flex-direction:column;gap:8px;max-width:640px;margin:0 auto}
+.razones button{text-align:left;font-weight:700;border:3px solid var(--tinta);background:#fff;border-radius:14px;padding:10px 12px;min-height:52px}
+.razones button[aria-pressed="true"]{background:#EEE8FB;border-color:var(--acento)}
+.cahokia-dato{background:#FFF8E1;border:4px solid var(--oro);border-radius:18px;padding:10px 14px;max-width:760px;margin:0 auto 12px}
+.cahokia-dato p{margin:4px 0}
+
+</style>
+</head>
+<body>
+
+<div class="marco">
+  <div class="barra">
+    <a class="boton casa volver-hub" id="btn-volver" href="./">◀ Curious Minds</a>
+    <h1>Plan the Dig at Cahokia<span class="es-bajo ayuda-es" lang="es">Planea la excavación en Cahokia</span></h1>
+    <span class="crece"></span>
+    <button class="btn-ayuda" id="btn-ayuda" type="button" aria-pressed="false" lang="es">🌐 Ayuda en español</button>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="p-portada" class="portada">
+    <img class="lumi-grande" id="img-portada" src="cahokia-excavacion.jpg" alt="Lumi and Nova at an archaeology field school, with the great earthen mound of Cahokia in the distance" width="1376" height="768" style="width:min(560px,92vw);border-radius:18px" onerror="this.onerror=null;this.src='../7mo_grado/lumi7-presenta.png';this.style.width='min(240px,50vw)'">
+    <h2>One field, many good plans</h2>
+    <p class="intro">Near Monks Mound, a team of archaeologists will dig a field where Cahokia's people lived about a thousand years ago. Plan where to dig. Follow the rules of each season, and then find a second plan that is very different. There is more than one good answer!</p>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="intro-es" aria-label="Escuchar en español">🔊</button><p id="intro-es">Cerca de Monks Mound, un equipo de arqueólogos va a excavar un campo donde vivió el pueblo de Cahokia hace unos mil años. Planea dónde excavar. Cumple las reglas de cada temporada y después busca un segundo plan muy distinto. ¡Hay más de una buena respuesta!</p></div></div>
+    <button class="bocina" id="btn-oir" aria-label="Hear what this game is about"><span aria-hidden="true">🔊</span></button>
+
+    <p class="pregunta-portada" id="preg-quien">Who is playing?<span class="es-bajo ayuda-es" lang="es">¿Quién juega?</span></p>
+    <div class="opciones-grandes" role="group" aria-labelledby="preg-quien">
+      <button class="opcion" data-modo="solo" aria-pressed="true"><span class="ico" aria-hidden="true">🧒</span>
+        <span>Just me</span><small>I make both plans</small><small class="ayuda-es" lang="es">Yo solo · hago los dos planes</small></button>
+      <button class="opcion" data-modo="adulto" aria-pressed="false"><span class="ico" aria-hidden="true">🧑‍🏫🧒</span>
+        <span>With a grown-up</span><small>with tips for the grown-up</small><small class="ayuda-es" lang="es">Con un adulto · con consejos</small></button>
+      <button class="opcion" data-modo="amigos" aria-pressed="false"><span class="ico" aria-hidden="true">🧒🧒</span>
+        <span>With a friend</span><small>each one makes a plan, then you choose</small><small class="ayuda-es" lang="es">Con un amigo · cada uno hace un plan y después eligen</small></button>
+    </div>
+
+    <div id="elegir-nivel">
+      <p class="pregunta-portada" id="preg-nivel">What grade are you in?<span class="es-bajo ayuda-es" lang="es">¿En qué grado estás?</span></p>
+      <div class="opciones-grandes" role="group" aria-labelledby="preg-nivel">
+        <button class="opcion" data-nivel="7" aria-pressed="true"><span class="ico" aria-hidden="true">📏</span><span>Grade 7</span><small>area and scale</small></button>
+        <button class="opcion" data-nivel="8" aria-pressed="false"><span class="ico" aria-hidden="true">📐</span><span>Grade 8</span><small>plus the Pythagorean theorem</small></button>
+      </div>
+    </div>
+
+    <button class="boton fuerte" id="btn-empezar">Let's play!</button>
+  </section>
+
+  <!-- JUEGO -->
+  <section id="p-juego" class="oculto">
+    <div class="instruccion">
+      <img src="../7mo_grado/lumi7-nova.png" alt="Nova" width="56" height="102">
+      <p id="msg" aria-live="polite"></p>
+      <button class="bocina" id="bocina" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-es" aria-label="Escuchar en español">🔊</button><p id="msg-es"></p></div></div>
+    <details class="consejo oculto" id="consejo"><summary>💡 For the grown-up</summary><p></p></details>
+    <p class="contador" id="contador"></p>
+    <div class="cahokia-dato" id="dato"></div>
+
+    <div class="excavacion" id="zona-plan">
+      <div class="campo-caja">
+        <svg id="campo" role="group" aria-label="The field, divided into squares 2 meters on each side"></svg>
+        <div class="leyenda-campo">
+          <span><i style="background:#E9D9BC"></i> 2 m × 2 m square</span>
+          <span><i style="background:#CFE8C8;border-color:#7FB06F"></i> <span id="ley-prot">Do not dig</span></span>
+          <span><i style="background:#E9D9BC;position:relative"><b style="position:absolute;left:4px;top:4px;width:6px;height:6px;border-radius:50%;background:#5B3A1E"></b></i> Magnetometer signal</span>
+          <span><i style="background:#7C5CD6;border-color:#4B2E9A"></i> Your plan</span>
+        </div>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;gap:10px">
+        <div class="reglas"><h3 id="reglas-tit"></h3><ol id="reglas"></ol></div>
+        <p class="medidor" id="medidor" aria-live="polite"></p>
+        <div class="acciones">
+          <button class="boton" id="btn-borrar"><span aria-hidden="true">🧽</span> Clear</button>
+          <button class="boton oro" id="btn-revisar"><span aria-hidden="true">🔎</span> Check my plan</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="zona-elegir" class="oculto">
+      <div class="galeria" id="galeria"></div>
+      <p class="indicacion" id="ind-r" style="text-align:center"></p>
+      <p class="indicacion-es ayuda-es" lang="es" id="ind-r-es" style="text-align:center"></p>
+      <div class="decidir" id="cual" role="group" aria-labelledby="ind-r"></div>
+      <div class="razones oculto" id="razones" role="group"></div>
+    </div>
+    <div class="acciones oculto" id="zona-siguiente"><button class="boton fuerte" id="btn-siguiente"></button></div>
+  </section>
+
+  <!-- FINAL -->
+  <section id="p-final" class="oculto final">
+    <div class="instruccion">
+      <img src="../7mo_grado/lumi7-nova.png" alt="Nova" width="56" height="102">
+      <p id="msg-final" aria-live="polite"></p>
+      <button class="bocina" id="bocina-final" aria-label="Hear it again"><span aria-hidden="true">🔊</span></button>
+    </div>
+    <div class="caja-ayuda ayuda-es" lang="es"><div class="fila-ayuda"><button class="bocina chica" type="button" data-lee-es="msg-final-es" aria-label="Escuchar en español">🔊</button><p id="msg-final-es"></p></div></div>
+    <div class="galeria" id="galeria-final"></div>
+    <div class="historia" style="background:#fff;border:4px solid var(--linea);border-radius:18px;padding:12px 16px;max-width:680px;margin:12px auto;text-align:left">
+      <h3 style="margin:0 0 6px">🌅 The real Woodhenge<span class="es-bajo ayuda-es" lang="es">El Woodhenge de verdad</span></h3>
+      <p>In the early 1960s, before a highway was built near Cahokia, archaeologist Warren Wittry studied the maps of a rescue excavation and noticed that some large oval pits were arranged in arcs. He proposed that they had held posts in great circles. Those circles of red cedar posts, now called Woodhenge, were built and rebuilt larger: the first had 24 posts, and later ones added posts in groups of 12. Some posts line up with the sunrise on the equinoxes and solstices. Today a reconstructed circle stands at the site, and people gather there to watch the sun rise.</p>
+      <p class="ayuda-es" lang="es" style="color:#1D5A46">A principios de los años sesenta, antes de construir una carretera cerca de Cahokia, el arqueólogo Warren Wittry estudió los mapas de una excavación de rescate y notó que unos hoyos ovalados grandes formaban arcos. Propuso que habían sostenido postes en grandes círculos. Esos círculos de postes de cedro rojo, que hoy se llaman Woodhenge, se construyeron y se reconstruyeron cada vez más grandes: el primero tenía 24 postes y los siguientes agregaron postes de 12 en 12. Algunos postes se alinean con la salida del sol en los equinoccios y los solsticios. Hoy hay un círculo reconstruido en el sitio, y la gente se reúne allí a ver salir el sol.</p>
+    </div>
+    <div class="reto">
+      <h3>🏠 Real-world challenge<span class="es-bajo ayuda-es" lang="es">Reto con cosas de verdad</span></h3>
+      <p id="txt-reto"></p>
+      <p class="ayuda-es" lang="es" id="txt-reto-es" style="color:#1D5A46"></p>
+    </div>
+    <div class="acciones">
+      <button class="boton fuerte" id="btn-otra-vez"><span aria-hidden="true">🔁</span> Play again</button>
+      <a class="boton volver-hub" id="btn-al-menu" href="./"><span aria-hidden="true">🧠</span> Another game</a>
+    </div>
+    <a class="enlace-adultos" href="para-adultos.html">🍎 For teachers, parents and caregivers: why these games<span class="es-bajo ayuda-es" lang="es">Para maestros, padres y tutores: por qué estos juegos</span></a>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* ============ Lo común a los juegos de 5.º a 8.º (inglés con ayuda en español) ============ */
+const S = {idioma:"en", ayuda:false, modo:"solo", nivel:"7", vistos:{}, ultimoConsejo:null};
+const $ = id=>document.getElementById(id);
+const tx = (o,...p)=>{ const v=o[S.idioma]; return typeof v==="function" ? v(...p) : v; };
+const Mayus = s=>s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+const cita = t=>S.idioma==="es" ? "«"+t+"»" : "“"+t+"”";
+function mezclar(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const azar = arr=>arr[Math.floor(Math.random()*arr.length)];
+const sinMovimiento = ()=>window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const suave = ()=>sinMovimiento()?"auto":"smooth";
+const COLOR_JUG = {amarillo:{en:"Yellow player", es:"Jugador amarillo"}, azul:{en:"Blue player", es:"Jugador azul"}};
+/* Construye un texto en los dos idiomas: f se evalúa una vez en inglés y otra en español */
+function dos(f){ const antes=S.idioma; S.idioma="en"; const en=f(); S.idioma="es"; const es=f(); S.idioma=antes; return {en, es}; }
+
+/* Voz */
+let voces=[];
+function cargarVoces(){ voces = window.speechSynthesis ? speechSynthesis.getVoices() : []; }
+if(window.speechSynthesis){ cargarVoces(); speechSynthesis.onvoiceschanged = cargarVoces; }
+let turnoVoz=0;
+let limpiarParaVoz = t=>t;
+function hablar(texto, despues, interno, lengua){
+  if(!interno){ turnoVoz++; limpiarSenal(); }
+  if(!window.speechSynthesis || !texto){ if(despues) setTimeout(despues,400); return; }
+  try{
+    speechSynthesis.cancel();
+    const L=lengua||"en";
+    const antes=S.idioma; S.idioma=L; const limpio=limpiarParaVoz(texto); S.idioma=antes;
+    const u=new SpeechSynthesisUtterance(limpio);
+    u.lang = L==="es" ? "es-US" : "en-US";
+    const v=voces.find(x=>x.lang && x.lang.toLowerCase().startsWith(L)); if(v) u.voice=v;
+    u.rate=0.93; u.pitch=1.05;
+    if(despues) u.onend=despues;
+    speechSynthesis.speak(u);
+  }catch(e){ if(despues) setTimeout(despues,400); }
+}
+
+/* Sonidos y celebración */
+let audioCtx=null;
+function tono(frecs,dur){
+  try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let t=audioCtx.currentTime;
+    frecs.forEach(f=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.14,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur); t+=dur*0.72; });
+  }catch(e){}
+}
+const sonSi=()=>tono([659,880],0.12), sonNo=()=>tono([440,349],0.14), sonElige=()=>tono([659],0.08),
+      sonPista=()=>tono([523,659],0.12), sonTada=()=>tono([523,659,784,1047],0.16);
+let CONFETI=["🎉","⭐","✨","🌟","💡"];
+function confeti(){
+  if(sinMovimiento()) return;
+  for(let i=0;i<14;i++){ const p=document.createElement("span"); p.className="confeti"; p.setAttribute("aria-hidden","true");
+    p.textContent=CONFETI[i%CONFETI.length]; p.style.left=(4+Math.random()*90)+"vw"; p.style.animationDelay=(Math.random()*.4).toFixed(2)+"s";
+    document.body.appendChild(p); setTimeout(()=>p.remove(),2300); }
+}
+function lumiFeliz(){ document.querySelectorAll(".instruccion img").forEach(im=>{ im.classList.remove("feliz"); void im.offsetWidth; im.classList.add("feliz"); }); }
+
+/* Lumi señala los botones de los que habla (en inglés) */
+const DICE_COMUN = {
+  "btn-otra-vez":{en:"Tap here to play again.", es:"Toca aquí para jugar otra vez."},
+  "btn-al-menu": {en:"Tap here to pick another game.", es:"Toca aquí para escoger otro juego."},
+  "btn-empezar": {en:"When you are ready, tap the purple button: Let's play!", es:"Cuando estés listo, toca el botón morado: ¡A jugar!"}
+};
+let DICE = {};
+const visible = el=>!!(el && el.offsetParent!==null && el.getClientRects().length);
+function limpiarSenal(){ document.querySelectorAll(".senalado").forEach(x=>x.classList.remove("senalado")); }
+function pasos(ids){ return ids.map(id=>$(id)).filter(visible).map(el=>({el, texto:tx(DICE[el.id]||DICE_COMUN[el.id])})); }
+document.addEventListener("pointerdown", ()=>{ if(document.querySelector(".senalado")){ turnoVoz++; limpiarSenal(); } }, true);
+function guia(lista){
+  const mio=++turnoVoz; limpiarSenal(); let i=-1;
+  function siguiente(){
+    if(mio!==turnoVoz) return;
+    limpiarSenal(); i++;
+    if(i>=lista.length) return;
+    const p=lista[i];
+    if(p.el && visible(p.el)){
+      p.el.classList.add("senalado");
+      const r=p.el.getBoundingClientRect();
+      if(r.top<70 || r.bottom>window.innerHeight-40) p.el.scrollIntoView({block:"nearest", behavior:suave()});
+    }
+    const t0=Date.now(); let hecho=false;
+    const avanzar=()=>{ if(hecho) return; hecho=true; setTimeout(siguiente, Math.max(0,(p.el?1300:500)-(Date.now()-t0))+200); };
+    hablar(p.texto, avanzar, true);
+    setTimeout(avanzar, 1500+p.texto.length*85);
+  }
+  siguiente();
+}
+/* Lumi escribe el mensaje en inglés (y la ayuda en español debajo), lo dice en inglés
+   y presenta los botones de ese momento solo las dos primeras veces.
+   «f» es una función que arma el texto: se arma una vez en cada idioma. */
+let ultimaGuia=null;
+const ULTIMO_ES={};
+function decir(cual, f, botones, extra){
+  const t = typeof f==="function" ? dos(f) : {en:f, es:f};
+  $(cual).textContent = t.en;
+  ponerAyudaDe(cual, t.es);
+  const b=botones||[], clave=cual+":"+b.join(",");
+  S.vistos[clave]=(S.vistos[clave]||0)+1;
+  const ex=extra||[];
+  ultimaGuia=()=>[{texto:t.en}].concat(ex, pasos(b));
+  guia([{texto:t.en}].concat(ex, S.vistos[clave]<=2 ? pasos(b) : []));
+}
+function ponerAyudaDe(cual, es){
+  ULTIMO_ES[cual]=es;
+  const p=$(cual+"-es"); if(p) p.textContent=es;
+}
+/* Una indicación junto a sus opciones (la página no sube); con su ayuda en español */
+function indicar(caja, ind, f, foco){
+  const t=dos(f);
+  $(ind).textContent=t.en;
+  const pe=$(ind+"-es"); if(pe) pe.textContent=t.es;
+  $(caja).scrollIntoView({block:"center", behavior:suave()});
+  hablar(t.en);
+  if(foco) setTimeout(()=>foco.focus({preventScroll:true}),60);
+}
+let C = {};
+function consejo(clave){
+  const caja=$("consejo"), ver=S.modo!=="solo" && clave && C[clave];
+  caja.classList.toggle("oculto", !ver);
+  if(!ver){ S.ultimoConsejo=null; return; }
+  if(S.modo==="adulto") caja.open=true;
+  S.ultimoConsejo=clave;
+  /* el consejo es para el adulto: va en español si la ayuda está activada */
+  caja.querySelector("p").textContent=C[clave][S.ayuda?"es":"en"];
+  caja.querySelector("summary").textContent=S.ayuda?"💡 Para el adulto":"💡 For the grown-up";
+}
+function mostrar(cual){
+  ["p-portada","p-juego","p-final"].forEach(id=>$(id).classList.toggle("oculto", id!==cual));
+  window.scrollTo(0,0);
+}
+function grabadoraEn(boton, etiqueta, alTerminar){
+  let grab=null, trozos=[], url=null;
+  boton.addEventListener("click", async ()=>{
+    if(grab && grab.state==="recording"){ grab.stop(); return; }
+    try{
+      const flujo=await navigator.mediaDevices.getUserMedia({audio:true});
+      trozos=[]; grab=new MediaRecorder(flujo);
+      grab.ondataavailable=e=>trozos.push(e.data);
+      grab.onstop=()=>{
+        flujo.getTracks().forEach(t=>t.stop());
+        url=URL.createObjectURL(new Blob(trozos));
+        boton.classList.remove("grabando"); etiqueta.textContent="Record";
+        alTerminar(url);
+      };
+      grab.start(); boton.classList.add("grabando"); etiqueta.textContent="Stop";
+    }catch(e){ alTerminar(null); }
+  });
+}
+
+/* Portada, grado y ayuda en español */
+let gradoFijo=null, alCambiarAyuda=()=>{}, TEXTO_PORTADA={en:"",es:""};
+document.querySelectorAll("[data-modo]").forEach(b=>b.addEventListener("click", ()=>{
+  S.modo=b.dataset.modo; document.querySelectorAll("[data-modo]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+document.querySelectorAll("[data-nivel]").forEach(b=>b.addEventListener("click", ()=>{
+  S.nivel=b.dataset.nivel; document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); }));
+function ponerAyuda(on){
+  S.ayuda=on;
+  document.body.classList.toggle("con-ayuda", on);
+  $("btn-ayuda").setAttribute("aria-pressed", String(on));
+  const q=[gradoFijo ? "grado="+gradoFijo : "", on ? "ayuda=es" : ""].filter(Boolean).join("&");
+  document.querySelectorAll("a.volver-hub").forEach(a=>a.setAttribute("href", "./"+(q?"?"+q:"")));
+  document.querySelectorAll("a.enlace-adultos").forEach(a=>a.setAttribute("href", "para-adultos.html"+(q?"?"+q:"")+(on?"":"")));
+  try{ history.replaceState(null,"", "?"+q); }catch(e){}
+  if(S.ultimoConsejo) consejo(S.ultimoConsejo);
+  alCambiarAyuda();
+}
+function iniciarPagina(empezar){
+  try{
+    const q=new URLSearchParams(location.search);
+    if(q.get("ayuda")==="es" || q.get("lang")==="es") S.ayuda=true;
+    if(q.get("grado")==="7" || q.get("grado")==="8") gradoFijo=q.get("grado");
+  }catch(e){}
+  if(gradoFijo){
+    S.nivel=gradoFijo; $("elegir-nivel").classList.add("oculto");
+    document.querySelectorAll("[data-nivel]").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.nivel===gradoFijo)));
+  }
+  ponerAyuda(S.ayuda);
+  $("btn-ayuda").addEventListener("click", ()=>ponerAyuda(!S.ayuda));
+  /* bocinas en español de cada recuadro de ayuda */
+  document.querySelectorAll("[data-lee-es]").forEach(b=>b.addEventListener("click", ()=>{
+    const p=$(b.dataset.leeEs); if(p) hablar(p.textContent, null, false, "es"); }));
+  $("btn-empezar").addEventListener("click", empezar);
+  $("btn-otra-vez").addEventListener("click", empezar);
+  $("bocina").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  $("bocina-final").addEventListener("click", ()=>{ if(ultimaGuia) guia(ultimaGuia()); });
+  let presentado=false;
+  function presentar(){
+    if(presentado || $("p-portada").classList.contains("oculto")) return;
+    presentado=true;
+    guia([{texto:TEXTO_PORTADA.en}, {el:$("btn-empezar"), texto:DICE_COMUN["btn-empezar"].en}]);
+  }
+  ["pointerdown","keydown"].forEach(ev=>document.addEventListener(ev, e=>{
+    if(e.target && e.target.closest && e.target.closest("#btn-empezar, [data-modo], [data-nivel], #btn-ayuda, #btn-oir, [data-lee-es]")) return;
+    presentar(); }, {once:true}));
+  $("btn-oir").addEventListener("click", ()=>{ presentado=false; presentar(); });
+  presentar();
+  if(gradoFijo){ const nav=document.createElement("script"); nav.src="../nav-lumi.js"; nav.setAttribute("data-grado", gradoFijo); document.body.appendChild(nav); }
+}
+
+/* ==================================================================
+   El juego: «Plan the Dig at Cahokia / Planea la excavación en Cahokia»
+   Pensamiento creativo con reglas: en cada temporada hay que planear
+   dónde excavar cumpliendo las reglas (área, zona que no se toca,
+   señales del magnetómetro, zanjas, el círculo de postes) y después
+   hallar un segundo plan MUY distinto (comparten un cuadro como máximo).
+   Al final se elige un plan y se explica por qué: no hay una respuesta única.
+   Datos verificados: Monks Mound, unos 30 m (100 pies) de alto, en 14 etapas;
+   unos 120 montículos, 70 conservados; Patrimonio de la Humanidad desde 1982;
+   Woodhenge: Warren Wittry, principios de los años sesenta, postes de cedro
+   rojo, el primer círculo de 24 postes y los siguientes de 12 en 12.
+   El campo, la zona protegida y las señales son inventados para el juego.
+   ================================================================== */
+const COLS = 10, ROWS = 7, LADO = 2;                 /* cada cuadro mide 2 m × 2 m */
+const LETRAS = "ABCDEFGHIJ";
+const nombreCelda = k=>LETRAS[k % COLS] + (Math.floor(k / COLS) + 1);
+const centro = k=>({x:(k % COLS) * LADO + 1, y:Math.floor(k / COLS) * LADO + 1});
+const vecinos = k=>{ const c = k % COLS, r = Math.floor(k / COLS), v = [];
+  if(c > 0) v.push(k - 1); if(c < COLS - 1) v.push(k + 1); if(r > 0) v.push(k - COLS); if(r < ROWS - 1) v.push(k + COLS); return v; };
+function grupos(celdas){
+  const resto = new Set(celdas), out = [];
+  while(resto.size){ const ini = resto.values().next().value, g = [ini]; resto.delete(ini);
+    for(let i = 0; i < g.length; i++) vecinos(g[i]).forEach(v=>{ if(resto.has(v)){ resto.delete(v); g.push(v); } });
+    out.push(g); }
+  return out;
+}
+const RADIO = 12;                                     /* el círculo de postes: centro en la estaca (0, 0) */
+const dist0 = k=>{ const c = centro(k); return Math.hypot(c.x, c.y); };
+/* 8.º: el cuadro está en el círculo si su centro está a entre 11 y 13 m de la estaca.
+   7.º: si la línea punteada pasa por el cuadro (la esquina más cercana está dentro y la más lejana fuera). */
+const enCirculo = k=>{
+  if(S.nivel === "8") return Math.abs(dist0(k) - RADIO) <= 1;
+  const c = k % COLS, r = Math.floor(k / COLS);
+  const cerca = Math.hypot(c * LADO, r * LADO), lejos = Math.hypot((c + 1) * LADO, (r + 1) * LADO);
+  return cerca < RADIO && lejos > RADIO;
+};
+
+/* ---------- Las temporadas ---------- */
+function temporadas(){
+  return [
+    {id:"t1", cuadros:6, tit:{en:"Season 1: the first trench", es:"Temporada 1: la primera zanja"},
+     dato:{en:"Monks Mound, the largest earthen mound in the Americas, rises about 100 feet (30 meters). Cahokia's people built it in many stages, one basketful of earth at a time.",
+           es:"Monks Mound, el montículo de tierra más grande de América, mide unos 30 metros (100 pies) de alto. El pueblo de Cahokia lo construyó en muchas etapas, una canasta de tierra a la vez."},
+     reglas:["area","prot","senal","unida"]},
+    {id:"t2", cuadros:8, tit:{en:"Season 2: two teams", es:"Temporada 2: dos equipos"},
+     dato:{en:"Cahokia once had about 120 earthen mounds. About 70 are still protected today in Cahokia Mounds State Historic Site, a UNESCO World Heritage Site since 1982.",
+           es:"Cahokia llegó a tener unos 120 montículos de tierra. Hoy se conservan unos 70 en el Sitio Histórico Estatal de Cahokia Mounds, Patrimonio de la Humanidad desde 1982."},
+     reglas:["area","prot","dos","cadaSenal"]},
+    {id:"t3", cuadros:6, tit:{en:"Season 3: the lost circle", es:"Temporada 3: el círculo perdido"},
+     dato:{en:"At Cahokia, archaeologists found holes where tall red cedar posts once stood in great circles. Your team thinks there may be another circle of posts in this field.",
+           es:"En Cahokia, los arqueólogos hallaron los hoyos donde hubo altos postes de cedro rojo en grandes círculos. Tu equipo cree que puede haber otro círculo de postes en este campo."},
+     reglas:["area","prot","circulo"]}
+  ];
+}
+/* Texto de cada regla y su revisión (con una pista que nunca da la respuesta) */
+const REGLAS = {
+  area:{
+    txt:t=>({en:`Dig exactly ${t.cuadros * LADO * LADO} square meters. Each square is ${LADO} m × ${LADO} m.`, es:`Excava exactamente ${t.cuadros * LADO * LADO} metros cuadrados. Cada cuadro mide ${LADO} m × ${LADO} m.`}),
+    ok:(p, t)=>p.length === t.cuadros,
+    pista:(p, t)=>({en:`Your plan has ${p.length} squares. Each square is ${LADO * LADO} square meters, so that is ${p.length * LADO * LADO} m². How many squares make ${t.cuadros * LADO * LADO} m²?`,
+                    es:`Tu plan tiene ${p.length} cuadros. Cada cuadro mide ${LADO * LADO} metros cuadrados, así que son ${p.length * LADO * LADO} m². ¿Cuántos cuadros hacen ${t.cuadros * LADO * LADO} m²?`})},
+  prot:{
+    txt:()=>({en:"Don't dig in the green area. The descendant Native Nations asked the team to leave it untouched.", es:"No excaves en la zona verde. Las naciones indígenas descendientes le pidieron al equipo que no la toque."}),
+    ok:(p)=>!p.some(k=>J.prot.has(k)),
+    pista:()=>({en:"One of your squares is in the green area. Move it somewhere else.", es:"Uno de tus cuadros está en la zona verde. Muévelo a otro lugar."}), mala:p=>p.filter(k=>J.prot.has(k))},
+  senal:{
+    txt:()=>({en:"At least one square must be over a magnetometer signal (a dark dot).", es:"Por lo menos un cuadro debe estar sobre una señal del magnetómetro (un punto oscuro)."}),
+    ok:(p)=>p.some(k=>J.senal.has(k)),
+    pista:()=>({en:"None of your squares is over a dark dot. The magnetometer senses buried things without digging: use its clues.", es:"Ninguno de tus cuadros está sobre un punto oscuro. El magnetómetro detecta cosas enterradas sin excavar: usa sus pistas."})},
+  unida:{
+    txt:()=>({en:"All the squares must form one trench: each square touches another one side by side.", es:"Todos los cuadros deben formar una sola zanja: cada cuadro toca a otro por un lado."}),
+    ok:(p)=>p.length > 0 && grupos(p).length === 1,
+    pista:(p)=>({en:`Your squares form ${grupos(p).length} separate groups. Squares that touch only at a corner don't count as touching.`, es:`Tus cuadros forman ${grupos(p).length} grupos separados. Los cuadros que solo se tocan por una esquina no cuentan.`})},
+  dos:{
+    txt:()=>({en:"Make exactly two separate trenches, one for each team. The two trenches must not touch.", es:"Haz exactamente dos zanjas separadas, una para cada equipo. Las dos zanjas no deben tocarse."}),
+    ok:(p)=>grupos(p).length === 2,
+    pista:(p)=>({en:`Right now your squares form ${grupos(p).length} ${grupos(p).length === 1 ? "group" : "groups"}. You need exactly 2 groups that don't touch side by side.`, es:`Ahora tus cuadros forman ${grupos(p).length} ${grupos(p).length === 1 ? "grupo" : "grupos"}. Necesitas exactamente 2 grupos que no se toquen por un lado.`})},
+  cadaSenal:{
+    txt:()=>({en:"Each trench needs at least one magnetometer signal.", es:"Cada zanja necesita por lo menos una señal del magnetómetro."}),
+    ok:(p)=>grupos(p).every(g=>g.some(k=>J.senal.has(k))),
+    pista:()=>({en:"One of your trenches has no dark dot. Each team wants a clue to follow.", es:"Una de tus zanjas no tiene ningún punto oscuro. Cada equipo quiere una pista que seguir."})},
+  circulo:{
+    txt:()=>S.nivel === "8"
+      ? {en:`At least 3 squares must be on the circle of posts: its center is the red stake at (0, 0) and its radius is ${RADIO} m. A square is on the circle if the distance from the stake to the center of the square is between ${RADIO - 1} and ${RADIO + 1} meters. The center of square A1 is at (1, 1), and B1's is at (3, 1).`,
+         es:`Por lo menos 3 cuadros deben estar sobre el círculo de postes: su centro es la estaca roja en (0, 0) y su radio es ${RADIO} m. Un cuadro está sobre el círculo si la distancia de la estaca al centro del cuadro está entre ${RADIO - 1} y ${RADIO + 1} metros. El centro del cuadro A1 está en (1, 1), y el de B1, en (3, 1).`}
+      : {en:"At least 3 squares must be on the dashed red circle, where the team thinks the posts stood.", es:"Por lo menos 3 cuadros deben estar sobre el círculo rojo punteado, donde el equipo cree que estaban los postes."},
+    ok:(p)=>p.filter(enCirculo).length >= 3,
+    pista:(p)=>{
+      const n = p.filter(enCirculo).length;
+      if(S.nivel !== "8") return {en:`Only ${n} of your squares ${n === 1 ? "is" : "are"} on the dashed circle. Look for squares the red line passes through.`, es:`Solo ${n} de tus cuadros ${n === 1 ? "está" : "están"} sobre el círculo punteado. Busca cuadros por los que pasa la línea roja.`};
+      const k = p.find(x=>!enCirculo(x)), c = k !== undefined ? centro(k) : null;
+      if(!c) return {en:"You need more squares on the circle.", es:"Necesitas más cuadros sobre el círculo."};
+      const d = Math.round(dist0(k) * 10) / 10;
+      return {en:`Only ${n} of your squares ${n === 1 ? "is" : "are"} on the circle. For example, square ${nombreCelda(k)} has its center at (${c.x}, ${c.y}), so its distance is √(${c.x}² + ${c.y}²) ≈ ${d} m. Is that between ${RADIO - 1} and ${RADIO + 1}?`,
+              es:`Solo ${n} de tus cuadros ${n === 1 ? "está" : "están"} sobre el círculo. Por ejemplo, el cuadro ${nombreCelda(k)} tiene su centro en (${c.x}, ${c.y}), así que su distancia es √(${c.x}² + ${c.y}²) ≈ ${d} m. ¿Está entre ${RADIO - 1} y ${RADIO + 1}?`};
+    }},
+  distinto:{
+    txt:()=>({en:"Make it very different: share at most 1 square with your first plan (outlined in orange).", es:"Hazlo muy distinto: comparte como máximo 1 cuadro con tu primer plan (marcado en naranja)."}),
+    ok:(p)=>p.filter(k=>J.plan1.includes(k)).length <= 1,
+    pista:(p)=>({en:`Your new plan shares ${p.filter(k=>J.plan1.includes(k)).length} squares with the first one. Try a different part of the field.`, es:`Tu plan nuevo comparte ${p.filter(k=>J.plan1.includes(k)).length} cuadros con el primero. Prueba otra parte del campo.`}),
+    mala:p=>p.filter(k=>J.plan1.includes(k))}
+};
+
+/* ---------- Textos ---------- */
+const T = {
+  ronda:{en:(i, n)=>`Season ${i} of ${n}`, es:(i, n)=>`Temporada ${i} de ${n}`},
+  reglasTit:{en:"Rules for this season", es:"Reglas de esta temporada"},
+  plan1:{en:"Tap the squares where your team will dig. Follow all the rules, then check your plan.", es:"Toca los cuadros donde tu equipo va a excavar. Cumple todas las reglas y después revisa tu plan."},
+  plan1A:{en:"Yellow player: make the first plan. Tap the squares, then check it.", es:"Jugador amarillo: haz el primer plan. Toca los cuadros y después revísalo."},
+  plan2:{en:"Your plan works! Now make a second plan that is very different. Good archaeologists imagine more than one way.", es:"¡Tu plan funciona! Ahora haz un segundo plan muy distinto. Los buenos arqueólogos imaginan más de una manera."},
+  plan2B:{en:"Yellow's plan works! Blue player: now make a plan that is very different.", es:"¡El plan del amarillo funciona! Jugador azul: ahora haz un plan muy distinto."},
+  falta:{en:"Almost! One rule is not followed yet.", es:"¡Casi! Todavía falta cumplir una regla."},
+  elegir:{en:"Two good plans! If the team could do only one this season, which one would you choose?", es:"¡Dos buenos planes! Si el equipo solo pudiera hacer uno esta temporada, ¿cuál elegirías?"},
+  elegirA:{en:"Two good plans! Talk it over: which one would you both choose?", es:"¡Dos buenos planes! Conversen: ¿cuál elegirían los dos?"},
+  porque:{en:"Why? Choose your reason. There is no single right answer.", es:"¿Por qué? Elige tu razón. No hay una sola respuesta correcta."},
+  razones:[{en:"It covers more magnetometer signals.", es:"Cubre más señales del magnetómetro."},
+           {en:"It explores a part of the field nobody has looked at.", es:"Explora una parte del campo que nadie ha mirado."},
+           {en:"It stays farther from the area we must not touch.", es:"Se mantiene más lejos de la zona que no debemos tocar."},
+           {en:"It tests our idea in a new way.", es:"Pone a prueba nuestra idea de una manera nueva."}],
+  bienRazon:{en:"Good reason! Real archaeologists also choose between good plans, and they explain why.", es:"¡Buena razón! Los arqueólogos de verdad también eligen entre buenos planes y explican por qué."},
+  siguiente:{en:"Next season ▶", es:"Siguiente temporada ▶"}, terminar:{en:"Finish ▶", es:"Terminar ▶"},
+  final:{en:"Three seasons, six different plans! When there are rules, there is still room for many good ideas. Thinking of more than one solution is what creative people do.",
+         es:"¡Tres temporadas, seis planes distintos! Aunque haya reglas, siempre cabe más de una buena idea. Pensar en más de una solución es lo que hace la gente creativa."},
+  reto:{en:"Make a grid on a sheet of paper and plan a small garden, a classroom layout or a park. Write three rules first (for example: 12 square meters, one path, no plants near the door). Then draw two very different plans that follow all the rules, and ask someone which one they would choose and why.",
+        es:"Haz una cuadrícula en una hoja y planea un huerto pequeño, la distribución de un salón o un parque. Primero escribe tres reglas (por ejemplo: 12 metros cuadrados, un camino, nada de plantas cerca de la puerta). Después dibuja dos planes muy distintos que cumplan todas las reglas, y pregúntale a alguien cuál elegiría y por qué."},
+  reto8:{en:" Add one rule that uses the Pythagorean theorem, like “the bench must be exactly 5 meters from the tree.”", es:" Agrega una regla que use el teorema de Pitágoras, como «la banca debe estar exactamente a 5 metros del árbol»."},
+  cuadros:{en:(n)=>`Squares chosen: ${n}`, es:(n)=>`Cuadros elegidos: ${n}`},
+  cuadros8:{en:(n)=>`Squares chosen: ${n} · Area: ${n} × ${LADO * LADO} = ${n * LADO * LADO} m²`, es:(n)=>`Cuadros elegidos: ${n} · Área: ${n} × ${LADO * LADO} = ${n * LADO * LADO} m²`}
+};
+C = {
+  plan:{en:"Ask: “Which rule did you think about first?” Let them try and check; the game gives hints, not answers.", es:"Pregunte: «¿En qué regla pensaste primero?». Deje que prueben y revisen; el juego da pistas, no respuestas."},
+  plan2:{en:"Encourage a truly different idea, not a small change: “What if the trench went the other way, or to the other side of the field?”", es:"Anime una idea de verdad distinta, no un cambio pequeño: «¿Y si la zanja fuera hacia el otro lado, o al otro extremo del campo?»."},
+  elegir:{en:"There is no right plan. Ask for the reason, and accept any reason they can explain.", es:"No hay un plan correcto. Pida la razón y acepte cualquier razón que sepan explicar."}
+};
+DICE = {"btn-revisar":{en:"When your plan is ready, tap Check my plan.", es:"Cuando tu plan esté listo, toca «Revisar mi plan»."},
+        "btn-siguiente":{en:"Tap here to go on.", es:"Toca aquí para seguir."}};
+TEXTO_PORTADA = {en:document.querySelector(".portada .intro").textContent, es:$("intro-es").textContent};
+limpiarParaVoz = t=>t.replace(/m²/g, S.idioma === "es" ? " metros cuadrados" : " square meters").replace(/(\d) m\b/g, S.idioma === "es" ? "$1 metros" : "$1 meters")
+  .replace(/√/g, S.idioma === "es" ? "la raíz cuadrada de " : "the square root of ").replace(/²/g, S.idioma === "es" ? " al cuadrado" : " squared").replace(/≈/g, S.idioma === "es" ? " aproximadamente " : " about ");
+
+/* ---------- El campo ---------- */
+const NS = "http://www.w3.org/2000/svg", CEL = 46, MI = 52, MA = 12, MB = 34;
+function nodo(tag, at, padre){ const n=document.createElementNS(NS, tag); for(const k in at) n.setAttribute(k, at[k]); if(padre) padre.appendChild(n); return n; }
+const xs = c=>MI + c * CEL, ys = r=>MA + (ROWS - 1 - r) * CEL;
+function dibujarCampo(svg, plan, chico){
+  svg.innerHTML = "";
+  svg.setAttribute("viewBox", `0 0 ${MI + COLS * CEL + 8} ${MA + ROWS * CEL + MB}`);
+  for(let k = 0; k < COLS * ROWS; k++){
+    const c = k % COLS, r = Math.floor(k / COLS);
+    const cls = ["celda"]; if(J.prot.has(k)) cls.push("prot"); if(J.senal.has(k)) cls.push("senal");
+    if(plan.includes(k)) cls.push("elegida");
+    if(!chico && J.fase === "plan2" && J.plan1.includes(k)) cls.push("antes");
+    if(!chico && J.malas.has(k)) cls.push("mala");
+    const g = nodo("g", chico ? {class:cls.join(" ")} : {class:cls.join(" "), tabindex:"0", role:"button", id:"c-" + k,
+      "aria-pressed":String(plan.includes(k)), "aria-label":nombreCelda(k) + (J.prot.has(k) ? ", do not dig" : "") + (J.senal.has(k) ? ", signal" : "")}, svg);
+    nodo("rect", {x:xs(c), y:ys(r), width:CEL, height:CEL, rx:3}, g);
+    if(J.senal.has(k)) nodo("circle", {cx:xs(c) + CEL / 2, cy:ys(r) + CEL / 2, r:7, class:"punto-mag"}, g);
+    if(!chico){
+      g.addEventListener("click", ()=>tocarCelda(k));
+      g.addEventListener("keydown", e=>{ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); tocarCelda(k); } });
+    }
+  }
+  if(!chico){
+    for(let c = 0; c < COLS; c++){ const t = nodo("text", {x:xs(c) + CEL / 2, y:MA + ROWS * CEL + 22, class:"coord-et", "text-anchor":"middle"}, svg); t.textContent = LETRAS[c]; }
+    for(let r = 0; r < ROWS; r++){ const t = nodo("text", {x:MI - 10, y:ys(r) + CEL / 2 + 5, class:"coord-et", "text-anchor":"end"}, svg); t.textContent = r + 1; }
+  }
+  if(J.t.id === "t3"){
+    const esc = CEL / LADO, ox = xs(0), oy = MA + ROWS * CEL;     /* (0, 0) es la esquina de abajo a la izquierda */
+    nodo("circle", {cx:ox, cy:oy, r:7, class:"estaca"}, svg);
+    if(!chico){ const t = nodo("text", {x:ox - 4, y:oy + 26, class:"coord-et", "text-anchor":"end"}, svg); t.textContent = "(0, 0)"; }
+    if(S.nivel !== "8") nodo("path", {class:"arco", d:`M${ox + RADIO * esc},${oy} A${RADIO * esc},${RADIO * esc} 0 0 0 ${ox},${oy - RADIO * esc}`}, svg);
+  }
+}
+function miniatura(plan, titulo){
+  const f = document.createElement("figure");
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("aria-hidden", "true");
+  dibujarCampo(svg, plan, true); f.appendChild(svg);
+  const cap = document.createElement("figcaption"); cap.textContent = titulo; f.appendChild(cap);
+  return f;
+}
+
+/* ---------- La partida ---------- */
+let J = null;
+const P = {ronda:0, rondas:3, guardados:[]};
+function campoNuevo(t){
+  for(let intento = 0; intento < 500; intento++){
+    const prot = new Set(), senal = new Set();
+    /* zona protegida: un rectángulo de 2 × 2 o 3 × 2 cuadros */
+    const w = azar([2, 3]), h = 2, c0 = Math.floor(Math.random() * (COLS - w)), r0 = Math.floor(Math.random() * (ROWS - h));
+    for(let c = c0; c < c0 + w; c++) for(let r = r0; r < r0 + h; r++) prot.add(r * COLS + c);
+    while(senal.size < 7){ const k = Math.floor(Math.random() * COLS * ROWS); if(!prot.has(k)) senal.add(k); }
+    if(t.id === "t3"){ const libres = [...Array(COLS * ROWS).keys()].filter(k=>enCirculo(k) && !prot.has(k)); if(libres.length < 7) continue; }
+    if(t.id === "t2" && [...senal].filter(k=>k % COLS < 4).length < 1) continue;
+    return {prot, senal};
+  }
+}
+function nuevaRonda(){
+  const t = temporadas()[P.ronda], campo = campoNuevo(t);
+  J = {t, prot:campo.prot, senal:campo.senal, plan:[], plan1:[], plan2:[], fase:"plan1", malas:new Set()};
+  $("contador").textContent = dos(()=>tx(T.ronda, P.ronda + 1, P.rondas)).en;
+  const d = dos(()=>tx(t.dato)); $("dato").innerHTML = `<p><b>${dos(()=>tx(t.tit)).en}.</b> ${d.en}</p><p class="ayuda-es" lang="es" style="color:#1D5A46"><b>${t.tit.es}.</b> ${d.es}</p>`;
+  $("zona-plan").classList.remove("oculto"); $("zona-elegir").classList.add("oculto"); $("zona-siguiente").classList.add("oculto");
+  $("btn-borrar").disabled = false; $("btn-revisar").disabled = false;
+  pintar(); consejo("plan");
+  decir("msg", ()=>tx(S.modo === "amigos" ? T.plan1A : T.plan1), ["btn-revisar"]);
+}
+function reglasActivas(){ return J.t.reglas.concat(J.fase === "plan2" ? ["distinto"] : []); }
+function pintar(){
+  dibujarCampo($("campo"), J.plan, false);
+  $("reglas-tit").textContent = T.reglasTit.en;
+  $("reglas").innerHTML = reglasActivas().map(id=>{ const r = dos(()=>tx(REGLAS[id].txt(J.t))); return `<li id="r-${id}">${r.en}<span class="es-regla" lang="es">${r.es}</span></li>`; }).join("");
+  $("medidor").textContent = (S.nivel === "8" ? T.cuadros8 : T.cuadros).en(J.plan.length);
+}
+function tocarCelda(k){
+  if(J.fase !== "plan1" && J.fase !== "plan2") return;
+  if(J.prot.has(k)){ sonNo(); decir("msg", ()=>tx(REGLAS.prot.pista())); return; }
+  const i = J.plan.indexOf(k);
+  if(i >= 0) J.plan.splice(i, 1); else J.plan.push(k);
+  J.malas.clear(); sonElige(); pintar();
+  const el = $("c-" + k); if(el) el.focus({preventScroll:true});
+}
+$("btn-borrar").addEventListener("click", ()=>{ if(!J) return; J.plan = []; J.malas.clear(); pintar(); });
+$("btn-revisar").addEventListener("click", ()=>{
+  if(!J || (J.fase !== "plan1" && J.fase !== "plan2")) return;
+  const lista = reglasActivas(), fallas = lista.filter(id=>!REGLAS[id].ok(J.plan, J.t));
+  lista.forEach(id=>{ const li = $("r-" + id); if(li) li.classList.toggle("ok", !fallas.includes(id)); });
+  if(fallas.length){
+    const f = REGLAS[fallas[0]]; sonPista();
+    J.malas = new Set(f.mala ? f.mala(J.plan) : []); dibujarCampo($("campo"), J.plan, false);
+    decir("msg", ()=>tx(T.falta) + " " + tx(f.pista(J.plan, J.t)));
+    return;
+  }
+  sonTada(); confeti(); lumiFeliz();
+  if(J.fase === "plan1"){
+    J.plan1 = J.plan.slice(); J.plan = []; J.fase = "plan2"; consejo("plan2"); pintar();
+    decir("msg", ()=>tx(S.modo === "amigos" ? T.plan2B : T.plan2), ["btn-revisar"]);
+  } else { J.plan2 = J.plan.slice(); elegir(); }
+});
+function elegir(){
+  J.fase = "elegir"; consejo("elegir");
+  $("zona-plan").classList.add("oculto"); $("zona-elegir").classList.remove("oculto");
+  const g = $("galeria"); g.innerHTML = "";
+  const n1 = S.modo === "amigos" ? "Yellow's plan" : "Plan 1", n2 = S.modo === "amigos" ? "Blue's plan" : "Plan 2";
+  g.appendChild(miniatura(J.plan1, n1)); g.appendChild(miniatura(J.plan2, n2));
+  const t = dos(()=>tx(S.modo === "amigos" ? T.elegirA : T.elegir)); $("ind-r").textContent = t.en; $("ind-r-es").textContent = t.es;
+  const cual = $("cual"); cual.innerHTML = "";
+  [[n1, J.plan1], [n2, J.plan2]].forEach(([nom, plan])=>{
+    const b = document.createElement("button"); b.className = "opcion"; b.type = "button"; b.textContent = nom;
+    b.addEventListener("click", ()=>{
+      sonElige(); cual.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", String(x === b)));
+      J.elegido = {nom, plan}; razones();
+    });
+    cual.appendChild(b);
+  });
+  decir("msg", ()=>tx(S.modo === "amigos" ? T.elegirA : T.elegir));
+  $("zona-elegir").scrollIntoView({block:"nearest", behavior:suave()});
+}
+function razones(){
+  const cont = $("razones"); cont.innerHTML = ""; cont.classList.remove("oculto");
+  T.razones.forEach(r=>{
+    const b = document.createElement("button"); b.type = "button";
+    b.innerHTML = `${r.en}<span class="es-bajo ayuda-es" lang="es">${r.es}</span>`;
+    b.addEventListener("click", ()=>{
+      cont.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", String(x === b)));
+      sonSi(); P.guardados.push({tit:J.t.tit.en, nom:J.elegido.nom, plan:J.elegido.plan, t:J.t, prot:J.prot, senal:J.senal});
+      $("zona-siguiente").classList.remove("oculto");
+      $("btn-siguiente").textContent = P.ronda >= P.rondas - 1 ? T.terminar.en : T.siguiente.en;
+      cont.querySelectorAll("button").forEach(x=>x.disabled = true);
+      decir("msg", ()=>tx(T.bienRazon), ["btn-siguiente"]);
+    });
+    cont.appendChild(b);
+  });
+  decir("msg", ()=>tx(T.porque));
+}
+$("btn-siguiente").addEventListener("click", ()=>{
+  P.ronda++;
+  if(P.ronda >= P.rondas){ final(); return; }
+  nuevaRonda();
+});
+function final(){
+  mostrar("p-final");
+  const g = $("galeria-final"); g.innerHTML = "";
+  P.guardados.forEach(x=>{ const antes = J; J = {t:x.t, prot:x.prot, senal:x.senal, plan1:[], malas:new Set(), fase:"fin"}; g.appendChild(miniatura(x.plan, x.tit.split(":")[0] + " · " + x.nom)); J = antes; });
+  const r = dos(()=>tx(T.reto) + (S.nivel === "8" ? tx(T.reto8) : "")); $("txt-reto").textContent = r.en; $("txt-reto-es").textContent = r.es;
+  decir("msg-final", ()=>tx(T.final), ["btn-otra-vez","btn-al-menu"]);
+}
+function empezar(){
+  P.ronda = 0; P.guardados = []; S.vistos = {};
+  mostrar("p-juego"); nuevaRonda();
+}
+window.S = S; window.P = P; window.REGLAS = REGLAS; Object.defineProperty(window, "J", {get:()=>J});
+alCambiarAyuda = ()=>{ if(J && (J.fase === "plan1" || J.fase === "plan2")) pintar(); };
+CONFETI = ["🏺","⭐","✨","🌟","🌅"];
+iniciarPagina(empezar);
+
+</script>
+</body>
+</html>
